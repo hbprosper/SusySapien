@@ -4,11 +4,12 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
-// $Revision:$
-// $Id$
+// $Revision: 1.3 $
+// $Id: plugins.cc,v 1.3 2010/01/16 04:02:01 prosper Exp $
 //
 //
-// Include its header first to avoid annoying compiler complaints.
+// If using Python, include its header first to avoid 
+// annoying compiler complaints.
 #include <Python.h>
 #include <boost/python/type_id.hpp>
 #include <iostream>

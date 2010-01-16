@@ -1,16 +1,16 @@
-HBP
+HBP 
+$Revision:$
 
 Do
 
 	1.source $CMSSW_BASE/src/PhysicsTools/LiteAnalysis/setup.sh
 
-	2. mkobjectlist.py ../test/<root-file>
+	2. mkclasslist.py <root-file> [root-file]
 
 				to create 	adapters.txt, 
 							headers.txt and 
-							objects.txt
+							classes.txt
 
 	3. mkplugins.icc.py
 
-				to create 	buffers.txt and 
-							plugins.icc
+				to create 	plugins.icc
