@@ -9,5 +9,3 @@ edm::reftobase::VectorHolder<T, REFV>|typename base_type::const_iterator|end|voi
 edm::reftobase::VectorHolder<T, REFV>|const void*|product|void
 edm::reftobase::VectorHolder<T, REFV>|bool|isAvailable|void
 edm::reftobase::VectorHolder<T, REFV>|std::auto_ptr<RefVectorHolderBase>|vectorHolder|void
-edm::reftobase::BaseVectorHolder<T>|BaseVectorHolder*|clone|void
-edm::reftobase::BaseVectorHolder<T>|BaseVectorHolder*|cloneEmpty|void

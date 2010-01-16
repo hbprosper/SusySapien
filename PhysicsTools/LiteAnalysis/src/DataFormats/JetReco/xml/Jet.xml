@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: Jet.xml
-  Created:  Thu Jan 14 22:47:15 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:28 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/JetReco/interface/Jet.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/JetReco/interface/Jet.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/JetReco/interface/Jet.h">
 
     <include name="&lt;string&gt;"/>
     <include name="&quot;DataFormats/Candidate/interface/CompositePtrCandidate.h&quot;"/>
@@ -235,6 +235,22 @@ static float detectorEta (float fZVertex, float fPhysicsEta);
                     </comment>
                 </method1>
 
+                <method1 name="physicsP4"
+                         return="static Candidate::LorentzVector"
+                         args="['const Candidate::Point&amp;','const Candidate&amp;','const Candidate::Point&amp;=Candidate::Point(0, 0, 0)']"
+                         vars="['newVertex','inParticle','oldVertex']"
+                         qual="">
+static Candidate::LorentzVector physicsP4 (const Candidate::Point&amp; newVertex, const Candidate&amp; inParticle, const Candidate::Point&amp; oldVertex=Candidate::Point(0, 0, 0));
+                </method1>
+
+                <method1 name="detectorP4"
+                         return="static Candidate::LorentzVector"
+                         args="['const Candidate::Point&amp;','const Candidate&amp;']"
+                         vars="['vertex','inParticle']"
+                         qual="">
+static Candidate::LorentzVector detectorP4 (const Candidate::Point&amp; vertex, const Candidate&amp; inParticle);
+                </method1>
+
                 <method1 name="getJetConstituents"
                          return="virtual Constituents"
                          args="['void']"
@@ -365,10 +381,13 @@ bool isJet() const;
         </class>
     </namespace>
 
+    <type name="Candidate::LorentzVector"/>
     <type name="CompositePtrCandidate"/>
     <type name="Constituents"/>
     <type name="EtaPhiMoments"/>
     <type name="bool"/>
+    <type name="const Candidate&amp;"/>
+    <type name="const Candidate::Point&amp;"/>
     <type name="const Constituents&amp;"/>
     <type name="const LorentzVector&amp;"/>
     <type name="const Point&amp;"/>

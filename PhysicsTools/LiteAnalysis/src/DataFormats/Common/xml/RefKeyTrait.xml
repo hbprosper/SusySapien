@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: RefKeyTrait.xml
-  Created:  Thu Jan 14 22:46:21 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:45:52 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/Common/interface/RefKeyTrait.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/RefKeyTrait.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/Common/interface/RefKeyTrait.h">
 
     <include name="&quot;FWCore/Utilities/interface/EDMException.h&quot;"/>
 

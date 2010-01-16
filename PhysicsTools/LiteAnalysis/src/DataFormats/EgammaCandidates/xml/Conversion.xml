@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: Conversion.xml
-  Created:  Thu Jan 14 22:46:50 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:17 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/EgammaCandidates/interface/Conversion.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/EgammaCandidates/interface/Conversion.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/EgammaCandidates/interface/Conversion.h">
 
     <include name="&quot;DataFormats/TrackReco/interface/TrackFwd.h&quot;"/>
     <include name="&quot;DataFormats/GeometryVector/interface/GlobalVector.h&quot;"/>
@@ -24,6 +24,23 @@
                type="regular">
 
             <section name="public">
+                <enum name="ConversionAlgorithm">
+enum ConversionAlgorithm {
+undefined=0, 
+    ecalSeeded=1, 
+    trackerOnly=2, 
+    mixed=3, 
+    algoSize=4};
+                    <field name="undefined" value="0"/>
+                    <field name="ecalSeeded" value="1"/>
+                    <field name="trackerOnly" value="2"/>
+                    <field name="mixed" value="3"/>
+                    <field name="algoSize" value="4"/>
+                </enum>
+
+                <constant name="algoNames[]"
+                          type="static const std::string"
+                          value=""/>
                 <constructor name="Conversion"
                              return=""
                              args="['void']"
@@ -31,16 +48,16 @@
                              qual="">
 Conversion();
                     <comment>
-       Default constructor
+         Default constructor
                     </comment>
                 </constructor>
 
                 <constructor name="Conversion"
                              return=""
-                             args="['const reco::CaloClusterPtrVector','const std::vector&lt;reco::TrackRef&gt;','const std::vector&lt;math::XYZPoint&gt;','const reco::Vertex&amp;','const std::vector&lt;reco::CaloClusterPtr&gt;&amp;']"
-                             vars="['clu','tr','trackPositionAtEcal','convVtx','matchingBC']"
+                             args="['const reco::CaloClusterPtrVector','const std::vector&lt;reco::TrackRef&gt;','const std::vector&lt;math::XYZPoint&gt;','const reco::Vertex&amp;','const std::vector&lt;reco::CaloClusterPtr&gt;&amp;','const float','const std::vector&lt;math::XYZVector&gt;&amp;','const std::vector&lt;math::XYZVector&gt;&amp;','ConversionAlgorithm=undefined']"
+                             vars="['clu','tr','trackPositionAtEcal','convVtx','matchingBC','DCA','trackPin','trackPout','']"
                              qual="">
-Conversion(const reco::CaloClusterPtrVector clu, const std::vector&lt;reco::TrackRef&gt; tr, const std::vector&lt;math::XYZPoint&gt; trackPositionAtEcal, const reco::Vertex&amp; convVtx, const std::vector&lt;reco::CaloClusterPtr&gt;&amp; matchingBC);
+Conversion(const reco::CaloClusterPtrVector clu, const std::vector&lt;reco::TrackRef&gt; tr, const std::vector&lt;math::XYZPoint&gt; trackPositionAtEcal, const reco::Vertex&amp; convVtx, const std::vector&lt;reco::CaloClusterPtr&gt;&amp; matchingBC, const float DCA, const std::vector&lt;math::XYZVector&gt;&amp; trackPin, const std::vector&lt;math::XYZVector&gt;&amp; trackPout, ConversionAlgorithm=undefined);
                 </constructor>
 
                 <destructor name="~Conversion"
@@ -50,7 +67,7 @@ Conversion(const reco::CaloClusterPtrVector clu, const std::vector&lt;reco::Trac
                             qual="">
 virtual ~Conversion();
                     <comment>
-        destructor
+          destructor
                     </comment>
                 </destructor>
 
@@ -61,7 +78,7 @@ virtual ~Conversion();
                          qual="const">
 Conversion* clone() const;
                     <comment>
-        returns a clone of the candidate
+          returns a clone of the candidate
                     </comment>
                 </method1>
 
@@ -72,7 +89,7 @@ Conversion* clone() const;
                          qual="const">
 reco::CaloClusterPtrVector caloCluster() const;
                     <comment>
-        reference to a SuperCluster
+          Poiner to CaloCluster (foe Egamma Conversions it points to  a SuperCluster)
                     </comment>
                 </method1>
 
@@ -83,7 +100,7 @@ reco::CaloClusterPtrVector caloCluster() const;
                          qual="const">
 std::vector&lt;reco::TrackRef&gt; tracks() const;
                     <comment>
-        vector of references to  tracks
+          vector of references to  tracks
                     </comment>
                 </method2>
 
@@ -94,31 +111,9 @@ std::vector&lt;reco::TrackRef&gt; tracks() const;
                          qual="const">
 const reco::Vertex&amp; conversionVertex() const;
                     <comment>
-         returns  the reco conversion vertex
+          returns  the reco conversion vertex
                     </comment>
                 </method1>
-
-                <method2 name="ecalImpactPosition"
-                         return="const std::vector&lt;math::XYZPoint&gt;&amp;"
-                         args="['void']"
-                         vars="['']"
-                         qual="const">
-const std::vector&lt;math::XYZPoint&gt;&amp; ecalImpactPosition() const;
-                    <comment>
-         positions of the track extrapolation at the ECAL front face
-                    </comment>
-                </method2>
-
-                <method2 name="bcMatchingWithTracks"
-                         return="const std::vector&lt;reco::CaloClusterPtr&gt;&amp;"
-                         args="['void']"
-                         vars="['']"
-                         qual="const">
-const std::vector&lt;reco::CaloClusterPtr&gt;&amp; bcMatchingWithTracks() const;
-                    <comment>
-        pair of BC matching a posteriori the tracks
-                    </comment>
-                </method2>
 
                 <method1 name="isConverted"
                          return="bool"
@@ -127,7 +122,7 @@ const std::vector&lt;reco::CaloClusterPtr&gt;&amp; bcMatchingWithTracks() const;
                          qual="const">
 bool isConverted() const;
                     <comment>
-        Bool flagging objects having track size &gt;0
+          Bool flagging objects having track size &gt;0
                     </comment>
                 </method1>
 
@@ -138,7 +133,7 @@ bool isConverted() const;
                          qual="const">
 unsigned int nTracks() const;
                     <comment>
-        Number of tracks= 0,1,2
+          Number of tracks= 0,1,2
                     </comment>
                 </method1>
 
@@ -149,7 +144,7 @@ unsigned int nTracks() const;
                          qual="const">
 double pairInvariantMass() const;
                     <comment>
-        if nTracks=2 returns the pair invariant mass
+          if nTracks=2 returns the pair invariant mass
                     </comment>
                 </method1>
 
@@ -160,7 +155,7 @@ double pairInvariantMass() const;
                          qual="const">
 double pairCotThetaSeparation() const;
                     <comment>
-        Delta cot(Theta) where Theta is the angle in the (y,z) plane between the two tracks
+          Delta cot(Theta) where Theta is the angle in the (y,z) plane between the two tracks
                     </comment>
                 </method1>
 
@@ -171,7 +166,7 @@ double pairCotThetaSeparation() const;
                          qual="const">
 GlobalVector pairMomentum() const;
                     <comment>
-        Conversion tracks momentum
+          Conversion tracks momentum
                     </comment>
                 </method1>
 
@@ -182,7 +177,7 @@ GlobalVector pairMomentum() const;
                          qual="const">
 double EoverP() const;
                     <comment>
-        is stored in the conversion, this method returns the energy sum of clusters divided by the  track pair momentum
+          is stored in the conversion, this method returns the energy sum of clusters divided by the  track pair momentum
                     </comment>
                 </method1>
 
@@ -193,27 +188,196 @@ double EoverP() const;
                          qual="const">
 double zOfPrimaryVertexFromTracks() const;
                     <comment>
-        set primary event vertex used to define photon direction
+          set primary event vertex used to define photon direction
                     </comment>
                 </method1>
 
+                <method1 name="distOfMinimumApproach"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double distOfMinimumApproach() const;
+                    <comment>
+         Dist of minimum approach between tracks
+                    </comment>
+                </method1>
+
+                <method1 name="dPhiTracksAtVtx"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double dPhiTracksAtVtx() const;
+                    <comment>
+         deltaPhi tracks at innermost point
+                    </comment>
+                </method1>
+
+                <method1 name="dPhiTracksAtEcal"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double dPhiTracksAtEcal() const;
+                    <comment>
+         deltaPhi tracks at ECAl
+                    </comment>
+                </method1>
+
+                <method1 name="dEtaTracksAtEcal"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double dEtaTracksAtEcal() const;
+                    <comment>
+         deltaEta tracks at ECAl
+                    </comment>
+                </method1>
+
+                <method2 name="ecalImpactPosition"
+                         return="const std::vector&lt;math::XYZPoint&gt;&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const std::vector&lt;math::XYZPoint&gt;&amp; ecalImpactPosition() const;
+                    <comment>
+          positions of the track extrapolation at the ECAL front face
+                    </comment>
+                </method2>
+
+                <method2 name="bcMatchingWithTracks"
+                         return="const std::vector&lt;reco::CaloClusterPtr&gt;&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const std::vector&lt;reco::CaloClusterPtr&gt;&amp; bcMatchingWithTracks() const;
+                    <comment>
+          pair of BC matching a posteriori the tracks
+                    </comment>
+                </method2>
+
+                <method2 name="tracksSigned_d0"
+                         return="std::vector&lt;double&gt;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+std::vector&lt;double&gt; tracksSigned_d0() const;
+                    <comment>
+          signed transverse impact parameter for each track
+                    </comment>
+                </method2>
+
+                <method2 name="tracksPout"
+                         return="const std::vector&lt;math::XYZVector&gt;&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const std::vector&lt;math::XYZVector&gt;&amp; tracksPout() const;
+                    <comment>
+          Vector of track momentum measured at the outermost hit
+                    </comment>
+                </method2>
+
+                <method2 name="tracksPin"
+                         return="const std::vector&lt;math::XYZVector&gt;&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const std::vector&lt;math::XYZVector&gt;&amp; tracksPin() const;
+                    <comment>
+          Vector of track momentum measured at the innermost hit
+                    </comment>
+                </method2>
+
+                <method1 name="setConversionAlgorithm"
+                         return="void"
+                         args="['const ConversionAlgorithm','bool=true']"
+                         vars="['a','set']"
+                         qual="">
+void setConversionAlgorithm(const ConversionAlgorithm a, bool set=true);
+                    <comment>
+          Conversion Track algorithm/provenance
+                    </comment>
+                </method1>
+
+                <method1 name="algo"
+                         return="ConversionAlgorithm"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+ConversionAlgorithm algo() const;
+                </method1>
+
+                <method1 name="algoName"
+                         return="std::string"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+std::string algoName() const;
+                </method1>
+
+                <method1 name="algoName"
+                         return="static std::string"
+                         args="['ConversionAlgorithm']"
+                         vars="['']"
+                         qual="">
+static std::string algoName(ConversionAlgorithm);
+                </method1>
+
+                <method1 name="algoByName"
+                         return="static ConversionAlgorithm"
+                         args="['const std::string&amp;']"
+                         vars="['name']"
+                         qual="">
+static ConversionAlgorithm algoByName(const std::string&amp; name);
+                </method1>
+
             </section>
+
+            <typemap name="ConversionAlgorithm"
+                     value="reco::Conversion::ConversionAlgorithm"
+                     type="enum"/>
+            <typemap name="algoSize"
+                     value="reco::Conversion::algoSize"
+                     type="enum"/>
+            <typemap name="ecalSeeded"
+                     value="reco::Conversion::ecalSeeded"
+                     type="enum"/>
+            <typemap name="mixed"
+                     value="reco::Conversion::mixed"
+                     type="enum"/>
+            <typemap name="trackerOnly"
+                     value="reco::Conversion::trackerOnly"
+                     type="enum"/>
+            <typemap name="undefined"
+                     value="reco::Conversion::undefined"
+                     type="enum"/>
 
         </class>
     </namespace>
 
     <type name="Conversion*"/>
+    <type name="ConversionAlgorithm"/>
     <type name="GlobalVector"/>
     <type name="bool"/>
+    <type name="const ConversionAlgorithm"/>
+    <type name="const float"/>
     <type name="const reco::CaloClusterPtrVector"/>
     <type name="const reco::Vertex&amp;"/>
+    <type name="const std::string&amp;"/>
     <type name="const std::vector&lt;math::XYZPoint&gt;"/>
     <type name="const std::vector&lt;math::XYZPoint&gt;&amp;"/>
+    <type name="const std::vector&lt;math::XYZVector&gt;&amp;"/>
     <type name="const std::vector&lt;reco::CaloClusterPtr&gt;&amp;"/>
     <type name="const std::vector&lt;reco::TrackRef&gt;"/>
     <type name="double"/>
+    <type name="enum ConversionAlgorithm"/>
     <type name="reco::CaloClusterPtrVector"/>
     <type name="reco::Conversion"/>
+    <type name="std::string"/>
+    <type name="std::vector&lt;double&gt;"/>
     <type name="std::vector&lt;reco::TrackRef&gt;"/>
     <type name="unsigned int"/>
     <type name="void"/>

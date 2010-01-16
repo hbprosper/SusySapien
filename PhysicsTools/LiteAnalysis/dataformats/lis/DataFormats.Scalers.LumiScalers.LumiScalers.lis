@@ -5,7 +5,7 @@ LumiScalers|unsigned int|eventID|void
 LumiScalers|unsigned int|sourceID|void
 LumiScalers|unsigned int|bunchNumber|void
 LumiScalers|int|version|void
-LumiScalers|struct timespec|collectionTime|void
+LumiScalers|timespec|collectionTime|void
 LumiScalers|float|normalization|void
 LumiScalers|float|deadTimeNormalization|void
 LumiScalers|float|lumiFill|void

@@ -7,8 +7,8 @@ Header:
 BaseClasses:
 	edm::reftobase::BaseVectorHolder<T>	DataFormats/Common/interface/BaseVectorHolder.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:57 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:37 2010	lsclass.py $Revision:$
 
 Methods from edm::reftobase::VectorHolder<T, REFV>
 
@@ -71,18 +71,4 @@ Methods from edm::reftobase::VectorHolder<T, REFV>
 	-o- vectorHolder
 		Return: std::auto_ptr<RefVectorHolderBase>
 		Arguments: void	
-
-Methods from edm::reftobase::BaseVectorHolder<T>
-
-	-o- clone
-		Return: BaseVectorHolder*
-		Arguments: void	
-
-	-o- cloneEmpty
-		Return: BaseVectorHolder*
-		Arguments: void	
-
-	-o- at
-		Return: RefToBase<T> const
-		Arguments: size_type	idx
 

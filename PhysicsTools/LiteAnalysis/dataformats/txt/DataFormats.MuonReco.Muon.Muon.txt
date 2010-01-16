@@ -8,10 +8,9 @@ BaseClasses:
 	reco::RecoCandidate	DataFormats/RecoCandidate/interface/RecoCandidate.h
 	reco::LeafCandidate	DataFormats/Candidate/interface/LeafCandidate.h
 	reco::Candidate	DataFormats/Candidate/interface/Candidate.h
-	reco::Particle	DataFormats/Candidate/interface/Particle.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:15 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:04 2010	lsclass.py $Revision:$
 
 Methods from reco::Muon
 
@@ -79,6 +78,18 @@ Methods from reco::Muon
 		Return: void
 		Arguments: const MuonEnergy&	calEnergy
 
+	-o- isQualityValid
+		Return: bool
+		Arguments: void	
+
+	-o- combinedQuality
+		Return: MuonQuality
+		Arguments: void	
+
+	-o- setCombinedQuality
+		Return: void
+		Arguments: const MuonQuality&	combinedQuality
+
 	-o- isTimeValid
 		Return: bool
 		Arguments: void	
@@ -107,10 +118,6 @@ Methods from reco::Muon
 		Return: bool
 		Arguments: void	
 
-	-o- segmentCompatibility
-		Return: float
-		Arguments: void	
-
 	-o- isolationR03
 		Return: const MuonIsolation&
 		Arguments: void	
@@ -127,10 +134,6 @@ Methods from reco::Muon
 	-o- isIsolationValid
 		Return: bool
 		Arguments: void	
-
-	-o- isGood
-		Return: bool
-		Arguments: SelectionType=AllArbitrated	type
 
 	-o- numberOfChambers
 		Return: int
@@ -184,252 +187,14 @@ Methods from reco::Muon
 		Return: std::vector<MuonChamberMatch>&
 		Arguments: void	
 
-	-o- matches
-		Return: const std::vector<MuonChamberMatch>&
-		Arguments: void	
-
-	-o- setMatches
-		Return: void
-		Arguments: const std::vector<MuonChamberMatch>&	matches
-
-	-o- numberOfSegments
-		Return: int
-		Arguments: int	station
-		           int	muonSubdetId
-		           ArbitrationType=SegmentArbitration	type
-
-	-o- dX
-		Return: float
-		Arguments: int	station
-		           int	muonSubdetId
-		           ArbitrationType=SegmentArbitration	type
-
-	-o- dY
-		Return: float
-		Arguments: int	station
-		           int	muonSubdetId
-		           ArbitrationType=SegmentArbitration	type
-
-	-o- dDxDz
-		Return: float
-		Arguments: int	station
-		           int	muonSubdetId
-		           ArbitrationType=SegmentArbitration	type
-
-	-o- dDyDz
-		Return: float
-		Arguments: int	station
-		           int	muonSubdetId
-		           ArbitrationType=SegmentArbitration	type
-
-	-o- pullX
-		Return: float
-		Arguments: int	station
-		           int	muonSubdetId
-		           ArbitrationType=SegmentArbitration	type
-		           bool=false	includeSegmentError
-
-	-o- pullY
-		Return: float
-		Arguments: int	station
-		           int	muonSubdetId
-		           ArbitrationType=SegmentArbitration	type
-		           bool=false	includeSegmentError
-
-	-o- pullDxDz
-		Return: float
-		Arguments: int	station
-		           int	muonSubdetId
-		           ArbitrationType=SegmentArbitration	type
-		           bool=false	includeSegmentError
-
-	-o- pullDyDz
-		Return: float
-		Arguments: int	station
-		           int	muonSubdetId
-		           ArbitrationType=SegmentArbitration	type
-		           bool=false	includeSegmentError
-
-	-o- segmentX
-		Return: float
-		Arguments: int	station
-		           int	muonSubdetId
-		           ArbitrationType=SegmentArbitration	type
-
-	-o- segmentY
-		Return: float
-		Arguments: int	station
-		           int	muonSubdetId
-		           ArbitrationType=SegmentArbitration	type
-
-	-o- segmentDxDz
-		Return: float
-		Arguments: int	station
-		           int	muonSubdetId
-		           ArbitrationType=SegmentArbitration	type
-
-	-o- segmentDyDz
-		Return: float
-		Arguments: int	station
-		           int	muonSubdetId
-		           ArbitrationType=SegmentArbitration	type
-
-	-o- segmentXErr
-		Return: float
-		Arguments: int	station
-		           int	muonSubdetId
-		           ArbitrationType=SegmentArbitration	type
-
-	-o- segmentYErr
-		Return: float
-		Arguments: int	station
-		           int	muonSubdetId
-		           ArbitrationType=SegmentArbitration	type
-
-	-o- segmentDxDzErr
-		Return: float
-		Arguments: int	station
-		           int	muonSubdetId
-		           ArbitrationType=SegmentArbitration	type
-
-	-o- segmentDyDzErr
-		Return: float
-		Arguments: int	station
-		           int	muonSubdetId
-		           ArbitrationType=SegmentArbitration	type
-
-	-o- trackEdgeX
-		Return: float
-		Arguments: int	station
-		           int	muonSubdetId
-		           ArbitrationType=SegmentArbitration	type
-
-	-o- trackEdgeY
-		Return: float
-		Arguments: int	station
-		           int	muonSubdetId
-		           ArbitrationType=SegmentArbitration	type
-
-	-o- trackX
-		Return: float
-		Arguments: int	station
-		           int	muonSubdetId
-		           ArbitrationType=SegmentArbitration	type
-
-	-o- trackY
-		Return: float
-		Arguments: int	station
-		           int	muonSubdetId
-		           ArbitrationType=SegmentArbitration	type
-
-	-o- trackDxDz
-		Return: float
-		Arguments: int	station
-		           int	muonSubdetId
-		           ArbitrationType=SegmentArbitration	type
-
-	-o- trackDyDz
-		Return: float
-		Arguments: int	station
-		           int	muonSubdetId
-		           ArbitrationType=SegmentArbitration	type
-
-	-o- trackXErr
-		Return: float
-		Arguments: int	station
-		           int	muonSubdetId
-		           ArbitrationType=SegmentArbitration	type
-
-	-o- trackYErr
-		Return: float
-		Arguments: int	station
-		           int	muonSubdetId
-		           ArbitrationType=SegmentArbitration	type
-
-	-o- trackDxDzErr
-		Return: float
-		Arguments: int	station
-		           int	muonSubdetId
-		           ArbitrationType=SegmentArbitration	type
-
-	-o- trackDyDzErr
-		Return: float
-		Arguments: int	station
-		           int	muonSubdetId
-		           ArbitrationType=SegmentArbitration	type
-
-	-o- trackDist
-		Return: float
-		Arguments: int	station
-		           int	muonSubdetId
-		           ArbitrationType=SegmentArbitration	type
-
-	-o- trackDistErr
-		Return: float
-		Arguments: int	station
-		           int	muonSubdetId
-		           ArbitrationType=SegmentArbitration	type
-
-	-o- t0
-		Return: float
-		Arguments: int=0	n
-
 Methods from reco::RecoCandidate
 
 	-o- overlap
 		Return: bool
 		Arguments: const Candidate&	
 
-	-o- track
-		Return: reco::edm::Ref<std::vector<Track>>
-		Arguments: void	
-
-	-o- track
-		Return: reco::edm::Ref<std::vector<Track>>
-		Arguments: size_t	
-
-	-o- numberOfTracks
-		Return: size_t
-		Arguments: void	
-
-	-o- gsfTrack
-		Return: reco::edm::Ref<GsfTrackCollection>
-		Arguments: void	
-
-	-o- standAloneMuon
-		Return: reco::edm::Ref<std::vector<Track>>
-		Arguments: void	
-
-	-o- combinedMuon
-		Return: reco::edm::Ref<std::vector<Track>>
-		Arguments: void	
-
-	-o- superCluster
-		Return: reco::edm::Ref<std::vector<SuperCluster>>
-		Arguments: void	
-
-	-o- caloTower
-		Return: edm::Ref<CaloTowerCollection>
-		Arguments: void	
-
-	-o- bestTrack
-		Return: const Track*
-		Arguments: void	
-
-	-o- bestTrackRef
-		Return: edm::RefToBase<reco::Track>
-		Arguments: void	
-
-	-o- bestTrackType
-		Return: TrackType
-		Arguments: void	
-
 Methods from reco::LeafCandidate
 
-	-o- clone
-		Return: LeafCandidate*
-		Arguments: void	
-
 	-o- begin
 		Return: candidate::const_iterator
 		Arguments: void	
@@ -437,42 +202,8 @@ Methods from reco::LeafCandidate
 	-o- end
 		Return: candidate::const_iterator
 		Arguments: void	
-
-	-o- begin
-		Return: candidate::iterator
-		Arguments: void	
-
-	-o- end
-		Return: candidate::iterator
-		Arguments: void	
-
-	-o- numberOfDaughters
-		Return: size_t
-		Arguments: void	
-
-	-o- daughter
-		Return: const Candidate*
-		Arguments: size_type	
-
-	-o- numberOfMothers
-		Return: size_t
-		Arguments: void	
-
-	-o- mother
-		Return: const Candidate*
-		Arguments: size_type	
-
-	-o- daughter
-		Return: Candidate*
-		Arguments: size_type	
 
 Methods from reco::Candidate
-
-	-o- clone
-		Return: Candidate*
-		Arguments: void	
-
-Methods from reco::Particle
 
 	-o- charge
 		Return: int
@@ -491,11 +222,11 @@ Methods from reco::Particle
 		Arguments: Charge	qx3
 
 	-o- p4
-		Return: const math::XYZTLorentzVectorD&
+		Return: const math::XYZTLorentzVector&
 		Arguments: void	
 
 	-o- polarP4
-		Return: const math::ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> >&
+		Return: const math::PtEtaPhiMLorentzVector&
 		Arguments: void	
 
 	-o- momentum
@@ -627,6 +358,14 @@ Methods from reco::Particle
 		Arguments: void	
 
 	-o- longLived
+		Return: bool
+		Arguments: void	
+
+	-o- setMassConstraint
+		Return: void
+		Arguments: void	
+
+	-o- massConstraint
 		Return: bool
 		Arguments: void	
 

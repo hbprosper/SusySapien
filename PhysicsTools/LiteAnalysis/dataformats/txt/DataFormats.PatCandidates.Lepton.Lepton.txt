@@ -7,8 +7,8 @@ Header:
 BaseClasses:
 	pat::PATObject<LeptonType>	DataFormats/PatCandidates/interface/PATObject.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:14:10 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:55:19 2010	lsclass.py $Revision:$
 
 Methods from pat::Lepton<LeptonType>
 
@@ -21,7 +21,7 @@ Methods from pat::Lepton<LeptonType>
 		Arguments: const reco::GenParticleRef&	gl
 		           bool=false	embed
 
-	-o- isolation
+	-o- userIsolation
 		Return: float
 		Arguments: IsolationKeys	key
 
@@ -50,15 +50,15 @@ Methods from pat::Lepton<LeptonType>
 		Return: float
 		Arguments: void	
 
-	-o- chargedParticleIso
+	-o- chargedHadronIso
 		Return: float
 		Arguments: void	
 
-	-o- neutralParticleIso
+	-o- neutralHadronIso
 		Return: float
 		Arguments: void	
 
-	-o- gammaParticleIso
+	-o- photonIso
 		Return: float
 		Arguments: void	
 
@@ -70,11 +70,11 @@ Methods from pat::Lepton<LeptonType>
 		Return: void
 		Arguments: float	trackIso
 
-	-o- setECalIso
+	-o- setEcalIso
 		Return: void
 		Arguments: float	caloIso
 
-	-o- setHCalIso
+	-o- setHcalIso
 		Return: void
 		Arguments: float	caloIso
 
@@ -84,7 +84,7 @@ Methods from pat::Lepton<LeptonType>
 		           uint8_t=0	index
 
 	-o- isoDeposit
-		Return: const reco::IsoDeposit*
+		Return: const IsoDeposit*
 		Arguments: IsolationKeys	key
 
 	-o- setIsoDeposit
@@ -92,23 +92,23 @@ Methods from pat::Lepton<LeptonType>
 		Arguments: IsolationKeys	key
 		           const IsoDeposit&	dep
 
-	-o- trackerIsoDeposit
-		Return: const reco::IsoDeposit*
+	-o- trackIsoDeposit
+		Return: const IsoDeposit*
 		Arguments: void	
 
 	-o- ecalIsoDeposit
-		Return: const reco::IsoDeposit*
+		Return: const IsoDeposit*
 		Arguments: void	
 
 	-o- hcalIsoDeposit
-		Return: const reco::IsoDeposit*
+		Return: const IsoDeposit*
 		Arguments: void	
 
 	-o- userIsoDeposit
-		Return: const reco::IsoDeposit*
+		Return: const IsoDeposit*
 		Arguments: uint8_t=0	index
 
-	-o- trackerIsoDeposit
+	-o- trackIsoDeposit
 		Return: void
 		Arguments: const IsoDeposit&	dep
 
@@ -134,10 +134,6 @@ Methods from pat::PATObject<LeptonType>
 	-o- originalObject
 		Return: const reco::Candidate*
 		Arguments: void	
-
-	-o- addTriggerMatch
-		Return: void
-		Arguments: const pat::TriggerPrimitive&	aTrigPrim
 
 	-o- triggerObjectMatches
 		Return: const std::vector<TriggerObjectStandAlone >&
@@ -180,6 +176,7 @@ Methods from pat::PATObject<LeptonType>
 		Return: reco::GenParticleRef
 		Arguments: int	pdgId
 		           int	status
+		           uint8_t=0	autoCharge
 
 	-o- genParticle
 		Return: const reco::GenParticle*
@@ -211,7 +208,7 @@ Methods from pat::PATObject<LeptonType>
 		Arguments: const std::string&	label
 
 	-o- overlaps
-		Return: const reco::edm::PtrVector<Candidate>&
+		Return: const reco::CandidatePtrVector&
 		Arguments: const std::string&	label
 
 	-o- setOverlaps
@@ -254,6 +251,19 @@ Methods from pat::PATObject<LeptonType>
 		           int32_t	data
 
 	-o- hasUserInt
+		Return: bool
+		Arguments: const std::string&	key
+
+	-o- userCand
+		Return: reco::CandidatePtr
+		Arguments: const std::string&	key
+
+	-o- addUserCand
+		Return: void
+		Arguments: const std::string&	label
+		           const reco::CandidatePtr&	data
+
+	-o- hasUserCand
 		Return: bool
 		Arguments: const std::string&	key
 
@@ -322,14 +332,6 @@ Methods from pat::PATObject<LeptonType>
 		Return: const edm::Ptr<reco::Candidate>&
 		Arguments: void	
 
-	-o- triggerMatches
-		Return: const std::vector<TriggerPrimitive>&
-		Arguments: void	
-
-	-o- triggerMatchesByFilter
-		Return: const std::vector<TriggerPrimitive>
-		Arguments: const std::string&	aFilt
-
 	-o- efficiencies
 		Return: std::vector<std::pair<std::string, pat::LookupTableRecord> >
 		Arguments: void	
@@ -374,6 +376,10 @@ Methods from pat::PATObject<LeptonType>
 		Arguments: void	
 
 	-o- userIntNames
+		Return: const std::vector<std::string>&
+		Arguments: void	
+
+	-o- userCandNames
 		Return: const std::vector<std::string>&
 		Arguments: void	
 

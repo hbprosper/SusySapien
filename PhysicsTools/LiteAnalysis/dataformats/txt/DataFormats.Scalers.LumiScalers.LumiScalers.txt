@@ -4,8 +4,8 @@ Class:
 Header:
 	DataFormats/Scalers/interface/LumiScalers.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:16:13 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:51 2010	lsclass.py $Revision:$
 
 Methods from LumiScalers
 
@@ -38,7 +38,7 @@ Methods from LumiScalers
 		Arguments: void	
 
 	-o- collectionTime
-		Return: struct timespec
+		Return: timespec
 		Arguments: void	
 
 	-o- normalization

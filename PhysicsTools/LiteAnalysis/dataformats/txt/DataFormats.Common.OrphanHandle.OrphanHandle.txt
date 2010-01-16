@@ -4,22 +4,19 @@ Class:
 Header:
 	DataFormats/Common/interface/OrphanHandle.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:55 2010	lsclass.py $Revision:$
+BaseClasses:
+	edm::OrphanHandleBase	DataFormats/Common/interface/OrphanHandleBase.h
+
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:34 2010	lsclass.py $Revision:$
 
 Methods from edm::OrphanHandle<T>
-
-	-o- isValid
-		Return: bool
-		Arguments: void	
 
 	-o- product
 		Return: T const*
 		Arguments: void	
 
-	-o- id
-		Return: ProductID
-		Arguments: void	
+Methods from edm::OrphanHandleBase
 
 	-o- clear
 		Return: void
@@ -27,5 +24,13 @@ Methods from edm::OrphanHandle<T>
 
 	-o- swap
 		Return: void
-		Arguments: OrphanHandle<T>&	other
+		Arguments: OrphanHandleBase&	other
+
+	-o- isValid
+		Return: bool
+		Arguments: void	
+
+	-o- id
+		Return: ProductID
+		Arguments: void	
 

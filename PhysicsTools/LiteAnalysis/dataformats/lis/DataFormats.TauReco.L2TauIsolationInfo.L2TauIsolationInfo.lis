@@ -1,1 +1,8 @@
-
+reco::L2TauIsolationInfo|double|ecalIsolEt|void
+reco::L2TauIsolationInfo|double|seedEcalHitEt|void
+reco::L2TauIsolationInfo|int|nEcalHits|void
+reco::L2TauIsolationInfo|double|hcalIsolEt|void
+reco::L2TauIsolationInfo|double|seedHcalHitEt|void
+reco::L2TauIsolationInfo|int|nHcalHits|void
+reco::L2TauIsolationInfo|std::vector<double>|ecalClusterShape|void
+reco::L2TauIsolationInfo|std::vector<double>|hcalClusterShape|void

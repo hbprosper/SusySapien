@@ -1,7 +1,7 @@
 reco::Particle|int|charge|void
 reco::Particle|int|threeCharge|void
-reco::Particle|const math::XYZTLorentzVectorD&|p4|void
-reco::Particle|const math::ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> >&|polarP4|void
+reco::Particle|const math::XYZTLorentzVector&|p4|void
+reco::Particle|const math::PtEtaPhiMLorentzVector&|polarP4|void
 reco::Particle|math::XYZVector|momentum|void
 reco::Particle|math::XYZVector|boostToCM|void
 reco::Particle|double|p|void

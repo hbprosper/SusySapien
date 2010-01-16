@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: Vertexing.xml
-  Created:  Thu Jan 14 22:48:25 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:22 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/PatCandidates/interface/Vertexing.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/PatCandidates/interface/Vertexing.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/PatCandidates/interface/Vertexing.h">
 
     <include name="&quot;DataFormats/VertexReco/interface/VertexFwd.h&quot;"/>
     <include name="&quot;DataFormats/VertexReco/interface/Vertex.h&quot;"/>

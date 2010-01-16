@@ -2,15 +2,16 @@
 <!--
 ==============================================================================
   XML File: TriggerEvent.xml
-  Created:  Thu Jan 14 22:49:03 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:48 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/HLTReco/interface/TriggerEvent.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/HLTReco/interface/TriggerEvent.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/HLTReco/interface/TriggerEvent.h">
 
     <include name="&quot;DataFormats/HLTReco/interface/TriggerTypeDefs.h&quot;"/>
     <include name="&quot;DataFormats/HLTReco/interface/TriggerObject.h&quot;"/>
     <include name="&quot;FWCore/Utilities/interface/InputTag.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/traits.h&quot;"/>
     <include name="&lt;string&gt;"/>
     <include name="&lt;vector&gt;"/>
 
@@ -21,6 +22,7 @@
                module="DataFormats.HLTReco"
                project=""
                type="regular">
+            <baseclass name="public edm::DoNotRecordParents"/>
             <comment>
       The single EDProduct to be saved for each event (AOD case)
             </comment>
@@ -116,10 +118,10 @@ TriggerEvent();
 
                 <constructor name="TriggerEvent"
                              return=""
-                             args="['const std::string&amp;','size_type','size_type','size_type']"
+                             args="['const std::string&amp;','trigger::size_type','trigger::size_type','trigger::size_type']"
                              vars="['usedProcessName','nc','no','nf']"
                              qual="">
-TriggerEvent(const std::string&amp; usedProcessName, size_type nc, size_type no, size_type nf);
+TriggerEvent(const std::string&amp; usedProcessName, trigger::size_type nc, trigger::size_type no, trigger::size_type nf);
                 </constructor>
 
                 <method1 name="addObjects"
@@ -186,91 +188,91 @@ const TriggerObjectCollection&amp; getObjects() const;
 
                 <method1 name="collectionTag"
                          return="const edm::InputTag"
-                         args="['size_type']"
+                         args="['trigger::size_type']"
                          vars="['index']"
                          qual="const">
-const edm::InputTag collectionTag(size_type index) const;
+const edm::InputTag collectionTag(trigger::size_type index) const;
                 </method1>
 
                 <method1 name="collectionKey"
-                         return="size_type"
-                         args="['size_type']"
+                         return="trigger::size_type"
+                         args="['trigger::size_type']"
                          vars="['index']"
                          qual="const">
-size_type collectionKey(size_type index) const;
+trigger::size_type collectionKey(trigger::size_type index) const;
                 </method1>
 
                 <method1 name="filterTag"
                          return="const edm::InputTag"
-                         args="['size_type']"
+                         args="['trigger::size_type']"
                          vars="['index']"
                          qual="const">
-const edm::InputTag filterTag(size_type index) const;
+const edm::InputTag filterTag(trigger::size_type index) const;
                 </method1>
 
                 <method1 name="filterIds"
                          return="const Vids&amp;"
-                         args="['size_type']"
+                         args="['trigger::size_type']"
                          vars="['index']"
                          qual="const">
-const Vids&amp; filterIds(size_type index) const;
+const Vids&amp; filterIds(trigger::size_type index) const;
                 </method1>
 
                 <method1 name="filterKeys"
                          return="const Keys&amp;"
-                         args="['size_type']"
+                         args="['trigger::size_type']"
                          vars="['index']"
                          qual="const">
-const Keys&amp; filterKeys(size_type index) const;
+const Keys&amp; filterKeys(trigger::size_type index) const;
                 </method1>
 
                 <method1 name="collectionIndex"
-                         return="size_type"
+                         return="trigger::size_type"
                          args="['const edm::InputTag&amp;']"
                          vars="['collectionTag']"
                          qual="const">
-size_type collectionIndex(const edm::InputTag&amp; collectionTag) const;
+trigger::size_type collectionIndex(const edm::InputTag&amp; collectionTag) const;
                     <comment>
         find index of collection from collection tag
                     </comment>
                 </method1>
 
                 <method1 name="filterIndex"
-                         return="size_type"
+                         return="trigger::size_type"
                          args="['const edm::InputTag&amp;']"
                          vars="['filterTag']"
                          qual="const">
-size_type filterIndex(const edm::InputTag&amp; filterTag) const;
+trigger::size_type filterIndex(const edm::InputTag&amp; filterTag) const;
                     <comment>
         find index of filter in data-member vector from filter tag
                     </comment>
                 </method1>
 
                 <method1 name="sizeCollections"
-                         return="size_type"
+                         return="trigger::size_type"
                          args="['void']"
                          vars="['']"
                          qual="const">
-size_type sizeCollections() const;
+trigger::size_type sizeCollections() const;
                     <comment>
         other
                     </comment>
                 </method1>
 
                 <method1 name="sizeObjects"
-                         return="size_type"
+                         return="trigger::size_type"
                          args="['void']"
                          vars="['']"
                          qual="const">
-size_type sizeObjects() const;
+trigger::size_type sizeObjects() const;
                 </method1>
 
                 <method1 name="sizeFilters"
-                         return="size_type"
+                         return="trigger::size_type"
                          args="['void']"
                          vars="['']"
                          qual="const">
-size_type sizeFilters() const;
+trigger::size_type sizeFilters() const;
                 </method1>
 
             </section>
@@ -288,9 +290,10 @@ size_type sizeFilters() const;
     <type name="const std::string&amp;"/>
     <type name="const std::vector&lt;edm::InputTag&gt;&amp;"/>
     <type name="const std::vector&lt;std::string&gt;&amp;"/>
-    <type name="size_type"/>
+    <type name="edm::DoNotRecordParents"/>
     <type name="std::string"/>
     <type name="trigger::TriggerEvent"/>
     <type name="trigger::TriggerEvent::TriggerFilterObject"/>
+    <type name="trigger::size_type"/>
     <type name="void"/>
 </header>

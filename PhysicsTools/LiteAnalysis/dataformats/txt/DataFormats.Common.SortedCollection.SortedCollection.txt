@@ -4,8 +4,8 @@ Class:
 Header:
 	DataFormats/Common/interface/SortedCollection.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:40 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:22 2010	lsclass.py $Revision:$
 
 Methods from edm::SortedCollection<T, SORT>
 
@@ -36,70 +36,4 @@ Methods from edm::SortedCollection<T, SORT>
 	-o- find
 		Return: typename std::vector<T>::iterator
 		Arguments: key_type	k
-
-	-o- find
-		Return: typename std::vector<T>::const_iterator
-		Arguments: key_type	k
-
-	-o- begin
-		Return: typename std::vector<T>::const_iterator
-		Arguments: void	
-
-	-o- end
-		Return: typename std::vector<T>::const_iterator
-		Arguments: void	
-
-	-o- begin
-		Return: typename std::vector<T>::iterator
-		Arguments: void	
-
-	-o- end
-		Return: typename std::vector<T>::iterator
-		Arguments: void	
-
-	-o- front
-		Return: typename std::vector<T>::const_reference
-		Arguments: void	
-
-	-o- front
-		Return: typename std::vector<T>::reference
-		Arguments: void	
-
-	-o- back
-		Return: typename std::vector<T>::const_reference
-		Arguments: void	
-
-	-o- back
-		Return: typename std::vector<T>::reference
-		Arguments: void	
-
-	-o- sort
-		Return: void
-		Arguments: void	
-
-	-o- post_insert
-		Return: void
-		Arguments: void	
-
-	-o- setPtr
-		Return: void
-		Arguments: std::type_info const&	toType
-		           unsigned long	index
-		           void const*&	ptr
-
-	-o- swap_contents
-		Return: void
-		Arguments: std::vector<T>&	other
-
-	-o- fillView
-		Return: void
-		Arguments: ProductID const&	id
-		           std::vector<void const*>&	pointers
-		           helper_vector&	helpers
-
-	-o- fillPtrVector
-		Return: void
-		Arguments: const std::type_info&	toType
-		           const std::vector<unsigned long>&	indices
-		           std::vector<void const*>&	ptrs
 

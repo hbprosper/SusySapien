@@ -8,8 +8,8 @@ BaseClasses:
 	reco::JetTagInfo	DataFormats/BTauReco/interface/JetTagInfo.h
 	reco::BaseTagInfo	DataFormats/BTauReco/interface/BaseTagInfo.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:14:53 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:55:47 2010	lsclass.py $Revision:$
 
 Methods from reco::SoftLeptonTagInfo
 
@@ -37,40 +37,4 @@ Methods from reco::SoftLeptonTagInfo
 		Return: void
 		Arguments: const edm::RefToBase<reco::Track>&	lepton
 		           const SoftLeptonProperties&	properties
-
-Methods from reco::JetTagInfo
-
-	-o- clone
-		Return: JetTagInfo*
-		Arguments: void	
-
-	-o- JetTagInfo
-		Return: template<typename T>
-		Arguments: const edm::Ref<T>&	jetRef
-
-	-o- jet
-		Return: edm::RefToBase<Jet>
-		Arguments: void	
-
-	-o- setJetRef
-		Return: template<typename T> void
-		Arguments: const edm::Ref<T>&	jetRef
-
-	-o- setJetRef
-		Return: void
-		Arguments: const edm::RefToBase<Jet>&	jetRef
-
-Methods from reco::BaseTagInfo
-
-	-o- clone
-		Return: BaseTagInfo*
-		Arguments: void	
-
-	-o- tracks
-		Return: edm::RefVector<std::vector<Track>>
-		Arguments: void	
-
-	-o- hasTracks
-		Return: bool
-		Arguments: void	
 

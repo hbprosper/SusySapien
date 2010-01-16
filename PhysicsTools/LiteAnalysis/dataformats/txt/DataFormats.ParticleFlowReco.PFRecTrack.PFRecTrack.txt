@@ -7,8 +7,8 @@ Header:
 BaseClasses:
 	reco::PFTrack	DataFormats/ParticleFlowReco/interface/PFTrack.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:14:24 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:55:29 2010	lsclass.py $Revision:$
 
 Methods from reco::PFRecTrack
 
@@ -21,7 +21,7 @@ Methods from reco::PFRecTrack
 		Arguments: void	
 
 	-o- trackRef
-		Return: const reco::edm::Ref<std::vector<Track>>&
+		Return: const reco::TrackRef&
 		Arguments: void	
 
 Methods from reco::PFTrack

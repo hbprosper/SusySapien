@@ -2,21 +2,13 @@
 <!--
 ==============================================================================
   XML File: TriggerObjectStandAlone.xml
-  Created:  Thu Jan 14 22:48:23 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:20 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/PatCandidates/interface/TriggerObjectStandAlone.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/PatCandidates/interface/TriggerObjectStandAlone.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/PatCandidates/interface/TriggerObjectStandAlone.h">
 
     <include name="&quot;DataFormats/PatCandidates/interface/TriggerObject.h&quot;"/>
-    <include name="&lt;map&gt;"/>
-    <include name="&lt;string&gt;"/>
-    <include name="&lt;vector&gt;"/>
-    <include name="&quot;DataFormats/HLTReco/interface/TriggerObject.h&quot;"/>
-    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
-    <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
-    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
-    <include name="&quot;DataFormats/Common/interface/Association.h&quot;"/>
 
     <namespace name="pat">
 
@@ -190,6 +182,14 @@ typedef edm::RefProd&lt;TriggerObjectStandAloneCollection &gt; TriggerObjectStan
 typedef edm::RefVector&lt;TriggerObjectStandAloneCollection &gt; TriggerObjectStandAloneRefVector;
             <comment>
       vector of persistent references to items in the same TriggerObjectStandAloneCollection
+            </comment>
+        </typedef>
+
+        <typedef name="TriggerObjectStandAloneRefVectorIterator"
+                 value="edm::RefVectorIterator&lt;TriggerObjectStandAloneCollection &gt;">
+typedef edm::RefVectorIterator&lt;TriggerObjectStandAloneCollection &gt; TriggerObjectStandAloneRefVectorIterator;
+            <comment>
+      const iterator over vector of persistent references to items in the same TriggerObjectStandAloneCollection
             </comment>
         </typedef>
 

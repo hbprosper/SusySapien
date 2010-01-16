@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: FlavorHistory.xml
-  Created:  Thu Jan 14 22:49:00 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:45 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/HepMCCandidate/interface/FlavorHistory.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/HepMCCandidate/interface/FlavorHistory.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/HepMCCandidate/interface/FlavorHistory.h">
 
     <include name="&quot;DataFormats/Common/interface/Ptr.h&quot;"/>
     <include name="&quot;DataFormats/Common/interface/OwnVector.h&quot;"/>
@@ -14,6 +14,8 @@
     <include name="&quot;DataFormats/Common/interface/View.h&quot;"/>
     <include name="&quot;DataFormats/Candidate/interface/Candidate.h&quot;"/>
     <include name="&quot;DataFormats/Candidate/interface/CandidateFwd.h&quot;"/>
+    <include name="&quot;DataFormats/Candidate/interface/ShallowClonePtrCandidate.h&quot;"/>
+    <include name="&lt;fstream&gt;"/>
 
     <namespace name="reco">
 
@@ -62,26 +64,26 @@ FlavorHistory();
 
                 <constructor name="FlavorHistory"
                              return=""
-                             args="['FLAVOR_T','reco::CandidatePtr const&amp;','reco::CandidatePtr const&amp;','reco::CandidatePtr const&amp;']"
-                             vars="['flavorSource','parton','progenitor','sister']"
+                             args="['FLAVOR_T','reco::CandidatePtr const&amp;','reco::CandidatePtr const&amp;','reco::CandidatePtr const&amp;','reco::ShallowClonePtrCandidate const&amp;','reco::ShallowClonePtrCandidate const&amp;']"
+                             vars="['flavorSource','parton','progenitor','sister','matchedJet','sisterJet']"
                              qual="">
-FlavorHistory(FLAVOR_T flavorSource, reco::CandidatePtr const&amp; parton, reco::CandidatePtr const&amp; progenitor, reco::CandidatePtr const&amp; sister);
+FlavorHistory(FLAVOR_T flavorSource, reco::CandidatePtr const&amp; parton, reco::CandidatePtr const&amp; progenitor, reco::CandidatePtr const&amp; sister, reco::ShallowClonePtrCandidate const&amp; matchedJet, reco::ShallowClonePtrCandidate const&amp; sisterJet);
                 </constructor>
 
                 <constructor name="FlavorHistory"
                              return=""
-                             args="['FLAVOR_T','edm::Handle&lt;edm::View&lt;reco::Candidate&gt; &gt;','int','int','int']"
-                             vars="['flavorSource','h_partons','iparton','iprogenitor','isister']"
+                             args="['FLAVOR_T','edm::Handle&lt;edm::View&lt;reco::Candidate&gt; &gt;','int','int','int','reco::ShallowClonePtrCandidate const&amp;','reco::ShallowClonePtrCandidate const&amp;']"
+                             vars="['flavorSource','h_partons','iparton','iprogenitor','isister','matchedJet','sisterJet']"
                              qual="">
-FlavorHistory(FLAVOR_T flavorSource, edm::Handle&lt;edm::View&lt;reco::Candidate&gt; &gt; h_partons, int iparton, int iprogenitor, int isister);
+FlavorHistory(FLAVOR_T flavorSource, edm::Handle&lt;edm::View&lt;reco::Candidate&gt; &gt; h_partons, int iparton, int iprogenitor, int isister, reco::ShallowClonePtrCandidate const&amp; matchedJet, reco::ShallowClonePtrCandidate const&amp; sisterJet);
                 </constructor>
 
                 <constructor name="FlavorHistory"
                              return=""
-                             args="['FLAVOR_T','edm::Handle&lt;reco::CandidateCollection &gt;','int','int','int']"
-                             vars="['flavorSource','h_partons','iparton','iprogenitor','isister']"
+                             args="['FLAVOR_T','edm::Handle&lt;reco::CandidateCollection &gt;','int','int','int','reco::ShallowClonePtrCandidate const&amp;','reco::ShallowClonePtrCandidate const&amp;']"
+                             vars="['flavorSource','h_partons','iparton','iprogenitor','isister','matchedJet','sisterJet']"
                              qual="">
-FlavorHistory(FLAVOR_T flavorSource, edm::Handle&lt;reco::CandidateCollection &gt; h_partons, int iparton, int iprogenitor, int isister);
+FlavorHistory(FLAVOR_T flavorSource, edm::Handle&lt;reco::CandidateCollection &gt; h_partons, int iparton, int iprogenitor, int isister, reco::ShallowClonePtrCandidate const&amp; matchedJet, reco::ShallowClonePtrCandidate const&amp; sisterJet);
                 </constructor>
 
                 <destructor name="~FlavorHistory"
@@ -127,6 +129,22 @@ bool hasSister () const;
 bool hasProgenitor () const;
                 </method1>
 
+                <method1 name="hasMatchedJet"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool hasMatchedJet () const;
+                </method1>
+
+                <method1 name="hasSisterJet"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool hasSisterJet () const;
+                </method1>
+
                 <method1 name="parton"
                          return="const reco::CandidatePtr&amp;"
                          args="['void']"
@@ -151,12 +169,28 @@ const reco::CandidatePtr&amp; sister () const;
 const reco::CandidatePtr&amp; progenitor() const;
                 </method1>
 
+                <method1 name="matchedJet"
+                         return="const reco::ShallowClonePtrCandidate&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const reco::ShallowClonePtrCandidate&amp;                               matchedJet() const;
+                </method1>
+
+                <method1 name="sisterJet"
+                         return="const reco::ShallowClonePtrCandidate&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const reco::ShallowClonePtrCandidate&amp;                               sisterJet() const;
+                </method1>
+
                 <operator name="operator&lt;"
                           return="bool"
                           args="['FlavorHistory const&amp;']"
                           vars="['right']"
-                          qual="">
-bool operator&lt;(FlavorHistory const&amp; right);
+                          qual="const">
+bool operator&lt;(FlavorHistory const&amp; right) const;
                     <comment>
      Operators for sorting and keys
                     </comment>
@@ -166,16 +200,16 @@ bool operator&lt;(FlavorHistory const&amp; right);
                           return="bool"
                           args="['FlavorHistory const&amp;']"
                           vars="['right']"
-                          qual="">
-bool operator&gt;(FlavorHistory const&amp; right);
+                          qual="const">
+bool operator&gt;(FlavorHistory const&amp; right) const;
                 </operator>
 
                 <operator name="operator=="
                           return="bool"
                           args="['FlavorHistory const&amp;']"
                           vars="['right']"
-                          qual="">
-bool operator==(FlavorHistory const&amp; right);
+                          qual="const">
+bool operator==(FlavorHistory const&amp; right) const;
                 </operator>
 
             </section>
@@ -204,16 +238,26 @@ bool operator==(FlavorHistory const&amp; right);
 
         </class>
     </namespace>
+    <operator name="operator&lt;&lt;"
+              return="std::ostream&amp;"
+              args="['std::ostream&amp;','reco::FlavorHistory const&amp;']"
+              vars="['out','cand']"
+              qual="">
+std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, reco::FlavorHistory const&amp; cand);
+    </operator>
+
 
     <type name="FLAVOR_T"/>
     <type name="FlavorHistory const&amp;"/>
     <type name="bool"/>
     <type name="const reco::CandidatePtr&amp;"/>
+    <type name="const reco::ShallowClonePtrCandidate&amp;"/>
     <type name="edm::Handle&lt;edm::View&lt;reco::Candidate&gt; &gt;"/>
     <type name="edm::Handle&lt;reco::CandidateCollection &gt;"/>
     <type name="enum FLAVOR_T"/>
     <type name="int"/>
     <type name="reco::CandidatePtr const&amp;"/>
     <type name="reco::FlavorHistory"/>
+    <type name="reco::ShallowClonePtrCandidate const&amp;"/>
     <type name="void"/>
 </header>

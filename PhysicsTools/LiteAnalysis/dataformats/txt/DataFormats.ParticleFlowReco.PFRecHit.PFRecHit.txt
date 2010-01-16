@@ -4,8 +4,8 @@ Class:
 Header:
 	DataFormats/ParticleFlowReco/interface/PFRecHit.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:14:30 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:55:34 2010	lsclass.py $Revision:$
 
 Methods from reco::PFRecHit
 
@@ -61,8 +61,12 @@ Methods from reco::PFRecHit
 		Return: double
 		Arguments: void	
 
+	-o- pt2
+		Return: double
+		Arguments: void	
+
 	-o- position
-		Return: const math::XYZPointD&
+		Return: const math::XYZPoint&
 		Arguments: void	
 
 	-o- positionREP
@@ -70,7 +74,7 @@ Methods from reco::PFRecHit
 		Arguments: void	
 
 	-o- getAxisXYZ
-		Return: const math::ROOT::Math::DisplacementVector3D<ROOT::Math::Cartesian3D<double> >&
+		Return: const math::XYZVector&
 		Arguments: void	
 
 	-o- getCornersREP
@@ -91,7 +95,7 @@ Methods from reco::PFRecHit
 		           double&	dphi
 
 	-o- getCornersXYZ
-		Return: const std::vector<math::XYZPointD >&
+		Return: const std::vector<math::XYZPoint >&
 		Arguments: void	
 
 	-o- neighbours4

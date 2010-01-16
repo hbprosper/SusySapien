@@ -4,8 +4,8 @@ Class:
 Header:
 	DataFormats/Common/interface/DetSet.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:16:01 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:41 2010	lsclass.py $Revision:$
 
 Methods from edm::DetSet<T>
 
@@ -16,40 +16,4 @@ Methods from edm::DetSet<T>
 	-o- end
 		Return: typename std::vector<T>::iterator
 		Arguments: void	
-
-	-o- begin
-		Return: typename collection_type::const_iterator
-		Arguments: void	
-
-	-o- end
-		Return: typename collection_type::const_iterator
-		Arguments: void	
-
-	-o- size
-		Return: typename std::vector<T>::size_type
-		Arguments: void	
-
-	-o- empty
-		Return: bool
-		Arguments: void	
-
-	-o- reserve
-		Return: void
-		Arguments: size_t	s
-
-	-o- push_back
-		Return: void
-		Arguments: const T&	t
-
-	-o- clear
-		Return: void
-		Arguments: void	
-
-	-o- detId
-		Return: uint32_t
-		Arguments: void	
-
-	-o- swap
-		Return: void
-		Arguments: DetSet<T>&	other
 

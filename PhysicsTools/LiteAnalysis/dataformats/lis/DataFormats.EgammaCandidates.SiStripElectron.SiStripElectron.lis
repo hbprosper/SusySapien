@@ -12,39 +12,28 @@ reco::SiStripElectron|unsigned int|numberOfStereoHits|void
 reco::SiStripElectron|unsigned int|numberOfBarrelRphiHits|void
 reco::SiStripElectron|unsigned int|numberOfEndcapZphiHits|void
 reco::SiStripElectron|bool|isElectron|void
-reco::SiStripElectron|const edm::RefVector<SiStripRecHit2DCollection>&|rphiRecHits|void
-reco::SiStripElectron|const edm::RefVector<SiStripRecHit2DCollection>&|stereoRecHits|void
-reco::RecoCandidate|reco::edm::Ref<std::vector<Track>>|track|void
-reco::RecoCandidate|reco::edm::Ref<std::vector<Track>>|track|
+reco::SiStripElectron|const std::vector<SiStripRecHit2D>&|rphiRecHits|void
+reco::SiStripElectron|const std::vector<SiStripRecHit2D>&|stereoRecHits|void
+reco::RecoCandidate|reco::TrackRef|track|void
+reco::RecoCandidate|reco::TrackRef|track|
 reco::RecoCandidate|size_t|numberOfTracks|void
-reco::RecoCandidate|reco::edm::Ref<GsfTrackCollection>|gsfTrack|void
-reco::RecoCandidate|reco::edm::Ref<std::vector<Track>>|standAloneMuon|void
-reco::RecoCandidate|reco::edm::Ref<std::vector<Track>>|combinedMuon|void
-reco::RecoCandidate|reco::edm::Ref<std::vector<SuperCluster>>|superCluster|void
-reco::RecoCandidate|edm::Ref<CaloTowerCollection>|caloTower|void
-reco::RecoCandidate|const Track*|bestTrack|void
-reco::RecoCandidate|edm::RefToBase<reco::Track>|bestTrackRef|void
-reco::RecoCandidate|TrackType|bestTrackType|void
-reco::LeafCandidate|LeafCandidate*|clone|void
+reco::RecoCandidate|reco::GsfTrackRef|gsfTrack|void
+reco::RecoCandidate|reco::TrackRef|standAloneMuon|void
+reco::RecoCandidate|reco::TrackRef|combinedMuon|void
 reco::LeafCandidate|candidate::const_iterator|begin|void
 reco::LeafCandidate|candidate::const_iterator|end|void
-reco::LeafCandidate|candidate::iterator|begin|void
-reco::LeafCandidate|candidate::iterator|end|void
-reco::LeafCandidate|size_t|numberOfDaughters|void
-reco::LeafCandidate|size_t|numberOfMothers|void
-reco::Candidate|Candidate*|clone|void
-reco::Particle|int|charge|void
-reco::Particle|int|threeCharge|void
-reco::Particle|const math::XYZTLorentzVectorD&|p4|void
-reco::Particle|const math::ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> >&|polarP4|void
-reco::Particle|math::XYZVector|momentum|void
-reco::Particle|math::XYZVector|boostToCM|void
-reco::Particle|double|p|void
-reco::Particle|double|energy|void
-reco::Particle|double|et|void
-reco::Particle|double|mass|void
-reco::Particle|double|massSqr|void
-reco::Particle|double|mt|void
-reco::Particle|double|mtSqr|void
-reco::Particle|double|px|void
-reco::Particle|double|py|void
+reco::Candidate|int|charge|void
+reco::Candidate|int|threeCharge|void
+reco::Candidate|const math::XYZTLorentzVector&|p4|void
+reco::Candidate|const math::PtEtaPhiMLorentzVector&|polarP4|void
+reco::Candidate|math::XYZVector|momentum|void
+reco::Candidate|math::XYZVector|boostToCM|void
+reco::Candidate|double|p|void
+reco::Candidate|double|energy|void
+reco::Candidate|double|et|void
+reco::Candidate|double|mass|void
+reco::Candidate|double|massSqr|void
+reco::Candidate|double|mt|void
+reco::Candidate|double|mtSqr|void
+reco::Candidate|double|px|void
+reco::Candidate|double|py|void

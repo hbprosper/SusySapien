@@ -1,8 +1,7 @@
 <use name=PhysicsTools/LiteAnalysis>
-
+<use name=CommonTools/Utils>
 <use name=FWCore/FWLite>
 <use name=FWCore/PluginManager>
-<use name=PhysicsTools/Utilities>
 
 <use name=DataFormats/EgammaReco>
 <use name=DataFormats/JetReco>

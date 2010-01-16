@@ -7,8 +7,8 @@ Header:
 BaseClasses:
 	reco::BaseTagInfo	DataFormats/BTauReco/interface/BaseTagInfo.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:14:44 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:55:40 2010	lsclass.py $Revision:$
 
 Methods from reco::EMIsolatedTauTagInfo
 
@@ -45,23 +45,5 @@ Methods from reco::EMIsolatedTauTagInfo
 
 	-o- jet
 		Return: edm::RefToBase<Jet>
-		Arguments: void	
-
-Methods from reco::BaseTagInfo
-
-	-o- clone
-		Return: BaseTagInfo*
-		Arguments: void	
-
-	-o- tracks
-		Return: edm::RefVector<std::vector<Track>>
-		Arguments: void	
-
-	-o- hasTracks
-		Return: bool
-		Arguments: void	
-
-	-o- taggingVariables
-		Return: TaggingVariableList
 		Arguments: void	
 

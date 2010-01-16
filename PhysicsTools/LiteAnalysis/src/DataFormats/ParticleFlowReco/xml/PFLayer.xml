@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: PFLayer.xml
-  Created:  Thu Jan 14 22:48:00 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:02 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/ParticleFlowReco/interface/PFLayer.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/ParticleFlowReco/interface/PFLayer.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/ParticleFlowReco/interface/PFLayer.h">
 
     <include name="&quot;DataFormats/CaloRecHit/interface/CaloID.h&quot;"/>
 
@@ -63,7 +63,8 @@ PS2=-12,
               HCAL_BARREL1=1, 
               HCAL_BARREL2=2, 
               HCAL_ENDCAP=3, 
-              HCAL_HF=11 };
+              HF_EM=11, 
+              HF_HAD=12};
                 <field name="PS2" value="-12"/>
                 <field name="PS1" value="-11"/>
                 <field name="ECAL_ENDCAP" value="-2"/>
@@ -72,7 +73,8 @@ PS2=-12,
                 <field name="HCAL_BARREL1" value="1"/>
                 <field name="HCAL_BARREL2" value="2"/>
                 <field name="HCAL_ENDCAP" value="3"/>
-                <field name="HCAL_HF" value="11"/>
+                <field name="HF_EM" value="11"/>
+                <field name="HF_HAD" value="12"/>
                 <comment>
       layer definition
                 </comment>
@@ -111,8 +113,11 @@ static Layer fromCaloID(const reco::CaloID&amp; id);
         <typemap name="HCAL_ENDCAP "
                  value="PFLayer::HCAL_ENDCAP "
                  type="enum"/>
-        <typemap name="HCAL_HF "
-                 value="PFLayer::HCAL_HF "
+        <typemap name="HF_EM "
+                 value="PFLayer::HF_EM "
+                 type="enum"/>
+        <typemap name="HF_HAD "
+                 value="PFLayer::HF_HAD "
                  type="enum"/>
         <typemap name="Layer"
                  value="PFLayer::Layer"

@@ -11,10 +11,9 @@ BaseClasses:
 	reco::RecoCandidate	DataFormats/RecoCandidate/interface/RecoCandidate.h
 	reco::LeafCandidate	DataFormats/Candidate/interface/LeafCandidate.h
 	reco::Candidate	DataFormats/Candidate/interface/Candidate.h
-	reco::Particle	DataFormats/Candidate/interface/Particle.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:14:13 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:55:21 2010	lsclass.py $Revision:$
 
 Methods from pat::Electron
 
@@ -50,48 +49,28 @@ Methods from pat::Electron
 		Return: float
 		Arguments: const std::string&	name
 
-	-o- leptonID
-		Return: float
-		Arguments: const std::string&	name
-
 	-o- isElectronIDAvailable
 		Return: bool
 		Arguments: const std::string&	name
 
-	-o- isLeptonIDAvailable
-		Return: bool
-		Arguments: const std::string&	name
-
-	-o- setClusterShapes
-		Return: void
-		Arguments: const float&	
-		           const float&	
-		           const float&	
-		           const float&	
-		           const float&	
-
-	-o- scSigmaEtaEta
-		Return: const float
+	-o- trackIso
+		Return: float
 		Arguments: void	
 
-	-o- scSigmaIEtaIEta
-		Return: const float
+	-o- ecalIso
+		Return: float
 		Arguments: void	
 
-	-o- scE1x5
-		Return: const float
+	-o- hcalIso
+		Return: float
 		Arguments: void	
 
-	-o- scE2x5Max
-		Return: const float
-		Arguments: void	
-
-	-o- scE5x5
-		Return: const float
+	-o- caloIso
+		Return: float
 		Arguments: void	
 
 	-o- pfCandidateRef
-		Return: reco::edm::Ref<std::vector<reco::PFCandidate>>
+		Return: reco::PFCandidateRef
 		Arguments: void	
 
 	-o- setPFCandidateRef
@@ -102,19 +81,19 @@ Methods from pat::Electron
 		Return: void
 		Arguments: void	
 
+	-o- dB
+		Return: double
+		Arguments: void	
+
+	-o- setDB
+		Return: void
+		Arguments: double	dB
+
 	-o- electronIDs
 		Return: const std::vector<std::pair<std::string, float>>&
 		Arguments: void	
 
-	-o- leptonIDs
-		Return: const std::vector<std::pair<std::string, float>>&
-		Arguments: void	
-
 	-o- setElectronIDs
-		Return: void
-		Arguments: const std::vector<IdPair>&	ids
-
-	-o- setLeptonIDs
 		Return: void
 		Arguments: const std::vector<IdPair>&	ids
 
@@ -129,7 +108,7 @@ Methods from pat::Lepton<reco::GsfElectron>
 		Arguments: const reco::GenParticleRef&	gl
 		           bool=false	embed
 
-	-o- isolation
+	-o- userIsolation
 		Return: float
 		Arguments: IsolationKeys	key
 
@@ -138,114 +117,11 @@ Methods from pat::Lepton<reco::GsfElectron>
 		Arguments: IsolationKeys	key
 		           float	value
 
-	-o- trackIso
-		Return: float
-		Arguments: void	
-
-	-o- caloIso
-		Return: float
-		Arguments: void	
-
-	-o- ecalIso
-		Return: float
-		Arguments: void	
-
-	-o- hcalIso
-		Return: float
-		Arguments: void	
-
-	-o- particleIso
-		Return: float
-		Arguments: void	
-
-	-o- chargedParticleIso
-		Return: float
-		Arguments: void	
-
-	-o- neutralParticleIso
-		Return: float
-		Arguments: void	
-
-	-o- gammaParticleIso
-		Return: float
-		Arguments: void	
-
-	-o- userIso
-		Return: float
-		Arguments: uint8_t=0	index
-
-	-o- setTrackIso
-		Return: void
-		Arguments: float	trackIso
-
-	-o- setECalIso
-		Return: void
-		Arguments: float	caloIso
-
-	-o- setHCalIso
-		Return: void
-		Arguments: float	caloIso
-
-	-o- setUserIso
-		Return: void
-		Arguments: float	value
-		           uint8_t=0	index
-
-	-o- isoDeposit
-		Return: const reco::IsoDeposit*
-		Arguments: IsolationKeys	key
-
-	-o- setIsoDeposit
-		Return: void
-		Arguments: IsolationKeys	key
-		           const IsoDeposit&	dep
-
-	-o- trackerIsoDeposit
-		Return: const reco::IsoDeposit*
-		Arguments: void	
-
-	-o- ecalIsoDeposit
-		Return: const reco::IsoDeposit*
-		Arguments: void	
-
-	-o- hcalIsoDeposit
-		Return: const reco::IsoDeposit*
-		Arguments: void	
-
-	-o- userIsoDeposit
-		Return: const reco::IsoDeposit*
-		Arguments: uint8_t=0	index
-
-	-o- trackerIsoDeposit
-		Return: void
-		Arguments: const IsoDeposit&	dep
-
-	-o- ecalIsoDeposit
-		Return: void
-		Arguments: const IsoDeposit&	dep
-
-	-o- hcalIsoDeposit
-		Return: void
-		Arguments: const IsoDeposit&	dep
-
-	-o- userIsoDeposit
-		Return: void
-		Arguments: const IsoDeposit&	dep
-		           uint8_t=0	index
-
-	-o- clone
-		Return: Lepton<reco::GsfElectron>*
-		Arguments: void	
-
 Methods from pat::PATObject<reco::GsfElectron>
 
 	-o- originalObject
 		Return: const reco::Candidate*
 		Arguments: void	
-
-	-o- addTriggerMatch
-		Return: void
-		Arguments: const pat::TriggerPrimitive&	aTrigPrim
 
 	-o- triggerObjectMatches
 		Return: const std::vector<TriggerObjectStandAlone >&
@@ -288,6 +164,7 @@ Methods from pat::PATObject<reco::GsfElectron>
 		Return: reco::GenParticleRef
 		Arguments: int	pdgId
 		           int	status
+		           uint8_t=0	autoCharge
 
 	-o- genParticle
 		Return: const reco::GenParticle*
@@ -319,7 +196,7 @@ Methods from pat::PATObject<reco::GsfElectron>
 		Arguments: const std::string&	label
 
 	-o- overlaps
-		Return: const reco::edm::PtrVector<Candidate>&
+		Return: const reco::CandidatePtrVector&
 		Arguments: const std::string&	label
 
 	-o- setOverlaps
@@ -362,6 +239,19 @@ Methods from pat::PATObject<reco::GsfElectron>
 		           int32_t	data
 
 	-o- hasUserInt
+		Return: bool
+		Arguments: const std::string&	key
+
+	-o- userCand
+		Return: reco::CandidatePtr
+		Arguments: const std::string&	key
+
+	-o- addUserCand
+		Return: void
+		Arguments: const std::string&	label
+		           const reco::CandidatePtr&	data
+
+	-o- hasUserCand
 		Return: bool
 		Arguments: const std::string&	key
 
@@ -430,14 +320,6 @@ Methods from pat::PATObject<reco::GsfElectron>
 		Return: const edm::Ptr<reco::Candidate>&
 		Arguments: void	
 
-	-o- triggerMatches
-		Return: const std::vector<TriggerPrimitive>&
-		Arguments: void	
-
-	-o- triggerMatchesByFilter
-		Return: const std::vector<TriggerPrimitive>
-		Arguments: const std::string&	aFilt
-
 	-o- efficiencies
 		Return: std::vector<std::pair<std::string, pat::LookupTableRecord> >
 		Arguments: void	
@@ -485,144 +367,8 @@ Methods from pat::PATObject<reco::GsfElectron>
 		Return: const std::vector<std::string>&
 		Arguments: void	
 
-Methods from reco::GsfElectron
-
-	-o- classification
-		Return: int
-		Arguments: void	
-
-	-o- clone
-		Return: GsfElectron*
-		Arguments: void	
-
-	-o- setDeltaEtaSuperClusterAtVtx
-		Return: void
-		Arguments: float	de
-
-	-o- setDeltaPhiSuperClusterAtVtx
-		Return: void
-		Arguments: float	dphi
-
-	-o- setSuperCluster
-		Return: void
-		Arguments: const reco::SuperClusterRef&	scl
-
-	-o- setGsfTrack
-		Return: void
-		Arguments: const reco::GsfTrackRef&	t
-
-	-o- caloEnergy
-		Return: float
-		Arguments: void	
-
-	-o- caloPosition
-		Return: math::XYZPoint
-		Arguments: void	
-
-	-o- trackMomentumAtVtx
-		Return: math::XYZVector
-		Arguments: void	
-
-	-o- TrackPositionAtVtx
-		Return: math::XYZVector
-		Arguments: void	
-
-	-o- trackMomentumAtCalo
-		Return: math::XYZVector
-		Arguments: void	
-
-	-o- trackMomentumOut
-		Return: math::XYZVector
-		Arguments: void	
-
-	-o- TrackPositionAtCalo
-		Return: math::XYZVector
-		Arguments: void	
-
-	-o- eSuperClusterOverP
-		Return: float
-		Arguments: void	
-
-	-o- eSeedClusterOverPout
-		Return: float
-		Arguments: void	
-
-	-o- deltaEtaSuperClusterTrackAtVtx
-		Return: float
-		Arguments: void	
-
-	-o- deltaEtaSeedClusterTrackAtCalo
-		Return: float
-		Arguments: void	
-
-	-o- deltaPhiSuperClusterTrackAtVtx
-		Return: float
-		Arguments: void	
-
-	-o- deltaPhiSeedClusterTrackAtCalo
-		Return: float
-		Arguments: void	
-
-	-o- hadronicOverEm
-		Return: float
-		Arguments: void	
-
-	-o- isEnergyScaleCorrected
-		Return: bool
-		Arguments: void	
-
-	-o- isMomentumCorrected
-		Return: bool
-		Arguments: void	
-
-	-o- correctElectronFourMomentum
-		Return: void
-		Arguments: const math::XYZTLorentzVectorD&	momentum
-		           float&	enErr
-		           float&	tMerr
-
-	-o- correctElectronEnergyScale
-		Return: void
-		Arguments: const float	newEnergy
-
-	-o- classifyElectron
-		Return: void
-		Arguments: const int	myclass
-
-	-o- caloEnergyError
-		Return: float
-		Arguments: void	
-
-	-o- trackMomentumError
-		Return: float
-		Arguments: void	
-
-	-o- superCluster
-		Return: edm::Ref<std::vector<SuperCluster>>
-		Arguments: void	
-
-	-o- gsfTrack
-		Return: reco::edm::Ref<GsfTrackCollection>
-		Arguments: void	
-
-	-o- track
-		Return: reco::edm::Ref<std::vector<Track>>
-		Arguments: void	
-
-	-o- numberOfClusters
-		Return: int
-		Arguments: void	
-
-	-o- basicClustersBegin
-		Return: basicCluster_iterator
-		Arguments: void	
-
-	-o- basicClustersEnd
-		Return: basicCluster_iterator
-		Arguments: void	
-
-	-o- isElectron
-		Return: bool
+	-o- userCandNames
+		Return: const std::vector<std::string>&
 		Arguments: void	
 
 Methods from reco::RecoCandidate
@@ -633,10 +379,6 @@ Methods from reco::RecoCandidate
 
 Methods from reco::LeafCandidate
 
-	-o- clone
-		Return: LeafCandidate*
-		Arguments: void	
-
 	-o- begin
 		Return: candidate::const_iterator
 		Arguments: void	
@@ -644,42 +386,8 @@ Methods from reco::LeafCandidate
 	-o- end
 		Return: candidate::const_iterator
 		Arguments: void	
-
-	-o- begin
-		Return: candidate::iterator
-		Arguments: void	
-
-	-o- end
-		Return: candidate::iterator
-		Arguments: void	
-
-	-o- numberOfDaughters
-		Return: size_t
-		Arguments: void	
-
-	-o- daughter
-		Return: const Candidate*
-		Arguments: size_type	
-
-	-o- numberOfMothers
-		Return: size_t
-		Arguments: void	
-
-	-o- mother
-		Return: const Candidate*
-		Arguments: size_type	
-
-	-o- daughter
-		Return: Candidate*
-		Arguments: size_type	
 
 Methods from reco::Candidate
-
-	-o- clone
-		Return: Candidate*
-		Arguments: void	
-
-Methods from reco::Particle
 
 	-o- charge
 		Return: int
@@ -698,11 +406,11 @@ Methods from reco::Particle
 		Arguments: Charge	qx3
 
 	-o- p4
-		Return: const math::XYZTLorentzVectorD&
+		Return: const math::XYZTLorentzVector&
 		Arguments: void	
 
 	-o- polarP4
-		Return: const math::ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> >&
+		Return: const math::PtEtaPhiMLorentzVector&
 		Arguments: void	
 
 	-o- momentum
@@ -834,6 +542,14 @@ Methods from reco::Particle
 		Arguments: void	
 
 	-o- longLived
+		Return: bool
+		Arguments: void	
+
+	-o- setMassConstraint
+		Return: void
+		Arguments: void	
+
+	-o- massConstraint
 		Return: bool
 		Arguments: void	
 

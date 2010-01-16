@@ -2,13 +2,13 @@
 <!--
 ==============================================================================
   XML File: PFCandidate.xml
-  Created:  Thu Jan 14 22:47:49 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:54 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/ParticleFlowCandidate/interface/PFCandidate.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/ParticleFlowCandidate/interface/PFCandidate.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/ParticleFlowCandidate/interface/PFCandidate.h">
 
-    <include name="&lt;iostream&gt;"/>
+    <include name="&lt;iosfwd&gt;"/>
     <include name="&quot;DataFormats/Math/interface/Point3D.h&quot;"/>
     <include name="&quot;DataFormats/Candidate/interface/CompositeCandidate.h&quot;"/>
     <include name="&quot;DataFormats/ParticleFlowReco/interface/PFBlockFwd.h&quot;"/>
@@ -116,12 +116,12 @@ virtual PFCandidate* clone() const;
                     </comment>
                 </method1>
 
-                <method1 name="setSourcePtr"
+                <method1 name="setSourceCandidatePtr"
                          return="void"
                          args="['const PFCandidatePtr&amp;']"
                          vars="['ptr']"
                          qual="">
-void setSourcePtr(const PFCandidatePtr&amp; ptr);
+void setSourceCandidatePtr(const PFCandidatePtr&amp; ptr);
                     <comment>
        }
                     </comment>
@@ -837,6 +837,14 @@ typedef componenthelper::SingleComponent&lt;PFCandidate, PFCandidate::ParticleTy
                      type="typedef"/>
 
         </class>
+        <operator name="operator&lt;&lt;"
+                  return="std::ostream&amp;"
+                  args="['std::ostream&amp;','const PFCandidate&amp;']"
+                  vars="['out','c']"
+                  qual="">
+std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, const PFCandidate&amp; c);
+        </operator>
+
     </namespace>
 
     <type name="CandidatePtr"/>

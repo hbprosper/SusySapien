@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: CompositeCandidate.xml
-  Created:  Thu Jan 14 22:48:07 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:07 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/PatCandidates/interface/CompositeCandidate.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/PatCandidates/interface/CompositeCandidate.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/PatCandidates/interface/CompositeCandidate.h">
 
     <include name="&quot;DataFormats/Candidate/interface/CompositeCandidate.h&quot;"/>
     <include name="&quot;DataFormats/PatCandidates/interface/PATObject.h&quot;"/>
@@ -34,11 +34,9 @@ typedef edm::RefVector&lt;CompositeCandidateCollection&gt; CompositeCandidateRef
     </namespace>
 
     <namespace name="pat">
-        <typedef name="CompositeCandidateType"
-                 value="reco::CompositeCandidate">
-typedef reco::CompositeCandidate CompositeCandidateType;
-        </typedef>
-
+        <comment>
+   Class definition
+        </comment>
 
         <class name="CompositeCandidate"
                fullname="pat::CompositeCandidate"
@@ -54,14 +52,20 @@ typedef reco::CompositeCandidate CompositeCandidateType;
                              vars="['']"
                              qual="">
 CompositeCandidate();
+                    <comment>
+          default constructor
+                    </comment>
                 </constructor>
 
                 <constructor name="CompositeCandidate"
                              return=""
-                             args="['const CompositeCandidateType&amp;']"
+                             args="['const reco::CompositeCandidate&amp;']"
                              vars="['aCompositeCandidate']"
                              qual="">
-CompositeCandidate(const CompositeCandidateType&amp; aCompositeCandidate);
+CompositeCandidate(const reco::CompositeCandidate&amp; aCompositeCandidate);
+                    <comment>
+          constructor from a composite candidate
+                    </comment>
                 </constructor>
 
                 <destructor name="~CompositeCandidate"
@@ -70,6 +74,9 @@ CompositeCandidate(const CompositeCandidateType&amp; aCompositeCandidate);
                             vars="['']"
                             qual="">
 virtual ~CompositeCandidate();
+                    <comment>
+          destructor
+                    </comment>
                 </destructor>
 
                 <method1 name="clone"
@@ -78,6 +85,9 @@ virtual ~CompositeCandidate();
                          vars="['']"
                          qual="const">
 virtual CompositeCandidate* clone() const;
+                    <comment>
+          required reimplementation of the Candidate's clone method
+                    </comment>
                 </method1>
 
             </section>
@@ -87,7 +97,7 @@ virtual CompositeCandidate* clone() const;
 
     <type name="CompositeCandidate*"/>
     <type name="PATObject&lt;reco::CompositeCandidate&gt;"/>
-    <type name="const CompositeCandidateType&amp;"/>
+    <type name="const reco::CompositeCandidate&amp;"/>
     <type name="pat::CompositeCandidate"/>
     <type name="void"/>
 </header>

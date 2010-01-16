@@ -1,7 +1,7 @@
 pat::VertexAssociation|bool|isNull|void
 pat::VertexAssociation|bool|isNonnull|void
 pat::VertexAssociation|bool|isAvailable|void
-pat::VertexAssociation|const reco::edm::Ref<std::vector<Vertex>>&|vertexRef|void
+pat::VertexAssociation|const reco::VertexRef&|vertexRef|void
 pat::VertexAssociation|const reco::Vertex*|vertex|void
 pat::VertexAssociation|bool|hasTrack|void
 pat::VertexAssociation|const reco::TrackBaseRef&|trackRef|void

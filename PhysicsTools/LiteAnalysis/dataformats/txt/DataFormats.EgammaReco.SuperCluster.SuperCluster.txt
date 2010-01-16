@@ -7,8 +7,8 @@ Header:
 BaseClasses:
 	reco::CaloCluster	DataFormats/CaloRecHit/interface/CaloCluster.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:16:20 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:56 2010	lsclass.py $Revision:$
 
 Methods from reco::SuperCluster
 
@@ -28,6 +28,10 @@ Methods from reco::SuperCluster
 		Return: double
 		Arguments: void	
 
+	-o- setPreshowerEnergy
+		Return: void
+		Arguments: double	preshowerEnergy
+
 	-o- setPhiWidth
 		Return: void
 		Arguments: double	pw
@@ -37,15 +41,23 @@ Methods from reco::SuperCluster
 		Arguments: double	ew
 
 	-o- seed
-		Return: const edm::Ref<std::vector<BasicCluster>>&
+		Return: const CaloClusterPtr&
 		Arguments: void	
 
 	-o- clustersBegin
-		Return: BasicClusterRefVector::iterator
+		Return: CaloCluster_iterator
 		Arguments: void	
 
 	-o- clustersEnd
-		Return: BasicClusterRefVector::iterator
+		Return: CaloCluster_iterator
+		Arguments: void	
+
+	-o- preshowerClustersBegin
+		Return: CaloCluster_iterator
+		Arguments: void	
+
+	-o- preshowerClustersEnd
+		Return: CaloCluster_iterator
 		Arguments: void	
 
 	-o- clustersSize
@@ -54,24 +66,28 @@ Methods from reco::SuperCluster
 
 	-o- setSeed
 		Return: void
-		Arguments: const BasicClusterRef&	r
+		Arguments: const CaloClusterPtr&	r
 
-	-o- add
+	-o- addCluster
 		Return: void
-		Arguments: const BasicClusterRef&	r
+		Arguments: const CaloClusterPtr&	r
 
-	-o- getHitsByDetId
-		Return: std::vector<DetId>
-		Arguments: void	
+	-o- addPreshowerCluster
+		Return: void
+		Arguments: const CaloClusterPtr&	r
 
 Methods from reco::CaloCluster
+
+	-o- reset
+		Return: void
+		Arguments: void	
 
 	-o- energy
 		Return: double
 		Arguments: void	
 
 	-o- position
-		Return: const math::ROOT::Math::PositionVector3D<ROOT::Math::Cartesian3D<double> >&
+		Return: const math::XYZPoint&
 		Arguments: void	
 
 	-o- x
@@ -94,11 +110,28 @@ Methods from reco::CaloCluster
 		Return: double
 		Arguments: void	
 
-	-o- caloID
-		Return: CaloID&
+	-o- size
+		Return: size_t
+		Arguments: void	
+
+	-o- algo
+		Return: AlgoId
+		Arguments: void	
+
+	-o- algoID
+		Return: AlgoId
 		Arguments: void	
 
 	-o- caloID
 		Return: const CaloID&
 		Arguments: void	
+
+	-o- addHitAndFraction
+		Return: void
+		Arguments: DetId	id
+		           float	fraction
+
+	-o- printHitAndFraction
+		Return: std::string
+		Arguments: unsigned	i
 

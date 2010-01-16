@@ -7,8 +7,8 @@ Header:
 BaseClasses:
 	edm::EDProduct	DataFormats/Common/interface/EDProduct.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:16:00 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:39 2010	lsclass.py $Revision:$
 
 Methods from edm::Wrapper<T>
 
@@ -17,11 +17,11 @@ Methods from edm::Wrapper<T>
 		Arguments: void	
 
 	-o- productTypeInfo
-		Return: static const std::type_info&
+		Return: static std::type_info const&
 		Arguments: void	
 
 	-o- typeInfo
-		Return: static const std::type_info&
+		Return: static std::type_info const&
 		Arguments: void	
 
 Methods from edm::EDProduct
@@ -42,7 +42,7 @@ Methods from edm::EDProduct
 
 	-o- mergeProduct
 		Return: bool
-		Arguments: EDProduct*	newProduct
+		Arguments: EDProduct const*	newProduct
 
 	-o- hasIsProductEqual
 		Return: bool
@@ -50,7 +50,7 @@ Methods from edm::EDProduct
 
 	-o- isProductEqual
 		Return: bool
-		Arguments: EDProduct*	newProduct
+		Arguments: EDProduct const*	newProduct
 
 	-o- fillView
 		Return: void

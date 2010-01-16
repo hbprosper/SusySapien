@@ -2,14 +2,18 @@
 <!--
 ==============================================================================
   XML File: CaloCluster.xml
-  Created:  Thu Jan 14 22:46:35 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:04 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/CaloRecHit/interface/CaloCluster.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/CaloRecHit/interface/CaloCluster.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/CaloRecHit/interface/CaloCluster.h">
 
     <include name="&quot;DataFormats/Math/interface/Point3D.h&quot;"/>
     <include name="&quot;DataFormats/CaloRecHit/interface/CaloID.h&quot;"/>
+    <include name="&quot;DataFormats/DetId/interface/DetId.h&quot;"/>
+    <include name="&lt;vector&gt;"/>
+    <include name="&lt;string&gt;"/>
+    <include name="&lt;iostream&gt;"/>
 
     <namespace name="reco">
 
@@ -17,9 +21,30 @@
                fullname="reco::CaloCluster"
                module="DataFormats.CaloRecHit"
                project=""
-               type="regular">
+               type="regular printable">
 
             <section name="public">
+                <enum name="AlgoId">
+enum AlgoId {
+ island=0, hybrid=1, fixedMatrix=2, dynamicHybrid=3, multi5x5=4, particleFlow=5, undefined=100};
+                    <field name="island" value="0"/>
+                    <field name="hybrid" value="1"/>
+                    <field name="fixedMatrix" value="2"/>
+                    <field name="dynamicHybrid" value="3"/>
+                    <field name="multi5x5" value="4"/>
+                    <field name="particleFlow" value="5"/>
+                    <field name="undefined" value="100"/>
+                </enum>
+
+                <typedef name="AlgoID"
+                         value="AlgoId">
+typedef AlgoId AlgoID;
+                    <comment>
+     FIXME:
+     temporary fix... to be removed before 310 final
+                    </comment>
+                </typedef>
+
                 <constructor name="CaloCluster"
                              return=""
                              args="['void']"
@@ -27,18 +52,18 @@
                              qual="">
 CaloCluster();
                     <comment>
-        default constructor. Sets energy and position to zero
+       default constructor. Sets energy and position to zero
                     </comment>
                 </constructor>
 
                 <constructor name="CaloCluster"
                              return=""
-                             args="['double','const math::XYZPoint&amp;']"
-                             vars="['energy','position']"
+                             args="['AlgoID']"
+                             vars="['algoID']"
                              qual="">
-CaloCluster(double energy, const math::XYZPoint&amp; position);
+CaloCluster(AlgoID algoID);
                     <comment>
-        constructor from values
+        constructor with algoId, to be used in all child classes
                     </comment>
                 </constructor>
 
@@ -48,8 +73,54 @@ CaloCluster(double energy, const math::XYZPoint&amp; position);
                              vars="['energy','position','caloID']"
                              qual="">
 CaloCluster(double energy, const math::XYZPoint&amp; position, const CaloID&amp; caloID);
+                </constructor>
+
+                <method1 name="reset"
+                         return="void"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+void reset();
                     <comment>
-        constructor from values
+        resets the CaloCluster (position, energy, hitsAndFractions)
+                    </comment>
+                </method1>
+
+                <constructor name="CaloCluster"
+                             return=""
+                             args="['double','const math::XYZPoint&amp;']"
+                             vars="['energy','position']"
+                             qual="">
+CaloCluster(double energy, const math::XYZPoint&amp; position);
+                    <comment>
+         constructor from values
+                    </comment>
+                </constructor>
+
+                <constructor name="CaloCluster"
+                             return=""
+                             args="['double','const math::XYZPoint&amp;','const CaloID&amp;','const AlgoID&amp;']"
+                             vars="['energy','position','caloID','algoID']"
+                             qual="">
+CaloCluster(double energy, const math::XYZPoint&amp; position, const CaloID&amp; caloID, const AlgoID&amp; algoID);
+                </constructor>
+
+                <constructor name="CaloCluster"
+                             return=""
+                             args="['double','const math::XYZPoint&amp;','const CaloID&amp;','const std::vector&lt;std::pair&lt;DetId, float &gt; &gt;&amp;','const AlgoId','const DetId=DetId(0)']"
+                             vars="['energy','position','caloID','usedHitsAndFractions','algoId','seedId']"
+                             qual="">
+CaloCluster(double energy, const math::XYZPoint&amp; position, const CaloID&amp; caloID, const std::vector&lt;std::pair&lt;DetId, float &gt; &gt;&amp; usedHitsAndFractions, const AlgoId algoId, const DetId seedId=DetId(0));
+                </constructor>
+
+                <constructor name="CaloCluster"
+                             return=""
+                             args="['double','const math::XYZPoint&amp;','float','const std::vector&lt;DetId &gt;&amp;','const AlgoId']"
+                             vars="['energy','position','chi2','usedHits','algoId']"
+                             qual="">
+CaloCluster(double energy, const math::XYZPoint&amp; position, float chi2, const std::vector&lt;DetId &gt;&amp; usedHits, const AlgoId algoId);
+                    <comment>
+       temporary compatibility constructor
                     </comment>
                 </constructor>
 
@@ -126,7 +197,18 @@ bool operator&lt;=(const CaloCluster&amp; rhs) const;
                           qual="const">
 bool operator&lt;(const CaloCluster&amp; rhs) const;
                     <comment>
-        comparison &lt;= operator
+        comparison &lt; operator
+                    </comment>
+                </operator>
+
+                <operator name="operator=="
+                          return="bool"
+                          args="['const CaloCluster&amp;']"
+                          vars="['rhs']"
+                          qual="const">
+bool operator==(const CaloCluster&amp; rhs) const;
+                    <comment>
+        comparison == operator
                     </comment>
                 </operator>
 
@@ -185,12 +267,34 @@ double phi() const;
                     </comment>
                 </method1>
 
-                <method1 name="caloID"
-                         return="CaloID&amp;"
+                <method1 name="size"
+                         return="size_t"
                          args="['void']"
                          vars="['']"
-                         qual="">
-CaloID&amp; caloID();
+                         qual="const">
+size_t size() const;
+                    <comment>
+        size in number of hits (e.g. in crystals for ECAL)
+                    </comment>
+                </method1>
+
+                <method1 name="algo"
+                         return="AlgoId"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+AlgoId algo() const;
+                    <comment>
+        algorithm identifier
+                    </comment>
+                </method1>
+
+                <method1 name="algoID"
+                         return="AlgoID"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+AlgoID algoID() const;
                 </method1>
 
                 <method1 name="caloID"
@@ -201,26 +305,111 @@ CaloID&amp; caloID();
 const CaloID&amp; caloID() const;
                 </method1>
 
-                <operator name="operator="
-                          return="CaloCluster&amp;"
-                          args="['const CaloCluster&amp;']"
-                          vars="['rhs']"
+                <method1 name="addHitAndFraction"
+                         return="void"
+                         args="['DetId','float']"
+                         vars="['id','fraction']"
+                         qual="">
+void addHitAndFraction(DetId id, float fraction);
+                </method1>
+
+                <method2 name="hitsAndFractions"
+                         return="const std::vector&lt;std::pair&lt;DetId, float&gt; &gt;&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const std::vector&lt;std::pair&lt;DetId, float&gt; &gt;&amp; hitsAndFractions() const;
+                    <comment>
+        to compute the total cluster energy
+                    </comment>
+                </method2>
+
+                <method1 name="printHitAndFraction"
+                         return="std::string"
+                         args="['unsigned']"
+                         vars="['i']"
+                         qual="const">
+std::string printHitAndFraction(unsigned i) const;
+                    <comment>
+        print hitAndFraction
+                    </comment>
+                </method1>
+
+                <operator name="operator&lt;&lt;"
+                          return="friend std::ostream&amp;"
+                          args="['std::ostream&amp;','const CaloCluster&amp;']"
+                          vars="['out','cluster']"
                           qual="">
-CaloCluster&amp; operator=(const CaloCluster&amp; rhs);
+friend std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, const CaloCluster&amp; cluster);
+                    <comment>
+        print me
+                    </comment>
                 </operator>
 
+                <method1 name="seed"
+                         return="DetId"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+DetId seed() const;
+                    <comment>
+        return DetId of seed
+                    </comment>
+                </method1>
+
             </section>
+
+            <typemap name="AlgoID"
+                     value="AlgoId"
+                     type="typedef"/>
+            <typemap name="AlgoId"
+                     value="reco::CaloCluster::AlgoId"
+                     type="enum"/>
+            <typemap name="dynamicHybrid "
+                     value="reco::CaloCluster::dynamicHybrid "
+                     type="enum"/>
+            <typemap name="fixedMatrix "
+                     value="reco::CaloCluster::fixedMatrix "
+                     type="enum"/>
+            <typemap name="hybrid "
+                     value="reco::CaloCluster::hybrid "
+                     type="enum"/>
+            <typemap name="island "
+                     value="reco::CaloCluster::island "
+                     type="enum"/>
+            <typemap name="multi5x5 "
+                     value="reco::CaloCluster::multi5x5 "
+                     type="enum"/>
+            <typemap name="particleFlow "
+                     value="reco::CaloCluster::particleFlow "
+                     type="enum"/>
+            <typemap name="undefined "
+                     value="reco::CaloCluster::undefined "
+                     type="enum"/>
 
         </class>
     </namespace>
 
-    <type name="CaloCluster&amp;"/>
-    <type name="CaloID&amp;"/>
+    <type name="AlgoID"/>
+    <type name="AlgoId"/>
+    <type name="DetId"/>
     <type name="bool"/>
+    <type name="const AlgoID&amp;"/>
+    <type name="const AlgoId"/>
     <type name="const CaloCluster&amp;"/>
     <type name="const CaloID&amp;"/>
+    <type name="const DetId"/>
     <type name="const math::XYZPoint&amp;"/>
+    <type name="const std::vector&lt;DetId &gt;&amp;"/>
+    <type name="const std::vector&lt;std::pair&lt;DetId, float &gt; &gt;&amp;"/>
+    <type name="const std::vector&lt;std::pair&lt;DetId, float&gt; &gt;&amp;"/>
     <type name="double"/>
+    <type name="enum AlgoId"/>
+    <type name="float"/>
     <type name="reco::CaloCluster"/>
+    <type name="size_t"/>
+    <type name="std::ostream&amp;"/>
+    <type name="std::string"/>
+    <type name="unsigned"/>
     <type name="void"/>
 </header>

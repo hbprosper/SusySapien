@@ -1,7 +1,7 @@
 trigger::TriggerEvent|const std::string&|usedProcessName|void
-trigger::TriggerEvent|const std::vector<uint16_t>&|collectionKeys|void
+trigger::TriggerEvent|const Keys&|collectionKeys|void
 trigger::TriggerEvent|const std::vector<TriggerObject>&|getObjects|void
-trigger::TriggerEvent|uint16_t|sizeCollections|void
-trigger::TriggerEvent|uint16_t|sizeObjects|void
-trigger::TriggerEvent|uint16_t|sizeFilters|void
+trigger::TriggerEvent|trigger::size_type|sizeCollections|void
+trigger::TriggerEvent|trigger::size_type|sizeObjects|void
+trigger::TriggerEvent|trigger::size_type|sizeFilters|void
 trigger::TriggerEvent|const std::vector<std::string>&|collectionTags|void

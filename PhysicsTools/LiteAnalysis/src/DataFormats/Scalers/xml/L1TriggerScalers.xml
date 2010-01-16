@@ -2,13 +2,16 @@
 <!--
 ==============================================================================
   XML File: L1TriggerScalers.xml
-  Created:  Thu Jan 14 22:48:35 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:29 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/Scalers/interface/L1TriggerScalers.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Scalers/interface/L1TriggerScalers.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/Scalers/interface/L1TriggerScalers.h">
 
-    <include name="&lt;ostream&gt;"/>
+    <include name="&quot;DataFormats/Scalers/interface/TimeSpec.h&quot;"/>
+    <include name="&lt;ctime&gt;"/>
+    <include name="&lt;iosfwd&gt;"/>
+    <include name="&lt;string&gt;"/>
     <include name="&lt;vector&gt;"/>
 
     <class name="L1TriggerScalers"
@@ -122,11 +125,11 @@ unsigned int bunchNumber() const;
             </method1>
 
             <method1 name="collectionTimeSpecial"
-                     return="struct timespec"
+                     return="timespec"
                      args="['void']"
                      vars="['']"
                      qual="const">
-struct timespec collectionTimeSpecial() const;
+timespec collectionTimeSpecial() const;
             </method1>
 
             <method1 name="orbitNumber"
@@ -154,11 +157,11 @@ unsigned int bunchCrossingErrors() const;
             </method1>
 
             <method1 name="collectionTimeSummary"
-                     return="struct timespec"
+                     return="timespec"
                      args="['void']"
                      vars="['']"
                      qual="const">
-struct timespec collectionTimeSummary() const;
+timespec collectionTimeSummary() const;
             </method1>
 
             <method1 name="triggerNumber"
@@ -306,11 +309,11 @@ unsigned int numberResets() const;
             </method1>
 
             <method1 name="collectionTimeDetails"
-                     return="struct timespec"
+                     return="timespec"
                      args="['void']"
                      vars="['']"
                      qual="const">
-struct timespec collectionTimeDetails() const;
+timespec collectionTimeDetails() const;
             </method1>
 
             <method2 name="triggers"
@@ -386,7 +389,7 @@ typedef std::vector&lt;L1TriggerScalers&gt; L1TriggerScalersCollection;
     <type name="int"/>
     <type name="std::string"/>
     <type name="std::vector&lt;unsigned int&gt;"/>
-    <type name="struct timespec"/>
+    <type name="timespec"/>
     <type name="unsigned int"/>
     <type name="unsigned long long"/>
     <type name="void"/>

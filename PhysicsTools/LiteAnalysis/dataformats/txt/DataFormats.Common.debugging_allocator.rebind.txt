@@ -4,8 +4,8 @@ Class:
 Header:
 	DataFormats/Common/interface/debugging_allocator.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:46 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:28 2010	lsclass.py $Revision:$
 
 Methods from edm::debugging_allocator<T>
 

@@ -8,8 +8,8 @@ BaseClasses:
 	edm::HLTGlobalStatus	DataFormats/Common/interface/HLTGlobalStatus.h
 	edm::DoNotRecordParents	DataFormats/Common/interface/traits.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:47 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:28 2010	lsclass.py $Revision:$
 
 Methods from edm::TriggerResults
 
@@ -58,36 +58,4 @@ Methods from edm::HLTGlobalStatus
 	-o- at
 		Return: const HLTPathStatus&
 		Arguments: const unsigned int	i
-
-	-o- at
-		Return: HLTPathStatus&
-		Arguments: const unsigned int	i
-
-	-o- wasrun
-		Return: bool
-		Arguments: const unsigned int	i
-
-	-o- accept
-		Return: bool
-		Arguments: const unsigned int	i
-
-	-o- error
-		Return: bool
-		Arguments: const unsigned int	i
-
-	-o- state
-		Return: hlt::HLTState
-		Arguments: const unsigned int	i
-
-	-o- index
-		Return: unsigned int
-		Arguments: const unsigned int	i
-
-	-o- reset
-		Return: void
-		Arguments: const unsigned int	i
-
-	-o- swap
-		Return: void
-		Arguments: HLTGlobalStatus&	other
 

@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: TriggerFilter.xml
-  Created:  Thu Jan 14 22:48:22 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:19 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/PatCandidates/interface/TriggerFilter.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/PatCandidates/interface/TriggerFilter.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/PatCandidates/interface/TriggerFilter.h">
 
     <include name="&lt;string&gt;"/>
     <include name="&lt;vector&gt;"/>
@@ -14,6 +14,7 @@
     <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
     <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
     <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVectorIterator.h&quot;"/>
 
     <namespace name="pat">
 
@@ -40,7 +41,7 @@ std::vector&lt;unsigned &gt; objectKeys_;
                 </member>
 
                 <member>
-std::vector&lt;unsigned &gt; objectIds_;
+std::vector&lt;int &gt; objectIds_;
                 </member>
 
                 <member>
@@ -113,10 +114,10 @@ void addObjectKey(unsigned objectKey);
 
                 <method1 name="addObjectId"
                          return="void"
-                         args="['unsigned']"
+                         args="['int']"
                          vars="['objectId']"
                          qual="">
-void addObjectId(unsigned objectId);
+void addObjectId(int objectId);
                 </method1>
 
                 <method1 name="setStatus"
@@ -152,11 +153,11 @@ std::vector&lt;unsigned &gt; objectKeys() const;
                 </method2>
 
                 <method2 name="objectIds"
-                         return="std::vector&lt;unsigned &gt;"
+                         return="std::vector&lt;int &gt;"
                          args="['void']"
                          vars="['']"
                          qual="const">
-std::vector&lt;unsigned &gt; objectIds() const;
+std::vector&lt;int &gt; objectIds() const;
                 </method2>
 
                 <method1 name="status"
@@ -177,10 +178,10 @@ bool hasObjectKey(unsigned objectKey) const;
 
                 <method1 name="hasObjectId"
                          return="bool"
-                         args="['unsigned']"
+                         args="['int']"
                          vars="['objectId']"
                          qual="const">
-bool hasObjectId(unsigned objectId) const;
+bool hasObjectId(int objectId) const;
                 </method1>
 
             </section>
@@ -234,6 +235,14 @@ typedef edm::RefVector&lt;TriggerFilterCollection &gt; TriggerFilterRefVector;
             </comment>
         </typedef>
 
+        <typedef name="TriggerFilterRefVectorIterator"
+                 value="edm::RefVectorIterator&lt;TriggerFilterCollection &gt;">
+typedef edm::RefVectorIterator&lt;TriggerFilterCollection &gt; TriggerFilterRefVectorIterator;
+            <comment>
+      const iterator over vector of persistent references to items in the same TriggerFilterCollection
+            </comment>
+        </typedef>
+
     </namespace>
 
     <type name="bool"/>
@@ -242,6 +251,7 @@ typedef edm::RefVector&lt;TriggerFilterCollection &gt; TriggerFilterRefVector;
     <type name="int"/>
     <type name="pat::TriggerFilter"/>
     <type name="std::string"/>
+    <type name="std::vector&lt;int &gt;"/>
     <type name="std::vector&lt;unsigned &gt;"/>
     <type name="unsigned"/>
     <type name="void"/>

@@ -4,8 +4,8 @@ Class:
 Header:
 	DataFormats/CaloRecHit/interface/CaloRecHit.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:28 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:14 2010	lsclass.py $Revision:$
 
 Methods from CaloRecHit
 
@@ -20,4 +20,23 @@ Methods from CaloRecHit
 	-o- detid
 		Return: const DetId&
 		Arguments: void	
+
+	-o- flags
+		Return: uint32_t
+		Arguments: void	
+
+	-o- setFlags
+		Return: void
+		Arguments: uint32_t	flags
+
+	-o- setFlagField
+		Return: void
+		Arguments: uint32_t	value
+		           int	base
+		           int=1	width
+
+	-o- flagField
+		Return: uint32_t
+		Arguments: int	base
+		           int=1	width
 

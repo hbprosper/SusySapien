@@ -2,13 +2,13 @@
 <!--
 ==============================================================================
   XML File: CompositeCandidate.xml
-  Created:  Thu Jan 14 22:46:39 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:07 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/Candidate/interface/CompositeCandidate.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Candidate/interface/CompositeCandidate.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/Candidate/interface/CompositeCandidate.h">
 
-    <include name="&quot;DataFormats/Candidate/interface/Candidate.h&quot;"/>
+    <include name="&quot;DataFormats/Candidate/interface/LeafCandidate.h&quot;"/>
     <include name="&lt;memory&gt;"/>
     <include name="&quot;DataFormats/Candidate/interface/iterator_imp_specific.h&quot;"/>
     <include name="&quot;DataFormats/Candidate/interface/CompositeCandidateFwd.h&quot;"/>
@@ -22,7 +22,7 @@
                module="DataFormats.Candidate"
                project=""
                type="regular">
-            <baseclass name="public Candidate"/>
+            <baseclass name="public LeafCandidate"/>
 
             <section name="public">
                 <typedef name="daughters"
@@ -66,17 +66,6 @@ CompositeCandidate(Charge q, const LorentzVector&amp; p4, const Point&amp; vtx=P
                              vars="['q','p4','vtx','pdgId','status','integerCharge','name']"
                              qual="">
 CompositeCandidate(Charge q, const PolarLorentzVector&amp; p4, const Point&amp; vtx=Point(0, 0, 0), int pdgId=0, int status=0, bool integerCharge=true, std::string name=&quot;&quot;);
-                    <comment>
-        constructor from values
-                    </comment>
-                </constructor>
-
-                <constructor name="CompositeCandidate"
-                             return="explicit"
-                             args="['const Particle&amp;','const std::string&amp;=&quot;&quot;']"
-                             vars="['p','name']"
-                             qual="">
-explicit CompositeCandidate(const Particle&amp; p, const std::string&amp; name=&quot;&quot;);
                     <comment>
         constructor from values
                     </comment>
@@ -355,15 +344,14 @@ virtual const Candidate* mother(size_type i=0) const;
         </class>
     </namespace>
 
-    <type name="Candidate"/>
     <type name="Candidate*"/>
     <type name="Charge"/>
     <type name="CompositeCandidate*"/>
+    <type name="LeafCandidate"/>
     <type name="bool"/>
     <type name="const Candidate&amp;"/>
     <type name="const Candidate*"/>
     <type name="const LorentzVector&amp;"/>
-    <type name="const Particle&amp;"/>
     <type name="const Point&amp;"/>
     <type name="const PolarLorentzVector&amp;"/>
     <type name="const role_collection&amp;"/>

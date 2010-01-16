@@ -4,8 +4,8 @@ Class:
 Header:
 	DataFormats/ParticleFlowReco/interface/PFBlockElementGsfTrack.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:14:22 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:55:28 2010	lsclass.py $Revision:$
 
 Methods from reco::PFBlockElementGsfTrack
 
@@ -19,7 +19,7 @@ Methods from reco::PFBlockElementGsfTrack
 		           const char*=" "	tab
 
 	-o- GsftrackRefPF
-		Return: edm::Ref<std::vector<GsfPFRecTrack>>
+		Return: GsfPFRecTrackRef
 		Arguments: void	
 
 	-o- GsftrackRef
@@ -27,7 +27,7 @@ Methods from reco::PFBlockElementGsfTrack
 		Arguments: void	
 
 	-o- positionAtECALEntrance
-		Return: const math::ROOT::Math::PositionVector3D<ROOT::Math::Cartesian3D<float> >&
+		Return: const math::XYZPointF&
 		Arguments: void	
 
 	-o- GsftrackPF
@@ -35,10 +35,10 @@ Methods from reco::PFBlockElementGsfTrack
 		Arguments: void	
 
 	-o- Pin
-		Return: const math::XYZTLorentzVectorD&
+		Return: const math::XYZTLorentzVector&
 		Arguments: void	
 
 	-o- Pout
-		Return: const math::XYZTLorentzVectorD&
+		Return: const math::XYZTLorentzVector&
 		Arguments: void	
 

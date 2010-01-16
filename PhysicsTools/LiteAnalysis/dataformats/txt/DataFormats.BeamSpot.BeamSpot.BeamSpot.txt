@@ -4,14 +4,10 @@ Class:
 Header:
 	DataFormats/BeamSpot/interface/BeamSpot.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:25 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:12 2010	lsclass.py $Revision:$
 
 Methods from reco::BeamSpot
-
-	-o- dummy
-		Return: void
-		Arguments: void	
 
 	-o- position
 		Return: const math::XYZPoint&
@@ -41,7 +37,11 @@ Methods from reco::BeamSpot
 		Return: double
 		Arguments: void	
 
-	-o- BeamWidth
+	-o- BeamWidthX
+		Return: double
+		Arguments: void	
+
+	-o- BeamWidthY
 		Return: double
 		Arguments: void	
 
@@ -69,9 +69,21 @@ Methods from reco::BeamSpot
 		Return: double
 		Arguments: void	
 
-	-o- BeamWidthError
+	-o- BeamWidthXError
 		Return: double
 		Arguments: void	
+
+	-o- BeamWidthYError
+		Return: double
+		Arguments: void	
+
+	-o- setBeamWidthX
+		Return: void
+		Arguments: double	v
+
+	-o- setBeamWidthY
+		Return: void
+		Arguments: double	v
 
 	-o- covariance
 		Return: double
@@ -79,16 +91,49 @@ Methods from reco::BeamSpot
 		           int	j
 
 	-o- covariance
-		Return: math::Error<dimension>::ROOT::Math::SMatrix<double, N, N, ROOT::Math::MatRepSym<double, N> >
+		Return: math::Error<dimension>::type
 		Arguments: void	
 
 	-o- covariance3D
-		Return: math::Error<dim3>::ROOT::Math::SMatrix<double, N, N, ROOT::Math::MatRepSym<double, N> >
+		Return: math::Error<dim3>::type
+		Arguments: void	
+
+	-o- type
+		Return: BeamType
 		Arguments: void	
 
 	-o- rotatedCovariance3D
-		Return: math::Error<dim3>::ROOT::Math::SMatrix<double, N, N, ROOT::Math::MatRepSym<double, N> >
+		Return: math::Error<dim3>::type
 		Arguments: void	
+
+	-o- emittanceX
+		Return: double
+		Arguments: void	
+
+	-o- emittanceY
+		Return: double
+		Arguments: void	
+
+	-o- betaStar
+		Return: double
+		Arguments: void	
+
+	-o- beamWidthFromBeta
+		Return: double
+		Arguments: double	z
+		           double	e
+
+	-o- setEmittanceX
+		Return: void
+		Arguments: double	v
+
+	-o- setEmittanceY
+		Return: void
+		Arguments: double	v
+
+	-o- setbetaStar
+		Return: void
+		Arguments: double	v
 
 	-o- print
 		Return: void

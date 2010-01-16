@@ -4,8 +4,8 @@ Class:
 Header:
 	DataFormats/Common/interface/EDCollection.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:56 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:36 2010	lsclass.py $Revision:$
 
 Methods from edm::EDCollection<T>
 
@@ -32,20 +32,4 @@ Methods from edm::EDCollection<T>
 	-o- at
 		Return: T&
 		Arguments: size_type	i
-
-	-o- at
-		Return: T const&
-		Arguments: size_type	i
-
-	-o- begin
-		Return: typename std::vector<T>::const_iterator
-		Arguments: void	
-
-	-o- end
-		Return: typename std::vector<T>::const_iterator
-		Arguments: void	
-
-	-o- swap
-		Return: void
-		Arguments: EDCollection<T>&	other
 

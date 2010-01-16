@@ -4,8 +4,8 @@ Class:
 Header:
 	DataFormats/ParticleFlowReco/interface/PFNuclearInteraction.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:14:27 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:55:31 2010	lsclass.py $Revision:$
 
 Methods from reco::PFNuclearInteraction
 
@@ -30,7 +30,7 @@ Methods from reco::PFNuclearInteraction
 		Arguments: void	
 
 	-o- nuclInterRef
-		Return: const edm::Ref<NuclearInteractionCollection>&
+		Return: const NuclearInteractionRef&
 		Arguments: void	
 
 	-o- secondaryTracksSize

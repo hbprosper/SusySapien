@@ -1,2 +1,2 @@
 reco::PFBlockElementCluster|PFBlockElement*|clone|void
-reco::PFBlockElementCluster|edm::Ref<PFClusterCollection>|clusterRef|void
+reco::PFBlockElementCluster|PFClusterRef|clusterRef|void

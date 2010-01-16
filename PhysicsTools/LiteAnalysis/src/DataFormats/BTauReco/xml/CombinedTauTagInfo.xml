@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: CombinedTauTagInfo.xml
-  Created:  Thu Jan 14 22:45:35 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:45:09 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/BTauReco/interface/CombinedTauTagInfo.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/BTauReco/interface/CombinedTauTagInfo.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/BTauReco/interface/CombinedTauTagInfo.h">
 
     <include name="&lt;limits&gt;"/>
     <include name="&lt;math.h&gt;"/>
@@ -453,19 +453,19 @@ void setneutralE_ratio(double x);
                 </method1>
 
                 <method1 name="alternatrecJet_HepLV"
-                         return="HepLorentzVector"
+                         return="CLHEP::HepLorentzVector"
                          args="['void']"
                          vars="['']"
                          qual="const">
-HepLorentzVector alternatrecJet_HepLV() const;
+CLHEP::HepLorentzVector alternatrecJet_HepLV() const;
                 </method1>
 
                 <method1 name="setalternatrecJet_HepLV"
                          return="void"
-                         args="['HepLorentzVector']"
+                         args="['CLHEP::HepLorentzVector']"
                          vars="['x']"
                          qual="">
-void setalternatrecJet_HepLV(HepLorentzVector x);
+void setalternatrecJet_HepLV(CLHEP::HepLorentzVector x);
                 </method1>
 
                 <method1 name="ECALEt_o_leadTkPt"
@@ -531,8 +531,8 @@ typedef edm::RefVector&lt;CombinedTauTagInfoCollection&gt; CombinedTauTagInfoRef
 
     </namespace>
 
+    <type name="CLHEP::HepLorentzVector"/>
     <type name="CombinedTauTagInfo*"/>
-    <type name="HepLorentzVector"/>
     <type name="JTATagInfo"/>
     <type name="bool"/>
     <type name="const IsolatedTauTagInfoRef&amp;"/>

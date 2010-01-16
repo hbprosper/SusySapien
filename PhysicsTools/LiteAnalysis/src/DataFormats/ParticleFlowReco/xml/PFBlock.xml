@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: PFBlock.xml
-  Created:  Thu Jan 14 22:47:53 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:57 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/ParticleFlowReco/interface/PFBlock.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/ParticleFlowReco/interface/PFBlock.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/ParticleFlowReco/interface/PFBlock.h">
 
     <include name="&lt;map&gt;"/>
     <include name="&lt;iostream&gt;"/>
@@ -30,14 +30,59 @@
             </comment>
 
             <section name="public">
+
+                <class name="Link"
+                       fullname="reco::PFBlock::Link"
+                       module="DataFormats.ParticleFlowReco"
+                       project=""
+                       type="regular struct">
+
+                    <section>
+                        <constructor name="Link"
+                                     return=""
+                                     args="['void']"
+                                     vars="['']"
+                                     qual="">
+Link();
+                        </constructor>
+
+                        <constructor name="Link"
+                                     return=""
+                                     args="['float','char']"
+                                     vars="['d','t']"
+                                     qual="">
+Link(float d, char t);
+                        </constructor>
+
+                        <member>
+float distance;
+                        </member>
+
+                        <member>
+char test;
+                        </member>
+
+                    </section>
+
+                    <typemap name="Link"
+                             value="reco::PFBlock::Link"
+                             type="class"/>
+                    <typemap name="distance"
+                             value="reco::PFBlock::Link::distance"
+                             type="member"/>
+                    <typemap name="test"
+                             value="reco::PFBlock::Link::test"
+                             type="member"/>
+
+                </class>
                 <typedef name="IE"
                          value="edm::OwnVector&lt;reco::PFBlockElement &gt;::const_iterator">
 typedef edm::OwnVector&lt;reco::PFBlockElement &gt;::const_iterator IE;
                 </typedef>
 
                 <typedef name="LinkData"
-                         value="std::vector&lt;std::vector&lt;std::pair&lt;float, float&gt; &gt; &gt;">
-typedef std::vector&lt;std::vector&lt;std::pair&lt;float, float&gt; &gt; &gt; LinkData;
+                         value="std::map&lt;unsigned int, Link &gt;">
+typedef std::map&lt;unsigned int, Link &gt; LinkData;
                     <comment>
        typedef std::vector&lt; std::vector&lt;double&gt; &gt; LinkData;
                     </comment>
@@ -46,15 +91,11 @@ typedef std::vector&lt;std::vector&lt;std::pair&lt;float, float&gt; &gt; &gt; Li
                 <enum name="LinkTest">
 enum LinkTest {
 
-      LINKTEST_CHI2=0, 
       LINKTEST_RECHIT, 
-      LINKTEST_TANGENT, 
       LINKTEST_NLINKTEST, 
       LINKTEST_ALL
     };
-                    <field name="LINKTEST_CHI2" value="0"/>
                     <field name="LINKTEST_RECHIT" value=""/>
-                    <field name="LINKTEST_TANGENT" value=""/>
                     <field name="LINKTEST_NLINKTEST" value=""/>
                     <field name="LINKTEST_ALL" value=""/>
                 </enum>
@@ -99,10 +140,10 @@ bool matrix2vector(unsigned i, unsigned j, unsigned&amp; index) const;
 
                 <method1 name="setLink"
                          return="void"
-                         args="['unsigned','unsigned','double','double','LinkData&amp;','LinkTest=LINKTEST_CHI2']"
-                         vars="['i1','i2','chi2','dist','linkData','test']"
+                         args="['unsigned','unsigned','double','LinkData&amp;','LinkTest=LINKTEST_RECHIT']"
+                         vars="['i1','i2','dist','linkData','test']"
                          qual="const">
-void setLink(unsigned i1, unsigned i2, double chi2, double dist, LinkData&amp; linkData, LinkTest test=LINKTEST_CHI2) const;
+void setLink(unsigned i1, unsigned i2, double dist, LinkData&amp; linkData, LinkTest test=LINKTEST_RECHIT) const;
                     <comment>
         As indicated by the 'const' statement, 'this' is not modified.
                     </comment>
@@ -110,32 +151,32 @@ void setLink(unsigned i1, unsigned i2, double chi2, double dist, LinkData&amp; l
 
                 <method2 name="associatedElements"
                          return="void"
-                         args="['unsigned','const LinkData&amp;','std::multimap&lt;double, unsigned&gt;&amp;','reco::PFBlockElement::Type=PFBlockElement::NONE','LinkTest=LINKTEST_CHI2']"
+                         args="['unsigned','const LinkData&amp;','std::multimap&lt;double, unsigned&gt;&amp;','reco::PFBlockElement::Type=PFBlockElement::NONE','LinkTest=LINKTEST_RECHIT']"
                          vars="['i','linkData','sortedAssociates','type','test']"
                          qual="const">
-void associatedElements(unsigned i, const LinkData&amp; linkData, std::multimap&lt;double, unsigned&gt;&amp; sortedAssociates, reco::PFBlockElement::Type type=PFBlockElement::NONE, LinkTest test=LINKTEST_CHI2) const;
+void associatedElements(unsigned i, const LinkData&amp; linkData, std::multimap&lt;double, unsigned&gt;&amp; sortedAssociates, reco::PFBlockElement::Type type=PFBlockElement::NONE, LinkTest test=LINKTEST_RECHIT) const;
                     <comment>
-        be considered: chi2 test, rechit test, tangent test etc..
+        be considered: distance test, etc..
                     </comment>
                 </method2>
 
-                <method1 name="chi2"
+                <method1 name="dist"
                          return="double"
-                         args="['unsigned','unsigned','const LinkData&amp;','LinkTest=LINKTEST_CHI2']"
+                         args="['unsigned','unsigned','const LinkData&amp;','LinkTest']"
                          vars="['ie1','ie2','linkData','test']"
                          qual="const">
-double chi2(unsigned ie1, unsigned ie2, const LinkData&amp; linkData, LinkTest test=LINKTEST_CHI2) const;
+double dist(unsigned ie1, unsigned ie2, const LinkData&amp; linkData, LinkTest test) const;
                     <comment>
-        \return chi2 of link
+        \return distance of link
                     </comment>
                 </method1>
 
                 <method1 name="dist"
                          return="double"
-                         args="['unsigned','unsigned','const LinkData&amp;','LinkTest=LINKTEST_CHI2']"
-                         vars="['ie1','ie2','linkData','test']"
+                         args="['unsigned','unsigned','const LinkData&amp;']"
+                         vars="['ie1','ie2','linkData']"
                          qual="const">
-double dist(unsigned ie1, unsigned ie2, const LinkData&amp; linkData, LinkTest test=LINKTEST_CHI2) const;
+double dist(unsigned ie1, unsigned ie2, const LinkData&amp; linkData) const;
                     <comment>
         \return distance of link
                     </comment>
@@ -190,20 +231,14 @@ friend std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, const PFBlock&a
             <typemap name="LINKTEST_ALL"
                      value="reco::PFBlock::LINKTEST_ALL"
                      type="enum"/>
-            <typemap name="LINKTEST_CHI2"
-                     value="reco::PFBlock::LINKTEST_CHI2"
-                     type="enum"/>
             <typemap name="LINKTEST_NLINKTEST"
                      value="reco::PFBlock::LINKTEST_NLINKTEST"
                      type="enum"/>
             <typemap name="LINKTEST_RECHIT"
                      value="reco::PFBlock::LINKTEST_RECHIT"
                      type="enum"/>
-            <typemap name="LINKTEST_TANGENT"
-                     value="reco::PFBlock::LINKTEST_TANGENT"
-                     type="enum"/>
             <typemap name="LinkData"
-                     value="std::vector&lt;std::vector&lt;std::pair&lt;float, float&gt; &gt; &gt;"
+                     value="std::map&lt;unsigned int, Link &gt;"
                      type="typedef"/>
             <typemap name="LinkTest"
                      value="reco::PFBlock::LinkTest"
@@ -215,12 +250,15 @@ friend std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, const PFBlock&a
     <type name="LinkData&amp;"/>
     <type name="LinkTest"/>
     <type name="bool"/>
+    <type name="char"/>
     <type name="const LinkData&amp;"/>
     <type name="const PFBlock&amp;"/>
     <type name="const edm::OwnVector&lt;reco::PFBlockElement &gt;&amp;"/>
     <type name="double"/>
     <type name="enum LinkTest"/>
+    <type name="float"/>
     <type name="reco::PFBlock"/>
+    <type name="reco::PFBlock::Link"/>
     <type name="reco::PFBlockElement*"/>
     <type name="reco::PFBlockElement::Type"/>
     <type name="std::multimap&lt;double, unsigned&gt;&amp;"/>

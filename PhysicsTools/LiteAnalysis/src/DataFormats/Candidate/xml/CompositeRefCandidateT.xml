@@ -2,13 +2,13 @@
 <!--
 ==============================================================================
   XML File: CompositeRefCandidateT.xml
-  Created:  Thu Jan 14 22:46:41 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:09 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/Candidate/interface/CompositeRefCandidateT.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Candidate/interface/CompositeRefCandidateT.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/Candidate/interface/CompositeRefCandidateT.h">
 
-    <include name="&quot;DataFormats/Candidate/interface/Candidate.h&quot;"/>
+    <include name="&quot;DataFormats/Candidate/interface/LeafCandidate.h&quot;"/>
     <include name="&quot;DataFormats/Candidate/interface/iterator_imp_specific.h&quot;"/>
 
     <namespace name="reco">
@@ -19,7 +19,7 @@
                project=""
                type="template"
                template="template&lt;typename D&gt;">
-            <baseclass name="public Candidate"/>
+            <baseclass name="public LeafCandidate"/>
 
             <section name="public">
                 <typedef name="daughters"
@@ -73,10 +73,10 @@ CompositeRefCandidateT(Charge q, const PolarLorentzVector&amp; p4, const Point&a
 
                 <constructor name="CompositeRefCandidateT"
                              return="explicit"
-                             args="['const Particle&amp;']"
-                             vars="['p']"
+                             args="['const LeafCandidate&amp;']"
+                             vars="['c']"
                              qual="">
-explicit CompositeRefCandidateT(const Particle&amp; p);
+explicit CompositeRefCandidateT(const LeafCandidate&amp; c);
                     <comment>
         constructor from a particle
                     </comment>
@@ -325,14 +325,14 @@ void resetMothers(const edm::ProductID&amp; id);
         </class>
     </namespace>
 
-    <type name="Candidate"/>
     <type name="Candidate*"/>
     <type name="Charge"/>
     <type name="CompositeRefCandidateT&lt;D&gt;*"/>
+    <type name="LeafCandidate"/>
     <type name="bool"/>
     <type name="const Candidate*"/>
+    <type name="const LeafCandidate&amp;"/>
     <type name="const LorentzVector&amp;"/>
-    <type name="const Particle&amp;"/>
     <type name="const Point&amp;"/>
     <type name="const PolarLorentzVector&amp;"/>
     <type name="const daughters&amp;"/>

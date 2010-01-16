@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: MuonIsolation.xml
-  Created:  Thu Jan 14 22:47:46 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:51 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/MuonReco/interface/MuonIsolation.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/MuonReco/interface/MuonIsolation.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/MuonReco/interface/MuonIsolation.h">
 
 
     <namespace name="reco">
@@ -42,6 +42,22 @@ int nTracks;
 int nJets;
                 </member>
 
+                <member>
+float trackerVetoPt;
+                </member>
+
+                <member>
+float emVetoEt;
+                </member>
+
+                <member>
+float hadVetoEt;
+                </member>
+
+                <member>
+float hoVetoEt;
+                </member>
+
                 <constructor name="MuonIsolation"
                              return=""
                              args="['void']"
@@ -55,11 +71,20 @@ MuonIsolation();
             <typemap name="emEt"
                      value="reco::MuonIsolation::emEt"
                      type="member"/>
+            <typemap name="emVetoEt"
+                     value="reco::MuonIsolation::emVetoEt"
+                     type="member"/>
             <typemap name="hadEt"
                      value="reco::MuonIsolation::hadEt"
                      type="member"/>
+            <typemap name="hadVetoEt"
+                     value="reco::MuonIsolation::hadVetoEt"
+                     type="member"/>
             <typemap name="hoEt"
                      value="reco::MuonIsolation::hoEt"
+                     type="member"/>
+            <typemap name="hoVetoEt"
+                     value="reco::MuonIsolation::hoVetoEt"
                      type="member"/>
             <typemap name="nJets"
                      value="reco::MuonIsolation::nJets"
@@ -69,6 +94,9 @@ MuonIsolation();
                      type="member"/>
             <typemap name="sumPt"
                      value="reco::MuonIsolation::sumPt"
+                     type="member"/>
+            <typemap name="trackerVetoPt"
+                     value="reco::MuonIsolation::trackerVetoPt"
                      type="member"/>
 
         </class>

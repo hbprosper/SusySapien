@@ -8,7 +8,7 @@
 //              class:   CaloTower
 //              header:  DataFormats/CaloTowers/interface/CaloTower.h
 //              
-// Created:     Thu Jan 14 23:47:24 2010 by mkadapter.py  HBP
+// Created:     Fri Jan 15 21:57:34 2010 by mkadapter.py  HBP
 //-----------------------------------------------------------------------------
 #include "DataFormats/CaloTowers/interface/CaloTower.h"
 //-----------------------------------------------------------------------------

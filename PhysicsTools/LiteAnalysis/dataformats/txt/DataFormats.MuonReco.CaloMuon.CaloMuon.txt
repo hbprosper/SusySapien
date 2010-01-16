@@ -4,14 +4,22 @@ Class:
 Header:
 	DataFormats/MuonReco/interface/CaloMuon.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:18 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:06 2010	lsclass.py $Revision:$
 
 Methods from reco::CaloMuon
 
-	-o- track
-		Return: edm::Ref<std::vector<Track>>
+	-o- innerTrack
+		Return: TrackRef
 		Arguments: void	
+
+	-o- track
+		Return: TrackRef
+		Arguments: void	
+
+	-o- setInnerTrack
+		Return: void
+		Arguments: const TrackRef&	t
 
 	-o- setTrack
 		Return: void
@@ -25,19 +33,11 @@ Methods from reco::CaloMuon
 		Return: MuonEnergy
 		Arguments: void	
 
-	-o- getCalEnergy
-		Return: MuonEnergy
-		Arguments: void	
-
 	-o- setCalEnergy
 		Return: void
 		Arguments: const MuonEnergy&	calEnergy
 
 	-o- caloCompatibility
-		Return: float
-		Arguments: void	
-
-	-o- getCaloCompatibility
 		Return: float
 		Arguments: void	
 

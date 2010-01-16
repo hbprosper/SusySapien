@@ -6,11 +6,11 @@ Header:
 
 BaseClasses:
 	reco::CompositePtrCandidate	DataFormats/Candidate/interface/CompositePtrCandidate.h
+	reco::LeafCandidate	DataFormats/Candidate/interface/LeafCandidate.h
 	reco::Candidate	DataFormats/Candidate/interface/Candidate.h
-	reco::Particle	DataFormats/Candidate/interface/Particle.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:14:14 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:55:22 2010	lsclass.py $Revision:$
 
 Methods from reco::CompositePtrCandidate
 
@@ -19,72 +19,14 @@ Methods from reco::CompositePtrCandidate
 		Arguments: void	
 
 	-o- begin
-		Return: candidate::const_iterator
+		Return: const_iterator
 		Arguments: void	
 
 	-o- end
-		Return: candidate::const_iterator
+		Return: const_iterator
 		Arguments: void	
-
-	-o- begin
-		Return: candidate::iterator
-		Arguments: void	
-
-	-o- end
-		Return: candidate::iterator
-		Arguments: void	
-
-	-o- numberOfDaughters
-		Return: size_t
-		Arguments: void	
-
-	-o- numberOfMothers
-		Return: size_t
-		Arguments: void	
-
-	-o- daughter
-		Return: const Candidate*
-		Arguments: size_type	
-
-	-o- daughter
-		Return: Candidate*
-		Arguments: size_type	
-
-	-o- addDaughter
-		Return: void
-		Arguments: const CandidatePtr&	
-
-	-o- clearDaughters
-		Return: void
-		Arguments: void	
-
-	-o- daughterPtr
-		Return: CandidatePtr
-		Arguments: size_type	i
-
-	-o- daughterPtrVector
-		Return: const std::vector<CandidatePtr>&
-		Arguments: void	
-
-	-o- mother
-		Return: const Candidate*
-		Arguments: size_t=0	i
-
-	-o- numberOfSourceCandidatePtrs
-		Return: size_t
-		Arguments: void	
-
-	-o- sourceCandidatePtr
-		Return: CandidatePtr
-		Arguments: size_type	i
 
 Methods from reco::Candidate
-
-	-o- clone
-		Return: Candidate*
-		Arguments: void	
-
-Methods from reco::Particle
 
 	-o- charge
 		Return: int
@@ -103,11 +45,11 @@ Methods from reco::Particle
 		Arguments: Charge	qx3
 
 	-o- p4
-		Return: const math::XYZTLorentzVectorD&
+		Return: const math::XYZTLorentzVector&
 		Arguments: void	
 
 	-o- polarP4
-		Return: const math::ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> >&
+		Return: const math::PtEtaPhiMLorentzVector&
 		Arguments: void	
 
 	-o- momentum
@@ -239,6 +181,14 @@ Methods from reco::Particle
 		Arguments: void	
 
 	-o- longLived
+		Return: bool
+		Arguments: void	
+
+	-o- setMassConstraint
+		Return: void
+		Arguments: void	
+
+	-o- massConstraint
 		Return: bool
 		Arguments: void	
 

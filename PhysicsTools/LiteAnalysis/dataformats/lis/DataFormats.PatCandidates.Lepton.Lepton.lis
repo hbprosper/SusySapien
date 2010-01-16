@@ -4,12 +4,12 @@ pat::Lepton<LeptonType>|float|caloIso|void
 pat::Lepton<LeptonType>|float|ecalIso|void
 pat::Lepton<LeptonType>|float|hcalIso|void
 pat::Lepton<LeptonType>|float|particleIso|void
-pat::Lepton<LeptonType>|float|chargedParticleIso|void
-pat::Lepton<LeptonType>|float|neutralParticleIso|void
-pat::Lepton<LeptonType>|float|gammaParticleIso|void
-pat::Lepton<LeptonType>|const reco::IsoDeposit*|trackerIsoDeposit|void
-pat::Lepton<LeptonType>|const reco::IsoDeposit*|ecalIsoDeposit|void
-pat::Lepton<LeptonType>|const reco::IsoDeposit*|hcalIsoDeposit|void
+pat::Lepton<LeptonType>|float|chargedHadronIso|void
+pat::Lepton<LeptonType>|float|neutralHadronIso|void
+pat::Lepton<LeptonType>|float|photonIso|void
+pat::Lepton<LeptonType>|const IsoDeposit*|trackIsoDeposit|void
+pat::Lepton<LeptonType>|const IsoDeposit*|ecalIsoDeposit|void
+pat::Lepton<LeptonType>|const IsoDeposit*|hcalIsoDeposit|void
 pat::Lepton<LeptonType>|Lepton<LeptonType>*|clone|void
 pat::PATObject<LeptonType>|const reco::Candidate*|originalObject|void
 pat::PATObject<LeptonType>|const std::vector<TriggerObjectStandAlone >&|triggerObjectMatches|void
@@ -22,7 +22,7 @@ pat::PATObject<LeptonType>|reco::GenParticleRef|genParticleRef|size_t=0
 pat::PATObject<LeptonType>|const reco::GenParticle*|genParticle|size_t=0
 pat::PATObject<LeptonType>|size_t|genParticlesSize|void
 pat::PATObject<LeptonType>|bool|hasOverlaps|const std::string&
-pat::PATObject<LeptonType>|const reco::edm::PtrVector<Candidate>&|overlaps|const std::string&
+pat::PATObject<LeptonType>|const reco::CandidatePtrVector&|overlaps|const std::string&
 pat::PATObject<LeptonType>|bool|hasUserData|const std::string&
 pat::PATObject<LeptonType>|const std::string&|userDataObjectType|const std::string&
 pat::PATObject<LeptonType>|const void*|userDataBare|const std::string&
@@ -30,6 +30,8 @@ pat::PATObject<LeptonType>|float|userFloat|const std::string&
 pat::PATObject<LeptonType>|bool|hasUserFloat|const std::string&
 pat::PATObject<LeptonType>|int32_t|userInt|const std::string&
 pat::PATObject<LeptonType>|bool|hasUserInt|const std::string&
+pat::PATObject<LeptonType>|reco::CandidatePtr|userCand|const std::string&
+pat::PATObject<LeptonType>|bool|hasUserCand|const std::string&
 pat::PATObject<LeptonType>|const pat::CandKinResolution&|getKinResolution|const std::string&=""
 pat::PATObject<LeptonType>|bool|hasKinResolution|const std::string&=""
 pat::PATObject<LeptonType>|double|resolEta|const std::string&=""
@@ -45,8 +47,6 @@ pat::PATObject<LeptonType>|double|resolPy|const std::string&=""
 pat::PATObject<LeptonType>|double|resolPz|const std::string&=""
 pat::PATObject<LeptonType>|double|resolM|const std::string&=""
 pat::PATObject<LeptonType>|const edm::Ptr<reco::Candidate>&|originalObjectRef|void
-pat::PATObject<LeptonType>|const std::vector<TriggerPrimitive>&|triggerMatches|void
-pat::PATObject<LeptonType>|const std::vector<TriggerPrimitive>|triggerMatchesByFilter|const std::string&
 pat::PATObject<LeptonType>|std::vector<std::pair<std::string, pat::LookupTableRecord> >|efficiencies|void
 pat::PATObject<LeptonType>|const std::vector<std::string>&|efficiencyNames|void
 pat::PATObject<LeptonType>|const std::vector<pat::LookupTableRecord>&|efficiencyValues|void
@@ -56,3 +56,4 @@ pat::PATObject<LeptonType>|template<typename T> const T*|userData|const std::str
 pat::PATObject<LeptonType>|const std::vector<std::string>&|userDataNames|void
 pat::PATObject<LeptonType>|const std::vector<std::string>&|userFloatNames|void
 pat::PATObject<LeptonType>|const std::vector<std::string>&|userIntNames|void
+pat::PATObject<LeptonType>|const std::vector<std::string>&|userCandNames|void

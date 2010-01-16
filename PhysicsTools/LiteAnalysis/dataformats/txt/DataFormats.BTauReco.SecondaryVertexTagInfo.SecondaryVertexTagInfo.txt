@@ -4,8 +4,8 @@ Class:
 Header:
 	DataFormats/BTauReco/interface/SecondaryVertexTagInfo.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:14:49 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:55:44 2010	lsclass.py $Revision:$
 
 Methods from reco::SecondaryVertexTagInfo
 
@@ -18,11 +18,11 @@ Methods from reco::SecondaryVertexTagInfo
 		Arguments: void	
 
 	-o- tracks
-		Return: edm::edm::RefVector<Container><TrackCollection>
+		Return: TrackRefVector
 		Arguments: void	
 
 	-o- jtaRef
-		Return: const JetTracksAssociation::edm::Ref<Container>&
+		Return: const JetTracksAssociationRef&
 		Arguments: void	
 
 	-o- secondaryVertex
@@ -50,19 +50,19 @@ Methods from reco::SecondaryVertexTagInfo
 		Arguments: void	
 
 	-o- selectedTracks
-		Return: edm::edm::RefVector<Container><TrackCollection>
+		Return: TrackRefVector
 		Arguments: void	
 
 	-o- vertexTracks
-		Return: edm::edm::RefVector<Container><TrackCollection>
+		Return: TrackRefVector
 		Arguments: void	
 
 	-o- vertexTracks
-		Return: edm::edm::RefVector<Container><TrackCollection>
+		Return: TrackRefVector
 		Arguments: unsigned int	index
 
 	-o- track
-		Return: edm::Ref<std::vector<Track>>
+		Return: TrackRef
 		Arguments: unsigned int	index
 
 	-o- findTrack

@@ -29,6 +29,11 @@ reco::HitPattern|int|numberOfLostStripTECHits|void
 reco::HitPattern|int|numberOfLostMuonDTHits|void
 reco::HitPattern|int|numberOfLostMuonCSCHits|void
 reco::HitPattern|int|numberOfLostMuonRPCHits|void
+reco::HitPattern|int|numberOfBadHits|void
+reco::HitPattern|int|numberOfBadMuonHits|void
+reco::HitPattern|int|numberOfBadMuonDTHits|void
+reco::HitPattern|int|numberOfBadMuonCSCHits|void
+reco::HitPattern|int|numberOfBadMuonRPCHits|void
 reco::HitPattern|int|numberOfValidStripLayersWithMonoAndStereo|void
 reco::HitPattern|int|trackerLayersWithMeasurement|void
 reco::HitPattern|int|pixelLayersWithMeasurement|void

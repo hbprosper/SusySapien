@@ -4,8 +4,8 @@ Class:
 Header:
 	DataFormats/Common/interface/Trie.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:16:03 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:43 2010	lsclass.py $Revision:$
 
 Methods from edm::TrieNode<T>
 
@@ -38,37 +38,4 @@ Methods from edm::TrieNode<T>
 	-o- brother
 		Return: const TrieNode<T>*
 		Arguments: void	
-
-	-o- brother
-		Return: TrieNode<T>*
-		Arguments: void	
-
-	-o- begin
-		Return: TrieNodeIter<T>
-		Arguments: void	
-
-	-o- end
-		Return: TrieNodeIter<T>
-		Arguments: void	
-
-	-o- subNode
-		Return: const TrieNode<T>*
-		Arguments: void	
-
-	-o- subNode
-		Return: TrieNode<T>*
-		Arguments: void	
-
-	-o- subNodeByLabel
-		Return: const TrieNode<T>*
-		Arguments: unsigned char	chr
-
-	-o- subNodeByLabel
-		Return: TrieNode<T>*
-		Arguments: unsigned char	chr
-
-	-o- addSubNode
-		Return: void
-		Arguments: unsigned char	chr
-		           TrieNode<T>*	node
 

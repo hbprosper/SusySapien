@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: MuonTime.xml
-  Created:  Thu Jan 14 22:47:47 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:53 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/MuonReco/interface/MuonTime.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/MuonReco/interface/MuonTime.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/MuonReco/interface/MuonTime.h">
 
 
     <namespace name="reco">
@@ -27,32 +27,10 @@ enum Direction {
                 </enum>
 
                 <member>
-int nStations;
+int nDof;
                     <comment>
            number of muon stations used
                     </comment>
-                </member>
-
-                <member>
-float inverseBeta;
-                    <comment>
-           (time is constraint to the bunch crossing time)
-                    </comment>
-                </member>
-
-                <member>
-float inverseBetaErr;
-                </member>
-
-                <member>
-float freeInverseBeta;
-                    <comment>
-             negative - inward moving particle
-                    </comment>
-                </member>
-
-                <member>
-float freeInverseBetaErr;
                 </member>
 
                 <member>
@@ -110,20 +88,8 @@ MuonTime();
             <typemap name="Undefined "
                      value="reco::MuonTime::Undefined "
                      type="enum"/>
-            <typemap name="freeInverseBeta"
-                     value="reco::MuonTime::freeInverseBeta"
-                     type="member"/>
-            <typemap name="freeInverseBetaErr"
-                     value="reco::MuonTime::freeInverseBetaErr"
-                     type="member"/>
-            <typemap name="inverseBeta"
-                     value="reco::MuonTime::inverseBeta"
-                     type="member"/>
-            <typemap name="inverseBetaErr"
-                     value="reco::MuonTime::inverseBetaErr"
-                     type="member"/>
-            <typemap name="nStations"
-                     value="reco::MuonTime::nStations"
+            <typemap name="nDof"
+                     value="reco::MuonTime::nDof"
                      type="member"/>
             <typemap name="timeAtIpInOut"
                      value="reco::MuonTime::timeAtIpInOut"

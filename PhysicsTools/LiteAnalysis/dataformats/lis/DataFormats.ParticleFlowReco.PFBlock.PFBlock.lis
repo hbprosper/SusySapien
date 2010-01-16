@@ -1,3 +1,1 @@
-reco::PFBlock|const std::vector<std::vector<std::pair<float, float> > >&|linkData|void
-reco::PFBlock|std::vector<std::vector<std::pair<float, float> > >&|linkData|void
-reco::PFBlock|const edm::OwnVector<reco::PFBlockElement >&|elements|void
+reco::PFBlock|const std::map<unsigned int, Link >&|linkData|void

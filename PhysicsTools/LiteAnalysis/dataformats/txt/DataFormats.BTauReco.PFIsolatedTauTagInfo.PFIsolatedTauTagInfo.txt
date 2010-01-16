@@ -7,8 +7,8 @@ Header:
 BaseClasses:
 	reco::BaseTagInfo	DataFormats/BTauReco/interface/BaseTagInfo.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:14:52 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:55:47 2010	lsclass.py $Revision:$
 
 Methods from reco::PFIsolatedTauTagInfo
 
@@ -17,19 +17,19 @@ Methods from reco::PFIsolatedTauTagInfo
 		Arguments: void	
 
 	-o- PFCands
-		Return: const edm::RefVector<std::vector<reco::PFCandidate>>&
+		Return: const PFCandidateRefVector&
 		Arguments: void	
 
 	-o- PFChargedHadrCands
-		Return: const edm::RefVector<std::vector<reco::PFCandidate>>&
+		Return: const PFCandidateRefVector&
 		Arguments: void	
 
 	-o- PFNeutrHadrCands
-		Return: const edm::RefVector<std::vector<reco::PFCandidate>>&
+		Return: const PFCandidateRefVector&
 		Arguments: void	
 
 	-o- PFGammaCands
-		Return: const edm::RefVector<std::vector<reco::PFCandidate>>&
+		Return: const PFCandidateRefVector&
 		Arguments: void	
 
 	-o- alternatLorentzVect
@@ -41,7 +41,7 @@ Methods from reco::PFIsolatedTauTagInfo
 		Arguments: math::XYZTLorentzVector	x
 
 	-o- pfjetRef
-		Return: const edm::Ref<PFJetCollection>&
+		Return: const PFJetRef&
 		Arguments: void	
 
 	-o- setpfjetRef
@@ -233,97 +233,97 @@ Methods from reco::PFIsolatedTauTagInfo
 		           float=0	IsolPFCands_maxEtSum
 
 	-o- PFCandsInCone
-		Return: const edm::RefVector<std::vector<reco::PFCandidate>>
+		Return: const PFCandidateRefVector
 		Arguments: const math::XYZVector	myVector
 		           const float	conesize
 		           const float	minPt
 
 	-o- PFChargedHadrCandsInCone
-		Return: const edm::RefVector<std::vector<reco::PFCandidate>>
+		Return: const PFCandidateRefVector
 		Arguments: const math::XYZVector	myVector
 		           const float	conesize
 		           const float	minPt
 
 	-o- PFNeutrHadrCandsInCone
-		Return: const edm::RefVector<std::vector<reco::PFCandidate>>
+		Return: const PFCandidateRefVector
 		Arguments: const math::XYZVector	myVector
 		           const float	conesize
 		           const float	minPt
 
 	-o- PFGammaCandsInCone
-		Return: const edm::RefVector<std::vector<reco::PFCandidate>>
+		Return: const PFCandidateRefVector
 		Arguments: const math::XYZVector	myVector
 		           const float	conesize
 		           const float	minPt
 
 	-o- PFCandsInBand
-		Return: const edm::RefVector<std::vector<reco::PFCandidate>>
+		Return: const PFCandidateRefVector
 		Arguments: const math::XYZVector	myVector
 		           const float	innercone_size
 		           const float	outercone_size
 		           const float	minPt
 
 	-o- PFChargedHadrCandsInBand
-		Return: const edm::RefVector<std::vector<reco::PFCandidate>>
+		Return: const PFCandidateRefVector
 		Arguments: const math::XYZVector	myVector
 		           const float	innercone_size
 		           const float	outercone_size
 		           const float	minPt
 
 	-o- PFNeutrHadrCandsInBand
-		Return: const edm::RefVector<std::vector<reco::PFCandidate>>
+		Return: const PFCandidateRefVector
 		Arguments: const math::XYZVector	myVector
 		           const float	innercone_size
 		           const float	outercone_size
 		           const float	minPt
 
 	-o- PFGammaCandsInBand
-		Return: const edm::RefVector<std::vector<reco::PFCandidate>>
+		Return: const PFCandidateRefVector
 		Arguments: const math::XYZVector	myVector
 		           const float	innercone_size
 		           const float	outercone_size
 		           const float	minPt
 
 	-o- leadPFCand
-		Return: const edm::Ref<std::vector<reco::PFCandidate>>
+		Return: const PFCandidateRef
 		Arguments: const float	matchingcone_size
 		           const float	minPt
 
 	-o- leadPFCand
-		Return: const edm::Ref<std::vector<reco::PFCandidate>>
+		Return: const PFCandidateRef
 		Arguments: const math::XYZVector	myVector
 		           const float	matchingcone_size
 		           const float	minPt
 
 	-o- leadPFChargedHadrCand
-		Return: const edm::Ref<std::vector<reco::PFCandidate>>
+		Return: const PFCandidateRef
 		Arguments: const float	matchingcone_size
 		           const float	minPt
 
 	-o- leadPFChargedHadrCand
-		Return: const edm::Ref<std::vector<reco::PFCandidate>>
+		Return: const PFCandidateRef
 		Arguments: const math::XYZVector	myVector
 		           const float	matchingcone_size
 		           const float	minPt
 
 	-o- leadPFNeutrHadrCand
-		Return: const edm::Ref<std::vector<reco::PFCandidate>>
+		Return: const PFCandidateRef
 		Arguments: const float	matchingcone_size
 		           const float	minPt
 
 	-o- leadPFNeutrHadrCand
-		Return: const edm::Ref<std::vector<reco::PFCandidate>>
+		Return: const PFCandidateRef
 		Arguments: const math::XYZVector	myVector
 		           const float	matchingcone_size
 		           const float	minPt
 
 	-o- leadPFGammaCand
-		Return: const edm::Ref<std::vector<reco::PFCandidate>>
+		Return: const PFCandidateRef
 		Arguments: const float	matchingcone_size
 		           const float	minPt
 
 	-o- leadPFGammaCand
-		Return: const edm::Ref<std::vector<reco::PFCandidate>>
+		Return: const PFCandidateRef
 		Arguments: const math::XYZVector	myVector
 		           const float	matchingcone_size
 		           const float	minPt
@@ -352,27 +352,5 @@ Methods from reco::PFIsolatedTauTagInfo
 
 	-o- removefilters
 		Return: void
-		Arguments: void	
-
-Methods from reco::BaseTagInfo
-
-	-o- clone
-		Return: BaseTagInfo*
-		Arguments: void	
-
-	-o- tracks
-		Return: edm::RefVector<std::vector<Track>>
-		Arguments: void	
-
-	-o- hasTracks
-		Return: bool
-		Arguments: void	
-
-	-o- taggingVariables
-		Return: TaggingVariableList
-		Arguments: void	
-
-	-o- jet
-		Return: edm::RefToBase<Jet>
 		Arguments: void	
 

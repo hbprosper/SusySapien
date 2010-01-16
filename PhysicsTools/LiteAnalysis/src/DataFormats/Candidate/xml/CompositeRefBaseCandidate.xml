@@ -2,13 +2,13 @@
 <!--
 ==============================================================================
   XML File: CompositeRefBaseCandidate.xml
-  Created:  Thu Jan 14 22:46:41 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:08 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/Candidate/interface/CompositeRefBaseCandidate.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Candidate/interface/CompositeRefBaseCandidate.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/Candidate/interface/CompositeRefBaseCandidate.h">
 
-    <include name="&quot;DataFormats/Candidate/interface/Candidate.h&quot;"/>
+    <include name="&quot;DataFormats/Candidate/interface/LeafCandidate.h&quot;"/>
     <include name="&quot;DataFormats/Candidate/interface/iterator_imp_specific.h&quot;"/>
 
     <namespace name="reco">
@@ -18,7 +18,7 @@
                module="DataFormats.Candidate"
                project=""
                type="regular">
-            <baseclass name="public Candidate"/>
+            <baseclass name="public LeafCandidate"/>
 
             <section name="public">
                 <typedef name="daughters"
@@ -64,10 +64,10 @@ CompositeRefBaseCandidate(Charge q, const PolarLorentzVector&amp; p4, const Poin
 
                 <constructor name="CompositeRefBaseCandidate"
                              return="explicit"
-                             args="['const Particle&amp;']"
-                             vars="['p']"
+                             args="['const Candidate&amp;']"
+                             vars="['c']"
                              qual="">
-explicit CompositeRefBaseCandidate(const Particle&amp; p);
+explicit CompositeRefBaseCandidate(const Candidate&amp; c);
                     <comment>
         constructor from a particle
                     </comment>
@@ -236,16 +236,16 @@ CandidateBaseRef daughterRef(size_type i) const;
         </class>
     </namespace>
 
-    <type name="Candidate"/>
     <type name="Candidate*"/>
     <type name="CandidateBaseRef"/>
     <type name="Charge"/>
     <type name="CompositeRefBaseCandidate*"/>
+    <type name="LeafCandidate"/>
     <type name="bool"/>
+    <type name="const Candidate&amp;"/>
     <type name="const Candidate*"/>
     <type name="const CandidateBaseRef&amp;"/>
     <type name="const LorentzVector&amp;"/>
-    <type name="const Particle&amp;"/>
     <type name="const Point&amp;"/>
     <type name="const PolarLorentzVector&amp;"/>
     <type name="const_iterator"/>

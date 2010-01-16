@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: PFBlockElementBrem.xml
-  Created:  Thu Jan 14 22:47:54 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:58 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/ParticleFlowReco/interface/PFBlockElementBrem.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/ParticleFlowReco/interface/PFBlockElementBrem.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/ParticleFlowReco/interface/PFBlockElementBrem.h">
 
     <include name="&lt;iostream&gt;"/>
     <include name="&quot;DataFormats/ParticleFlowReco/interface/PFBlockElementTrack.h&quot;"/>
@@ -111,6 +111,17 @@ double SigmaDeltaP() const;
 unsigned int indTrajPoint() const;
                 </method1>
 
+                <method1 name="positionAtECALEntrance"
+                         return="const math::XYZPointF&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const math::XYZPointF&amp; positionAtECALEntrance() const;
+                    <comment>
+        \return position at ECAL entrance
+                    </comment>
+                </method1>
+
             </section>
 
         </class>
@@ -123,6 +134,7 @@ unsigned int indTrajPoint() const;
     <type name="const PFRecTrack&amp;"/>
     <type name="const char*"/>
     <type name="const double"/>
+    <type name="const math::XYZPointF&amp;"/>
     <type name="const unsigned int"/>
     <type name="double"/>
     <type name="reco::GsfTrackRef"/>

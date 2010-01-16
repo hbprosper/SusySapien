@@ -1,4 +1,4 @@
-reco::GsfPFRecTrack|const reco::edm::Ref<GsfTrackCollection>&|gsfTrackRef|void
+reco::GsfPFRecTrack|const reco::GsfTrackRef&|gsfTrackRef|void
 reco::GsfPFRecTrack|int|trackId|void
 reco::GsfPFRecTrack|const edm::Ref<std::vector<PFRecTrack> >&|kfPFRecTrackRef|void
 reco::GsfPFRecTrack|const std::vector<reco::PFBrem>&|PFRecBrem|void

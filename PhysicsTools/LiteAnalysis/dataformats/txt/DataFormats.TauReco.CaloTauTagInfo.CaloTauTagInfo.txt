@@ -7,8 +7,8 @@ Header:
 BaseClasses:
 	reco::BaseTauTagInfo	DataFormats/TauReco/interface/BaseTauTagInfo.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:06 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:55:58 2010	lsclass.py $Revision:$
 
 Methods from reco::CaloTauTagInfo
 
@@ -17,7 +17,7 @@ Methods from reco::CaloTauTagInfo
 		Arguments: void	
 
 	-o- calojetRef
-		Return: const edm::Ref<CaloJetCollection>&
+		Return: const CaloJetRef&
 		Arguments: void	
 
 	-o- setcalojetRef
@@ -25,7 +25,7 @@ Methods from reco::CaloTauTagInfo
 		Arguments: const CaloJetRef	
 
 	-o- positionAndEnergyECALRecHits
-		Return: const std::vector<std::pair<math::ROOT::Math::PositionVector3D<ROOT::Math::Cartesian3D<double> >, float> >
+		Return: const std::vector<std::pair<math::XYZPoint, float> >
 		Arguments: void	
 
 	-o- setpositionAndEnergyECALRecHits
@@ -43,7 +43,7 @@ Methods from reco::CaloTauTagInfo
 Methods from reco::BaseTauTagInfo
 
 	-o- Tracks
-		Return: const reco::edm::RefVector<std::vector<Track>>&
+		Return: const reco::TrackRefVector&
 		Arguments: void	
 
 	-o- setTracks

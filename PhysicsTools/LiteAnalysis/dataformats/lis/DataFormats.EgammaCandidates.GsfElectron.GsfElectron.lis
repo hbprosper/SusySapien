@@ -1,64 +1,133 @@
-reco::GsfElectron|int|classification|void
 reco::GsfElectron|GsfElectron*|clone|void
-reco::GsfElectron|float|caloEnergy|void
-reco::GsfElectron|math::XYZPoint|caloPosition|void
-reco::GsfElectron|math::XYZVector|trackMomentumAtVtx|void
-reco::GsfElectron|math::XYZVector|TrackPositionAtVtx|void
-reco::GsfElectron|math::XYZVector|trackMomentumAtCalo|void
-reco::GsfElectron|math::XYZVector|trackMomentumOut|void
-reco::GsfElectron|math::XYZVector|TrackPositionAtCalo|void
+reco::GsfElectron|int|scPixCharge|void
+reco::GsfElectron|bool|isGsfCtfScPixChargeConsistent|void
+reco::GsfElectron|bool|isGsfScPixChargeConsistent|void
+reco::GsfElectron|bool|isGsfCtfChargeConsistent|void
+reco::GsfElectron|const ChargeInfo&|chargeInfo|void
+reco::GsfElectron|bool|isElectron|void
+reco::GsfElectron|GsfElectronCoreRef|core|void
+reco::GsfElectron|SuperClusterRef|superCluster|void
+reco::GsfElectron|GsfTrackRef|gsfTrack|void
+reco::GsfElectron|bool|isEcalDriven|void
+reco::GsfElectron|bool|isTrackerDriven|void
+reco::GsfElectron|SuperClusterRef|pflowSuperCluster|void
+reco::GsfElectron|CaloClusterPtr|electronCluster|void
 reco::GsfElectron|float|eSuperClusterOverP|void
+reco::GsfElectron|float|eSeedClusterOverP|void
 reco::GsfElectron|float|eSeedClusterOverPout|void
+reco::GsfElectron|float|eEleClusterOverPout|void
 reco::GsfElectron|float|deltaEtaSuperClusterTrackAtVtx|void
 reco::GsfElectron|float|deltaEtaSeedClusterTrackAtCalo|void
+reco::GsfElectron|float|deltaEtaEleClusterTrackAtCalo|void
 reco::GsfElectron|float|deltaPhiSuperClusterTrackAtVtx|void
 reco::GsfElectron|float|deltaPhiSeedClusterTrackAtCalo|void
+reco::GsfElectron|float|deltaPhiEleClusterTrackAtCalo|void
+reco::GsfElectron|const TrackClusterMatching&|trackClusterMatching|void
+reco::GsfElectron|math::XYZPoint|trackPositionAtVtx|void
+reco::GsfElectron|math::XYZPoint|trackPositionAtCalo|void
+reco::GsfElectron|math::XYZVector|trackMomentumAtVtx|void
+reco::GsfElectron|math::XYZVector|trackMomentumAtCalo|void
+reco::GsfElectron|math::XYZVector|trackMomentumOut|void
+reco::GsfElectron|math::XYZVector|trackMomentumAtEleClus|void
+reco::GsfElectron|math::XYZVector|trackMomentumAtVtxWithConstraint|void
+reco::GsfElectron|const TrackExtrapolations&|trackExtrapolations|void
+reco::GsfElectron|math::XYZPoint|TrackPositionAtVtx|void
+reco::GsfElectron|math::XYZPoint|TrackPositionAtCalo|void
+reco::GsfElectron|math::XYZPoint|superClusterPosition|void
+reco::GsfElectron|int|basicClustersSize|void
+reco::GsfElectron|CaloCluster_iterator|basicClustersBegin|void
+reco::GsfElectron|CaloCluster_iterator|basicClustersEnd|void
+reco::GsfElectron|math::XYZPoint|caloPosition|void
+reco::GsfElectron|TrackRef|closestCtfTrackRef|void
+reco::GsfElectron|float|shFracInnerHits|void
+reco::GsfElectron|const ClosestCtfTrack&|closestCtfTrack|void
+reco::GsfElectron|GsfTrackRefVector::size_type|ambiguousGsfTracksSize|void
+reco::GsfElectron|GsfTrackRefVector::const_iterator|ambiguousGsfTracksBegin|void
+reco::GsfElectron|GsfTrackRefVector::const_iterator|ambiguousGsfTracksEnd|void
+reco::GsfElectron|bool|isEB|void
+reco::GsfElectron|bool|isEE|void
+reco::GsfElectron|bool|isGap|void
+reco::GsfElectron|bool|isEBEEGap|void
+reco::GsfElectron|bool|isEBGap|void
+reco::GsfElectron|bool|isEBEtaGap|void
+reco::GsfElectron|bool|isEBPhiGap|void
+reco::GsfElectron|bool|isEEGap|void
+reco::GsfElectron|bool|isEEDeeGap|void
+reco::GsfElectron|bool|isEERingGap|void
+reco::GsfElectron|const FiducialFlags&|fiducialFlags|void
+reco::GsfElectron|float|sigmaEtaEta|void
+reco::GsfElectron|float|sigmaIetaIeta|void
+reco::GsfElectron|float|e1x5|void
+reco::GsfElectron|float|e2x5Max|void
+reco::GsfElectron|float|e5x5|void
+reco::GsfElectron|float|hcalDepth1OverEcal|void
+reco::GsfElectron|float|hcalDepth2OverEcal|void
+reco::GsfElectron|float|hcalOverEcal|void
+reco::GsfElectron|const ShowerShape&|showerShape|void
+reco::GsfElectron|float|scSigmaEtaEta|void
+reco::GsfElectron|float|scSigmaIEtaIEta|void
+reco::GsfElectron|float|scE1x5|void
+reco::GsfElectron|float|scE2x5Max|void
+reco::GsfElectron|float|scE5x5|void
 reco::GsfElectron|float|hadronicOverEm|void
-reco::GsfElectron|bool|isEnergyScaleCorrected|void
+reco::GsfElectron|float|hadronicOverEm1|void
+reco::GsfElectron|float|hadronicOverEm2|void
+reco::GsfElectron|float|dr03TkSumPt|void
+reco::GsfElectron|float|dr03EcalRecHitSumEt|void
+reco::GsfElectron|float|dr03HcalDepth1TowerSumEt|void
+reco::GsfElectron|float|dr03HcalDepth2TowerSumEt|void
+reco::GsfElectron|float|dr03HcalTowerSumEt|void
+reco::GsfElectron|const IsolationVariables&|dr03IsolationVariables|void
+reco::GsfElectron|float|dr04TkSumPt|void
+reco::GsfElectron|float|dr04EcalRecHitSumEt|void
+reco::GsfElectron|float|dr04HcalDepth1TowerSumEt|void
+reco::GsfElectron|float|dr04HcalDepth2TowerSumEt|void
+reco::GsfElectron|float|dr04HcalTowerSumEt|void
+reco::GsfElectron|const IsolationVariables&|dr04IsolationVariables|void
+reco::GsfElectron|const IsolationVariables&|isolationVariables03|void
+reco::GsfElectron|const IsolationVariables&|isolationVariables04|void
+reco::GsfElectron|float|mva|void
+reco::GsfElectron|float|fbrem|void
+reco::GsfElectron|int|numberOfBrems|void
+reco::GsfElectron|Classification|classification|void
+reco::GsfElectron|bool|isEcalEnergyCorrected|void
+reco::GsfElectron|float|ecalEnergy|void
+reco::GsfElectron|float|ecalEnergyError|void
 reco::GsfElectron|bool|isMomentumCorrected|void
-reco::GsfElectron|float|caloEnergyError|void
 reco::GsfElectron|float|trackMomentumError|void
-reco::GsfElectron|edm::Ref<std::vector<SuperCluster>>|superCluster|void
-reco::GsfElectron|reco::edm::Ref<GsfTrackCollection>|gsfTrack|void
-reco::GsfElectron|reco::edm::Ref<std::vector<Track>>|track|void
-reco::GsfElectron|int|numberOfClusters|void
-reco::GsfElectron|basicCluster_iterator|basicClustersBegin|void
-reco::GsfElectron|basicCluster_iterator|basicClustersEnd|void
-reco::GsfElectron|bool|isElectron|void
-reco::LeafCandidate|LeafCandidate*|clone|void
+reco::GsfElectron|float|electronMomentumError|void
+reco::GsfElectron|const Corrections&|corrections|void
+reco::GsfElectron|float|caloEnergy|void
+reco::GsfElectron|bool|isEnergyScaleCorrected|void
 reco::LeafCandidate|candidate::const_iterator|begin|void
 reco::LeafCandidate|candidate::const_iterator|end|void
-reco::LeafCandidate|candidate::iterator|begin|void
-reco::LeafCandidate|candidate::iterator|end|void
-reco::LeafCandidate|size_t|numberOfDaughters|void
-reco::LeafCandidate|size_t|numberOfMothers|void
-reco::Candidate|Candidate*|clone|void
-reco::Particle|int|charge|void
-reco::Particle|int|threeCharge|void
-reco::Particle|const math::XYZTLorentzVectorD&|p4|void
-reco::Particle|const math::ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> >&|polarP4|void
-reco::Particle|math::XYZVector|momentum|void
-reco::Particle|math::XYZVector|boostToCM|void
-reco::Particle|double|p|void
-reco::Particle|double|energy|void
-reco::Particle|double|et|void
-reco::Particle|double|mass|void
-reco::Particle|double|massSqr|void
-reco::Particle|double|mt|void
-reco::Particle|double|mtSqr|void
-reco::Particle|double|px|void
-reco::Particle|double|py|void
-reco::Particle|double|pz|void
-reco::Particle|double|pt|void
-reco::Particle|double|phi|void
-reco::Particle|double|theta|void
-reco::Particle|double|eta|void
-reco::Particle|double|rapidity|void
-reco::Particle|double|y|void
-reco::Particle|const math::XYZPoint&|vertex|void
-reco::Particle|double|vx|void
-reco::Particle|double|vy|void
-reco::Particle|double|vz|void
-reco::Particle|int|pdgId|void
-reco::Particle|int|status|void
-reco::Particle|bool|longLived|void
+reco::Candidate|int|charge|void
+reco::Candidate|int|threeCharge|void
+reco::Candidate|const math::XYZTLorentzVector&|p4|void
+reco::Candidate|const math::PtEtaPhiMLorentzVector&|polarP4|void
+reco::Candidate|math::XYZVector|momentum|void
+reco::Candidate|math::XYZVector|boostToCM|void
+reco::Candidate|double|p|void
+reco::Candidate|double|energy|void
+reco::Candidate|double|et|void
+reco::Candidate|double|mass|void
+reco::Candidate|double|massSqr|void
+reco::Candidate|double|mt|void
+reco::Candidate|double|mtSqr|void
+reco::Candidate|double|px|void
+reco::Candidate|double|py|void
+reco::Candidate|double|pz|void
+reco::Candidate|double|pt|void
+reco::Candidate|double|phi|void
+reco::Candidate|double|theta|void
+reco::Candidate|double|eta|void
+reco::Candidate|double|rapidity|void
+reco::Candidate|double|y|void
+reco::Candidate|const math::XYZPoint&|vertex|void
+reco::Candidate|double|vx|void
+reco::Candidate|double|vy|void
+reco::Candidate|double|vz|void
+reco::Candidate|int|pdgId|void
+reco::Candidate|int|status|void
+reco::Candidate|bool|longLived|void
+reco::Candidate|bool|massConstraint|void

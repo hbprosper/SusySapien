@@ -2,16 +2,17 @@
 <!--
 ==============================================================================
   XML File: RefHolder_.xml
-  Created:  Thu Jan 14 22:46:20 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:45:51 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/Common/interface/RefHolder_.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/RefHolder_.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/Common/interface/RefHolder_.h">
 
     <include name="&quot;DataFormats/Common/interface/RefHolderBase.h&quot;"/>
     <include name="&quot;DataFormats/Provenance/interface/ProductID.h&quot;"/>
     <include name="&quot;Reflex/Object.h&quot;"/>
     <include name="&quot;Reflex/Type.h&quot;"/>
+    <include name="&quot;FWCore/Utilities/interface/UseReflex.h&quot;"/>
 
     <namespace name="edm">
 

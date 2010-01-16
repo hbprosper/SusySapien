@@ -2,14 +2,15 @@
 <!--
 ==============================================================================
   XML File: L1GctHFRingEtSums.xml
-  Created:  Thu Jan 14 22:47:24 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:34 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/L1GlobalCaloTrigger/interface/L1GctHFRingEtSums.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/L1GlobalCaloTrigger/interface/L1GctHFRingEtSums.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/L1GlobalCaloTrigger/interface/L1GctHFRingEtSums.h">
 
     <include name="&lt;ostream&gt;"/>
     <include name="&lt;string&gt;"/>
+    <include name="&lt;stdint.h&gt;"/>
 
     <class name="L1GctHFRingEtSums"
            fullname="L1GctHFRingEtSums"
@@ -62,9 +63,9 @@ static L1GctHFRingEtSums fromConcRingSums(const uint16_t capBlock, const uint16_
             <method1 name="fromGctEmulator"
                      return="static L1GctHFRingEtSums"
                      args="['const int16_t','const uint16_t','const uint16_t','const uint16_t','const uint16_t']"
-                     vars="['bx','etSumPosEtaRing1','etSumPosEtaRing2','etSumNegEtaRing1','etSumNegEtaRing2']"
+                     vars="['bx','etSumPosEtaRing1','etSumNegEtaRing1','etSumPosEtaRing2','etSumNegEtaRing2']"
                      qual="">
-static L1GctHFRingEtSums fromGctEmulator(const int16_t bx, const uint16_t etSumPosEtaRing1, const uint16_t etSumPosEtaRing2, const uint16_t etSumNegEtaRing1, const uint16_t etSumNegEtaRing2);
+static L1GctHFRingEtSums fromGctEmulator(const int16_t bx, const uint16_t etSumPosEtaRing1, const uint16_t etSumNegEtaRing1, const uint16_t etSumPosEtaRing2, const uint16_t etSumNegEtaRing2);
                 <comment>
       named ctor for GCT emulator
                 </comment>

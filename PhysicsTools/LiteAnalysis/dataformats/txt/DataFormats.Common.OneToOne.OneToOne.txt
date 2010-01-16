@@ -7,8 +7,8 @@ Header:
 BaseClasses:
 	edm::OneToOneGeneric<CKey, CVal, index, KeyRefProd, ValRefProd, KeyRef, ValRef>	DataFormats/Common/interface/OneToOneGeneric.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:16:05 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:44 2010	lsclass.py $Revision:$
 
 Methods from edm::OneToOneGeneric<CKey, CVal, index, KeyRefProd, ValRefProd, KeyRef, ValRef>
 

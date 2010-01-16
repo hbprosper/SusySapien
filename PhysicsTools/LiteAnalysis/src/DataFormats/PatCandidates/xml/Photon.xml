@@ -2,18 +2,17 @@
 <!--
 ==============================================================================
   XML File: Photon.xml
-  Created:  Thu Jan 14 22:48:18 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:16 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/PatCandidates/interface/Photon.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/PatCandidates/interface/Photon.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/PatCandidates/interface/Photon.h">
 
     <include name="&quot;DataFormats/PatCandidates/interface/PATObject.h&quot;"/>
     <include name="&quot;DataFormats/EgammaCandidates/interface/Photon.h&quot;"/>
     <include name="&quot;DataFormats/EgammaReco/interface/SuperClusterFwd.h&quot;"/>
     <include name="&quot;DataFormats/EgammaReco/interface/SuperCluster.h&quot;"/>
     <include name="&quot;DataFormats/PatCandidates/interface/Isolation.h&quot;"/>
-    <include name="&quot;DataFormats/EgammaCandidates/interface/PhotonID.h&quot;"/>
 
     <namespace name="pat">
         <comment>
@@ -41,20 +40,20 @@ typedef edm::RefVector&lt;PhotonCollection&gt; PhotonRefVector;
         <comment>
    Class definition
         </comment>
-        <typedef name="PhotonType"
-                 value="reco::Photon">
-typedef reco::Photon PhotonType;
-        </typedef>
-
 
         <class name="Photon"
                fullname="pat::Photon"
                module="DataFormats.PatCandidates"
                project=""
                type="regular">
-            <baseclass name="public PATObject&lt;PhotonType&gt;"/>
+            <baseclass name="public PATObject&lt;reco::Photon&gt;"/>
 
             <section name="public">
+                <typedef name="IdPair"
+                         value="std::pair&lt;std::string, Bool_t&gt;">
+typedef std::pair&lt;std::string, Bool_t&gt; IdPair;
+                </typedef>
+
                 <constructor name="Photon"
                              return=""
                              args="['void']"
@@ -68,10 +67,10 @@ Photon();
 
                 <constructor name="Photon"
                              return=""
-                             args="['const PhotonType&amp;']"
+                             args="['const reco::Photon&amp;']"
                              vars="['aPhoton']"
                              qual="">
-Photon(const PhotonType&amp; aPhoton);
+Photon(const reco::Photon&amp; aPhoton);
                     <comment>
           constructor from a reco photon
                     </comment>
@@ -79,10 +78,10 @@ Photon(const PhotonType&amp; aPhoton);
 
                 <constructor name="Photon"
                              return=""
-                             args="['const edm::RefToBase&lt;PhotonType&gt;&amp;']"
+                             args="['const edm::RefToBase&lt;reco::Photon&gt;&amp;']"
                              vars="['aPhotonRef']"
                              qual="">
-Photon(const edm::RefToBase&lt;PhotonType&gt;&amp; aPhotonRef);
+Photon(const edm::RefToBase&lt;reco::Photon&gt;&amp; aPhotonRef);
                     <comment>
           constructor from a RefToBase to a reco photon (to be superseded by Ptr counterpart)
                     </comment>
@@ -90,10 +89,10 @@ Photon(const edm::RefToBase&lt;PhotonType&gt;&amp; aPhotonRef);
 
                 <constructor name="Photon"
                              return=""
-                             args="['const edm::Ptr&lt;PhotonType&gt;&amp;']"
+                             args="['const edm::Ptr&lt;reco::Photon&gt;&amp;']"
                              vars="['aPhotonRef']"
                              qual="">
-Photon(const edm::Ptr&lt;PhotonType&gt;&amp; aPhotonRef);
+Photon(const edm::Ptr&lt;reco::Photon&gt;&amp; aPhotonRef);
                     <comment>
           constructor from a Ptr to a reco photon
                     </comment>
@@ -144,11 +143,11 @@ void embedSuperCluster();
                 </method1>
 
                 <method1 name="genPhoton"
-                         return="const reco::Particle*"
+                         return="const reco::Candidate*"
                          args="['void']"
                          vars="['']"
                          qual="const">
-const reco::Particle* genPhoton() const;
+const reco::Candidate* genPhoton() const;
                     <comment>
           return the match to the generated photon
                     </comment>
@@ -166,213 +165,48 @@ void setGenPhoton(const reco::GenParticleRef&amp; gp, bool embed=false);
                 </method1>
 
                 <method1 name="photonID"
-                         return="const reco::PhotonID*"
-                         args="['void']"
-                         vars="['']"
+                         return="Bool_t"
+                         args="['const std::string&amp;']"
+                         vars="['name']"
                          qual="const">
-const reco::PhotonID* photonID() const;
+Bool_t photonID(const std::string&amp; name) const;
                     <comment>
-          returns the PhotonID object, or a null pointer if no ID is available
+          Note: an exception is thrown if the specified ID is not available
                     </comment>
                 </method1>
 
-                <method1 name="setPhotonID"
+                <method1 name="isPhotonIDAvailable"
+                         return="bool"
+                         args="['const std::string&amp;']"
+                         vars="['name']"
+                         qual="const">
+bool isPhotonIDAvailable(const std::string&amp; name) const;
+                    <comment>
+          Returns true if a specific ID is available in this pat::Photon
+                    </comment>
+                </method1>
+
+                <method2 name="photonIDs"
+                         return="const std::vector&lt;IdPair&gt;&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const std::vector&lt;IdPair&gt;&amp; photonIDs() const;
+                    <comment>
+          The 'default' ID is the first in the list
+                    </comment>
+                </method2>
+
+                <method2 name="setPhotonIDs"
                          return="void"
-                         args="['const reco::PhotonID&amp;']"
-                         vars="['photonID']"
+                         args="['const std::vector&lt;IdPair&gt;&amp;']"
+                         vars="['ids']"
                          qual="">
-void setPhotonID(const reco::PhotonID&amp; photonID);
+void setPhotonIDs(const std::vector&lt;IdPair&gt;&amp; ids);
                     <comment>
-          sets the PhotonID object
+          The first one in the list becomes the 'default' photon id
                     </comment>
-                </method1>
-
-                <method1 name="isLooseEM"
-                         return="bool"
-                         args="['void']"
-                         vars="['']"
-                         qual="const">
-bool isLooseEM() const;
-                    <comment>
-          Method from reco::PhotonID, throws exception if there is no photon ID in this pat::Photon
-                    </comment>
-                </method1>
-
-                <method1 name="isLoosePhoton"
-                         return="bool"
-                         args="['void']"
-                         vars="['']"
-                         qual="const">
-bool isLoosePhoton() const;
-                    <comment>
-          Method from reco::PhotonID, throws exception if there is no photon ID in this pat::Photon
-                    </comment>
-                </method1>
-
-                <method1 name="isTightPhoton"
-                         return="bool"
-                         args="['void']"
-                         vars="['']"
-                         qual="const">
-bool isTightPhoton() const;
-                    <comment>
-          Method from reco::PhotonID, throws exception if there is no photon ID in this pat::Photon
-                    </comment>
-                </method1>
-
-                <method1 name="isolationEcalRecHit"
-                         return="float"
-                         args="['void']"
-                         vars="['']"
-                         qual="const">
-float isolationEcalRecHit() const;
-                    <comment>
-          Method from reco::PhotonID, throws exception if there is no photon ID in this pat::Photon
-                    </comment>
-                </method1>
-
-                <method1 name="isolationHcalRecHit"
-                         return="float"
-                         args="['void']"
-                         vars="['']"
-                         qual="const">
-float isolationHcalRecHit() const;
-                    <comment>
-          Method from reco::PhotonID, throws exception if there is no photon ID in this pat::Photon
-                    </comment>
-                </method1>
-
-                <method1 name="isolationSolidTrkCone"
-                         return="float"
-                         args="['void']"
-                         vars="['']"
-                         qual="const">
-float isolationSolidTrkCone() const;
-                    <comment>
-          Method from reco::PhotonID, throws exception if there is no photon ID in this pat::Photon
-                    </comment>
-                </method1>
-
-                <method1 name="isolationHollowTrkCone"
-                         return="float"
-                         args="['void']"
-                         vars="['']"
-                         qual="const">
-float isolationHollowTrkCone() const;
-                    <comment>
-          Method from reco::PhotonID, throws exception if there is no photon ID in this pat::Photon
-                    </comment>
-                </method1>
-
-                <method1 name="nTrkSolidCone"
-                         return="int"
-                         args="['void']"
-                         vars="['']"
-                         qual="const">
-int nTrkSolidCone() const;
-                    <comment>
-          Method from reco::PhotonID, throws exception if there is no photon ID in this pat::Photon
-                    </comment>
-                </method1>
-
-                <method1 name="nTrkHollowCone"
-                         return="int"
-                         args="['void']"
-                         vars="['']"
-                         qual="const">
-int nTrkHollowCone() const;
-                    <comment>
-          Method from reco::PhotonID, throws exception if there is no photon ID in this pat::Photon
-                    </comment>
-                </method1>
-
-                <method1 name="r9"
-                         return="float"
-                         args="['void']"
-                         vars="['']"
-                         qual="const">
-float r9() const;
-                    <comment>
-          Method from reco::PhotonID, throws exception if there is no photon ID in this pat::Photon
-                    </comment>
-                </method1>
-
-                <method1 name="isEBPho"
-                         return="bool"
-                         args="['void']"
-                         vars="['']"
-                         qual="const">
-bool isEBPho() const;
-                    <comment>
-          Method from reco::PhotonID, throws exception if there is no photon ID in this pat::Photon
-                    </comment>
-                </method1>
-
-                <method1 name="isEEPho"
-                         return="bool"
-                         args="['void']"
-                         vars="['']"
-                         qual="const">
-bool isEEPho() const;
-                    <comment>
-          Method from reco::PhotonID, throws exception if there is no photon ID in this pat::Photon
-                    </comment>
-                </method1>
-
-                <method1 name="isEBGap"
-                         return="bool"
-                         args="['void']"
-                         vars="['']"
-                         qual="const">
-bool isEBGap() const;
-                    <comment>
-          Method from reco::PhotonID, throws exception if there is no photon ID in this pat::Photon
-                    </comment>
-                </method1>
-
-                <method1 name="isEEGap"
-                         return="bool"
-                         args="['void']"
-                         vars="['']"
-                         qual="const">
-bool isEEGap() const;
-                    <comment>
-          Method from reco::PhotonID, throws exception if there is no photon ID in this pat::Photon
-                    </comment>
-                </method1>
-
-                <method1 name="isEBEEGap"
-                         return="bool"
-                         args="['void']"
-                         vars="['']"
-                         qual="const">
-bool isEBEEGap() const;
-                    <comment>
-          Method from reco::PhotonID, throws exception if there is no photon ID in this pat::Photon
-                    </comment>
-                </method1>
-
-                <method1 name="isAlsoElectron"
-                         return="bool"
-                         args="['void']"
-                         vars="['']"
-                         qual="const">
-bool isAlsoElectron() const;
-                    <comment>
-          Method from reco::PhotonID, throws exception if there is no photon ID in this pat::Photon
-                    </comment>
-                </method1>
-
-                <method1 name="isolation"
-                         return="float"
-                         args="['IsolationKeys']"
-                         vars="['key']"
-                         qual="const">
-float isolation(IsolationKeys key) const;
-                    <comment>
-          Returns the isolation variable for a specifc key (or pseudo-key like CaloIso), or -1.0 if not available
-                    </comment>
-                </method1>
+                </method2>
 
                 <method1 name="trackIso"
                          return="float"
@@ -381,18 +215,7 @@ float isolation(IsolationKeys key) const;
                          qual="const">
 float trackIso() const;
                     <comment>
-          Return the tracker isolation variable that was stored in this object when produced, or -1.0 if there is none
-                    </comment>
-                </method1>
-
-                <method1 name="caloIso"
-                         return="float"
-                         args="['void']"
-                         vars="['']"
-                         qual="const">
-float caloIso() const;
-                    <comment>
-          Return the sum of ecal and hcal isolation variable that were stored in this object when produced, or -1.0 if at least one is missing
+          including the region of the reconstructed photon
                     </comment>
                 </method1>
 
@@ -403,7 +226,7 @@ float caloIso() const;
                          qual="const">
 float ecalIso() const;
                     <comment>
-          Return the ecal isolation variable that was stored in this object when produced, or -1.0 if there is none
+          calculated from recHits
                     </comment>
                 </method1>
 
@@ -414,7 +237,18 @@ float ecalIso() const;
                          qual="const">
 float hcalIso() const;
                     <comment>
-          Return the hcal isolation variable that was stored in this object when produced, or -1.0 if there is none
+          from caloTowers
+                    </comment>
+                </method1>
+
+                <method1 name="caloIso"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float caloIso() const;
+                    <comment>
+          and hcal
                     </comment>
                 </method1>
 
@@ -425,7 +259,18 @@ float hcalIso() const;
                          qual="const">
 float userIso(uint8_t index=0) const;
                     <comment>
-          Return the user defined isolation variable #index that was stored in this object when produced, or -1.0 if there is none
+          Returns a user defined isolation value
+                    </comment>
+                </method1>
+
+                <method1 name="userIsolation"
+                         return="float"
+                         args="['IsolationKeys']"
+                         vars="['key']"
+                         qual="const">
+float userIsolation(IsolationKeys key) const;
+                    <comment>
+          pseudo-key like CaloIso), or -1.0 if not available
                     </comment>
                 </method1>
 
@@ -451,23 +296,23 @@ void setTrackIso(float trackIso);
                     </comment>
                 </method1>
 
-                <method1 name="setECalIso"
+                <method1 name="setEcalIso"
                          return="void"
                          args="['float']"
                          vars="['caloIso']"
                          qual="">
-void setECalIso(float caloIso);
+void setEcalIso(float caloIso);
                     <comment>
           Sets ecal isolation variable
                     </comment>
                 </method1>
 
-                <method1 name="setHCalIso"
+                <method1 name="setHcalIso"
                          return="void"
                          args="['float']"
                          vars="['caloIso']"
                          qual="">
-void setHCalIso(float caloIso);
+void setHcalIso(float caloIso);
                     <comment>
           Sets hcal isolation variable
                     </comment>
@@ -495,12 +340,12 @@ const IsoDeposit* isoDeposit(IsolationKeys key) const;
                     </comment>
                 </method1>
 
-                <method1 name="trackerIsoDeposit"
+                <method1 name="trackIsoDeposit"
                          return="const IsoDeposit*"
                          args="['void']"
                          vars="['']"
                          qual="const">
-const IsoDeposit* trackerIsoDeposit() const;
+const IsoDeposit* trackIsoDeposit() const;
                     <comment>
           Return the tracker IsoDeposit
                     </comment>
@@ -550,12 +395,12 @@ void setIsoDeposit(IsolationKeys key, const IsoDeposit&amp; dep);
                     </comment>
                 </method1>
 
-                <method1 name="trackerIsoDeposit"
+                <method1 name="trackIsoDeposit"
                          return="void"
                          args="['const IsoDeposit&amp;']"
                          vars="['dep']"
                          qual="">
-void trackerIsoDeposit(const IsoDeposit&amp; dep);
+void trackIsoDeposit(const IsoDeposit&amp; dep);
                     <comment>
           Sets tracker IsoDeposit
                     </comment>
@@ -596,24 +441,28 @@ void userIsoDeposit(const IsoDeposit&amp; dep, uint8_t index=0);
 
             </section>
 
+            <typemap name="IdPair"
+                     value="std::pair&lt;std::string, Bool_t&gt;"
+                     type="typedef"/>
+
         </class>
     </namespace>
 
+    <type name="Bool_t"/>
     <type name="IsolationKeys"/>
-    <type name="PATObject&lt;PhotonType&gt;"/>
+    <type name="PATObject&lt;reco::Photon&gt;"/>
     <type name="Photon*"/>
     <type name="bool"/>
     <type name="const IsoDeposit&amp;"/>
     <type name="const IsoDeposit*"/>
-    <type name="const PhotonType&amp;"/>
-    <type name="const edm::Ptr&lt;PhotonType&gt;&amp;"/>
-    <type name="const edm::RefToBase&lt;PhotonType&gt;&amp;"/>
+    <type name="const edm::Ptr&lt;reco::Photon&gt;&amp;"/>
+    <type name="const edm::RefToBase&lt;reco::Photon&gt;&amp;"/>
+    <type name="const reco::Candidate*"/>
     <type name="const reco::GenParticleRef&amp;"/>
-    <type name="const reco::Particle*"/>
-    <type name="const reco::PhotonID&amp;"/>
-    <type name="const reco::PhotonID*"/>
+    <type name="const reco::Photon&amp;"/>
+    <type name="const std::string&amp;"/>
+    <type name="const std::vector&lt;IdPair&gt;&amp;"/>
     <type name="float"/>
-    <type name="int"/>
     <type name="pat::Photon"/>
     <type name="reco::SuperClusterRef"/>
     <type name="uint8_t"/>

@@ -1,9 +1,9 @@
-reco::PFCombinedTauTagInfo|const edm::Ref<PFJetCollection>&|pfjetRef|void
+reco::PFCombinedTauTagInfo|const PFJetRef&|pfjetRef|void
 reco::PFCombinedTauTagInfo|const edm::Ref<PFIsolatedTauTagInfoCollection>&|isolatedtautaginfoRef|void
-reco::PFCombinedTauTagInfo|const edm::RefVector<std::vector<reco::PFCandidate>>&|PFChargedHadrCands|void
-reco::PFCombinedTauTagInfo|const edm::RefVector<std::vector<reco::PFCandidate>>&|selectedPFChargedHadrCands|void
-reco::PFCombinedTauTagInfo|const edm::RefVector<std::vector<reco::PFCandidate>>&|signalPFChargedHadrCands|void
-reco::PFCombinedTauTagInfo|const edm::RefVector<std::vector<reco::PFCandidate>>&|isolPFChargedHadrCands|void
+reco::PFCombinedTauTagInfo|const PFCandidateRefVector&|PFChargedHadrCands|void
+reco::PFCombinedTauTagInfo|const PFCandidateRefVector&|selectedPFChargedHadrCands|void
+reco::PFCombinedTauTagInfo|const PFCandidateRefVector&|signalPFChargedHadrCands|void
+reco::PFCombinedTauTagInfo|const PFCandidateRefVector&|isolPFChargedHadrCands|void
 reco::PFCombinedTauTagInfo|PFCombinedTauTagInfo*|clone|void
 reco::PFCombinedTauTagInfo|bool|selectedByPFChargedHadrCands|void
 reco::PFCombinedTauTagInfo|bool|electronTagged|void
@@ -25,8 +25,3 @@ reco::PFCombinedTauTagInfo|double|PFGammaCandsERatio|void
 reco::PFCombinedTauTagInfo|math::XYZTLorentzVector|alternatLorentzVect|void
 reco::PFCombinedTauTagInfo|double|ECALEtleadPFChargedHadrCandPtRatio|void
 reco::PFCombinedTauTagInfo|double|HCALEtleadPFChargedHadrCandPtRatio|void
-reco::BaseTagInfo|BaseTagInfo*|clone|void
-reco::BaseTagInfo|edm::RefVector<std::vector<Track>>|tracks|void
-reco::BaseTagInfo|bool|hasTracks|void
-reco::BaseTagInfo|TaggingVariableList|taggingVariables|void
-reco::BaseTagInfo|edm::RefToBase<Jet>|jet|void

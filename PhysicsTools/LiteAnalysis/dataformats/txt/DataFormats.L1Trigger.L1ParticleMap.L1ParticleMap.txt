@@ -4,8 +4,8 @@ Class:
 Header:
 	DataFormats/L1Trigger/interface/L1ParticleMap.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:19 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:06 2010	lsclass.py $Revision:$
 
 Methods from l1extra::L1ParticleMap
 
@@ -30,19 +30,19 @@ Methods from l1extra::L1ParticleMap
 		Arguments: void	
 
 	-o- emParticles
-		Return: const std::vector<L1EmParticleRef >&
+		Return: const L1EmParticleVectorRef&
 		Arguments: void	
 
 	-o- jetParticles
-		Return: const std::vector<edm::Ref<L1JetParticleCollection > >&
+		Return: const L1JetParticleVectorRef&
 		Arguments: void	
 
 	-o- muonParticles
-		Return: const std::vector<L1MuonParticleRef >&
+		Return: const L1MuonParticleVectorRef&
 		Arguments: void	
 
 	-o- etMissParticle
-		Return: const edm::RefProd<L1EtMissParticle >&
+		Return: const L1EtMissParticleRefProd&
 		Arguments: void	
 
 	-o- indexCombos

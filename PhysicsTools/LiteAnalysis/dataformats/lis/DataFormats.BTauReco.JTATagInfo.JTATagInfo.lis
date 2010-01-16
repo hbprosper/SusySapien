@@ -1,7 +1,5 @@
 reco::JTATagInfo|JTATagInfo*|clone|void
 reco::JTATagInfo|TrackRefVector|tracks|void
-reco::JTATagInfo|const JetTracksAssociation::edm::Ref<Container>&|jtaRef|void
+reco::JTATagInfo|const JetTracksAssociationRef&|jtaRef|void
 reco::JTATagInfo|bool|hasTracks|void
 reco::JTATagInfo|edm::RefToBase<Jet>|jet|void
-reco::BaseTagInfo|BaseTagInfo*|clone|void
-reco::BaseTagInfo|edm::RefVector<std::vector<Track>>|tracks|void

@@ -4,8 +4,8 @@ Class:
 Header:
 	DataFormats/RecoCandidate/interface/IsoDepositVetos.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:13:58 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:55:09 2010	lsclass.py $Revision:$
 
 Methods from reco::isodeposit::AbsThresholdVeto
 

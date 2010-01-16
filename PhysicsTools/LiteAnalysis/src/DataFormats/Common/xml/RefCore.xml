@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: RefCore.xml
-  Created:  Thu Jan 14 22:46:17 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:45:49 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/Common/interface/RefCore.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/RefCore.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/Common/interface/RefCore.h">
 
     <include name="&quot;DataFormats/Provenance/interface/ProductID.h&quot;"/>
     <include name="&quot;DataFormats/Common/interface/EDProductGetter.h&quot;"/>
@@ -163,6 +163,82 @@ int isTransientInt() const;
 void pushBackItem(RefCore const&amp; productToBeInserted, bool checkPointer);
                 </method1>
 
+
+                <class name="RefCoreTransients"
+                       fullname="edm::RefCore::RefCoreTransients"
+                       module="DataFormats.Common"
+                       project=""
+                       type="regular struct">
+
+                    <section>
+                        <constructor name="RefCoreTransients"
+                                     return=""
+                                     args="['void']"
+                                     vars="['']"
+                                     qual="">
+RefCoreTransients();
+                        </constructor>
+
+                        <constructor name="RefCoreTransients"
+                                     return="explicit"
+                                     args="['void const*','EDProductGetter const*','bool']"
+                                     vars="['prodPtr','prodGetter','transient']"
+                                     qual="">
+explicit RefCoreTransients(void const* prodPtr, EDProductGetter const* prodGetter, bool transient);
+                        </constructor>
+
+                        <method1 name="isTransient"
+                                 return="bool"
+                                 args="['void']"
+                                 vars="['']"
+                                 qual="const">
+bool isTransient() const;
+                        </method1>
+
+                        <method1 name="setProductGetter"
+                                 return="void"
+                                 args="['EDProductGetter const*']"
+                                 vars="['prodGetter']"
+                                 qual="const">
+void setProductGetter(EDProductGetter const* prodGetter) const;
+                        </method1>
+
+                        <method1 name="setProductPtr"
+                                 return="void"
+                                 args="['void const*']"
+                                 vars="['prodPtr']"
+                                 qual="const">
+void setProductPtr(void const* prodPtr) const;
+                        </method1>
+
+                        <member>
+mutable void const* prodPtr_;
+                        </member>
+
+                        <member>
+mutable EDProductGetter const* prodGetter_;
+                        </member>
+
+                        <member>
+bool transient_;
+                        </member>
+
+                    </section>
+
+                    <typemap name="RefCoreTransients"
+                             value="edm::RefCore::RefCoreTransients"
+                             type="class"/>
+                    <typemap name="prodGetter_"
+                             value="edm::RefCore::RefCoreTransients::prodGetter_"
+                             type="member"/>
+                    <typemap name="prodPtr_"
+                             value="edm::RefCore::RefCoreTransients::prodPtr_"
+                             type="member"/>
+                    <typemap name="transient_"
+                             value="edm::RefCore::RefCoreTransients::transient_"
+                             type="member"/>
+
+                </class>
             </section>
 
         </class>
@@ -208,7 +284,10 @@ inline void swap(edm::RefCore&amp; lhs, edm::RefCore&amp; rhs);
     <type name="RefCore&amp;"/>
     <type name="bool"/>
     <type name="edm::RefCore"/>
+    <type name="edm::RefCore::RefCoreTransients"/>
     <type name="int"/>
+    <type name="mutable EDProductGetter const*"/>
+    <type name="mutable void const*"/>
     <type name="void"/>
     <type name="void const*"/>
 </header>

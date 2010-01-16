@@ -9,5 +9,3 @@ edm::reftobase::IndirectVectorHolder<T>|BaseVectorHolder<T>*|cloneEmpty|void
 edm::reftobase::IndirectVectorHolder<T>|std::auto_ptr<reftobase::RefVectorHolderBase>|vectorHolder|void
 edm::reftobase::IndirectVectorHolder<T>|typename base_type::const_iterator|begin|void
 edm::reftobase::IndirectVectorHolder<T>|typename base_type::const_iterator|end|void
-edm::reftobase::BaseVectorHolder<T>|BaseVectorHolder*|clone|void
-edm::reftobase::BaseVectorHolder<T>|BaseVectorHolder*|cloneEmpty|void

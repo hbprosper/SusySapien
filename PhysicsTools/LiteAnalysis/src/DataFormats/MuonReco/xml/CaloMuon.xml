@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: CaloMuon.xml
-  Created:  Thu Jan 14 22:47:41 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:49 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/MuonReco/interface/CaloMuon.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/MuonReco/interface/CaloMuon.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/MuonReco/interface/CaloMuon.h">
 
     <include name="&quot;DataFormats/MuonReco/interface/MuonEnergy.h&quot;"/>
     <include name="&quot;DataFormats/TrackReco/interface/TrackFwd.h&quot;"/>
@@ -29,26 +29,50 @@
 CaloMuon();
                 </constructor>
 
-                <method1 name="track"
-                         return="TrackRef"
+                <destructor name="~CaloMuon"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~CaloMuon();
+                </destructor>
+
+                <method1 name="innerTrack"
+                         return="virtual TrackRef"
                          args="['void']"
                          vars="['']"
                          qual="const">
-TrackRef track() const;
+virtual TrackRef innerTrack() const;
                     <comment>
         reference to Track reconstructed in the tracker only
                     </comment>
                 </method1>
 
-                <method1 name="setTrack"
-                         return="void"
+                <method1 name="track"
+                         return="virtual TrackRef"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual TrackRef track() const;
+                </method1>
+
+                <method1 name="setInnerTrack"
+                         return="virtual void"
                          args="['const TrackRef&amp;']"
                          vars="['t']"
                          qual="">
-void setTrack(const TrackRef&amp; t);
+virtual void setInnerTrack(const TrackRef&amp; t);
                     <comment>
         set reference to Track
                     </comment>
+                </method1>
+
+                <method1 name="setTrack"
+                         return="virtual void"
+                         args="['const TrackRef&amp;']"
+                         vars="['t']"
+                         qual="">
+virtual void setTrack(const TrackRef&amp; t);
                 </method1>
 
                 <method1 name="isEnergyValid"
@@ -73,14 +97,6 @@ MuonEnergy calEnergy() const;
                     </comment>
                 </method1>
 
-                <method1 name="getCalEnergy"
-                         return="MuonEnergy"
-                         args="['void']"
-                         vars="['']"
-                         qual="const ">
-MuonEnergy getCalEnergy() const ;
-                </method1>
-
                 <method1 name="setCalEnergy"
                          return="void"
                          args="['const MuonEnergy&amp;']"
@@ -101,14 +117,6 @@ float caloCompatibility() const;
                     <comment>
         L_muon/(L_muon+L_not_muon)
                     </comment>
-                </method1>
-
-                <method1 name="getCaloCompatibility"
-                         return="float"
-                         args="['void']"
-                         vars="['']"
-                         qual="const ">
-float getCaloCompatibility() const ;
                 </method1>
 
                 <method1 name="setCaloCompatibility"

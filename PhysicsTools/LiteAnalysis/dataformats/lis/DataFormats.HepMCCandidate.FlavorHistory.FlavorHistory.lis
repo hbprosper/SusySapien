@@ -2,6 +2,10 @@ reco::FlavorHistory|FLAVOR_T|flavorSource|void
 reco::FlavorHistory|bool|hasParton|void
 reco::FlavorHistory|bool|hasSister|void
 reco::FlavorHistory|bool|hasProgenitor|void
-reco::FlavorHistory|const reco::edm::Ptr<Candidate>&|parton|void
-reco::FlavorHistory|const reco::edm::Ptr<Candidate>&|sister|void
-reco::FlavorHistory|const reco::edm::Ptr<Candidate>&|progenitor|void
+reco::FlavorHistory|bool|hasMatchedJet|void
+reco::FlavorHistory|bool|hasSisterJet|void
+reco::FlavorHistory|const reco::CandidatePtr&|parton|void
+reco::FlavorHistory|const reco::CandidatePtr&|sister|void
+reco::FlavorHistory|const reco::CandidatePtr&|progenitor|void
+reco::FlavorHistory|const reco::ShallowClonePtrCandidate&|matchedJet|void
+reco::FlavorHistory|const reco::ShallowClonePtrCandidate&|sisterJet|void

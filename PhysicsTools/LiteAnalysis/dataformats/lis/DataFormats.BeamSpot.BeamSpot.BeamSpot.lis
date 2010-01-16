@@ -5,14 +5,20 @@ reco::BeamSpot|double|z0|void
 reco::BeamSpot|double|sigmaZ|void
 reco::BeamSpot|double|dxdz|void
 reco::BeamSpot|double|dydz|void
-reco::BeamSpot|double|BeamWidth|void
+reco::BeamSpot|double|BeamWidthX|void
+reco::BeamSpot|double|BeamWidthY|void
 reco::BeamSpot|double|x0Error|void
 reco::BeamSpot|double|y0Error|void
 reco::BeamSpot|double|z0Error|void
 reco::BeamSpot|double|sigmaZ0Error|void
 reco::BeamSpot|double|dxdzError|void
 reco::BeamSpot|double|dydzError|void
-reco::BeamSpot|double|BeamWidthError|void
-reco::BeamSpot|math::Error<dimension>::ROOT::Math::SMatrix<double, N, N, ROOT::Math::MatRepSym<double, N> >|covariance|void
-reco::BeamSpot|math::Error<dim3>::ROOT::Math::SMatrix<double, N, N, ROOT::Math::MatRepSym<double, N> >|covariance3D|void
-reco::BeamSpot|math::Error<dim3>::ROOT::Math::SMatrix<double, N, N, ROOT::Math::MatRepSym<double, N> >|rotatedCovariance3D|void
+reco::BeamSpot|double|BeamWidthXError|void
+reco::BeamSpot|double|BeamWidthYError|void
+reco::BeamSpot|math::Error<dimension>::type|covariance|void
+reco::BeamSpot|math::Error<dim3>::type|covariance3D|void
+reco::BeamSpot|BeamType|type|void
+reco::BeamSpot|math::Error<dim3>::type|rotatedCovariance3D|void
+reco::BeamSpot|double|emittanceX|void
+reco::BeamSpot|double|emittanceY|void
+reco::BeamSpot|double|betaStar|void

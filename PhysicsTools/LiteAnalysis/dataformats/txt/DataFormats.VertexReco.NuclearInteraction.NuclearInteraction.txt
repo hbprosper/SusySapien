@@ -4,8 +4,8 @@ Class:
 Header:
 	DataFormats/VertexReco/interface/NuclearInteraction.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:28 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:14 2010	lsclass.py $Revision:$
 
 Methods from reco::NuclearInteraction
 
@@ -26,7 +26,7 @@ Methods from reco::NuclearInteraction
 		Arguments: void	
 
 	-o- seeds
-		Return: const edm::RefVector<std::vector<TrajectorySeed>>&
+		Return: const edm::RefVector<TrajectorySeedCollection>&
 		Arguments: void	
 
 	-o- seeds_begin

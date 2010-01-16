@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: HitPattern.xml
-  Created:  Thu Jan 14 22:48:49 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:39 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/TrackReco/interface/HitPattern.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/TrackReco/interface/HitPattern.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/TrackReco/interface/HitPattern.h">
 
     <include name="&lt;ostream&gt;"/>
     <include name="&quot;DataFormats/DetId/interface/DetId.h&quot;"/>
@@ -524,6 +524,46 @@ int numberOfLostMuonCSCHits() const;
                          vars="['']"
                          qual="const">
 int numberOfLostMuonRPCHits() const;
+                </method1>
+
+                <method1 name="numberOfBadHits"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int numberOfBadHits() const;
+                </method1>
+
+                <method1 name="numberOfBadMuonHits"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int numberOfBadMuonHits() const;
+                </method1>
+
+                <method1 name="numberOfBadMuonDTHits"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int numberOfBadMuonDTHits() const;
+                </method1>
+
+                <method1 name="numberOfBadMuonCSCHits"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int numberOfBadMuonCSCHits() const;
+                </method1>
+
+                <method1 name="numberOfBadMuonRPCHits"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int numberOfBadMuonRPCHits() const;
                 </method1>
 
                 <method1 name="numberOfValidStripLayersWithMonoAndStereo"

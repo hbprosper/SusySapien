@@ -2,17 +2,18 @@
 <!--
 ==============================================================================
   XML File: TriggerPath.xml
-  Created:  Thu Jan 14 22:48:23 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:21 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/PatCandidates/interface/TriggerPath.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/PatCandidates/interface/TriggerPath.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/PatCandidates/interface/TriggerPath.h">
 
     <include name="&lt;string&gt;"/>
     <include name="&lt;vector&gt;"/>
     <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
     <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
     <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVectorIterator.h&quot;"/>
 
     <namespace name="pat">
 
@@ -314,6 +315,14 @@ typedef edm::RefProd&lt;TriggerPathCollection &gt; TriggerPathRefProd;
 typedef edm::RefVector&lt;TriggerPathCollection &gt; TriggerPathRefVector;
             <comment>
       vector of persistent references to items in the same TriggerPathCollection
+            </comment>
+        </typedef>
+
+        <typedef name="TriggerPathRefVectorIterator"
+                 value="edm::RefVectorIterator&lt;TriggerPathCollection &gt;">
+typedef edm::RefVectorIterator&lt;TriggerPathCollection &gt; TriggerPathRefVectorIterator;
+            <comment>
+      const iterator over vector of persistent references to items in the same TriggerPathCollection
             </comment>
         </typedef>
 

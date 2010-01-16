@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: AssociationVector.xml
-  Created:  Thu Jan 14 22:45:49 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:45:21 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/Common/interface/AssociationVector.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/AssociationVector.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/Common/interface/AssociationVector.h">
 
     <include name="&quot;FWCore/Utilities/interface/EDMException.h&quot;"/>
     <include name="&quot;DataFormats/Common/interface/traits.h&quot;"/>
@@ -127,10 +127,10 @@ typedef RefToBase&lt;T&gt; ref_type;
             <section>
                 <constructor name="BOOST_STATIC_ASSERT"
                              return=""
-                             args="['(boost::is_same&lt;SizeType, typename']"
+                             args="['(boost::is_convertible&lt;SizeType, typename']"
                              vars="['CVal::size_type&gt;::value)']"
                              qual="">
-BOOST_STATIC_ASSERT((boost::is_same&lt;SizeType, typename CVal::size_type&gt;::value));
+BOOST_STATIC_ASSERT((boost::is_convertible&lt;SizeType, typename CVal::size_type&gt;::value));
                 </constructor>
 
                 <typedef name="self"
@@ -385,7 +385,7 @@ static bool const value=true;
         </class>
     </namespace>
 
-    <type name="(boost::is_same&lt;SizeType, typename"/>
+    <type name="(boost::is_convertible&lt;SizeType, typename"/>
     <type name="ProductID const&amp;"/>
     <type name="bool"/>
     <type name="bool const value"/>

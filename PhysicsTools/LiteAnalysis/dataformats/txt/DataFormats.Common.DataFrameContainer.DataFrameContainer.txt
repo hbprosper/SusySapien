@@ -4,8 +4,8 @@ Class:
 Header:
 	DataFormats/Common/interface/DataFrameContainer.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:39 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:21 2010	lsclass.py $Revision:$
 
 Methods from edm::DataFrameContainer
 
@@ -63,44 +63,4 @@ Methods from edm::DataFrameContainer
 	-o- pair
 		Return: std::pair<std::vector<unsigned int>::data_type*, std::vector<data_type>::iterator>
 		Arguments: size_t	i
-
-	-o- pair
-		Return: std::pair<const_IdIter, const_DataIter>
-		Arguments: size_t	i
-
-	-o- find
-		Return: boost::transform_iterator<IterHelp, boost::counting_iterator<int> >
-		Arguments: id_type	i
-
-	-o- begin
-		Return: boost::transform_iterator<IterHelp, boost::counting_iterator<int> >
-		Arguments: void	
-
-	-o- end
-		Return: boost::transform_iterator<IterHelp, boost::counting_iterator<int> >
-		Arguments: void	
-
-	-o- subdetId
-		Return: int
-		Arguments: void	
-
-	-o- stride
-		Return: unsigned int
-		Arguments: void	
-
-	-o- empty
-		Return: bool
-		Arguments: void	
-
-	-o- size
-		Return: unsigned int
-		Arguments: void	
-
-	-o- frame
-		Return: unsigned short const*
-		Arguments: size_t	cell
-
-	-o- id
-		Return: unsigned int
-		Arguments: size_t	cell
 

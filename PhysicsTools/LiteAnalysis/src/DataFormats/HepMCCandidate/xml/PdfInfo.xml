@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: PdfInfo.xml
-  Created:  Thu Jan 14 22:49:01 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:46 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/HepMCCandidate/interface/PdfInfo.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/HepMCCandidate/interface/PdfInfo.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/HepMCCandidate/interface/PdfInfo.h">
 
 
     <namespace name="reco">

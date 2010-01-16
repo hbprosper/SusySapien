@@ -1,8 +1,7 @@
-edm::OutputHandle<T>|bool|isValid|void
-edm::OutputHandle<T>|bool|failedToGet|void
-edm::OutputHandle<T>|EDProduct const*|wrapper|void
-edm::OutputHandle<T>|ProductID|id|void
-edm::OutputHandle<T>|T const*|entryInfo|void
-edm::OutputHandle<T>|ConstBranchDescription const*|desc|void
-edm::OutputHandle<T>|boost::shared_ptr<cms::Exception>|whyFailed|void
-edm::OutputHandle<T>|boost::shared_ptr<T>|entryInfoSharedPtr|void
+edm::OutputHandle|bool|isValid|void
+edm::OutputHandle|bool|failedToGet|void
+edm::OutputHandle|EDProduct const*|wrapper|void
+edm::OutputHandle|ProductProvenance const*|productProvenance|void
+edm::OutputHandle|ConstBranchDescription const*|desc|void
+edm::OutputHandle|boost::shared_ptr<cms::Exception>|whyFailed|void
+edm::OutputHandle|boost::shared_ptr<ProductProvenance>|productProvenanceSharedPtr|void

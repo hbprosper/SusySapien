@@ -2,19 +2,19 @@
 <!--
 ==============================================================================
   XML File: BasicHandle.xml
-  Created:  Thu Jan 14 22:45:51 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:45:23 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/Common/interface/BasicHandle.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/BasicHandle.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/Common/interface/BasicHandle.h">
 
     <include name="&quot;DataFormats/Provenance/interface/Provenance.h&quot;"/>
     <include name="&quot;DataFormats/Provenance/interface/ProductID.h&quot;"/>
-    <include name="&quot;FWCore/Utilities/interface/Exception.h&quot;"/>
     <include name="&lt;boost/shared_ptr.hpp&gt;"/>
 
     <namespace name="edm">
         <forward name="EDProduct"/>
+        <forward name="template&lt;typename T&gt; Wrapper"/>
 
         <class name="BasicHandle"
                fullname="edm::BasicHandle"
@@ -41,18 +41,18 @@ BasicHandle(BasicHandle const&amp; h);
 
                 <constructor name="BasicHandle"
                              return=""
-                             args="['EDProduct const*','Provenance const*']"
+                             args="['boost::shared_ptr&lt;EDProduct const&gt;','Provenance const*']"
                              vars="['prod','prov']"
                              qual="">
-BasicHandle(EDProduct const* prod, Provenance const* prov);
+BasicHandle(boost::shared_ptr&lt;EDProduct const&gt; prod, Provenance const* prov);
                 </constructor>
 
                 <constructor name="BasicHandle"
                              return=""
-                             args="['const boost::shared_ptr&lt;cms::Exception&gt;&amp;']"
+                             args="['boost::shared_ptr&lt;cms::Exception&gt; const&amp;']"
                              vars="['iWhyFailed']"
                              qual="">
-BasicHandle(const boost::shared_ptr&lt;cms::Exception&gt;&amp; iWhyFailed);
+BasicHandle(boost::shared_ptr&lt;cms::Exception&gt; const&amp; iWhyFailed);
                     <comment>
        Used when the attempt to get the data failed
                     </comment>
@@ -106,6 +106,14 @@ bool failedToGet() const;
 EDProduct const* wrapper() const;
                 </method1>
 
+                <method2 name="product"
+                         return="boost::shared_ptr&lt;EDProduct const&gt;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+boost::shared_ptr&lt;EDProduct const&gt; product() const;
+                </method2>
+
                 <method1 name="provenance"
                          return="Provenance const*"
                          args="['void']"
@@ -152,8 +160,9 @@ inline   void   swap(BasicHandle&amp; a, BasicHandle&amp; b);
     <type name="ProductID"/>
     <type name="Provenance const*"/>
     <type name="bool"/>
+    <type name="boost::shared_ptr&lt;EDProduct const&gt;"/>
     <type name="boost::shared_ptr&lt;cms::Exception&gt;"/>
-    <type name="const boost::shared_ptr&lt;cms::Exception&gt;&amp;"/>
+    <type name="boost::shared_ptr&lt;cms::Exception&gt; const&amp;"/>
     <type name="edm::BasicHandle"/>
     <type name="void"/>
 </header>

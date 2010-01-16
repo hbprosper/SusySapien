@@ -1,7 +1,2 @@
 edm::DetSet<T>|typename std::vector<T>::iterator|begin|void
 edm::DetSet<T>|typename std::vector<T>::iterator|end|void
-edm::DetSet<T>|typename collection_type::const_iterator|begin|void
-edm::DetSet<T>|typename collection_type::const_iterator|end|void
-edm::DetSet<T>|typename std::vector<T>::size_type|size|void
-edm::DetSet<T>|bool|empty|void
-edm::DetSet<T>|uint32_t|detId|void

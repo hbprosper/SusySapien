@@ -1,7 +1,3 @@
 edm::DataFrame|inline|DataFrame|void
 edm::DataFrame|inline unsigned short*|begin|void
 edm::DataFrame|inline unsigned short*|end|void
-edm::DataFrame|inline unsigned short const*|begin|void
-edm::DataFrame|inline unsigned short const*|end|void
-edm::DataFrame|inline unsigned int|id|void
-edm::DataFrame|inline unsigned int|size|void

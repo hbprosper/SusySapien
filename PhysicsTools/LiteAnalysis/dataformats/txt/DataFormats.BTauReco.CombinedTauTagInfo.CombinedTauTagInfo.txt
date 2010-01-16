@@ -8,13 +8,13 @@ BaseClasses:
 	reco::JTATagInfo	DataFormats/BTauReco/interface/JTATagInfo.h
 	reco::BaseTagInfo	DataFormats/BTauReco/interface/BaseTagInfo.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:14:44 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:55:41 2010	lsclass.py $Revision:$
 
 Methods from reco::CombinedTauTagInfo
 
 	-o- isolatedtautaginfoRef
-		Return: const edm::Ref<IsolatedTauTagInfoCollection>&
+		Return: const edm::Ref<std::vector<IsolatedTauTagInfo >>&
 		Arguments: void	
 
 	-o- setisolatedtautaginfoRef
@@ -22,11 +22,11 @@ Methods from reco::CombinedTauTagInfo
 		Arguments: const IsolatedTauTagInfoRef&	x
 
 	-o- allTks
-		Return: const edm::edm::RefVector<Container><TrackCollection>&
+		Return: const TrackRefVector&
 		Arguments: void	
 
 	-o- selectedTks
-		Return: const edm::edm::RefVector<Container><TrackCollection>&
+		Return: const TrackRefVector&
 		Arguments: void	
 
 	-o- setselectedTks
@@ -34,7 +34,7 @@ Methods from reco::CombinedTauTagInfo
 		Arguments: const TrackRefVector&	x
 
 	-o- signalTks
-		Return: const edm::edm::RefVector<Container><TrackCollection>&
+		Return: const TrackRefVector&
 		Arguments: void	
 
 	-o- setsignalTks
@@ -46,7 +46,7 @@ Methods from reco::CombinedTauTagInfo
 		Arguments: void	
 
 	-o- isolTks
-		Return: const edm::edm::RefVector<Container><TrackCollection>&
+		Return: const TrackRefVector&
 		Arguments: void	
 
 	-o- setisolTks
@@ -194,12 +194,12 @@ Methods from reco::CombinedTauTagInfo
 		Arguments: double	x
 
 	-o- alternatrecJet_HepLV
-		Return: HepLorentzVector
+		Return: CLHEP::HepLorentzVector
 		Arguments: void	
 
 	-o- setalternatrecJet_HepLV
 		Return: void
-		Arguments: HepLorentzVector	x
+		Arguments: CLHEP::HepLorentzVector	x
 
 	-o- ECALEt_o_leadTkPt
 		Return: double
@@ -216,40 +216,4 @@ Methods from reco::CombinedTauTagInfo
 	-o- setHCALEt_o_leadTkPt
 		Return: void
 		Arguments: double	x
-
-Methods from reco::JTATagInfo
-
-	-o- clone
-		Return: JTATagInfo*
-		Arguments: void	
-
-	-o- tracks
-		Return: TrackRefVector
-		Arguments: void	
-
-	-o- jtaRef
-		Return: const JetTracksAssociation::edm::Ref<Container>&
-		Arguments: void	
-
-	-o- hasTracks
-		Return: bool
-		Arguments: void	
-
-	-o- setJTARef
-		Return: void
-		Arguments: const JetTracksAssociationRef&	jtaRef
-
-	-o- jet
-		Return: edm::RefToBase<Jet>
-		Arguments: void	
-
-Methods from reco::BaseTagInfo
-
-	-o- clone
-		Return: BaseTagInfo*
-		Arguments: void	
-
-	-o- tracks
-		Return: edm::RefVector<std::vector<Track>>
-		Arguments: void	
 

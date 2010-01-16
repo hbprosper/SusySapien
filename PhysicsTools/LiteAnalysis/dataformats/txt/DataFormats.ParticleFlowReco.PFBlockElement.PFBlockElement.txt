@@ -4,8 +4,8 @@ Class:
 Header:
 	DataFormats/ParticleFlowReco/interface/PFBlockElement.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:14:26 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:55:31 2010	lsclass.py $Revision:$
 
 Methods from reco::PFBlockElement
 
@@ -52,15 +52,15 @@ Methods from reco::PFBlockElement
 		Arguments: void	
 
 	-o- trackRef
-		Return: reco::edm::Ref<std::vector<Track>>
+		Return: reco::TrackRef
 		Arguments: void	
 
 	-o- trackRefPF
-		Return: edm::Ref<std::vector<PFRecTrack>>
+		Return: PFRecTrackRef
 		Arguments: void	
 
 	-o- clusterRef
-		Return: edm::Ref<std::vector<PFCluster>>
+		Return: PFClusterRef
 		Arguments: void	
 
 	-o- nuclearRef
@@ -68,15 +68,15 @@ Methods from reco::PFBlockElement
 		Arguments: void	
 
 	-o- convRef
-		Return: edm::Ref<std::vector<Conversion>>
+		Return: ConversionRef
 		Arguments: void	
 
 	-o- muonRef
-		Return: edm::Ref<MuonCollection>
+		Return: MuonRef
 		Arguments: void	
 
 	-o- V0Ref
-		Return: edm::Ref<VertexCompositeCandidateCollection>
+		Return: VertexCompositeCandidateRef
 		Arguments: void	
 
 	-o- setNuclearRef

@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: CaloMET.xml
-  Created:  Thu Jan 14 22:47:33 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:43 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/METReco/interface/CaloMET.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/METReco/interface/CaloMET.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/METReco/interface/CaloMET.h">
 
     <include name="&quot;DataFormats/METReco/interface/SpecificCaloMETData.h&quot;"/>
     <include name="&quot;DataFormats/METReco/interface/MET.h&quot;"/>
@@ -255,6 +255,17 @@ double CaloMETPhiInpHF() const;
 double CaloMETPhiInmHF() const;
                     <comment>
          Returns the event MET-phi in HF-
+                    </comment>
+                </method1>
+
+                <method1 name="SetMetSignificance"
+                         return="void"
+                         args="['double']"
+                         vars="['metsig']"
+                         qual="">
+void SetMetSignificance(double metsig);
+                    <comment>
+        Set Met Significance
                     </comment>
                 </method1>
 

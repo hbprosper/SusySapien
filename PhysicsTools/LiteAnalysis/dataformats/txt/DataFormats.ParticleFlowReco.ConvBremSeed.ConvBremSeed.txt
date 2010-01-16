@@ -7,13 +7,13 @@ Header:
 BaseClasses:
 	TrajectorySeed	DataFormats/TrajectorySeed/interface/TrajectorySeed.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:14:28 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:55:32 2010	lsclass.py $Revision:$
 
 Methods from reco::ConvBremSeed
 
 	-o- GsfPFTrack
-		Return: edm::Ref<std::vector<GsfPFRecTrack>>
+		Return: GsfPFRecTrackRef
 		Arguments: void	
 
 	-o- clone
@@ -46,9 +46,5 @@ Methods from TrajectorySeed
 
 	-o- startingState
 		Return: PTrajectoryStateOnDet const&
-		Arguments: void	
-
-	-o- clone
-		Return: TrajectorySeed*
 		Arguments: void	
 

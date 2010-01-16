@@ -7,11 +7,11 @@ Header:
 BaseClasses:
 	pat::PATObject<reco::CompositeCandidate>	DataFormats/PatCandidates/interface/PATObject.h
 	reco::CompositeCandidate	DataFormats/Candidate/interface/CompositeCandidate.h
+	reco::LeafCandidate	DataFormats/Candidate/interface/LeafCandidate.h
 	reco::Candidate	DataFormats/Candidate/interface/Candidate.h
-	reco::Particle	DataFormats/Candidate/interface/Particle.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:14:11 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:55:20 2010	lsclass.py $Revision:$
 
 Methods from pat::CompositeCandidate
 
@@ -24,10 +24,6 @@ Methods from pat::PATObject<reco::CompositeCandidate>
 	-o- originalObject
 		Return: const reco::Candidate*
 		Arguments: void	
-
-	-o- addTriggerMatch
-		Return: void
-		Arguments: const pat::TriggerPrimitive&	aTrigPrim
 
 	-o- triggerObjectMatches
 		Return: const std::vector<TriggerObjectStandAlone >&
@@ -70,6 +66,7 @@ Methods from pat::PATObject<reco::CompositeCandidate>
 		Return: reco::GenParticleRef
 		Arguments: int	pdgId
 		           int	status
+		           uint8_t=0	autoCharge
 
 	-o- genParticle
 		Return: const reco::GenParticle*
@@ -101,7 +98,7 @@ Methods from pat::PATObject<reco::CompositeCandidate>
 		Arguments: const std::string&	label
 
 	-o- overlaps
-		Return: const reco::edm::PtrVector<Candidate>&
+		Return: const reco::CandidatePtrVector&
 		Arguments: const std::string&	label
 
 	-o- setOverlaps
@@ -144,6 +141,19 @@ Methods from pat::PATObject<reco::CompositeCandidate>
 		           int32_t	data
 
 	-o- hasUserInt
+		Return: bool
+		Arguments: const std::string&	key
+
+	-o- userCand
+		Return: reco::CandidatePtr
+		Arguments: const std::string&	key
+
+	-o- addUserCand
+		Return: void
+		Arguments: const std::string&	label
+		           const reco::CandidatePtr&	data
+
+	-o- hasUserCand
 		Return: bool
 		Arguments: const std::string&	key
 
@@ -212,14 +222,6 @@ Methods from pat::PATObject<reco::CompositeCandidate>
 		Return: const edm::Ptr<reco::Candidate>&
 		Arguments: void	
 
-	-o- triggerMatches
-		Return: const std::vector<TriggerPrimitive>&
-		Arguments: void	
-
-	-o- triggerMatchesByFilter
-		Return: const std::vector<TriggerPrimitive>
-		Arguments: const std::string&	aFilt
-
 	-o- efficiencies
 		Return: std::vector<std::pair<std::string, pat::LookupTableRecord> >
 		Arguments: void	
@@ -267,6 +269,10 @@ Methods from pat::PATObject<reco::CompositeCandidate>
 		Return: const std::vector<std::string>&
 		Arguments: void	
 
+	-o- userCandNames
+		Return: const std::vector<std::string>&
+		Arguments: void	
+
 Methods from reco::CompositeCandidate
 
 	-o- name
@@ -285,178 +291,17 @@ Methods from reco::CompositeCandidate
 		Return: void
 		Arguments: const role_collection&	roles
 
+Methods from reco::LeafCandidate
+
+	-o- begin
+		Return: candidate::const_iterator
+		Arguments: void	
+
+	-o- end
+		Return: candidate::const_iterator
+		Arguments: void	
+
 Methods from reco::Candidate
-
-	-o- clone
-		Return: Candidate*
-		Arguments: void	
-
-	-o- begin
-		Return: candidate::const_iterator
-		Arguments: void	
-
-	-o- end
-		Return: candidate::const_iterator
-		Arguments: void	
-
-	-o- begin
-		Return: candidate::iterator
-		Arguments: void	
-
-	-o- end
-		Return: candidate::iterator
-		Arguments: void	
-
-	-o- numberOfDaughters
-		Return: size_t
-		Arguments: void	
-
-	-o- daughter
-		Return: const Candidate*
-		Arguments: size_type	i
-
-	-o- daughter
-		Return: Candidate*
-		Arguments: size_type	i
-
-	-o- daughter
-		Return: Candidate*
-		Arguments: const std::string&	s
-
-	-o- daughter
-		Return: const Candidate*
-		Arguments: const std::string&	s
-
-	-o- numberOfMothers
-		Return: size_t
-		Arguments: void	
-
-	-o- mother
-		Return: const Candidate*
-		Arguments: size_type=0	i
-
-	-o- numberOfSourceCandidatePtrs
-		Return: size_t
-		Arguments: void	
-
-	-o- sourceCandidatePtr
-		Return: edm::Ptr<Candidate>
-		Arguments: size_type	i
-
-	-o- vertexChi2
-		Return: double
-		Arguments: void	
-
-	-o- vertexNdof
-		Return: double
-		Arguments: void	
-
-	-o- vertexNormalizedChi2
-		Return: double
-		Arguments: void	
-
-	-o- vertexCovariance
-		Return: double
-		Arguments: int	i
-		           int	j
-
-	-o- vertexCovariance
-		Return: math::Error<dimension>::type
-		Arguments: void	
-
-	-o- fillVertexCovariance
-		Return: void
-		Arguments: CovarianceMatrix&	v
-
-	-o- hasMasterClone
-		Return: bool
-		Arguments: void	
-
-	-o- masterClone
-		Return: const edm::RefToBase<Candidate>&
-		Arguments: void	
-
-	-o- hasMasterClonePtr
-		Return: bool
-		Arguments: void	
-
-	-o- masterClonePtr
-		Return: const edm::Ptr<Candidate>&
-		Arguments: void	
-
-	-o- isElectron
-		Return: bool
-		Arguments: void	
-
-	-o- isMuon
-		Return: bool
-		Arguments: void	
-
-	-o- isStandAloneMuon
-		Return: bool
-		Arguments: void	
-
-	-o- isGlobalMuon
-		Return: bool
-		Arguments: void	
-
-	-o- isTrackerMuon
-		Return: bool
-		Arguments: void	
-
-	-o- isCaloMuon
-		Return: bool
-		Arguments: void	
-
-	-o- isPhoton
-		Return: bool
-		Arguments: void	
-
-	-o- isConvertedPhoton
-		Return: bool
-		Arguments: void	
-
-	-o- isJet
-		Return: bool
-		Arguments: void	
-
-	-o- masterRef
-		Return: template<typename Ref> Ref
-		Arguments: void	
-
-	-o- get
-		Return: template<typename T> T
-		Arguments: void	
-
-	-o- get
-		Return: template<typename T, typename Tag> T
-		Arguments: void	
-
-	-o- get
-		Return: template<typename T> T
-		Arguments: size_type	i
-
-	-o- get
-		Return: template<typename T, typename Tag> T
-		Arguments: size_type	i
-
-	-o- numberOf
-		Return: template<typename T> size_t
-		Arguments: void	
-
-	-o- numberOf
-		Return: template<typename T, typename Tag> size_t
-		Arguments: void	
-
-	-o- beginFilter
-		Return: template<typename S> typename daughter_iterator<S>::boost::filter_iterator<S, const_iterator>
-		Arguments: const S&	s
-
-	-o- endFilter
-		Return: template<typename S> typename daughter_iterator<S>::boost::filter_iterator<S, const_iterator>
-		Arguments: const S&	s
-
-Methods from reco::Particle
 
 	-o- charge
 		Return: int
@@ -475,11 +320,11 @@ Methods from reco::Particle
 		Arguments: Charge	qx3
 
 	-o- p4
-		Return: const math::XYZTLorentzVectorD&
+		Return: const math::XYZTLorentzVector&
 		Arguments: void	
 
 	-o- polarP4
-		Return: const math::ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> >&
+		Return: const math::PtEtaPhiMLorentzVector&
 		Arguments: void	
 
 	-o- momentum
@@ -611,6 +456,14 @@ Methods from reco::Particle
 		Arguments: void	
 
 	-o- longLived
+		Return: bool
+		Arguments: void	
+
+	-o- setMassConstraint
+		Return: void
+		Arguments: void	
+
+	-o- massConstraint
 		Return: bool
 		Arguments: void	
 

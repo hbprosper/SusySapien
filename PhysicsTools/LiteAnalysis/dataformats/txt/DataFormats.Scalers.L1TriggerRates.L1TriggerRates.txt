@@ -4,19 +4,19 @@ Class:
 Header:
 	DataFormats/Scalers/interface/L1TriggerRates.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:16:12 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:50 2010	lsclass.py $Revision:$
 
 Methods from L1TriggerRates
 
 	-o- computeRunRates
 		Return: void
-		Arguments: const L1TriggerScalers	t
+		Arguments: L1TriggerScalers const&	t
 
 	-o- computeRates
 		Return: void
-		Arguments: const L1TriggerScalers	t1
-		           const L1TriggerScalers	t2
+		Arguments: L1TriggerScalers const&	t1
+		           L1TriggerScalers const&	t2
 
 	-o- name
 		Return: std::string
@@ -31,7 +31,7 @@ Methods from L1TriggerRates
 		Arguments: void	
 
 	-o- collectionTimeSummary
-		Return: struct timespec
+		Return: timespec
 		Arguments: void	
 
 	-o- deltaT
@@ -127,7 +127,7 @@ Methods from L1TriggerRates
 		Arguments: void	
 
 	-o- collectionTimeDetails
-		Return: struct timespec
+		Return: timespec
 		Arguments: void	
 
 	-o- triggerNumberRunRate

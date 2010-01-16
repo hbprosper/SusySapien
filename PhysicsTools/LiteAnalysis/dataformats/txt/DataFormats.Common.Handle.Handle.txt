@@ -4,10 +4,27 @@ Class:
 Header:
 	DataFormats/Common/interface/Handle.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:16:02 2010	lsclass.py $Revision:$
+BaseClasses:
+	edm::HandleBase	DataFormats/Common/interface/HandleBase.h
+
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:41 2010	lsclass.py $Revision:$
 
 Methods from edm::Handle<T>
+
+	-o- product
+		Return: T const*
+		Arguments: void	
+
+Methods from edm::HandleBase
+
+	-o- clear
+		Return: void
+		Arguments: void	
+
+	-o- swap
+		Return: void
+		Arguments: HandleBase&	other
 
 	-o- isValid
 		Return: bool
@@ -15,10 +32,6 @@ Methods from edm::Handle<T>
 
 	-o- failedToGet
 		Return: bool
-		Arguments: void	
-
-	-o- product
-		Return: T const*
 		Arguments: void	
 
 	-o- provenance
@@ -29,11 +42,7 @@ Methods from edm::Handle<T>
 		Return: ProductID
 		Arguments: void	
 
-	-o- clear
-		Return: void
+	-o- whyFailed
+		Return: boost::shared_ptr<cms::Exception>
 		Arguments: void	
-
-	-o- swap
-		Return: void
-		Arguments: Handle<T>&	other
 

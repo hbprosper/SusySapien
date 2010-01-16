@@ -2,12 +2,14 @@
 <!--
 ==============================================================================
   XML File: MuonEnergy.xml
-  Created:  Thu Jan 14 22:47:45 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:50 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/MuonReco/interface/MuonEnergy.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/MuonReco/interface/MuonEnergy.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/MuonReco/interface/MuonEnergy.h">
 
+    <include name="&quot;DataFormats/DetId/interface/DetId.h&quot;"/>
+    <include name="&quot;DataFormats/Math/interface/Point3D.h&quot;"/>
 
     <namespace name="reco">
 
@@ -42,35 +44,92 @@ float em;
                 <member>
 float emS9;
                     <comment>
-           crossed crystal
+           energy deposited in 3x3 ECAL crystal shape around central crystal
+                    </comment>
+                </member>
+
+                <member>
+float emS25;
+                    <comment>
+           energy deposited in 5x5 ECAL crystal shape around central crystal
+                    </comment>
+                </member>
+
+                <member>
+float emMax;
+                    <comment>
+           maximal energy of ECAL crystal in the 5x5 shape
                     </comment>
                 </member>
 
                 <member>
 float had;
                     <comment>
-           energy deposited in crossed HCAL tower (RecHits)
+           energy deposited in crossed HCAL towers
                     </comment>
                 </member>
 
                 <member>
 float hadS9;
                     <comment>
-           crossed tower (RecHits)
+           energy deposited in 3x3 HCAL tower shape around central tower
+                    </comment>
+                </member>
+
+                <member>
+float hadMax;
+                    <comment>
+           maximal energy of HCAL tower in the 3x3 shape
                     </comment>
                 </member>
 
                 <member>
 float ho;
                     <comment>
-           energy deposited in crossed HO tower (RecHits)
+           energy deposited in crossed HO towers
                     </comment>
                 </member>
 
                 <member>
 float hoS9;
                     <comment>
-           crossed tower (RecHits)
+           energy deposited in 3x3 HO tower shape around central tower
+                    </comment>
+                </member>
+
+                <member>
+float ecal_time;
+                    <comment>
+           Calorimeter timing
+                    </comment>
+                </member>
+
+                <member>
+float hcal_time;
+                </member>
+
+                <member>
+math::XYZPoint ecal_position;
+                    <comment>
+           Trajectory position at the calorimeter
+                    </comment>
+                </member>
+
+                <member>
+math::XYZPoint hcal_position;
+                </member>
+
+                <member>
+DetId ecal_id;
+                    <comment>
+           DetId of the central ECAL crystal
+                    </comment>
+                </member>
+
+                <member>
+DetId hcal_id;
+                    <comment>
+           DetId of the central HCAL tower with smallest depth
                     </comment>
                 </member>
 
@@ -84,8 +143,23 @@ MuonEnergy();
 
             </section>
 
+            <typemap name="ecal_id"
+                     value="reco::MuonEnergy::ecal_id"
+                     type="member"/>
+            <typemap name="ecal_position"
+                     value="reco::MuonEnergy::ecal_position"
+                     type="member"/>
+            <typemap name="ecal_time"
+                     value="reco::MuonEnergy::ecal_time"
+                     type="member"/>
             <typemap name="em"
                      value="reco::MuonEnergy::em"
+                     type="member"/>
+            <typemap name="emMax"
+                     value="reco::MuonEnergy::emMax"
+                     type="member"/>
+            <typemap name="emS25"
+                     value="reco::MuonEnergy::emS25"
                      type="member"/>
             <typemap name="emS9"
                      value="reco::MuonEnergy::emS9"
@@ -93,8 +167,20 @@ MuonEnergy();
             <typemap name="had"
                      value="reco::MuonEnergy::had"
                      type="member"/>
+            <typemap name="hadMax"
+                     value="reco::MuonEnergy::hadMax"
+                     type="member"/>
             <typemap name="hadS9"
                      value="reco::MuonEnergy::hadS9"
+                     type="member"/>
+            <typemap name="hcal_id"
+                     value="reco::MuonEnergy::hcal_id"
+                     type="member"/>
+            <typemap name="hcal_position"
+                     value="reco::MuonEnergy::hcal_position"
+                     type="member"/>
+            <typemap name="hcal_time"
+                     value="reco::MuonEnergy::hcal_time"
                      type="member"/>
             <typemap name="ho"
                      value="reco::MuonEnergy::ho"
@@ -112,7 +198,9 @@ MuonEnergy();
         </class>
     </namespace>
 
+    <type name="DetId"/>
     <type name="float"/>
+    <type name="math::XYZPoint"/>
     <type name="reco::MuonEnergy"/>
     <type name="void"/>
 </header>

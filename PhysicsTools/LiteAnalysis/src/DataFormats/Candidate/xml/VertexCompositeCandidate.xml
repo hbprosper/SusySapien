@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: VertexCompositeCandidate.xml
-  Created:  Thu Jan 14 22:46:45 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:13 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/Candidate/interface/VertexCompositeCandidate.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Candidate/interface/VertexCompositeCandidate.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/Candidate/interface/VertexCompositeCandidate.h">
 
     <include name="&quot;DataFormats/Candidate/interface/VertexCompositeCandidateFwd.h&quot;"/>
     <include name="&quot;DataFormats/Candidate/interface/CompositeCandidate.h&quot;"/>
@@ -46,17 +46,6 @@ VertexCompositeCandidate(Charge q, const LorentzVector&amp; p4, const Point&amp;
                              vars="['q','p4','vtx','err','chi2','ndof','pdgId','status','integerCharge']"
                              qual="">
 VertexCompositeCandidate(Charge q, const LorentzVector&amp; p4, const Point&amp; vtx, const CovarianceMatrix&amp; err, double chi2, double ndof, int pdgId=0, int status=0, bool integerCharge=true);
-                    <comment>
-        constructor from values
-                    </comment>
-                </constructor>
-
-                <constructor name="VertexCompositeCandidate"
-                             return="explicit"
-                             args="['const Particle&amp;']"
-                             vars="['p']"
-                             qual="">
-explicit VertexCompositeCandidate(const Particle&amp; p);
                     <comment>
         constructor from values
                     </comment>
@@ -201,7 +190,6 @@ void setCovariance(const CovarianceMatrix&amp; m);
     <type name="const CompositeCandidate&amp;"/>
     <type name="const CovarianceMatrix&amp;"/>
     <type name="const LorentzVector&amp;"/>
-    <type name="const Particle&amp;"/>
     <type name="const Point&amp;"/>
     <type name="double"/>
     <type name="int"/>

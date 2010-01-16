@@ -2,13 +2,14 @@
 <!--
 ==============================================================================
   XML File: DetSet.xml
-  Created:  Thu Jan 14 22:45:56 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:45:28 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/Common/interface/DetSet.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/DetSet.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/Common/interface/DetSet.h">
 
     <include name="&lt;vector&gt;"/>
+    <include name="&lt;stdint.h&gt;"/>
 
     <namespace name="edm">
         <typedef name="det_id_type"

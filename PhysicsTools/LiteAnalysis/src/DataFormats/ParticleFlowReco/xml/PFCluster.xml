@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: PFCluster.xml
-  Created:  Thu Jan 14 22:47:57 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:01 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/ParticleFlowReco/interface/PFCluster.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/ParticleFlowReco/interface/PFCluster.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/ParticleFlowReco/interface/PFCluster.h">
 
     <include name="&quot;DataFormats/CaloRecHit/interface/CaloCluster.h&quot;"/>
     <include name="&quot;Math/GenVector/PositionVector3D.h&quot;"/>
@@ -60,9 +60,6 @@ typedef ROOT::Math::PositionVector3D&lt;ROOT::Math::CylindricalEta3D&lt;Double32
                              vars="['']"
                              qual="">
 PFCluster();
-                    <comment>
-        default constructor
-                    </comment>
                 </constructor>
 
                 <constructor name="PFCluster"
@@ -160,7 +157,7 @@ const REPPoint&amp; positionREP() const;
                          qual="">
 void calculatePositionREP();
                     <comment>
-        calculates posrep_ once and for all
+        computes posrep_ once and for all
                     </comment>
                 </method1>
 

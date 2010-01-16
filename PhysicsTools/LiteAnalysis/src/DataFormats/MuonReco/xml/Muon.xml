@@ -2,17 +2,18 @@
 <!--
 ==============================================================================
   XML File: Muon.xml
-  Created:  Thu Jan 14 22:47:43 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:49 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/MuonReco/interface/Muon.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/MuonReco/interface/Muon.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/MuonReco/interface/Muon.h">
 
     <include name="&quot;DataFormats/RecoCandidate/interface/RecoCandidate.h&quot;"/>
     <include name="&quot;DataFormats/MuonReco/interface/MuonChamberMatch.h&quot;"/>
     <include name="&quot;DataFormats/MuonReco/interface/MuonIsolation.h&quot;"/>
     <include name="&quot;DataFormats/MuonReco/interface/MuonEnergy.h&quot;"/>
     <include name="&quot;DataFormats/MuonReco/interface/MuonTime.h&quot;"/>
+    <include name="&quot;DataFormats/MuonReco/interface/MuonQuality.h&quot;"/>
 
     <namespace name="reco">
 
@@ -60,17 +61,14 @@ Muon* clone() const;
                          vars="['']"
                          qual="const">
 virtual TrackRef innerTrack() const;
-                    <comment>
-        reference to Track reconstructed in the tracker only
-                    </comment>
                 </method1>
 
                 <method1 name="track"
                          return="virtual TrackRef"
                          args="['void']"
                          vars="['']"
-                         qual="const ">
-virtual TrackRef track() const ;
+                         qual="const">
+virtual TrackRef track() const;
                 </method1>
 
                 <method1 name="outerTrack"
@@ -88,8 +86,8 @@ virtual TrackRef outerTrack() const;
                          return="virtual TrackRef"
                          args="['void']"
                          vars="['']"
-                         qual="const ">
-virtual TrackRef standAloneMuon() const ;
+                         qual="const">
+virtual TrackRef standAloneMuon() const;
                 </method1>
 
                 <method1 name="globalTrack"
@@ -107,8 +105,8 @@ virtual TrackRef globalTrack() const;
                          return="virtual TrackRef"
                          args="['void']"
                          vars="['']"
-                         qual="const ">
-virtual TrackRef combinedMuon() const ;
+                         qual="const">
+virtual TrackRef combinedMuon() const;
                 </method1>
 
                 <method1 name="setInnerTrack"
@@ -127,7 +125,7 @@ virtual void setInnerTrack(const TrackRef&amp; t);
                          args="['const TrackRef&amp;']"
                          vars="['t']"
                          qual="">
-virtual void setTrack(const TrackRef&amp; t) ;
+virtual void setTrack(const TrackRef&amp; t);
                 </method1>
 
                 <method1 name="setOuterTrack"
@@ -146,7 +144,7 @@ virtual void setOuterTrack(const TrackRef&amp; t);
                          args="['const TrackRef&amp;']"
                          vars="['t']"
                          qual="">
-virtual void setStandAlone(const TrackRef&amp; t) ;
+virtual void setStandAlone(const TrackRef&amp; t);
                 </method1>
 
                 <method1 name="setGlobalTrack"
@@ -165,7 +163,7 @@ virtual void setGlobalTrack(const TrackRef&amp; t);
                          args="['const TrackRef&amp;']"
                          vars="['t']"
                          qual="">
-virtual void setCombined(const TrackRef&amp; t) ;
+virtual void setCombined(const TrackRef&amp; t);
                 </method1>
 
                 <method1 name="isEnergyValid"
@@ -196,6 +194,39 @@ MuonEnergy calEnergy() const;
                          vars="['calEnergy']"
                          qual="">
 void setCalEnergy(const MuonEnergy&amp; calEnergy);
+                    <comment>
+        set energy deposition information
+                    </comment>
+                </method1>
+
+                <method1 name="isQualityValid"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isQualityValid() const;
+                    <comment>
+        energy deposition
+                    </comment>
+                </method1>
+
+                <method1 name="combinedQuality"
+                         return="MuonQuality"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+MuonQuality combinedQuality() const;
+                    <comment>
+        get energy deposition information
+                    </comment>
+                </method1>
+
+                <method1 name="setCombinedQuality"
+                         return="void"
+                         args="['const MuonQuality&amp;']"
+                         vars="['combinedQuality']"
+                         qual="">
+void setCombinedQuality(const MuonQuality&amp; combinedQuality);
                     <comment>
         set energy deposition information
                     </comment>
@@ -302,14 +333,6 @@ void setCaloCompatibility(float input);
 bool isCaloCompatibilityValid() const;
                 </method1>
 
-                <method1 name="segmentCompatibility"
-                         return="float"
-                         args="['void']"
-                         vars="['']"
-                         qual="const">
-float segmentCompatibility() const;
-                </method1>
-
                 <method1 name="isolationR03"
                          return="const MuonIsolation&amp;"
                          args="['void']"
@@ -343,53 +366,6 @@ void setIsolation(const MuonIsolation&amp; isoR03, const MuonIsolation&amp; isoR
                          vars="['']"
                          qual="const">
 bool isIsolationValid() const;
-                </method1>
-
-                <enum name="SelectionType">
-enum SelectionType {
-
-         All, 
-         AllGlobalMuons, 
-         AllStandAloneMuons, 
-         AllTrackerMuons, 
-  TrackerMuonArbitrated, 
-         AllArbitrated, 
-         GlobalMuonPromptTight, 
-  TMLastStationLoose, 
-  TMLastStationTight, 
-  TM2DCompatibilityLoose, 
-  TM2DCompatibilityTight, 
-         TMOneStationLoose, 
-         TMOneStationTight, 
-         TMLastStationOptimizedLowPtLoose, 
-         TMLastStationOptimizedLowPtTight
-    };
-                    <field name="All" value=""/>
-                    <field name="AllGlobalMuons" value=""/>
-                    <field name="AllStandAloneMuons" value=""/>
-                    <field name="AllTrackerMuons" value=""/>
-                    <field name="TrackerMuonArbitrated" value=""/>
-                    <field name="AllArbitrated" value=""/>
-                    <field name="GlobalMuonPromptTight" value=""/>
-                    <field name="TMLastStationLoose" value=""/>
-                    <field name="TMLastStationTight" value=""/>
-                    <field name="TM2DCompatibilityLoose" value=""/>
-                    <field name="TM2DCompatibilityTight" value=""/>
-                    <field name="TMOneStationLoose" value=""/>
-                    <field name="TMOneStationTight" value=""/>
-                    <field name="TMLastStationOptimizedLowPtLoose" value=""/>
-                    <field name="TMLastStationOptimizedLowPtTight" value=""/>
-                    <comment>
-        object
-                    </comment>
-                </enum>
-
-                <method1 name="isGood"
-                         return="bool"
-                         args="['SelectionType=AllArbitrated']"
-                         vars="['type']"
-                         qual="const">
-bool isGood(SelectionType type=AllArbitrated) const;
                 </method1>
 
                 <enum name="ArbitrationType">
@@ -785,26 +761,8 @@ float t0(int n=0);
 
             </section>
 
-            <typemap name="All"
-                     value="reco::Muon::All"
-                     type="enum"/>
-            <typemap name="AllArbitrated"
-                     value="reco::Muon::AllArbitrated"
-                     type="enum"/>
-            <typemap name="AllGlobalMuons"
-                     value="reco::Muon::AllGlobalMuons"
-                     type="enum"/>
-            <typemap name="AllStandAloneMuons"
-                     value="reco::Muon::AllStandAloneMuons"
-                     type="enum"/>
-            <typemap name="AllTrackerMuons"
-                     value="reco::Muon::AllTrackerMuons"
-                     type="enum"/>
             <typemap name="ArbitrationType"
                      value="reco::Muon::ArbitrationType"
-                     type="enum"/>
-            <typemap name="GlobalMuonPromptTight"
-                     value="reco::Muon::GlobalMuonPromptTight"
                      type="enum"/>
             <typemap name="NoArbitration"
                      value="reco::Muon::NoArbitration"
@@ -815,36 +773,6 @@ float t0(int n=0);
             <typemap name="SegmentArbitration"
                      value="reco::Muon::SegmentArbitration"
                      type="enum"/>
-            <typemap name="SelectionType"
-                     value="reco::Muon::SelectionType"
-                     type="enum"/>
-            <typemap name="TM2DCompatibilityLoose"
-                     value="reco::Muon::TM2DCompatibilityLoose"
-                     type="enum"/>
-            <typemap name="TM2DCompatibilityTight"
-                     value="reco::Muon::TM2DCompatibilityTight"
-                     type="enum"/>
-            <typemap name="TMLastStationLoose"
-                     value="reco::Muon::TMLastStationLoose"
-                     type="enum"/>
-            <typemap name="TMLastStationOptimizedLowPtLoose"
-                     value="reco::Muon::TMLastStationOptimizedLowPtLoose"
-                     type="enum"/>
-            <typemap name="TMLastStationOptimizedLowPtTight"
-                     value="reco::Muon::TMLastStationOptimizedLowPtTight"
-                     type="enum"/>
-            <typemap name="TMLastStationTight"
-                     value="reco::Muon::TMLastStationTight"
-                     type="enum"/>
-            <typemap name="TMOneStationLoose"
-                     value="reco::Muon::TMOneStationLoose"
-                     type="enum"/>
-            <typemap name="TMOneStationTight"
-                     value="reco::Muon::TMOneStationTight"
-                     type="enum"/>
-            <typemap name="TrackerMuonArbitrated"
-                     value="reco::Muon::TrackerMuonArbitrated"
-                     type="enum"/>
 
         </class>
     </namespace>
@@ -853,20 +781,20 @@ float t0(int n=0);
     <type name="Charge"/>
     <type name="Muon*"/>
     <type name="MuonEnergy"/>
+    <type name="MuonQuality"/>
     <type name="MuonTime"/>
     <type name="RecoCandidate"/>
-    <type name="SelectionType"/>
     <type name="TrackRef"/>
     <type name="bool"/>
     <type name="const LorentzVector&amp;"/>
     <type name="const MuonEnergy&amp;"/>
     <type name="const MuonIsolation&amp;"/>
+    <type name="const MuonQuality&amp;"/>
     <type name="const MuonTime&amp;"/>
     <type name="const Point&amp;"/>
     <type name="const TrackRef&amp;"/>
     <type name="const std::vector&lt;MuonChamberMatch&gt;&amp;"/>
     <type name="enum ArbitrationType"/>
-    <type name="enum SelectionType"/>
     <type name="float"/>
     <type name="int"/>
     <type name="reco::Muon"/>

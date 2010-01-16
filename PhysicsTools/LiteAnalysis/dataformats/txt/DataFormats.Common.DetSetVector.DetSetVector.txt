@@ -4,8 +4,8 @@ Class:
 Header:
 	DataFormats/Common/interface/DetSetVector.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:50 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:31 2010	lsclass.py $Revision:$
 
 Methods from edm::DetSetVector<T>
 
@@ -32,38 +32,4 @@ Methods from edm::DetSetVector<T>
 	-o- find
 		Return: typename std::vector<detset>::iterator
 		Arguments: det_id_type	id
-
-	-o- find
-		Return: typename collection_type::const_iterator
-		Arguments: det_id_type	id
-
-	-o- begin
-		Return: typename std::vector<detset>::iterator
-		Arguments: void	
-
-	-o- begin
-		Return: typename collection_type::const_iterator
-		Arguments: void	
-
-	-o- end
-		Return: typename std::vector<detset>::iterator
-		Arguments: void	
-
-	-o- end
-		Return: typename collection_type::const_iterator
-		Arguments: void	
-
-	-o- post_insert
-		Return: void
-		Arguments: void	
-
-	-o- getIds
-		Return: void
-		Arguments: std::vector<det_id_type>&	result
-
-	-o- fillView
-		Return: void
-		Arguments: ProductID const&	id
-		           std::vector<void const*>&	pointers
-		           helper_vector&	helpers
 

@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: LeafCandidate.xml
-  Created:  Thu Jan 14 22:46:42 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:10 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/Candidate/interface/LeafCandidate.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Candidate/interface/LeafCandidate.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/Candidate/interface/LeafCandidate.h">
 
     <include name="&quot;DataFormats/Candidate/interface/Candidate.h&quot;"/>
     <include name="&quot;DataFormats/Candidate/interface/iterator_imp_specific.h&quot;"/>
@@ -29,6 +29,51 @@ typedef CandidateCollection daughters;
                     </comment>
                 </typedef>
 
+                <typedef name="Charge"
+                         value="int">
+typedef int Charge;
+                    <comment>
+        electric charge type
+                    </comment>
+                </typedef>
+
+                <typedef name="LorentzVector"
+                         value="math::XYZTLorentzVector">
+typedef math::XYZTLorentzVector LorentzVector;
+                    <comment>
+        Lorentz vector
+                    </comment>
+                </typedef>
+
+                <typedef name="PolarLorentzVector"
+                         value="math::PtEtaPhiMLorentzVector">
+typedef math::PtEtaPhiMLorentzVector PolarLorentzVector;
+                    <comment>
+        Lorentz vector
+                    </comment>
+                </typedef>
+
+                <typedef name="Point"
+                         value="math::XYZPoint">
+typedef math::XYZPoint Point;
+                    <comment>
+        point in the space
+                    </comment>
+                </typedef>
+
+                <typedef name="Vector"
+                         value="math::XYZVector">
+typedef math::XYZVector Vector;
+                    <comment>
+        point in the space
+                    </comment>
+                </typedef>
+
+                <typedef name="index"
+                         value="unsigned int">
+typedef unsigned int index;
+                </typedef>
+
                 <constructor name="LeafCandidate"
                              return=""
                              args="['void']"
@@ -42,12 +87,12 @@ LeafCandidate();
 
                 <constructor name="LeafCandidate"
                              return="explicit"
-                             args="['const Particle&amp;']"
-                             vars="['p']"
+                             args="['const Candidate&amp;']"
+                             vars="['c']"
                              qual="">
-explicit LeafCandidate(const Particle&amp; p);
+explicit LeafCandidate(const Candidate&amp; c);
                     <comment>
-        constructor from Particle
+       constructor from candidate
                     </comment>
                 </constructor>
 
@@ -67,7 +112,7 @@ LeafCandidate(Charge q, const LorentzVector&amp; p4, const Point&amp; vtx=Point(
                              args="['Charge','const PolarLorentzVector&amp;','const Point&amp;=Point(0, 0, 0)','int=0','int=0','bool=true']"
                              vars="['q','p4','vtx','pdgId','status','integerCharge']"
                              qual="">
-LeafCandidate(Charge q, const PolarLorentzVector&amp; p4, const Point&amp; vtx=Point(0, 0, 0), int pdgId=0, int status=0, bool integerCharge=true);
+LeafCandidate(Charge q, const PolarLorentzVector&amp; p4, const Point&amp; vtx=Point (0, 0, 0), int pdgId=0, int status=0, bool integerCharge=true);
                     <comment>
         constructor from values
                     </comment>
@@ -83,17 +128,6 @@ virtual ~LeafCandidate();
         destructor
                     </comment>
                 </destructor>
-
-                <method1 name="clone"
-                         return="virtual LeafCandidate*"
-                         args="['void']"
-                         vars="['']"
-                         qual="const">
-virtual LeafCandidate* clone() const;
-                    <comment>
-        returns a clone of the Candidate object
-                    </comment>
-                </method1>
 
                 <method1 name="begin"
                          return="virtual const_iterator"
@@ -194,10 +228,840 @@ virtual Candidate* daughter(size_type);
                     </comment>
                 </method1>
 
+                <method1 name="daughter"
+                         return="virtual Candidate*"
+                         args="['const std::string&amp;']"
+                         vars="['s']"
+                         qual="">
+virtual Candidate* daughter(const std::string&amp; s);
+                    <comment>
+        return daughter with a specified role name
+                    </comment>
+                </method1>
+
+                <method1 name="daughter"
+                         return="virtual const Candidate*"
+                         args="['const std::string&amp;']"
+                         vars="['s']"
+                         qual="const">
+virtual const Candidate* daughter(const std::string&amp; s) const;
+                    <comment>
+        return daughter with a specified role name
+                    </comment>
+                </method1>
+
+                <method1 name="numberOfSourceCandidatePtrs"
+                         return="virtual size_t"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual size_t numberOfSourceCandidatePtrs() const;
+                    <comment>
+        ( the candidates used to construct this Candidate)
+                    </comment>
+                </method1>
+
+                <method1 name="sourceCandidatePtr"
+                         return="virtual CandidatePtr"
+                         args="['size_type']"
+                         vars="['i']"
+                         qual="const">
+virtual CandidatePtr sourceCandidatePtr(size_type i) const;
+                    <comment>
+        ( the candidates used to construct this Candidate)
+                    </comment>
+                </method1>
+
+                <method1 name="charge"
+                         return="virtual int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual int charge() const;
+                    <comment>
+        electric charge
+                    </comment>
+                </method1>
+
+                <method1 name="setCharge"
+                         return="virtual void"
+                         args="['Charge']"
+                         vars="['q']"
+                         qual="">
+virtual void setCharge(Charge q);
+                    <comment>
+        set electric charge
+                    </comment>
+                </method1>
+
+                <method1 name="threeCharge"
+                         return="virtual int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual int threeCharge() const;
+                    <comment>
+        electric charge
+                    </comment>
+                </method1>
+
+                <method1 name="setThreeCharge"
+                         return="virtual void"
+                         args="['Charge']"
+                         vars="['qx3']"
+                         qual="">
+virtual void setThreeCharge(Charge qx3);
+                    <comment>
+        set electric charge
+                    </comment>
+                </method1>
+
+                <method1 name="p4"
+                         return="virtual const LorentzVector&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual const LorentzVector&amp; p4() const;
+                    <comment>
+        four-momentum Lorentz vector
+                    </comment>
+                </method1>
+
+                <method1 name="polarP4"
+                         return="virtual const PolarLorentzVector&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual const PolarLorentzVector&amp; polarP4() const;
+                    <comment>
+        four-momentum Lorentz vector
+                    </comment>
+                </method1>
+
+                <method1 name="momentum"
+                         return="virtual Vector"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual Vector momentum() const;
+                    <comment>
+        spatial momentum vector
+                    </comment>
+                </method1>
+
+                <method1 name="boostToCM"
+                         return="virtual Vector"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual Vector boostToCM() const;
+                    <comment>
+        to the particle center of mass system
+                    </comment>
+                </method1>
+
+                <method1 name="p"
+                         return="virtual double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual double p() const;
+                    <comment>
+        magnitude of momentum vector
+                    </comment>
+                </method1>
+
+                <method1 name="energy"
+                         return="virtual double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual double energy() const;
+                    <comment>
+        energy
+                    </comment>
+                </method1>
+
+                <method1 name="et"
+                         return="virtual double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual double et() const;
+                    <comment>
+        transverse energy
+                    </comment>
+                </method1>
+
+                <method1 name="mass"
+                         return="virtual double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual double mass() const;
+                    <comment>
+        mass
+                    </comment>
+                </method1>
+
+                <method1 name="massSqr"
+                         return="virtual double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual double massSqr() const;
+                    <comment>
+        mass squared
+                    </comment>
+                </method1>
+
+                <method1 name="mt"
+                         return="virtual double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual double mt() const;
+                    <comment>
+        transverse mass
+                    </comment>
+                </method1>
+
+                <method1 name="mtSqr"
+                         return="virtual double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual double mtSqr() const;
+                    <comment>
+        transverse mass squared
+                    </comment>
+                </method1>
+
+                <method1 name="px"
+                         return="virtual double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual double px() const;
+                    <comment>
+        x coordinate of momentum vector
+                    </comment>
+                </method1>
+
+                <method1 name="py"
+                         return="virtual double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual double py() const;
+                    <comment>
+        y coordinate of momentum vector
+                    </comment>
+                </method1>
+
+                <method1 name="pz"
+                         return="virtual double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual double pz() const;
+                    <comment>
+        z coordinate of momentum vector
+                    </comment>
+                </method1>
+
+                <method1 name="pt"
+                         return="virtual double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual double pt() const;
+                    <comment>
+        transverse momentum
+                    </comment>
+                </method1>
+
+                <method1 name="phi"
+                         return="virtual double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual double phi() const;
+                    <comment>
+        momentum azimuthal angle
+                    </comment>
+                </method1>
+
+                <method1 name="theta"
+                         return="virtual double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual double theta() const;
+                    <comment>
+        momentum polar angle
+                    </comment>
+                </method1>
+
+                <method1 name="eta"
+                         return="virtual double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual double eta() const;
+                    <comment>
+        momentum pseudorapidity
+                    </comment>
+                </method1>
+
+                <method1 name="rapidity"
+                         return="virtual double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual double rapidity() const;
+                    <comment>
+        rapidity
+                    </comment>
+                </method1>
+
+                <method1 name="y"
+                         return="virtual double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual double y() const;
+                    <comment>
+        rapidity
+                    </comment>
+                </method1>
+
+                <method1 name="setP4"
+                         return="virtual void"
+                         args="['const LorentzVector&amp;']"
+                         vars="['p4']"
+                         qual="">
+virtual void setP4(const LorentzVector&amp; p4);
+                    <comment>
+        set 4-momentum
+                    </comment>
+                </method1>
+
+                <method1 name="setP4"
+                         return="virtual void"
+                         args="['const PolarLorentzVector&amp;']"
+                         vars="['p4']"
+                         qual="">
+virtual void setP4(const PolarLorentzVector&amp; p4);
+                    <comment>
+        set 4-momentum
+                    </comment>
+                </method1>
+
+                <method1 name="setMass"
+                         return="virtual void"
+                         args="['double']"
+                         vars="['m']"
+                         qual="">
+virtual void setMass(double m);
+                    <comment>
+        set particle mass
+                    </comment>
+                </method1>
+
+                <method1 name="setPz"
+                         return="virtual void"
+                         args="['double']"
+                         vars="['pz']"
+                         qual="">
+virtual void setPz(double pz);
+                </method1>
+
+                <method1 name="vertex"
+                         return="virtual const Point&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual const Point&amp; vertex() const;
+                    <comment>
+        vertex position
+                    </comment>
+                </method1>
+
+                <method1 name="vx"
+                         return="virtual double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual double vx() const;
+                    <comment>
+        x coordinate of vertex position
+                    </comment>
+                </method1>
+
+                <method1 name="vy"
+                         return="virtual double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual double vy() const;
+                    <comment>
+        y coordinate of vertex position
+                    </comment>
+                </method1>
+
+                <method1 name="vz"
+                         return="virtual double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual double vz() const;
+                    <comment>
+        z coordinate of vertex position
+                    </comment>
+                </method1>
+
+                <method1 name="setVertex"
+                         return="virtual void"
+                         args="['const Point&amp;']"
+                         vars="['vertex']"
+                         qual="">
+virtual void setVertex(const Point&amp; vertex);
+                    <comment>
+        set vertex
+                    </comment>
+                </method1>
+
+                <method1 name="pdgId"
+                         return="virtual int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual int pdgId() const;
+                    <comment>
+        PDG identifier
+                    </comment>
+                </method1>
+
+                <method1 name="setPdgId"
+                         return="virtual void"
+                         args="['int']"
+                         vars="['pdgId']"
+                         qual="">
+virtual void setPdgId(int pdgId);
+                    <comment>
+       set PDG identifier
+                    </comment>
+                </method1>
+
+                <method1 name="status"
+                         return="virtual int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual int status() const;
+                    <comment>
+        status word
+                    </comment>
+                </method1>
+
+                <method1 name="setStatus"
+                         return="virtual void"
+                         args="['int']"
+                         vars="['status']"
+                         qual="">
+virtual void setStatus(int status);
+                    <comment>
+        set status word
+                    </comment>
+                </method1>
+
+                <constant name="longLivedTag"
+                          type="static const unsigned int"
+                          value=""/>
+                <method1 name="setLongLived"
+                         return="virtual void"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+virtual void setLongLived();
+                    <comment>
+        set long lived flag
+                    </comment>
+                </method1>
+
+                <method1 name="longLived"
+                         return="virtual bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual bool longLived() const;
+                    <comment>
+        is long lived?
+                    </comment>
+                </method1>
+
+                <constant name="massConstraintTag"
+                          type="static const unsigned int"
+                          value=""/>
+                <method1 name="setMassConstraint"
+                         return="virtual void"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+virtual void setMassConstraint();
+                    <comment>
+        set mass constraint flag
+                    </comment>
+                </method1>
+
+                <method1 name="massConstraint"
+                         return="virtual bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual bool massConstraint() const;
+                    <comment>
+        do mass constraint?
+                    </comment>
+                </method1>
+
+                <method1 name="clone"
+                         return="virtual LeafCandidate*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual LeafCandidate* clone() const;
+                    <comment>
+        returns a clone of the Candidate object
+                    </comment>
+                </method1>
+
+                <method1 name="vertexChi2"
+                         return="virtual double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual double vertexChi2() const;
+                    <comment>
+        chi-squares
+                    </comment>
+                </method1>
+
+                <method1 name="vertexNdof"
+                         return="virtual double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual double vertexNdof() const;
+                    <comment>
+        Number of degrees of freedom
+        Meant to be Double32_t for soft-assignment fitters:
+        tracks may contribute to the vertex with fractional weights.
+        The ndof is then = to the sum of the track weights.
+        see e.g. CMS NOTE-2006/032, CMS NOTE-2004/002
+                    </comment>
+                </method1>
+
+                <method1 name="vertexNormalizedChi2"
+                         return="virtual double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual double vertexNormalizedChi2() const;
+                    <comment>
+        chi-squared divided by n.d.o.f.
+                    </comment>
+                </method1>
+
+                <method1 name="vertexCovariance"
+                         return="virtual double"
+                         args="['int','int']"
+                         vars="['i','j']"
+                         qual="const">
+virtual double vertexCovariance(int i, int j) const;
+                    <comment>
+        (i, j)-th element of error matrix, i, j = 0, ... 2
+                    </comment>
+                </method1>
+
+                <method1 name="vertexCovariance"
+                         return="CovarianceMatrix"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+CovarianceMatrix vertexCovariance() const;
+                    <comment>
+        return SMatrix
+                    </comment>
+                </method1>
+
+                <method1 name="fillVertexCovariance"
+                         return="virtual void"
+                         args="['CovarianceMatrix&amp;']"
+                         vars="['v']"
+                         qual="const">
+virtual void fillVertexCovariance(CovarianceMatrix&amp; v) const;
+                    <comment>
+        fill SMatrix
+                    </comment>
+                </method1>
+
+                <method1 name="hasMasterClone"
+                         return="virtual bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual bool hasMasterClone() const;
+                    <comment>
+        This only happens if the concrete Candidate type is ShallowCloneCandidate
+                    </comment>
+                </method1>
+
+                <method1 name="masterClone"
+                         return="virtual const CandidateBaseRef&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual const CandidateBaseRef&amp; masterClone() const;
+                    <comment>
+        Throws an exception unless the concrete Candidate type is ShallowCloneCandidate
+                    </comment>
+                </method1>
+
+                <method1 name="hasMasterClonePtr"
+                         return="virtual bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual bool hasMasterClonePtr() const;
+                    <comment>
+        This only happens if the concrete Candidate type is ShallowClonePtrCandidate
+                    </comment>
+                </method1>
+
+                <method1 name="masterClonePtr"
+                         return="virtual const CandidatePtr&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual const CandidatePtr&amp; masterClonePtr() const;
+                    <comment>
+        Throws an exception unless the concrete Candidate type is ShallowClonePtrCandidate
+                    </comment>
+                </method1>
+
+                <method2 name="masterRef"
+                         return="template&lt;typename Ref&gt; Ref"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+template&lt;typename Ref&gt;       Ref masterRef() const;
+                    <comment>
+        cast master clone reference to a concrete type
+                    </comment>
+                </method2>
+
+                <method2 name="get"
+                         return="template&lt;typename T&gt; T"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+template&lt;typename T&gt; T get() const;
+                    <comment>
+        get a component
+                    </comment>
+                </method2>
+
+                <method2 name="get"
+                         return="template&lt;typename T, typename Tag&gt; T"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+template&lt;typename T, typename Tag&gt; T get() const;
+                    <comment>
+        get a component
+                    </comment>
+                </method2>
+
+                <method2 name="get"
+                         return="template&lt;typename T&gt; T"
+                         args="['size_type']"
+                         vars="['i']"
+                         qual="const">
+template&lt;typename T&gt; T get(size_type i) const;
+                    <comment>
+        get a component
+                    </comment>
+                </method2>
+
+                <method2 name="get"
+                         return="template&lt;typename T, typename Tag&gt; T"
+                         args="['size_type']"
+                         vars="['i']"
+                         qual="const">
+template&lt;typename T, typename Tag&gt; T get(size_type i) const;
+                    <comment>
+        get a component
+                    </comment>
+                </method2>
+
+                <method2 name="numberOf"
+                         return="template&lt;typename T&gt; size_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+template&lt;typename T&gt; size_type numberOf() const;
+                    <comment>
+        number of components
+                    </comment>
+                </method2>
+
+                <method2 name="numberOf"
+                         return="template&lt;typename T, typename Tag&gt; size_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+template&lt;typename T, typename Tag&gt; size_type numberOf() const;
+                    <comment>
+        number of components
+                    </comment>
+                </method2>
+
+
+                <class name="daughter_iterator"
+                       fullname="reco::LeafCandidate::daughter_iterator&lt;S&gt;"
+                       module="DataFormats.Candidate"
+                       project=""
+                       type="template struct"
+                       template="template&lt;typename S&gt;">
+
+                    <section>
+                        <typedef name="type"
+                                 value="boost::filter_iterator&lt;S, const_iterator&gt;">
+typedef boost::filter_iterator&lt;S, const_iterator&gt; type;
+                        </typedef>
+
+                    </section>
+
+                    <typemap name="daughter_iterator"
+                             value="reco::LeafCandidate::daughter_iterator&lt;S&gt;"
+                             type="class"/>
+                    <typemap name="type"
+                             value="boost::filter_iterator&lt;S, const_iterator&gt;"
+                             type="typedef"/>
+
+                </class>
+                <method2 name="beginFilter"
+                         return="template&lt;typename S&gt; typename daughter_iterator&lt;S&gt;::type"
+                         args="['const S&amp;']"
+                         vars="['s']"
+                         qual="const">
+template&lt;typename S&gt;       typename daughter_iterator&lt;S&gt;::type beginFilter(const S&amp; s) const;
+                </method2>
+
+                <method2 name="endFilter"
+                         return="template&lt;typename S&gt; typename daughter_iterator&lt;S&gt;::type"
+                         args="['const S&amp;']"
+                         vars="['s']"
+                         qual="const">
+template&lt;typename S&gt;       typename daughter_iterator&lt;S&gt;::type endFilter(const S&amp; s) const;
+                </method2>
+
+                <method1 name="isElectron"
+                         return="virtual bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual bool isElectron() const;
+                </method1>
+
+                <method1 name="isMuon"
+                         return="virtual bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual bool isMuon() const;
+                </method1>
+
+                <method1 name="isStandAloneMuon"
+                         return="virtual bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual bool isStandAloneMuon() const;
+                </method1>
+
+                <method1 name="isGlobalMuon"
+                         return="virtual bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual bool isGlobalMuon() const;
+                </method1>
+
+                <method1 name="isTrackerMuon"
+                         return="virtual bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual bool isTrackerMuon() const;
+                </method1>
+
+                <method1 name="isCaloMuon"
+                         return="virtual bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual bool isCaloMuon() const;
+                </method1>
+
+                <method1 name="isPhoton"
+                         return="virtual bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual bool isPhoton() const;
+                </method1>
+
+                <method1 name="isConvertedPhoton"
+                         return="virtual bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual bool isConvertedPhoton() const;
+                </method1>
+
+                <method1 name="isJet"
+                         return="virtual bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual bool isJet() const;
+                </method1>
+
             </section>
 
+            <typemap name="Charge"
+                     value="int"
+                     type="typedef"/>
+            <typemap name="LorentzVector"
+                     value="math::XYZTLorentzVector"
+                     type="typedef"/>
+            <typemap name="Point"
+                     value="math::XYZPoint"
+                     type="typedef"/>
+            <typemap name="PolarLorentzVector"
+                     value="math::PtEtaPhiMLorentzVector"
+                     type="typedef"/>
+            <typemap name="Vector"
+                     value="math::XYZVector"
+                     type="typedef"/>
             <typemap name="daughters"
                      value="CandidateCollection"
+                     type="typedef"/>
+            <typemap name="index"
+                     value="unsigned int"
                      type="typedef"/>
 
         </class>
@@ -205,19 +1069,34 @@ virtual Candidate* daughter(size_type);
 
     <type name="Candidate"/>
     <type name="Candidate*"/>
+    <type name="CandidatePtr"/>
     <type name="Charge"/>
+    <type name="CovarianceMatrix"/>
+    <type name="CovarianceMatrix&amp;"/>
     <type name="LeafCandidate*"/>
+    <type name="Vector"/>
     <type name="bool"/>
+    <type name="const Candidate&amp;"/>
     <type name="const Candidate*"/>
+    <type name="const CandidateBaseRef&amp;"/>
+    <type name="const CandidatePtr&amp;"/>
     <type name="const LorentzVector&amp;"/>
-    <type name="const Particle&amp;"/>
     <type name="const Point&amp;"/>
     <type name="const PolarLorentzVector&amp;"/>
+    <type name="const std::string&amp;"/>
     <type name="const_iterator"/>
+    <type name="double"/>
     <type name="int"/>
     <type name="iterator"/>
     <type name="reco::LeafCandidate"/>
+    <type name="reco::LeafCandidate::daughter_iterator&lt;S&gt;"/>
     <type name="size_t"/>
     <type name="size_type"/>
+    <type name="template&lt;typename Ref&gt; Ref"/>
+    <type name="template&lt;typename S&gt; typename daughter_iterator&lt;S&gt;::type"/>
+    <type name="template&lt;typename T, typename Tag&gt; T"/>
+    <type name="template&lt;typename T, typename Tag&gt; size_type"/>
+    <type name="template&lt;typename T&gt; T"/>
+    <type name="template&lt;typename T&gt; size_type"/>
     <type name="void"/>
 </header>

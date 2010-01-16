@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: MHT.xml
-  Created:  Thu Jan 14 22:48:15 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:13 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/PatCandidates/interface/MHT.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/PatCandidates/interface/MHT.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/PatCandidates/interface/MHT.h">
 
     <include name="&quot;DataFormats/Candidate/interface/CompositeRefBaseCandidate.h&quot;"/>
     <include name="&quot;DataFormats/Candidate/interface/Candidate.h&quot;"/>
@@ -31,10 +31,10 @@ MHT ();
 
                 <constructor name="MHT"
                              return=""
-                             args="['const Particle::LorentzVector&amp;','double','double']"
+                             args="['const Candidate::LorentzVector&amp;','double','double']"
                              vars="['p4','ht','signif']"
                              qual="">
-MHT (const Particle::LorentzVector&amp; p4, double ht, double signif);
+MHT (const Candidate::LorentzVector&amp; p4, double ht, double signif);
                 </constructor>
 
                 <destructor name="~MHT"
@@ -85,6 +85,54 @@ double significance() const;
 double error() const;
                 </method1>
 
+                <method1 name="getNumberOfJets"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double getNumberOfJets() const;
+                </method1>
+
+                <method1 name="setNumberOfJets"
+                         return="void"
+                         args="['const double&amp;']"
+                         vars="['numberOfJets']"
+                         qual="">
+void setNumberOfJets(const double&amp; numberOfJets);
+                </method1>
+
+                <method1 name="getNumberOfElectrons"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double getNumberOfElectrons() const;
+                </method1>
+
+                <method1 name="setNumberOfElectrons"
+                         return="void"
+                         args="['const double&amp;']"
+                         vars="['numberOfElectrons']"
+                         qual="">
+void setNumberOfElectrons(const double&amp; numberOfElectrons);
+                </method1>
+
+                <method1 name="getNumberOfMuons"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double getNumberOfMuons() const;
+                </method1>
+
+                <method1 name="setNumberOfMuons"
+                         return="void"
+                         args="['const double&amp;']"
+                         vars="['numberOfMuons']"
+                         qual="">
+void setNumberOfMuons(const double&amp; numberOfMuons);
+                </method1>
+
             </section>
 
         </class>
@@ -95,7 +143,8 @@ typedef std::vector&lt;pat::MHT&gt; MHTCollection;
 
     </namespace>
 
-    <type name="const Particle::LorentzVector&amp;"/>
+    <type name="const Candidate::LorentzVector&amp;"/>
+    <type name="const double&amp;"/>
     <type name="double"/>
     <type name="pat::MHT"/>
     <type name="reco::CompositeRefBaseCandidate"/>

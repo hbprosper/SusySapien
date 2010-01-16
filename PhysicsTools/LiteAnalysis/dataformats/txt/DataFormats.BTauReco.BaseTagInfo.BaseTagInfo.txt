@@ -4,8 +4,8 @@ Class:
 Header:
 	DataFormats/BTauReco/interface/BaseTagInfo.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:14:48 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:55:43 2010	lsclass.py $Revision:$
 
 Methods from reco::BaseTagInfo
 
@@ -14,7 +14,7 @@ Methods from reco::BaseTagInfo
 		Arguments: void	
 
 	-o- tracks
-		Return: edm::RefVector<std::vector<Track>>
+		Return: TrackRefVector
 		Arguments: void	
 
 	-o- hasTracks

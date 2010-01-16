@@ -2,17 +2,21 @@ reco::SuperCluster|double|rawEnergy|void
 reco::SuperCluster|double|preshowerEnergy|void
 reco::SuperCluster|double|phiWidth|void
 reco::SuperCluster|double|etaWidth|void
-reco::SuperCluster|const edm::Ref<std::vector<BasicCluster>>&|seed|void
-reco::SuperCluster|BasicClusterRefVector::iterator|clustersBegin|void
-reco::SuperCluster|BasicClusterRefVector::iterator|clustersEnd|void
+reco::SuperCluster|const CaloClusterPtr&|seed|void
+reco::SuperCluster|CaloCluster_iterator|clustersBegin|void
+reco::SuperCluster|CaloCluster_iterator|clustersEnd|void
+reco::SuperCluster|CaloCluster_iterator|preshowerClustersBegin|void
+reco::SuperCluster|CaloCluster_iterator|preshowerClustersEnd|void
 reco::SuperCluster|size_t|clustersSize|void
-reco::SuperCluster|std::vector<DetId>|getHitsByDetId|void
 reco::CaloCluster|double|energy|void
-reco::CaloCluster|const math::ROOT::Math::PositionVector3D<ROOT::Math::Cartesian3D<double> >&|position|void
+reco::CaloCluster|const math::XYZPoint&|position|void
 reco::CaloCluster|double|x|void
 reco::CaloCluster|double|y|void
 reco::CaloCluster|double|z|void
 reco::CaloCluster|double|eta|void
 reco::CaloCluster|double|phi|void
-reco::CaloCluster|CaloID&|caloID|void
+reco::CaloCluster|size_t|size|void
+reco::CaloCluster|AlgoId|algo|void
+reco::CaloCluster|AlgoId|algoID|void
 reco::CaloCluster|const CaloID&|caloID|void
+reco::CaloCluster|std::string|printHitAndFraction|unsigned

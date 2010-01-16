@@ -2,15 +2,14 @@
 <!--
 ==============================================================================
   XML File: DetSet2RangeMap.xml
-  Created:  Thu Jan 14 22:45:56 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:45:28 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/Common/interface/DetSet2RangeMap.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/DetSet2RangeMap.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/Common/interface/DetSet2RangeMap.h">
 
     <include name="&quot;DataFormats/Common/interface/DetSetVectorNew.h&quot;"/>
     <include name="&quot;DataFormats/Common/interface/RangeMap.h&quot;"/>
-    <include name="&quot;DataFormats/DetId/interface/DetId.h&quot;"/>
     <include name="&lt;boost/ref.hpp&gt;"/>
     <include name="&lt;algorithm&gt;"/>
 
@@ -34,14 +33,14 @@
                 <section>
                     <constructor name="ToRM"
                                  return=""
-                                 args="['edm::RangeMap&lt;DetId, edm::OwnVector&lt;B&gt; &gt;&amp;']"
+                                 args="['edm::RangeMap&lt;det_id_type, edm::OwnVector&lt;B&gt; &gt;&amp;']"
                                  vars="['irm']"
                                  qual="">
-ToRM(edm::RangeMap&lt;DetId, edm::OwnVector&lt;B&gt; &gt;&amp; irm);
+ToRM(edm::RangeMap&lt;det_id_type, edm::OwnVector&lt;B&gt; &gt;&amp; irm);
                     </constructor>
 
                     <member>
-edm::RangeMap&lt;DetId, edm::OwnVector&lt;B&gt; &gt;* rm;
+edm::RangeMap&lt;det_id_type, edm::OwnVector&lt;B&gt; &gt;* rm;
                     </member>
 
                     <operator name="operator()"
@@ -62,8 +61,8 @@ template&lt;typename T&gt;       void operatorPP(edmNew::DetSet&lt;T&gt; const&a
         </namespace>
     </namespace>
 
-    <type name="edm::RangeMap&lt;DetId, edm::OwnVector&lt;B&gt; &gt;&amp;"/>
-    <type name="edm::RangeMap&lt;DetId, edm::OwnVector&lt;B&gt; &gt;*"/>
+    <type name="edm::RangeMap&lt;det_id_type, edm::OwnVector&lt;B&gt; &gt;&amp;"/>
+    <type name="edm::RangeMap&lt;det_id_type, edm::OwnVector&lt;B&gt; &gt;*"/>
     <type name="edmNew::DetSet&lt;T&gt; const&amp;"/>
     <type name="edmNew::dstvdetails::ToRM&lt;B&gt;"/>
     <type name="template&lt;typename T&gt; void"/>

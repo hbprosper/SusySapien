@@ -4,8 +4,8 @@ Class:
 Header:
 	DataFormats/ParticleFlowReco/interface/PFTrajectoryPoint.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:14:30 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:55:34 2010	lsclass.py $Revision:$
 
 Methods from reco::PFTrajectoryPoint
 
@@ -26,7 +26,7 @@ Methods from reco::PFTrajectoryPoint
 		Arguments: void	
 
 	-o- position
-		Return: const math::XYZPointD&
+		Return: const math::XYZPoint&
 		Arguments: void	
 
 	-o- positionREP
@@ -38,6 +38,6 @@ Methods from reco::PFTrajectoryPoint
 		Arguments: void	
 
 	-o- momentum
-		Return: const math::XYZTLorentzVectorD&
+		Return: const math::XYZTLorentzVector&
 		Arguments: void	
 

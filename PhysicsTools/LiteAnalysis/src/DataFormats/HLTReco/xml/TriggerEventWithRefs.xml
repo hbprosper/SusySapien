@@ -2,16 +2,17 @@
 <!--
 ==============================================================================
   XML File: TriggerEventWithRefs.xml
-  Created:  Thu Jan 14 22:49:04 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:48 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/HLTReco/interface/TriggerEventWithRefs.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/HLTReco/interface/TriggerEventWithRefs.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/HLTReco/interface/TriggerEventWithRefs.h">
 
     <include name="&quot;DataFormats/HLTReco/interface/TriggerTypeDefs.h&quot;"/>
     <include name="&quot;DataFormats/HLTReco/interface/TriggerRefsCollections.h&quot;"/>
     <include name="&quot;DataFormats/HLTReco/interface/TriggerFilterObjectWithRefs.h&quot;"/>
     <include name="&quot;FWCore/Utilities/interface/InputTag.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/traits.h&quot;"/>
     <include name="&lt;string&gt;"/>
     <include name="&lt;vector&gt;"/>
 
@@ -23,6 +24,7 @@
                project=""
                type="regular">
             <baseclass name="public TriggerRefsCollections"/>
+            <baseclass name="public edm::DoNotRecordParents"/>
             <comment>
       - but only in the &quot;RAW&quot; case: for a fraction of all events
             </comment>
@@ -97,6 +99,10 @@ size_type l1jet_;
 size_type l1etmiss_;
                         </member>
 
+                        <member>
+size_type l1hfrings_;
+                        </member>
+
                         <constructor name="TriggerFilterObject"
                                      return=""
                                      args="['void']"
@@ -110,10 +116,10 @@ TriggerFilterObject();
 
                         <constructor name="TriggerFilterObject"
                                      return=""
-                                     args="['const edm::InputTag&amp;','size_type','size_type','size_type','size_type','size_type','size_type','size_type','size_type','size_type','size_type','size_type','size_type']"
-                                     vars="['filterTag','np','ne','nm','nj','nc','nB','nC','nt','l1em','l1muon','l1jet','l1etmiss']"
+                                     args="['const edm::InputTag&amp;','size_type','size_type','size_type','size_type','size_type','size_type','size_type','size_type','size_type','size_type','size_type','size_type','size_type']"
+                                     vars="['filterTag','np','ne','nm','nj','nc','nB','nC','nt','l1em','l1muon','l1jet','l1etmiss','l1hfrings']"
                                      qual="">
-TriggerFilterObject(const edm::InputTag&amp; filterTag, size_type np, size_type ne, size_type nm, size_type nj, size_type nc, size_type nB, size_type nC, size_type nt, size_type l1em, size_type l1muon, size_type l1jet, size_type l1etmiss);
+TriggerFilterObject(const edm::InputTag&amp; filterTag, size_type np, size_type ne, size_type nm, size_type nj, size_type nc, size_type nB, size_type nC, size_type nt, size_type l1em, size_type l1muon, size_type l1jet, size_type l1etmiss, size_type l1hfrings);
                         </constructor>
 
                     </section>
@@ -144,6 +150,9 @@ TriggerFilterObject(const edm::InputTag&amp; filterTag, size_type np, size_type 
                              type="member"/>
                     <typemap name="l1etmiss_"
                              value="trigger::TriggerEventWithRefs::TriggerFilterObject::l1etmiss_"
+                             type="member"/>
+                    <typemap name="l1hfrings_"
+                             value="trigger::TriggerEventWithRefs::TriggerFilterObject::l1hfrings_"
                              type="member"/>
                     <typemap name="l1jet_"
                              value="trigger::TriggerEventWithRefs::TriggerFilterObject::l1jet_"
@@ -335,6 +344,14 @@ std::pair&lt;size_type, size_type&gt; l1jetSlice(size_type filter) const;
                          vars="['filter']"
                          qual="const">
 std::pair&lt;size_type, size_type&gt; l1etmissSlice(size_type filter) const;
+                </method2>
+
+                <method2 name="l1hfringsSlice"
+                         return="std::pair&lt;size_type, size_type&gt;"
+                         args="['size_type']"
+                         vars="['filter']"
+                         qual="const">
+std::pair&lt;size_type, size_type&gt; l1hfringsSlice(size_type filter) const;
                 </method2>
 
                 <method1 name="getObjects"
@@ -532,6 +549,22 @@ void getObjects(size_type filter, Vids&amp; ids, VRl1etmiss&amp; l1etmiss) const
 void getObjects(size_type filter, int id, VRl1etmiss&amp; l1etmiss) const;
                 </method1>
 
+                <method1 name="getObjects"
+                         return="void"
+                         args="['size_type','Vids&amp;','VRl1hfrings&amp;']"
+                         vars="['filter','ids','l1hfrings']"
+                         qual="const">
+void getObjects(size_type filter, Vids&amp; ids, VRl1hfrings&amp; l1hfrings) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['size_type','int','VRl1hfrings&amp;']"
+                         vars="['filter','id','l1hfrings']"
+                         qual="const">
+void getObjects(size_type filter, int id, VRl1hfrings&amp; l1hfrings) const;
+                </method1>
+
             </section>
 
         </class>
@@ -545,6 +578,7 @@ void getObjects(size_type filter, int id, VRl1etmiss&amp; l1etmiss) const;
     <type name="VRjet&amp;"/>
     <type name="VRl1em&amp;"/>
     <type name="VRl1etmiss&amp;"/>
+    <type name="VRl1hfrings&amp;"/>
     <type name="VRl1jet&amp;"/>
     <type name="VRl1muon&amp;"/>
     <type name="VRmuon&amp;"/>
@@ -555,6 +589,7 @@ void getObjects(size_type filter, int id, VRl1etmiss&amp; l1etmiss) const;
     <type name="const edm::InputTag"/>
     <type name="const edm::InputTag&amp;"/>
     <type name="const std::string&amp;"/>
+    <type name="edm::DoNotRecordParents"/>
     <type name="int"/>
     <type name="size_type"/>
     <type name="std::pair&lt;size_type, size_type&gt;"/>

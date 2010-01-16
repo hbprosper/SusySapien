@@ -4,8 +4,8 @@ Class:
 Header:
 	DataFormats/Scalers/interface/L1TriggerScalers.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:16:13 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:52 2010	lsclass.py $Revision:$
 
 Methods from L1TriggerScalers
 
@@ -38,7 +38,7 @@ Methods from L1TriggerScalers
 		Arguments: void	
 
 	-o- collectionTimeSpecial
-		Return: struct timespec
+		Return: timespec
 		Arguments: void	
 
 	-o- orbitNumber
@@ -54,7 +54,7 @@ Methods from L1TriggerScalers
 		Arguments: void	
 
 	-o- collectionTimeSummary
-		Return: struct timespec
+		Return: timespec
 		Arguments: void	
 
 	-o- triggerNumber
@@ -130,7 +130,7 @@ Methods from L1TriggerScalers
 		Arguments: void	
 
 	-o- collectionTimeDetails
-		Return: struct timespec
+		Return: timespec
 		Arguments: void	
 
 	-o- triggers

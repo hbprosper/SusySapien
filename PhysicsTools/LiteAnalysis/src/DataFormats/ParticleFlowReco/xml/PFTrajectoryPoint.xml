@@ -2,15 +2,15 @@
 <!--
 ==============================================================================
   XML File: PFTrajectoryPoint.xml
-  Created:  Thu Jan 14 22:48:05 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:05 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/ParticleFlowReco/interface/PFTrajectoryPoint.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/ParticleFlowReco/interface/PFTrajectoryPoint.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/ParticleFlowReco/interface/PFTrajectoryPoint.h">
 
     <include name="&lt;vector&gt;"/>
     <include name="&lt;map&gt;"/>
-    <include name="&lt;iostream&gt;"/>
+    <include name="&lt;iosfwd&gt;"/>
     <include name="&quot;DataFormats/Math/interface/Point3D.h&quot;"/>
     <include name="&quot;Rtypes.h&quot;"/>
     <include name="&quot;DataFormats/Math/interface/LorentzVector.h&quot;"/>
@@ -261,6 +261,14 @@ friend std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, const reco::PFT
                      type="typedef"/>
 
         </class>
+        <operator name="operator&lt;&lt;"
+                  return="std::ostream&amp;"
+                  args="['std::ostream&amp;','const reco::PFTrajectoryPoint&amp;']"
+                  vars="['out','trajPoint']"
+                  qual="">
+std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, const reco::PFTrajectoryPoint&amp; trajPoint);
+        </operator>
+
     </namespace>
 
     <type name="bool"/>

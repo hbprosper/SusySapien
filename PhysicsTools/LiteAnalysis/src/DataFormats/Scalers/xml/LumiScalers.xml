@@ -2,14 +2,17 @@
 <!--
 ==============================================================================
   XML File: LumiScalers.xml
-  Created:  Thu Jan 14 22:48:35 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:30 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/Scalers/interface/LumiScalers.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Scalers/interface/LumiScalers.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/Scalers/interface/LumiScalers.h">
 
-    <include name="&lt;ostream&gt;"/>
+    <include name="&quot;DataFormats/Scalers/interface/TimeSpec.h&quot;"/>
+    <include name="&lt;ctime&gt;"/>
+    <include name="&lt;iosfwd&gt;"/>
     <include name="&lt;vector&gt;"/>
+    <include name="&lt;string&gt;"/>
 
     <class name="LumiScalers"
            fullname="LumiScalers"
@@ -117,11 +120,11 @@ int version() const;
             </method1>
 
             <method1 name="collectionTime"
-                     return="struct timespec"
+                     return="timespec"
                      args="['void']"
                      vars="['']"
                      qual="const">
-struct timespec collectionTime() const;
+timespec collectionTime() const;
             </method1>
 
             <method1 name="normalization"
@@ -396,7 +399,7 @@ typedef std::vector&lt;LumiScalers&gt; LumiScalersCollection;
     <type name="std::string"/>
     <type name="std::vector&lt;float&gt;"/>
     <type name="std::vector&lt;unsigned char&gt;"/>
-    <type name="struct timespec"/>
+    <type name="timespec"/>
     <type name="unsigned char"/>
     <type name="unsigned int"/>
     <type name="void"/>

@@ -2,13 +2,13 @@
 <!--
 ==============================================================================
   XML File: Flags.xml
-  Created:  Thu Jan 14 22:48:10 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:09 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/PatCandidates/interface/Flags.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/PatCandidates/interface/Flags.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/PatCandidates/interface/Flags.h">
 
-    <include name="&quot;DataFormats/Candidate/interface/Particle.h&quot;"/>
+    <include name="&quot;DataFormats/Candidate/interface/Candidate.h&quot;"/>
     <include name="&lt;string&gt;"/>
     <include name="&lt;vector&gt;"/>
     <include name="&lt;boost/cstdint.hpp&gt;"/>
@@ -49,10 +49,10 @@ inline static bool test(uint32_t val, uint32_t mask);
 
                 <method1 name="test"
                          return="inline static bool"
-                         args="['const reco::Particle&amp;','uint32_t']"
-                         vars="['p','mask']"
+                         args="['const reco::Candidate&amp;','uint32_t']"
+                         vars="['c','mask']"
                          qual="">
-inline static bool test(const reco::Particle&amp; p, uint32_t mask);
+inline static bool test(const reco::Candidate&amp; c, uint32_t mask);
                 </method1>
 
                 <method1 name="bitToString"
@@ -565,7 +565,7 @@ static uint32_t get (const std::vector&lt;std::string&gt;&amp; str);
 
     <type name="Bits"/>
     <type name="bool"/>
-    <type name="const reco::Particle&amp;"/>
+    <type name="const reco::Candidate&amp;"/>
     <type name="const std::string&amp;"/>
     <type name="const std::vector&lt;std::string&gt;&amp;"/>
     <type name="enum"/>

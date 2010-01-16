@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: View.xml
-  Created:  Thu Jan 14 22:46:31 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:02 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/Common/interface/View.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/View.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/Common/interface/View.h">
 
     <include name="&lt;vector&gt;"/>
     <include name="&quot;boost/iterator/indirect_iterator.hpp&quot;"/>
@@ -102,8 +102,12 @@ typedef boost::indirect_iterator&lt;typename seq_t::const_iterator&gt; const_ite
                 </typedef>
 
                 <typedef name="size_type"
-                         value="typename seq_t::size_type">
-typedef typename seq_t::size_type size_type;
+                         value="unsigned int">
+typedef unsigned int size_type;
+                    <comment>
+       This should be a typedef to seq_t::size_type but because this type is used as a template
+       argument in a persistened class it must be stable for different architectures
+                    </comment>
                 </typedef>
 
                 <typedef name="difference_type"
@@ -366,7 +370,7 @@ const void* product() const;
                      value="std::vector&lt;T const*&gt;"
                      type="typedef"/>
             <typemap name="size_type"
-                     value="typename std::vector&lt;T const*&gt;::size_type"
+                     value="unsigned int"
                      type="typedef"/>
             <typemap name="value_type"
                      value="T"

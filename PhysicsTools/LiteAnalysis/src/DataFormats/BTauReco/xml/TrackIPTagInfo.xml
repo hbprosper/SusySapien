@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: TrackIPTagInfo.xml
-  Created:  Thu Jan 14 22:45:45 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:45:17 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/BTauReco/interface/TrackIPTagInfo.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/BTauReco/interface/TrackIPTagInfo.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/BTauReco/interface/TrackIPTagInfo.h">
 
     <include name="&quot;DataFormats/BTauReco/interface/RefMacros.h&quot;"/>
     <include name="&quot;DataFormats/GeometryCommonDetAlgo/interface/Measurement1D.h&quot;"/>
@@ -15,6 +15,7 @@
     <include name="&quot;DataFormats/JetReco/interface/JetTracksAssociation.h&quot;"/>
     <include name="&quot;DataFormats/BTauReco/interface/JTATagInfo.h&quot;"/>
     <include name="&quot;DataFormats/GeometryVector/interface/GlobalPoint.h&quot;"/>
+    <include name="&quot;DataFormats/GeometryVector/interface/GlobalVector.h&quot;"/>
 
     <namespace name="reco">
 
@@ -35,6 +36,14 @@
 
                     <section>
                         <member>
+GlobalPoint closestToJetAxis;
+                        </member>
+
+                        <member>
+GlobalPoint closestToGhostTrack;
+                        </member>
+
+                        <member>
 Measurement1D ip2d;
                         </member>
 
@@ -43,19 +52,15 @@ Measurement1D ip3d;
                         </member>
 
                         <member>
-GlobalPoint closestToJetAxis;
+Measurement1D distanceToJetAxis;
                         </member>
 
                         <member>
-GlobalPoint closestToFirstTrack;
+Measurement1D distanceToGhostTrack;
                         </member>
 
                         <member>
-float distanceToJetAxis;
-                        </member>
-
-                        <member>
-float distanceToFirstTrack;
+float ghostTrackWeight;
                         </member>
 
                     </section>
@@ -63,17 +68,20 @@ float distanceToFirstTrack;
                     <typemap name="TrackIPData"
                              value="reco::TrackIPTagInfo::TrackIPData"
                              type="class"/>
-                    <typemap name="closestToFirstTrack"
-                             value="reco::TrackIPTagInfo::TrackIPData::closestToFirstTrack"
+                    <typemap name="closestToGhostTrack"
+                             value="reco::TrackIPTagInfo::TrackIPData::closestToGhostTrack"
                              type="member"/>
                     <typemap name="closestToJetAxis"
                              value="reco::TrackIPTagInfo::TrackIPData::closestToJetAxis"
                              type="member"/>
-                    <typemap name="distanceToFirstTrack"
-                             value="reco::TrackIPTagInfo::TrackIPData::distanceToFirstTrack"
+                    <typemap name="distanceToGhostTrack"
+                             value="reco::TrackIPTagInfo::TrackIPData::distanceToGhostTrack"
                              type="member"/>
                     <typemap name="distanceToJetAxis"
                              value="reco::TrackIPTagInfo::TrackIPData::distanceToJetAxis"
+                             type="member"/>
+                    <typemap name="ghostTrackWeight"
+                             value="reco::TrackIPTagInfo::TrackIPData::ghostTrackWeight"
                              type="member"/>
                     <typemap name="ip2d"
                              value="reco::TrackIPTagInfo::TrackIPData::ip2d"
@@ -85,10 +93,10 @@ float distanceToFirstTrack;
                 </class>
                 <constructor name="TrackIPTagInfo"
                              return=""
-                             args="['std::vector&lt;TrackIPData&gt;','std::vector&lt;float&gt;','std::vector&lt;float&gt;','edm::RefVector&lt;TrackCollection&gt;','const JetTracksAssociationRef&amp;','const edm::Ref&lt;VertexCollection&gt;&amp;']"
-                             vars="['ipData','prob2d','prob3d','selectedTracks','jtaRef','pv']"
+                             args="['const std::vector&lt;TrackIPData&gt;&amp;','const std::vector&lt;float&gt;&amp;','const std::vector&lt;float&gt;&amp;','const edm::RefVector&lt;TrackCollection&gt;&amp;','const JetTracksAssociationRef&amp;','const edm::Ref&lt;VertexCollection&gt;&amp;','const GlobalVector&amp;','const TrackRef&amp;']"
+                             vars="['ipData','prob2d','prob3d','selectedTracks','jtaRef','pv','axis','ghostTrack']"
                              qual="">
-TrackIPTagInfo(     std::vector&lt;TrackIPData&gt; ipData, std::vector&lt;float&gt; prob2d, std::vector&lt;float&gt; prob3d, edm::RefVector&lt;TrackCollection&gt; selectedTracks, const JetTracksAssociationRef&amp; jtaRef, const edm::Ref&lt;VertexCollection&gt;&amp; pv);
+TrackIPTagInfo(     const std::vector&lt;TrackIPData&gt;&amp; ipData, const std::vector&lt;float&gt;&amp; prob2d, const std::vector&lt;float&gt;&amp; prob3d, const edm::RefVector&lt;TrackCollection&gt;&amp; selectedTracks, const JetTracksAssociationRef&amp; jtaRef, const edm::Ref&lt;VertexCollection&gt;&amp; pv, const GlobalVector&amp; axis, const TrackRef&amp; ghostTrack);
                 </constructor>
 
                 <constructor name="TrackIPTagInfo"
@@ -164,14 +172,17 @@ const edm::RefVector&lt;TrackCollection&gt;&amp; selectedTracks() const;
 const std::vector&lt;float&gt;&amp; probabilities(int ip) const;
                 </method2>
 
-                <typedef name="SortCriteria"
-                         value="enum {
-IP3DSig=0, Prob3D=1, IP2DSig=2, Prob2D=3, 
-                IP3DValue=4, IP2DValue=5 }">
-typedef enum {
-IP3DSig=0, Prob3D=1, IP2DSig=2, Prob2D=3, 
-                IP3DValue=4, IP2DValue=5 } SortCriteria;
-                </typedef>
+                <enum name="SortCriteria">
+enum SortCriteria {
+ IP3DSig=0, Prob3D, IP2DSig, Prob2D, 
+                      IP3DValue, IP2DValue };
+                    <field name="IP3DSig" value="0"/>
+                    <field name="Prob3D" value=""/>
+                    <field name="IP2DSig" value=""/>
+                    <field name="Prob2D" value=""/>
+                    <field name="IP3DValue" value=""/>
+                    <field name="IP2DValue" value=""/>
+                </enum>
 
                 <method2 name="sortedIndexesWithCut"
                          return="std::vector&lt;size_t&gt;"
@@ -217,18 +228,52 @@ virtual TaggingVariableList taggingVariables(void) const;
                 </method1>
 
                 <method2 name="primaryVertex"
-                         return="edm::Ref&lt;VertexCollection&gt;"
+                         return="const edm::Ref&lt;VertexCollection&gt;&amp;"
                          args="['void']"
                          vars="['']"
                          qual="const">
-edm::Ref&lt;VertexCollection&gt; primaryVertex() const;
+const edm::Ref&lt;VertexCollection&gt;&amp; primaryVertex() const;
                 </method2>
+
+                <method1 name="axis"
+                         return="const GlobalVector&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const GlobalVector&amp; axis() const;
+                </method1>
+
+                <method1 name="ghostTrack"
+                         return="const TrackRef&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const TrackRef&amp; ghostTrack() const;
+                </method1>
 
             </section>
 
+            <typemap name="IP2DSig"
+                     value="reco::TrackIPTagInfo::IP2DSig"
+                     type="enum"/>
+            <typemap name="IP2DValue"
+                     value="reco::TrackIPTagInfo::IP2DValue"
+                     type="enum"/>
+            <typemap name="IP3DSig "
+                     value="reco::TrackIPTagInfo::IP3DSig "
+                     type="enum"/>
+            <typemap name="IP3DValue"
+                     value="reco::TrackIPTagInfo::IP3DValue"
+                     type="enum"/>
+            <typemap name="Prob2D"
+                     value="reco::TrackIPTagInfo::Prob2D"
+                     type="enum"/>
+            <typemap name="Prob3D"
+                     value="reco::TrackIPTagInfo::Prob3D"
+                     type="enum"/>
             <typemap name="SortCriteria"
                      value="reco::TrackIPTagInfo::SortCriteria"
-                     type="typedef"/>
+                     type="enum"/>
 
         </class>
         <typedef name="TrackIPTagInfoCollection"
@@ -264,20 +309,19 @@ typedef edm::RefVector&lt;TrackIPTagInfoCollection&gt; TrackIPTagInfoRefVector;
     <type name="TaggingVariableList"/>
     <type name="TrackIPTagInfo*"/>
     <type name="bool"/>
+    <type name="const GlobalVector&amp;"/>
     <type name="const JetTracksAssociationRef&amp;"/>
+    <type name="const TrackRef&amp;"/>
     <type name="const edm::Ref&lt;VertexCollection&gt;&amp;"/>
     <type name="const edm::RefVector&lt;TrackCollection&gt;&amp;"/>
     <type name="const std::vector&lt;TrackIPData&gt;&amp;"/>
     <type name="const std::vector&lt;float&gt;&amp;"/>
-    <type name="edm::Ref&lt;VertexCollection&gt;"/>
-    <type name="edm::RefVector&lt;TrackCollection&gt;"/>
+    <type name="enum SortCriteria"/>
     <type name="float"/>
     <type name="int"/>
     <type name="reco::TrackIPTagInfo"/>
     <type name="reco::TrackIPTagInfo::TrackIPData"/>
     <type name="reco::TrackRefVector"/>
-    <type name="std::vector&lt;TrackIPData&gt;"/>
-    <type name="std::vector&lt;float&gt;"/>
     <type name="std::vector&lt;size_t&gt;"/>
     <type name="void"/>
 </header>

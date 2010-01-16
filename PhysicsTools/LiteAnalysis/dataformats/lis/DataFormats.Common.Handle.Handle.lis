@@ -1,5 +1,6 @@
-edm::Handle<T>|bool|isValid|void
-edm::Handle<T>|bool|failedToGet|void
 edm::Handle<T>|T const*|product|void
-edm::Handle<T>|Provenance const*|provenance|void
-edm::Handle<T>|ProductID|id|void
+edm::HandleBase|bool|isValid|void
+edm::HandleBase|bool|failedToGet|void
+edm::HandleBase|Provenance const*|provenance|void
+edm::HandleBase|ProductID|id|void
+edm::HandleBase|boost::shared_ptr<cms::Exception>|whyFailed|void

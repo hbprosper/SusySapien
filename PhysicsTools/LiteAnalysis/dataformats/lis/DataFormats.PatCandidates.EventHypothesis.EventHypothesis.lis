@@ -1,10 +1,10 @@
-pat::EventHypothesis|std::vector<value_type>::const_iterator|begin|void
-pat::EventHypothesis|std::vector<value_type>::const_iterator|end|void
-pat::EventHypothesis|std::vector<value_type>::const_reverse_iterator|rbegin|void
-pat::EventHypothesis|std::vector<value_type>::const_reverse_iterator|rend|void
+pat::EventHypothesis|vector_type::const_iterator|begin|void
+pat::EventHypothesis|vector_type::const_iterator|end|void
+pat::EventHypothesis|vector_type::const_reverse_iterator|rbegin|void
+pat::EventHypothesis|vector_type::const_reverse_iterator|rend|void
 pat::EventHypothesis|size_t|count|void
 pat::EventHypothesis|size_t|count|const std::string&
 pat::EventHypothesis|eventhypothesis::Looper<reco::Candidate>|loop|void
 pat::EventHypothesis|eventhypothesis::Looper<reco::Candidate>|loop|const std::string&
-pat::EventHypothesis|std::vector<reco::edm::Ptr<Candidate>>|all|const std::string&
+pat::EventHypothesis|std::vector<reco::CandidatePtr>|all|const std::string&
 pat::EventHypothesis|template<typename T> eventhypothesis::Looper<T>|loopAs|const std::string&

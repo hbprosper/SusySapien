@@ -1,10 +1,10 @@
-edm::View<T>|typename seq_t::size_type|capacity|void
+edm::View<T>|unsigned int|capacity|void
 edm::View<T>|boost::indirect_iterator<typename seq_t::const_iterator>|begin|void
 edm::View<T>|boost::indirect_iterator<typename seq_t::const_iterator>|end|void
 edm::View<T>|boost::indirect_iterator<typename seq_t::const_reverse_iterator>|rbegin|void
 edm::View<T>|boost::indirect_iterator<typename seq_t::const_reverse_iterator>|rend|void
-edm::View<T>|typename seq_t::size_type|size|void
-edm::View<T>|typename seq_t::size_type|max_size|void
+edm::View<T>|unsigned int|size|void
+edm::View<T>|unsigned int|max_size|void
 edm::View<T>|bool|empty|void
 edm::View<T>|T const&|front|void
 edm::View<T>|T const&|back|void

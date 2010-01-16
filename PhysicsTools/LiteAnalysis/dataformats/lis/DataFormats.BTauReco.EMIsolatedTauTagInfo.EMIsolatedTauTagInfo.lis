@@ -3,7 +3,3 @@ reco::EMIsolatedTauTagInfo|math::PtEtaPhiELorentzVectorRefVector|lorentzVectorRe
 reco::EMIsolatedTauTagInfo|const JetCrystalsAssociationRef&|jcaRef|void
 reco::EMIsolatedTauTagInfo|float|discriminator|void
 reco::EMIsolatedTauTagInfo|edm::RefToBase<Jet>|jet|void
-reco::BaseTagInfo|BaseTagInfo*|clone|void
-reco::BaseTagInfo|edm::RefVector<std::vector<Track>>|tracks|void
-reco::BaseTagInfo|bool|hasTracks|void
-reco::BaseTagInfo|TaggingVariableList|taggingVariables|void

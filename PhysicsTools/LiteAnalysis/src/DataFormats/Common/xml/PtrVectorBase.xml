@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: PtrVectorBase.xml
-  Created:  Thu Jan 14 22:46:15 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:45:47 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/Common/interface/PtrVectorBase.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/PtrVectorBase.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/Common/interface/PtrVectorBase.h">
 
     <include name="&lt;vector&gt;"/>
     <include name="&lt;typeinfo&gt;"/>
@@ -33,6 +33,14 @@ typedef unsigned long key_type;
                          value="key_type">
 typedef key_type size_type;
                 </typedef>
+
+                <constructor name="PtrVectorBase"
+                             return="explicit"
+                             args="['ProductID const&amp;','void const*=0','EDProductGetter const*=0']"
+                             vars="['productID','prodPtr','prodGetter']"
+                             qual="">
+explicit PtrVectorBase(ProductID const&amp; productID, void const* prodPtr=0, EDProductGetter const* prodGetter=0);
+                </constructor>
 
                 <destructor name="~PtrVectorBase"
                             return="virtual"
@@ -103,6 +111,14 @@ EDProductGetter const* productGetter() const;
                          vars="['']"
                          qual="const">
 bool hasCache() const;
+                </method1>
+
+                <method1 name="hasProductCache"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool hasProductCache() const;
                 </method1>
 
                 <method1 name="isAvailable"
@@ -195,6 +211,14 @@ void setProductGetter(EDProductGetter* iGetter) const;
 bool isTransient() const;
                 </method1>
 
+                <method1 name="product"
+                         return="void const*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+void const* product() const;
+                </method1>
+
             </section>
 
             <typemap name="key_type"
@@ -210,9 +234,11 @@ bool isTransient() const;
     <type name="EDProductGetter const*"/>
     <type name="EDProductGetter*"/>
     <type name="ProductID"/>
+    <type name="ProductID const&amp;"/>
     <type name="PtrVectorBase const&amp;"/>
     <type name="bool"/>
     <type name="edm::PtrVectorBase"/>
     <type name="size_type"/>
     <type name="void"/>
+    <type name="void const*"/>
 </header>

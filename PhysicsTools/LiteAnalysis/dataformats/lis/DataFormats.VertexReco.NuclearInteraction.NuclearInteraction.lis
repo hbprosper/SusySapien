@@ -2,7 +2,7 @@ reco::NuclearInteraction|int|secondaryTracksSize|void
 reco::NuclearInteraction|reco::Vertex::trackRef_iterator|secondaryTracks_begin|void
 reco::NuclearInteraction|reco::Vertex::trackRef_iterator|secondaryTracks_end|void
 reco::NuclearInteraction|int|seedsSize|void
-reco::NuclearInteraction|const edm::RefVector<std::vector<TrajectorySeed>>&|seeds|void
+reco::NuclearInteraction|const edm::RefVector<TrajectorySeedCollection>&|seeds|void
 reco::NuclearInteraction|TrajectorySeedRefVector::iterator|seeds_begin|void
 reco::NuclearInteraction|TrajectorySeedRefVector::iterator|seeds_end|void
 reco::NuclearInteraction|const reco::Vertex&|vertex|void

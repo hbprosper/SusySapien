@@ -5,11 +5,11 @@ L1TriggerScalers|unsigned int|trigType|void
 L1TriggerScalers|unsigned int|eventID|void
 L1TriggerScalers|unsigned int|sourceID|void
 L1TriggerScalers|unsigned int|bunchNumber|void
-L1TriggerScalers|struct timespec|collectionTimeSpecial|void
+L1TriggerScalers|timespec|collectionTimeSpecial|void
 L1TriggerScalers|unsigned int|orbitNumber|void
 L1TriggerScalers|unsigned int|luminositySection|void
 L1TriggerScalers|unsigned int|bunchCrossingErrors|void
-L1TriggerScalers|struct timespec|collectionTimeSummary|void
+L1TriggerScalers|timespec|collectionTimeSummary|void
 L1TriggerScalers|unsigned int|triggerNumber|void
 L1TriggerScalers|unsigned int|eventNumber|void
 L1TriggerScalers|unsigned int|finalTriggersDistributed|void
@@ -28,6 +28,6 @@ L1TriggerScalers|unsigned long long|deadTimeActiveThrottle|void
 L1TriggerScalers|unsigned long long|deadTimeActiveCalibration|void
 L1TriggerScalers|unsigned long long|deadTimeActiveTimeSlot|void
 L1TriggerScalers|unsigned int|numberResets|void
-L1TriggerScalers|struct timespec|collectionTimeDetails|void
+L1TriggerScalers|timespec|collectionTimeDetails|void
 L1TriggerScalers|std::vector<unsigned int>|triggers|void
 L1TriggerScalers|std::vector<unsigned int>|testTriggers|void

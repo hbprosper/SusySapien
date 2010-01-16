@@ -16,8 +16,8 @@ reco::TrackExtra|double|outerPhi|void
 reco::TrackExtra|double|outerEta|void
 reco::TrackExtra|double|outerTheta|void
 reco::TrackExtra|double|outerRadius|void
-reco::TrackExtra|math::Error<5>::type|outerStateCovariance|void
-reco::TrackExtra|math::Error<5>::type|innerStateCovariance|void
+reco::TrackExtra|math::Error<5>::ROOT::Math::SMatrix<double, N, N, ROOT::Math::MatRepSym<double, N> >|outerStateCovariance|void
+reco::TrackExtra|math::Error<5>::ROOT::Math::SMatrix<double, N, N, ROOT::Math::MatRepSym<double, N> >|innerStateCovariance|void
 reco::TrackExtra|unsigned int|outerDetId|void
 reco::TrackExtra|unsigned int|innerDetId|void
 reco::TrackExtra|PropagationDirection|seedDirection|void

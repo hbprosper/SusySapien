@@ -2,14 +2,16 @@
 <!--
 ==============================================================================
   XML File: Photon.xml
-  Created:  Thu Jan 14 22:46:54 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:19 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/EgammaCandidates/interface/Photon.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/EgammaCandidates/interface/Photon.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/EgammaCandidates/interface/Photon.h">
 
     <include name="&quot;DataFormats/RecoCandidate/interface/RecoCandidate.h&quot;"/>
     <include name="&quot;DataFormats/EgammaCandidates/interface/ConversionFwd.h&quot;"/>
+    <include name="&quot;DataFormats/EgammaCandidates/interface/PhotonCore.h&quot;"/>
+    <include name="&quot;DataFormats/EgammaReco/interface/ElectronSeed.h&quot;"/>
     <include name="&quot;DataFormats/EgammaReco/interface/SuperCluster.h&quot;"/>
 
     <namespace name="reco">
@@ -22,6 +24,21 @@
             <baseclass name="public RecoCandidate"/>
 
             <section name="public">
+                <member>
+struct FiducialFlags;
+                    <comment>
+        Forward declaration of data structures included in the object
+                    </comment>
+                </member>
+
+                <member>
+struct IsolationVariables;
+                </member>
+
+                <member>
+struct ShowerShape;
+                </member>
+
                 <constructor name="Photon"
                              return=""
                              args="['void']"
@@ -33,12 +50,23 @@ Photon();
                     </comment>
                 </constructor>
 
+                <copyconstructor name="Photon"
+                                 return=""
+                                 args="['const Photon&amp;']"
+                                 vars="['']"
+                                 qual="">
+Photon (const Photon&amp;);
+                    <comment>
+        copy constructor
+                    </comment>
+                </copyconstructor>
+
                 <constructor name="Photon"
                              return=""
-                             args="['const LorentzVector&amp;','Point','const SuperClusterRef','float','bool=false','const Point&amp;=Point(0, 0, 0)']"
-                             vars="['p4','caloPos','scl','HoE','hasPixelSeed','vtx']"
+                             args="['const LorentzVector&amp;','Point','const PhotonCoreRef&amp;','const Point&amp;=Point(0, 0, 0)']"
+                             vars="['p4','caloPos','core','vtx']"
                              qual="">
-Photon(const LorentzVector&amp; p4, Point caloPos, const SuperClusterRef scl, float HoE, bool hasPixelSeed=false, const Point&amp; vtx=Point(0, 0, 0));
+Photon(const LorentzVector&amp; p4, Point caloPos, const PhotonCoreRef&amp; core, const Point&amp; vtx=Point(0, 0, 0));
                     <comment>
         constructor from values
                     </comment>
@@ -66,58 +94,69 @@ virtual Photon* clone() const;
                     </comment>
                 </method1>
 
-                <method1 name="superCluster"
-                         return="virtual reco::SuperClusterRef"
+                <method1 name="photonCore"
+                         return="reco::PhotonCoreRef"
                          args="['void']"
                          vars="['']"
                          qual="const">
-virtual reco::SuperClusterRef superCluster() const;
+reco::PhotonCoreRef photonCore() const;
                     <comment>
-        reference to SuperCluster
+        returns a reference to the core photon object
                     </comment>
                 </method1>
 
-                <method2 name="conversions"
-                         return="std::vector&lt;reco::ConversionRef&gt;"
+                <method1 name="superCluster"
+                         return="reco::SuperClusterRef"
                          args="['void']"
                          vars="['']"
                          qual="const">
-std::vector&lt;reco::ConversionRef&gt; conversions() const;
+reco::SuperClusterRef superCluster() const;
+                    <comment>
+        Ref to SuperCluster
+                    </comment>
+                </method1>
+
+                <method1 name="conversions"
+                         return="reco::ConversionRefVector"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+reco::ConversionRefVector conversions() const;
                     <comment>
         vector of references to  Conversion's
                     </comment>
-                </method2>
+                </method1>
 
-                <method1 name="setSuperCluster"
-                         return="void"
-                         args="['const reco::SuperClusterRef&amp;']"
-                         vars="['r']"
-                         qual="">
-void setSuperCluster(const reco::SuperClusterRef&amp; r);
+                <method1 name="hasConversionTracks"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool hasConversionTracks() const;
                     <comment>
-        set reference to SuperCluster
+        Bool flagging photons with a vector of refereces to conversions with size &gt;0
                     </comment>
                 </method1>
 
-                <method1 name="addConversion"
-                         return="void"
-                         args="['const reco::ConversionRef&amp;']"
-                         vars="['r']"
-                         qual="">
-void addConversion(const reco::ConversionRef&amp; r);
+                <method1 name="electronPixelSeeds"
+                         return="reco::ElectronSeedRefVector"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+reco::ElectronSeedRefVector electronPixelSeeds() const;
                     <comment>
-        add  single ConversionRef to the vector of Refs
+        reference to electron Pixel seed
                     </comment>
                 </method1>
 
-                <method1 name="setVertex"
-                         return="void"
-                         args="['const Point&amp;']"
-                         vars="['vertex']"
-                         qual="">
-void setVertex(const Point&amp; vertex);
+                <method1 name="hasPixelSeed"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool hasPixelSeed() const;
                     <comment>
-        set primary event vertex used to define photon direction
+        Bool flagging photons having a non-zero size vector of Ref to electornPixel seeds
                     </comment>
                 </method1>
 
@@ -132,6 +171,259 @@ math::XYZPoint caloPosition() const;
                     </comment>
                 </method1>
 
+                <method1 name="setVertex"
+                         return="void"
+                         args="['const Point&amp;']"
+                         vars="['vertex']"
+                         qual="">
+void setVertex(const Point&amp; vertex);
+                    <comment>
+        set primary event vertex used to define photon direction
+                    </comment>
+                </method1>
+
+                <method1 name="isPhoton"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isPhoton() const;
+                    <comment>
+        Implement Candidate method for particle species
+                    </comment>
+                </method1>
+
+
+                <class name="FiducialFlags"
+                       fullname="reco::Photon::FiducialFlags"
+                       module="DataFormats.EgammaCandidates"
+                       project=""
+                       type="regular struct">
+                    <comment>
+      =======================================================
+       Fiducial Flags
+      =======================================================
+                    </comment>
+
+                    <section>
+                        <member>
+bool isEB;
+                            <comment>
+        Fiducial flags
+                            </comment>
+                        </member>
+
+                        <member>
+bool isEE;
+                        </member>
+
+                        <member>
+bool isEBGap;
+                        </member>
+
+                        <member>
+bool isEEGap;
+                        </member>
+
+                        <member>
+bool isEBEEGap;
+                        </member>
+
+                        <constructor name="FiducialFlags"
+                                     return=""
+                                     args="['void']"
+                                     vars="['']"
+                                     qual="">
+FiducialFlags();
+                        </constructor>
+
+                    </section>
+
+                    <typemap name="FiducialFlags"
+                             value="reco::Photon::FiducialFlags"
+                             type="class"/>
+                    <typemap name="isEB"
+                             value="reco::Photon::FiducialFlags::isEB"
+                             type="member"/>
+                    <typemap name="isEBEEGap"
+                             value="reco::Photon::FiducialFlags::isEBEEGap"
+                             type="member"/>
+                    <typemap name="isEBGap"
+                             value="reco::Photon::FiducialFlags::isEBGap"
+                             type="member"/>
+                    <typemap name="isEE"
+                             value="reco::Photon::FiducialFlags::isEE"
+                             type="member"/>
+                    <typemap name="isEEGap"
+                             value="reco::Photon::FiducialFlags::isEEGap"
+                             type="member"/>
+
+                </class>
+                <method1 name="setFiducialVolumeFlags"
+                         return="void"
+                         args="['const FiducialFlags&amp;']"
+                         vars="['a']"
+                         qual="">
+void setFiducialVolumeFlags (const FiducialFlags&amp; a);
+                    <comment>
+        set flags for photons in the ECAL fiducial volume
+                    </comment>
+                </method1>
+
+                <method1 name="isEB"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isEB() const;
+                    <comment>
+        true if photon is in ECAL barrel
+                    </comment>
+                </method1>
+
+                <method1 name="isEE"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isEE() const;
+                    <comment>
+       true if photon is in ECAL endcap
+                    </comment>
+                </method1>
+
+                <method1 name="isEBGap"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isEBGap() const;
+                    <comment>
+        true if photon is in EB, and inside the boundaries in super crystals/modules
+                    </comment>
+                </method1>
+
+                <method1 name="isEEGap"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isEEGap() const;
+                    <comment>
+        true if photon is in EE, and inside the boundaries in supercrystal/D
+                    </comment>
+                </method1>
+
+                <method1 name="isEBEEGap"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isEBEEGap() const;
+                    <comment>
+        true if photon is in boundary between EB and EE
+                    </comment>
+                </method1>
+
+
+                <class name="ShowerShape"
+                       fullname="reco::Photon::ShowerShape"
+                       module="DataFormats.EgammaCandidates"
+                       project=""
+                       type="regular struct">
+                    <comment>
+      =======================================================
+       Shower Shape Variables
+      =======================================================
+                    </comment>
+
+                    <section>
+                        <member>
+float sigmaEtaEta;
+                        </member>
+
+                        <member>
+float sigmaIetaIeta;
+                        </member>
+
+                        <member>
+float e1x5;
+                        </member>
+
+                        <member>
+float e2x5;
+                        </member>
+
+                        <member>
+float e3x3;
+                        </member>
+
+                        <member>
+float e5x5;
+                        </member>
+
+                        <member>
+float maxEnergyXtal;
+                        </member>
+
+                        <member>
+float hcalDepth1OverEcal;
+                        </member>
+
+                        <member>
+float hcalDepth2OverEcal;
+                        </member>
+
+                        <constructor name="ShowerShape"
+                                     return=""
+                                     args="['void']"
+                                     vars="['']"
+                                     qual="">
+ShowerShape();
+                        </constructor>
+
+                    </section>
+
+                    <typemap name="ShowerShape"
+                             value="reco::Photon::ShowerShape"
+                             type="class"/>
+                    <typemap name="e1x5"
+                             value="reco::Photon::ShowerShape::e1x5"
+                             type="member"/>
+                    <typemap name="e2x5"
+                             value="reco::Photon::ShowerShape::e2x5"
+                             type="member"/>
+                    <typemap name="e3x3"
+                             value="reco::Photon::ShowerShape::e3x3"
+                             type="member"/>
+                    <typemap name="e5x5"
+                             value="reco::Photon::ShowerShape::e5x5"
+                             type="member"/>
+                    <typemap name="hcalDepth1OverEcal"
+                             value="reco::Photon::ShowerShape::hcalDepth1OverEcal"
+                             type="member"/>
+                    <typemap name="hcalDepth2OverEcal"
+                             value="reco::Photon::ShowerShape::hcalDepth2OverEcal"
+                             type="member"/>
+                    <typemap name="maxEnergyXtal"
+                             value="reco::Photon::ShowerShape::maxEnergyXtal"
+                             type="member"/>
+                    <typemap name="sigmaEtaEta"
+                             value="reco::Photon::ShowerShape::sigmaEtaEta"
+                             type="member"/>
+                    <typemap name="sigmaIetaIeta"
+                             value="reco::Photon::ShowerShape::sigmaIetaIeta"
+                             type="member"/>
+
+                </class>
+                <method1 name="setShowerShapeVariables"
+                         return="void"
+                         args="['const ShowerShape&amp;']"
+                         vars="['a']"
+                         qual="">
+void setShowerShapeVariables (const ShowerShape&amp; a);
+                </method1>
+
                 <method1 name="hadronicOverEm"
                          return="float"
                          args="['void']"
@@ -139,33 +431,421 @@ math::XYZPoint caloPosition() const;
                          qual="const">
 float hadronicOverEm() const;
                     <comment>
-        the hadronic over electromagnetic fraction
+        the total hadronic over electromagnetic fraction
                     </comment>
                 </method1>
 
-                <method1 name="hasPixelSeed"
-                         return="bool"
+                <method1 name="hadronicDepth1OverEm"
+                         return="float"
                          args="['void']"
                          vars="['']"
                          qual="const">
-bool hasPixelSeed() const;
+float hadronicDepth1OverEm() const;
                     <comment>
-        Whether or not the SuperCluster has a matched pixel seed
+        the  hadronic release in depth1 over electromagnetic fraction
                     </comment>
                 </method1>
 
-                <method1 name="isConverted"
-                         return="bool"
+                <method1 name="hadronicDepth2OverEm"
+                         return="float"
                          args="['void']"
                          vars="['']"
                          qual="const">
-bool isConverted() const;
+float hadronicDepth2OverEm() const;
                     <comment>
-        Bool flagging photons with a vector of refereces to conversions with size &gt;0
+        the  hadronic release in depth2 over electromagnetic fraction
+                    </comment>
+                </method1>
+
+                <method1 name="e1x5"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float e1x5() const;
+                    <comment>
+         Shower shape variables
+                    </comment>
+                </method1>
+
+                <method1 name="e2x5"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float e2x5() const;
+                </method1>
+
+                <method1 name="e3x3"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float e3x3() const;
+                </method1>
+
+                <method1 name="e5x5"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float e5x5() const;
+                </method1>
+
+                <method1 name="maxEnergyXtal"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float maxEnergyXtal() const;
+                </method1>
+
+                <method1 name="sigmaEtaEta"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float sigmaEtaEta() const;
+                </method1>
+
+                <method1 name="sigmaIetaIeta"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float sigmaIetaIeta() const;
+                </method1>
+
+                <method1 name="r1x5"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float r1x5 () const;
+                </method1>
+
+                <method1 name="r2x5"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float r2x5 () const;
+                </method1>
+
+                <method1 name="r9"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float r9 () const;
+                </method1>
+
+
+                <class name="IsolationVariables"
+                       fullname="reco::Photon::IsolationVariables"
+                       module="DataFormats.EgammaCandidates"
+                       project=""
+                       type="regular struct">
+                    <comment>
+      =======================================================
+       Isolation Variables
+      =======================================================
+                    </comment>
+
+                    <section>
+                        <member>
+float ecalRecHitSumEt;
+                            <comment>
+        EcalRecHit isolation
+                            </comment>
+                        </member>
+
+                        <member>
+float hcalTowerSumEt;
+                            <comment>
+        HcalDepth1Tower isolation
+                            </comment>
+                        </member>
+
+                        <member>
+float hcalDepth1TowerSumEt;
+                            <comment>
+        HcalDepth1Tower isolation
+                            </comment>
+                        </member>
+
+                        <member>
+float hcalDepth2TowerSumEt;
+                            <comment>
+        HcalDepth2Tower isolation
+                            </comment>
+                        </member>
+
+                        <member>
+float trkSumPtSolidCone;
+                            <comment>
+        Sum of track pT in a cone of dR
+                            </comment>
+                        </member>
+
+                        <member>
+float trkSumPtHollowCone;
+                            <comment>
+        Sum of track pT in a hollow cone of outer radius, inner radius
+                            </comment>
+                        </member>
+
+                        <member>
+int nTrkSolidCone;
+                            <comment>
+        Number of tracks in a cone of dR
+                            </comment>
+                        </member>
+
+                        <member>
+int nTrkHollowCone;
+                            <comment>
+        Number of tracks in a hollow cone of outer radius, inner radius
+                            </comment>
+                        </member>
+
+                        <constructor name="IsolationVariables"
+                                     return=""
+                                     args="['void']"
+                                     vars="['']"
+                                     qual="">
+IsolationVariables();
+                        </constructor>
+
+                    </section>
+
+                    <typemap name="IsolationVariables"
+                             value="reco::Photon::IsolationVariables"
+                             type="class"/>
+                    <typemap name="ecalRecHitSumEt"
+                             value="reco::Photon::IsolationVariables::ecalRecHitSumEt"
+                             type="member"/>
+                    <typemap name="hcalDepth1TowerSumEt"
+                             value="reco::Photon::IsolationVariables::hcalDepth1TowerSumEt"
+                             type="member"/>
+                    <typemap name="hcalDepth2TowerSumEt"
+                             value="reco::Photon::IsolationVariables::hcalDepth2TowerSumEt"
+                             type="member"/>
+                    <typemap name="hcalTowerSumEt"
+                             value="reco::Photon::IsolationVariables::hcalTowerSumEt"
+                             type="member"/>
+                    <typemap name="nTrkHollowCone"
+                             value="reco::Photon::IsolationVariables::nTrkHollowCone"
+                             type="member"/>
+                    <typemap name="nTrkSolidCone"
+                             value="reco::Photon::IsolationVariables::nTrkSolidCone"
+                             type="member"/>
+                    <typemap name="trkSumPtHollowCone"
+                             value="reco::Photon::IsolationVariables::trkSumPtHollowCone"
+                             type="member"/>
+                    <typemap name="trkSumPtSolidCone"
+                             value="reco::Photon::IsolationVariables::trkSumPtSolidCone"
+                             type="member"/>
+
+                </class>
+                <method1 name="setIsolationVariables"
+                         return="void"
+                         args="['const IsolationVariables&amp;','const IsolationVariables&amp;']"
+                         vars="['isolInDr04','isolInDr03']"
+                         qual="">
+void setIsolationVariables (const IsolationVariables&amp; isolInDr04, const IsolationVariables&amp; isolInDr03);
+                    <comment>
+        set relevant isolation variables
+                    </comment>
+                </method1>
+
+                <method1 name="ecalRecHitSumEtConeDR04"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float ecalRecHitSumEtConeDR04() const;
+                    <comment>
+       Ecal isolation sum calculated from recHits
+                    </comment>
+                </method1>
+
+                <method1 name="hcalTowerSumEtConeDR04"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float hcalTowerSumEtConeDR04() const;
+                    <comment>
+        Hcal isolation sum
+                    </comment>
+                </method1>
+
+                <method1 name="hcalDepth1TowerSumEtConeDR04"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float hcalDepth1TowerSumEtConeDR04() const;
+                    <comment>
+        Hcal-Depth1 isolation sum
+                    </comment>
+                </method1>
+
+                <method1 name="hcalDepth2TowerSumEtConeDR04"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float hcalDepth2TowerSumEtConeDR04() const;
+                    <comment>
+        Hcal-Depth2 isolation sum
+                    </comment>
+                </method1>
+
+                <method1 name="trkSumPtSolidConeDR04"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float trkSumPtSolidConeDR04() const;
+                    <comment>
+        Track pT sum c
+                    </comment>
+                </method1>
+
+                <method1 name="trkSumPtHollowConeDR04"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float trkSumPtHollowConeDR04() const;
+                    <comment>
+      As above, excluding the core at the center of the cone
+                    </comment>
+                </method1>
+
+                <method1 name="nTrkSolidConeDR04"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int nTrkSolidConeDR04() const;
+                    <comment>
+      Returns number of tracks in a cone of dR
+                    </comment>
+                </method1>
+
+                <method1 name="nTrkHollowConeDR04"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int nTrkHollowConeDR04() const;
+                    <comment>
+      As above, excluding the core at the center of the cone
+                    </comment>
+                </method1>
+
+                <method1 name="ecalRecHitSumEtConeDR03"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float ecalRecHitSumEtConeDR03() const;
+                    <comment>
+        Isolation variables in cone dR=0.3
+                    </comment>
+                </method1>
+
+                <method1 name="hcalTowerSumEtConeDR03"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float hcalTowerSumEtConeDR03() const;
+                    <comment>
+        Hcal isolation sum
+                    </comment>
+                </method1>
+
+                <method1 name="hcalDepth1TowerSumEtConeDR03"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float hcalDepth1TowerSumEtConeDR03() const;
+                    <comment>
+        Hcal-Depth1 isolation sum
+                    </comment>
+                </method1>
+
+                <method1 name="hcalDepth2TowerSumEtConeDR03"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float hcalDepth2TowerSumEtConeDR03() const;
+                    <comment>
+        Hcal-Depth2 isolation sum
+                    </comment>
+                </method1>
+
+                <method1 name="trkSumPtSolidConeDR03"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float trkSumPtSolidConeDR03() const;
+                    <comment>
+        Track pT sum c
+                    </comment>
+                </method1>
+
+                <method1 name="trkSumPtHollowConeDR03"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float trkSumPtHollowConeDR03() const;
+                    <comment>
+      As above, excluding the core at the center of the cone
+                    </comment>
+                </method1>
+
+                <method1 name="nTrkSolidConeDR03"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int nTrkSolidConeDR03() const;
+                    <comment>
+      Returns number of tracks in a cone of dR
+                    </comment>
+                </method1>
+
+                <method1 name="nTrkHollowConeDR03"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int nTrkHollowConeDR03() const;
+                    <comment>
+      As above, excluding the core at the center of the cone
                     </comment>
                 </method1>
 
             </section>
+
+            <typemap name="FiducialFlags"
+                     value="reco::Photon::FiducialFlags"
+                     type="member"/>
+            <typemap name="IsolationVariables"
+                     value="reco::Photon::IsolationVariables"
+                     type="member"/>
+            <typemap name="ShowerShape"
+                     value="reco::Photon::ShowerShape"
+                     type="member"/>
 
         </class>
     </namespace>
@@ -174,15 +854,24 @@ bool isConverted() const;
     <type name="Point"/>
     <type name="RecoCandidate"/>
     <type name="bool"/>
+    <type name="const FiducialFlags&amp;"/>
+    <type name="const IsolationVariables&amp;"/>
     <type name="const LorentzVector&amp;"/>
+    <type name="const Photon&amp;"/>
+    <type name="const PhotonCoreRef&amp;"/>
     <type name="const Point&amp;"/>
-    <type name="const SuperClusterRef"/>
-    <type name="const reco::ConversionRef&amp;"/>
-    <type name="const reco::SuperClusterRef&amp;"/>
+    <type name="const ShowerShape&amp;"/>
     <type name="float"/>
+    <type name="int"/>
     <type name="math::XYZPoint"/>
+    <type name="reco::ConversionRefVector"/>
+    <type name="reco::ElectronSeedRefVector"/>
     <type name="reco::Photon"/>
+    <type name="reco::Photon::FiducialFlags"/>
+    <type name="reco::Photon::IsolationVariables"/>
+    <type name="reco::Photon::ShowerShape"/>
+    <type name="reco::PhotonCoreRef"/>
     <type name="reco::SuperClusterRef"/>
-    <type name="std::vector&lt;reco::ConversionRef&gt;"/>
+    <type name="struct"/>
     <type name="void"/>
 </header>

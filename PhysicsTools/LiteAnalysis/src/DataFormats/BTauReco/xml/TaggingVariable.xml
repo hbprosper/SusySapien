@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: TaggingVariable.xml
-  Created:  Thu Jan 14 22:45:42 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:45:15 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/BTauReco/interface/TaggingVariable.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/BTauReco/interface/TaggingVariable.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/BTauReco/interface/TaggingVariable.h">
 
     <include name="&lt;utility&gt;"/>
     <include name="&lt;vector&gt;"/>
@@ -46,8 +46,11 @@ enum TaggingVariableName {
       trackSip3dSig, 
       trackDecayLenVal, 
       trackDecayLenSig, 
-      trackJetDist, 
-      trackFirstTrackDist, 
+      trackJetDistVal, 
+      trackJetDistSig, 
+      trackGhostTrackDistVal, 
+      trackGhostTrackDistSig, 
+      trackGhostTrackWeight, 
 
       trackSumJetEtRatio, 
       trackSumJetDeltaR, 
@@ -58,6 +61,7 @@ enum TaggingVariableName {
 
       vertexMass, 
       vertexNTracks, 
+      vertexFitProb, 
 
       vertexEnergyRatio, 
       vertexJetDeltaR, 
@@ -112,14 +116,18 @@ enum TaggingVariableName {
                 <field name="trackSip3dSig" value=""/>
                 <field name="trackDecayLenVal" value=""/>
                 <field name="trackDecayLenSig" value=""/>
-                <field name="trackJetDist" value=""/>
-                <field name="trackFirstTrackDist" value=""/>
+                <field name="trackJetDistVal" value=""/>
+                <field name="trackJetDistSig" value=""/>
+                <field name="trackGhostTrackDistVal" value=""/>
+                <field name="trackGhostTrackDistSig" value=""/>
+                <field name="trackGhostTrackWeight" value=""/>
                 <field name="trackSumJetEtRatio" value=""/>
                 <field name="trackSumJetDeltaR" value=""/>
                 <field name="vertexCategory" value=""/>
                 <field name="jetNSecondaryVertices" value=""/>
                 <field name="vertexMass" value=""/>
                 <field name="vertexNTracks" value=""/>
+                <field name="vertexFitProb" value=""/>
                 <field name="vertexEnergyRatio" value=""/>
                 <field name="vertexJetDeltaR" value=""/>
                 <field name="flightDistance2dVal" value=""/>

@@ -2,13 +2,12 @@
 <!--
 ==============================================================================
   XML File: DetSetVectorNew.xml
-  Created:  Thu Jan 14 22:45:59 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:45:31 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/Common/interface/DetSetVectorNew.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/DetSetVectorNew.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/Common/interface/DetSetVectorNew.h">
 
-    <include name="&quot;DataFormats/Common/interface/DetSet.h&quot;"/>
     <include name="&quot;DataFormats/Common/interface/DetSetNew.h&quot;"/>
     <include name="&quot;DataFormats/Common/interface/traits.h&quot;"/>
     <include name="&lt;boost/iterator_adaptors.hpp&gt;"/>
@@ -27,6 +26,11 @@
         <comment>
   FIXME remove New when ready
         </comment>
+        <typedef name="det_id_type"
+                 value="uint32_t">
+typedef uint32_t det_id_type;
+        </typedef>
+
 
         <namespace name="dslv">
             <forward name="template&lt;typename T&gt; LazyGetter"/>
@@ -218,13 +222,13 @@ typedef T data_type;
                 </typedef>
 
                 <typedef name="self"
-                         value="DetSetVector&lt;T&gt;">
-typedef DetSetVector&lt;T&gt; self;
+                         value="edmNew::DetSetVector&lt;T&gt;">
+typedef edmNew::DetSetVector&lt;T&gt; self;
                 </typedef>
 
                 <typedef name="DetSet"
-                         value="DetSet&lt;T&gt;">
-typedef DetSet&lt;T&gt; DetSet;
+                         value="edmNew::DetSet&lt;T&gt;">
+typedef edmNew::DetSet&lt;T&gt; DetSet;
                 </typedef>
 
                 <typedef name="Getter"
@@ -503,7 +507,7 @@ friend class FastFiller;
                        module="DataFormats.Common"
                        project=""
                        type="regular struct">
-                    <baseclass name="public std::binary_function&lt;const edmNew::DetSetVector&lt;T&gt;&amp;, size_t, const T*&gt;"/>
+                    <baseclass name="public std::binary_function&lt;const edmNew::DetSetVector&lt;T&gt;&amp;, unsigned int, const T*&gt;"/>
 
                     <section>
                         <typedef name="self"
@@ -818,7 +822,7 @@ void update(Item const&amp; item) const;
                      value="typename std::vector&lt;T&gt;::iterator"
                      type="typedef"/>
             <typemap name="DetSet"
-                     value="DetSet&lt;T&gt;"
+                     value="edmNew::DetSet&lt;T&gt;"
                      type="typedef"/>
             <typemap name="Getter"
                      value="dslv::LazyGetter&lt;T&gt;"
@@ -866,13 +870,13 @@ void update(Item const&amp; item) const;
                      value="unsigned int"
                      type="typedef"/>
             <typemap name="self"
-                     value="DetSetVector&lt;T&gt;"
+                     value="edmNew::DetSetVector&lt;T&gt;"
                      type="typedef"/>
             <typemap name="size_type"
                      value="unsigned int"
                      type="typedef"/>
             <typemap name="value_type"
-                     value="DetSet&lt;T&gt;"
+                     value="edmNew::DetSet&lt;T&gt;"
                      type="typedef"/>
 
         </class>
@@ -955,7 +959,7 @@ typedef typename edmNew::DetSetVector&lt;T&gt;::FindForDetSetVector value;
                    project=""
                    type="template struct"
                    template="template&lt;typename T&gt;">
-                <baseclass name="public std::binary_function&lt;const edmNew::DetSetVector&lt;T&gt;&amp;, size_t, edmNew::DetSet&lt;T&gt; &gt;"/>
+                <baseclass name="public std::binary_function&lt;const edmNew::DetSetVector&lt;T&gt;&amp;, unsigned int, edmNew::DetSet&lt;T&gt; &gt;"/>
 
                 <section>
                     <typedef name="self"
@@ -1041,8 +1045,8 @@ typedef FindSetForNewDetSetVector&lt;T&gt; value;
     <type name="result_type&amp;"/>
     <type name="size_t"/>
     <type name="size_type"/>
-    <type name="std::binary_function&lt;const edmNew::DetSetVector&lt;T&gt;&amp;, size_t, const T*&gt;"/>
-    <type name="std::binary_function&lt;const edmNew::DetSetVector&lt;T&gt;&amp;, size_t, edmNew::DetSet&lt;T&gt; &gt;"/>
+    <type name="std::binary_function&lt;const edmNew::DetSetVector&lt;T&gt;&amp;, unsigned int, const T*&gt;"/>
+    <type name="std::binary_function&lt;const edmNew::DetSetVector&lt;T&gt;&amp;, unsigned int, edmNew::DetSet&lt;T&gt; &gt;"/>
     <type name="template&lt;typename CMP&gt; Range"/>
     <type name="typename DetSetVector&lt;T&gt;::FastFiller&amp;"/>
     <type name="typename DetSetVector&lt;T&gt;::Item&amp;"/>

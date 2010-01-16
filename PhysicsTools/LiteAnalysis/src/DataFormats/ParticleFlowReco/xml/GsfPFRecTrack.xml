@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: GsfPFRecTrack.xml
-  Created:  Thu Jan 14 22:47:52 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:57 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/ParticleFlowReco/interface/GsfPFRecTrack.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/ParticleFlowReco/interface/GsfPFRecTrack.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/ParticleFlowReco/interface/GsfPFRecTrack.h">
 
     <include name="&quot;DataFormats/ParticleFlowReco/interface/PFRecTrack.h&quot;"/>
     <include name="&quot;DataFormats/ParticleFlowReco/interface/PFRecTrackFwd.h&quot;"/>
@@ -81,6 +81,17 @@ const edm::Ref&lt;std::vector&lt;PFRecTrack&gt; &gt;&amp;       kfPFRecTrackRef(
 void addBrem(const reco::PFBrem&amp; brem);
                     <comment>
         add a Bremsstrahlung photon
+                    </comment>
+                </method1>
+
+                <method1 name="calculateBremPositionREP"
+                         return="void"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+void calculateBremPositionREP();
+                    <comment>
+        calculate posrep_ once and for all for each brem
                     </comment>
                 </method1>
 

@@ -1,3 +1,4 @@
 CaloRecHit|float|energy|void
 CaloRecHit|float|time|void
 CaloRecHit|const DetId&|detid|void
+CaloRecHit|uint32_t|flags|void

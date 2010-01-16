@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: JetCorrFactors.xml
-  Created:  Thu Jan 14 22:48:13 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:11 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/PatCandidates/interface/JetCorrFactors.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/PatCandidates/interface/JetCorrFactors.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/PatCandidates/interface/JetCorrFactors.h">
 
     <include name="&lt;vector&gt;"/>
     <include name="&lt;string&gt;"/>
@@ -59,7 +59,7 @@ float uds, g, c, b;
                                   qual="const">
 bool operator!=(const float f) const;
                             <comment>
-                  check if all are different from -1 (default), or 0
+	        check if all are different from -1 (default), or 0
                             </comment>
                         </operator>
 
@@ -115,10 +115,10 @@ JetCorrFactors();
 
                 <constructor name="JetCorrFactors"
                              return=""
-                             args="['std::string&amp;','float','float','float','float','FlavourCorrections','FlavourCorrections','FlavourCorrections']"
-                             vars="['label','l1','l2','l3','l4','l5','l6','l7']"
+                             args="['const std::string&amp;','float','float','float','float','FlavourCorrections','FlavourCorrections','FlavourCorrections','const std::vector&lt;float&gt;&amp;']"
+                             vars="['label','l1','l2','l3','l4','l5','l6','l7','uncert']"
                              qual="">
-JetCorrFactors(std::string&amp; label, float l1, float l2, float l3, float l4, FlavourCorrections l5, FlavourCorrections l6, FlavourCorrections l7);
+JetCorrFactors(const std::string&amp; label, float l1, float l2, float l3, float l4, FlavourCorrections l5, FlavourCorrections l6, FlavourCorrections l7, const std::vector&lt;float&gt;&amp; uncert);
                     <comment>
 	      constructor by value
                     </comment>
@@ -131,7 +131,7 @@ JetCorrFactors(std::string&amp; label, float l1, float l2, float l3, float l4, F
                          qual="const">
 float scaleDefault() const;
                     <comment>
-              default scale factor: raw &amp; L1 &amp; L2 &amp; L3 (ignore -1's)
+              default scale factor: Raw &amp; L1 &amp; L2 &amp; L3
                     </comment>
                 </method1>
 
@@ -142,7 +142,7 @@ float scaleDefault() const;
                          qual="const">
 float correction(CorrStep step, CorrStep begin=Raw) const;
                     <comment>
-	      returns the correction for a jet up to a given step, starting from another step.
+              returns the correction for a jet up to a given step, starting from another step.
                     </comment>
                 </method1>
 
@@ -175,7 +175,7 @@ std::string corrStep(CorrStep step) const;
                          qual="const">
 std::string flavour (CorrStep step) const;
                     <comment>
-              return Flavour
+              return flavour string
                     </comment>
                 </method1>
 
@@ -197,7 +197,7 @@ std::string getLabel() const;
                          qual="">
 void clearLabel();
                     <comment>
-	      clear label to save storage, if only one set of correction factors is used.
+	      clear label to save storage, if only one set of correction factors is used
                     </comment>
                 </method1>
 
@@ -209,6 +209,35 @@ void clearLabel();
 void print() const;
                     <comment>
 	      print function for debugging
+                    </comment>
+                </method1>
+
+                <enum name="UncertVar">
+enum UncertVar {
+up=0, down=1};
+                    <field name="up" value="0"/>
+                    <field name="down" value="1"/>
+                </enum>
+
+                <method1 name="uncertainty"
+                         return="float"
+                         args="['CorrStep','const std::string&amp;']"
+                         vars="['step','direction']"
+                         qual="const">
+float uncertainty(CorrStep step, const std::string&amp; direction) const;
+                    <comment>
+	     relative jet correction factor uncertainty
+                    </comment>
+                </method1>
+
+                <method1 name="uncertainty"
+                         return="float"
+                         args="['CorrStep','const UncertVar']"
+                         vars="['step','direction']"
+                         qual="const">
+float uncertainty(CorrStep step, const UncertVar direction) const;
+                    <comment>
+	     relative jet correction factor uncertainty
                     </comment>
                 </method1>
 
@@ -268,6 +297,15 @@ void print() const;
             <typemap name="Raw "
                      value="pat::JetCorrFactors::Raw "
                      type="enum"/>
+            <typemap name="UncertVar"
+                     value="pat::JetCorrFactors::UncertVar"
+                     type="enum"/>
+            <typemap name="down"
+                     value="pat::JetCorrFactors::down"
+                     type="enum"/>
+            <typemap name="up"
+                     value="pat::JetCorrFactors::up"
+                     type="enum"/>
 
         </class>
     </namespace>
@@ -276,14 +314,16 @@ void print() const;
     <type name="CorrStep const"/>
     <type name="FlavourCorrections"/>
     <type name="bool"/>
+    <type name="const UncertVar"/>
     <type name="const float"/>
     <type name="const std::string&amp;"/>
+    <type name="const std::vector&lt;float&gt;&amp;"/>
     <type name="enum CorrStep"/>
+    <type name="enum UncertVar"/>
     <type name="float"/>
     <type name="float uds, g, c,"/>
     <type name="pat::JetCorrFactors"/>
     <type name="pat::JetCorrFactors::FlavourCorrections"/>
     <type name="std::string"/>
-    <type name="std::string&amp;"/>
     <type name="void"/>
 </header>

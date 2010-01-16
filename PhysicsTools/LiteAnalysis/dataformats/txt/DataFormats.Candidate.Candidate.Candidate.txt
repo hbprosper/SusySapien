@@ -4,184 +4,10 @@ Class:
 Header:
 	DataFormats/Candidate/interface/Candidate.h
 
-BaseClasses:
-	reco::Particle	DataFormats/Candidate/interface/Particle.h
-
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:14:58 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:55:52 2010	lsclass.py $Revision:$
 
 Methods from reco::Candidate
-
-	-o- clone
-		Return: Candidate*
-		Arguments: void	
-
-	-o- begin
-		Return: candidate::const_iterator
-		Arguments: void	
-
-	-o- end
-		Return: candidate::const_iterator
-		Arguments: void	
-
-	-o- begin
-		Return: candidate::iterator
-		Arguments: void	
-
-	-o- end
-		Return: candidate::iterator
-		Arguments: void	
-
-	-o- numberOfDaughters
-		Return: size_t
-		Arguments: void	
-
-	-o- daughter
-		Return: const Candidate*
-		Arguments: size_type	i
-
-	-o- daughter
-		Return: Candidate*
-		Arguments: size_type	i
-
-	-o- daughter
-		Return: Candidate*
-		Arguments: const std::string&	s
-
-	-o- daughter
-		Return: const Candidate*
-		Arguments: const std::string&	s
-
-	-o- numberOfMothers
-		Return: size_t
-		Arguments: void	
-
-	-o- mother
-		Return: const Candidate*
-		Arguments: size_type=0	i
-
-	-o- numberOfSourceCandidatePtrs
-		Return: size_t
-		Arguments: void	
-
-	-o- sourceCandidatePtr
-		Return: edm::Ptr<Candidate>
-		Arguments: size_type	i
-
-	-o- vertexChi2
-		Return: double
-		Arguments: void	
-
-	-o- vertexNdof
-		Return: double
-		Arguments: void	
-
-	-o- vertexNormalizedChi2
-		Return: double
-		Arguments: void	
-
-	-o- vertexCovariance
-		Return: double
-		Arguments: int	i
-		           int	j
-
-	-o- vertexCovariance
-		Return: math::Error<dimension>::type
-		Arguments: void	
-
-	-o- fillVertexCovariance
-		Return: void
-		Arguments: CovarianceMatrix&	v
-
-	-o- hasMasterClone
-		Return: bool
-		Arguments: void	
-
-	-o- masterClone
-		Return: const edm::RefToBase<Candidate>&
-		Arguments: void	
-
-	-o- hasMasterClonePtr
-		Return: bool
-		Arguments: void	
-
-	-o- masterClonePtr
-		Return: const edm::Ptr<Candidate>&
-		Arguments: void	
-
-	-o- isElectron
-		Return: bool
-		Arguments: void	
-
-	-o- isMuon
-		Return: bool
-		Arguments: void	
-
-	-o- isStandAloneMuon
-		Return: bool
-		Arguments: void	
-
-	-o- isGlobalMuon
-		Return: bool
-		Arguments: void	
-
-	-o- isTrackerMuon
-		Return: bool
-		Arguments: void	
-
-	-o- isCaloMuon
-		Return: bool
-		Arguments: void	
-
-	-o- isPhoton
-		Return: bool
-		Arguments: void	
-
-	-o- isConvertedPhoton
-		Return: bool
-		Arguments: void	
-
-	-o- isJet
-		Return: bool
-		Arguments: void	
-
-	-o- masterRef
-		Return: template<typename Ref> Ref
-		Arguments: void	
-
-	-o- get
-		Return: template<typename T> T
-		Arguments: void	
-
-	-o- get
-		Return: template<typename T, typename Tag> T
-		Arguments: void	
-
-	-o- get
-		Return: template<typename T> T
-		Arguments: size_type	i
-
-	-o- get
-		Return: template<typename T, typename Tag> T
-		Arguments: size_type	i
-
-	-o- numberOf
-		Return: template<typename T> size_t
-		Arguments: void	
-
-	-o- numberOf
-		Return: template<typename T, typename Tag> size_t
-		Arguments: void	
-
-	-o- beginFilter
-		Return: template<typename S> typename daughter_iterator<S>::boost::filter_iterator<S, const_iterator>
-		Arguments: const S&	s
-
-	-o- endFilter
-		Return: template<typename S> typename daughter_iterator<S>::boost::filter_iterator<S, const_iterator>
-		Arguments: const S&	s
-
-Methods from reco::Particle
 
 	-o- charge
 		Return: int
@@ -200,11 +26,11 @@ Methods from reco::Particle
 		Arguments: Charge	qx3
 
 	-o- p4
-		Return: const math::XYZTLorentzVectorD&
+		Return: const math::XYZTLorentzVector&
 		Arguments: void	
 
 	-o- polarP4
-		Return: const math::ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> >&
+		Return: const math::PtEtaPhiMLorentzVector&
 		Arguments: void	
 
 	-o- momentum
@@ -337,5 +163,25 @@ Methods from reco::Particle
 
 	-o- longLived
 		Return: bool
+		Arguments: void	
+
+	-o- setMassConstraint
+		Return: void
+		Arguments: void	
+
+	-o- massConstraint
+		Return: bool
+		Arguments: void	
+
+	-o- clone
+		Return: Candidate*
+		Arguments: void	
+
+	-o- begin
+		Return: candidate::const_iterator
+		Arguments: void	
+
+	-o- end
+		Return: candidate::const_iterator
 		Arguments: void	
 

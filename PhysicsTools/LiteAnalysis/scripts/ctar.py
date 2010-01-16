@@ -7,6 +7,7 @@
 #----------------------------------------------------------------------------
 import sys, os, re
 from string import *
+from time import *
 #----------------------------------------------------------------------------
 skip = re.compile(r'\.([vV][1-9]+|so|log|old|gif|root|pyc|d|#|~)$')
 skipfile = re.compile(r'(\.cpp.h|\.header.h|a.txt|'\
@@ -14,6 +15,7 @@ skipfile = re.compile(r'(\.cpp.h|\.header.h|a.txt|'\
 
 recs = map(strip, os.popen("find .").readlines())
 dirmap = {}
+
 for record in recs:
 
 	if skip.search(record) != None: continue
@@ -43,14 +45,18 @@ if len(argv) == 0:
 	tarfile = "code.tar"
 else:
 	tarfile = argv[0]
-	
+
+out = open("MANIFEST","w")
+out.write("%s\n" % ctime(time()))
 first = True
 for d in dirlist:
 	files = dirmap[d]
 	for f in files:
+		out.write(f+'\n')
 		if first:
 			first = False
 			os.system("tar cvf %s %s" % (tarfile, f))
 		else:
 			os.system("tar uvf %s %s" % (tarfile, f))
-	
+out.close()
+

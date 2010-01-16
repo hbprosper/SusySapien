@@ -2,13 +2,13 @@
 <!--
 ==============================================================================
   XML File: CaloID.xml
-  Created:  Thu Jan 14 22:46:35 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:05 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/CaloRecHit/interface/CaloID.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/CaloRecHit/interface/CaloID.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/CaloRecHit/interface/CaloID.h">
 
-    <include name="&lt;iostream&gt;"/>
+    <include name="&lt;iosfwd&gt;"/>
 
     <namespace name="reco">
 
@@ -29,6 +29,8 @@ enum Detectors {
       DET_HCAL_BARREL, 
       DET_HCAL_ENDCAP, 
       DET_HF, 
+      DET_HF_EM, 
+      DET_HF_HAD, 
       DET_HO, 
       DET_NONE
     };
@@ -39,6 +41,8 @@ enum Detectors {
                     <field name="DET_HCAL_BARREL" value=""/>
                     <field name="DET_HCAL_ENDCAP" value=""/>
                     <field name="DET_HF" value=""/>
+                    <field name="DET_HF_EM" value=""/>
+                    <field name="DET_HF_HAD" value=""/>
                     <field name="DET_HO" value=""/>
                     <field name="DET_NONE" value=""/>
                 </enum>
@@ -161,6 +165,12 @@ friend std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, const CaloID&am
             <typemap name="DET_HF"
                      value="reco::CaloID::DET_HF"
                      type="enum"/>
+            <typemap name="DET_HF_EM"
+                     value="reco::CaloID::DET_HF_EM"
+                     type="enum"/>
+            <typemap name="DET_HF_HAD"
+                     value="reco::CaloID::DET_HF_HAD"
+                     type="enum"/>
             <typemap name="DET_HO"
                      value="reco::CaloID::DET_HO"
                      type="enum"/>
@@ -178,6 +188,14 @@ friend std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, const CaloID&am
                      type="enum"/>
 
         </class>
+        <operator name="operator&lt;&lt;"
+                  return="std::ostream&amp;"
+                  args="['std::ostream&amp;','const CaloID&amp;']"
+                  vars="['out','id']"
+                  qual="">
+std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, const CaloID&amp; id);
+        </operator>
+
     </namespace>
 
     <type name="CaloID&amp;"/>

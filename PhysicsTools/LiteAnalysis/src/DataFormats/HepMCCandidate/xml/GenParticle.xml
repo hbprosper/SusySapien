@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: GenParticle.xml
-  Created:  Thu Jan 14 22:49:01 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:46 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/HepMCCandidate/interface/GenParticle.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/HepMCCandidate/interface/GenParticle.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/HepMCCandidate/interface/GenParticle.h">
 
     <include name="&quot;DataFormats/Candidate/interface/CompositeRefCandidateT.h&quot;"/>
     <include name="&quot;DataFormats/HepMCCandidate/interface/GenParticleFwd.h&quot;"/>
@@ -39,10 +39,10 @@ GenParticle();
 
                 <constructor name="GenParticle"
                              return=""
-                             args="['const Particle&amp;']"
-                             vars="['p']"
+                             args="['const LeafCandidate&amp;']"
+                             vars="['c']"
                              qual="">
-GenParticle(const Particle&amp; p);
+GenParticle(const LeafCandidate&amp; c);
                     <comment>
         default constructor
                     </comment>
@@ -92,6 +92,22 @@ GenParticle* clone() const;
                     </comment>
                 </method1>
 
+                <method1 name="setCollisionId"
+                         return="void"
+                         args="['int']"
+                         vars="['s']"
+                         qual="">
+void setCollisionId(int s);
+                </method1>
+
+                <method1 name="collisionId"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int collisionId() const;
+                </method1>
+
             </section>
 
         </class>
@@ -101,8 +117,8 @@ GenParticle* clone() const;
     <type name="CompositeRefCandidateT&lt;GenParticleRefVector&gt;"/>
     <type name="GenParticle*"/>
     <type name="bool"/>
+    <type name="const LeafCandidate&amp;"/>
     <type name="const LorentzVector&amp;"/>
-    <type name="const Particle&amp;"/>
     <type name="const Point&amp;"/>
     <type name="const PolarLorentzVector&amp;"/>
     <type name="int"/>

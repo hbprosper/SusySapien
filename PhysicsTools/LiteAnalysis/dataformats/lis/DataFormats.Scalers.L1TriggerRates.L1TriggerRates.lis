@@ -1,7 +1,7 @@
 L1TriggerRates|std::string|name|void
 L1TriggerRates|bool|empty|void
 L1TriggerRates|int|version|void
-L1TriggerRates|struct timespec|collectionTimeSummary|void
+L1TriggerRates|timespec|collectionTimeSummary|void
 L1TriggerRates|double|deltaT|void
 L1TriggerRates|double|deltaTActive|void
 L1TriggerRates|double|deltaTRun|void
@@ -25,7 +25,7 @@ L1TriggerRates|double|deadTimeActiveTimeSlotPercent|void
 L1TriggerRates|double|finalTriggersInvalidBCPercent|void
 L1TriggerRates|double|lostFinalTriggersPercent|void
 L1TriggerRates|double|lostFinalTriggersActivePercent|void
-L1TriggerRates|struct timespec|collectionTimeDetails|void
+L1TriggerRates|timespec|collectionTimeDetails|void
 L1TriggerRates|double|triggerNumberRunRate|void
 L1TriggerRates|double|eventNumberRunRate|void
 L1TriggerRates|double|finalTriggersDistributedRunRate|void

@@ -2,10 +2,3 @@ edm::TrieNode<T>|const T&|value|void
 edm::TrieNode<T>|unsigned char|brotherLabel|void
 edm::TrieNode<T>|unsigned char|subNodeLabel|void
 edm::TrieNode<T>|const TrieNode<T>*|brother|void
-edm::TrieNode<T>|TrieNode<T>*|brother|void
-edm::TrieNode<T>|TrieNodeIter<T>|begin|void
-edm::TrieNode<T>|TrieNodeIter<T>|end|void
-edm::TrieNode<T>|const TrieNode<T>*|subNode|void
-edm::TrieNode<T>|TrieNode<T>*|subNode|void
-edm::TrieNode<T>|const TrieNode<T>*|subNodeByLabel|unsigned char
-edm::TrieNode<T>|TrieNode<T>*|subNodeByLabel|unsigned char

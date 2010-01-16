@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: BaseVectorHolder.xml
-  Created:  Thu Jan 14 22:45:51 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:45:22 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/Common/interface/BaseVectorHolder.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/BaseVectorHolder.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/Common/interface/BaseVectorHolder.h">
 
     <include name="&quot;FWCore/Utilities/interface/EDMException.h&quot;"/>
     <include name="&quot;DataFormats/Common/interface/BaseHolder.h&quot;"/>
@@ -448,6 +448,14 @@ bool isValid() const;
 bool isInvalid() const;
                             </method1>
 
+                            <method1 name="throwInvalidReference"
+                                     return="void"
+                                     args="['bool','const char*']"
+                                     vars="['isInvalid','why']"
+                                     qual="const">
+void throwInvalidReference(bool isInvalid, const char* why) const;
+                            </method1>
+
                         </section>
 
                         <typemap name="const_iterator"
@@ -539,6 +547,7 @@ virtual bool isAvailable() const=0;
     <type name="base_ref_type const"/>
     <type name="bool"/>
     <type name="const BaseHolder&lt;T&gt;*"/>
+    <type name="const char*"/>
     <type name="const const_iterator&amp;"/>
     <type name="const const_iterator_imp*"/>
     <type name="const void*"/>

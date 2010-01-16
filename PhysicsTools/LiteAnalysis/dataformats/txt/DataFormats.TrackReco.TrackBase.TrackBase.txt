@@ -4,8 +4,8 @@ Class:
 Header:
 	DataFormats/TrackReco/interface/TrackBase.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:16:28 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:57:01 2010	lsclass.py $Revision:$
 
 Methods from reco::TrackBase
 
@@ -118,7 +118,7 @@ Methods from reco::TrackBase
 		Arguments: const Point&	myBeamSpot
 
 	-o- parameters
-		Return: math::Vector<dimension>::type
+		Return: math::math::XYZVector<dimension>::ROOT::Math::SVector<double, N>
 		Arguments: void	
 
 	-o- covariance
@@ -191,6 +191,14 @@ Methods from reco::TrackBase
 		Return: const HitPattern&
 		Arguments: void	
 
+	-o- trackerExpectedHitsInner
+		Return: const HitPattern&
+		Arguments: void	
+
+	-o- trackerExpectedHitsOuter
+		Return: const HitPattern&
+		Arguments: void	
+
 	-o- numberOfValidHits
 		Return: unsigned short
 		Arguments: void	
@@ -200,6 +208,16 @@ Methods from reco::TrackBase
 		Arguments: void	
 
 	-o- setHitPattern
+		Return: void
+		Arguments: const TrackingRecHit&	hit
+		           size_t	i
+
+	-o- setTrackerExpectedHitsInner
+		Return: void
+		Arguments: const TrackingRecHit&	hit
+		           size_t	i
+
+	-o- setTrackerExpectedHitsOuter
 		Return: void
 		Arguments: const TrackingRecHit&	hit
 		           size_t	i
@@ -254,7 +272,25 @@ Methods from reco::TrackBase
 		Return: template<typename C> void
 		Arguments: const C&	c
 
+	-o- setTrackerExpectedHitsInner
+		Return: template<typename C> void
+		Arguments: const C&	c
+
+	-o- setTrackerExpectedHitsOuter
+		Return: template<typename C> void
+		Arguments: const C&	c
+
 	-o- setHitPattern
+		Return: template<typename I> void
+		Arguments: const I&	begin
+		           const I&	end
+
+	-o- setTrackerExpectedHitsInner
+		Return: template<typename I> void
+		Arguments: const I&	begin
+		           const I&	end
+
+	-o- setTrackerExpectedHitsOuter
 		Return: template<typename I> void
 		Arguments: const I&	begin
 		           const I&	end

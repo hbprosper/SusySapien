@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: PFJet.xml
-  Created:  Thu Jan 14 22:47:18 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:30 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/JetReco/interface/PFJet.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/JetReco/interface/PFJet.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/JetReco/interface/PFJet.h">
 
     <include name="&quot;DataFormats/JetReco/interface/Jet.h&quot;"/>
     <include name="&quot;DataFormats/ParticleFlowCandidate/interface/PFCandidateFwd.h&quot;"/>
@@ -19,7 +19,7 @@
                fullname="reco::PFJet"
                module="DataFormats.JetReco"
                project=""
-               type="regular printable">
+               type="regular">
             <baseclass name="public Jet"/>
 
             <section name="public">
@@ -367,21 +367,24 @@ virtual PFJet* clone () const;
                          qual="const">
 virtual std::string print () const;
                     <comment>
-      Print object
+      Print object in details
                     </comment>
                 </method1>
-
-                <operator name="operator&lt;&lt;"
-                          return="friend std::ostream&amp;"
-                          args="['std::ostream&amp;','const reco::PFJet&amp;']"
-                          vars="['out','jet']"
-                          qual="">
-friend std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, const reco::PFJet&amp; jet);
-                </operator>
 
             </section>
 
         </class>
+        <operator name="operator&lt;&lt;"
+                  return="std::ostream&amp;"
+                  args="['std::ostream&amp;','const reco::PFJet&amp;']"
+                  vars="['out','jet']"
+                  qual="">
+std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, const reco::PFJet&amp; jet);
+            <comment>
+   streamer
+            </comment>
+        </operator>
+
     </namespace>
     <include name="&quot;DataFormats/JetReco/interface/PFJetCollection.h&quot;"/>
 
@@ -393,13 +396,11 @@ friend std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, const reco::PFJ
     <type name="const Specific&amp;"/>
     <type name="const reco::Candidate*"/>
     <type name="const reco::PFCandidate*"/>
-    <type name="const reco::PFJet&amp;"/>
     <type name="float"/>
     <type name="int"/>
     <type name="reco::PFJet"/>
     <type name="reco::PFJet::Specific"/>
     <type name="reco::TrackRefVector"/>
-    <type name="std::ostream&amp;"/>
     <type name="std::string"/>
     <type name="std::vector&lt;const reco::PFCandidate*&gt;"/>
     <type name="unsigned"/>

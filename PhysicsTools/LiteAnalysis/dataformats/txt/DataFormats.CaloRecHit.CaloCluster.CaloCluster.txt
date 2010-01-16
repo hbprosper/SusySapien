@@ -4,17 +4,21 @@ Class:
 Header:
 	DataFormats/CaloRecHit/interface/CaloCluster.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:29 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:15 2010	lsclass.py $Revision:$
 
 Methods from reco::CaloCluster
+
+	-o- reset
+		Return: void
+		Arguments: void	
 
 	-o- energy
 		Return: double
 		Arguments: void	
 
 	-o- position
-		Return: const math::ROOT::Math::PositionVector3D<ROOT::Math::Cartesian3D<double> >&
+		Return: const math::XYZPoint&
 		Arguments: void	
 
 	-o- x
@@ -37,11 +41,36 @@ Methods from reco::CaloCluster
 		Return: double
 		Arguments: void	
 
-	-o- caloID
-		Return: CaloID&
+	-o- size
+		Return: size_t
+		Arguments: void	
+
+	-o- algo
+		Return: AlgoId
+		Arguments: void	
+
+	-o- algoID
+		Return: AlgoId
 		Arguments: void	
 
 	-o- caloID
 		Return: const CaloID&
+		Arguments: void	
+
+	-o- addHitAndFraction
+		Return: void
+		Arguments: DetId	id
+		           float	fraction
+
+	-o- printHitAndFraction
+		Return: std::string
+		Arguments: unsigned	i
+
+	-o- seed
+		Return: DetId
+		Arguments: void	
+
+	-o- hitsAndFractions
+		Return: const std::vector<std::pair<DetId, float> >&
 		Arguments: void	
 

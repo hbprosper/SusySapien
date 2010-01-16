@@ -1,5 +1,3 @@
 edm::EDCollection<T>|bool|empty|void
 edm::EDCollection<T>|typename std::vector<T>::size_type|size|void
 edm::EDCollection<T>|typename std::vector<T>::size_type|capacity|void
-edm::EDCollection<T>|typename std::vector<T>::const_iterator|begin|void
-edm::EDCollection<T>|typename std::vector<T>::const_iterator|end|void

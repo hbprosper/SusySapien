@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: TrackBase.xml
-  Created:  Thu Jan 14 22:48:50 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:40 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/TrackReco/interface/TrackBase.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/TrackReco/interface/TrackBase.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/TrackReco/interface/TrackBase.h">
 
     <include name="&quot;DataFormats/Math/interface/Vector.h&quot;"/>
     <include name="&quot;DataFormats/Math/interface/Error.h&quot;"/>
@@ -98,15 +98,21 @@ typedef unsigned int index;
 
                 <enum name="TrackAlgorithm">
 enum TrackAlgorithm {
- undefAlgorithm=0, ctf=1, rs=2, cosmics=3, beamhalo=4, 
+ undefAlgorithm=0, ctf=1, rs=2, cosmics=3, iter0=4, 
      iter1=5, iter2=6, iter3=7, iter4=8, iter5=9, iter6=10, iter7=11, iter8=12, iter9=13, iter10=14, 
-     conversion=15, nuclInter=16, 
-     algoSize=17 };
+     outInEcalSeededConv=15, inOutEcalSeededConv=16, 
+     nuclInter=17, 
+     standAloneMuon=18, globalMuon=19, cosmicStandAloneMuon=20, cosmicGlobalMuon=21, 
+                          iter1LargeD0=22, iter2LargeD0=23, iter3LargeD0=24, iter4LargeD0=25, iter5LargeD0=26, 
+     bTagGhostTracks=27, 
+     beamhalo=28, 
+     gsf=29, 
+     algoSize=30 };
                     <field name="undefAlgorithm" value="0"/>
                     <field name="ctf" value="1"/>
                     <field name="rs" value="2"/>
                     <field name="cosmics" value="3"/>
-                    <field name="beamhalo" value="4"/>
+                    <field name="iter0" value="4"/>
                     <field name="iter1" value="5"/>
                     <field name="iter2" value="6"/>
                     <field name="iter3" value="7"/>
@@ -117,9 +123,22 @@ enum TrackAlgorithm {
                     <field name="iter8" value="12"/>
                     <field name="iter9" value="13"/>
                     <field name="iter10" value="14"/>
-                    <field name="conversion" value="15"/>
-                    <field name="nuclInter" value="16"/>
-                    <field name="algoSize" value="17"/>
+                    <field name="outInEcalSeededConv" value="15"/>
+                    <field name="inOutEcalSeededConv" value="16"/>
+                    <field name="nuclInter" value="17"/>
+                    <field name="standAloneMuon" value="18"/>
+                    <field name="globalMuon" value="19"/>
+                    <field name="cosmicStandAloneMuon" value="20"/>
+                    <field name="cosmicGlobalMuon" value="21"/>
+                    <field name="iter1LargeD0" value="22"/>
+                    <field name="iter2LargeD0" value="23"/>
+                    <field name="iter3LargeD0" value="24"/>
+                    <field name="iter4LargeD0" value="25"/>
+                    <field name="iter5LargeD0" value="26"/>
+                    <field name="bTagGhostTracks" value="27"/>
+                    <field name="beamhalo" value="28"/>
+                    <field name="gsf" value="29"/>
+                    <field name="algoSize" value="30"/>
                     <comment>
         track algorithm
                     </comment>
@@ -208,7 +227,7 @@ double ndof() const;
                          qual="const">
 double normalizedChi2() const;
                     <comment>
-        chi-squared divided by n.d.o.f.
+        chi-squared divided by n.d.o.f. (or chi-squared * 1e6 if n.d.o.f. is zero)
                     </comment>
                 </method1>
 
@@ -674,6 +693,28 @@ const HitPattern&amp; hitPattern() const;
                     </comment>
                 </method1>
 
+                <method1 name="trackerExpectedHitsInner"
+                         return="const HitPattern&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const HitPattern&amp; trackerExpectedHitsInner() const;
+                    <comment>
+        Access the hit pattern counting (in the Tracker) the number of expected crossed layers  before the first trajectory's hit
+                    </comment>
+                </method1>
+
+                <method1 name="trackerExpectedHitsOuter"
+                         return="const HitPattern&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const HitPattern&amp; trackerExpectedHitsOuter() const;
+                    <comment>
+        Access the hit pattern counting (in the Tracker) the number of expected crossed layers  after the last trajectory's hit
+                    </comment>
+                </method1>
+
                 <method1 name="numberOfValidHits"
                          return="unsigned short"
                          args="['void']"
@@ -703,8 +744,24 @@ unsigned short numberOfLostHits() const;
                          qual="">
 template&lt;typename C&gt;     void setHitPattern(const C&amp; c);
                     <comment>
-        set hit pattern from vector of hit references
+        set hit patterns from vector of hit references
                     </comment>
+                </method2>
+
+                <method2 name="setTrackerExpectedHitsInner"
+                         return="template&lt;typename C&gt; void"
+                         args="['const C&amp;']"
+                         vars="['c']"
+                         qual="">
+template&lt;typename C&gt;     void setTrackerExpectedHitsInner(const C&amp; c);
+                </method2>
+
+                <method2 name="setTrackerExpectedHitsOuter"
+                         return="template&lt;typename C&gt; void"
+                         args="['const C&amp;']"
+                         vars="['c']"
+                         qual="">
+template&lt;typename C&gt;     void setTrackerExpectedHitsOuter(const C&amp; c);
                 </method2>
 
                 <method2 name="setHitPattern"
@@ -713,6 +770,22 @@ template&lt;typename C&gt;     void setHitPattern(const C&amp; c);
                          vars="['begin','end']"
                          qual="">
 template&lt;typename I&gt;     void setHitPattern(const I&amp; begin, const I&amp; end);
+                </method2>
+
+                <method2 name="setTrackerExpectedHitsInner"
+                         return="template&lt;typename I&gt; void"
+                         args="['const I&amp;','const I&amp;']"
+                         vars="['begin','end']"
+                         qual="">
+template&lt;typename I&gt;     void setTrackerExpectedHitsInner(const I&amp; begin, const I&amp; end);
+                </method2>
+
+                <method2 name="setTrackerExpectedHitsOuter"
+                         return="template&lt;typename I&gt; void"
+                         args="['const I&amp;','const I&amp;']"
+                         vars="['begin','end']"
+                         qual="">
+template&lt;typename I&gt;     void setTrackerExpectedHitsOuter(const I&amp; begin, const I&amp; end);
                 </method2>
 
                 <method1 name="setHitPattern"
@@ -724,6 +797,22 @@ void setHitPattern(const TrackingRecHit&amp; hit, size_t i);
                     <comment>
         set hit pattern for specified hit
                     </comment>
+                </method1>
+
+                <method1 name="setTrackerExpectedHitsInner"
+                         return="void"
+                         args="['const TrackingRecHit&amp;','size_t']"
+                         vars="['hit','i']"
+                         qual="">
+void setTrackerExpectedHitsInner(const TrackingRecHit&amp; hit, size_t i);
+                </method1>
+
+                <method1 name="setTrackerExpectedHitsOuter"
+                         return="void"
+                         args="['const TrackingRecHit&amp;','size_t']"
+                         vars="['hit','i']"
+                         qual="">
+void setTrackerExpectedHitsOuter(const TrackingRecHit&amp; hit, size_t i);
                 </method1>
 
                 <method1 name="setAlgorithm"
@@ -843,14 +932,20 @@ void setQualityMask(int qualMask);
             <typemap name="algoSize"
                      value="reco::TrackBase::algoSize"
                      type="enum"/>
+            <typemap name="bTagGhostTracks"
+                     value="reco::TrackBase::bTagGhostTracks"
+                     type="enum"/>
             <typemap name="beamhalo"
                      value="reco::TrackBase::beamhalo"
                      type="enum"/>
             <typemap name="confirmed"
                      value="reco::TrackBase::confirmed"
                      type="enum"/>
-            <typemap name="conversion"
-                     value="reco::TrackBase::conversion"
+            <typemap name="cosmicGlobalMuon"
+                     value="reco::TrackBase::cosmicGlobalMuon"
+                     type="enum"/>
+            <typemap name="cosmicStandAloneMuon"
+                     value="reco::TrackBase::cosmicStandAloneMuon"
                      type="enum"/>
             <typemap name="cosmics"
                      value="reco::TrackBase::cosmics"
@@ -864,8 +959,14 @@ void setQualityMask(int qualMask);
             <typemap name="dimension "
                      value="reco::TrackBase::dimension "
                      type="enum"/>
+            <typemap name="globalMuon"
+                     value="reco::TrackBase::globalMuon"
+                     type="enum"/>
             <typemap name="goodIterative"
                      value="reco::TrackBase::goodIterative"
+                     type="enum"/>
+            <typemap name="gsf"
+                     value="reco::TrackBase::gsf"
                      type="enum"/>
             <typemap name="highPurity"
                      value="reco::TrackBase::highPurity"
@@ -885,26 +986,47 @@ void setQualityMask(int qualMask);
             <typemap name="i_qoverp "
                      value="reco::TrackBase::i_qoverp "
                      type="enum"/>
+            <typemap name="inOutEcalSeededConv"
+                     value="reco::TrackBase::inOutEcalSeededConv"
+                     type="enum"/>
             <typemap name="index"
                      value="unsigned int"
                      type="typedef"/>
+            <typemap name="iter0"
+                     value="reco::TrackBase::iter0"
+                     type="enum"/>
             <typemap name="iter1"
                      value="reco::TrackBase::iter1"
                      type="enum"/>
             <typemap name="iter10"
                      value="reco::TrackBase::iter10"
                      type="enum"/>
+            <typemap name="iter1LargeD0"
+                     value="reco::TrackBase::iter1LargeD0"
+                     type="enum"/>
             <typemap name="iter2"
                      value="reco::TrackBase::iter2"
+                     type="enum"/>
+            <typemap name="iter2LargeD0"
+                     value="reco::TrackBase::iter2LargeD0"
                      type="enum"/>
             <typemap name="iter3"
                      value="reco::TrackBase::iter3"
                      type="enum"/>
+            <typemap name="iter3LargeD0"
+                     value="reco::TrackBase::iter3LargeD0"
+                     type="enum"/>
             <typemap name="iter4"
                      value="reco::TrackBase::iter4"
                      type="enum"/>
+            <typemap name="iter4LargeD0"
+                     value="reco::TrackBase::iter4LargeD0"
+                     type="enum"/>
             <typemap name="iter5"
                      value="reco::TrackBase::iter5"
+                     type="enum"/>
+            <typemap name="iter5LargeD0"
+                     value="reco::TrackBase::iter5LargeD0"
                      type="enum"/>
             <typemap name="iter6"
                      value="reco::TrackBase::iter6"
@@ -924,11 +1046,17 @@ void setQualityMask(int qualMask);
             <typemap name="nuclInter"
                      value="reco::TrackBase::nuclInter"
                      type="enum"/>
+            <typemap name="outInEcalSeededConv"
+                     value="reco::TrackBase::outInEcalSeededConv"
+                     type="enum"/>
             <typemap name="qualitySize"
                      value="reco::TrackBase::qualitySize"
                      type="enum"/>
             <typemap name="rs"
                      value="reco::TrackBase::rs"
+                     type="enum"/>
+            <typemap name="standAloneMuon"
+                     value="reco::TrackBase::standAloneMuon"
                      type="enum"/>
             <typemap name="tight"
                      value="reco::TrackBase::tight"

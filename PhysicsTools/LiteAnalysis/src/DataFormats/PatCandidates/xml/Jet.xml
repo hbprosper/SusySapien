@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: Jet.xml
-  Created:  Thu Jan 14 22:48:13 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:11 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/PatCandidates/interface/Jet.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/PatCandidates/interface/Jet.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/PatCandidates/interface/Jet.h">
 
     <include name="&quot;DataFormats/JetReco/interface/CaloJet.h&quot;"/>
     <include name="&quot;DataFormats/JetReco/interface/BasicJet.h&quot;"/>
@@ -24,6 +24,7 @@
     <include name="&quot;DataFormats/BTauReco/interface/SoftLeptonTagInfo.h&quot;"/>
     <include name="&quot;DataFormats/BTauReco/interface/SecondaryVertexTagInfo.h&quot;"/>
     <include name="&quot;DataFormats/PatCandidates/interface/JetCorrFactors.h&quot;"/>
+    <include name="&quot;DataFormats/JetReco/interface/JetID.h&quot;"/>
     <include name="&quot;DataFormats/Common/interface/Ptr.h&quot;"/>
     <include name="&quot;DataFormats/Common/interface/OwnVector.h&quot;"/>
 
@@ -53,11 +54,6 @@ typedef edm::RefVector&lt;JetCollection&gt; JetRefVector;
         <comment>
    Class definition
         </comment>
-        <typedef name="JetType"
-                 value="reco::Jet">
-typedef reco::Jet JetType;
-        </typedef>
-
         <typedef name="CaloSpecific"
                  value="reco::CaloJet::Specific">
 typedef reco::CaloJet::Specific CaloSpecific;
@@ -74,7 +70,7 @@ typedef reco::PFJet::Specific PFSpecific;
                module="DataFormats.PatCandidates"
                project=""
                type="regular">
-            <baseclass name="public PATObject&lt;JetType&gt;"/>
+            <baseclass name="public PATObject&lt;reco::Jet&gt;"/>
 
             <section name="public">
                 <constructor name="Jet"
@@ -90,34 +86,34 @@ Jet();
 
                 <constructor name="Jet"
                              return=""
-                             args="['const JetType&amp;']"
+                             args="['const reco::Jet&amp;']"
                              vars="['aJet']"
                              qual="">
-Jet(const JetType&amp; aJet);
+Jet(const reco::Jet&amp; aJet);
                     <comment>
-          constructor from a JetType
+          constructor from a reco::Jet
                     </comment>
                 </constructor>
 
                 <constructor name="Jet"
                              return=""
-                             args="['const edm::RefToBase&lt;JetType&gt;&amp;']"
+                             args="['const edm::RefToBase&lt;reco::Jet&gt;&amp;']"
                              vars="['aJetRef']"
                              qual="">
-Jet(const edm::RefToBase&lt;JetType&gt;&amp; aJetRef);
+Jet(const edm::RefToBase&lt;reco::Jet&gt;&amp; aJetRef);
                     <comment>
-          constructor from ref to JetType
+          constructor from ref to reco::Jet
                     </comment>
                 </constructor>
 
                 <constructor name="Jet"
                              return=""
-                             args="['const edm::Ptr&lt;JetType&gt;&amp;']"
+                             args="['const edm::Ptr&lt;reco::Jet&gt;&amp;']"
                              vars="['aJetRef']"
                              qual="">
-Jet(const edm::Ptr&lt;JetType&gt;&amp; aJetRef);
+Jet(const edm::Ptr&lt;reco::Jet&gt;&amp; aJetRef);
                     <comment>
-          constructor from ref to JetType
+          constructor from ref to reco::Jet
                     </comment>
                 </constructor>
 
@@ -138,6 +134,9 @@ virtual ~Jet();
                          vars="['']"
                          qual="const">
 virtual Jet* clone() const;
+                    <comment>
+          required reimplementation of the Candidate's clone method
+                    </comment>
                 </method1>
 
                 <method1 name="genParton"
@@ -180,7 +179,7 @@ int partonFlavour() const;
                          qual="const">
 bool hasCorrFactors() const;
                     <comment>
-         return true if this jet carries jet energy correction information
+          return true if the jet carries jet energy correction information
                     </comment>
                 </method1>
 
@@ -191,7 +190,7 @@ bool hasCorrFactors() const;
                          qual="const">
 bool hasCorrFactorSet(const std::string&amp; set) const;
                     <comment>
-          return true if this jet carries the jet correction factors of a different set, for systematic studies
+          return true if the jet carries the jet correction factors of a different set, for systematic studies
                     </comment>
                 </method1>
 
@@ -202,7 +201,7 @@ bool hasCorrFactorSet(const std::string&amp; set) const;
                          qual="const">
 std::string corrFactorSetLabel() const;
                     <comment>
-          return the label-name of the current set of jet energy corrections
+          return the label of the current set of jet energy corrections
                     </comment>
                 </method1>
 
@@ -213,7 +212,7 @@ std::string corrFactorSetLabel() const;
                          qual="const">
 const std::vector&lt;std::string&gt; corrFactorSetLabels() const;
                     <comment>
-          return the all available label-names of all sets of jet energy corrections
+          return label-names of all available sets of jet energy corrections
                     </comment>
                 </method2>
 
@@ -224,7 +223,7 @@ const std::vector&lt;std::string&gt; corrFactorSetLabels() const;
                          qual="const">
 std::string corrStep() const;
                     <comment>
-          return the name of the current level of jet energy corrections
+          return the name of the current step of jet energy corrections
                     </comment>
                 </method1>
 
@@ -235,7 +234,7 @@ std::string corrStep() const;
                          qual="const">
 std::string corrFlavour() const;
                     <comment>
-          return flavour of the current level of jet energy corrections
+          return flavour of the current step of jet energy corrections
                     </comment>
                 </method1>
 
@@ -246,7 +245,7 @@ std::string corrFlavour() const;
                          qual="const">
 float corrFactor(const std::string&amp; step, const std::string&amp; flavour=&quot;&quot;) const;
                     <comment>
-          for the currently used set of correction factors
+          for the set of correction factors, which is currently in use
                     </comment>
                 </method1>
 
@@ -257,7 +256,7 @@ float corrFactor(const std::string&amp; step, const std::string&amp; flavour=&qu
                          qual="const">
 float corrFactor(const std::string&amp; step, const std::string&amp; flavour, const std::string&amp; set) const;
                     <comment>
-          for any available set of correction factors
+          for a specific set of correction factors
                     </comment>
                 </method1>
 
@@ -268,7 +267,7 @@ float corrFactor(const std::string&amp; step, const std::string&amp; flavour, co
                          qual="const">
 Jet correctedJet(const JetCorrFactors::CorrStep&amp; step) const;
                     <comment>
-          for the currently used set of correction factors
+          the set of correction factors, which is currently in use
                     </comment>
                 </method1>
 
@@ -279,18 +278,7 @@ Jet correctedJet(const JetCorrFactors::CorrStep&amp; step) const;
                          qual="const">
 Jet correctedJet(const std::string&amp; step, const std::string&amp; flavour=&quot;&quot;) const;
                     <comment>
-          for the currently used set of correction factors
-                    </comment>
-                </method1>
-
-                <method1 name="correctedJet"
-                         return="Jet"
-                         args="['const std::string&amp;','const std::string&amp;','const std::string&amp;']"
-                         vars="['step','flavour','set']"
-                         qual="const">
-Jet correctedJet(const std::string&amp; step, const std::string&amp; flavour, const std::string&amp; set) const;
-                    <comment>
-          for any available set of correction factors
+          the set of correction factors, which is currently in use
                     </comment>
                 </method1>
 
@@ -301,7 +289,62 @@ Jet correctedJet(const std::string&amp; step, const std::string&amp; flavour, co
                          qual="const">
 Jet correctedJet(const JetCorrFactors::CorrStep&amp; step, const std::string&amp; set) const;
                     <comment>
-          for any available set of correction factors
+          for a specific set of correction factors
+                    </comment>
+                </method1>
+
+                <method1 name="correctedJet"
+                         return="Jet"
+                         args="['const std::string&amp;','const std::string&amp;','const std::string&amp;']"
+                         vars="['step','flavour','set']"
+                         qual="const">
+Jet correctedJet(const std::string&amp; step, const std::string&amp; flavour, const std::string&amp; set) const;
+                    <comment>
+          for a specific set of correction factors
+                    </comment>
+                </method1>
+
+                <method1 name="correctedP4"
+                         return="const LorentzVector&amp;"
+                         args="['const JetCorrFactors::CorrStep&amp;']"
+                         vars="['step']"
+                         qual="const">
+const LorentzVector&amp; correctedP4(const JetCorrFactors::CorrStep&amp; step) const;
+                    <comment>
+          the set of correction factors, which is currently in use
+                    </comment>
+                </method1>
+
+                <method1 name="correctedP4"
+                         return="const LorentzVector&amp;"
+                         args="['const std::string&amp;','const std::string&amp;=&quot;&quot;']"
+                         vars="['step','flavour']"
+                         qual="const">
+const LorentzVector&amp; correctedP4(const std::string&amp; step, const std::string&amp; flavour=&quot;&quot;) const;
+                    <comment>
+          the set of correction factors, which is currently in use
+                    </comment>
+                </method1>
+
+                <method1 name="correctedP4"
+                         return="const LorentzVector&amp;"
+                         args="['const JetCorrFactors::CorrStep&amp;','const std::string&amp;']"
+                         vars="['step','set']"
+                         qual="const">
+const LorentzVector&amp; correctedP4(const JetCorrFactors::CorrStep&amp; step, const std::string&amp; set) const;
+                    <comment>
+          the set of correction factors, which is currently in use
+                    </comment>
+                </method1>
+
+                <method1 name="correctedP4"
+                         return="const LorentzVector&amp;"
+                         args="['const std::string&amp;','const std::string&amp;','const std::string&amp;']"
+                         vars="['step','flavour','set']"
+                         qual="const">
+const LorentzVector&amp; correctedP4(const std::string&amp; step, const std::string&amp; flavour, const std::string&amp; set) const;
+                    <comment>
+          the set of correction factors, which is currently in use
                     </comment>
                 </method1>
 
@@ -312,7 +355,7 @@ Jet correctedJet(const JetCorrFactors::CorrStep&amp; step, const std::string&amp
                          qual="">
 void setCorrStep(JetCorrFactors::CorrStep step);
                     <comment>
-          The default JetCorrFactor-Set is always the first element in 'jetEnergyCorrections_'
+          jetEnergyCorrections_ is taken into consideration
                     </comment>
                 </method1>
 
@@ -335,6 +378,17 @@ void setCorrFactors(const JetCorrFactors&amp; jetCorrF);
 void addCorrFactors(const JetCorrFactors&amp; jetCorrF);
                     <comment>
           to be used by PATJetProducer: method to add more sets of energy scale correction factors
+                    </comment>
+                </method1>
+
+                <method1 name="relCorrUncert"
+                         return="float"
+                         args="['const std::string&amp;']"
+                         vars="['direction']"
+                         qual="const">
+float relCorrUncert(const std::string&amp; direction) const;
+                    <comment>
+         relative jet correction factor uncertainty plus/minus 1 sigma
                     </comment>
                 </method1>
 
@@ -378,7 +432,7 @@ const reco::BaseTagInfo* tagInfo(const std::string&amp; label) const;
                          qual="const">
 const reco::TrackIPTagInfo* tagInfoTrackIP(const std::string&amp; label=&quot;&quot;) const;
                     <comment>
-          You should omit the 'TagInfos' part from the label
+          you should omit the 'TagInfos' part from the label
                     </comment>
                 </method1>
 
@@ -389,7 +443,7 @@ const reco::TrackIPTagInfo* tagInfoTrackIP(const std::string&amp; label=&quot;&q
                          qual="const">
 const reco::SoftLeptonTagInfo* tagInfoSoftLepton(const std::string&amp; label=&quot;&quot;) const;
                     <comment>
-          You should omit the 'TagInfos' part from the label
+          you should omit the 'TagInfos' part from the label
                     </comment>
                 </method1>
 
@@ -400,9 +454,20 @@ const reco::SoftLeptonTagInfo* tagInfoSoftLepton(const std::string&amp; label=&q
                          qual="const">
 const reco::SecondaryVertexTagInfo* tagInfoSecondaryVertex(const std::string&amp; label=&quot;&quot;) const;
                     <comment>
-          You should omit the 'TagInfos' part from the label
+          you should omit the 'TagInfos' part from the label
                     </comment>
                 </method1>
+
+                <method2 name="addBDiscriminatorPair"
+                         return="void"
+                         args="['const std::pair&lt;std::string, float&gt;&amp;']"
+                         vars="['thePair']"
+                         qual="">
+void addBDiscriminatorPair(const std::pair&lt;std::string, float&gt;&amp; thePair);
+                    <comment>
+          method to add a algolabel-discriminator pair
+                    </comment>
+                </method2>
 
                 <method2 name="addTagInfo"
                          return="void"
@@ -414,17 +479,6 @@ void addTagInfo(const std::string&amp; label, const edm::Ptr&lt;reco::BaseTagInf
           If the label ends with 'TagInfos', the 'TagInfos' is stripped out.
                     </comment>
                 </method2>
-
-                <method1 name="addTagInfo"
-                         return="void"
-                         args="['const std::string&amp;','const reco::BaseTagInfo&amp;']"
-                         vars="['label','info']"
-                         qual="">
-void addTagInfo(const std::string&amp; label, const reco::BaseTagInfo&amp; info);
-                    <comment>
-          If the label ends with 'TagInfos', the 'TagInfos' is stripped out.
-                    </comment>
-                </method1>
 
                 <method1 name="jetCharge"
                          return="float"
@@ -445,6 +499,28 @@ float jetCharge() const;
 const reco::TrackRefVector&amp; associatedTracks() const;
                     <comment>
           method to return a vector of refs to the tracks associated to this jet
+                    </comment>
+                </method1>
+
+                <method1 name="setJetCharge"
+                         return="void"
+                         args="['float']"
+                         vars="['jetCharge']"
+                         qual="">
+void setJetCharge(float jetCharge);
+                    <comment>
+          method to set the jet charge
+                    </comment>
+                </method1>
+
+                <method1 name="setAssociatedTracks"
+                         return="void"
+                         args="['const reco::TrackRefVector&amp;']"
+                         vars="['tracks']"
+                         qual="">
+void setAssociatedTracks(const reco::TrackRefVector&amp; tracks);
+                    <comment>
+          method to set the vector of refs to the tracks associated to this jet
                     </comment>
                 </method1>
 
@@ -472,12 +548,23 @@ void setGenParton(const reco::GenParticleRef&amp; gp, bool embed=false);
 
                 <method1 name="setGenJet"
                          return="void"
-                         args="['const reco::GenJet&amp;']"
-                         vars="['gj']"
+                         args="['const reco::GenJetRef&amp;','const bool=false']"
+                         vars="['gj','embed']"
                          qual="">
-void setGenJet(const reco::GenJet&amp; gj);
+void setGenJet(const reco::GenJetRef&amp; gj, const bool embed=false);
                     <comment>
           method to set the matched generated jet
+                    </comment>
+                </method1>
+
+                <method1 name="setGenJetRef"
+                         return="void"
+                         args="['const reco::GenJetRef&amp;','const bool']"
+                         vars="['gj','embed']"
+                         qual="">
+void setGenJetRef(const reco::GenJetRef&amp; gj, const bool embed);
+                    <comment>
+          method to set the matched generated jet reference, embedding if requested
                     </comment>
                 </method1>
 
@@ -492,36 +579,14 @@ void setPartonFlavour(int partonFl);
                     </comment>
                 </method1>
 
-                <method2 name="addBDiscriminatorPair"
+                <method1 name="setJetID"
                          return="void"
-                         args="['const std::pair&lt;std::string, float&gt;&amp;']"
-                         vars="['thePair']"
+                         args="['reco::JetID const&amp;']"
+                         vars="['id']"
                          qual="">
-void addBDiscriminatorPair(const std::pair&lt;std::string, float&gt;&amp; thePair);
+void setJetID(reco::JetID const&amp; id);
                     <comment>
-          method to add a algolabel-discriminator pair
-                    </comment>
-                </method2>
-
-                <method1 name="setJetCharge"
-                         return="void"
-                         args="['float']"
-                         vars="['jetCharge']"
-                         qual="">
-void setJetCharge(float jetCharge);
-                    <comment>
-          method to set the jet charge
-                    </comment>
-                </method1>
-
-                <method1 name="setAssociatedTracks"
-                         return="void"
-                         args="['const reco::TrackRefVector&amp;']"
-                         vars="['tracks']"
-                         qual="">
-void setAssociatedTracks(const reco::TrackRefVector&amp; tracks);
-                    <comment>
-          method to set the vector of refs to the tracks associated to this jet
+          methods for jet ID
                     </comment>
                 </method1>
 
@@ -531,6 +596,9 @@ void setAssociatedTracks(const reco::TrackRefVector&amp; tracks);
                          vars="['']"
                          qual="const">
 bool isCaloJet() const;
+                    <comment>
+          check to see if the jet is a reco::CaloJet
+                    </comment>
                 </method1>
 
                 <method1 name="isPFJet"
@@ -539,6 +607,9 @@ bool isCaloJet() const;
                          vars="['']"
                          qual="const">
 bool isPFJet() const;
+                    <comment>
+          check to see if the jet is a reco::PFJet
+                    </comment>
                 </method1>
 
                 <method1 name="isBasicJet"
@@ -547,6 +618,9 @@ bool isPFJet() const;
                          vars="['']"
                          qual="const">
 bool isBasicJet() const;
+                    <comment>
+          check to see if the jet is no more than a reco::BasicJet
+                    </comment>
                 </method1>
 
                 <method1 name="caloSpecific"
@@ -555,6 +629,9 @@ bool isBasicJet() const;
                          vars="['']"
                          qual="const">
 const CaloSpecific&amp; caloSpecific() const;
+                    <comment>
+          retrieve the calo specific part of the jet
+                    </comment>
                 </method1>
 
                 <method1 name="pfSpecific"
@@ -563,6 +640,9 @@ const CaloSpecific&amp; caloSpecific() const;
                          vars="['']"
                          qual="const">
 const PFSpecific&amp; pfSpecific() const;
+                    <comment>
+          retrieve the pf specific part of the jet
+                    </comment>
                 </method1>
 
                 <method1 name="maxEInEmTowers"
@@ -572,7 +652,7 @@ const PFSpecific&amp; pfSpecific() const;
                          qual="const">
 float maxEInEmTowers() const;
                     <comment>
-          Returns the maximum energy deposited in ECAL towers
+          returns the maximum energy deposited in ECAL towers
                     </comment>
                 </method1>
 
@@ -583,7 +663,7 @@ float maxEInEmTowers() const;
                          qual="const">
 float maxEInHadTowers() const;
                     <comment>
-          Returns the maximum energy deposited in HCAL towers
+          returns the maximum energy deposited in HCAL towers
                     </comment>
                 </method1>
 
@@ -594,7 +674,7 @@ float maxEInHadTowers() const;
                          qual="const">
 float energyFractionHadronic () const;
                     <comment>
-          Returns the jet hadronic energy fraction
+          returns the jet hadronic energy fraction
                     </comment>
                 </method1>
 
@@ -605,7 +685,7 @@ float energyFractionHadronic () const;
                          qual="const">
 float emEnergyFraction() const;
                     <comment>
-          Returns the jet electromagnetic energy fraction
+          returns the jet electromagnetic energy fraction
                     </comment>
                 </method1>
 
@@ -616,7 +696,7 @@ float emEnergyFraction() const;
                          qual="const">
 float hadEnergyInHB() const;
                     <comment>
-          Returns the jet hadronic energy in HB
+          returns the jet hadronic energy in HB
                     </comment>
                 </method1>
 
@@ -627,7 +707,7 @@ float hadEnergyInHB() const;
                          qual="const">
 float hadEnergyInHO() const;
                     <comment>
-          Returns the jet hadronic energy in HO
+          returns the jet hadronic energy in HO
                     </comment>
                 </method1>
 
@@ -638,7 +718,7 @@ float hadEnergyInHO() const;
                          qual="const">
 float hadEnergyInHE() const;
                     <comment>
-          Returns the jet hadronic energy in HE
+          returns the jet hadronic energy in HE
                     </comment>
                 </method1>
 
@@ -649,7 +729,7 @@ float hadEnergyInHE() const;
                          qual="const">
 float hadEnergyInHF() const;
                     <comment>
-          Returns the jet hadronic energy in HF
+          returns the jet hadronic energy in HF
                     </comment>
                 </method1>
 
@@ -660,7 +740,7 @@ float hadEnergyInHF() const;
                          qual="const">
 float emEnergyInEB() const;
                     <comment>
-          Returns the jet electromagnetic energy in EB
+          returns the jet electromagnetic energy in EB
                     </comment>
                 </method1>
 
@@ -671,7 +751,7 @@ float emEnergyInEB() const;
                          qual="const">
 float emEnergyInEE() const;
                     <comment>
-          Returns the jet electromagnetic energy in EE
+          returns the jet electromagnetic energy in EE
                     </comment>
                 </method1>
 
@@ -682,7 +762,7 @@ float emEnergyInEE() const;
                          qual="const">
 float emEnergyInHF() const;
                     <comment>
-          Returns the jet electromagnetic energy extracted from HF
+          returns the jet electromagnetic energy extracted from HF
                     </comment>
                 </method1>
 
@@ -693,7 +773,7 @@ float emEnergyInHF() const;
                          qual="const">
 float towersArea() const;
                     <comment>
-          Returns area of contributing towers
+          returns area of contributing towers
                     </comment>
                 </method1>
 
@@ -704,7 +784,7 @@ float towersArea() const;
                          qual="const">
 int n90() const;
                     <comment>
-          Returns the number of constituents carrying a 90% of the total Jet energy
+          returns the number of constituents carrying a 90% of the total Jet energy
                     </comment>
                 </method1>
 
@@ -715,7 +795,7 @@ int n90() const;
                          qual="const">
 int n60() const;
                     <comment>
-          Returns the number of constituents carrying a 60% of the total Jet energy
+          returns the number of constituents carrying a 60% of the total Jet energy
                     </comment>
                 </method1>
 
@@ -726,7 +806,7 @@ int n60() const;
                          qual="const">
 CaloTowerPtr getCaloConstituent (unsigned fIndex) const;
                     <comment>
-          If the caloTowers were embedded, this reference is transient only and must not be persisted
+          if the caloTowers were embedded, this reference is transient only and must not be persisted
                     </comment>
                 </method1>
 
@@ -923,6 +1003,9 @@ std::vector&lt;const reco::PFCandidate*&gt; getPFConstituents () const;
                          vars="['i']"
                          qual="const">
 virtual const reco::Candidate* daughter(size_t i) const;
+                    <comment>
+          needs to be re-implemented because of CaloTower embedding
+                    </comment>
                 </method1>
 
                 <method1 name="numberOfDaughters"
@@ -932,7 +1015,18 @@ virtual const reco::Candidate* daughter(size_t i) const;
                          qual="const">
 virtual size_t numberOfDaughters() const;
                     <comment>
-          Needs to be re-implemented because of CaloTower embedding
+          needs to be re-implemented because of CaloTower embedding
+                    </comment>
+                </method1>
+
+                <method1 name="jetID"
+                         return="reco::JetID const&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+reco::JetID const&amp; jetID () const;
+                    <comment>
+          accessing Jet ID information
                     </comment>
                 </method1>
 
@@ -945,23 +1039,24 @@ virtual size_t numberOfDaughters() const;
     <type name="Jet"/>
     <type name="Jet*"/>
     <type name="JetCorrFactors::CorrStep"/>
-    <type name="PATObject&lt;JetType&gt;"/>
+    <type name="PATObject&lt;reco::Jet&gt;"/>
     <type name="bool"/>
     <type name="const CaloSpecific&amp;"/>
     <type name="const JetCorrFactors&amp;"/>
     <type name="const JetCorrFactors::CorrStep&amp;"/>
-    <type name="const JetType&amp;"/>
+    <type name="const LorentzVector&amp;"/>
     <type name="const PFSpecific&amp;"/>
-    <type name="const edm::Ptr&lt;JetType&gt;&amp;"/>
+    <type name="const bool"/>
     <type name="const edm::Ptr&lt;reco::BaseTagInfo&gt;&amp;"/>
-    <type name="const edm::RefToBase&lt;JetType&gt;&amp;"/>
-    <type name="const reco::BaseTagInfo&amp;"/>
+    <type name="const edm::Ptr&lt;reco::Jet&gt;&amp;"/>
+    <type name="const edm::RefToBase&lt;reco::Jet&gt;&amp;"/>
     <type name="const reco::BaseTagInfo*"/>
     <type name="const reco::Candidate*"/>
-    <type name="const reco::GenJet&amp;"/>
     <type name="const reco::GenJet*"/>
+    <type name="const reco::GenJetRef&amp;"/>
     <type name="const reco::GenParticle*"/>
     <type name="const reco::GenParticleRef&amp;"/>
+    <type name="const reco::Jet&amp;"/>
     <type name="const reco::PFCandidate*"/>
     <type name="const reco::SecondaryVertexTagInfo*"/>
     <type name="const reco::SoftLeptonTagInfo*"/>
@@ -975,6 +1070,7 @@ virtual size_t numberOfDaughters() const;
     <type name="float"/>
     <type name="int"/>
     <type name="pat::Jet"/>
+    <type name="reco::JetID const&amp;"/>
     <type name="size_t"/>
     <type name="std::string"/>
     <type name="std::vector&lt;CaloTowerPtr&gt;"/>

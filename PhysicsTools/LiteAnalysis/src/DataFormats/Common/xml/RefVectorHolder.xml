@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: RefVectorHolder.xml
-  Created:  Thu Jan 14 22:46:25 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:45:56 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/Common/interface/RefVectorHolder.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/RefVectorHolder.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/Common/interface/RefVectorHolder.h">
 
     <include name="&quot;DataFormats/Common/interface/RefVectorHolderBase.h&quot;"/>
     <include name="&quot;FWCore/Utilities/interface/EDMException.h&quot;"/>
@@ -16,7 +16,7 @@
 
         <namespace name="reftobase">
             <forward name="RefHolderBase"/>
-            <forward name="template&lt;REF&gt; RefHolder"/>
+            <forward name="template&lt;typename REF&gt; RefHolder"/>
 
             <class name="RefVectorHolder"
                    fullname="edm::reftobase::RefVectorHolder&lt;REFV&gt;"
@@ -37,10 +37,18 @@ RefVectorHolder();
 
                     <constructor name="RefVectorHolder"
                                  return=""
-                                 args="['const REFV&amp;']"
+                                 args="['REFV const&amp;']"
                                  vars="['refs']"
                                  qual="">
-RefVectorHolder(const REFV&amp; refs);
+RefVectorHolder(REFV const&amp; refs);
+                    </constructor>
+
+                    <constructor name="RefVectorHolder"
+                                 return="explicit"
+                                 args="['ProductID const&amp;']"
+                                 vars="['id']"
+                                 qual="">
+explicit RefVectorHolder(ProductID const&amp; id);
                     </constructor>
 
                     <destructor name="~RefVectorHolder"
@@ -93,10 +101,10 @@ virtual void clear();
 
                     <method1 name="push_back"
                              return="virtual void"
-                             args="['const RefHolderBase*']"
+                             args="['RefHolderBase const*']"
                              vars="['r']"
                              qual="">
-virtual void push_back(const RefHolderBase* r);
+virtual void push_back(RefHolderBase const* r);
                     </method1>
 
                     <method1 name="reserve"
@@ -141,18 +149,18 @@ virtual RefVectorHolder&lt;REFV&gt;* cloneEmpty() const;
 
                     <method1 name="setRefs"
                              return="void"
-                             args="['const REFV&amp;']"
+                             args="['REFV const&amp;']"
                              vars="['refs']"
                              qual="">
-void setRefs(const REFV&amp; refs);
+void setRefs(REFV const&amp; refs);
                     </method1>
 
                     <method2 name="reallyFillView"
                              return="virtual void"
-                             args="['const void*','const ProductID&amp;','std::vector&lt;void const*&gt;&amp;']"
+                             args="['void const*','ProductID const&amp;','std::vector&lt;void const*&gt;&amp;']"
                              vars="['','','']"
                              qual="">
-virtual void reallyFillView(const void*, const ProductID&amp;, std::vector&lt;void const*&gt;&amp;);
+virtual void reallyFillView(void const*, ProductID const&amp;, std::vector&lt;void const*&gt;&amp;);
                     </method2>
 
                 </section>
@@ -181,10 +189,10 @@ const_iterator_imp_specific();
 
                             <constructor name="const_iterator_imp_specific"
                                          return="explicit"
-                                         args="['const typename REFV::const_iterator&amp;']"
+                                         args="['typename REFV::const_iterator const&amp;']"
                                          vars="['it']"
                                          qual="">
-explicit const_iterator_imp_specific(const typename REFV::const_iterator&amp; it);
+explicit const_iterator_imp_specific(typename REFV::const_iterator const&amp; it);
                             </constructor>
 
                             <destructor name="~const_iterator_imp_specific"
@@ -237,26 +245,26 @@ void decrease(difference_type d);
 
                             <method1 name="equal_to"
                                      return="bool"
-                                     args="['const const_iterator_imp*']"
+                                     args="['const_iterator_imp const*']"
                                      vars="['o']"
                                      qual="const">
-bool equal_to(const const_iterator_imp* o) const;
+bool equal_to(const_iterator_imp const* o) const;
                             </method1>
 
                             <method1 name="less_than"
                                      return="bool"
-                                     args="['const const_iterator_imp*']"
+                                     args="['const_iterator_imp const*']"
                                      vars="['o']"
                                      qual="const">
-bool less_than(const const_iterator_imp* o) const;
+bool less_than(const_iterator_imp const* o) const;
                             </method1>
 
                             <method1 name="assign"
                                      return="void"
-                                     args="['const const_iterator_imp*']"
+                                     args="['const_iterator_imp const*']"
                                      vars="['o']"
                                      qual="">
-void assign(const const_iterator_imp* o);
+void assign(const_iterator_imp const* o);
                             </method1>
 
                             <method2 name="deref"
@@ -269,10 +277,10 @@ boost::shared_ptr&lt;RefHolderBase&gt; deref() const;
 
                             <method1 name="difference"
                                      return="difference_type"
-                                     args="['const const_iterator_imp*']"
+                                     args="['const_iterator_imp const*']"
                                      vars="['o']"
                                      qual="const">
-difference_type difference(const const_iterator_imp* o) const;
+difference_type difference(const_iterator_imp const* o) const;
                             </method1>
 
                         </section>
@@ -307,11 +315,11 @@ const_iterator end() const;
                     </method1>
 
                     <method1 name="product"
-                             return="virtual const void*"
+                             return="virtual void const*"
                              args="['void']"
                              vars="['']"
                              qual="const">
-virtual const void* product() const;
+virtual void const* product() const;
                     </method1>
 
                     <method1 name="isAvailable"
@@ -359,10 +367,10 @@ virtual bool isAvailable() const;
                 <section>
                     <method2 name="reallyFillView"
                              return="static void"
-                             args="['RefVectorHolder&lt;REFV&gt;&amp;','const void*','const ProductID&amp;','std::vector&lt;void const*&gt;&amp;']"
+                             args="['RefVectorHolder&lt;REFV&gt;&amp;','void const*','ProductID const&amp;','std::vector&lt;void const*&gt;&amp;']"
                              vars="['','','','']"
                              qual="">
-static void reallyFillView(RefVectorHolder&lt;REFV&gt;&amp;, const void*, const ProductID&amp;, std::vector&lt;void const*&gt;&amp;);
+static void reallyFillView(RefVectorHolder&lt;REFV&gt;&amp;, void const*, ProductID const&amp;, std::vector&lt;void const*&gt;&amp;);
                     </method2>
 
                 </section>
@@ -379,10 +387,10 @@ static void reallyFillView(RefVectorHolder&lt;REFV&gt;&amp;, const void*, const 
                 <section>
                     <method2 name="reallyFillView"
                              return="static void"
-                             args="['RefVectorHolder&lt;REFV&gt;&amp;','const void*','const ProductID&amp;','std::vector&lt;void const*&gt;&amp;']"
+                             args="['RefVectorHolder&lt;REFV&gt;&amp;','void const*','ProductID const&amp;','std::vector&lt;void const*&gt;&amp;']"
                              vars="['rvh','prod','id','pointers']"
                              qual="">
-static void reallyFillView(RefVectorHolder&lt;REFV&gt;&amp; rvh, const void* prod, const ProductID&amp; id, std::vector&lt;void const*&gt;&amp; pointers);
+static void reallyFillView(RefVectorHolder&lt;REFV&gt;&amp; rvh, void const* prod, ProductID const&amp; id, std::vector&lt;void const*&gt;&amp; pointers);
                     </method2>
 
                 </section>
@@ -393,6 +401,8 @@ static void reallyFillView(RefVectorHolder&lt;REFV&gt;&amp; rvh, const void* pro
 
     <type name="EDProductGetter const*"/>
     <type name="ProductID"/>
+    <type name="ProductID const&amp;"/>
+    <type name="RefHolderBase const*"/>
     <type name="RefVectorHolder const&amp;"/>
     <type name="RefVectorHolder&amp;"/>
     <type name="RefVectorHolder&lt;REFV&gt;&amp;"/>
@@ -400,13 +410,9 @@ static void reallyFillView(RefVectorHolder&lt;REFV&gt;&amp; rvh, const void* pro
     <type name="RefVectorHolderBase"/>
     <type name="bool"/>
     <type name="boost::shared_ptr&lt;RefHolderBase&gt;"/>
-    <type name="const ProductID&amp;"/>
-    <type name="const RefHolderBase*"/>
-    <type name="const const_iterator_imp*"/>
-    <type name="const typename REFV::const_iterator&amp;"/>
-    <type name="const void*"/>
     <type name="const_iterator"/>
     <type name="const_iterator_imp"/>
+    <type name="const_iterator_imp const*"/>
     <type name="const_iterator_imp_specific*"/>
     <type name="difference_type"/>
     <type name="edm::reftobase::RefVectorHolder&lt;REFV&gt;"/>
@@ -415,5 +421,7 @@ static void reallyFillView(RefVectorHolder&lt;REFV&gt;&amp; rvh, const void* pro
     <type name="edm::reftobase::RefVectorHolderNoFillView&lt;REFV&gt;"/>
     <type name="size_type"/>
     <type name="std::vector&lt;void const*&gt;&amp;"/>
+    <type name="typename REFV::const_iterator const&amp;"/>
     <type name="void"/>
+    <type name="void const*"/>
 </header>

@@ -1,7 +1,6 @@
 float	caloCompatibility()
 int	charge()
 double	eta()
-float	getCaloCompatibility()
 bool	isCaloCompatibilityValid()
 bool	isEnergyValid()
 double	p()

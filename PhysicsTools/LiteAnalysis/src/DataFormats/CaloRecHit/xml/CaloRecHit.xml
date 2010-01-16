@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: CaloRecHit.xml
-  Created:  Thu Jan 14 22:46:36 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:05 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/CaloRecHit/interface/CaloRecHit.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/CaloRecHit/interface/CaloRecHit.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/CaloRecHit/interface/CaloRecHit.h">
 
     <include name="&quot;DataFormats/DetId/interface/DetId.h&quot;"/>
     <include name="&lt;ostream&gt;"/>
@@ -19,8 +19,8 @@
         <comment>
     \class CaloRecHit
 
-   $Date: 2005/10/04 14:09:13 $
-   $Revision: 1.4 $
+   $Date: 2009/03/29 02:07:54 $
+   $Revision: 1.6 $
  author J. Mans - Minnesota
         </comment>
 
@@ -35,10 +35,10 @@ CaloRecHit();
 
             <constructor name="CaloRecHit"
                          return="explicit"
-                         args="['const DetId&amp;','float','float']"
-                         vars="['id','energy','time']"
+                         args="['const DetId&amp;','float','float','uint32_t=0']"
+                         vars="['id','energy','time','flags']"
                          qual="">
-explicit CaloRecHit(const DetId&amp; id, float energy, float time);
+explicit CaloRecHit(const DetId&amp; id, float energy, float time, uint32_t flags=0);
             </constructor>
 
             <destructor name="~CaloRecHit"
@@ -73,6 +73,38 @@ float time() const;
 const DetId&amp; detid() const;
             </method1>
 
+            <method1 name="flags"
+                     return="uint32_t"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+uint32_t flags() const;
+            </method1>
+
+            <method1 name="setFlags"
+                     return="void"
+                     args="['uint32_t']"
+                     vars="['flags']"
+                     qual="">
+void setFlags(uint32_t flags);
+            </method1>
+
+            <method1 name="setFlagField"
+                     return="void"
+                     args="['uint32_t','int','int=1']"
+                     vars="['value','base','width']"
+                     qual="">
+void setFlagField(uint32_t value, int base, int width=1);
+            </method1>
+
+            <method1 name="flagField"
+                     return="uint32_t"
+                     args="['int','int=1']"
+                     vars="['base','width']"
+                     qual="const">
+uint32_t flagField(int base, int width=1) const;
+            </method1>
+
         </section>
 
     </class>
@@ -88,5 +120,7 @@ std::ostream&amp; operator&lt;&lt;(std::ostream&amp; s, const CaloRecHit&amp; hi
     <type name="CaloRecHit"/>
     <type name="const DetId&amp;"/>
     <type name="float"/>
+    <type name="int"/>
+    <type name="uint32_t"/>
     <type name="void"/>
 </header>

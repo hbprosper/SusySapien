@@ -2,14 +2,15 @@
 <!--
 ==============================================================================
   XML File: Muon.xml
-  Created:  Thu Jan 14 22:48:16 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:14 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/PatCandidates/interface/Muon.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/PatCandidates/interface/Muon.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/PatCandidates/interface/Muon.h">
 
     <include name="&quot;DataFormats/MuonReco/interface/Muon.h&quot;"/>
     <include name="&quot;DataFormats/MuonReco/interface/MuonFwd.h&quot;"/>
+    <include name="&quot;DataFormats/MuonReco/interface/MuonSelectors.h&quot;"/>
     <include name="&quot;DataFormats/TrackReco/interface/Track.h&quot;"/>
     <include name="&quot;DataFormats/PatCandidates/interface/Lepton.h&quot;"/>
     <include name="&quot;DataFormats/ParticleFlowCandidate/interface/IsolatedPFCandidateFwd.h&quot;"/>
@@ -41,23 +42,13 @@ typedef edm::RefVector&lt;MuonCollection&gt; MuonRefVector;
         <comment>
    Class definition
         </comment>
-        <typedef name="MuonType"
-                 value="reco::Muon">
-typedef reco::Muon MuonType;
-        </typedef>
-
-        <typedef name="MuonTypeCollection"
-                 value="reco::MuonCollection">
-typedef reco::MuonCollection MuonTypeCollection;
-        </typedef>
-
 
         <class name="Muon"
                fullname="pat::Muon"
                module="DataFormats.PatCandidates"
                project=""
                type="regular">
-            <baseclass name="public Lepton&lt;MuonType&gt;"/>
+            <baseclass name="public Lepton&lt;reco::Muon&gt;"/>
 
             <section name="public">
                 <constructor name="Muon"
@@ -73,10 +64,10 @@ Muon();
 
                 <constructor name="Muon"
                              return=""
-                             args="['const MuonType&amp;']"
+                             args="['const reco::Muon&amp;']"
                              vars="['aMuon']"
                              qual="">
-Muon(const MuonType&amp; aMuon);
+Muon(const reco::Muon&amp; aMuon);
                     <comment>
           constructor from a reco muon
                     </comment>
@@ -84,10 +75,10 @@ Muon(const MuonType&amp; aMuon);
 
                 <constructor name="Muon"
                              return=""
-                             args="['const edm::RefToBase&lt;MuonType&gt;&amp;']"
+                             args="['const edm::RefToBase&lt;reco::Muon&gt;&amp;']"
                              vars="['aMuonRef']"
                              qual="">
-Muon(const edm::RefToBase&lt;MuonType&gt;&amp; aMuonRef);
+Muon(const edm::RefToBase&lt;reco::Muon&gt;&amp; aMuonRef);
                     <comment>
           constructor from a RefToBase to a reco muon (to be superseded by Ptr counterpart)
                     </comment>
@@ -95,10 +86,10 @@ Muon(const edm::RefToBase&lt;MuonType&gt;&amp; aMuonRef);
 
                 <constructor name="Muon"
                              return=""
-                             args="['const edm::Ptr&lt;MuonType&gt;&amp;']"
+                             args="['const edm::Ptr&lt;reco::Muon&gt;&amp;']"
                              vars="['aMuonRef']"
                              qual="">
-Muon(const edm::Ptr&lt;MuonType&gt;&amp; aMuonRef);
+Muon(const edm::Ptr&lt;reco::Muon&gt;&amp; aMuonRef);
                     <comment>
           constructor from a Ptr to a reco muon
                     </comment>
@@ -318,20 +309,148 @@ void embedPFCandidate();
                     </comment>
                 </method1>
 
+                <method1 name="muonID"
+                         return="bool"
+                         args="['const std::string&amp;']"
+                         vars="['name']"
+                         qual="const">
+bool muonID (const std::string&amp; name) const;
+                    <comment>
+          e.g. bool result = patmuon.muonID(&quot;TMLastStationLoose&quot;)
+                    </comment>
+                </method1>
+
+                <method1 name="isGood"
+                         return="bool"
+                         args="['const std::string&amp;']"
+                         vars="['name']"
+                         qual="const">
+bool isGood (const std::string&amp; name) const;
+                    <comment>
+          with when the reco::Muon::isGood method existed
+                    </comment>
+                </method1>
+
+                <method1 name="trackIso"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float trackIso() const;
+                    <comment>
+          the summed track pt in a cone of deltaR&lt;0.3
+                    </comment>
+                </method1>
+
+                <method1 name="ecalIso"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float ecalIso() const;
+                    <comment>
+          deltaR&lt;0.3
+                    </comment>
+                </method1>
+
+                <method1 name="hcalIso"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float hcalIso() const;
+                    <comment>
+          deltaR&lt;0.4
+                    </comment>
+                </method1>
+
+                <method1 name="caloIso"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float caloIso() const;
+                    <comment>
+          ecalIso() and hcalIso
+                    </comment>
+                </method1>
+
+                <method1 name="dB"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double dB() const;
+                    <comment>
+          dB gives the impact parameter wrt the beamline.
+                    </comment>
+                </method1>
+
+                <method1 name="setDB"
+                         return="void"
+                         args="['double']"
+                         vars="['dB']"
+                         qual="">
+void setDB (double dB);
+                </method1>
+
+                <method1 name="numberOfValidHits"
+                         return="unsigned int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+unsigned int numberOfValidHits() const;
+                    <comment>
+          numberOfValidHits returns the number of valid hits on the global track.
+                    </comment>
+                </method1>
+
+                <method1 name="setNumberOfValidHits"
+                         return="void"
+                         args="['unsigned int']"
+                         vars="['numberOfValidHits']"
+                         qual="">
+void setNumberOfValidHits(unsigned int numberOfValidHits);
+                </method1>
+
+                <method1 name="normChi2"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double normChi2() const;
+                    <comment>
+          Norm chi2 gives the normalized chi2 of the global track.
+                    </comment>
+                </method1>
+
+                <method1 name="setNormChi2"
+                         return="void"
+                         args="['double']"
+                         vars="['normChi2']"
+                         qual="">
+void setNormChi2 (double normChi2);
+                </method1>
+
             </section>
 
         </class>
     </namespace>
 
-    <type name="Lepton&lt;MuonType&gt;"/>
+    <type name="Lepton&lt;reco::Muon&gt;"/>
     <type name="Muon*"/>
-    <type name="const MuonType&amp;"/>
-    <type name="const edm::Ptr&lt;MuonType&gt;&amp;"/>
-    <type name="const edm::RefToBase&lt;MuonType&gt;&amp;"/>
+    <type name="bool"/>
+    <type name="const edm::Ptr&lt;reco::Muon&gt;&amp;"/>
+    <type name="const edm::RefToBase&lt;reco::Muon&gt;&amp;"/>
+    <type name="const reco::Muon&amp;"/>
     <type name="const reco::PFCandidateRef&amp;"/>
     <type name="const reco::TrackRef&amp;"/>
+    <type name="const std::string&amp;"/>
+    <type name="double"/>
+    <type name="float"/>
     <type name="pat::Muon"/>
     <type name="reco::PFCandidateRef"/>
     <type name="reco::TrackRef"/>
+    <type name="unsigned int"/>
     <type name="void"/>
 </header>

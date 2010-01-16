@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: MET.xml
-  Created:  Thu Jan 14 22:48:15 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:13 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/PatCandidates/interface/MET.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/PatCandidates/interface/MET.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/PatCandidates/interface/MET.h">
 
     <include name="&quot;DataFormats/METReco/interface/CaloMET.h&quot;"/>
     <include name="&quot;DataFormats/METReco/interface/GenMET.h&quot;"/>
@@ -38,18 +38,13 @@ typedef edm::RefVector&lt;METCollection&gt; METRefVector;
         <comment>
    Class definition
         </comment>
-        <typedef name="METType"
-                 value="reco::MET">
-typedef reco::MET METType;
-        </typedef>
-
 
         <class name="MET"
                fullname="pat::MET"
                module="DataFormats.PatCandidates"
                project=""
                type="regular">
-            <baseclass name="public PATObject&lt;METType&gt;"/>
+            <baseclass name="public PATObject&lt;reco::MET&gt;"/>
 
             <section name="public">
                 <constructor name="MET"
@@ -65,34 +60,34 @@ MET();
 
                 <constructor name="MET"
                              return=""
-                             args="['const METType&amp;']"
+                             args="['const reco::MET&amp;']"
                              vars="['aMET']"
                              qual="">
-MET(const METType&amp; aMET);
+MET(const reco::MET&amp; aMET);
                     <comment>
-          constructor from METType
+          constructor from reco::MET
                     </comment>
                 </constructor>
 
                 <constructor name="MET"
                              return=""
-                             args="['const edm::RefToBase&lt;METType&gt;&amp;']"
+                             args="['const edm::RefToBase&lt;reco::MET&gt;&amp;']"
                              vars="['aMETRef']"
                              qual="">
-MET(const edm::RefToBase&lt;METType&gt;&amp; aMETRef);
+MET(const edm::RefToBase&lt;reco::MET&gt;&amp; aMETRef);
                     <comment>
-          constructor from a RefToBase to METType (to be superseded by Ptr counterpart)
+          constructor from a RefToBase to reco::MET (to be superseded by Ptr counterpart)
                     </comment>
                 </constructor>
 
                 <constructor name="MET"
                              return=""
-                             args="['const edm::Ptr&lt;METType&gt;&amp;']"
+                             args="['const edm::Ptr&lt;reco::MET&gt;&amp;']"
                              vars="['aMETRef']"
                              qual="">
-MET(const edm::Ptr&lt;METType&gt;&amp; aMETRef);
+MET(const edm::Ptr&lt;reco::MET&gt;&amp; aMETRef);
                     <comment>
-          constructor from a Ptr to a METType
+          constructor from a Ptr to a reco::MET
                     </comment>
                 </constructor>
 
@@ -493,15 +488,15 @@ const SpecificCaloMETData&amp; caloSpecific() const;
     </namespace>
 
     <type name="MET*"/>
-    <type name="PATObject&lt;METType&gt;"/>
+    <type name="PATObject&lt;reco::MET&gt;"/>
     <type name="UncorrectionType"/>
     <type name="bool"/>
-    <type name="const METType&amp;"/>
     <type name="const SpecificCaloMETData&amp;"/>
-    <type name="const edm::Ptr&lt;METType&gt;&amp;"/>
-    <type name="const edm::RefToBase&lt;METType&gt;&amp;"/>
+    <type name="const edm::Ptr&lt;reco::MET&gt;&amp;"/>
+    <type name="const edm::RefToBase&lt;reco::MET&gt;&amp;"/>
     <type name="const reco::GenMET&amp;"/>
     <type name="const reco::GenMET*"/>
+    <type name="const reco::MET&amp;"/>
     <type name="double"/>
     <type name="enum UncorrectionType"/>
     <type name="float"/>

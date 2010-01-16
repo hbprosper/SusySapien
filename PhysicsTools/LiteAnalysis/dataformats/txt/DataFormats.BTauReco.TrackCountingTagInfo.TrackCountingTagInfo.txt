@@ -8,8 +8,8 @@ BaseClasses:
 	reco::JTATagInfo	DataFormats/BTauReco/interface/JTATagInfo.h
 	reco::BaseTagInfo	DataFormats/BTauReco/interface/BaseTagInfo.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:14:45 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:55:41 2010	lsclass.py $Revision:$
 
 Methods from reco::TrackCountingTagInfo
 
@@ -34,41 +34,5 @@ Methods from reco::TrackCountingTagInfo
 
 	-o- clone
 		Return: TrackCountingTagInfo*
-		Arguments: void	
-
-Methods from reco::JTATagInfo
-
-	-o- clone
-		Return: JTATagInfo*
-		Arguments: void	
-
-	-o- tracks
-		Return: TrackRefVector
-		Arguments: void	
-
-	-o- jtaRef
-		Return: const JetTracksAssociation::edm::Ref<Container>&
-		Arguments: void	
-
-	-o- hasTracks
-		Return: bool
-		Arguments: void	
-
-	-o- setJTARef
-		Return: void
-		Arguments: const JetTracksAssociationRef&	jtaRef
-
-	-o- jet
-		Return: edm::RefToBase<Jet>
-		Arguments: void	
-
-Methods from reco::BaseTagInfo
-
-	-o- clone
-		Return: BaseTagInfo*
-		Arguments: void	
-
-	-o- tracks
-		Return: edm::RefVector<std::vector<Track>>
 		Arguments: void	
 

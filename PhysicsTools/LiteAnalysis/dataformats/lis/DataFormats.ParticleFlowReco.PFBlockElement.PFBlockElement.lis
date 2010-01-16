@@ -2,11 +2,11 @@ reco::PFBlockElement|PFBlockElement*|clone|void
 reco::PFBlockElement|Type|type|void
 reco::PFBlockElement|bool|locked|void
 reco::PFBlockElement|unsigned|index|void
-reco::PFBlockElement|reco::edm::Ref<std::vector<Track>>|trackRef|void
-reco::PFBlockElement|edm::Ref<std::vector<PFRecTrack>>|trackRefPF|void
-reco::PFBlockElement|edm::Ref<std::vector<PFCluster>>|clusterRef|void
+reco::PFBlockElement|reco::TrackRef|trackRef|void
+reco::PFBlockElement|PFRecTrackRef|trackRefPF|void
+reco::PFBlockElement|PFClusterRef|clusterRef|void
 reco::PFBlockElement|NuclearInteractionRef|nuclearRef|void
-reco::PFBlockElement|edm::Ref<std::vector<Conversion>>|convRef|void
-reco::PFBlockElement|edm::Ref<MuonCollection>|muonRef|void
-reco::PFBlockElement|edm::Ref<VertexCompositeCandidateCollection>|V0Ref|void
+reco::PFBlockElement|ConversionRef|convRef|void
+reco::PFBlockElement|MuonRef|muonRef|void
+reco::PFBlockElement|VertexCompositeCandidateRef|V0Ref|void
 reco::PFBlockElement|bool|isSecondary|void

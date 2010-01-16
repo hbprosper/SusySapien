@@ -4,24 +4,33 @@ Class:
 Header:
 	DataFormats/Common/interface/TestHandle.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:39 2010	lsclass.py $Revision:$
+BaseClasses:
+	edm::OrphanHandleBase	DataFormats/Common/interface/OrphanHandleBase.h
+
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:21 2010	lsclass.py $Revision:$
 
 Methods from edm::TestHandle<T>
-
-	-o- isValid
-		Return: bool
-		Arguments: void	
 
 	-o- product
 		Return: T const*
 		Arguments: void	
 
-	-o- id
-		Return: ProductID
+Methods from edm::OrphanHandleBase
+
+	-o- clear
+		Return: void
 		Arguments: void	
 
 	-o- swap
 		Return: void
-		Arguments: TestHandle<T>&	other
+		Arguments: OrphanHandleBase&	other
+
+	-o- isValid
+		Return: bool
+		Arguments: void	
+
+	-o- id
+		Return: ProductID
+		Arguments: void	
 

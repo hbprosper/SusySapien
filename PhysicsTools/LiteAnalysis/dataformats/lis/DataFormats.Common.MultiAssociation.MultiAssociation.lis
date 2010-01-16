@@ -1,3 +1,1 @@
-edm::MultiAssociation<C>|unsigned int|dataSize|void
-edm::MultiAssociation<C>|unsigned int|size|void
-edm::MultiAssociation<C>|bool|empty|void
+

@@ -4,8 +4,8 @@ Class:
 Header:
 	DataFormats/Common/interface/Ptr.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:16:01 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:41 2010	lsclass.py $Revision:$
 
 Methods from edm::Ptr<T>
 
@@ -41,12 +41,16 @@ Methods from edm::Ptr<T>
 		Return: unsigned long
 		Arguments: void	
 
-	-o- hasCache
+	-o- hasProductCache
 		Return: bool
 		Arguments: void	
 
 	-o- refCore
 		Return: RefCore const&
+		Arguments: void	
+
+	-o- product
+		Return: void const*
 		Arguments: void	
 
 	-o- Ptr

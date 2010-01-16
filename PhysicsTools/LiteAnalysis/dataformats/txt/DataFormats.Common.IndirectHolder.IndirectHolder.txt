@@ -7,8 +7,8 @@ Header:
 BaseClasses:
 	edm::reftobase::BaseHolder<T>	DataFormats/Common/interface/BaseHolder.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:47 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:28 2010	lsclass.py $Revision:$
 
 Methods from edm::reftobase::IndirectHolder<T>
 

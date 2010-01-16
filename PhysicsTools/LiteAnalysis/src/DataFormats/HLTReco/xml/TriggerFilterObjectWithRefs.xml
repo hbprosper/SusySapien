@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: TriggerFilterObjectWithRefs.xml
-  Created:  Thu Jan 14 22:49:04 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:49 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/HLTReco/interface/TriggerFilterObjectWithRefs.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/HLTReco/interface/TriggerFilterObjectWithRefs.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/HLTReco/interface/TriggerFilterObjectWithRefs.h">
 
     <include name="&quot;DataFormats/HLTReco/interface/TriggerRefsCollections.h&quot;"/>
     <include name="&quot;FWCore/Utilities/interface/InputTag.h&quot;"/>

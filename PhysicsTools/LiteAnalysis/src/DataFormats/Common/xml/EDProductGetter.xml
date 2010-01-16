@@ -2,12 +2,13 @@
 <!--
 ==============================================================================
   XML File: EDProductGetter.xml
-  Created:  Thu Jan 14 22:46:01 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:45:33 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/Common/interface/EDProductGetter.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/EDProductGetter.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/Common/interface/EDProductGetter.h">
 
+    <include name="&quot;boost/utility.hpp&quot;"/>
     <include name="&quot;DataFormats/Provenance/interface/ProductID.h&quot;"/>
 
     <namespace name="edm">
@@ -20,7 +21,8 @@
                fullname="edm::EDProductGetter"
                module="DataFormats.Common"
                project=""
-               type="abstract regular privatecopyctor">
+               type="abstract regular">
+            <baseclass name="private boost::noncopyable"/>
 
             <section name="public">
                 <constructor name="EDProductGetter"
@@ -99,22 +101,32 @@ Operate(EDProductGetter const* iGet);
 friend class Operate;
                 </friend>
 
+                <method1 name="oldToNewProductID"
+                         return="ProductID"
+                         args="['ProductID const&amp;']"
+                         vars="['oldProductID']"
+                         qual="const">
+ProductID oldToNewProductID(ProductID const&amp; oldProductID) const;
+                </method1>
+
             </section>
 
         </class>
         <function1 name="mustBeNonZero"
                    return="EDProductGetter const*"
                    args="['EDProductGetter const*','std::string','ProductID const&amp;']"
-                   vars="['prodGetter','refType','peoductID']"
+                   vars="['prodGetter','refType','productID']"
                    qual="">
-EDProductGetter const*    mustBeNonZero(EDProductGetter const* prodGetter, std::string refType, ProductID const&amp; peoductID);
+EDProductGetter const*    mustBeNonZero(EDProductGetter const* prodGetter, std::string refType, ProductID const&amp; productID);
         </function1>
 
     </namespace>
 
     <type name="EDProduct const*"/>
     <type name="EDProductGetter const*"/>
+    <type name="ProductID"/>
     <type name="ProductID const&amp;"/>
+    <type name="boost::noncopyable"/>
     <type name="edm::EDProductGetter"/>
     <type name="edm::EDProductGetter::Operate"/>
     <type name="void"/>

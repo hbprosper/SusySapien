@@ -8,11 +8,11 @@ BaseClasses:
 	pat::PATObject<reco::Jet>	DataFormats/PatCandidates/interface/PATObject.h
 	reco::Jet	DataFormats/JetReco/interface/Jet.h
 	reco::CompositePtrCandidate	DataFormats/Candidate/interface/CompositePtrCandidate.h
+	reco::LeafCandidate	DataFormats/Candidate/interface/LeafCandidate.h
 	reco::Candidate	DataFormats/Candidate/interface/Candidate.h
-	reco::Particle	DataFormats/Candidate/interface/Particle.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:14:20 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:55:26 2010	lsclass.py $Revision:$
 
 Methods from pat::Jet
 
@@ -74,13 +74,33 @@ Methods from pat::Jet
 
 	-o- correctedJet
 		Return: Jet
-		Arguments: const std::string&	step
-		           const std::string&	flavour
+		Arguments: const JetCorrFactors::CorrStep&	step
 		           const std::string&	set
 
 	-o- correctedJet
 		Return: Jet
+		Arguments: const std::string&	step
+		           const std::string&	flavour
+		           const std::string&	set
+
+	-o- correctedP4
+		Return: const math::XYZTLorentzVector&
 		Arguments: const JetCorrFactors::CorrStep&	step
+
+	-o- correctedP4
+		Return: const math::XYZTLorentzVector&
+		Arguments: const std::string&	step
+		           const std::string&=""	flavour
+
+	-o- correctedP4
+		Return: const math::XYZTLorentzVector&
+		Arguments: const JetCorrFactors::CorrStep&	step
+		           const std::string&	set
+
+	-o- correctedP4
+		Return: const math::XYZTLorentzVector&
+		Arguments: const std::string&	step
+		           const std::string&	flavour
 		           const std::string&	set
 
 	-o- setCorrStep
@@ -94,6 +114,10 @@ Methods from pat::Jet
 	-o- addCorrFactors
 		Return: void
 		Arguments: const JetCorrFactors&	jetCorrF
+
+	-o- relCorrUncert
+		Return: float
+		Arguments: const std::string&	direction
 
 	-o- bDiscriminator
 		Return: float
@@ -115,31 +139,13 @@ Methods from pat::Jet
 		Return: const reco::SecondaryVertexTagInfo*
 		Arguments: const std::string&=""	label
 
-	-o- addTagInfo
-		Return: void
-		Arguments: const std::string&	label
-		           const reco::BaseTagInfo&	info
-
 	-o- jetCharge
 		Return: float
 		Arguments: void	
 
 	-o- associatedTracks
-		Return: const reco::edm::RefVector<TrackCollection>&
+		Return: const reco::TrackRefVector&
 		Arguments: void	
-
-	-o- setGenParton
-		Return: void
-		Arguments: const reco::GenParticleRef&	gp
-		           bool=false	embed
-
-	-o- setGenJet
-		Return: void
-		Arguments: const reco::GenJet&	gj
-
-	-o- setPartonFlavour
-		Return: void
-		Arguments: int	partonFl
 
 	-o- setJetCharge
 		Return: void
@@ -148,6 +154,29 @@ Methods from pat::Jet
 	-o- setAssociatedTracks
 		Return: void
 		Arguments: const reco::TrackRefVector&	tracks
+
+	-o- setGenParton
+		Return: void
+		Arguments: const reco::GenParticleRef&	gp
+		           bool=false	embed
+
+	-o- setGenJet
+		Return: void
+		Arguments: const reco::GenJetRef&	gj
+		           const bool=false	embed
+
+	-o- setGenJetRef
+		Return: void
+		Arguments: const reco::GenJetRef&	gj
+		           const bool	embed
+
+	-o- setPartonFlavour
+		Return: void
+		Arguments: int	partonFl
+
+	-o- setJetID
+		Return: void
+		Arguments: reco::JetID const&	id
 
 	-o- isCaloJet
 		Return: bool
@@ -297,6 +326,10 @@ Methods from pat::Jet
 		Return: size_t
 		Arguments: void	
 
+	-o- jetID
+		Return: reco::JetID const&
+		Arguments: void	
+
 	-o- corrFactorSetLabels
 		Return: const std::vector<std::string>
 		Arguments: void	
@@ -304,6 +337,10 @@ Methods from pat::Jet
 	-o- getPairDiscri
 		Return: const std::vector<std::pair<std::string, float> >&
 		Arguments: void	
+
+	-o- addBDiscriminatorPair
+		Return: void
+		Arguments: const std::pair<std::string, float>&	thePair
 
 	-o- addTagInfo
 		Return: void
@@ -313,10 +350,6 @@ Methods from pat::Jet
 	-o- setCaloTowers
 		Return: void
 		Arguments: const std::vector<CaloTowerPtr>&	caloTowers
-
-	-o- addBDiscriminatorPair
-		Return: void
-		Arguments: const std::pair<std::string, float>&	thePair
 
 	-o- getCaloConstituents
 		Return: std::vector<CaloTowerPtr>
@@ -331,10 +364,6 @@ Methods from pat::PATObject<reco::Jet>
 	-o- originalObject
 		Return: const reco::Candidate*
 		Arguments: void	
-
-	-o- addTriggerMatch
-		Return: void
-		Arguments: const pat::TriggerPrimitive&	aTrigPrim
 
 	-o- triggerObjectMatches
 		Return: const std::vector<TriggerObjectStandAlone >&
@@ -377,6 +406,7 @@ Methods from pat::PATObject<reco::Jet>
 		Return: reco::GenParticleRef
 		Arguments: int	pdgId
 		           int	status
+		           uint8_t=0	autoCharge
 
 	-o- genParticle
 		Return: const reco::GenParticle*
@@ -408,7 +438,7 @@ Methods from pat::PATObject<reco::Jet>
 		Arguments: const std::string&	label
 
 	-o- overlaps
-		Return: const reco::edm::PtrVector<Candidate>&
+		Return: const reco::CandidatePtrVector&
 		Arguments: const std::string&	label
 
 	-o- setOverlaps
@@ -451,6 +481,19 @@ Methods from pat::PATObject<reco::Jet>
 		           int32_t	data
 
 	-o- hasUserInt
+		Return: bool
+		Arguments: const std::string&	key
+
+	-o- userCand
+		Return: reco::CandidatePtr
+		Arguments: const std::string&	key
+
+	-o- addUserCand
+		Return: void
+		Arguments: const std::string&	label
+		           const reco::CandidatePtr&	data
+
+	-o- hasUserCand
 		Return: bool
 		Arguments: const std::string&	key
 
@@ -519,14 +562,6 @@ Methods from pat::PATObject<reco::Jet>
 		Return: const edm::Ptr<reco::Candidate>&
 		Arguments: void	
 
-	-o- triggerMatches
-		Return: const std::vector<TriggerPrimitive>&
-		Arguments: void	
-
-	-o- triggerMatchesByFilter
-		Return: const std::vector<TriggerPrimitive>
-		Arguments: const std::string&	aFilt
-
 	-o- efficiencies
 		Return: std::vector<std::pair<std::string, pat::LookupTableRecord> >
 		Arguments: void	
@@ -571,6 +606,10 @@ Methods from pat::PATObject<reco::Jet>
 		Arguments: void	
 
 	-o- userIntNames
+		Return: const std::vector<std::string>&
+		Arguments: void	
+
+	-o- userCandNames
 		Return: const std::vector<std::string>&
 		Arguments: void	
 
@@ -619,6 +658,17 @@ Methods from reco::Jet
 		Arguments: float	fZVertex
 		           float	fPhysicsEta
 
+	-o- physicsP4
+		Return: static Candidate::LorentzVector
+		Arguments: const Candidate::Point&	newVertex
+		           const Candidate&	inParticle
+		           const Candidate::Point&=Candidate::Point(0, 0, 0)	oldVertex
+
+	-o- detectorP4
+		Return: static Candidate::LorentzVector
+		Arguments: const Candidate::Point&	vertex
+		           const Candidate&	inParticle
+
 	-o- getJetConstituents
 		Return: std::vector<Constituent>
 		Arguments: void	
@@ -663,11 +713,7 @@ Methods from reco::Jet
 		Return: std::vector<const reco::Candidate*>
 		Arguments: void	
 
-Methods from reco::CompositePtrCandidate
-
-	-o- clone
-		Return: CompositePtrCandidate*
-		Arguments: void	
+Methods from reco::LeafCandidate
 
 	-o- begin
 		Return: candidate::const_iterator
@@ -675,23 +721,9 @@ Methods from reco::CompositePtrCandidate
 
 	-o- end
 		Return: candidate::const_iterator
-		Arguments: void	
-
-	-o- begin
-		Return: candidate::iterator
-		Arguments: void	
-
-	-o- end
-		Return: candidate::iterator
 		Arguments: void	
 
 Methods from reco::Candidate
-
-	-o- clone
-		Return: Candidate*
-		Arguments: void	
-
-Methods from reco::Particle
 
 	-o- charge
 		Return: int
@@ -710,11 +742,11 @@ Methods from reco::Particle
 		Arguments: Charge	qx3
 
 	-o- p4
-		Return: const math::XYZTLorentzVectorD&
+		Return: const math::XYZTLorentzVector&
 		Arguments: void	
 
 	-o- polarP4
-		Return: const math::ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> >&
+		Return: const math::PtEtaPhiMLorentzVector&
 		Arguments: void	
 
 	-o- momentum
@@ -846,6 +878,14 @@ Methods from reco::Particle
 		Arguments: void	
 
 	-o- longLived
+		Return: bool
+		Arguments: void	
+
+	-o- setMassConstraint
+		Return: void
+		Arguments: void	
+
+	-o- massConstraint
 		Return: bool
 		Arguments: void	
 

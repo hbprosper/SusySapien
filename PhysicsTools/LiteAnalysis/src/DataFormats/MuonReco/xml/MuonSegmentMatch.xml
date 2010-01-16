@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: MuonSegmentMatch.xml
-  Created:  Thu Jan 14 22:47:46 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:52 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/MuonReco/interface/MuonSegmentMatch.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/MuonReco/interface/MuonSegmentMatch.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/MuonReco/interface/MuonSegmentMatch.h">
 
     <include name="&lt;cmath&gt;"/>
 
@@ -94,6 +94,14 @@ float dYdZErr;
 unsigned int mask;
                 </member>
 
+                <member>
+bool hasZed_;
+                </member>
+
+                <member>
+bool hasPhi_;
+                </member>
+
                 <method1 name="isMask"
                          return="bool"
                          args="['unsigned int=Arbitrated']"
@@ -151,6 +159,12 @@ bool hasPhi() const;
                      type="member"/>
             <typemap name="dYdZErr"
                      value="reco::MuonSegmentMatch::dYdZErr"
+                     type="member"/>
+            <typemap name="hasPhi_"
+                     value="reco::MuonSegmentMatch::hasPhi_"
+                     type="member"/>
+            <typemap name="hasZed_"
+                     value="reco::MuonSegmentMatch::hasZed_"
                      type="member"/>
             <typemap name="mask"
                      value="reco::MuonSegmentMatch::mask"

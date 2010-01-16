@@ -6,5 +6,5 @@ edm::reftobase::RefVectorHolder<REFV>|RefVectorHolder<REFV>*|clone|void
 edm::reftobase::RefVectorHolder<REFV>|RefVectorHolder<REFV>*|cloneEmpty|void
 edm::reftobase::RefVectorHolder<REFV>|typename RefVectorHolderBase::const_iterator|begin|void
 edm::reftobase::RefVectorHolder<REFV>|typename RefVectorHolderBase::const_iterator|end|void
-edm::reftobase::RefVectorHolder<REFV>|const void*|product|void
+edm::reftobase::RefVectorHolder<REFV>|void const*|product|void
 edm::reftobase::RefVectorHolder<REFV>|bool|isAvailable|void

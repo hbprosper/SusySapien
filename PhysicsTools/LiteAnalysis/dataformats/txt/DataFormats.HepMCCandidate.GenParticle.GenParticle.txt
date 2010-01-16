@@ -5,12 +5,12 @@ Header:
 	DataFormats/HepMCCandidate/interface/GenParticle.h
 
 BaseClasses:
-	reco::CompositeRefCandidateT<edm::RefVector<std::vector<GenParticle>	DataFormats/Candidate/interface/CompositeRefCandidateT.h
+	reco::CompositeRefCandidateT<GenParticleRefVector>	DataFormats/Candidate/interface/CompositeRefCandidateT.h
+	reco::LeafCandidate	DataFormats/Candidate/interface/LeafCandidate.h
 	reco::Candidate	DataFormats/Candidate/interface/Candidate.h
-	reco::Particle	DataFormats/Candidate/interface/Particle.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:23 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:10 2010	lsclass.py $Revision:$
 
 Methods from reco::GenParticle
 
@@ -18,95 +18,25 @@ Methods from reco::GenParticle
 		Return: GenParticle*
 		Arguments: void	
 
-Methods from reco::CompositeRefCandidateT<edm::RefVector<std::vector<GenParticle>
+	-o- setCollisionId
+		Return: void
+		Arguments: int	s
+
+	-o- collisionId
+		Return: int
+		Arguments: void	
+
+Methods from reco::CompositeRefCandidateT<GenParticleRefVector>
 
 	-o- begin
-		Return: candidate::const_iterator
+		Return: const_iterator
 		Arguments: void	
 
 	-o- end
-		Return: candidate::const_iterator
-		Arguments: void	
-
-	-o- begin
-		Return: candidate::iterator
-		Arguments: void	
-
-	-o- end
-		Return: candidate::iterator
-		Arguments: void	
-
-	-o- numberOfDaughters
-		Return: size_t
-		Arguments: void	
-
-	-o- numberOfMothers
-		Return: size_t
-		Arguments: void	
-
-	-o- daughter
-		Return: const Candidate*
-		Arguments: size_type	
-
-	-o- mother
-		Return: const Candidate*
-		Arguments: size_type=0	
-
-	-o- daughter
-		Return: Candidate*
-		Arguments: size_type	
-
-	-o- addDaughter
-		Return: void
-		Arguments: const typename daughters::value_type&	
-
-	-o- addMother
-		Return: void
-		Arguments: const typename mothers::value_type&	
-
-	-o- clearDaughters
-		Return: void
-		Arguments: void	
-
-	-o- clearMothers
-		Return: void
-		Arguments: void	
-
-	-o- daughterRef
-		Return: typename D::value_type
-		Arguments: size_type	i
-
-	-o- daughterRefVector
-		Return: const D&
-		Arguments: void	
-
-	-o- motherRef
-		Return: typename D::value_type
-		Arguments: size_type=0	i
-
-	-o- motherRefVector
-		Return: const D&
-		Arguments: void	
-
-	-o- resetDaughters
-		Return: void
-		Arguments: const edm::ProductID&	id
-
-	-o- resetMothers
-		Return: void
-		Arguments: const edm::ProductID&	id
-
-	-o- clone
-		Return: CompositeRefCandidateT<edm::RefVector<std::vector<GenParticle>*
+		Return: const_iterator
 		Arguments: void	
 
 Methods from reco::Candidate
-
-	-o- clone
-		Return: Candidate*
-		Arguments: void	
-
-Methods from reco::Particle
 
 	-o- charge
 		Return: int
@@ -125,11 +55,11 @@ Methods from reco::Particle
 		Arguments: Charge	qx3
 
 	-o- p4
-		Return: const math::XYZTLorentzVectorD&
+		Return: const math::XYZTLorentzVector&
 		Arguments: void	
 
 	-o- polarP4
-		Return: const math::ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> >&
+		Return: const math::PtEtaPhiMLorentzVector&
 		Arguments: void	
 
 	-o- momentum
@@ -261,6 +191,14 @@ Methods from reco::Particle
 		Arguments: void	
 
 	-o- longLived
+		Return: bool
+		Arguments: void	
+
+	-o- setMassConstraint
+		Return: void
+		Arguments: void	
+
+	-o- massConstraint
 		Return: bool
 		Arguments: void	
 

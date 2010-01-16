@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: PileUpPFCandidate.xml
-  Created:  Thu Jan 14 22:47:50 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:55 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/ParticleFlowCandidate/interface/PileUpPFCandidate.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/ParticleFlowCandidate/interface/PileUpPFCandidate.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/ParticleFlowCandidate/interface/PileUpPFCandidate.h">
 
     <include name="&lt;iostream&gt;"/>
     <include name="&quot;DataFormats/ParticleFlowCandidate/interface/PFCandidate.h&quot;"/>

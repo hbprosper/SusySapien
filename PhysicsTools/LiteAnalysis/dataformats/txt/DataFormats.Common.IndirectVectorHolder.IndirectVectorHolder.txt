@@ -7,8 +7,8 @@ Header:
 BaseClasses:
 	edm::reftobase::BaseVectorHolder<T>	DataFormats/Common/interface/BaseVectorHolder.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:45 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:27 2010	lsclass.py $Revision:$
 
 Methods from edm::reftobase::IndirectVectorHolder<T>
 
@@ -71,18 +71,4 @@ Methods from edm::reftobase::IndirectVectorHolder<T>
 	-o- end
 		Return: typename base_type::const_iterator
 		Arguments: void	
-
-Methods from edm::reftobase::BaseVectorHolder<T>
-
-	-o- clone
-		Return: BaseVectorHolder*
-		Arguments: void	
-
-	-o- cloneEmpty
-		Return: BaseVectorHolder*
-		Arguments: void	
-
-	-o- at
-		Return: RefToBase<T> const
-		Arguments: size_type	idx
 

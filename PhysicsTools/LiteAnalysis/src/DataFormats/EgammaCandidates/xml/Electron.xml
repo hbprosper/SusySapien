@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: Electron.xml
-  Created:  Thu Jan 14 22:46:51 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:18 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/EgammaCandidates/interface/Electron.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/EgammaCandidates/interface/Electron.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/EgammaCandidates/interface/Electron.h">
 
     <include name="&quot;DataFormats/RecoCandidate/interface/RecoCandidate.h&quot;"/>
 
@@ -70,9 +70,6 @@ virtual Electron* clone() const;
                          vars="['']"
                          qual="const">
 virtual reco::TrackRef track() const;
-                    <comment>
-        refrence to a Track
-                    </comment>
                 </method1>
 
                 <method1 name="superCluster"

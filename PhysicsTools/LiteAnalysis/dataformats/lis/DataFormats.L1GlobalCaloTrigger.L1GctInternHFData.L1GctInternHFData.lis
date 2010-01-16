@@ -5,6 +5,6 @@ L1GctInternHFData|int16_t|bx|void
 L1GctInternHFData|bool|empty|void
 L1GctInternHFData|bool|isRingSums|void
 L1GctInternHFData|uint32_t|raw|void
-L1GctInternHFData|uint16_t|value|unsigned const
-L1GctInternHFData|uint16_t|et|unsigned const
-L1GctInternHFData|uint16_t|count|unsigned const
+L1GctInternHFData|uint16_t|value|unsigned
+L1GctInternHFData|uint16_t|et|unsigned
+L1GctInternHFData|uint16_t|count|unsigned

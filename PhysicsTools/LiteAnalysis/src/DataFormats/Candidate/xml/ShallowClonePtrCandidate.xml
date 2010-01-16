@@ -2,13 +2,13 @@
 <!--
 ==============================================================================
   XML File: ShallowClonePtrCandidate.xml
-  Created:  Thu Jan 14 22:46:45 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:12 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/Candidate/interface/ShallowClonePtrCandidate.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Candidate/interface/ShallowClonePtrCandidate.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/Candidate/interface/ShallowClonePtrCandidate.h">
 
-    <include name="&quot;DataFormats/Candidate/interface/Candidate.h&quot;"/>
+    <include name="&quot;DataFormats/Candidate/interface/LeafCandidate.h&quot;"/>
     <include name="&quot;DataFormats/Candidate/interface/iterator_imp_specific.h&quot;"/>
 
     <namespace name="reco">
@@ -18,7 +18,7 @@
                module="DataFormats.Candidate"
                project=""
                type="regular">
-            <baseclass name="public Candidate"/>
+            <baseclass name="public LeafCandidate"/>
 
             <section name="public">
                 <typedef name="daughters"
@@ -297,9 +297,9 @@ virtual bool isJet() const;
         </class>
     </namespace>
 
-    <type name="Candidate"/>
     <type name="Candidate*"/>
     <type name="Charge"/>
+    <type name="LeafCandidate"/>
     <type name="ShallowClonePtrCandidate*"/>
     <type name="bool"/>
     <type name="const Candidate*"/>

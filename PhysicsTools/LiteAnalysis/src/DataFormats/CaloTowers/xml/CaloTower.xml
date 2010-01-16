@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: CaloTower.xml
-  Created:  Thu Jan 14 22:45:46 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:45:18 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/CaloTowers/interface/CaloTower.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/CaloTowers/interface/CaloTower.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/CaloTowers/interface/CaloTower.h">
 
     <include name="&quot;DataFormats/Candidate/interface/LeafCandidate.h&quot;"/>
     <include name="&quot;DataFormats/DetId/interface/DetId.h&quot;"/>
@@ -102,6 +102,26 @@ void setEcalTime(int t);
 void setHcalTime(int t);
             </method1>
 
+            <method1 name="setCaloTowerStatus"
+                     return="void"
+                     args="['uint','uint','uint','uint','uint','uint']"
+                     vars="['numBadHcalChan','numBadEcalChan','numRecHcalChan','numRecEcalChan','numProbHcalChan','numProbEcalChan']"
+                     qual="">
+void setCaloTowerStatus(uint numBadHcalChan, uint numBadEcalChan, uint numRecHcalChan, uint numRecEcalChan, uint numProbHcalChan, uint numProbEcalChan);
+                <comment>
+     set CaloTower status based on the number of
+     bad/recovered/problematic cells in ECAL and HCAL
+                </comment>
+            </method1>
+
+            <method1 name="setCaloTowerStatus"
+                     return="void"
+                     args="['uint32_t']"
+                     vars="['s']"
+                     qual="">
+void setCaloTowerStatus(uint32_t s);
+            </method1>
+
             <method1 name="id"
                      return="CaloTowerDetId"
                      args="['void']"
@@ -143,6 +163,10 @@ DetId constituent(size_t i) const;
                      vars="['']"
                      qual="const">
 double emEnergy() const;
+                <comment>
+     energy contributions from different detectors
+     energy in HO (&quot;outerEnergy&quot;)is not included in &quot;hadEnergy&quot;
+                </comment>
             </method1>
 
             <method1 name="hadEnergy"
@@ -167,6 +191,9 @@ double outerEnergy() const;
                      vars="['']"
                      qual="const">
 double emEt() const;
+                <comment>
+     transverse energies wrt to vtx (0,0,0)
+                </comment>
             </method1>
 
             <method1 name="hadEt"
@@ -185,12 +212,146 @@ double hadEt() const;
 double outerEt() const;
             </method1>
 
+            <method1 name="p4"
+                     return="math::PtEtaPhiMLorentzVector"
+                     args="['double']"
+                     vars="['vtxZ']"
+                     qual="const">
+math::PtEtaPhiMLorentzVector p4(double vtxZ) const;
+                <comment>
+     recalculated wrt user provided vertex Z position;
+                </comment>
+            </method1>
+
+            <method1 name="p"
+                     return="double"
+                     args="['double']"
+                     vars="['vtxZ']"
+                     qual="const">
+double p (double vtxZ) const;
+            </method1>
+
+            <method1 name="et"
+                     return="double"
+                     args="['double']"
+                     vars="['vtxZ']"
+                     qual="const">
+double et(double vtxZ) const;
+            </method1>
+
+            <method1 name="emEt"
+                     return="double"
+                     args="['double']"
+                     vars="['vtxZ']"
+                     qual="const">
+double emEt(double vtxZ) const;
+            </method1>
+
+            <method1 name="hadEt"
+                     return="double"
+                     args="['double']"
+                     vars="['vtxZ']"
+                     qual="const">
+double hadEt(double vtxZ) const;
+            </method1>
+
+            <method1 name="outerEt"
+                     return="double"
+                     args="['double']"
+                     vars="['vtxZ']"
+                     qual="const">
+double outerEt(double vtxZ) const;
+            </method1>
+
+            <method1 name="p4"
+                     return="math::PtEtaPhiMLorentzVector"
+                     args="['Point']"
+                     vars="['v']"
+                     qual="const">
+math::PtEtaPhiMLorentzVector p4(Point v) const;
+                <comment>
+     recalculated wrt vertex provided as 3D point
+                </comment>
+            </method1>
+
+            <method1 name="p"
+                     return="double"
+                     args="['Point']"
+                     vars="['v']"
+                     qual="const">
+double p (Point v) const;
+            </method1>
+
+            <method1 name="et"
+                     return="double"
+                     args="['Point']"
+                     vars="['v']"
+                     qual="const">
+double et(Point v) const;
+            </method1>
+
+            <method1 name="emEt"
+                     return="double"
+                     args="['Point']"
+                     vars="['v']"
+                     qual="const">
+double emEt(Point v) const;
+            </method1>
+
+            <method1 name="hadEt"
+                     return="double"
+                     args="['Point']"
+                     vars="['v']"
+                     qual="const">
+double hadEt(Point v) const;
+            </method1>
+
+            <method1 name="outerEt"
+                     return="double"
+                     args="['Point']"
+                     vars="['v']"
+                     qual="const">
+double outerEt(Point v) const;
+            </method1>
+
+            <method1 name="p4_HO"
+                     return="math::PtEtaPhiMLorentzVector"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+math::PtEtaPhiMLorentzVector p4_HO() const;
+                <comment>
+     Access to p4 comming from HO alone: requested by JetMET to add/subtract HO contributions
+     to the tower for cases when the tower collection was created without/with HO
+                </comment>
+            </method1>
+
+            <method1 name="p4_HO"
+                     return="math::PtEtaPhiMLorentzVector"
+                     args="['double']"
+                     vars="['vtxZ']"
+                     qual="const">
+math::PtEtaPhiMLorentzVector p4_HO(double vtxZ) const;
+            </method1>
+
+            <method1 name="p4_HO"
+                     return="math::PtEtaPhiMLorentzVector"
+                     args="['Point']"
+                     vars="['v']"
+                     qual="const">
+math::PtEtaPhiMLorentzVector p4_HO(Point v) const;
+            </method1>
+
             <method1 name="emPosition"
                      return="const GlobalPoint&amp;"
                      args="['void']"
                      vars="['']"
                      qual="const">
 const GlobalPoint&amp; emPosition() const;
+                <comment>
+     the reference poins in ECAL and HCAL for direction determination
+     algorithm and parameters for selecting these points are set in the CaloTowersCreator
+                </comment>
             </method1>
 
             <method1 name="hadPosition"
@@ -223,6 +384,9 @@ int hadLv11() const;
                      vars="['']"
                      qual="const">
 double hadEnergyHeOuterLayer() const;
+                <comment>
+     energy contained in depths&gt;1 in the HE for 18&lt;|iEta|&lt;29
+                </comment>
             </method1>
 
             <method1 name="hadEnergyHeInnerLayer"
@@ -239,6 +403,9 @@ double hadEnergyHeInnerLayer() const;
                      vars="['']"
                      qual="const">
 float ecalTime() const;
+                <comment>
+     time (ns) in ECAL/HCAL components of the tower based on weigted sum of the times in the contributing RecHits
+                </comment>
             </method1>
 
             <method1 name="hcalTime"
@@ -255,6 +422,9 @@ float hcalTime() const;
                      vars="['']"
                      qual="const">
 int ieta() const;
+                <comment>
+     position information on the tower
+                </comment>
             </method1>
 
             <method1 name="ietaAbs"
@@ -289,6 +459,70 @@ int zside() const;
 int numCrystals() const;
             </method1>
 
+            <method1 name="numBadEcalCells"
+                     return="uint"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+uint numBadEcalCells() const;
+                <comment>
+     methods to retrieve status information from the CaloTower:
+     number of bad/recovered/problematic cells in the tower
+     separately for ECAL and HCAL
+                </comment>
+            </method1>
+
+            <method1 name="numRecoveredEcalCells"
+                     return="uint"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+uint numRecoveredEcalCells() const;
+            </method1>
+
+            <method1 name="numProblematicEcalCells"
+                     return="uint"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+uint numProblematicEcalCells() const;
+            </method1>
+
+            <method1 name="numBadHcalCells"
+                     return="uint"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+uint numBadHcalCells() const;
+            </method1>
+
+            <method1 name="numRecoveredHcalCells"
+                     return="uint"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+uint numRecoveredHcalCells() const;
+            </method1>
+
+            <method1 name="numProblematicHcalCells"
+                     return="uint"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+uint numProblematicHcalCells() const;
+            </method1>
+
+            <method1 name="towerStatusWord"
+                     return="uint32_t"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+uint32_t towerStatusWord() const;
+                <comment>
+     the status word itself
+                </comment>
+            </method1>
+
         </section>
 
         <typemap name="key_type"
@@ -317,6 +551,7 @@ inline bool operator==(const CaloTower&amp; t1, const CaloTower&amp; t2);
     <type name="CaloTowerDetId"/>
     <type name="DetId"/>
     <type name="GlobalPoint"/>
+    <type name="Point"/>
     <type name="const CaloTowerDetId&amp;"/>
     <type name="const GlobalPoint&amp;"/>
     <type name="const LorentzVector"/>
@@ -325,7 +560,10 @@ inline bool operator==(const CaloTower&amp; t1, const CaloTower&amp; t2);
     <type name="double"/>
     <type name="float"/>
     <type name="int"/>
+    <type name="math::PtEtaPhiMLorentzVector"/>
     <type name="reco::LeafCandidate"/>
     <type name="size_t"/>
+    <type name="uint"/>
+    <type name="uint32_t"/>
     <type name="void"/>
 </header>

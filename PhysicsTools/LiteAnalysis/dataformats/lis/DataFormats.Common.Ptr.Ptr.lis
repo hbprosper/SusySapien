@@ -6,5 +6,6 @@ edm::Ptr<T>|bool|isTransient|void
 edm::Ptr<T>|ProductID|id|void
 edm::Ptr<T>|EDProductGetter const*|productGetter|void
 edm::Ptr<T>|unsigned long|key|void
-edm::Ptr<T>|bool|hasCache|void
+edm::Ptr<T>|bool|hasProductCache|void
 edm::Ptr<T>|RefCore const&|refCore|void
+edm::Ptr<T>|void const*|product|void

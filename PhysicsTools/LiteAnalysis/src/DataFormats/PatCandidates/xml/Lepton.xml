@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: Lepton.xml
-  Created:  Thu Jan 14 22:48:14 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:12 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/PatCandidates/interface/Lepton.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/PatCandidates/interface/Lepton.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/PatCandidates/interface/Lepton.h">
 
     <include name="&quot;DataFormats/Candidate/interface/Particle.h&quot;"/>
     <include name="&quot;DataFormats/PatCandidates/interface/PATObject.h&quot;"/>
@@ -87,14 +87,14 @@ const reco::GenParticle* genLepton() const;
 void setGenLepton(const reco::GenParticleRef&amp; gl, bool embed=false);
                 </method1>
 
-                <method1 name="isolation"
+                <method1 name="userIsolation"
                          return="float"
                          args="['IsolationKeys']"
                          vars="['key']"
                          qual="const">
-float isolation(IsolationKeys key) const;
+float userIsolation(IsolationKeys key) const;
                     <comment>
-          Returns the isolation variable for a specifc key (or pseudo-key like CaloIso), or -1.0 if not available
+          pseudo-key like CaloIso), or -1.0 if not available
                     </comment>
                 </method1>
 
@@ -105,7 +105,7 @@ float isolation(IsolationKeys key) const;
                          qual="">
 void setIsolation(IsolationKeys key, float value);
                     <comment>
-          Note that you can't set isolation for a pseudo-key like CaloIso
+          like CaloIso
                     </comment>
                 </method1>
 
@@ -116,7 +116,7 @@ void setIsolation(IsolationKeys key, float value);
                          qual="const">
 float trackIso() const;
                     <comment>
-          Return the tracker isolation variable that was stored in this object when produced, or -1.0 if there is none
+          objects)
                     </comment>
                 </method1>
 
@@ -127,7 +127,7 @@ float trackIso() const;
                          qual="const">
 float caloIso() const;
                     <comment>
-          Return the sum of ecal and hcal isolation variable that were stored in this object when produced, or -1.0 if at least one is missing
+          available from the derived objects)
                     </comment>
                 </method1>
 
@@ -138,7 +138,7 @@ float caloIso() const;
                          qual="const">
 float ecalIso() const;
                     <comment>
-          Return the ecal isolation variable that was stored in this object when produced, or -1.0 if there is none
+          derived objects)
                     </comment>
                 </method1>
 
@@ -149,7 +149,7 @@ float ecalIso() const;
                          qual="const">
 float hcalIso() const;
                     <comment>
-          Return the hcal isolation variable that was stored in this object when produced, or -1.0 if there is none
+          derived objects)
                     </comment>
                 </method1>
 
@@ -160,40 +160,40 @@ float hcalIso() const;
                          qual="const">
 float particleIso() const;
                     <comment>
-         Return the isolation calculated with all the PFCandidates
+          Returns the isolation calculated with all the PFCandidates
                     </comment>
                 </method1>
 
-                <method1 name="chargedParticleIso"
+                <method1 name="chargedHadronIso"
                          return="float"
                          args="['void']"
                          vars="['']"
                          qual="const">
-float chargedParticleIso() const;
+float chargedHadronIso() const;
                     <comment>
-         Return the isolation calculated with only the charged PFCandidates
+          PFCandidates
                     </comment>
                 </method1>
 
-                <method1 name="neutralParticleIso"
+                <method1 name="neutralHadronIso"
                          return="float"
                          args="['void']"
                          vars="['']"
                          qual="const">
-float neutralParticleIso() const;
+float neutralHadronIso() const;
                     <comment>
-         Return the isolation calculated with only the neutral hadrons PFCandidates
+          PFCandidates
                     </comment>
                 </method1>
 
-                <method1 name="gammaParticleIso"
+                <method1 name="photonIso"
                          return="float"
                          args="['void']"
                          vars="['']"
                          qual="const">
-float gammaParticleIso() const;
+float photonIso() const;
                     <comment>
-         Return the isolation calculated with only the gamma PFCandidates
+          PFCandidates
                     </comment>
                 </method1>
 
@@ -204,7 +204,7 @@ float gammaParticleIso() const;
                          qual="const">
 float userIso(uint8_t index=0) const;
                     <comment>
-          Return the user defined isolation variable #index that was stored in this object when produced, or -1.0 if there is none
+          stored in this object when produced, or -1.0 if there is none
                     </comment>
                 </method1>
 
@@ -219,23 +219,23 @@ void setTrackIso(float trackIso);
                     </comment>
                 </method1>
 
-                <method1 name="setECalIso"
+                <method1 name="setEcalIso"
                          return="void"
                          args="['float']"
                          vars="['caloIso']"
                          qual="">
-void setECalIso(float caloIso);
+void setEcalIso(float caloIso);
                     <comment>
           Sets ecal isolation variable
                     </comment>
                 </method1>
 
-                <method1 name="setHCalIso"
+                <method1 name="setHcalIso"
                          return="void"
                          args="['float']"
                          vars="['caloIso']"
                          qual="">
-void setHCalIso(float caloIso);
+void setHcalIso(float caloIso);
                     <comment>
           Sets hcal isolation variable
                     </comment>
@@ -274,12 +274,12 @@ void setIsoDeposit(IsolationKeys key, const IsoDeposit&amp; dep);
                     </comment>
                 </method1>
 
-                <method1 name="trackerIsoDeposit"
+                <method1 name="trackIsoDeposit"
                          return="const IsoDeposit*"
                          args="['void']"
                          vars="['']"
                          qual="const">
-const IsoDeposit* trackerIsoDeposit() const;
+const IsoDeposit* trackIsoDeposit() const;
                     <comment>
          ---- specific getters ----
                     </comment>
@@ -309,12 +309,12 @@ const IsoDeposit* hcalIsoDeposit() const;
 const IsoDeposit* userIsoDeposit(uint8_t index=0) const;
                 </method1>
 
-                <method1 name="trackerIsoDeposit"
+                <method1 name="trackIsoDeposit"
                          return="void"
                          args="['const IsoDeposit&amp;']"
                          vars="['dep']"
                          qual="">
-void trackerIsoDeposit(const IsoDeposit&amp; dep);
+void trackIsoDeposit(const IsoDeposit&amp; dep);
                     <comment>
          ---- specific setters ----
                     </comment>

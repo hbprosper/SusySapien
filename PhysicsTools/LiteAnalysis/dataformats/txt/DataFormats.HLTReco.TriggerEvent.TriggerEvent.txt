@@ -4,8 +4,11 @@ Class:
 Header:
 	DataFormats/HLTReco/interface/TriggerEvent.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:16:12 2010	lsclass.py $Revision:$
+BaseClasses:
+	edm::DoNotRecordParents	DataFormats/Common/interface/traits.h
+
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:50 2010	lsclass.py $Revision:$
 
 Methods from trigger::TriggerEvent
 
@@ -24,7 +27,7 @@ Methods from trigger::TriggerEvent
 		Arguments: void	
 
 	-o- collectionKeys
-		Return: const std::vector<uint16_t>&
+		Return: const Keys&
 		Arguments: void	
 
 	-o- getObjects
@@ -33,42 +36,42 @@ Methods from trigger::TriggerEvent
 
 	-o- collectionTag
 		Return: const edm::InputTag
-		Arguments: size_type	index
+		Arguments: trigger::size_type	index
 
 	-o- collectionKey
-		Return: uint16_t
-		Arguments: size_type	index
+		Return: trigger::size_type
+		Arguments: trigger::size_type	index
 
 	-o- filterTag
 		Return: const edm::InputTag
-		Arguments: size_type	index
+		Arguments: trigger::size_type	index
 
 	-o- filterIds
-		Return: const std::vector<int>&
-		Arguments: size_type	index
+		Return: const Vids&
+		Arguments: trigger::size_type	index
 
 	-o- filterKeys
-		Return: const std::vector<uint16_t>&
-		Arguments: size_type	index
+		Return: const Keys&
+		Arguments: trigger::size_type	index
 
 	-o- collectionIndex
-		Return: uint16_t
+		Return: trigger::size_type
 		Arguments: const edm::InputTag&	collectionTag
 
 	-o- filterIndex
-		Return: uint16_t
+		Return: trigger::size_type
 		Arguments: const edm::InputTag&	filterTag
 
 	-o- sizeCollections
-		Return: uint16_t
+		Return: trigger::size_type
 		Arguments: void	
 
 	-o- sizeObjects
-		Return: uint16_t
+		Return: trigger::size_type
 		Arguments: void	
 
 	-o- sizeFilters
-		Return: uint16_t
+		Return: trigger::size_type
 		Arguments: void	
 
 	-o- addCollections

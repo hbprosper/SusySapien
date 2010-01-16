@@ -8,10 +8,9 @@ BaseClasses:
 	reco::RecoCandidate	DataFormats/RecoCandidate/interface/RecoCandidate.h
 	reco::LeafCandidate	DataFormats/Candidate/interface/LeafCandidate.h
 	reco::Candidate	DataFormats/Candidate/interface/Candidate.h
-	reco::Particle	DataFormats/Candidate/interface/Particle.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:35 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:18 2010	lsclass.py $Revision:$
 
 Methods from reco::Photon
 
@@ -19,40 +18,189 @@ Methods from reco::Photon
 		Return: Photon*
 		Arguments: void	
 
+	-o- photonCore
+		Return: reco::PhotonCoreRef
+		Arguments: void	
+
 	-o- superCluster
 		Return: reco::SuperClusterRef
 		Arguments: void	
 
-	-o- setSuperCluster
-		Return: void
-		Arguments: const reco::SuperClusterRef&	r
-
-	-o- addConversion
-		Return: void
-		Arguments: const reco::ConversionRef&	r
-
-	-o- setVertex
-		Return: void
-		Arguments: const Point&	vertex
-
-	-o- caloPosition
-		Return: math::XYZPoint
+	-o- conversions
+		Return: reco::ConversionRefVector
 		Arguments: void	
 
-	-o- hadronicOverEm
-		Return: float
+	-o- hasConversionTracks
+		Return: bool
+		Arguments: void	
+
+	-o- electronPixelSeeds
+		Return: reco::ElectronSeedRefVector
 		Arguments: void	
 
 	-o- hasPixelSeed
 		Return: bool
 		Arguments: void	
 
-	-o- isConverted
+	-o- caloPosition
+		Return: math::XYZPoint
+		Arguments: void	
+
+	-o- setVertex
+		Return: void
+		Arguments: const Point&	vertex
+
+	-o- isPhoton
 		Return: bool
 		Arguments: void	
 
-	-o- conversions
-		Return: std::vector<reco::edm::Ref<ConversionCollection>>
+	-o- setFiducialVolumeFlags
+		Return: void
+		Arguments: const FiducialFlags&	a
+
+	-o- isEB
+		Return: bool
+		Arguments: void	
+
+	-o- isEE
+		Return: bool
+		Arguments: void	
+
+	-o- isEBGap
+		Return: bool
+		Arguments: void	
+
+	-o- isEEGap
+		Return: bool
+		Arguments: void	
+
+	-o- isEBEEGap
+		Return: bool
+		Arguments: void	
+
+	-o- setShowerShapeVariables
+		Return: void
+		Arguments: const ShowerShape&	a
+
+	-o- hadronicOverEm
+		Return: float
+		Arguments: void	
+
+	-o- hadronicDepth1OverEm
+		Return: float
+		Arguments: void	
+
+	-o- hadronicDepth2OverEm
+		Return: float
+		Arguments: void	
+
+	-o- e1x5
+		Return: float
+		Arguments: void	
+
+	-o- e2x5
+		Return: float
+		Arguments: void	
+
+	-o- e3x3
+		Return: float
+		Arguments: void	
+
+	-o- e5x5
+		Return: float
+		Arguments: void	
+
+	-o- maxEnergyXtal
+		Return: float
+		Arguments: void	
+
+	-o- sigmaEtaEta
+		Return: float
+		Arguments: void	
+
+	-o- sigmaIetaIeta
+		Return: float
+		Arguments: void	
+
+	-o- r1x5
+		Return: float
+		Arguments: void	
+
+	-o- r2x5
+		Return: float
+		Arguments: void	
+
+	-o- r9
+		Return: float
+		Arguments: void	
+
+	-o- setIsolationVariables
+		Return: void
+		Arguments: const IsolationVariables&	isolInDr04
+		           const IsolationVariables&	isolInDr03
+
+	-o- ecalRecHitSumEtConeDR04
+		Return: float
+		Arguments: void	
+
+	-o- hcalTowerSumEtConeDR04
+		Return: float
+		Arguments: void	
+
+	-o- hcalDepth1TowerSumEtConeDR04
+		Return: float
+		Arguments: void	
+
+	-o- hcalDepth2TowerSumEtConeDR04
+		Return: float
+		Arguments: void	
+
+	-o- trkSumPtSolidConeDR04
+		Return: float
+		Arguments: void	
+
+	-o- trkSumPtHollowConeDR04
+		Return: float
+		Arguments: void	
+
+	-o- nTrkSolidConeDR04
+		Return: int
+		Arguments: void	
+
+	-o- nTrkHollowConeDR04
+		Return: int
+		Arguments: void	
+
+	-o- ecalRecHitSumEtConeDR03
+		Return: float
+		Arguments: void	
+
+	-o- hcalTowerSumEtConeDR03
+		Return: float
+		Arguments: void	
+
+	-o- hcalDepth1TowerSumEtConeDR03
+		Return: float
+		Arguments: void	
+
+	-o- hcalDepth2TowerSumEtConeDR03
+		Return: float
+		Arguments: void	
+
+	-o- trkSumPtSolidConeDR03
+		Return: float
+		Arguments: void	
+
+	-o- trkSumPtHollowConeDR03
+		Return: float
+		Arguments: void	
+
+	-o- nTrkSolidConeDR03
+		Return: int
+		Arguments: void	
+
+	-o- nTrkHollowConeDR03
+		Return: int
 		Arguments: void	
 
 Methods from reco::RecoCandidate
@@ -62,11 +210,11 @@ Methods from reco::RecoCandidate
 		Arguments: const Candidate&	
 
 	-o- track
-		Return: reco::edm::Ref<std::vector<Track>>
+		Return: reco::TrackRef
 		Arguments: void	
 
 	-o- track
-		Return: reco::edm::Ref<std::vector<Track>>
+		Return: reco::TrackRef
 		Arguments: size_t	
 
 	-o- numberOfTracks
@@ -74,43 +222,19 @@ Methods from reco::RecoCandidate
 		Arguments: void	
 
 	-o- gsfTrack
-		Return: reco::edm::Ref<GsfTrackCollection>
+		Return: reco::GsfTrackRef
 		Arguments: void	
 
 	-o- standAloneMuon
-		Return: reco::edm::Ref<std::vector<Track>>
+		Return: reco::TrackRef
 		Arguments: void	
 
 	-o- combinedMuon
-		Return: reco::edm::Ref<std::vector<Track>>
-		Arguments: void	
-
-	-o- superCluster
-		Return: reco::edm::Ref<std::vector<SuperCluster>>
-		Arguments: void	
-
-	-o- caloTower
-		Return: edm::Ref<CaloTowerCollection>
-		Arguments: void	
-
-	-o- bestTrack
-		Return: const Track*
-		Arguments: void	
-
-	-o- bestTrackRef
-		Return: edm::RefToBase<reco::Track>
-		Arguments: void	
-
-	-o- bestTrackType
-		Return: TrackType
+		Return: reco::TrackRef
 		Arguments: void	
 
 Methods from reco::LeafCandidate
 
-	-o- clone
-		Return: LeafCandidate*
-		Arguments: void	
-
 	-o- begin
 		Return: candidate::const_iterator
 		Arguments: void	
@@ -118,42 +242,8 @@ Methods from reco::LeafCandidate
 	-o- end
 		Return: candidate::const_iterator
 		Arguments: void	
-
-	-o- begin
-		Return: candidate::iterator
-		Arguments: void	
-
-	-o- end
-		Return: candidate::iterator
-		Arguments: void	
-
-	-o- numberOfDaughters
-		Return: size_t
-		Arguments: void	
-
-	-o- daughter
-		Return: const Candidate*
-		Arguments: size_type	
-
-	-o- numberOfMothers
-		Return: size_t
-		Arguments: void	
-
-	-o- mother
-		Return: const Candidate*
-		Arguments: size_type	
-
-	-o- daughter
-		Return: Candidate*
-		Arguments: size_type	
 
 Methods from reco::Candidate
-
-	-o- clone
-		Return: Candidate*
-		Arguments: void	
-
-Methods from reco::Particle
 
 	-o- charge
 		Return: int
@@ -172,11 +262,11 @@ Methods from reco::Particle
 		Arguments: Charge	qx3
 
 	-o- p4
-		Return: const math::XYZTLorentzVectorD&
+		Return: const math::XYZTLorentzVector&
 		Arguments: void	
 
 	-o- polarP4
-		Return: const math::ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> >&
+		Return: const math::PtEtaPhiMLorentzVector&
 		Arguments: void	
 
 	-o- momentum

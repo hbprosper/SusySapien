@@ -2,26 +2,24 @@
 <!--
 ==============================================================================
   XML File: TestHandle.xml
-  Created:  Thu Jan 14 22:46:28 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:45:59 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/Common/interface/TestHandle.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/TestHandle.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/Common/interface/TestHandle.h">
 
-    <include name="&lt;algorithm&gt;"/>
-    <include name="&lt;stdexcept&gt;"/>
-    <include name="&lt;typeinfo&gt;"/>
-    <include name="&quot;DataFormats/Provenance/interface/ProductID.h&quot;"/>
-    <include name="&quot;FWCore/Utilities/interface/EDMException.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/OrphanHandleBase.h&quot;"/>
 
     <namespace name="edm">
+        <forward name="EDProduct"/>
 
         <class name="TestHandle"
                fullname="edm::TestHandle&lt;T&gt;"
                module="DataFormats.Common"
                project=""
                type="template"
-               template="template&lt;class T&gt;">
+               template="template&lt;typename T&gt;">
+            <baseclass name="public OrphanHandleBase"/>
 
             <section name="public">
                 <typedef name="element_type"
@@ -40,14 +38,6 @@ TestHandle();
                     </comment>
                 </constructor>
 
-                <copyconstructor name="TestHandle"
-                                 return=""
-                                 args="['const TestHandle&lt;T&gt;&amp;']"
-                                 vars="['h']"
-                                 qual="">
-TestHandle(const TestHandle&lt;T&gt;&amp; h);
-                </copyconstructor>
-
                 <constructor name="TestHandle"
                              return=""
                              args="['T const*','ProductID const&amp;']"
@@ -63,30 +53,6 @@ TestHandle(T const* prod, ProductID const&amp; id);
                             qual="">
 ~TestHandle();
                 </destructor>
-
-                <method2 name="swap"
-                         return="void"
-                         args="['TestHandle&lt;T&gt;&amp;']"
-                         vars="['other']"
-                         qual="">
-void swap(TestHandle&lt;T&gt;&amp; other);
-                </method2>
-
-                <operator name="operator="
-                          return="TestHandle&lt;T&gt;&amp;"
-                          args="['const TestHandle&lt;T&gt;&amp;']"
-                          vars="['rhs']"
-                          qual="">
-TestHandle&lt;T&gt;&amp; operator=(const TestHandle&lt;T&gt;&amp; rhs);
-                </operator>
-
-                <method1 name="isValid"
-                         return="bool"
-                         args="['void']"
-                         vars="['']"
-                         qual="const">
-bool isValid() const;
-                </method1>
 
                 <method1 name="product"
                          return="T const*"
@@ -112,14 +78,6 @@ T const* operator-&gt;() const;
 T const&amp; operator*() const;
                 </operator>
 
-                <method1 name="id"
-                         return="ProductID"
-                         args="['void']"
-                         vars="['']"
-                         qual="const">
-ProductID id() const;
-                </method1>
-
             </section>
 
             <typemap name="element_type"
@@ -129,11 +87,8 @@ ProductID id() const;
         </class>
     </namespace>
 
-    <type name="ProductID"/>
+    <type name="OrphanHandleBase"/>
     <type name="ProductID const&amp;"/>
-    <type name="TestHandle&lt;T&gt;&amp;"/>
-    <type name="bool"/>
-    <type name="const TestHandle&lt;T&gt;&amp;"/>
     <type name="edm::TestHandle&lt;T&gt;"/>
     <type name="void"/>
 </header>

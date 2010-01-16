@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: CaloJet.xml
-  Created:  Thu Jan 14 22:47:11 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:27 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/JetReco/interface/CaloJet.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/JetReco/interface/CaloJet.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/JetReco/interface/CaloJet.h">
 
     <include name="&quot;DataFormats/JetReco/interface/Jet.h&quot;"/>
     <include name="&quot;DataFormats/CaloTowers/interface/CaloTowerCollection.h&quot;"/>
@@ -370,58 +370,25 @@ int n60() const;
                     </comment>
                 </method1>
 
-                <method1 name="physicsEtaQuick"
-                         return="float"
-                         args="['float']"
-                         vars="['fZVertex']"
-                         qual="const">
-float physicsEtaQuick (float fZVertex) const;
-                    <comment>
-      Physics Eta (use jet Z and kinematics only)
-                    </comment>
-                </method1>
-
-                <method1 name="physicsEta"
-                         return="float"
-                         args="['float']"
-                         vars="['fZVertex']"
-                         qual="const">
-float physicsEta (float fZVertex) const;
-                    <comment>
-      Physics Eta (use jet Z and kinematics only)
-                    </comment>
-                </method1>
-
                 <method1 name="physicsP4"
                          return="LorentzVector"
-                         args="['float']"
-                         vars="['fZVertex']"
+                         args="['const Particle::Point&amp;']"
+                         vars="['vertex']"
                          qual="const">
-LorentzVector physicsP4 (float fZVertex) const;
+LorentzVector physicsP4 (const Particle::Point&amp; vertex) const;
                     <comment>
-      Physics p4 (use jet Z and kinematics only)
+      Physics p4 for full 3d vertex corretion
                     </comment>
                 </method1>
 
-                <method1 name="physicsEtaDetailed"
-                         return="float"
-                         args="['float']"
-                         vars="['fZVertex']"
-                         qual="const">
-float physicsEtaDetailed (float fZVertex) const;
-                    <comment>
-      Physics Eta (loop over constituents)
-                    </comment>
-                </method1>
-
-                <method1 name="detectorEta"
-                         return="float"
+                <method1 name="detectorP4"
+                         return="LorentzVector"
                          args="['void']"
                          vars="['']"
                          qual="const">
-float detectorEta () const;
+LorentzVector detectorP4 () const;
                     <comment>
-      Detector Eta (default for CaloJets)
+      detector p4 for full 3d vertex correction.
                     </comment>
                 </method1>
 
@@ -503,6 +470,7 @@ std::vector&lt;CaloTowerDetId&gt; getTowerIndices() const;
     <type name="LorentzVector"/>
     <type name="const Jet::Constituents&amp;"/>
     <type name="const LorentzVector&amp;"/>
+    <type name="const Particle::Point&amp;"/>
     <type name="const Point&amp;"/>
     <type name="const Specific&amp;"/>
     <type name="float"/>

@@ -2,20 +2,16 @@
 <!--
 ==============================================================================
   XML File: Handle.xml
-  Created:  Thu Jan 14 22:46:04 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:45:35 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/Common/interface/Handle.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/Handle.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/Common/interface/Handle.h">
 
     <include name="&lt;typeinfo&gt;"/>
-    <include name="&quot;DataFormats/Provenance/interface/ProductID.h&quot;"/>
-    <include name="&quot;DataFormats/Common/interface/BasicHandle.h&quot;"/>
-    <include name="&quot;FWCore/Utilities/interface/EDMException.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/HandleBase.h&quot;"/>
 
     <namespace name="edm">
-        <forward name="EDProduct"/>
-        <forward name="template&lt;typename T&gt; Wrapper"/>
 
         <class name="Handle"
                fullname="edm::Handle&lt;T&gt;"
@@ -23,6 +19,7 @@
                project=""
                type="template"
                template="template&lt;typename T&gt;">
+            <baseclass name="public HandleBase"/>
 
             <section name="public">
                 <typedef name="element_type"
@@ -41,14 +38,6 @@ Handle();
                     </comment>
                 </constructor>
 
-                <copyconstructor name="Handle"
-                                 return=""
-                                 args="['const Handle&lt;T&gt;&amp;']"
-                                 vars="['h']"
-                                 qual="">
-Handle(const Handle&lt;T&gt;&amp; h);
-                </copyconstructor>
-
                 <constructor name="Handle"
                              return=""
                              args="['T const*','Provenance const*']"
@@ -59,10 +48,10 @@ Handle(T const* prod, Provenance const* prov);
 
                 <constructor name="Handle"
                              return=""
-                             args="['const boost::shared_ptr&lt;cms::Exception&gt;&amp;']"
+                             args="['boost::shared_ptr&lt;cms::Exception&gt; const&amp;']"
                              vars="['']"
                              qual="">
-Handle(const boost::shared_ptr&lt;cms::Exception&gt;&amp;);
+Handle(boost::shared_ptr&lt;cms::Exception&gt; const&amp;);
                 </constructor>
 
                 <destructor name="~Handle"
@@ -72,41 +61,6 @@ Handle(const boost::shared_ptr&lt;cms::Exception&gt;&amp;);
                             qual="">
 ~Handle();
                 </destructor>
-
-                <method2 name="swap"
-                         return="void"
-                         args="['Handle&lt;T&gt;&amp;']"
-                         vars="['other']"
-                         qual="">
-void swap(Handle&lt;T&gt;&amp; other);
-                </method2>
-
-                <operator name="operator="
-                          return="Handle&lt;T&gt;&amp;"
-                          args="['const Handle&lt;T&gt;&amp;']"
-                          vars="['rhs']"
-                          qual="">
-Handle&lt;T&gt;&amp; operator=(const Handle&lt;T&gt;&amp; rhs);
-                </operator>
-
-                <method1 name="isValid"
-                         return="bool"
-                         args="['void']"
-                         vars="['']"
-                         qual="const">
-bool isValid() const;
-                </method1>
-
-                <method1 name="failedToGet"
-                         return="bool"
-                         args="['void']"
-                         vars="['']"
-                         qual="const">
-bool failedToGet() const;
-                    <comment>
-       Returns true only if Handle was used in a 'get' call and the data could not be found
-                    </comment>
-                </method1>
 
                 <method1 name="product"
                          return="T const*"
@@ -132,30 +86,6 @@ T const* operator-&gt;() const;
 T const&amp; operator*() const;
                 </operator>
 
-                <method1 name="provenance"
-                         return="Provenance const*"
-                         args="['void']"
-                         vars="['']"
-                         qual="const">
-Provenance const* provenance() const;
-                </method1>
-
-                <method1 name="id"
-                         return="ProductID"
-                         args="['void']"
-                         vars="['']"
-                         qual="const">
-ProductID id() const;
-                </method1>
-
-                <method1 name="clear"
-                         return="void"
-                         args="['void']"
-                         vars="['']"
-                         qual="">
-void clear();
-                </method1>
-
             </section>
 
             <typemap name="element_type"
@@ -165,12 +95,9 @@ void clear();
         </class>
     </namespace>
 
-    <type name="Handle&lt;T&gt;&amp;"/>
-    <type name="ProductID"/>
+    <type name="HandleBase"/>
     <type name="Provenance const*"/>
-    <type name="bool"/>
-    <type name="const Handle&lt;T&gt;&amp;"/>
-    <type name="const boost::shared_ptr&lt;cms::Exception&gt;&amp;"/>
+    <type name="boost::shared_ptr&lt;cms::Exception&gt; const&amp;"/>
     <type name="edm::Handle&lt;T&gt;"/>
     <type name="void"/>
 </header>

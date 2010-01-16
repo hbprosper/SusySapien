@@ -3,6 +3,6 @@ reco::PFNuclearInteraction|NuclearInteraction::trackRef_iterator|secondaryTracks
 reco::PFNuclearInteraction|PFRecTrackRefVector::const_iterator|secPFRecTracks_begin|void
 reco::PFNuclearInteraction|PFRecTrackRefVector::const_iterator|secPFRecTracks_end|void
 reco::PFNuclearInteraction|double|likelihood|void
-reco::PFNuclearInteraction|const edm::Ref<NuclearInteractionCollection>&|nuclInterRef|void
+reco::PFNuclearInteraction|const NuclearInteractionRef&|nuclInterRef|void
 reco::PFNuclearInteraction|int|secondaryTracksSize|void
 reco::PFNuclearInteraction|const edm::RefToBase<reco::Track>&|primaryTrack|void

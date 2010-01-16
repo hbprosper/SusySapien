@@ -4,8 +4,8 @@ Class:
 Header:
 	DataFormats/TrackReco/interface/HitPattern.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:16:27 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:57:01 2010	lsclass.py $Revision:$
 
 Methods from reco::HitPattern
 
@@ -228,6 +228,26 @@ Methods from reco::HitPattern
 		Arguments: void	
 
 	-o- numberOfLostMuonRPCHits
+		Return: int
+		Arguments: void	
+
+	-o- numberOfBadHits
+		Return: int
+		Arguments: void	
+
+	-o- numberOfBadMuonHits
+		Return: int
+		Arguments: void	
+
+	-o- numberOfBadMuonDTHits
+		Return: int
+		Arguments: void	
+
+	-o- numberOfBadMuonCSCHits
+		Return: int
+		Arguments: void	
+
+	-o- numberOfBadMuonRPCHits
 		Return: int
 		Arguments: void	
 

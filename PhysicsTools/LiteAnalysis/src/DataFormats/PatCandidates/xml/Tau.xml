@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: Tau.xml
-  Created:  Thu Jan 14 22:48:20 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:17 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/PatCandidates/interface/Tau.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/PatCandidates/interface/Tau.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/PatCandidates/interface/Tau.h">
 
     <include name="&quot;DataFormats/TauReco/interface/BaseTau.h&quot;"/>
     <include name="&quot;DataFormats/TrackReco/interface/Track.h&quot;"/>
@@ -42,18 +42,13 @@ typedef edm::RefVector&lt;TauCollection&gt; TauRefVector;
         <comment>
    Class definition
         </comment>
-        <typedef name="TauType"
-                 value="reco::BaseTau">
-typedef reco::BaseTau TauType;
-        </typedef>
-
 
         <class name="Tau"
                fullname="pat::Tau"
                module="DataFormats.PatCandidates"
                project=""
                type="regular">
-            <baseclass name="public Lepton&lt;TauType&gt;"/>
+            <baseclass name="public Lepton&lt;reco::BaseTau&gt;"/>
 
             <section name="public">
                 <typedef name="IdPair"
@@ -74,10 +69,10 @@ Tau();
 
                 <constructor name="Tau"
                              return=""
-                             args="['const TauType&amp;']"
+                             args="['const reco::BaseTau&amp;']"
                              vars="['aTau']"
                              qual="">
-Tau(const TauType&amp; aTau);
+Tau(const reco::BaseTau&amp; aTau);
                     <comment>
           constructor from a reco tau
                     </comment>
@@ -85,10 +80,10 @@ Tau(const TauType&amp; aTau);
 
                 <constructor name="Tau"
                              return=""
-                             args="['const edm::RefToBase&lt;TauType&gt;&amp;']"
+                             args="['const edm::RefToBase&lt;reco::BaseTau&gt;&amp;']"
                              vars="['aTauRef']"
                              qual="">
-Tau(const edm::RefToBase&lt;TauType&gt;&amp; aTauRef);
+Tau(const edm::RefToBase&lt;reco::BaseTau&gt;&amp; aTauRef);
                     <comment>
           constructor from a RefToBase to a reco tau (to be superseded by Ptr counterpart)
                     </comment>
@@ -96,10 +91,10 @@ Tau(const edm::RefToBase&lt;TauType&gt;&amp; aTauRef);
 
                 <constructor name="Tau"
                              return=""
-                             args="['const edm::Ptr&lt;TauType&gt;&amp;']"
+                             args="['const edm::Ptr&lt;reco::BaseTau&gt;&amp;']"
                              vars="['aTauRef']"
                              qual="">
-Tau(const edm::Ptr&lt;TauType&gt;&amp; aTauRef);
+Tau(const edm::Ptr&lt;reco::BaseTau&gt;&amp; aTauRef);
                     <comment>
           constructor from a Ptr to a reco tau
                     </comment>
@@ -134,7 +129,7 @@ virtual Tau* clone() const;
                          qual="const">
 const reco::TrackRefVector&amp; isolationTracks() const;
                     <comment>
-          override the TauType::isolationTracks method, to access the internal storage of the track
+          override the reco::BaseTau::isolationTracks method, to access the internal storage of the isolation tracks
                     </comment>
                 </method1>
 
@@ -145,7 +140,7 @@ const reco::TrackRefVector&amp; isolationTracks() const;
                          qual="const">
 reco::TrackRef leadTrack() const;
                     <comment>
-          override the TauType::track method, to access the internal storage of the track
+          override the reco::BaseTau::leadTrack method, to access the internal storage of the leading track
                     </comment>
                 </method1>
 
@@ -156,7 +151,7 @@ reco::TrackRef leadTrack() const;
                          qual="const">
 const reco::TrackRefVector&amp; signalTracks() const;
                     <comment>
-          override the TauType::track method, to access the internal storage of the track
+          override the reco::BaseTau::signalTracks method, to access the internal storage of the signal tracks
                     </comment>
                 </method1>
 
@@ -386,6 +381,28 @@ const reco::PFCandidateRef&amp; leadPFChargedHadrCand() const;
                          vars="['']"
                          qual="const">
 float leadPFChargedHadrCandsignedSipt() const;
+                    <comment>
+          Throws an exception if this pat::Tau was not made from a reco::PFTau
+                    </comment>
+                </method1>
+
+                <method1 name="leadPFNeutralCand"
+                         return="const reco::PFCandidateRef&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const reco::PFCandidateRef&amp; leadPFNeutralCand() const;
+                    <comment>
+          Throws an exception if this pat::Tau was not made from a reco::PFTau
+                    </comment>
+                </method1>
+
+                <method1 name="leadPFCand"
+                         return="const reco::PFCandidateRef&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const reco::PFCandidateRef&amp; leadPFCand() const;
                     <comment>
           Throws an exception if this pat::Tau was not made from a reco::PFTau
                     </comment>
@@ -719,14 +736,14 @@ void setTauIDs(const std::vector&lt;IdPair&gt;&amp; ids);
         </class>
     </namespace>
 
-    <type name="Lepton&lt;TauType&gt;"/>
+    <type name="Lepton&lt;reco::BaseTau&gt;"/>
     <type name="Tau*"/>
     <type name="bool"/>
-    <type name="const TauType&amp;"/>
-    <type name="const edm::Ptr&lt;TauType&gt;&amp;"/>
-    <type name="const edm::RefToBase&lt;TauType&gt;&amp;"/>
+    <type name="const edm::Ptr&lt;reco::BaseTau&gt;&amp;"/>
+    <type name="const edm::RefToBase&lt;reco::BaseTau&gt;&amp;"/>
     <type name="const pat::tau::TauCaloSpecific&amp;"/>
     <type name="const pat::tau::TauPFSpecific&amp;"/>
+    <type name="const reco::BaseTau&amp;"/>
     <type name="const reco::GenJet*"/>
     <type name="const reco::GenJetRef&amp;"/>
     <type name="const reco::PFCandidateRef&amp;"/>

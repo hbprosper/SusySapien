@@ -4,8 +4,8 @@ Class:
 Header:
 	DataFormats/EgammaReco/interface/PreshowerClusterShape.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:16:18 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:55 2010	lsclass.py $Revision:$
 
 Methods from reco::PreshowerClusterShape
 
@@ -14,7 +14,7 @@ Methods from reco::PreshowerClusterShape
 		Arguments: void	
 
 	-o- superCluster
-		Return: edm::Ref<std::vector<SuperCluster>>
+		Return: SuperClusterRef
 		Arguments: void	
 
 	-o- setSCRef

@@ -4,8 +4,8 @@ Class:
 Header:
 	DataFormats/MuonReco/interface/MuonTime.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:17 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:05 2010	lsclass.py $Revision:$
 
 Methods from reco::MuonTime
 

@@ -10,10 +10,9 @@ BaseClasses:
 	reco::RecoCandidate	DataFormats/RecoCandidate/interface/RecoCandidate.h
 	reco::LeafCandidate	DataFormats/Candidate/interface/LeafCandidate.h
 	reco::Candidate	DataFormats/Candidate/interface/Candidate.h
-	reco::Particle	DataFormats/Candidate/interface/Particle.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:14:20 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:55:27 2010	lsclass.py $Revision:$
 
 Methods from pat::MET
 
@@ -143,10 +142,6 @@ Methods from pat::PATObject<reco::MET>
 		Return: const reco::Candidate*
 		Arguments: void	
 
-	-o- addTriggerMatch
-		Return: void
-		Arguments: const pat::TriggerPrimitive&	aTrigPrim
-
 	-o- triggerObjectMatches
 		Return: const std::vector<TriggerObjectStandAlone >&
 		Arguments: void	
@@ -188,6 +183,7 @@ Methods from pat::PATObject<reco::MET>
 		Return: reco::GenParticleRef
 		Arguments: int	pdgId
 		           int	status
+		           uint8_t=0	autoCharge
 
 	-o- genParticle
 		Return: const reco::GenParticle*
@@ -219,7 +215,7 @@ Methods from pat::PATObject<reco::MET>
 		Arguments: const std::string&	label
 
 	-o- overlaps
-		Return: const reco::edm::PtrVector<Candidate>&
+		Return: const reco::CandidatePtrVector&
 		Arguments: const std::string&	label
 
 	-o- setOverlaps
@@ -262,6 +258,19 @@ Methods from pat::PATObject<reco::MET>
 		           int32_t	data
 
 	-o- hasUserInt
+		Return: bool
+		Arguments: const std::string&	key
+
+	-o- userCand
+		Return: reco::CandidatePtr
+		Arguments: const std::string&	key
+
+	-o- addUserCand
+		Return: void
+		Arguments: const std::string&	label
+		           const reco::CandidatePtr&	data
+
+	-o- hasUserCand
 		Return: bool
 		Arguments: const std::string&	key
 
@@ -330,14 +339,6 @@ Methods from pat::PATObject<reco::MET>
 		Return: const edm::Ptr<reco::Candidate>&
 		Arguments: void	
 
-	-o- triggerMatches
-		Return: const std::vector<TriggerPrimitive>&
-		Arguments: void	
-
-	-o- triggerMatchesByFilter
-		Return: const std::vector<TriggerPrimitive>
-		Arguments: const std::string&	aFilt
-
 	-o- efficiencies
 		Return: std::vector<std::pair<std::string, pat::LookupTableRecord> >
 		Arguments: void	
@@ -385,6 +386,10 @@ Methods from pat::PATObject<reco::MET>
 		Return: const std::vector<std::string>&
 		Arguments: void	
 
+	-o- userCandNames
+		Return: const std::vector<std::string>&
+		Arguments: void	
+
 Methods from reco::MET
 
 	-o- sumEt
@@ -422,11 +427,11 @@ Methods from reco::RecoCandidate
 		Arguments: const Candidate&	
 
 	-o- track
-		Return: reco::edm::Ref<std::vector<Track>>
+		Return: reco::TrackRef
 		Arguments: void	
 
 	-o- track
-		Return: reco::edm::Ref<std::vector<Track>>
+		Return: reco::TrackRef
 		Arguments: size_t	
 
 	-o- numberOfTracks
@@ -434,23 +439,23 @@ Methods from reco::RecoCandidate
 		Arguments: void	
 
 	-o- gsfTrack
-		Return: reco::edm::Ref<GsfTrackCollection>
+		Return: reco::GsfTrackRef
 		Arguments: void	
 
 	-o- standAloneMuon
-		Return: reco::edm::Ref<std::vector<Track>>
+		Return: reco::TrackRef
 		Arguments: void	
 
 	-o- combinedMuon
-		Return: reco::edm::Ref<std::vector<Track>>
+		Return: reco::TrackRef
 		Arguments: void	
 
 	-o- superCluster
-		Return: reco::edm::Ref<std::vector<SuperCluster>>
+		Return: reco::SuperClusterRef
 		Arguments: void	
 
 	-o- caloTower
-		Return: edm::Ref<CaloTowerCollection>
+		Return: CaloTowerRef
 		Arguments: void	
 
 	-o- bestTrack
@@ -458,7 +463,7 @@ Methods from reco::RecoCandidate
 		Arguments: void	
 
 	-o- bestTrackRef
-		Return: edm::RefToBase<reco::Track>
+		Return: TrackBaseRef
 		Arguments: void	
 
 	-o- bestTrackType
@@ -467,10 +472,6 @@ Methods from reco::RecoCandidate
 
 Methods from reco::LeafCandidate
 
-	-o- clone
-		Return: LeafCandidate*
-		Arguments: void	
-
 	-o- begin
 		Return: candidate::const_iterator
 		Arguments: void	
@@ -478,42 +479,8 @@ Methods from reco::LeafCandidate
 	-o- end
 		Return: candidate::const_iterator
 		Arguments: void	
-
-	-o- begin
-		Return: candidate::iterator
-		Arguments: void	
-
-	-o- end
-		Return: candidate::iterator
-		Arguments: void	
-
-	-o- numberOfDaughters
-		Return: size_t
-		Arguments: void	
-
-	-o- daughter
-		Return: const Candidate*
-		Arguments: size_type	
-
-	-o- numberOfMothers
-		Return: size_t
-		Arguments: void	
-
-	-o- mother
-		Return: const Candidate*
-		Arguments: size_type	
-
-	-o- daughter
-		Return: Candidate*
-		Arguments: size_type	
 
 Methods from reco::Candidate
-
-	-o- clone
-		Return: Candidate*
-		Arguments: void	
-
-Methods from reco::Particle
 
 	-o- charge
 		Return: int
@@ -532,11 +499,11 @@ Methods from reco::Particle
 		Arguments: Charge	qx3
 
 	-o- p4
-		Return: const math::XYZTLorentzVectorD&
+		Return: const math::XYZTLorentzVector&
 		Arguments: void	
 
 	-o- polarP4
-		Return: const math::ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> >&
+		Return: const math::PtEtaPhiMLorentzVector&
 		Arguments: void	
 
 	-o- momentum
@@ -668,6 +635,14 @@ Methods from reco::Particle
 		Arguments: void	
 
 	-o- longLived
+		Return: bool
+		Arguments: void	
+
+	-o- setMassConstraint
+		Return: void
+		Arguments: void	
+
+	-o- massConstraint
 		Return: bool
 		Arguments: void	
 

@@ -4,8 +4,8 @@ Class:
 Header:
 	DataFormats/HepMCCandidate/interface/FlavorHistory.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:23 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:09 2010	lsclass.py $Revision:$
 
 Methods from reco::FlavorHistory
 
@@ -25,15 +25,31 @@ Methods from reco::FlavorHistory
 		Return: bool
 		Arguments: void	
 
+	-o- hasMatchedJet
+		Return: bool
+		Arguments: void	
+
+	-o- hasSisterJet
+		Return: bool
+		Arguments: void	
+
 	-o- parton
-		Return: const reco::edm::Ptr<Candidate>&
+		Return: const reco::CandidatePtr&
 		Arguments: void	
 
 	-o- sister
-		Return: const reco::edm::Ptr<Candidate>&
+		Return: const reco::CandidatePtr&
 		Arguments: void	
 
 	-o- progenitor
-		Return: const reco::edm::Ptr<Candidate>&
+		Return: const reco::CandidatePtr&
+		Arguments: void	
+
+	-o- matchedJet
+		Return: const reco::ShallowClonePtrCandidate&
+		Arguments: void	
+
+	-o- sisterJet
+		Return: const reco::ShallowClonePtrCandidate&
 		Arguments: void	
 

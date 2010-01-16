@@ -6,11 +6,11 @@ Header:
 
 BaseClasses:
 	reco::CompositeCandidate	DataFormats/Candidate/interface/CompositeCandidate.h
+	reco::LeafCandidate	DataFormats/Candidate/interface/LeafCandidate.h
 	reco::Candidate	DataFormats/Candidate/interface/Candidate.h
-	reco::Particle	DataFormats/Candidate/interface/Particle.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:16:15 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:54 2010	lsclass.py $Revision:$
 
 Methods from reco::PFCandidate
 
@@ -18,7 +18,7 @@ Methods from reco::PFCandidate
 		Return: PFCandidate*
 		Arguments: void	
 
-	-o- setSourcePtr
+	-o- setSourceCandidatePtr
 		Return: void
 		Arguments: const PFCandidatePtr&	ptr
 
@@ -48,7 +48,7 @@ Methods from reco::PFCandidate
 		Arguments: const reco::TrackRef&	ref
 
 	-o- trackRef
-		Return: reco::edm::Ref<std::vector<Track>>
+		Return: reco::TrackRef
 		Arguments: void	
 
 	-o- setGsfTrackRef
@@ -56,7 +56,7 @@ Methods from reco::PFCandidate
 		Arguments: const reco::GsfTrackRef&	ref
 
 	-o- gsfTrackRef
-		Return: reco::edm::Ref<GsfTrackCollection>
+		Return: reco::GsfTrackRef
 		Arguments: void	
 
 	-o- setMuonRef
@@ -64,7 +64,7 @@ Methods from reco::PFCandidate
 		Arguments: const reco::MuonRef&	ref
 
 	-o- muonRef
-		Return: reco::edm::Ref<std::vector<Muon>>
+		Return: reco::MuonRef
 		Arguments: void	
 
 	-o- setNuclearRef
@@ -72,7 +72,7 @@ Methods from reco::PFCandidate
 		Arguments: const reco::NuclearInteractionRef&	ref
 
 	-o- nuclearRef
-		Return: reco::edm::Ref<NuclearInteractionCollection>
+		Return: reco::NuclearInteractionRef
 		Arguments: void	
 
 	-o- setConversionRef
@@ -80,7 +80,7 @@ Methods from reco::PFCandidate
 		Arguments: const reco::ConversionRef&	ref
 
 	-o- conversionRef
-		Return: reco::edm::Ref<std::vector<Conversion>>
+		Return: reco::ConversionRef
 		Arguments: void	
 
 	-o- setEcalEnergy
@@ -205,7 +205,7 @@ Methods from reco::PFCandidate
 		Arguments: const math::XYZPointF&	pos
 
 	-o- positionAtECALEntrance
-		Return: const math::ROOT::Math::PositionVector3D<ROOT::Math::Cartesian3D<float> >&
+		Return: const math::XYZPointF&
 		Arguments: void	
 
 	-o- particleId
@@ -213,7 +213,7 @@ Methods from reco::PFCandidate
 		Arguments: void	
 
 	-o- elementsInBlocks
-		Return: const std::vector<ElementInBlock >&
+		Return: const std::vector<std::pair<reco::PFBlockRef, unsigned> >&
 		Arguments: void	
 
 Methods from reco::CompositeCandidate
@@ -234,9 +234,7 @@ Methods from reco::CompositeCandidate
 		Return: void
 		Arguments: const role_collection&	roles
 
-	-o- clone
-		Return: CompositeCandidate*
-		Arguments: void	
+Methods from reco::LeafCandidate
 
 	-o- begin
 		Return: candidate::const_iterator
@@ -245,72 +243,8 @@ Methods from reco::CompositeCandidate
 	-o- end
 		Return: candidate::const_iterator
 		Arguments: void	
-
-	-o- begin
-		Return: candidate::iterator
-		Arguments: void	
-
-	-o- end
-		Return: candidate::iterator
-		Arguments: void	
-
-	-o- numberOfDaughters
-		Return: size_t
-		Arguments: void	
-
-	-o- daughter
-		Return: const Candidate*
-		Arguments: size_type	
-
-	-o- daughter
-		Return: Candidate*
-		Arguments: size_type	
-
-	-o- daughter
-		Return: Candidate*
-		Arguments: const std::string&	s
-
-	-o- daughter
-		Return: const Candidate*
-		Arguments: const std::string&	s
-
-	-o- addDaughter
-		Return: void
-		Arguments: const Candidate&	
-		           const std::string&=""	s
-
-	-o- clearDaughters
-		Return: void
-		Arguments: void	
-
-	-o- clearRoles
-		Return: void
-		Arguments: void	
-
-	-o- applyRoles
-		Return: void
-		Arguments: void	
-
-	-o- numberOfMothers
-		Return: size_t
-		Arguments: void	
-
-	-o- mother
-		Return: const Candidate*
-		Arguments: size_type=0	i
-
-	-o- addDaughter
-		Return: void
-		Arguments: std::auto_ptr<Candidate>	
-		           const std::string&=""	s
 
 Methods from reco::Candidate
-
-	-o- clone
-		Return: Candidate*
-		Arguments: void	
-
-Methods from reco::Particle
 
 	-o- charge
 		Return: int
@@ -329,11 +263,11 @@ Methods from reco::Particle
 		Arguments: Charge	qx3
 
 	-o- p4
-		Return: const math::XYZTLorentzVectorD&
+		Return: const math::XYZTLorentzVector&
 		Arguments: void	
 
 	-o- polarP4
-		Return: const math::ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> >&
+		Return: const math::PtEtaPhiMLorentzVector&
 		Arguments: void	
 
 	-o- momentum
@@ -465,6 +399,14 @@ Methods from reco::Particle
 		Arguments: void	
 
 	-o- longLived
+		Return: bool
+		Arguments: void	
+
+	-o- setMassConstraint
+		Return: void
+		Arguments: void	
+
+	-o- massConstraint
 		Return: bool
 		Arguments: void	
 

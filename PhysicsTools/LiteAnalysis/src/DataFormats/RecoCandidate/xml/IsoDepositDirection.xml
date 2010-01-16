@@ -2,17 +2,17 @@
 <!--
 ==============================================================================
   XML File: IsoDepositDirection.xml
-  Created:  Thu Jan 14 22:48:27 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:24 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/RecoCandidate/interface/IsoDepositDirection.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/RecoCandidate/interface/IsoDepositDirection.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/RecoCandidate/interface/IsoDepositDirection.h">
 
     <include name="&lt;cmath&gt;"/>
     <include name="&lt;sstream&gt;"/>
     <include name="&lt;iostream&gt;"/>
-    <include name="&quot;PhysicsTools/Utilities/interface/deltaR.h&quot;"/>
-    <include name="&quot;PhysicsTools/Utilities/interface/deltaPhi.h&quot;"/>
+    <include name="&quot;DataFormats/Math/interface/deltaR.h&quot;"/>
+    <include name="&quot;DataFormats/Math/interface/deltaPhi.h&quot;"/>
 
     <namespace name="reco">
 

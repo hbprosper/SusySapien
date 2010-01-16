@@ -4,31 +4,24 @@ Class:
 Header:
 	DataFormats/L1GlobalCaloTrigger/interface/L1GctInternEtSum.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:14:54 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:55:48 2010	lsclass.py $Revision:$
 
 Methods from L1GctInternEtSum
-
-	-o- fromWheelHfRingSum
-		Return: static L1GctInternEtSum
-		Arguments: uint16_t	capBlock
-		           uint16_t	capIndex
-		           int16_t	bx
-		           uint16_t	data
-
-	-o- fromWheelHfBitCount
-		Return: static L1GctInternEtSum
-		Arguments: uint16_t	capBlock
-		           uint16_t	capIndex
-		           int16_t	bx
-		           uint16_t	data
 
 	-o- fromJetTotEt
 		Return: static L1GctInternEtSum
 		Arguments: uint16_t	capBlock
 		           uint16_t	capIndex
 		           int16_t	bx
-		           uint16_t	data
+		           uint32_t	data
+
+	-o- fromJetTotHt
+		Return: static L1GctInternEtSum
+		Arguments: uint16_t	capBlock
+		           uint16_t	capIndex
+		           int16_t	bx
+		           uint32_t	data
 
 	-o- fromJetMissEt
 		Return: static L1GctInternEtSum
@@ -37,12 +30,49 @@ Methods from L1GctInternEtSum
 		           int16_t	bx
 		           uint32_t	data
 
-	-o- fromTotalEt
+	-o- fromTotalEtOrHt
 		Return: static L1GctInternEtSum
 		Arguments: uint16_t	capBlock
 		           uint16_t	capIndex
 		           int16_t	bx
 		           uint32_t	data
+
+	-o- fromMissEtxOrEty
+		Return: static L1GctInternEtSum
+		Arguments: uint16_t	capBlock
+		           uint16_t	capIndex
+		           int16_t	bx
+		           uint32_t	data
+
+	-o- fromEmulatorJetTotEt
+		Return: static L1GctInternEtSum
+		Arguments: unsigned	totEt
+		           bool	overFlow
+		           int16_t	bx
+
+	-o- fromEmulatorJetTotHt
+		Return: static L1GctInternEtSum
+		Arguments: unsigned	totHt
+		           bool	overFlow
+		           int16_t	bx
+
+	-o- fromEmulatorJetMissEt
+		Return: static L1GctInternEtSum
+		Arguments: int	missEtxOrEty
+		           bool	overFlow
+		           int16_t	bx
+
+	-o- fromEmulatorTotalEtOrHt
+		Return: static L1GctInternEtSum
+		Arguments: unsigned	totEtOrHt
+		           bool	overFlow
+		           int16_t	bx
+
+	-o- fromEmulatorMissEtxOrEty
+		Return: static L1GctInternEtSum
+		Arguments: int	missEtxOrEty
+		           bool	overFlow
+		           int16_t	bx
 
 	-o- type
 		Return: L1GctInternEtSum::L1GctInternEtSumType

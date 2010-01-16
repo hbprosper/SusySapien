@@ -7,8 +7,8 @@ Header:
 BaseClasses:
 	reco::BaseTauTagInfo	DataFormats/TauReco/interface/BaseTauTagInfo.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:13 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:02 2010	lsclass.py $Revision:$
 
 Methods from reco::PFTauTagInfo
 
@@ -17,11 +17,11 @@ Methods from reco::PFTauTagInfo
 		Arguments: void	
 
 	-o- PFCands
-		Return: edm::RefVector<PFCandidateCollection>
+		Return: PFCandidateRefVector
 		Arguments: void	
 
 	-o- PFChargedHadrCands
-		Return: const edm::RefVector<PFCandidateCollection>&
+		Return: const PFCandidateRefVector&
 		Arguments: void	
 
 	-o- setPFChargedHadrCands
@@ -29,7 +29,7 @@ Methods from reco::PFTauTagInfo
 		Arguments: const PFCandidateRefVector	
 
 	-o- PFNeutrHadrCands
-		Return: const edm::RefVector<PFCandidateCollection>&
+		Return: const PFCandidateRefVector&
 		Arguments: void	
 
 	-o- setPFNeutrHadrCands
@@ -37,7 +37,7 @@ Methods from reco::PFTauTagInfo
 		Arguments: const PFCandidateRefVector	
 
 	-o- PFGammaCands
-		Return: const edm::RefVector<PFCandidateCollection>&
+		Return: const PFCandidateRefVector&
 		Arguments: void	
 
 	-o- setPFGammaCands
@@ -45,7 +45,7 @@ Methods from reco::PFTauTagInfo
 		Arguments: const PFCandidateRefVector	
 
 	-o- pfjetRef
-		Return: const edm::Ref<PFJetCollection>&
+		Return: const PFJetRef&
 		Arguments: void	
 
 	-o- setpfjetRef
@@ -55,7 +55,7 @@ Methods from reco::PFTauTagInfo
 Methods from reco::BaseTauTagInfo
 
 	-o- Tracks
-		Return: const reco::edm::RefVector<std::vector<Track>>&
+		Return: const reco::TrackRefVector&
 		Arguments: void	
 
 	-o- setTracks

@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: PtrVector.xml
-  Created:  Thu Jan 14 22:46:14 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:45:47 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/Common/interface/PtrVector.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/PtrVector.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/Common/interface/PtrVector.h">
 
     <include name="&quot;boost/iterator.hpp&quot;"/>
     <include name="&quot;boost/static_assert.hpp&quot;"/>
@@ -274,6 +274,11 @@ typedef PtrVectorItr&lt;T&gt; iterator;
 typedef Ptr&lt;T&gt; value_type;
                 </typedef>
 
+                <typedef name="collection_type"
+                         value="void">
+typedef void collection_type;
+                </typedef>
+
                 <friend>
 friend class PtrVectorItr&lt;T&gt;;
                 </friend>
@@ -284,6 +289,14 @@ friend class PtrVectorItr&lt;T&gt;;
                              vars="['']"
                              qual="">
 PtrVector();
+                </constructor>
+
+                <constructor name="PtrVector"
+                             return="explicit"
+                             args="['ProductID const&amp;']"
+                             vars="['id']"
+                             qual="">
+explicit PtrVector(ProductID const&amp; id);
                 </constructor>
 
                 <copyconstructor name="PtrVector"
@@ -364,8 +377,19 @@ void swap(PtrVector&amp; other);
 PtrVector&amp; operator=(PtrVector const&amp; rhs);
                 </operator>
 
+                <method2 name="fillView"
+                         return="void"
+                         args="['std::vector&lt;void const*&gt;&amp;']"
+                         vars="['pointers']"
+                         qual="const">
+void fillView(std::vector&lt;void const*&gt;&amp; pointers) const;
+                </method2>
+
             </section>
 
+            <typemap name="collection_type"
+                     value="void"
+                     type="typedef"/>
             <typemap name="const_iterator"
                      value="PtrVectorItr&lt;T&gt;"
                      type="typedef"/>
@@ -377,8 +401,29 @@ PtrVector&amp; operator=(PtrVector const&amp; rhs);
                      type="typedef"/>
 
         </class>
+
+        <class name="has_fillView&lt;PtrVector&lt;T&gt; &gt;"
+               fullname="edm::has_fillView&lt;PtrVector&lt;T&gt; &gt;"
+               module="DataFormats.Common"
+               project=""
+               type="specialized template struct"
+               template="template&lt;typename T&gt;">
+
+            <section>
+                <member>
+static bool const value=true;
+                </member>
+
+            </section>
+
+            <typemap name="true"
+                     value="edm::has_fillView&lt;PtrVector&lt;T&gt; &gt;::true"
+                     type="member"/>
+
+        </class>
     </namespace>
 
+    <type name="ProductID const&amp;"/>
     <type name="Ptr&lt;T&gt;"/>
     <type name="Ptr&lt;T&gt; const"/>
     <type name="Ptr&lt;T&gt; const&amp;"/>
@@ -392,16 +437,19 @@ PtrVector&amp; operator=(PtrVector const&amp; rhs);
     <type name="PtrVector&lt;U&gt; const&amp;"/>
     <type name="PtrVectorBase"/>
     <type name="bool"/>
+    <type name="bool const value"/>
     <type name="const_iterator"/>
     <type name="difference_type"/>
     <type name="edm::PtrHolder&lt;T&gt;"/>
     <type name="edm::PtrVector&lt;T&gt;"/>
     <type name="edm::PtrVectorItr&lt;T&gt;"/>
+    <type name="edm::has_fillView&lt;PtrVector&lt;T&gt; &gt;"/>
     <type name="int"/>
     <type name="iterator"/>
     <type name="iterator const&amp;"/>
     <type name="iterator&amp;"/>
     <type name="std::iterator&lt;std::random_access_iterator_tag, Ptr&lt;T&gt; &gt;"/>
+    <type name="std::vector&lt;void const*&gt;&amp;"/>
     <type name="std::vector&lt;void const*&gt;::const_iterator const&amp;"/>
     <type name="template&lt;typename U&gt;"/>
     <type name="template&lt;typename U&gt; void"/>

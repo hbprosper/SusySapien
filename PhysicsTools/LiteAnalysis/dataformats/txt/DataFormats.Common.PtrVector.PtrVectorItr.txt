@@ -4,6 +4,6 @@ Class:
 Header:
 	DataFormats/Common/interface/PtrVector.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:54 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:34 2010	lsclass.py $Revision:$
 

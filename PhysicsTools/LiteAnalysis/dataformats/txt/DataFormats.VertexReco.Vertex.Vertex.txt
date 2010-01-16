@@ -4,8 +4,8 @@ Class:
 Header:
 	DataFormats/VertexReco/interface/Vertex.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:27 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:13 2010	lsclass.py $Revision:$
 
 Methods from reco::Vertex
 
@@ -41,11 +41,11 @@ Methods from reco::Vertex
 		Arguments: const TrackRef&	r
 
 	-o- tracks_begin
-		Return: std::vector<edm::RefToBase<reco::Track> >::const_iterator
+		Return: std::vector<TrackBaseRef >::const_iterator
 		Arguments: void	
 
 	-o- tracks_end
-		Return: std::vector<edm::RefToBase<reco::Track> >::const_iterator
+		Return: std::vector<TrackBaseRef >::const_iterator
 		Arguments: void	
 
 	-o- tracksSize
@@ -65,7 +65,7 @@ Methods from reco::Vertex
 		Arguments: void	
 
 	-o- position
-		Return: const math::ROOT::Math::PositionVector3D<ROOT::Math::Cartesian3D<double> >&
+		Return: const math::XYZPoint&
 		Arguments: void	
 
 	-o- x
@@ -92,11 +92,6 @@ Methods from reco::Vertex
 		Return: double
 		Arguments: void	
 
-	-o- error
-		Return: double
-		Arguments: int	i
-		           int	j
-
 	-o- covariance
 		Return: double
 		Arguments: int	i
@@ -119,7 +114,7 @@ Methods from reco::Vertex
 		Arguments: void	
 
 	-o- originalTrack
-		Return: edm::RefToBase<reco::Track>
+		Return: TrackBaseRef
 		Arguments: const Track&	refTrack
 
 	-o- refittedTrack

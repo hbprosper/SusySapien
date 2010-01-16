@@ -9,7 +9,7 @@ pat::PATObject<ObjectType>|reco::GenParticleRef|genParticleRef|size_t=0
 pat::PATObject<ObjectType>|const reco::GenParticle*|genParticle|size_t=0
 pat::PATObject<ObjectType>|size_t|genParticlesSize|void
 pat::PATObject<ObjectType>|bool|hasOverlaps|const std::string&
-pat::PATObject<ObjectType>|const reco::edm::PtrVector<Candidate>&|overlaps|const std::string&
+pat::PATObject<ObjectType>|const reco::CandidatePtrVector&|overlaps|const std::string&
 pat::PATObject<ObjectType>|bool|hasUserData|const std::string&
 pat::PATObject<ObjectType>|const std::string&|userDataObjectType|const std::string&
 pat::PATObject<ObjectType>|const void*|userDataBare|const std::string&
@@ -17,6 +17,8 @@ pat::PATObject<ObjectType>|float|userFloat|const std::string&
 pat::PATObject<ObjectType>|bool|hasUserFloat|const std::string&
 pat::PATObject<ObjectType>|int32_t|userInt|const std::string&
 pat::PATObject<ObjectType>|bool|hasUserInt|const std::string&
+pat::PATObject<ObjectType>|reco::CandidatePtr|userCand|const std::string&
+pat::PATObject<ObjectType>|bool|hasUserCand|const std::string&
 pat::PATObject<ObjectType>|const pat::CandKinResolution&|getKinResolution|const std::string&=""
 pat::PATObject<ObjectType>|bool|hasKinResolution|const std::string&=""
 pat::PATObject<ObjectType>|double|resolEta|const std::string&=""
@@ -32,8 +34,6 @@ pat::PATObject<ObjectType>|double|resolPy|const std::string&=""
 pat::PATObject<ObjectType>|double|resolPz|const std::string&=""
 pat::PATObject<ObjectType>|double|resolM|const std::string&=""
 pat::PATObject<ObjectType>|const edm::Ptr<reco::Candidate>&|originalObjectRef|void
-pat::PATObject<ObjectType>|const std::vector<TriggerPrimitive>&|triggerMatches|void
-pat::PATObject<ObjectType>|const std::vector<TriggerPrimitive>|triggerMatchesByFilter|const std::string&
 pat::PATObject<ObjectType>|std::vector<std::pair<std::string, pat::LookupTableRecord> >|efficiencies|void
 pat::PATObject<ObjectType>|const std::vector<std::string>&|efficiencyNames|void
 pat::PATObject<ObjectType>|const std::vector<pat::LookupTableRecord>&|efficiencyValues|void
@@ -43,3 +43,4 @@ pat::PATObject<ObjectType>|template<typename T> const T*|userData|const std::str
 pat::PATObject<ObjectType>|const std::vector<std::string>&|userDataNames|void
 pat::PATObject<ObjectType>|const std::vector<std::string>&|userFloatNames|void
 pat::PATObject<ObjectType>|const std::vector<std::string>&|userIntNames|void
+pat::PATObject<ObjectType>|const std::vector<std::string>&|userCandNames|void

@@ -2,14 +2,15 @@
 <!--
 ==============================================================================
   XML File: L1GctHFBitCounts.xml
-  Created:  Thu Jan 14 22:47:23 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:33 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/L1GlobalCaloTrigger/interface/L1GctHFBitCounts.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/L1GlobalCaloTrigger/interface/L1GctHFBitCounts.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/L1GlobalCaloTrigger/interface/L1GctHFBitCounts.h">
 
     <include name="&lt;ostream&gt;"/>
     <include name="&lt;string&gt;"/>
+    <include name="&lt;stdint.h&gt;"/>
 
     <class name="L1GctHFBitCounts"
            fullname="L1GctHFBitCounts"

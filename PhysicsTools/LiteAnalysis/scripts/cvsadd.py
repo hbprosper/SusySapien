@@ -45,6 +45,6 @@ for d in dirlist:
 	for f in files:
 		command = "cvs add %s" % f
 		print "\t%s" % command
-	        os.system(command)
+		os.system(command)
 		
 	

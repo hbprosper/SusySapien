@@ -4,6 +4,72 @@ Class:
 Header:
 	DataFormats/TauReco/interface/L2TauIsolationInfo.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:08 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:55:59 2010	lsclass.py $Revision:$
+
+Methods from reco::L2TauIsolationInfo
+
+	-o- ecalIsolEt
+		Return: double
+		Arguments: void	
+
+	-o- seedEcalHitEt
+		Return: double
+		Arguments: void	
+
+	-o- nEcalHits
+		Return: int
+		Arguments: void	
+
+	-o- hcalIsolEt
+		Return: double
+		Arguments: void	
+
+	-o- seedHcalHitEt
+		Return: double
+		Arguments: void	
+
+	-o- nHcalHits
+		Return: int
+		Arguments: void	
+
+	-o- setEcalIsolEt
+		Return: void
+		Arguments: double	et
+
+	-o- setSeedEcalHitEt
+		Return: void
+		Arguments: double	et
+
+	-o- setNEcalHits
+		Return: void
+		Arguments: int	hits
+
+	-o- setHcalIsolEt
+		Return: void
+		Arguments: double	et
+
+	-o- setSeedHcalHitEt
+		Return: void
+		Arguments: double	et
+
+	-o- setNHcalHits
+		Return: void
+		Arguments: int	hits
+
+	-o- ecalClusterShape
+		Return: std::vector<double>
+		Arguments: void	
+
+	-o- hcalClusterShape
+		Return: std::vector<double>
+		Arguments: void	
+
+	-o- setEcalClusterShape
+		Return: void
+		Arguments: std::vector<double>	shape
+
+	-o- setHcalClusterShape
+		Return: void
+		Arguments: std::vector<double>	shape
 

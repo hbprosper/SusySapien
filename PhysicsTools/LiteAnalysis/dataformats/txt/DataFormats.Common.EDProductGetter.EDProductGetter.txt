@@ -4,8 +4,8 @@ Class:
 Header:
 	DataFormats/Common/interface/EDProductGetter.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:55 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:35 2010	lsclass.py $Revision:$
 
 Methods from edm::EDProductGetter
 
@@ -16,4 +16,8 @@ Methods from edm::EDProductGetter
 	-o- instance
 		Return: static EDProductGetter const*
 		Arguments: void	
+
+	-o- oldToNewProductID
+		Return: ProductID
+		Arguments: ProductID const&	oldProductID
 

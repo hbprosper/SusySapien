@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: TrackIPData.xml
-  Created:  Thu Jan 14 22:45:44 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:45:17 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/BTauReco/interface/TrackIPData.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/BTauReco/interface/TrackIPData.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/BTauReco/interface/TrackIPData.h">
 
     <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
     <include name="&quot;DataFormats/GeometryVector/interface/GlobalVector.h&quot;"/>

@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: GenericParticle.xml
-  Created:  Thu Jan 14 22:48:11 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:09 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/PatCandidates/interface/GenericParticle.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/PatCandidates/interface/GenericParticle.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/PatCandidates/interface/GenericParticle.h">
 
     <include name="&quot;DataFormats/PatCandidates/interface/PATObject.h&quot;"/>
     <include name="&quot;DataFormats/RecoCandidate/interface/RecoCandidate.h&quot;"/>
@@ -114,6 +114,9 @@ virtual ~GenericParticle();
                          vars="['']"
                          qual="const">
 virtual GenericParticle* clone() const;
+                    <comment>
+          required reimplementation of the Candidate's clone method
+                    </comment>
                 </method1>
 
                 <method1 name="overlap"
@@ -479,23 +482,23 @@ void setTrackIso(float trackIso);
                     </comment>
                 </method1>
 
-                <method1 name="setECalIso"
+                <method1 name="setEcalIso"
                          return="void"
                          args="['float']"
                          vars="['caloIso']"
                          qual="">
-void setECalIso(float caloIso);
+void setEcalIso(float caloIso);
                     <comment>
           Sets ecal isolation variable
                     </comment>
                 </method1>
 
-                <method1 name="setHCalIso"
+                <method1 name="setHcalIso"
                          return="void"
                          args="['float']"
                          vars="['caloIso']"
                          qual="">
-void setHCalIso(float caloIso);
+void setHcalIso(float caloIso);
                     <comment>
           Sets hcal isolation variable
                     </comment>
@@ -534,12 +537,12 @@ void setIsoDeposit(IsolationKeys key, const IsoDeposit&amp; dep);
                     </comment>
                 </method1>
 
-                <method1 name="trackerIsoDeposit"
+                <method1 name="trackIsoDeposit"
                          return="const IsoDeposit*"
                          args="['void']"
                          vars="['']"
                          qual="const">
-const IsoDeposit* trackerIsoDeposit() const;
+const IsoDeposit* trackIsoDeposit() const;
                     <comment>
          ---- specific getters ----
                     </comment>
@@ -569,12 +572,12 @@ const IsoDeposit* hcalIsoDeposit() const;
 const IsoDeposit* userIsoDeposit(uint8_t index=0) const;
                 </method1>
 
-                <method1 name="trackerIsoDeposit"
+                <method1 name="trackIsoDeposit"
                          return="void"
                          args="['const IsoDeposit&amp;']"
                          vars="['dep']"
                          qual="">
-void trackerIsoDeposit(const IsoDeposit&amp; dep);
+void trackIsoDeposit(const IsoDeposit&amp; dep);
                     <comment>
          ---- specific setters ----
                     </comment>

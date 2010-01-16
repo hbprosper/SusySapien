@@ -4,8 +4,8 @@ Class:
 Header:
 	DataFormats/Common/interface/PtrVectorBase.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:45 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:27 2010	lsclass.py $Revision:$
 
 Methods from edm::PtrVectorBase
 
@@ -26,6 +26,10 @@ Methods from edm::PtrVectorBase
 		Arguments: void	
 
 	-o- hasCache
+		Return: bool
+		Arguments: void	
+
+	-o- hasProductCache
 		Return: bool
 		Arguments: void	
 
@@ -59,5 +63,9 @@ Methods from edm::PtrVectorBase
 
 	-o- isTransient
 		Return: bool
+		Arguments: void	
+
+	-o- product
+		Return: void const*
 		Arguments: void	
 

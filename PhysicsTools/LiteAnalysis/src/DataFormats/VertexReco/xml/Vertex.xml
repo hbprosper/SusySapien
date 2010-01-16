@@ -2,18 +2,17 @@
 <!--
 ==============================================================================
   XML File: Vertex.xml
-  Created:  Thu Jan 14 22:48:57 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:43 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/VertexReco/interface/Vertex.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/VertexReco/interface/Vertex.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/VertexReco/interface/Vertex.h">
 
     <include name="&lt;Rtypes.h&gt;"/>
     <include name="&quot;DataFormats/Math/interface/Error.h&quot;"/>
     <include name="&quot;DataFormats/Math/interface/Point3D.h&quot;"/>
     <include name="&quot;DataFormats/TrackReco/interface/TrackFwd.h&quot;"/>
     <include name="&quot;DataFormats/TrackReco/interface/Track.h&quot;"/>
-    <include name="&lt;iostream&gt;"/>
     <include name="&quot;DataFormats/Common/interface/RefToBase.h&quot;"/>
 
     <namespace name="reco">
@@ -338,23 +337,17 @@ double zError() const;
                     </comment>
                 </method1>
 
-                <method1 name="error"
-                         return="double"
-                         args="['int','int']"
-                         vars="['i','j']"
-                         qual="const">
-double error(int i, int j) const;
-                    <comment>
-        (i, j)-th element of error matrix, i, j = 0, ... 2
-                    </comment>
-                </method1>
-
                 <method1 name="covariance"
                          return="double"
                          args="['int','int']"
                          vars="['i','j']"
                          qual="const">
 double covariance(int i, int j) const;
+                    <comment>
+       Note that:
+         double error( int i, int j ) const
+       is OBSOLETE, use covariance(i, j)
+                    </comment>
                 </method1>
 
                 <method1 name="covariance"

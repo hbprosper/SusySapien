@@ -4,8 +4,8 @@ Class:
 Header:
 	DataFormats/ParticleFlowReco/interface/PFBlock.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:14:23 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:55:29 2010	lsclass.py $Revision:$
 
 Methods from reco::PFBlock
 
@@ -27,42 +27,24 @@ Methods from reco::PFBlock
 		Return: void
 		Arguments: unsigned	i1
 		           unsigned	i2
-		           double	chi2
 		           double	dist
 		           LinkData&	linkData
-		           LinkTest=LINKTEST_CHI2	test
-
-	-o- chi2
-		Return: double
-		Arguments: unsigned	ie1
-		           unsigned	ie2
-		           const LinkData&	linkData
-		           LinkTest=LINKTEST_CHI2	test
+		           LinkTest=LINKTEST_RECHIT	test
 
 	-o- dist
 		Return: double
 		Arguments: unsigned	ie1
 		           unsigned	ie2
 		           const LinkData&	linkData
-		           LinkTest=LINKTEST_CHI2	test
+		           LinkTest	test
 
-	-o- linkData
-		Return: const std::vector<std::vector<std::pair<float, float> > >&
-		Arguments: void	
-
-	-o- linkData
-		Return: std::vector<std::vector<std::pair<float, float> > >&
-		Arguments: void	
-
-	-o- associatedElements
-		Return: void
-		Arguments: unsigned	i
+	-o- dist
+		Return: double
+		Arguments: unsigned	ie1
+		           unsigned	ie2
 		           const LinkData&	linkData
-		           std::multimap<double, unsigned>&	sortedAssociates
-		           reco::PFBlockElement::Type=PFBlockElement::NONE	type
-		           LinkTest=LINKTEST_CHI2	test
 
-	-o- elements
-		Return: const edm::OwnVector<reco::PFBlockElement >&
+	-o- linkData
+		Return: const std::map<unsigned int, Link >&
 		Arguments: void	
 

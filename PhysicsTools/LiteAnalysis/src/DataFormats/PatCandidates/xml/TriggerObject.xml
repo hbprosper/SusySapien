@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: TriggerObject.xml
-  Created:  Thu Jan 14 22:48:22 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:20 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/PatCandidates/interface/TriggerObject.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/PatCandidates/interface/TriggerObject.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/PatCandidates/interface/TriggerObject.h">
 
     <include name="&quot;DataFormats/Candidate/interface/LeafCandidate.h&quot;"/>
     <include name="&lt;map&gt;"/>
@@ -16,6 +16,7 @@
     <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
     <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
     <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVectorIterator.h&quot;"/>
     <include name="&quot;DataFormats/Common/interface/Association.h&quot;"/>
 
     <namespace name="pat">
@@ -36,7 +37,7 @@ std::string collection_;
                 </member>
 
                 <member>
-std::vector&lt;unsigned &gt; filterIds_;
+std::vector&lt;int &gt; filterIds_;
                 </member>
 
             </section>
@@ -97,10 +98,10 @@ void setCollection(const std::string&amp; collection);
 
                 <method1 name="addFilterId"
                          return="void"
-                         args="['unsigned']"
+                         args="['int']"
                          vars="['filterId']"
                          qual="">
-void addFilterId(unsigned filterId);
+void addFilterId(int filterId);
                 </method1>
 
                 <method1 name="collection"
@@ -112,19 +113,19 @@ std::string collection() const;
                 </method1>
 
                 <method2 name="filterIds"
-                         return="std::vector&lt;unsigned &gt;"
+                         return="std::vector&lt;int &gt;"
                          args="['void']"
                          vars="['']"
                          qual="const">
-std::vector&lt;unsigned &gt; filterIds() const;
+std::vector&lt;int &gt; filterIds() const;
                 </method2>
 
                 <method1 name="hasFilterId"
                          return="bool"
-                         args="['unsigned']"
+                         args="['int']"
                          vars="['filterId']"
                          qual="const">
-bool hasFilterId(unsigned filterId) const;
+bool hasFilterId(int filterId) const;
                 </method1>
 
             </section>
@@ -177,6 +178,14 @@ typedef edm::RefVector&lt;TriggerObjectCollection &gt; TriggerObjectRefVector;
             </comment>
         </typedef>
 
+        <typedef name="TriggerObjectRefVectorIterator"
+                 value="edm::RefVectorIterator&lt;TriggerObjectCollection &gt;">
+typedef edm::RefVectorIterator&lt;TriggerObjectCollection &gt; TriggerObjectRefVectorIterator;
+            <comment>
+      const iterator over vector of persistent references to items in the same TriggerObjectCollection
+            </comment>
+        </typedef>
+
         <typedef name="TriggerObjectMatch"
                  value="edm::Association&lt;TriggerObjectCollection &gt;">
 typedef edm::Association&lt;TriggerObjectCollection &gt; TriggerObjectMatch;
@@ -212,7 +221,6 @@ typedef std::map&lt;std::string, TriggerObjectMatchRefProd &gt; TriggerObjectMat
     <type name="pat::TriggerObject"/>
     <type name="reco::LeafCandidate"/>
     <type name="std::string"/>
-    <type name="std::vector&lt;unsigned &gt;"/>
-    <type name="unsigned"/>
+    <type name="std::vector&lt;int &gt;"/>
     <type name="void"/>
 </header>

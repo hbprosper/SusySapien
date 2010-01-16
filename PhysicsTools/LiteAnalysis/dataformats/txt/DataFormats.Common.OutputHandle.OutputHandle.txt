@@ -1,13 +1,13 @@
 Class:
-	edm::OutputHandle<T>
+	edm::OutputHandle
 
 Header:
 	DataFormats/Common/interface/OutputHandle.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:55 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:36 2010	lsclass.py $Revision:$
 
-Methods from edm::OutputHandle<T>
+Methods from edm::OutputHandle
 
 	-o- swap
 		Return: void
@@ -25,12 +25,8 @@ Methods from edm::OutputHandle<T>
 		Return: EDProduct const*
 		Arguments: void	
 
-	-o- id
-		Return: ProductID
-		Arguments: void	
-
-	-o- entryInfo
-		Return: T const*
+	-o- productProvenance
+		Return: ProductProvenance const*
 		Arguments: void	
 
 	-o- desc
@@ -41,7 +37,7 @@ Methods from edm::OutputHandle<T>
 		Return: boost::shared_ptr<cms::Exception>
 		Arguments: void	
 
-	-o- entryInfoSharedPtr
-		Return: boost::shared_ptr<T>
+	-o- productProvenanceSharedPtr
+		Return: boost::shared_ptr<ProductProvenance>
 		Arguments: void	
 

@@ -22,7 +22,7 @@ reco::TrackBase|double|vz|void
 reco::TrackBase|const math::XYZVector&|momentum|void
 reco::TrackBase|const math::XYZPoint&|referencePoint|void
 reco::TrackBase|const math::XYZPoint&|vertex|void
-reco::TrackBase|math::Vector<dimension>::type|parameters|void
+reco::TrackBase|math::math::XYZVector<dimension>::ROOT::Math::SVector<double, N>|parameters|void
 reco::TrackBase|math::Error<dimension>::ROOT::Math::SVector<double, N>|covariance|void
 reco::TrackBase|double|parameter|int
 reco::TrackBase|double|error|int
@@ -37,6 +37,8 @@ reco::TrackBase|double|d0Error|void
 reco::TrackBase|double|dszError|void
 reco::TrackBase|double|dzError|void
 reco::TrackBase|const HitPattern&|hitPattern|void
+reco::TrackBase|const HitPattern&|trackerExpectedHitsInner|void
+reco::TrackBase|const HitPattern&|trackerExpectedHitsOuter|void
 reco::TrackBase|unsigned short|numberOfValidHits|void
 reco::TrackBase|unsigned short|numberOfLostHits|void
 reco::TrackBase|TrackAlgorithm|algo|void

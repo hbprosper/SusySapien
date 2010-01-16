@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: Particle.xml
-  Created:  Thu Jan 14 22:48:18 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:16 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/PatCandidates/interface/Particle.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/PatCandidates/interface/Particle.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/PatCandidates/interface/Particle.h">
 
     <include name="&quot;DataFormats/Candidate/interface/LeafCandidate.h&quot;"/>
     <include name="&quot;DataFormats/PatCandidates/interface/PATObject.h&quot;"/>
@@ -34,18 +34,13 @@ typedef edm::RefVector&lt;ParticleCollection&gt; ParticleRefVector;
     </namespace>
 
     <namespace name="pat">
-        <typedef name="ParticleType"
-                 value="reco::LeafCandidate">
-typedef reco::LeafCandidate ParticleType;
-        </typedef>
-
 
         <class name="Particle"
                fullname="pat::Particle"
                module="DataFormats.PatCandidates"
                project=""
                type="regular">
-            <baseclass name="public PATObject&lt;ParticleType&gt;"/>
+            <baseclass name="public PATObject&lt;reco::LeafCandidate&gt;"/>
 
             <section name="public">
                 <constructor name="Particle"
@@ -54,14 +49,20 @@ typedef reco::LeafCandidate ParticleType;
                              vars="['']"
                              qual="">
 Particle();
+                    <comment>
+          default constructor
+                    </comment>
                 </constructor>
 
                 <constructor name="Particle"
                              return=""
-                             args="['const ParticleType&amp;']"
+                             args="['const reco::LeafCandidate&amp;']"
                              vars="['aParticle']"
                              qual="">
-Particle(const ParticleType&amp; aParticle);
+Particle(const reco::LeafCandidate&amp; aParticle);
+                    <comment>
+          constructor from a LeafCandidate
+                    </comment>
                 </constructor>
 
                 <destructor name="~Particle"
@@ -70,6 +71,9 @@ Particle(const ParticleType&amp; aParticle);
                             vars="['']"
                             qual="">
 virtual ~Particle();
+                    <comment>
+          destructor
+                    </comment>
                 </destructor>
 
                 <method1 name="clone"
@@ -78,6 +82,9 @@ virtual ~Particle();
                          vars="['']"
                          qual="const">
 virtual Particle* clone() const;
+                    <comment>
+          required reimplementation of the Candidate's clone method
+                    </comment>
                 </method1>
 
             </section>
@@ -85,9 +92,9 @@ virtual Particle* clone() const;
         </class>
     </namespace>
 
-    <type name="PATObject&lt;ParticleType&gt;"/>
+    <type name="PATObject&lt;reco::LeafCandidate&gt;"/>
     <type name="Particle*"/>
-    <type name="const ParticleType&amp;"/>
+    <type name="const reco::LeafCandidate&amp;"/>
     <type name="pat::Particle"/>
     <type name="void"/>
 </header>

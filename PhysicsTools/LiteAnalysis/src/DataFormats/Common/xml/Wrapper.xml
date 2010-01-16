@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: Wrapper.xml
-  Created:  Thu Jan 14 22:46:32 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:02 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/Common/interface/Wrapper.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/Wrapper.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/Common/interface/Wrapper.h">
 
     <include name="&lt;algorithm&gt;"/>
     <include name="&lt;memory&gt;"/>
@@ -19,6 +19,7 @@
     <include name="&quot;boost/mpl/if.hpp&quot;"/>
     <include name="&quot;DataFormats/Common/interface/EDProduct.h&quot;"/>
     <include name="&quot;DataFormats/Common/interface/RefVectorHolder.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/PtrVector.h&quot;"/>
     <include name="&quot;DataFormats/Common/interface/traits.h&quot;"/>
     <include name="&quot;FWCore/Utilities/interface/EDMException.h&quot;"/>
 
@@ -29,7 +30,7 @@
                module="DataFormats.Common"
                project=""
                type="template privatecopyctor"
-               template="template&lt;class T&gt;">
+               template="template&lt;typename T&gt;">
             <baseclass name="public EDProduct"/>
 
             <section name="public">
@@ -84,22 +85,22 @@ T const* operator-&gt;() const;
                 </operator>
 
                 <method1 name="productTypeInfo"
-                         return="static const std::type_info&amp;"
+                         return="static std::type_info const&amp;"
                          args="['void']"
                          vars="['']"
                          qual="">
-static const std::type_info&amp; productTypeInfo();
+static std::type_info const&amp; productTypeInfo();
                     <comment>
       these are used by FWLite
                     </comment>
                 </method1>
 
                 <method1 name="typeInfo"
-                         return="static const std::type_info&amp;"
+                         return="static std::type_info const&amp;"
                          args="['void']"
                          vars="['']"
                          qual="">
-static const std::type_info&amp; typeInfo();
+static std::type_info const&amp; typeInfo();
                 </method1>
 
                 <constructor name="Wrapper"
@@ -133,8 +134,8 @@ Wrapper(T*);
                fullname="edm::DoFillView&lt;T&gt;"
                module="DataFormats.Common"
                project=""
-               type="template"
-               template="template&lt;class T&gt;">
+               type="template struct"
+               template="template&lt;typename T&gt;">
 
             <section>
                 <operator name="operator()"
@@ -153,8 +154,8 @@ void operatorPP(T const&amp; obj, ProductID const&amp; id, std::vector&lt;void c
                fullname="edm::DoNotFillView&lt;T&gt;"
                module="DataFormats.Common"
                project=""
-               type="template"
-               template="template&lt;class T&gt;">
+               type="template struct"
+               template="template&lt;typename T&gt;">
 
             <section>
                 <operator name="operator()"
@@ -173,24 +174,24 @@ void operatorPP(T const&amp;, ProductID const&amp;, std::vector&lt;void const*&g
                fullname="edm::DoSetPtr&lt;T&gt;"
                module="DataFormats.Common"
                project=""
-               type="template"
-               template="template&lt;class T&gt;">
+               type="template struct"
+               template="template&lt;typename T&gt;">
 
             <section>
                 <operator name="operator()"
                           return="void"
-                          args="['T const&amp;','const std::type_info&amp;','unsigned long','void const*&amp;']"
+                          args="['T const&amp;','std::type_info const&amp;','unsigned long','void const*&amp;']"
                           vars="['obj','iToType','iIndex','oPtr']"
                           qual="const">
-void operatorPP(T const&amp; obj, const std::type_info&amp; iToType, unsigned long iIndex, void const*&amp; oPtr) const;
+void operatorPP(T const&amp; obj, std::type_info const&amp; iToType, unsigned long iIndex, void const*&amp; oPtr) const;
                 </operator>
 
                 <operator name="operator()"
                           return="void"
-                          args="['T const&amp;','const std::type_info&amp;','const std::vector&lt;unsigned long&gt;&amp;','std::vector&lt;void const*&gt;&amp;']"
+                          args="['T const&amp;','std::type_info const&amp;','std::vector&lt;unsigned long&gt; const&amp;','std::vector&lt;void const*&gt;&amp;']"
                           vars="['obj','iToType','iIndex','oPtr']"
                           qual="const">
-void operatorPP(T const&amp; obj, const std::type_info&amp; iToType, const std::vector&lt;unsigned long&gt;&amp; iIndex, std::vector&lt;void const*&gt;&amp; oPtr) const;
+void operatorPP(T const&amp; obj, std::type_info const&amp; iToType, std::vector&lt;unsigned long&gt; const&amp; iIndex, std::vector&lt;void const*&gt;&amp; oPtr) const;
                 </operator>
 
             </section>
@@ -201,24 +202,24 @@ void operatorPP(T const&amp; obj, const std::type_info&amp; iToType, const std::
                fullname="edm::DoNotSetPtr&lt;T&gt;"
                module="DataFormats.Common"
                project=""
-               type="template"
-               template="template&lt;class T&gt;">
+               type="template struct"
+               template="template&lt;typename T&gt;">
 
             <section>
                 <operator name="operator()"
                           return="void"
-                          args="['T const&amp;','const std::type_info&amp;','unsigned long','void const*&amp;']"
+                          args="['T const&amp;','std::type_info const&amp;','unsigned long','void const*&amp;']"
                           vars="['','','','oPtr']"
                           qual="const">
-void operatorPP(T const&amp;, const std::type_info&amp;, unsigned long, void const*&amp; oPtr) const;
+void operatorPP(T const&amp;, std::type_info const&amp;, unsigned long, void const*&amp; oPtr) const;
                 </operator>
 
                 <operator name="operator()"
                           return="void"
-                          args="['T const&amp;','const std::type_info&amp;','const std::vector&lt;unsigned long&gt;&amp;','std::vector&lt;void const*&gt;&amp;']"
+                          args="['T const&amp;','std::type_info const&amp;','std::vector&lt;unsigned long&gt; const&amp;','std::vector&lt;void const*&gt;&amp;']"
                           vars="['obj','iToType','iIndex','oPtr']"
                           qual="const">
-void operatorPP(T const&amp; obj, const std::type_info&amp; iToType, const std::vector&lt;unsigned long&gt;&amp; iIndex, std::vector&lt;void const*&gt;&amp; oPtr) const;
+void operatorPP(T const&amp; obj, std::type_info const&amp; iToType, std::vector&lt;unsigned long&gt; const&amp; iIndex, std::vector&lt;void const*&gt;&amp; oPtr) const;
                 </operator>
 
             </section>
@@ -281,10 +282,10 @@ void operatorPP(T&amp; a, T&amp; b);
             <section>
                 <operator name="operator()"
                           return="bool"
-                          args="['T&amp;']"
+                          args="['T const&amp;']"
                           vars="['a']"
-                          qual="">
-bool operatorPP(T&amp; a);
+                          qual="const">
+bool operatorPP(T const&amp; a) const;
                 </operator>
 
             </section>
@@ -301,10 +302,10 @@ bool operatorPP(T&amp; a);
             <section>
                 <operator name="operator()"
                           return="bool"
-                          args="['T&amp;']"
+                          args="['T const&amp;']"
                           vars="['a']"
-                          qual="">
-bool operatorPP(T&amp; a);
+                          qual="const">
+bool operatorPP(T const&amp; a) const;
                 </operator>
 
             </section>
@@ -321,10 +322,10 @@ bool operatorPP(T&amp; a);
             <section>
                 <operator name="operator()"
                           return="bool"
-                          args="['T&amp;','T&amp;']"
+                          args="['T&amp;','T const&amp;']"
                           vars="['a','b']"
                           qual="">
-bool operatorPP(T&amp; a, T&amp; b);
+bool operatorPP(T&amp; a, T const&amp; b);
                 </operator>
 
             </section>
@@ -341,10 +342,10 @@ bool operatorPP(T&amp; a, T&amp; b);
             <section>
                 <operator name="operator()"
                           return="bool"
-                          args="['T&amp;','T&amp;']"
+                          args="['T&amp;','T const&amp;']"
                           vars="['a','b']"
                           qual="">
-bool operatorPP(T&amp; a, T&amp; b);
+bool operatorPP(T&amp; a, T const&amp; b);
                 </operator>
 
             </section>
@@ -361,10 +362,10 @@ bool operatorPP(T&amp; a, T&amp; b);
             <section>
                 <operator name="operator()"
                           return="bool"
-                          args="['T&amp;']"
+                          args="['T const&amp;']"
                           vars="['a']"
-                          qual="">
-bool operatorPP(T&amp; a);
+                          qual="const">
+bool operatorPP(T const&amp; a) const;
                 </operator>
 
             </section>
@@ -381,10 +382,10 @@ bool operatorPP(T&amp; a);
             <section>
                 <operator name="operator()"
                           return="bool"
-                          args="['T&amp;']"
+                          args="['T const&amp;']"
                           vars="['a']"
-                          qual="">
-bool operatorPP(T&amp; a);
+                          qual="const">
+bool operatorPP(T const&amp; a) const;
                 </operator>
 
             </section>
@@ -401,10 +402,10 @@ bool operatorPP(T&amp; a);
             <section>
                 <operator name="operator()"
                           return="bool"
-                          args="['T&amp;','T&amp;']"
+                          args="['T const&amp;','T const&amp;']"
                           vars="['a','b']"
-                          qual="">
-bool operatorPP(T&amp; a, T&amp; b);
+                          qual="const">
+bool operatorPP(T const&amp; a, T const&amp; b) const;
                 </operator>
 
             </section>
@@ -421,10 +422,10 @@ bool operatorPP(T&amp; a, T&amp; b);
             <section>
                 <operator name="operator()"
                           return="bool"
-                          args="['T&amp;','T&amp;']"
+                          args="['T const&amp;','T const&amp;']"
                           vars="['a','b']"
-                          qual="">
-bool operatorPP(T&amp; a, T&amp; b);
+                          qual="const">
+bool operatorPP(T const&amp; a, T const&amp; b) const;
                 </operator>
 
             </section>
@@ -480,7 +481,7 @@ static bool const value=  sizeof(has_swap_helper&lt;T&gt;(0))== sizeof(yes_tag);
             </class>
             <function2 name="bool"
                        return="template&lt;typename T,"
-                       args="['T::*) (T const &amp;']"
+                       args="['T::*) (T const&amp;']"
                        vars="['']"
                        qual="&gt; struct mergeProduct_function">
 template&lt;typename T, bool (T::*)(T const&amp;)&gt; struct mergeProduct_function;
@@ -508,10 +509,10 @@ static bool const value=  sizeof(has_mergeProduct_helper&lt;T&gt;(0))== sizeof(y
             </class>
             <function2 name="bool"
                        return="template&lt;typename T,"
-                       args="['T::*) (T const &amp;']"
+                       args="['T::*) (T const&amp;']"
                        vars="['']"
-                       qual="&gt; struct isProductEqual_function">
-template&lt;typename T, bool (T::*)(T const&amp;)&gt; struct isProductEqual_function;
+                       qual="const&gt; struct isProductEqual_function">
+template&lt;typename T, bool (T::*)(T const&amp;) const&gt; struct isProductEqual_function;
             </function2>
 
 
@@ -583,6 +584,26 @@ static void fill(RefToBaseVector&lt;T&gt; const&amp; obj, ProductID const&amp; i
 
             </class>
 
+            <class name="ViewFiller&lt;PtrVector&lt;T&gt; &gt;"
+                   fullname="edm::helpers::ViewFiller&lt;PtrVector&lt;T&gt; &gt;"
+                   module="DataFormats.Common"
+                   project=""
+                   type="specialized template struct"
+                   template="template&lt;typename T&gt;">
+
+                <section>
+                    <method2 name="fill"
+                             return="static void"
+                             args="['PtrVector&lt;T&gt; const&amp;','ProductID const&amp;','std::vector&lt;void const*&gt;&amp;','helper_vector_ptr&amp;']"
+                             vars="['obj','id','pointers','helpers']"
+                             qual="">
+static void fill(PtrVector&lt;T&gt; const&amp; obj, ProductID const&amp; id, std::vector&lt;void const*&gt;&amp; pointers, helper_vector_ptr&amp; helpers);
+                    </method2>
+
+                </section>
+
+            </class>
+
             <class name="PtrSetter"
                    fullname="edm::helpers::PtrSetter&lt;T&gt;"
                    module="DataFormats.Common"
@@ -593,18 +614,18 @@ static void fill(RefToBaseVector&lt;T&gt; const&amp; obj, ProductID const&amp; i
                 <section>
                     <method1 name="set"
                              return="static void"
-                             args="['T const&amp;','const std::type_info&amp;','unsigned long','void const*&amp;']"
+                             args="['T const&amp;','std::type_info const&amp;','unsigned long','void const*&amp;']"
                              vars="['obj','iToType','iIndex','oPtr']"
                              qual="">
-static void set(T const&amp; obj, const std::type_info&amp; iToType, unsigned long iIndex, void const*&amp; oPtr);
+static void set(T const&amp; obj, std::type_info const&amp; iToType, unsigned long iIndex, void const*&amp; oPtr);
                     </method1>
 
                     <method2 name="fill"
                              return="static void"
-                             args="['T const&amp;','const std::type_info&amp;','const std::vector&lt;unsigned long&gt;&amp;','std::vector&lt;void const*&gt;&amp;']"
+                             args="['T const&amp;','std::type_info const&amp;','std::vector&lt;unsigned long&gt; const&amp;','std::vector&lt;void const*&gt;&amp;']"
                              vars="['obj','iToType','iIndex','oPtr']"
                              qual="">
-static void fill(T const&amp; obj, const std::type_info&amp; iToType, const std::vector&lt;unsigned long&gt;&amp; iIndex, std::vector&lt;void const*&gt;&amp; oPtr);
+static void fill(T const&amp; obj, std::type_info const&amp; iToType, std::vector&lt;unsigned long&gt; const&amp; iIndex, std::vector&lt;void const*&gt;&amp; oPtr);
                     </method2>
 
                 </section>
@@ -619,11 +640,10 @@ static void fill(T const&amp; obj, const std::type_info&amp; iToType, const std:
     <type name="&amp;"/>
     <type name="EDProduct"/>
     <type name="ProductID const&amp;"/>
+    <type name="PtrVector&lt;T&gt; const&amp;"/>
     <type name="RefToBaseVector&lt;T&gt; const&amp;"/>
     <type name="bool"/>
     <type name="bool const value"/>
-    <type name="const std::type_info&amp;"/>
-    <type name="const std::vector&lt;unsigned long&gt;&amp;"/>
     <type name="edm::DoAssign&lt;T&gt;"/>
     <type name="edm::DoFillView&lt;T&gt;"/>
     <type name="edm::DoHasIsProductEqual&lt;T&gt;"/>
@@ -643,6 +663,7 @@ static void fill(T const&amp; obj, const std::type_info&amp; iToType, const std:
     <type name="edm::detail::has_mergeProduct_function&lt;T&gt;"/>
     <type name="edm::detail::has_swap_function&lt;T&gt;"/>
     <type name="edm::helpers::PtrSetter&lt;T&gt;"/>
+    <type name="edm::helpers::ViewFiller&lt;PtrVector&lt;T&gt; &gt;"/>
     <type name="edm::helpers::ViewFiller&lt;RefToBaseVector&lt;T&gt; &gt;"/>
     <type name="edm::helpers::ViewFiller&lt;T&gt;"/>
     <type name="has_isProductEqual_helper&lt;T&gt;"/>
@@ -650,6 +671,8 @@ static void fill(T const&amp; obj, const std::type_info&amp; iToType, const std:
     <type name="has_swap_helper&lt;T&gt;"/>
     <type name="helper_vector_ptr&amp;"/>
     <type name="std::auto_ptr&lt;T&gt;"/>
+    <type name="std::type_info const&amp;"/>
+    <type name="std::vector&lt;unsigned long&gt; const&amp;"/>
     <type name="std::vector&lt;void const*&gt;&amp;"/>
     <type name="unsigned long"/>
     <type name="void"/>

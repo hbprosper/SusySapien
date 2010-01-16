@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: Hemisphere.xml
-  Created:  Thu Jan 14 22:48:12 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:10 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/PatCandidates/interface/Hemisphere.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/PatCandidates/interface/Hemisphere.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/PatCandidates/interface/Hemisphere.h">
 
     <include name="&quot;DataFormats/Candidate/interface/CompositePtrCandidate.h&quot;"/>
 
@@ -52,10 +52,10 @@ Hemisphere ();
 
                 <constructor name="Hemisphere"
                              return=""
-                             args="['const Particle::LorentzVector&amp;']"
+                             args="['const Candidate::LorentzVector&amp;']"
                              vars="['p4']"
                              qual="">
-Hemisphere (const Particle::LorentzVector&amp; p4);
+Hemisphere (const Candidate::LorentzVector&amp; p4);
                 </constructor>
 
                 <destructor name="~Hemisphere"
@@ -71,7 +71,7 @@ virtual ~Hemisphere ();
         </class>
     </namespace>
 
-    <type name="const Particle::LorentzVector&amp;"/>
+    <type name="const Candidate::LorentzVector&amp;"/>
     <type name="pat::Hemisphere"/>
     <type name="reco::CompositePtrCandidate"/>
     <type name="void"/>

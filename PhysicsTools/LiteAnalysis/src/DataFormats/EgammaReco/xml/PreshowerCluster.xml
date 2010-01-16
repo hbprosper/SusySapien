@@ -2,15 +2,14 @@
 <!--
 ==============================================================================
   XML File: PreshowerCluster.xml
-  Created:  Thu Jan 14 22:47:05 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:23 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/EgammaReco/interface/PreshowerCluster.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/EgammaReco/interface/PreshowerCluster.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/EgammaReco/interface/PreshowerCluster.h">
 
     <include name="&quot;DataFormats/Math/interface/Point3D.h&quot;"/>
-    <include name="&quot;DataFormats/EgammaReco/interface/BasicCluster.h&quot;"/>
-    <include name="&quot;DataFormats/EgammaReco/interface/BasicClusterFwd.h&quot;"/>
+    <include name="&quot;DataFormats/CaloRecHit/interface/CaloClusterFwd.h&quot;"/>
     <include name="&lt;cmath&gt;"/>
 
     <namespace name="reco">
@@ -49,10 +48,10 @@ virtual ~PreshowerCluster();
 
                 <constructor name="PreshowerCluster"
                              return=""
-                             args="['const double','const Point&amp;','const std::vector&lt;DetId&gt;','const int']"
+                             args="['const double','const Point&amp;','const std::vector&lt;std::pair&lt;DetId, float&gt; &gt;','const int']"
                              vars="['E','pos','usedHits','plane']"
                              qual="">
-PreshowerCluster(const double E, const Point&amp; pos, const std::vector&lt;DetId&gt; usedHits, const int plane);
+PreshowerCluster(const double E, const Point&amp; pos, const std::vector&lt;std::pair&lt;DetId, float&gt; &gt; usedHits, const int plane);
                     <comment>
         Constructor from EcalRecHits
                     </comment>
@@ -119,33 +118,25 @@ bool operator&lt;(const PreshowerCluster&amp;) const;
                 </operator>
 
                 <method1 name="basicCluster"
-                         return="BasicClusterRef"
+                         return="CaloClusterPtr"
                          args="['void']"
                          vars="['']"
                          qual="const">
-BasicClusterRef basicCluster() const;
+CaloClusterPtr basicCluster() const;
                     <comment>
         Associated basic cluster;
                     </comment>
                 </method1>
 
-                <method2 name="getHitsByDetId"
-                         return="std::vector&lt;DetId&gt;"
-                         args="['void']"
-                         vars="['']"
-                         qual="const">
-std::vector&lt;DetId&gt; getHitsByDetId() const;
-                    <comment>
-        DetIds of component RecHits
-                    </comment>
-                </method2>
-
                 <method1 name="setBCRef"
                          return="void"
-                         args="['const BasicClusterRef&amp;']"
+                         args="['const CaloClusterPtr&amp;']"
                          vars="['r']"
                          qual="">
-void setBCRef(const BasicClusterRef&amp; r);
+void setBCRef(const CaloClusterPtr&amp; r);
+                    <comment>
+      std::vector&lt;DetId&gt; getHitsByDetId() const { return usedHits_; }
+                    </comment>
                 </method1>
 
             </section>
@@ -157,18 +148,17 @@ void setBCRef(const BasicClusterRef&amp; r);
         </class>
     </namespace>
 
-    <type name="BasicClusterRef"/>
     <type name="CaloCluster"/>
+    <type name="CaloClusterPtr"/>
     <type name="bool"/>
-    <type name="const BasicClusterRef&amp;"/>
+    <type name="const CaloClusterPtr&amp;"/>
     <type name="const Point&amp;"/>
     <type name="const PreshowerCluster&amp;"/>
     <type name="const double"/>
     <type name="const int"/>
-    <type name="const std::vector&lt;DetId&gt;"/>
+    <type name="const std::vector&lt;std::pair&lt;DetId, float&gt; &gt;"/>
     <type name="double"/>
     <type name="int"/>
     <type name="reco::PreshowerCluster"/>
-    <type name="std::vector&lt;DetId&gt;"/>
     <type name="void"/>
 </header>

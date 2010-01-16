@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: TriggerRefsCollections.xml
-  Created:  Thu Jan 14 22:49:05 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:50 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/HLTReco/interface/TriggerRefsCollections.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/HLTReco/interface/TriggerRefsCollections.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/HLTReco/interface/TriggerRefsCollections.h">
 
     <include name="&quot;DataFormats/HLTReco/interface/TriggerTypeDefs.h&quot;"/>
     <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
@@ -19,6 +19,7 @@
     <include name="&quot;DataFormats/METReco/interface/METFwd.h&quot;"/>
     <include name="&quot;DataFormats/METReco/interface/CaloMETFwd.h&quot;"/>
     <include name="&quot;DataFormats/HcalIsolatedTrack/interface/IsolatedPixelTrackCandidateFwd.h&quot;"/>
+    <include name="&quot;DataFormats/L1Trigger/interface/L1HFRingsFwd.h&quot;"/>
     <include name="&quot;DataFormats/L1Trigger/interface/L1EmParticleFwd.h&quot;"/>
     <include name="&quot;DataFormats/L1Trigger/interface/L1JetParticleFwd.h&quot;"/>
     <include name="&quot;DataFormats/L1Trigger/interface/L1MuonParticleFwd.h&quot;"/>
@@ -85,6 +86,11 @@ typedef std::vector&lt;l1extra::L1JetParticleRef&gt; VRl1jet;
         <typedef name="VRl1etmiss"
                  value="std::vector&lt;l1extra::L1EtMissParticleRef&gt;">
 typedef std::vector&lt;l1extra::L1EtMissParticleRef&gt; VRl1etmiss;
+        </typedef>
+
+        <typedef name="VRl1hfrings"
+                 value="std::vector&lt;l1extra::L1HFRingsRef&gt;">
+typedef std::vector&lt;l1extra::L1HFRingsRef&gt; VRl1hfrings;
         </typedef>
 
 
@@ -216,6 +222,14 @@ void addObject(int id, const l1extra::L1JetParticleRef&amp; ref);
 void addObject(int id, const l1extra::L1EtMissParticleRef&amp; ref);
                 </method1>
 
+                <method1 name="addObject"
+                         return="void"
+                         args="['int','const l1extra::L1HFRingsRef&amp;']"
+                         vars="['id','ref']"
+                         qual="">
+void addObject(int id, const l1extra::L1HFRingsRef&amp; ref);
+                </method1>
+
                 <method1 name="addObjects"
                          return="size_type"
                          args="['const Vids&amp;','const VRphoton&amp;']"
@@ -310,6 +324,14 @@ size_type addObjects (const Vids&amp; ids, const VRl1jet&amp; refs);
                          vars="['ids','refs']"
                          qual="">
 size_type addObjects (const Vids&amp; ids, const VRl1etmiss&amp; refs);
+                </method1>
+
+                <method1 name="addObjects"
+                         return="size_type"
+                         args="['const Vids&amp;','const VRl1hfrings&amp;']"
+                         vars="['ids','refs']"
+                         qual="">
+size_type addObjects (const Vids&amp; ids, const VRl1hfrings&amp; refs);
                 </method1>
 
                 <method1 name="getObjects"
@@ -699,6 +721,38 @@ void getObjects(int id, VRl1etmiss&amp; refs) const;
 void getObjects(int id, VRl1etmiss&amp; refs, size_type begin, size_type end) const;
                 </method1>
 
+                <method1 name="getObjects"
+                         return="void"
+                         args="['Vids&amp;','VRl1hfrings&amp;']"
+                         vars="['ids','refs']"
+                         qual="const">
+void getObjects(Vids&amp; ids, VRl1hfrings&amp; refs) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['Vids&amp;','VRl1hfrings&amp;','size_type','size_type']"
+                         vars="['ids','refs','begin','end']"
+                         qual="const">
+void getObjects(Vids&amp; ids, VRl1hfrings&amp; refs, size_type begin, size_type end) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['int','VRl1hfrings&amp;']"
+                         vars="['id','refs']"
+                         qual="const">
+void getObjects(int id, VRl1hfrings&amp; refs) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['int','VRl1hfrings&amp;','size_type','size_type']"
+                         vars="['id','refs','begin','end']"
+                         qual="const">
+void getObjects(int id, VRl1hfrings&amp; refs, size_type begin, size_type end) const;
+                </method1>
+
                 <method1 name="photonSize"
                          return="size_type"
                          args="['void']"
@@ -990,6 +1044,30 @@ const Vids&amp; l1etmissIds() const;
 const VRl1etmiss&amp; l1etmissRefs() const;
                 </method1>
 
+                <method1 name="l1hfringsSize"
+                         return="size_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+size_type l1hfringsSize() const;
+                </method1>
+
+                <method1 name="l1hfringsIds"
+                         return="const Vids&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const Vids&amp; l1hfringsIds() const;
+                </method1>
+
+                <method1 name="l1hfringsRefs"
+                         return="const VRl1hfrings&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const VRl1hfrings&amp; l1hfringsRefs() const;
+                </method1>
+
             </section>
 
         </class>
@@ -1014,6 +1092,7 @@ inline void swap(TriggerRefsCollections&amp; first, TriggerRefsCollections&amp; 
     <type name="VRjet&amp;"/>
     <type name="VRl1em&amp;"/>
     <type name="VRl1etmiss&amp;"/>
+    <type name="VRl1hfrings&amp;"/>
     <type name="VRl1jet&amp;"/>
     <type name="VRl1muon&amp;"/>
     <type name="VRmuon&amp;"/>
@@ -1027,6 +1106,7 @@ inline void swap(TriggerRefsCollections&amp; first, TriggerRefsCollections&amp; 
     <type name="const VRjet&amp;"/>
     <type name="const VRl1em&amp;"/>
     <type name="const VRl1etmiss&amp;"/>
+    <type name="const VRl1hfrings&amp;"/>
     <type name="const VRl1jet&amp;"/>
     <type name="const VRl1muon&amp;"/>
     <type name="const VRmuon&amp;"/>
@@ -1035,6 +1115,7 @@ inline void swap(TriggerRefsCollections&amp; first, TriggerRefsCollections&amp; 
     <type name="const Vids&amp;"/>
     <type name="const l1extra::L1EmParticleRef&amp;"/>
     <type name="const l1extra::L1EtMissParticleRef&amp;"/>
+    <type name="const l1extra::L1HFRingsRef&amp;"/>
     <type name="const l1extra::L1JetParticleRef&amp;"/>
     <type name="const l1extra::L1MuonParticleRef&amp;"/>
     <type name="const reco::CaloJetRef&amp;"/>

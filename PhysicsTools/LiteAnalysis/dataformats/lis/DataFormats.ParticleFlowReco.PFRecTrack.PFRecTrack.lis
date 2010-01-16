@@ -1,6 +1,6 @@
 reco::PFRecTrack|unsigned int|algoType|void
 reco::PFRecTrack|int|trackId|void
-reco::PFRecTrack|const reco::edm::Ref<std::vector<Track>>&|trackRef|void
+reco::PFRecTrack|const reco::TrackRef&|trackRef|void
 reco::PFTrack|double|charge|void
 reco::PFTrack|unsigned int|nTrajectoryPoints|void
 reco::PFTrack|unsigned int|nTrajectoryMeasurements|void

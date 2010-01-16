@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: PFRecHit.xml
-  Created:  Thu Jan 14 22:48:01 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:03 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/ParticleFlowReco/interface/PFRecHit.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/ParticleFlowReco/interface/PFRecHit.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/ParticleFlowReco/interface/PFRecHit.h">
 
     <include name="&lt;vector&gt;"/>
     <include name="&lt;map&gt;"/>
@@ -212,6 +212,17 @@ PFLayer::Layer layer() const;
 double energy() const;
                     <comment>
         rechit energy
+                    </comment>
+                </method1>
+
+                <method1 name="pt2"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double pt2() const;
+                    <comment>
+        rechit momentum transverse to the beam, squared.
                     </comment>
                 </method1>
 

@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: EgammaTrigger.xml
-  Created:  Thu Jan 14 22:47:02 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:22 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/EgammaReco/interface/EgammaTrigger.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/EgammaReco/interface/EgammaTrigger.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/EgammaReco/interface/EgammaTrigger.h">
 
     <include name="&quot;DataFormats/EgammaReco/interface/EgammaTriggerFwd.h&quot;"/>
 

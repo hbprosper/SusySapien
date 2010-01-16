@@ -5,11 +5,11 @@ Header:
 	DataFormats/Candidate/interface/ShallowClonePtrCandidate.h
 
 BaseClasses:
+	reco::LeafCandidate	DataFormats/Candidate/interface/LeafCandidate.h
 	reco::Candidate	DataFormats/Candidate/interface/Candidate.h
-	reco::Particle	DataFormats/Candidate/interface/Particle.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:02 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:55:55 2010	lsclass.py $Revision:$
 
 Methods from reco::ShallowClonePtrCandidate
 
@@ -18,92 +18,14 @@ Methods from reco::ShallowClonePtrCandidate
 		Arguments: void	
 
 	-o- begin
-		Return: candidate::const_iterator
+		Return: const_iterator
 		Arguments: void	
 
 	-o- end
-		Return: candidate::const_iterator
-		Arguments: void	
-
-	-o- begin
-		Return: candidate::iterator
-		Arguments: void	
-
-	-o- end
-		Return: candidate::iterator
-		Arguments: void	
-
-	-o- numberOfDaughters
-		Return: size_t
-		Arguments: void	
-
-	-o- numberOfMothers
-		Return: size_t
-		Arguments: void	
-
-	-o- daughter
-		Return: const Candidate*
-		Arguments: size_type	i
-
-	-o- mother
-		Return: const Candidate*
-		Arguments: size_type	i
-
-	-o- daughter
-		Return: Candidate*
-		Arguments: size_type	i
-
-	-o- hasMasterClonePtr
-		Return: bool
-		Arguments: void	
-
-	-o- masterClonePtr
-		Return: const CandidatePtr&
-		Arguments: void	
-
-	-o- isElectron
-		Return: bool
-		Arguments: void	
-
-	-o- isMuon
-		Return: bool
-		Arguments: void	
-
-	-o- isGlobalMuon
-		Return: bool
-		Arguments: void	
-
-	-o- isStandAloneMuon
-		Return: bool
-		Arguments: void	
-
-	-o- isTrackerMuon
-		Return: bool
-		Arguments: void	
-
-	-o- isCaloMuon
-		Return: bool
-		Arguments: void	
-
-	-o- isPhoton
-		Return: bool
-		Arguments: void	
-
-	-o- isConvertedPhoton
-		Return: bool
-		Arguments: void	
-
-	-o- isJet
-		Return: bool
+		Return: const_iterator
 		Arguments: void	
 
 Methods from reco::Candidate
-
-	-o- clone
-		Return: Candidate*
-		Arguments: void	
-
-Methods from reco::Particle
 
 	-o- charge
 		Return: int
@@ -122,11 +44,11 @@ Methods from reco::Particle
 		Arguments: Charge	qx3
 
 	-o- p4
-		Return: const math::XYZTLorentzVectorD&
+		Return: const math::XYZTLorentzVector&
 		Arguments: void	
 
 	-o- polarP4
-		Return: const math::ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> >&
+		Return: const math::PtEtaPhiMLorentzVector&
 		Arguments: void	
 
 	-o- momentum
@@ -258,6 +180,14 @@ Methods from reco::Particle
 		Arguments: void	
 
 	-o- longLived
+		Return: bool
+		Arguments: void	
+
+	-o- setMassConstraint
+		Return: void
+		Arguments: void	
+
+	-o- massConstraint
 		Return: bool
 		Arguments: void	
 

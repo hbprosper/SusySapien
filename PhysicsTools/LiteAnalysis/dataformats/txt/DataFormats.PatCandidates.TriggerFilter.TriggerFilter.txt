@@ -4,8 +4,8 @@ Class:
 Header:
 	DataFormats/PatCandidates/interface/TriggerFilter.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:14:14 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:55:22 2010	lsclass.py $Revision:$
 
 Methods from pat::TriggerFilter
 
@@ -23,7 +23,7 @@ Methods from pat::TriggerFilter
 
 	-o- addObjectId
 		Return: void
-		Arguments: unsigned	objectId
+		Arguments: int	objectId
 
 	-o- setStatus
 		Return: bool
@@ -47,13 +47,13 @@ Methods from pat::TriggerFilter
 
 	-o- hasObjectId
 		Return: bool
-		Arguments: unsigned	objectId
+		Arguments: int	objectId
 
 	-o- objectKeys
 		Return: std::vector<unsigned >
 		Arguments: void	
 
 	-o- objectIds
-		Return: std::vector<unsigned >
+		Return: std::vector<int >
 		Arguments: void	
 

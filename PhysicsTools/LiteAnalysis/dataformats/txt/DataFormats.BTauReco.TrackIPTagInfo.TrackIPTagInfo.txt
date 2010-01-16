@@ -8,8 +8,8 @@ BaseClasses:
 	reco::JTATagInfo	DataFormats/BTauReco/interface/JTATagInfo.h
 	reco::BaseTagInfo	DataFormats/BTauReco/interface/BaseTagInfo.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:14:47 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:55:42 2010	lsclass.py $Revision:$
 
 Methods from reco::TrackIPTagInfo
 
@@ -25,12 +25,20 @@ Methods from reco::TrackIPTagInfo
 		Return: TaggingVariableList
 		Arguments: void	
 
+	-o- axis
+		Return: const GlobalVector&
+		Arguments: void	
+
+	-o- ghostTrack
+		Return: const TrackRef&
+		Arguments: void	
+
 	-o- impactParameterData
 		Return: const std::vector<TrackIPData>&
 		Arguments: void	
 
 	-o- selectedTracks
-		Return: const edm::edm::RefVector<Container><std::vector<Track>>&
+		Return: const edm::RefVector<TrackCollection>&
 		Arguments: void	
 
 	-o- probabilities
@@ -47,46 +55,10 @@ Methods from reco::TrackIPTagInfo
 		Arguments: SortCriteria=IP3DSig	mode
 
 	-o- sortedTracks
-		Return: reco::edm::edm::RefVector<Container><TrackCollection>
+		Return: reco::TrackRefVector
 		Arguments: std::vector<size_t>	indexes
 
 	-o- primaryVertex
-		Return: edm::edm::Ref<Container><std::vector<Vertex>>
-		Arguments: void	
-
-Methods from reco::JTATagInfo
-
-	-o- clone
-		Return: JTATagInfo*
-		Arguments: void	
-
-	-o- tracks
-		Return: TrackRefVector
-		Arguments: void	
-
-	-o- jtaRef
-		Return: const JetTracksAssociation::edm::Ref<Container>&
-		Arguments: void	
-
-	-o- hasTracks
-		Return: bool
-		Arguments: void	
-
-	-o- setJTARef
-		Return: void
-		Arguments: const JetTracksAssociationRef&	jtaRef
-
-	-o- jet
-		Return: edm::RefToBase<Jet>
-		Arguments: void	
-
-Methods from reco::BaseTagInfo
-
-	-o- clone
-		Return: BaseTagInfo*
-		Arguments: void	
-
-	-o- tracks
-		Return: edm::RefVector<std::vector<Track>>
+		Return: const edm::Ref<VertexCollection>&
 		Arguments: void	
 

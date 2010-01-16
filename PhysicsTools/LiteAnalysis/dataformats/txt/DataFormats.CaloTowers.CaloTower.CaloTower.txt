@@ -7,10 +7,9 @@ Header:
 BaseClasses:
 	reco::LeafCandidate	DataFormats/Candidate/interface/LeafCandidate.h
 	reco::Candidate	DataFormats/Candidate/interface/Candidate.h
-	reco::Particle	DataFormats/Candidate/interface/Particle.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:16:08 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:47 2010	lsclass.py $Revision:$
 
 Methods from CaloTower
 
@@ -25,6 +24,19 @@ Methods from CaloTower
 	-o- setHcalTime
 		Return: void
 		Arguments: int	t
+
+	-o- setCaloTowerStatus
+		Return: void
+		Arguments: uint	numBadHcalChan
+		           uint	numBadEcalChan
+		           uint	numRecHcalChan
+		           uint	numRecEcalChan
+		           uint	numProbHcalChan
+		           uint	numProbEcalChan
+
+	-o- setCaloTowerStatus
+		Return: void
+		Arguments: uint32_t	s
 
 	-o- id
 		Return: CaloTowerDetId
@@ -61,6 +73,66 @@ Methods from CaloTower
 	-o- outerEt
 		Return: double
 		Arguments: void	
+
+	-o- p4
+		Return: math::PtEtaPhiMLorentzVector
+		Arguments: double	vtxZ
+
+	-o- p
+		Return: double
+		Arguments: double	vtxZ
+
+	-o- et
+		Return: double
+		Arguments: double	vtxZ
+
+	-o- emEt
+		Return: double
+		Arguments: double	vtxZ
+
+	-o- hadEt
+		Return: double
+		Arguments: double	vtxZ
+
+	-o- outerEt
+		Return: double
+		Arguments: double	vtxZ
+
+	-o- p4
+		Return: math::PtEtaPhiMLorentzVector
+		Arguments: Point	v
+
+	-o- p
+		Return: double
+		Arguments: Point	v
+
+	-o- et
+		Return: double
+		Arguments: Point	v
+
+	-o- emEt
+		Return: double
+		Arguments: Point	v
+
+	-o- hadEt
+		Return: double
+		Arguments: Point	v
+
+	-o- outerEt
+		Return: double
+		Arguments: Point	v
+
+	-o- p4_HO
+		Return: math::PtEtaPhiMLorentzVector
+		Arguments: void	
+
+	-o- p4_HO
+		Return: math::PtEtaPhiMLorentzVector
+		Arguments: double	vtxZ
+
+	-o- p4_HO
+		Return: math::PtEtaPhiMLorentzVector
+		Arguments: Point	v
 
 	-o- emPosition
 		Return: const GlobalPoint&
@@ -114,6 +186,34 @@ Methods from CaloTower
 		Return: int
 		Arguments: void	
 
+	-o- numBadEcalCells
+		Return: uint
+		Arguments: void	
+
+	-o- numRecoveredEcalCells
+		Return: uint
+		Arguments: void	
+
+	-o- numProblematicEcalCells
+		Return: uint
+		Arguments: void	
+
+	-o- numBadHcalCells
+		Return: uint
+		Arguments: void	
+
+	-o- numRecoveredHcalCells
+		Return: uint
+		Arguments: void	
+
+	-o- numProblematicHcalCells
+		Return: uint
+		Arguments: void	
+
+	-o- towerStatusWord
+		Return: uint32_t
+		Arguments: void	
+
 	-o- addConstituents
 		Return: void
 		Arguments: const std::vector<DetId>&	ids
@@ -124,10 +224,6 @@ Methods from CaloTower
 
 Methods from reco::LeafCandidate
 
-	-o- clone
-		Return: LeafCandidate*
-		Arguments: void	
-
 	-o- begin
 		Return: candidate::const_iterator
 		Arguments: void	
@@ -135,42 +231,8 @@ Methods from reco::LeafCandidate
 	-o- end
 		Return: candidate::const_iterator
 		Arguments: void	
-
-	-o- begin
-		Return: candidate::iterator
-		Arguments: void	
-
-	-o- end
-		Return: candidate::iterator
-		Arguments: void	
-
-	-o- numberOfDaughters
-		Return: size_t
-		Arguments: void	
-
-	-o- daughter
-		Return: const Candidate*
-		Arguments: size_type	
-
-	-o- numberOfMothers
-		Return: size_t
-		Arguments: void	
-
-	-o- mother
-		Return: const Candidate*
-		Arguments: size_type	
-
-	-o- daughter
-		Return: Candidate*
-		Arguments: size_type	
 
 Methods from reco::Candidate
-
-	-o- clone
-		Return: Candidate*
-		Arguments: void	
-
-Methods from reco::Particle
 
 	-o- charge
 		Return: int
@@ -189,11 +251,11 @@ Methods from reco::Particle
 		Arguments: Charge	qx3
 
 	-o- p4
-		Return: const math::XYZTLorentzVectorD&
+		Return: const math::XYZTLorentzVector&
 		Arguments: void	
 
 	-o- polarP4
-		Return: const math::ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> >&
+		Return: const math::PtEtaPhiMLorentzVector&
 		Arguments: void	
 
 	-o- momentum
@@ -326,5 +388,17 @@ Methods from reco::Particle
 
 	-o- longLived
 		Return: bool
+		Arguments: void	
+
+	-o- setMassConstraint
+		Return: void
+		Arguments: void	
+
+	-o- massConstraint
+		Return: bool
+		Arguments: void	
+
+	-o- clone
+		Return: Candidate*
 		Arguments: void	
 

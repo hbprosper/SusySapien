@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: L1AcceptBunchCrossing.xml
-  Created:  Thu Jan 14 22:48:34 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:28 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/Scalers/interface/L1AcceptBunchCrossing.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Scalers/interface/L1AcceptBunchCrossing.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/Scalers/interface/L1AcceptBunchCrossing.h">
 
     <include name="&lt;ostream&gt;"/>
     <include name="&lt;vector&gt;"/>

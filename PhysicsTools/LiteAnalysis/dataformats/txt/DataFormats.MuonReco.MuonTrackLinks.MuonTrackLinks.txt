@@ -4,21 +4,21 @@ Class:
 Header:
 	DataFormats/MuonReco/interface/MuonTrackLinks.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:16 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:05 2010	lsclass.py $Revision:$
 
 Methods from reco::MuonTrackLinks
 
 	-o- trackerTrack
-		Return: inline reco::edm::Ref<std::vector<Track>>
+		Return: inline reco::TrackRef
 		Arguments: void	
 
 	-o- standAloneTrack
-		Return: inline reco::edm::Ref<std::vector<Track>>
+		Return: inline reco::TrackRef
 		Arguments: void	
 
 	-o- globalTrack
-		Return: inline reco::edm::Ref<std::vector<Track>>
+		Return: inline reco::TrackRef
 		Arguments: void	
 
 	-o- setTrackerTrack

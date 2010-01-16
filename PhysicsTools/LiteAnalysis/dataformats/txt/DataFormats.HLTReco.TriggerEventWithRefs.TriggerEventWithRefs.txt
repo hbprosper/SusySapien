@@ -6,9 +6,10 @@ Header:
 
 BaseClasses:
 	trigger::TriggerRefsCollections	DataFormats/HLTReco/interface/TriggerRefsCollections.h
+	edm::DoNotRecordParents	DataFormats/Common/interface/traits.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:16:10 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:49 2010	lsclass.py $Revision:$
 
 Methods from trigger::TriggerEventWithRefs
 
@@ -22,7 +23,7 @@ Methods from trigger::TriggerEventWithRefs
 		Arguments: void	
 
 	-o- size
-		Return: uint16_t
+		Return: size_type
 		Arguments: void	
 
 	-o- filterTag
@@ -30,7 +31,7 @@ Methods from trigger::TriggerEventWithRefs
 		Arguments: size_type	filterIndex
 
 	-o- filterIndex
-		Return: uint16_t
+		Return: size_type
 		Arguments: const edm::InputTag&	filterTag
 
 	-o- getObjects
@@ -177,52 +178,68 @@ Methods from trigger::TriggerEventWithRefs
 		           int	id
 		           VRl1etmiss&	l1etmiss
 
+	-o- getObjects
+		Return: void
+		Arguments: size_type	filter
+		           Vids&	ids
+		           VRl1hfrings&	l1hfrings
+
+	-o- getObjects
+		Return: void
+		Arguments: size_type	filter
+		           int	id
+		           VRl1hfrings&	l1hfrings
+
 	-o- photonSlice
-		Return: std::pair<uint16_t, uint16_t>
+		Return: std::pair<size_type, size_type>
 		Arguments: size_type	filter
 
 	-o- electronSlice
-		Return: std::pair<uint16_t, uint16_t>
+		Return: std::pair<size_type, size_type>
 		Arguments: size_type	filter
 
 	-o- muonSlice
-		Return: std::pair<uint16_t, uint16_t>
+		Return: std::pair<size_type, size_type>
 		Arguments: size_type	filter
 
 	-o- jetSlice
-		Return: std::pair<uint16_t, uint16_t>
+		Return: std::pair<size_type, size_type>
 		Arguments: size_type	filter
 
 	-o- compositeSlice
-		Return: std::pair<uint16_t, uint16_t>
+		Return: std::pair<size_type, size_type>
 		Arguments: size_type	filter
 
 	-o- basemetSlice
-		Return: std::pair<uint16_t, uint16_t>
+		Return: std::pair<size_type, size_type>
 		Arguments: size_type	filter
 
 	-o- calometSlice
-		Return: std::pair<uint16_t, uint16_t>
+		Return: std::pair<size_type, size_type>
 		Arguments: size_type	filter
 
 	-o- pixtrackSlice
-		Return: std::pair<uint16_t, uint16_t>
+		Return: std::pair<size_type, size_type>
 		Arguments: size_type	filter
 
 	-o- l1emSlice
-		Return: std::pair<uint16_t, uint16_t>
+		Return: std::pair<size_type, size_type>
 		Arguments: size_type	filter
 
 	-o- l1muonSlice
-		Return: std::pair<uint16_t, uint16_t>
+		Return: std::pair<size_type, size_type>
 		Arguments: size_type	filter
 
 	-o- l1jetSlice
-		Return: std::pair<uint16_t, uint16_t>
+		Return: std::pair<size_type, size_type>
 		Arguments: size_type	filter
 
 	-o- l1etmissSlice
-		Return: std::pair<uint16_t, uint16_t>
+		Return: std::pair<size_type, size_type>
+		Arguments: size_type	filter
+
+	-o- l1hfringsSlice
+		Return: std::pair<size_type, size_type>
 		Arguments: size_type	filter
 
 Methods from trigger::TriggerRefsCollections
@@ -291,66 +308,76 @@ Methods from trigger::TriggerRefsCollections
 		Arguments: int	id
 		           const l1extra::L1EtMissParticleRef&	ref
 
+	-o- addObject
+		Return: void
+		Arguments: int	id
+		           const l1extra::L1HFRingsRef&	ref
+
 	-o- addObjects
-		Return: uint16_t
+		Return: size_type
 		Arguments: const Vids&	ids
 		           const VRphoton&	refs
 
 	-o- addObjects
-		Return: uint16_t
+		Return: size_type
 		Arguments: const Vids&	ids
 		           const VRelectron&	refs
 
 	-o- addObjects
-		Return: uint16_t
+		Return: size_type
 		Arguments: const Vids&	ids
 		           const VRmuon&	refs
 
 	-o- addObjects
-		Return: uint16_t
+		Return: size_type
 		Arguments: const Vids&	ids
 		           const VRjet&	refs
 
 	-o- addObjects
-		Return: uint16_t
+		Return: size_type
 		Arguments: const Vids&	ids
 		           const VRcomposite&	refs
 
 	-o- addObjects
-		Return: uint16_t
+		Return: size_type
 		Arguments: const Vids&	ids
 		           const VRbasemet&	refs
 
 	-o- addObjects
-		Return: uint16_t
+		Return: size_type
 		Arguments: const Vids&	ids
 		           const VRcalomet&	refs
 
 	-o- addObjects
-		Return: uint16_t
+		Return: size_type
 		Arguments: const Vids&	ids
 		           const VRpixtrack&	refs
 
 	-o- addObjects
-		Return: uint16_t
+		Return: size_type
 		Arguments: const Vids&	ids
 		           const VRl1em&	refs
 
 	-o- addObjects
-		Return: uint16_t
+		Return: size_type
 		Arguments: const Vids&	ids
 		           const VRl1muon&	refs
 
 	-o- addObjects
-		Return: uint16_t
+		Return: size_type
 		Arguments: const Vids&	ids
 		           const VRl1jet&	refs
 
 	-o- addObjects
-		Return: uint16_t
+		Return: size_type
 		Arguments: const Vids&	ids
 		           const VRl1etmiss&	refs
 
+	-o- addObjects
+		Return: size_type
+		Arguments: const Vids&	ids
+		           const VRl1hfrings&	refs
+
 	-o- getObjects
 		Return: void
 		Arguments: Vids&	ids
@@ -636,27 +663,51 @@ Methods from trigger::TriggerRefsCollections
 		Return: void
 		Arguments: int	id
 		           VRl1etmiss&	refs
+		           size_type	begin
+		           size_type	end
+
+	-o- getObjects
+		Return: void
+		Arguments: Vids&	ids
+		           VRl1hfrings&	refs
+
+	-o- getObjects
+		Return: void
+		Arguments: Vids&	ids
+		           VRl1hfrings&	refs
+		           size_type	begin
+		           size_type	end
+
+	-o- getObjects
+		Return: void
+		Arguments: int	id
+		           VRl1hfrings&	refs
+
+	-o- getObjects
+		Return: void
+		Arguments: int	id
+		           VRl1hfrings&	refs
 		           size_type	begin
 		           size_type	end
 
 	-o- photonSize
-		Return: uint16_t
+		Return: size_type
 		Arguments: void	
 
 	-o- photonIds
-		Return: const std::vector<int>&
+		Return: const Vids&
 		Arguments: void	
 
 	-o- photonRefs
-		Return: const std::vector<reco::edm::Ref<RecoEcalCandidateCollection>>&
+		Return: const std::vector<reco::RecoEcalCandidateRef>&
 		Arguments: void	
 
 	-o- electronSize
-		Return: uint16_t
+		Return: size_type
 		Arguments: void	
 
 	-o- electronIds
-		Return: const std::vector<int>&
+		Return: const Vids&
 		Arguments: void	
 
 	-o- electronRefs
@@ -664,35 +715,35 @@ Methods from trigger::TriggerRefsCollections
 		Arguments: void	
 
 	-o- muonSize
-		Return: uint16_t
+		Return: size_type
 		Arguments: void	
 
 	-o- muonIds
-		Return: const std::vector<int>&
+		Return: const Vids&
 		Arguments: void	
 
 	-o- muonRefs
-		Return: const std::vector<reco::edm::Ref<RecoChargedCandidateCollection>>&
+		Return: const std::vector<reco::RecoChargedCandidateRef>&
 		Arguments: void	
 
 	-o- jetSize
-		Return: uint16_t
+		Return: size_type
 		Arguments: void	
 
 	-o- jetIds
-		Return: const std::vector<int>&
+		Return: const Vids&
 		Arguments: void	
 
 	-o- jetRefs
-		Return: const std::vector<reco::edm::Ref<std::vector<CaloJet>>>&
+		Return: const std::vector<reco::CaloJetRef>&
 		Arguments: void	
 
 	-o- compositeSize
-		Return: uint16_t
+		Return: size_type
 		Arguments: void	
 
 	-o- compositeIds
-		Return: const std::vector<int>&
+		Return: const Vids&
 		Arguments: void	
 
 	-o- compositeRefs
@@ -700,11 +751,11 @@ Methods from trigger::TriggerRefsCollections
 		Arguments: void	
 
 	-o- basemetSize
-		Return: uint16_t
+		Return: size_type
 		Arguments: void	
 
 	-o- basemetIds
-		Return: const std::vector<int>&
+		Return: const Vids&
 		Arguments: void	
 
 	-o- basemetRefs
@@ -712,23 +763,23 @@ Methods from trigger::TriggerRefsCollections
 		Arguments: void	
 
 	-o- calometSize
-		Return: uint16_t
+		Return: size_type
 		Arguments: void	
 
 	-o- calometIds
-		Return: const std::vector<int>&
+		Return: const Vids&
 		Arguments: void	
 
 	-o- calometRefs
-		Return: const std::vector<reco::edm::Ref<CaloMETCollection>>&
+		Return: const std::vector<reco::CaloMETRef>&
 		Arguments: void	
 
 	-o- pixtrackSize
-		Return: uint16_t
+		Return: size_type
 		Arguments: void	
 
 	-o- pixtrackIds
-		Return: const std::vector<int>&
+		Return: const Vids&
 		Arguments: void	
 
 	-o- pixtrackRefs
@@ -736,11 +787,11 @@ Methods from trigger::TriggerRefsCollections
 		Arguments: void	
 
 	-o- l1emSize
-		Return: uint16_t
+		Return: size_type
 		Arguments: void	
 
 	-o- l1emIds
-		Return: const std::vector<int>&
+		Return: const Vids&
 		Arguments: void	
 
 	-o- l1emRefs
@@ -748,38 +799,50 @@ Methods from trigger::TriggerRefsCollections
 		Arguments: void	
 
 	-o- l1muonSize
-		Return: uint16_t
+		Return: size_type
 		Arguments: void	
 
 	-o- l1muonIds
-		Return: const std::vector<int>&
+		Return: const Vids&
 		Arguments: void	
 
 	-o- l1muonRefs
-		Return: const std::vector<l1extra::edm::Ref<std::vector<L1MuonParticle > >>&
+		Return: const std::vector<l1extra::L1MuonParticleRef>&
 		Arguments: void	
 
 	-o- l1jetSize
-		Return: uint16_t
+		Return: size_type
 		Arguments: void	
 
 	-o- l1jetIds
-		Return: const std::vector<int>&
+		Return: const Vids&
 		Arguments: void	
 
 	-o- l1jetRefs
-		Return: const std::vector<l1extra::edm::Ref<std::vector<L1JetParticle > >>&
+		Return: const std::vector<l1extra::L1JetParticleRef>&
 		Arguments: void	
 
 	-o- l1etmissSize
-		Return: uint16_t
+		Return: size_type
 		Arguments: void	
 
 	-o- l1etmissIds
-		Return: const std::vector<int>&
+		Return: const Vids&
 		Arguments: void	
 
 	-o- l1etmissRefs
-		Return: const std::vector<l1extra::edm::Ref<std::vector<L1EtMissParticle > >>&
+		Return: const std::vector<l1extra::L1EtMissParticleRef>&
+		Arguments: void	
+
+	-o- l1hfringsSize
+		Return: size_type
+		Arguments: void	
+
+	-o- l1hfringsIds
+		Return: const Vids&
+		Arguments: void	
+
+	-o- l1hfringsRefs
+		Return: const std::vector<l1extra::L1HFRingsRef>&
 		Arguments: void	
 

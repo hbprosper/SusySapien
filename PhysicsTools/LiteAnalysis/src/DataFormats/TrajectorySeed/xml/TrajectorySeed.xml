@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: TrajectorySeed.xml
-  Created:  Thu Jan 14 22:48:55 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:42 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/TrajectorySeed/interface/TrajectorySeed.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/TrajectorySeed/interface/TrajectorySeed.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/TrajectorySeed/interface/TrajectorySeed.h">
 
     <include name="&quot;DataFormats/TrajectorySeed/interface/PropagationDirection.h&quot;"/>
     <include name="&quot;DataFormats/Common/interface/OwnVector.h&quot;"/>

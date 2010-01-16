@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: Ptr.xml
-  Created:  Thu Jan 14 22:46:14 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:45:46 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/Common/interface/Ptr.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/Ptr.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/Common/interface/Ptr.h">
 
     <include name="&quot;boost/type_traits/is_base_of.hpp&quot;"/>
     <include name="&quot;boost/utility/enable_if.hpp&quot;"/>
@@ -303,12 +303,12 @@ EDProductGetter const* productGetter() const;
 key_type key() const;
                 </method1>
 
-                <method1 name="hasCache"
+                <method1 name="hasProductCache"
                          return="bool"
                          args="['void']"
                          vars="['']"
                          qual="const">
-bool hasCache() const;
+bool hasProductCache() const;
                 </method1>
 
                 <method1 name="refCore"
@@ -317,6 +317,17 @@ bool hasCache() const;
                          vars="['']"
                          qual="const">
 RefCore const&amp; refCore() const;
+                </method1>
+
+                <method1 name="product"
+                         return="void const*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+void const* product() const;
+                    <comment>
+       ---------- member functions ---------------------------
+                    </comment>
                 </method1>
 
             </section>
@@ -349,4 +360,5 @@ RefCore const&amp; refCore() const;
     <type name="typename boost::enable_if_c&lt;boost::is_base_of&lt;T, U&gt;::value&gt;::type*"/>
     <type name="typename boost::enable_if_c&lt;boost::is_base_of&lt;U, T&gt;::value&gt;::type*"/>
     <type name="void"/>
+    <type name="void const*"/>
 </header>

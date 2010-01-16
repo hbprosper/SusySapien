@@ -4,8 +4,8 @@ Class:
 Header:
 	DataFormats/EgammaCandidates/interface/Conversion.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:30 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:15 2010	lsclass.py $Revision:$
 
 Methods from reco::Conversion
 
@@ -14,7 +14,7 @@ Methods from reco::Conversion
 		Arguments: void	
 
 	-o- caloCluster
-		Return: reco::edm::PtrVector<CaloCluster>
+		Return: reco::CaloClusterPtrVector
 		Arguments: void	
 
 	-o- conversionVertex
@@ -49,8 +49,45 @@ Methods from reco::Conversion
 		Return: double
 		Arguments: void	
 
+	-o- distOfMinimumApproach
+		Return: double
+		Arguments: void	
+
+	-o- dPhiTracksAtVtx
+		Return: double
+		Arguments: void	
+
+	-o- dPhiTracksAtEcal
+		Return: double
+		Arguments: void	
+
+	-o- dEtaTracksAtEcal
+		Return: double
+		Arguments: void	
+
+	-o- setConversionAlgorithm
+		Return: void
+		Arguments: const ConversionAlgorithm	a
+		           bool=true	set
+
+	-o- algo
+		Return: ConversionAlgorithm
+		Arguments: void	
+
+	-o- algoName
+		Return: std::string
+		Arguments: void	
+
+	-o- algoName
+		Return: static std::string
+		Arguments: ConversionAlgorithm	
+
+	-o- algoByName
+		Return: static ConversionAlgorithm
+		Arguments: const std::string&	name
+
 	-o- tracks
-		Return: std::vector<reco::edm::Ref<std::vector<Track>>>
+		Return: std::vector<reco::TrackRef>
 		Arguments: void	
 
 	-o- ecalImpactPosition
@@ -58,6 +95,18 @@ Methods from reco::Conversion
 		Arguments: void	
 
 	-o- bcMatchingWithTracks
-		Return: const std::vector<reco::edm::Ptr<CaloCluster>>&
+		Return: const std::vector<reco::CaloClusterPtr>&
+		Arguments: void	
+
+	-o- tracksSigned_d0
+		Return: std::vector<double>
+		Arguments: void	
+
+	-o- tracksPout
+		Return: const std::vector<math::XYZVector>&
+		Arguments: void	
+
+	-o- tracksPin
+		Return: const std::vector<math::XYZVector>&
 		Arguments: void	
 

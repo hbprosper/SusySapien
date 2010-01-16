@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: EDProduct.xml
-  Created:  Thu Jan 14 22:46:00 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:45:32 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/Common/interface/EDProduct.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/EDProduct.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/Common/interface/EDProduct.h">
 
     <include name="&lt;vector&gt;"/>
     <include name="&quot;DataFormats/Common/interface/EDProductfwd.h&quot;"/>
@@ -76,32 +76,32 @@ void fillPtrVector(const std::type_info&amp; iToType, const std::vector&lt;unsig
                          return="bool"
                          args="['void']"
                          vars="['']"
-                         qual="">
-bool isMergeable();
+                         qual="const">
+bool isMergeable() const;
                 </method1>
 
                 <method1 name="mergeProduct"
                          return="bool"
-                         args="['EDProduct*']"
+                         args="['EDProduct const*']"
                          vars="['newProduct']"
                          qual="">
-bool mergeProduct(EDProduct* newProduct);
+bool mergeProduct(EDProduct const* newProduct);
                 </method1>
 
                 <method1 name="hasIsProductEqual"
                          return="bool"
                          args="['void']"
                          vars="['']"
-                         qual="">
-bool hasIsProductEqual();
+                         qual="const">
+bool hasIsProductEqual() const;
                 </method1>
 
                 <method1 name="isProductEqual"
                          return="bool"
-                         args="['EDProduct*']"
+                         args="['EDProduct const*']"
                          vars="['newProduct']"
-                         qual="">
-bool isProductEqual(EDProduct* newProduct);
+                         qual="const">
+bool isProductEqual(EDProduct const* newProduct) const;
                 </method1>
 
             </section>
@@ -109,7 +109,7 @@ bool isProductEqual(EDProduct* newProduct);
         </class>
     </namespace>
 
-    <type name="EDProduct*"/>
+    <type name="EDProduct const*"/>
     <type name="ProductID const&amp;"/>
     <type name="bool"/>
     <type name="const std::type_info&amp;"/>

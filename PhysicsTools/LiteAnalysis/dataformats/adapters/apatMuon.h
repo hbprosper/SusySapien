@@ -8,7 +8,7 @@
 //              class:   pat::Muon
 //              header:  DataFormats/PatCandidates/interface/Muon.h
 //              
-// Created:     Thu Jan 14 23:48:23 2010 by mkadapter.py  HBP
+// Created:     Fri Jan 15 21:58:23 2010 by mkadapter.py  HBP
 //-----------------------------------------------------------------------------
 #include "DataFormats/PatCandidates/interface/Muon.h"
 //-----------------------------------------------------------------------------
@@ -73,22 +73,19 @@ class apatMuon : public pat::Muon
   double combinedMuon_vx() const 	{return combinedMuon().isNonnull() ? combinedMuon()->vx() : -999999;}
   double combinedMuon_vy() const 	{return combinedMuon().isNonnull() ? combinedMuon()->vy() : -999999;}
   double combinedMuon_vz() const 	{return combinedMuon().isNonnull() ? combinedMuon()->vz() : -999999;}
-  double ecalIsoDeposit_candEnergy() const 	{return ecalIsoDeposit() ? ecalIsoDeposit()->candEnergy() : -999999;}
-  double ecalIsoDeposit_eta() const 	{return ecalIsoDeposit() ? ecalIsoDeposit()->eta() : -999999;}
-  double ecalIsoDeposit_phi() const 	{return ecalIsoDeposit() ? ecalIsoDeposit()->phi() : -999999;}
   float efficiency_error(const std::string x) const 	{return efficiency(x).error();}
   float efficiency_value(const std::string x) const 	{return efficiency(x).value();}
   int genLepton_charge() const 	{return genLepton() ? genLepton()->charge() : -999999;}
+  int genLepton_collisionId() const 	{return genLepton() ? genLepton()->collisionId() : -999999;}
   double genLepton_energy() const 	{return genLepton() ? genLepton()->energy() : -999999;}
   double genLepton_et() const 	{return genLepton() ? genLepton()->et() : -999999;}
   double genLepton_eta() const 	{return genLepton() ? genLepton()->eta() : -999999;}
   bool genLepton_longLived() const 	{return genLepton() ? genLepton()->longLived() : false;}
   double genLepton_mass() const 	{return genLepton() ? genLepton()->mass() : -999999;}
+  bool genLepton_massConstraint() const 	{return genLepton() ? genLepton()->massConstraint() : false;}
   double genLepton_massSqr() const 	{return genLepton() ? genLepton()->massSqr() : -999999;}
   double genLepton_mt() const 	{return genLepton() ? genLepton()->mt() : -999999;}
   double genLepton_mtSqr() const 	{return genLepton() ? genLepton()->mtSqr() : -999999;}
-  size_t genLepton_numberOfDaughters() const 	{return genLepton() ? genLepton()->numberOfDaughters() : 999999;}
-  size_t genLepton_numberOfMothers() const 	{return genLepton() ? genLepton()->numberOfMothers() : 999999;}
   double genLepton_p() const 	{return genLepton() ? genLepton()->p() : -999999;}
   int genLepton_pdgId() const 	{return genLepton() ? genLepton()->pdgId() : -999999;}
   double genLepton_phi() const 	{return genLepton() ? genLepton()->phi() : -999999;}
@@ -105,16 +102,16 @@ class apatMuon : public pat::Muon
   double genLepton_vz() const 	{return genLepton() ? genLepton()->vz() : -999999;}
   double genLepton_y() const 	{return genLepton() ? genLepton()->y() : -999999;}
   int genParticle_charge(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->charge() : -999999;}
+  int genParticle_collisionId(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->collisionId() : -999999;}
   double genParticle_energy(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->energy() : -999999;}
   double genParticle_et(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->et() : -999999;}
   double genParticle_eta(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->eta() : -999999;}
   bool genParticle_longLived(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->longLived() : false;}
   double genParticle_mass(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->mass() : -999999;}
+  bool genParticle_massConstraint(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->massConstraint() : false;}
   double genParticle_massSqr(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->massSqr() : -999999;}
   double genParticle_mt(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->mt() : -999999;}
   double genParticle_mtSqr(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->mtSqr() : -999999;}
-  size_t genParticle_numberOfDaughters(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->numberOfDaughters() : 999999;}
-  size_t genParticle_numberOfMothers(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->numberOfMothers() : 999999;}
   double genParticle_p(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->p() : -999999;}
   int genParticle_pdgId(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->pdgId() : -999999;}
   double genParticle_phi(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->phi() : -999999;}
@@ -131,16 +128,16 @@ class apatMuon : public pat::Muon
   double genParticle_vz(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->vz() : -999999;}
   double genParticle_y(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->y() : -999999;}
   int genParticleRef_charge(size_t x=0) const 	{return genParticleRef(x).isNonnull() ? genParticleRef(x)->charge() : -999999;}
+  int genParticleRef_collisionId(size_t x=0) const 	{return genParticleRef(x).isNonnull() ? genParticleRef(x)->collisionId() : -999999;}
   double genParticleRef_energy(size_t x=0) const 	{return genParticleRef(x).isNonnull() ? genParticleRef(x)->energy() : -999999;}
   double genParticleRef_et(size_t x=0) const 	{return genParticleRef(x).isNonnull() ? genParticleRef(x)->et() : -999999;}
   double genParticleRef_eta(size_t x=0) const 	{return genParticleRef(x).isNonnull() ? genParticleRef(x)->eta() : -999999;}
   bool genParticleRef_longLived(size_t x=0) const 	{return genParticleRef(x).isNonnull() ? genParticleRef(x)->longLived() : false;}
   double genParticleRef_mass(size_t x=0) const 	{return genParticleRef(x).isNonnull() ? genParticleRef(x)->mass() : -999999;}
+  bool genParticleRef_massConstraint(size_t x=0) const 	{return genParticleRef(x).isNonnull() ? genParticleRef(x)->massConstraint() : false;}
   double genParticleRef_massSqr(size_t x=0) const 	{return genParticleRef(x).isNonnull() ? genParticleRef(x)->massSqr() : -999999;}
   double genParticleRef_mt(size_t x=0) const 	{return genParticleRef(x).isNonnull() ? genParticleRef(x)->mt() : -999999;}
   double genParticleRef_mtSqr(size_t x=0) const 	{return genParticleRef(x).isNonnull() ? genParticleRef(x)->mtSqr() : -999999;}
-  size_t genParticleRef_numberOfDaughters(size_t x=0) const 	{return genParticleRef(x).isNonnull() ? genParticleRef(x)->numberOfDaughters() : 999999;}
-  size_t genParticleRef_numberOfMothers(size_t x=0) const 	{return genParticleRef(x).isNonnull() ? genParticleRef(x)->numberOfMothers() : 999999;}
   double genParticleRef_p(size_t x=0) const 	{return genParticleRef(x).isNonnull() ? genParticleRef(x)->p() : -999999;}
   int genParticleRef_pdgId(size_t x=0) const 	{return genParticleRef(x).isNonnull() ? genParticleRef(x)->pdgId() : -999999;}
   double genParticleRef_phi(size_t x=0) const 	{return genParticleRef(x).isNonnull() ? genParticleRef(x)->phi() : -999999;}
@@ -209,9 +206,6 @@ class apatMuon : public pat::Muon
   double globalTrack_vx() const 	{return globalTrack().isNonnull() ? globalTrack()->vx() : -999999;}
   double globalTrack_vy() const 	{return globalTrack().isNonnull() ? globalTrack()->vy() : -999999;}
   double globalTrack_vz() const 	{return globalTrack().isNonnull() ? globalTrack()->vz() : -999999;}
-  double hcalIsoDeposit_candEnergy() const 	{return hcalIsoDeposit() ? hcalIsoDeposit()->candEnergy() : -999999;}
-  double hcalIsoDeposit_eta() const 	{return hcalIsoDeposit() ? hcalIsoDeposit()->eta() : -999999;}
-  double hcalIsoDeposit_phi() const 	{return hcalIsoDeposit() ? hcalIsoDeposit()->phi() : -999999;}
   int innerTrack_charge() const 	{return innerTrack().isNonnull() ? innerTrack()->charge() : -999999;}
   double innerTrack_chi2() const 	{return innerTrack().isNonnull() ? innerTrack()->chi2() : -999999;}
   double innerTrack_d0() const 	{return innerTrack().isNonnull() ? innerTrack()->d0() : -999999;}
@@ -269,25 +263,12 @@ class apatMuon : public pat::Muon
   double originalObject_energy() const 	{return originalObject() ? originalObject()->energy() : -999999;}
   double originalObject_et() const 	{return originalObject() ? originalObject()->et() : -999999;}
   double originalObject_eta() const 	{return originalObject() ? originalObject()->eta() : -999999;}
-  bool originalObject_hasMasterClone() const 	{return originalObject() ? originalObject()->hasMasterClone() : false;}
-  bool originalObject_hasMasterClonePtr() const 	{return originalObject() ? originalObject()->hasMasterClonePtr() : false;}
-  bool originalObject_isCaloMuon() const 	{return originalObject() ? originalObject()->isCaloMuon() : false;}
-  bool originalObject_isConvertedPhoton() const 	{return originalObject() ? originalObject()->isConvertedPhoton() : false;}
-  bool originalObject_isElectron() const 	{return originalObject() ? originalObject()->isElectron() : false;}
-  bool originalObject_isGlobalMuon() const 	{return originalObject() ? originalObject()->isGlobalMuon() : false;}
-  bool originalObject_isJet() const 	{return originalObject() ? originalObject()->isJet() : false;}
-  bool originalObject_isMuon() const 	{return originalObject() ? originalObject()->isMuon() : false;}
-  bool originalObject_isPhoton() const 	{return originalObject() ? originalObject()->isPhoton() : false;}
-  bool originalObject_isStandAloneMuon() const 	{return originalObject() ? originalObject()->isStandAloneMuon() : false;}
-  bool originalObject_isTrackerMuon() const 	{return originalObject() ? originalObject()->isTrackerMuon() : false;}
   bool originalObject_longLived() const 	{return originalObject() ? originalObject()->longLived() : false;}
   double originalObject_mass() const 	{return originalObject() ? originalObject()->mass() : -999999;}
+  bool originalObject_massConstraint() const 	{return originalObject() ? originalObject()->massConstraint() : false;}
   double originalObject_massSqr() const 	{return originalObject() ? originalObject()->massSqr() : -999999;}
   double originalObject_mt() const 	{return originalObject() ? originalObject()->mt() : -999999;}
   double originalObject_mtSqr() const 	{return originalObject() ? originalObject()->mtSqr() : -999999;}
-  size_t originalObject_numberOfDaughters() const 	{return originalObject() ? originalObject()->numberOfDaughters() : 999999;}
-  size_t originalObject_numberOfMothers() const 	{return originalObject() ? originalObject()->numberOfMothers() : 999999;}
-  size_t originalObject_numberOfSourceCandidatePtrs() const 	{return originalObject() ? originalObject()->numberOfSourceCandidatePtrs() : 999999;}
   double originalObject_p() const 	{return originalObject() ? originalObject()->p() : -999999;}
   int originalObject_pdgId() const 	{return originalObject() ? originalObject()->pdgId() : -999999;}
   double originalObject_phi() const 	{return originalObject() ? originalObject()->phi() : -999999;}
@@ -299,9 +280,6 @@ class apatMuon : public pat::Muon
   int originalObject_status() const 	{return originalObject() ? originalObject()->status() : -999999;}
   double originalObject_theta() const 	{return originalObject() ? originalObject()->theta() : -999999;}
   int originalObject_threeCharge() const 	{return originalObject() ? originalObject()->threeCharge() : -999999;}
-  double originalObject_vertexChi2() const 	{return originalObject() ? originalObject()->vertexChi2() : -999999;}
-  double originalObject_vertexNdof() const 	{return originalObject() ? originalObject()->vertexNdof() : -999999;}
-  double originalObject_vertexNormalizedChi2() const 	{return originalObject() ? originalObject()->vertexNormalizedChi2() : -999999;}
   double originalObject_vx() const 	{return originalObject() ? originalObject()->vx() : -999999;}
   double originalObject_vy() const 	{return originalObject() ? originalObject()->vy() : -999999;}
   double originalObject_vz() const 	{return originalObject() ? originalObject()->vz() : -999999;}
@@ -368,6 +346,7 @@ class apatMuon : public pat::Muon
   double pfCandidateRef_hcalEnergy() const 	{return pfCandidateRef().isNonnull() ? pfCandidateRef()->hcalEnergy() : -999999;}
   bool pfCandidateRef_longLived() const 	{return pfCandidateRef().isNonnull() ? pfCandidateRef()->longLived() : false;}
   double pfCandidateRef_mass() const 	{return pfCandidateRef().isNonnull() ? pfCandidateRef()->mass() : -999999;}
+  bool pfCandidateRef_massConstraint() const 	{return pfCandidateRef().isNonnull() ? pfCandidateRef()->massConstraint() : false;}
   double pfCandidateRef_massSqr() const 	{return pfCandidateRef().isNonnull() ? pfCandidateRef()->massSqr() : -999999;}
   double pfCandidateRef_mt() const 	{return pfCandidateRef().isNonnull() ? pfCandidateRef()->mt() : -999999;}
   double pfCandidateRef_mtSqr() const 	{return pfCandidateRef().isNonnull() ? pfCandidateRef()->mtSqr() : -999999;}
@@ -377,8 +356,6 @@ class apatMuon : public pat::Muon
   float pfCandidateRef_mva_nothing_gamma() const 	{return pfCandidateRef().isNonnull() ? pfCandidateRef()->mva_nothing_gamma() : -999999;}
   float pfCandidateRef_mva_nothing_nh() const 	{return pfCandidateRef().isNonnull() ? pfCandidateRef()->mva_nothing_nh() : -999999;}
   float pfCandidateRef_mva_pi_mu() const 	{return pfCandidateRef().isNonnull() ? pfCandidateRef()->mva_pi_mu() : -999999;}
-  size_t pfCandidateRef_numberOfDaughters() const 	{return pfCandidateRef().isNonnull() ? pfCandidateRef()->numberOfDaughters() : 999999;}
-  size_t pfCandidateRef_numberOfMothers() const 	{return pfCandidateRef().isNonnull() ? pfCandidateRef()->numberOfMothers() : 999999;}
   size_t pfCandidateRef_numberOfSourceCandidatePtrs() const 	{return pfCandidateRef().isNonnull() ? pfCandidateRef()->numberOfSourceCandidatePtrs() : 999999;}
   double pfCandidateRef_p() const 	{return pfCandidateRef().isNonnull() ? pfCandidateRef()->p() : -999999;}
   double pfCandidateRef_pS1Energy() const 	{return pfCandidateRef().isNonnull() ? pfCandidateRef()->pS1Energy() : -999999;}
@@ -611,9 +588,6 @@ class apatMuon : public pat::Muon
   double track_vx() const 	{return track().isNonnull() ? track()->vx() : -999999;}
   double track_vy() const 	{return track().isNonnull() ? track()->vy() : -999999;}
   double track_vz() const 	{return track().isNonnull() ? track()->vz() : -999999;}
-  double trackerIsoDeposit_candEnergy() const 	{return trackerIsoDeposit() ? trackerIsoDeposit()->candEnergy() : -999999;}
-  double trackerIsoDeposit_eta() const 	{return trackerIsoDeposit() ? trackerIsoDeposit()->eta() : -999999;}
-  double trackerIsoDeposit_phi() const 	{return trackerIsoDeposit() ? trackerIsoDeposit()->phi() : -999999;}
 };
 #endif
 

@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: PFBlockElement.xml
-  Created:  Thu Jan 14 22:47:53 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:58 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/ParticleFlowReco/interface/PFBlockElement.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/ParticleFlowReco/interface/PFBlockElement.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/ParticleFlowReco/interface/PFBlockElement.h">
 
     <include name="&quot;DataFormats/ParticleFlowReco/interface/PFRecTrackFwd.h&quot;"/>
     <include name="&quot;DataFormats/ParticleFlowReco/interface/PFNuclearInteraction.h&quot;"/>
@@ -40,24 +40,28 @@
 enum Type {
 
       NONE=0, 
-      TRACK, 
-      PS1, 
-      PS2, 
-      ECAL, 
-      HCAL, 
-      GSF, 
-      BREM
+      TRACK=1, 
+      PS1=2, 
+      PS2=3, 
+      ECAL=4, 
+      HCAL=5, 
+      GSF=6, 
+      BREM=7, 
+      HFEM=8, 
+      HFHAD=9
     };
                     <field name="NONE" value="0"/>
-                    <field name="TRACK" value=""/>
-                    <field name="PS1" value=""/>
-                    <field name="PS2" value=""/>
-                    <field name="ECAL" value=""/>
-                    <field name="HCAL" value=""/>
-                    <field name="GSF" value=""/>
-                    <field name="BREM" value=""/>
+                    <field name="TRACK" value="1"/>
+                    <field name="PS1" value="2"/>
+                    <field name="PS2" value="3"/>
+                    <field name="ECAL" value="4"/>
+                    <field name="HCAL" value="5"/>
+                    <field name="GSF" value="6"/>
+                    <field name="BREM" value="7"/>
+                    <field name="HFEM" value="8"/>
+                    <field name="HFHAD" value="9"/>
                     <comment>
-        possible types for the element
+        do not modify this enum if you don't know what you're doing!!!
                     </comment>
                 </enum>
 
@@ -331,6 +335,12 @@ friend std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, const PFBlockEl
                      type="enum"/>
             <typemap name="HCAL"
                      value="reco::PFBlockElement::HCAL"
+                     type="enum"/>
+            <typemap name="HFEM"
+                     value="reco::PFBlockElement::HFEM"
+                     type="enum"/>
+            <typemap name="HFHAD"
+                     value="reco::PFBlockElement::HFHAD"
                      type="enum"/>
             <typemap name="MUON"
                      value="reco::PFBlockElement::MUON"

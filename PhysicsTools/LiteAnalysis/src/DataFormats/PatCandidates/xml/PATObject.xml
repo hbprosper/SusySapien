@@ -2,18 +2,17 @@
 <!--
 ==============================================================================
   XML File: PATObject.xml
-  Created:  Thu Jan 14 22:48:16 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:47:14 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/PatCandidates/interface/PATObject.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/PatCandidates/interface/PATObject.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/PatCandidates/interface/PATObject.h">
 
     <include name="&quot;DataFormats/Common/interface/Ptr.h&quot;"/>
     <include name="&quot;DataFormats/Candidate/interface/CandidateFwd.h&quot;"/>
     <include name="&quot;DataFormats/Candidate/interface/Candidate.h&quot;"/>
     <include name="&lt;vector&gt;"/>
     <include name="&lt;string&gt;"/>
-    <include name="&quot;DataFormats/PatCandidates/interface/TriggerPrimitive.h&quot;"/>
     <include name="&quot;DataFormats/PatCandidates/interface/TriggerObjectStandAlone.h&quot;"/>
     <include name="&quot;DataFormats/PatCandidates/interface/LookupTableRecord.h&quot;"/>
     <include name="&quot;DataFormats/HepMCCandidate/interface/GenParticle.h&quot;"/>
@@ -113,36 +112,6 @@ const edm::Ptr&lt;reco::Candidate&gt;&amp; originalObjectRef() const;
           reference to original object. Returns a null reference if not available
                     </comment>
                 </method2>
-
-                <method2 name="triggerMatches"
-                         return="const std::vector&lt;TriggerPrimitive&gt;&amp;"
-                         args="['void']"
-                         vars="['']"
-                         qual="const">
-const std::vector&lt;TriggerPrimitive&gt;&amp; triggerMatches() const;
-                    <comment>
-          old trigger matches
-                    </comment>
-                </method2>
-
-                <method2 name="triggerMatchesByFilter"
-                         return="const std::vector&lt;TriggerPrimitive&gt;"
-                         args="['const std::string&amp;']"
-                         vars="['aFilt']"
-                         qual="const">
-const std::vector&lt;TriggerPrimitive&gt; triggerMatchesByFilter(const std::string&amp; aFilt) const;
-                </method2>
-
-                <method1 name="addTriggerMatch"
-                         return="void"
-                         args="['const pat::TriggerPrimitive&amp;']"
-                         vars="['aTrigPrim']"
-                         qual="">
-void addTriggerMatch(const pat::TriggerPrimitive&amp; aTrigPrim);
-                    <comment>
-          add an old trigger match
-                    </comment>
-                </method1>
 
                 <method1 name="triggerObjectMatches"
                          return="const TriggerObjectStandAloneCollection&amp;"
@@ -266,12 +235,12 @@ reco::GenParticleRef genParticleRef(size_t idx=0) const;
 
                 <method1 name="genParticleById"
                          return="reco::GenParticleRef"
-                         args="['int','int']"
-                         vars="['pdgId','status']"
+                         args="['int','int','uint8_t=0']"
+                         vars="['pdgId','status','autoCharge']"
                          qual="const">
-reco::GenParticleRef genParticleById(int pdgId, int status) const;
+reco::GenParticleRef genParticleById(int pdgId, int status, uint8_t autoCharge=0) const;
                     <comment>
-          Note: this might be a transient ref if the genParticle was embedded
+         implementation note: uint8_t instead of bool, because the string parser doesn't allow bool currently
                     </comment>
                 </method1>
 
@@ -561,6 +530,50 @@ bool hasUserInt(const std::string&amp; key) const;
                     </comment>
                 </method1>
 
+                <method1 name="userCand"
+                         return="reco::CandidatePtr"
+                         args="['const std::string&amp;']"
+                         vars="['key']"
+                         qual="const">
+reco::CandidatePtr userCand(const std::string&amp; key) const;
+                    <comment>
+          Note: it will a null pointer if the key is not found; you can check if the key exists with 'hasUserInt' method.
+                    </comment>
+                </method1>
+
+                <method1 name="addUserCand"
+                         return="void"
+                         args="['const std::string&amp;','const reco::CandidatePtr&amp;']"
+                         vars="['label','data']"
+                         qual="">
+void addUserCand(const std::string&amp; label, const reco::CandidatePtr&amp; data);
+                    <comment>
+          Set user-defined int
+                    </comment>
+                </method1>
+
+                <method2 name="userCandNames"
+                         return="const std::vector&lt;std::string&gt;&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const std::vector&lt;std::string&gt;&amp; userCandNames() const;
+                    <comment>
+          Get list of user-defined cand names
+                    </comment>
+                </method2>
+
+                <method1 name="hasUserCand"
+                         return="bool"
+                         args="['const std::string&amp;']"
+                         vars="['key']"
+                         qual="const">
+bool hasUserCand(const std::string&amp; key) const;
+                    <comment>
+          Return true if there is a user-defined int with a given name
+                    </comment>
+                </method1>
+
                 <method1 name="getKinResolution"
                          return="const pat::CandKinResolution&amp;"
                          args="['const std::string&amp;=&quot;&quot;']"
@@ -745,15 +758,13 @@ double resolM(const std::string&amp; label=&quot;&quot;) const;
     <type name="const edm::RefToBase&lt;ObjectType&gt;&amp;"/>
     <type name="const pat::CandKinResolution&amp;"/>
     <type name="const pat::LookupTableRecord&amp;"/>
-    <type name="const pat::TriggerPrimitive&amp;"/>
     <type name="const reco::Candidate*"/>
+    <type name="const reco::CandidatePtr&amp;"/>
     <type name="const reco::CandidatePtrVector&amp;"/>
     <type name="const reco::GenParticle&amp;"/>
     <type name="const reco::GenParticle*"/>
     <type name="const reco::GenParticleRef&amp;"/>
     <type name="const std::string&amp;"/>
-    <type name="const std::vector&lt;TriggerPrimitive&gt;"/>
-    <type name="const std::vector&lt;TriggerPrimitive&gt;&amp;"/>
     <type name="const std::vector&lt;pat::LookupTableRecord&gt;&amp;"/>
     <type name="const std::vector&lt;std::string&gt;&amp;"/>
     <type name="const unsigned"/>
@@ -763,11 +774,13 @@ double resolM(const std::string&amp; label=&quot;&quot;) const;
     <type name="int"/>
     <type name="int32_t"/>
     <type name="pat::PATObject&lt;ObjectType&gt;"/>
+    <type name="reco::CandidatePtr"/>
     <type name="reco::GenParticleRef"/>
     <type name="size_t"/>
     <type name="std::vector&lt;reco::GenParticleRef&gt;"/>
     <type name="std::vector&lt;std::pair&lt;std::string, pat::LookupTableRecord&gt; &gt;"/>
     <type name="template&lt;typename T&gt; const T*"/>
     <type name="template&lt;typename T&gt; void"/>
+    <type name="uint8_t"/>
     <type name="void"/>
 </header>

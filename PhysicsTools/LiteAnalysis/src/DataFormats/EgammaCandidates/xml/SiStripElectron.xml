@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: SiStripElectron.xml
-  Created:  Thu Jan 14 22:46:58 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:20 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/EgammaCandidates/interface/SiStripElectron.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/EgammaCandidates/interface/SiStripElectron.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/EgammaCandidates/interface/SiStripElectron.h">
 
     <include name="&lt;vector&gt;"/>
     <include name="&quot;DataFormats/RecoCandidate/interface/RecoCandidate.h&quot;"/>
@@ -39,10 +39,10 @@ SiStripElectron();
 
                 <constructor name="SiStripElectron"
                              return=""
-                             args="['const reco::SuperClusterRef&amp;','Charge','const edm::RefVector&lt;SiStripRecHit2DCollection&gt;&amp;','const edm::RefVector&lt;SiStripRecHit2DCollection&gt;&amp;','double','double','double','double','int','double','double','double','unsigned int','unsigned int','unsigned int']"
+                             args="['const reco::SuperClusterRef&amp;','Charge','const std::vector&lt;SiStripRecHit2D&gt;&amp;','const std::vector&lt;SiStripRecHit2D&gt;&amp;','double','double','double','double','int','double','double','double','unsigned int','unsigned int','unsigned int']"
                              vars="['superCluster','q','rphiRecHits','stereoRecHits','superClusterPhiVsRSlope','phiVsRSlope','phiAtOrigin','chi2','ndof','pt','pz','zVsRSlope','numberOfStereoHits','numberOfBarrelRphiHits','numberOfEndcapZphiHits']"
                              qual="">
-SiStripElectron(const reco::SuperClusterRef&amp; superCluster, Charge q, const edm::RefVector&lt;SiStripRecHit2DCollection&gt;&amp; rphiRecHits, const edm::RefVector&lt;SiStripRecHit2DCollection&gt;&amp; stereoRecHits, double superClusterPhiVsRSlope, double phiVsRSlope, double phiAtOrigin, double chi2, int ndof, double pt, double pz, double zVsRSlope, unsigned int numberOfStereoHits, unsigned int numberOfBarrelRphiHits, unsigned int numberOfEndcapZphiHits);
+SiStripElectron(const reco::SuperClusterRef&amp; superCluster, Charge q, const std::vector&lt;SiStripRecHit2D&gt;&amp; rphiRecHits, const std::vector&lt;SiStripRecHit2D&gt;&amp; stereoRecHits, double superClusterPhiVsRSlope, double phiVsRSlope, double phiAtOrigin, double chi2, int ndof, double pt, double pz, double zVsRSlope, unsigned int numberOfStereoHits, unsigned int numberOfBarrelRphiHits, unsigned int numberOfEndcapZphiHits);
                     <comment>
         constructor from band algorithm
                     </comment>
@@ -104,22 +104,22 @@ virtual reco::SuperClusterRef superCluster() const;
                 </method1>
 
                 <method2 name="rphiRecHits"
-                         return="const edm::RefVector&lt;SiStripRecHit2DCollection&gt;&amp;"
+                         return="const std::vector&lt;SiStripRecHit2D&gt;&amp;"
                          args="['void']"
                          vars="['']"
                          qual="const">
-const edm::RefVector&lt;SiStripRecHit2DCollection&gt;&amp; rphiRecHits() const;
+const std::vector&lt;SiStripRecHit2D&gt;&amp; rphiRecHits() const;
                     <comment>
         reference to the rphiRecHits identified as belonging to an electron
                     </comment>
                 </method2>
 
                 <method2 name="stereoRecHits"
-                         return="const edm::RefVector&lt;SiStripRecHit2DCollection&gt;&amp;"
+                         return="const std::vector&lt;SiStripRecHit2D&gt;&amp;"
                          args="['void']"
                          vars="['']"
                          qual="const">
-const edm::RefVector&lt;SiStripRecHit2DCollection&gt;&amp; stereoRecHits() const;
+const std::vector&lt;SiStripRecHit2D&gt;&amp; stereoRecHits() const;
                     <comment>
         reference to the stereoRecHits identified as belonging to an electron
                     </comment>
@@ -266,8 +266,8 @@ bool isElectron() const;
     <type name="const LorentzVector&amp;"/>
     <type name="const Point&amp;"/>
     <type name="const SiStripElectron&amp;"/>
-    <type name="const edm::RefVector&lt;SiStripRecHit2DCollection&gt;&amp;"/>
     <type name="const reco::SuperClusterRef&amp;"/>
+    <type name="const std::vector&lt;SiStripRecHit2D&gt;&amp;"/>
     <type name="double"/>
     <type name="int"/>
     <type name="reco::SiStripElectron"/>

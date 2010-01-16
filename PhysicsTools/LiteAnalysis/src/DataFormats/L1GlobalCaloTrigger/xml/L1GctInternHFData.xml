@@ -2,14 +2,15 @@
 <!--
 ==============================================================================
   XML File: L1GctInternHFData.xml
-  Created:  Thu Jan 14 22:47:25 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:36 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/L1GlobalCaloTrigger/interface/L1GctInternHFData.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/L1GlobalCaloTrigger/interface/L1GctInternHFData.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/L1GlobalCaloTrigger/interface/L1GctInternHFData.h">
 
     <include name="&lt;ostream&gt;"/>
     <include name="&lt;string&gt;"/>
+    <include name="&lt;stdint.h&gt;"/>
 
     <class name="L1GctInternHFData"
            fullname="L1GctInternHFData"
@@ -25,11 +26,15 @@
 enum L1GctInternHFDataType {
  null, 
           conc_hf_ring_et_sums, 
-          conc_hf_bit_counts
+          conc_hf_bit_counts, 
+                               wheel_hf_ring_et_sums, 
+                               wheel_hf_bit_counts
   };
                 <field name="null" value=""/>
                 <field name="conc_hf_ring_et_sums" value=""/>
                 <field name="conc_hf_bit_counts" value=""/>
+                <field name="wheel_hf_ring_et_sums" value=""/>
+                <field name="wheel_hf_bit_counts" value=""/>
                 <comment>
       et sum type - not clear this is required
                 </comment>
@@ -73,6 +78,22 @@ static L1GctInternHFData fromConcRingSums(const uint16_t capBlock, const uint16_
 static L1GctInternHFData fromConcBitCounts(const uint16_t capBlock, const uint16_t capIndex, const int16_t bx, const uint32_t data);
             </method1>
 
+            <method1 name="fromWheelRingSums"
+                     return="static L1GctInternHFData"
+                     args="['const uint16_t','const uint16_t','const int16_t','const uint32_t']"
+                     vars="['capBlock','capIndex','bx','data']"
+                     qual="">
+static L1GctInternHFData fromWheelRingSums(const uint16_t capBlock, const uint16_t capIndex, const int16_t bx, const uint32_t data);
+            </method1>
+
+            <method1 name="fromWheelBitCounts"
+                     return="static L1GctInternHFData"
+                     args="['const uint16_t','const uint16_t','const int16_t','const uint32_t']"
+                     vars="['capBlock','capIndex','bx','data']"
+                     qual="">
+static L1GctInternHFData fromWheelBitCounts(const uint16_t capBlock, const uint16_t capIndex, const int16_t bx, const uint32_t data);
+            </method1>
+
             <method1 name="type"
                      return="L1GctInternHFData::L1GctInternHFDataType"
                      args="['void']"
@@ -80,7 +101,7 @@ static L1GctInternHFData fromConcBitCounts(const uint16_t capBlock, const uint16
                      qual="const">
 L1GctInternHFData::L1GctInternHFDataType type() const;
                 <comment>
-      'type' of object - not required?
+      'type' of object
                 </comment>
             </method1>
 
@@ -152,10 +173,10 @@ uint32_t raw() const;
 
             <method1 name="value"
                      return="uint16_t"
-                     args="['unsigned const']"
+                     args="['unsigned']"
                      vars="['i']"
-                     qual="">
-uint16_t value(unsigned const i);
+                     qual="const">
+uint16_t value(unsigned i) const;
                 <comment>
       get value
                 </comment>
@@ -163,10 +184,10 @@ uint16_t value(unsigned const i);
 
             <method1 name="et"
                      return="uint16_t"
-                     args="['unsigned const']"
+                     args="['unsigned']"
                      vars="['i']"
-                     qual="">
-uint16_t et(unsigned const i);
+                     qual="const">
+uint16_t et(unsigned i) const;
                 <comment>
       get the et sums
                 </comment>
@@ -174,10 +195,10 @@ uint16_t et(unsigned const i);
 
             <method1 name="count"
                      return="uint16_t"
-                     args="['unsigned const']"
+                     args="['unsigned']"
                      vars="['i']"
-                     qual="">
-uint16_t count(unsigned const i);
+                     qual="const">
+uint16_t count(unsigned i) const;
                 <comment>
       get the counts
                 </comment>
@@ -304,6 +325,12 @@ bool operator!=(const L1GctInternHFData&amp; c) const;
         <typemap name="null"
                  value="L1GctInternHFData::null"
                  type="enum"/>
+        <typemap name="wheel_hf_bit_counts"
+                 value="L1GctInternHFData::wheel_hf_bit_counts"
+                 type="enum"/>
+        <typemap name="wheel_hf_ring_et_sums"
+                 value="L1GctInternHFData::wheel_hf_ring_et_sums"
+                 type="enum"/>
 
     </class>
     <operator name="operator&lt;&lt;"
@@ -330,6 +357,7 @@ std::ostream&amp; operator&lt;&lt;(std::ostream&amp; s, const L1GctInternHFData&
     <type name="uint16_t const"/>
     <type name="uint32_t"/>
     <type name="uint32_t const"/>
+    <type name="unsigned"/>
     <type name="unsigned const"/>
     <type name="void"/>
 </header>

@@ -2,11 +2,11 @@
 <!--
 ==============================================================================
   XML File: L1GctInternJetData.xml
-  Created:  Thu Jan 14 22:47:26 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:37 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/L1GlobalCaloTrigger/interface/L1GctInternJetData.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/L1GlobalCaloTrigger/interface/L1GctInternJetData.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/L1GlobalCaloTrigger/interface/L1GctInternJetData.h">
 
     <include name="&lt;string&gt;"/>
     <include name="&quot;DataFormats/L1CaloTrigger/interface/L1CaloRegionDetId.h&quot;"/>
@@ -23,8 +23,9 @@
         <section name="public">
             <enum name="L1GctInternJetType">
 enum L1GctInternJetType {
- null, jet_cluster, jet_cluster_minimal, jet_precluster, gct_trig_object };
+ null, emulator, jet_cluster, jet_cluster_minimal, jet_precluster, gct_trig_object };
                 <field name="null" value=""/>
+                <field name="emulator" value=""/>
                 <field name="jet_cluster" value=""/>
                 <field name="jet_cluster_minimal" value=""/>
                 <field name="jet_precluster" value=""/>
@@ -54,6 +55,17 @@ L1GctInternJetData(L1CaloRegionDetId rgn, uint16_t capBlock, uint16_t capIndex, 
       construct from individual quantities
                 </comment>
             </constructor>
+
+            <method1 name="fromEmulator"
+                     return="static L1GctInternJetData"
+                     args="['L1CaloRegionDetId','int16_t','uint16_t','bool','bool','uint8_t','uint8_t','uint16_t']"
+                     vars="['rgn','bx','et','overFlow','tauVeto','eta','phi','rank']"
+                     qual="">
+static L1GctInternJetData fromEmulator(L1CaloRegionDetId rgn, int16_t bx, uint16_t et, bool overFlow, bool tauVeto, uint8_t eta, uint8_t phi, uint16_t rank);
+                <comment>
+     emulator calibrated jet ctor
+                </comment>
+            </method1>
 
             <method1 name="fromJetCluster"
                      return="static L1GctInternJetData"
@@ -367,6 +379,9 @@ bool operator!=(const L1GctInternJetData&amp; c) const;
 
         <typemap name="L1GctInternJetType"
                  value="L1GctInternJetData::L1GctInternJetType"
+                 type="enum"/>
+        <typemap name="emulator"
+                 value="L1GctInternJetData::emulator"
                  type="enum"/>
         <typemap name="gct_trig_object"
                  value="L1GctInternJetData::gct_trig_object"

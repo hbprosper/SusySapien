@@ -4,8 +4,8 @@ Class:
 Header:
 	DataFormats/EgammaReco/interface/PreshowerCluster.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:16:17 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:54 2010	lsclass.py $Revision:$
 
 Methods from reco::PreshowerCluster
 
@@ -22,14 +22,10 @@ Methods from reco::PreshowerCluster
 		Arguments: void	
 
 	-o- basicCluster
-		Return: edm::Ref<std::vector<BasicCluster>>
+		Return: CaloClusterPtr
 		Arguments: void	
 
 	-o- setBCRef
 		Return: void
-		Arguments: const BasicClusterRef&	r
-
-	-o- getHitsByDetId
-		Return: std::vector<DetId>
-		Arguments: void	
+		Arguments: const CaloClusterPtr&	r
 

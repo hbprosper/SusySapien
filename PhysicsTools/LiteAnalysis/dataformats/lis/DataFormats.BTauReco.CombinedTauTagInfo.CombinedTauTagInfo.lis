@@ -1,9 +1,9 @@
-reco::CombinedTauTagInfo|const edm::Ref<IsolatedTauTagInfoCollection>&|isolatedtautaginfoRef|void
-reco::CombinedTauTagInfo|const edm::edm::RefVector<Container><TrackCollection>&|allTks|void
-reco::CombinedTauTagInfo|const edm::edm::RefVector<Container><TrackCollection>&|selectedTks|void
-reco::CombinedTauTagInfo|const edm::edm::RefVector<Container><TrackCollection>&|signalTks|void
+reco::CombinedTauTagInfo|const edm::Ref<std::vector<IsolatedTauTagInfo >>&|isolatedtautaginfoRef|void
+reco::CombinedTauTagInfo|const TrackRefVector&|allTks|void
+reco::CombinedTauTagInfo|const TrackRefVector&|selectedTks|void
+reco::CombinedTauTagInfo|const TrackRefVector&|signalTks|void
 reco::CombinedTauTagInfo|int|signalTks_qsum|void
-reco::CombinedTauTagInfo|const edm::edm::RefVector<Container><TrackCollection>&|isolTks|void
+reco::CombinedTauTagInfo|const TrackRefVector&|isolTks|void
 reco::CombinedTauTagInfo|CombinedTauTagInfo*|clone|void
 reco::CombinedTauTagInfo|bool|passed_trackerselection|void
 reco::CombinedTauTagInfo|bool|is_GoodTauCandidate|void
@@ -22,13 +22,6 @@ reco::CombinedTauTagInfo|double|neutralECALClus_radius|void
 reco::CombinedTauTagInfo|double|neutralE_o_TksEneutralE|void
 reco::CombinedTauTagInfo|double|isolneutralE_o_TksEneutralE|void
 reco::CombinedTauTagInfo|double|neutralE_ratio|void
-reco::CombinedTauTagInfo|HepLorentzVector|alternatrecJet_HepLV|void
+reco::CombinedTauTagInfo|CLHEP::HepLorentzVector|alternatrecJet_HepLV|void
 reco::CombinedTauTagInfo|double|ECALEt_o_leadTkPt|void
 reco::CombinedTauTagInfo|double|HCALEt_o_leadTkPt|void
-reco::JTATagInfo|JTATagInfo*|clone|void
-reco::JTATagInfo|TrackRefVector|tracks|void
-reco::JTATagInfo|const JetTracksAssociation::edm::Ref<Container>&|jtaRef|void
-reco::JTATagInfo|bool|hasTracks|void
-reco::JTATagInfo|edm::RefToBase<Jet>|jet|void
-reco::BaseTagInfo|BaseTagInfo*|clone|void
-reco::BaseTagInfo|edm::RefVector<std::vector<Track>>|tracks|void

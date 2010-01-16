@@ -1,9 +1,8 @@
-reco::CaloMuon|edm::Ref<std::vector<Track>>|track|void
+reco::CaloMuon|TrackRef|innerTrack|void
+reco::CaloMuon|TrackRef|track|void
 reco::CaloMuon|bool|isEnergyValid|void
 reco::CaloMuon|MuonEnergy|calEnergy|void
-reco::CaloMuon|MuonEnergy|getCalEnergy|void
 reco::CaloMuon|float|caloCompatibility|void
-reco::CaloMuon|float|getCaloCompatibility|void
 reco::CaloMuon|bool|isCaloCompatibilityValid|void
 reco::CaloMuon|int|charge|void
 reco::CaloMuon|double|theta|void

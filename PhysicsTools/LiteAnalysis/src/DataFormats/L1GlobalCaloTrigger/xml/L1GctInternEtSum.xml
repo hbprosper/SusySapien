@@ -2,14 +2,15 @@
 <!--
 ==============================================================================
   XML File: L1GctInternEtSum.xml
-  Created:  Thu Jan 14 22:47:25 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:35 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/L1GlobalCaloTrigger/interface/L1GctInternEtSum.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/L1GlobalCaloTrigger/interface/L1GctInternEtSum.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/L1GlobalCaloTrigger/interface/L1GctInternEtSum.h">
 
     <include name="&lt;ostream&gt;"/>
     <include name="&lt;string&gt;"/>
+    <include name="&lt;stdint.h&gt;"/>
 
     <class name="L1GctInternEtSum"
            fullname="L1GctInternEtSum"
@@ -24,21 +25,60 @@
             <enum name="L1GctInternEtSumType">
 enum L1GctInternEtSumType {
  null, 
-         wheel_hf_ring_et_sum, 
-         wheel_hf_ring_bit_count, 
-         jet_tot_et, 
+          jet_tot_et, 
+         jet_tot_ht, 
          jet_miss_et, 
-         total_et
+         total_et_or_ht, 
+                              miss_etx_or_ety
   };
                 <field name="null" value=""/>
-                <field name="wheel_hf_ring_et_sum" value=""/>
-                <field name="wheel_hf_ring_bit_count" value=""/>
                 <field name="jet_tot_et" value=""/>
+                <field name="jet_tot_ht" value=""/>
                 <field name="jet_miss_et" value=""/>
-                <field name="total_et" value=""/>
+                <field name="total_et_or_ht" value=""/>
+                <field name="miss_etx_or_ety" value=""/>
                 <comment>
       et sum type - not clear this is required
                 </comment>
+            </enum>
+
+            <enum name="numberOfBits">
+enum numberOfBits {
+
+    kTotEtOrHtNBits=12, 
+    kJetMissEtNBits=17, 
+    kMissExOrEyNBits=20, 
+    kTotEtOrHtOFlowBit=1&lt;&lt;kTotEtOrHtNBits, 
+    kJetMissEtOFlowBit=1&lt;&lt;kJetMissEtNBits, 
+    kMissExOrEyOFlowBit=1&lt;&lt;kMissExOrEyNBits, 
+    kTotEtOrHtMaxValue=kTotEtOrHtOFlowBit-1, 
+    kJetMissEtMaxValue=kJetMissEtOFlowBit-1, 
+    kMissExOrEyMaxValue=kMissExOrEyOFlowBit-1, 
+    kTotEtOrHtRawCtorMask=kTotEtOrHtOFlowBit | kTotEtOrHtMaxValue, 
+    kJetMissEtRawCtorMask=kJetMissEtOFlowBit | kJetMissEtMaxValue, 
+    kMissExOrEyRawCtorMask=kMissExOrEyOFlowBit | kMissExOrEyMaxValue
+  };
+                <field name="kTotEtOrHtNBits" value="12"/>
+                <field name="kJetMissEtNBits" value="17"/>
+                <field name="kMissExOrEyNBits" value="20"/>
+                <field name="kTotEtOrHtOFlowBit"
+                       value="1&amp;lt;&amp;lt;kTotEtOrHtNBits"/>
+                <field name="kJetMissEtOFlowBit"
+                       value="1&amp;lt;&amp;lt;kJetMissEtNBits"/>
+                <field name="kMissExOrEyOFlowBit"
+                       value="1&amp;lt;&amp;lt;kMissExOrEyNBits"/>
+                <field name="kTotEtOrHtMaxValue"
+                       value="kTotEtOrHtOFlowBit-1"/>
+                <field name="kJetMissEtMaxValue"
+                       value="kJetMissEtOFlowBit-1"/>
+                <field name="kMissExOrEyMaxValue"
+                       value="kMissExOrEyOFlowBit-1"/>
+                <field name="kTotEtOrHtRawCtorMask"
+                       value="kTotEtOrHtOFlowBit | kTotEtOrHtMaxValue"/>
+                <field name="kJetMissEtRawCtorMask"
+                       value="kJetMissEtOFlowBit | kJetMissEtMaxValue"/>
+                <field name="kMissExOrEyRawCtorMask"
+                       value="kMissExOrEyOFlowBit | kMissExOrEyMaxValue"/>
             </enum>
 
             <constructor name="L1GctInternEtSum"
@@ -74,31 +114,23 @@ L1GctInternEtSum(uint16_t capBlock, uint16_t capIndex, int16_t bx, uint32_t et, 
                 </comment>
             </destructor>
 
-            <method1 name="fromWheelHfRingSum"
+            <method1 name="fromJetTotEt"
                      return="static L1GctInternEtSum"
-                     args="['uint16_t','uint16_t','int16_t','uint16_t']"
+                     args="['uint16_t','uint16_t','int16_t','uint32_t']"
                      vars="['capBlock','capIndex','bx','data']"
                      qual="">
-static L1GctInternEtSum fromWheelHfRingSum(uint16_t capBlock, uint16_t capIndex, int16_t bx, uint16_t data);
+static L1GctInternEtSum fromJetTotEt(uint16_t capBlock, uint16_t capIndex, int16_t bx, uint32_t data);
                 <comment>
-      use this for wheel_hf_et_sum
+     named ctors
                 </comment>
             </method1>
 
-            <method1 name="fromWheelHfBitCount"
+            <method1 name="fromJetTotHt"
                      return="static L1GctInternEtSum"
-                     args="['uint16_t','uint16_t','int16_t','uint16_t']"
+                     args="['uint16_t','uint16_t','int16_t','uint32_t']"
                      vars="['capBlock','capIndex','bx','data']"
                      qual="">
-static L1GctInternEtSum fromWheelHfBitCount(uint16_t capBlock, uint16_t capIndex, int16_t bx, uint16_t data);
-            </method1>
-
-            <method1 name="fromJetTotEt"
-                     return="static L1GctInternEtSum"
-                     args="['uint16_t','uint16_t','int16_t','uint16_t']"
-                     vars="['capBlock','capIndex','bx','data']"
-                     qual="">
-static L1GctInternEtSum fromJetTotEt(uint16_t capBlock, uint16_t capIndex, int16_t bx, uint16_t data);
+static L1GctInternEtSum fromJetTotHt(uint16_t capBlock, uint16_t capIndex, int16_t bx, uint32_t data);
             </method1>
 
             <method1 name="fromJetMissEt"
@@ -109,12 +141,60 @@ static L1GctInternEtSum fromJetTotEt(uint16_t capBlock, uint16_t capIndex, int16
 static L1GctInternEtSum fromJetMissEt(uint16_t capBlock, uint16_t capIndex, int16_t bx, uint32_t data);
             </method1>
 
-            <method1 name="fromTotalEt"
+            <method1 name="fromTotalEtOrHt"
                      return="static L1GctInternEtSum"
                      args="['uint16_t','uint16_t','int16_t','uint32_t']"
                      vars="['capBlock','capIndex','bx','data']"
                      qual="">
-static L1GctInternEtSum fromTotalEt(uint16_t capBlock, uint16_t capIndex, int16_t bx, uint32_t data);
+static L1GctInternEtSum fromTotalEtOrHt(uint16_t capBlock, uint16_t capIndex, int16_t bx, uint32_t data);
+            </method1>
+
+            <method1 name="fromMissEtxOrEty"
+                     return="static L1GctInternEtSum"
+                     args="['uint16_t','uint16_t','int16_t','uint32_t']"
+                     vars="['capBlock','capIndex','bx','data']"
+                     qual="">
+static L1GctInternEtSum fromMissEtxOrEty(uint16_t capBlock, uint16_t capIndex, int16_t bx, uint32_t data);
+            </method1>
+
+            <method1 name="fromEmulatorJetTotEt"
+                     return="static L1GctInternEtSum"
+                     args="['unsigned','bool','int16_t']"
+                     vars="['totEt','overFlow','bx']"
+                     qual="">
+static L1GctInternEtSum fromEmulatorJetTotEt(unsigned totEt, bool overFlow, int16_t bx);
+            </method1>
+
+            <method1 name="fromEmulatorJetTotHt"
+                     return="static L1GctInternEtSum"
+                     args="['unsigned','bool','int16_t']"
+                     vars="['totHt','overFlow','bx']"
+                     qual="">
+static L1GctInternEtSum fromEmulatorJetTotHt(unsigned totHt, bool overFlow, int16_t bx);
+            </method1>
+
+            <method1 name="fromEmulatorJetMissEt"
+                     return="static L1GctInternEtSum"
+                     args="['int','bool','int16_t']"
+                     vars="['missEtxOrEty','overFlow','bx']"
+                     qual="">
+static L1GctInternEtSum fromEmulatorJetMissEt(int missEtxOrEty, bool overFlow, int16_t bx);
+            </method1>
+
+            <method1 name="fromEmulatorTotalEtOrHt"
+                     return="static L1GctInternEtSum"
+                     args="['unsigned','bool','int16_t']"
+                     vars="['totEtOrHt','overFlow','bx']"
+                     qual="">
+static L1GctInternEtSum fromEmulatorTotalEtOrHt(unsigned totEtOrHt, bool overFlow, int16_t bx);
+            </method1>
+
+            <method1 name="fromEmulatorMissEtxOrEty"
+                     return="static L1GctInternEtSum"
+                     args="['int','bool','int16_t']"
+                     vars="['missEtxOrEty','overFlow','bx']"
+                     qual="">
+static L1GctInternEtSum fromEmulatorMissEtxOrEty(int missEtxOrEty, bool overFlow, int16_t bx);
             </method1>
 
             <method1 name="type"
@@ -348,17 +428,56 @@ bool operator!=(const L1GctInternEtSum&amp; c) const;
         <typemap name="jet_tot_et"
                  value="L1GctInternEtSum::jet_tot_et"
                  type="enum"/>
+        <typemap name="jet_tot_ht"
+                 value="L1GctInternEtSum::jet_tot_ht"
+                 type="enum"/>
+        <typemap name="kJetMissEtMaxValue "
+                 value="L1GctInternEtSum::kJetMissEtMaxValue "
+                 type="enum"/>
+        <typemap name="kJetMissEtNBits "
+                 value="L1GctInternEtSum::kJetMissEtNBits "
+                 type="enum"/>
+        <typemap name="kJetMissEtOFlowBit "
+                 value="L1GctInternEtSum::kJetMissEtOFlowBit "
+                 type="enum"/>
+        <typemap name="kJetMissEtRawCtorMask "
+                 value="L1GctInternEtSum::kJetMissEtRawCtorMask "
+                 type="enum"/>
+        <typemap name="kMissExOrEyMaxValue "
+                 value="L1GctInternEtSum::kMissExOrEyMaxValue "
+                 type="enum"/>
+        <typemap name="kMissExOrEyNBits "
+                 value="L1GctInternEtSum::kMissExOrEyNBits "
+                 type="enum"/>
+        <typemap name="kMissExOrEyOFlowBit "
+                 value="L1GctInternEtSum::kMissExOrEyOFlowBit "
+                 type="enum"/>
+        <typemap name="kMissExOrEyRawCtorMask "
+                 value="L1GctInternEtSum::kMissExOrEyRawCtorMask "
+                 type="enum"/>
+        <typemap name="kTotEtOrHtMaxValue "
+                 value="L1GctInternEtSum::kTotEtOrHtMaxValue "
+                 type="enum"/>
+        <typemap name="kTotEtOrHtNBits "
+                 value="L1GctInternEtSum::kTotEtOrHtNBits "
+                 type="enum"/>
+        <typemap name="kTotEtOrHtOFlowBit "
+                 value="L1GctInternEtSum::kTotEtOrHtOFlowBit "
+                 type="enum"/>
+        <typemap name="kTotEtOrHtRawCtorMask "
+                 value="L1GctInternEtSum::kTotEtOrHtRawCtorMask "
+                 type="enum"/>
+        <typemap name="miss_etx_or_ety"
+                 value="L1GctInternEtSum::miss_etx_or_ety"
+                 type="enum"/>
         <typemap name="null"
                  value="L1GctInternEtSum::null"
                  type="enum"/>
-        <typemap name="total_et"
-                 value="L1GctInternEtSum::total_et"
+        <typemap name="numberOfBits"
+                 value="L1GctInternEtSum::numberOfBits"
                  type="enum"/>
-        <typemap name="wheel_hf_ring_bit_count"
-                 value="L1GctInternEtSum::wheel_hf_ring_bit_count"
-                 type="enum"/>
-        <typemap name="wheel_hf_ring_et_sum"
-                 value="L1GctInternEtSum::wheel_hf_ring_et_sum"
+        <typemap name="total_et_or_ht"
+                 value="L1GctInternEtSum::total_et_or_ht"
                  type="enum"/>
 
     </class>
@@ -377,9 +496,12 @@ std::ostream&amp; operator&lt;&lt;(std::ostream&amp; s, const L1GctInternEtSum&a
     <type name="bool"/>
     <type name="const L1GctInternEtSum&amp;"/>
     <type name="enum L1GctInternEtSumType"/>
+    <type name="enum numberOfBits"/>
+    <type name="int"/>
     <type name="int16_t"/>
     <type name="uint16_t"/>
     <type name="uint32_t"/>
     <type name="uint8_t"/>
+    <type name="unsigned"/>
     <type name="void"/>
 </header>

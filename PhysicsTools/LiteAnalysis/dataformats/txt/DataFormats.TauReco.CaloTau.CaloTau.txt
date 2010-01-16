@@ -9,10 +9,9 @@ BaseClasses:
 	reco::RecoCandidate	DataFormats/RecoCandidate/interface/RecoCandidate.h
 	reco::LeafCandidate	DataFormats/Candidate/interface/LeafCandidate.h
 	reco::Candidate	DataFormats/Candidate/interface/Candidate.h
-	reco::Particle	DataFormats/Candidate/interface/Particle.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:09 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:00 2010	lsclass.py $Revision:$
 
 Methods from reco::CaloTau
 
@@ -92,44 +91,6 @@ Methods from reco::CaloTau
 		Return: void
 		Arguments: const float&	
 
-Methods from reco::BaseTau
-
-	-o- clone
-		Return: BaseTau*
-		Arguments: void	
-
-	-o- alternatLorentzVect
-		Return: math::ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> >
-		Arguments: void	
-
-	-o- setalternatLorentzVect
-		Return: void
-		Arguments: math::XYZTLorentzVector	
-
-	-o- leadTrack
-		Return: reco::edm::Ref<std::vector<Track>>
-		Arguments: void	
-
-	-o- setleadTrack
-		Return: void
-		Arguments: const TrackRef&	
-
-	-o- signalTracks
-		Return: const reco::edm::RefVector<std::vector<Track>>&
-		Arguments: void	
-
-	-o- setsignalTracks
-		Return: void
-		Arguments: const TrackRefVector&	
-
-	-o- isolationTracks
-		Return: const reco::edm::RefVector<std::vector<Track>>&
-		Arguments: void	
-
-	-o- setisolationTracks
-		Return: void
-		Arguments: const TrackRefVector&	
-
 Methods from reco::RecoCandidate
 
 	-o- overlap
@@ -137,11 +98,11 @@ Methods from reco::RecoCandidate
 		Arguments: const Candidate&	
 
 	-o- track
-		Return: reco::edm::Ref<std::vector<Track>>
+		Return: reco::TrackRef
 		Arguments: void	
 
 	-o- track
-		Return: reco::edm::Ref<std::vector<Track>>
+		Return: reco::TrackRef
 		Arguments: size_t	
 
 	-o- numberOfTracks
@@ -149,23 +110,23 @@ Methods from reco::RecoCandidate
 		Arguments: void	
 
 	-o- gsfTrack
-		Return: reco::edm::Ref<GsfTrackCollection>
+		Return: reco::GsfTrackRef
 		Arguments: void	
 
 	-o- standAloneMuon
-		Return: reco::edm::Ref<std::vector<Track>>
+		Return: reco::TrackRef
 		Arguments: void	
 
 	-o- combinedMuon
-		Return: reco::edm::Ref<std::vector<Track>>
+		Return: reco::TrackRef
 		Arguments: void	
 
 	-o- superCluster
-		Return: reco::edm::Ref<std::vector<SuperCluster>>
+		Return: reco::SuperClusterRef
 		Arguments: void	
 
 	-o- caloTower
-		Return: edm::Ref<CaloTowerCollection>
+		Return: CaloTowerRef
 		Arguments: void	
 
 	-o- bestTrack
@@ -173,7 +134,7 @@ Methods from reco::RecoCandidate
 		Arguments: void	
 
 	-o- bestTrackRef
-		Return: edm::RefToBase<reco::Track>
+		Return: TrackBaseRef
 		Arguments: void	
 
 	-o- bestTrackType
@@ -182,10 +143,6 @@ Methods from reco::RecoCandidate
 
 Methods from reco::LeafCandidate
 
-	-o- clone
-		Return: LeafCandidate*
-		Arguments: void	
-
 	-o- begin
 		Return: candidate::const_iterator
 		Arguments: void	
@@ -193,42 +150,8 @@ Methods from reco::LeafCandidate
 	-o- end
 		Return: candidate::const_iterator
 		Arguments: void	
-
-	-o- begin
-		Return: candidate::iterator
-		Arguments: void	
-
-	-o- end
-		Return: candidate::iterator
-		Arguments: void	
-
-	-o- numberOfDaughters
-		Return: size_t
-		Arguments: void	
-
-	-o- daughter
-		Return: const Candidate*
-		Arguments: size_type	
-
-	-o- numberOfMothers
-		Return: size_t
-		Arguments: void	
-
-	-o- mother
-		Return: const Candidate*
-		Arguments: size_type	
-
-	-o- daughter
-		Return: Candidate*
-		Arguments: size_type	
 
 Methods from reco::Candidate
-
-	-o- clone
-		Return: Candidate*
-		Arguments: void	
-
-Methods from reco::Particle
 
 	-o- charge
 		Return: int
@@ -247,11 +170,11 @@ Methods from reco::Particle
 		Arguments: Charge	qx3
 
 	-o- p4
-		Return: const math::XYZTLorentzVectorD&
+		Return: const math::XYZTLorentzVector&
 		Arguments: void	
 
 	-o- polarP4
-		Return: const math::ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> >&
+		Return: const math::PtEtaPhiMLorentzVector&
 		Arguments: void	
 
 	-o- momentum
@@ -383,6 +306,14 @@ Methods from reco::Particle
 		Arguments: void	
 
 	-o- longLived
+		Return: bool
+		Arguments: void	
+
+	-o- setMassConstraint
+		Return: void
+		Arguments: void	
+
+	-o- massConstraint
 		Return: bool
 		Arguments: void	
 

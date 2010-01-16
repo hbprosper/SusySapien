@@ -35,7 +35,9 @@
    <class name="Bclass"/>
 
 
+   <class name="arecoFlavorHistory"/>
    <class name="arecoPFTrack"/>
+   <class name="arecoPFBlockElement"/>
    <class name="apatJet"/>
    <class name="arecoPFSimParticle"/>
    <class name="apatPhoton"/>
@@ -47,18 +49,17 @@
    <class name="arecoNuclearInteraction"/>
    <class name="arecoPhoton"/>
    <class name="apatTau"/>
+   <class name="arecoPhotonCore"/>
    <class name="aCaloTower"/>
-   <class name="al1extraL1JetParticle"/>
    <class name="apatElectron"/>
    <class name="apatMuon"/>
-   <class name="arecoRecoCaloTowerCandidate"/>
    <class name="apatParticle"/>
-   <class name="al1extraL1EmParticle"/>
+   <class name="arecoCaloCluster"/>
    <class name="arecoPFRecTrack"/>
    <class name="aHLTPerformanceInfoModule"/>
-   <class name="al1extraL1EtMissParticle"/>
    <class name="apatMET"/>
    <class name="arecoClusterShape"/>
+   <class name="arecoPFBlockElementTrack"/>
    <class name="aL1DataEmulDigi"/>
    <class name="apatVertexAssociation"/>
    <class name="aHLTPerformanceInfoPath"/>

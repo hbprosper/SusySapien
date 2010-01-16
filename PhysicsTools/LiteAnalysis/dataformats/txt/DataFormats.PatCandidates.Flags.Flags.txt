@@ -4,8 +4,8 @@ Class:
 Header:
 	DataFormats/PatCandidates/interface/Flags.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:14:07 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:55:16 2010	lsclass.py $Revision:$
 
 Methods from pat::Flags
 
@@ -16,7 +16,7 @@ Methods from pat::Flags
 
 	-o- test
 		Return: inline static bool
-		Arguments: const reco::Particle&	p
+		Arguments: const reco::Candidate&	c
 		           uint32_t	mask
 
 	-o- bitToString

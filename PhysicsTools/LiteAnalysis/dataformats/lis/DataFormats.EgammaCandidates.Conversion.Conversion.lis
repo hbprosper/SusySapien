@@ -1,5 +1,5 @@
 reco::Conversion|Conversion*|clone|void
-reco::Conversion|reco::edm::PtrVector<CaloCluster>|caloCluster|void
+reco::Conversion|reco::CaloClusterPtrVector|caloCluster|void
 reco::Conversion|const reco::Vertex&|conversionVertex|void
 reco::Conversion|bool|isConverted|void
 reco::Conversion|unsigned int|nTracks|void
@@ -8,6 +8,16 @@ reco::Conversion|double|pairCotThetaSeparation|void
 reco::Conversion|GlobalVector|pairMomentum|void
 reco::Conversion|double|EoverP|void
 reco::Conversion|double|zOfPrimaryVertexFromTracks|void
-reco::Conversion|std::vector<reco::edm::Ref<std::vector<Track>>>|tracks|void
+reco::Conversion|double|distOfMinimumApproach|void
+reco::Conversion|double|dPhiTracksAtVtx|void
+reco::Conversion|double|dPhiTracksAtEcal|void
+reco::Conversion|double|dEtaTracksAtEcal|void
+reco::Conversion|ConversionAlgorithm|algo|void
+reco::Conversion|std::string|algoName|void
+reco::Conversion|static ConversionAlgorithm|algoByName|const std::string&
+reco::Conversion|std::vector<reco::TrackRef>|tracks|void
 reco::Conversion|const std::vector<math::XYZPoint>&|ecalImpactPosition|void
-reco::Conversion|const std::vector<reco::edm::Ptr<CaloCluster>>&|bcMatchingWithTracks|void
+reco::Conversion|const std::vector<reco::CaloClusterPtr>&|bcMatchingWithTracks|void
+reco::Conversion|std::vector<double>|tracksSigned_d0|void
+reco::Conversion|const std::vector<math::XYZVector>&|tracksPout|void
+reco::Conversion|const std::vector<math::XYZVector>&|tracksPin|void

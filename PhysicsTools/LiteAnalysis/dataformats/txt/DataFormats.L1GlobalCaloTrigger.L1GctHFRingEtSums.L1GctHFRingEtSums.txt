@@ -4,8 +4,8 @@ Class:
 Header:
 	DataFormats/L1GlobalCaloTrigger/interface/L1GctHFRingEtSums.h
 
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:14:55 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:55:49 2010	lsclass.py $Revision:$
 
 Methods from L1GctHFRingEtSums
 
@@ -20,8 +20,8 @@ Methods from L1GctHFRingEtSums
 		Return: static L1GctHFRingEtSums
 		Arguments: const int16_t	bx
 		           const uint16_t	etSumPosEtaRing1
-		           const uint16_t	etSumPosEtaRing2
 		           const uint16_t	etSumNegEtaRing1
+		           const uint16_t	etSumPosEtaRing2
 		           const uint16_t	etSumNegEtaRing2
 
 	-o- nSums

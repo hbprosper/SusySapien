@@ -2,13 +2,13 @@
 <!--
 ==============================================================================
   XML File: CompositeRefCandidate.xml
-  Created:  Thu Jan 14 22:46:41 2010 with header2xml.py 1.13
+  Created:  Fri Jan 15 20:46:09 2010 with header2xml.py 1.13
 ==============================================================================
 -->
 <header name="DataFormats/Candidate/interface/CompositeRefCandidate.h"
-        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Candidate/interface/CompositeRefCandidate.h">
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/Candidate/interface/CompositeRefCandidate.h">
 
-    <include name="&quot;DataFormats/Candidate/interface/Candidate.h&quot;"/>
+    <include name="&quot;DataFormats/Candidate/interface/LeafCandidate.h&quot;"/>
     <include name="&quot;DataFormats/Candidate/interface/iterator_imp_specific.h&quot;"/>
 
     <namespace name="reco">
@@ -18,7 +18,7 @@
                module="DataFormats.Candidate"
                project=""
                type="regular">
-            <baseclass name="public Candidate"/>
+            <baseclass name="public LeafCandidate"/>
 
             <section name="public">
                 <typedef name="daughters"
@@ -72,12 +72,12 @@ CompositeRefCandidate(Charge q, const PolarLorentzVector&amp; p4, const Point&am
 
                 <constructor name="CompositeRefCandidate"
                              return="explicit"
-                             args="['const Particle&amp;']"
+                             args="['const Candidate&amp;']"
                              vars="['p']"
                              qual="">
-explicit CompositeRefCandidate(const Particle&amp; p);
+explicit CompositeRefCandidate(const Candidate&amp; p);
                     <comment>
-        constructor from a particle
+        constructor from a candidate
                     </comment>
                 </constructor>
 
@@ -302,16 +302,16 @@ virtual const Candidate* mother(size_t i=0) const;
         </class>
     </namespace>
 
-    <type name="Candidate"/>
     <type name="Candidate*"/>
     <type name="CandidateRef"/>
     <type name="Charge"/>
     <type name="CompositeRefCandidate*"/>
+    <type name="LeafCandidate"/>
     <type name="bool"/>
+    <type name="const Candidate&amp;"/>
     <type name="const Candidate*"/>
     <type name="const CandidateRef&amp;"/>
     <type name="const LorentzVector&amp;"/>
-    <type name="const Particle&amp;"/>
     <type name="const Point&amp;"/>
     <type name="const PolarLorentzVector&amp;"/>
     <type name="const daughters&amp;"/>
