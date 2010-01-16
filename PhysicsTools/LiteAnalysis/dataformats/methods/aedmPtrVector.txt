@@ -1,7 +1,0 @@
-bool	empty()
-bool	hasCache()
-bool	isAvailable()
-bool	isNonnull()
-bool	isNull()
-bool	isTransient()
-

@@ -1,4 +1,0 @@
-bool	empty()
-bool	isAvailable()
-size_t	size()
-
