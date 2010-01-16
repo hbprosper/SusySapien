@@ -4,11 +4,11 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
+// $Revision:$
 // $Id$
 //
 //
-// If using Python, include its header first to avoid annoying compiler
-// complaints.
+// Include its header first to avoid annoying compiler complaints.
 #include <Python.h>
 #include <boost/python/type_id.hpp>
 #include <iostream>
@@ -17,9 +17,9 @@
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "PhysicsTools/Mkntuple/interface/pluginfactory.h"
-#include "PhysicsTools/Utilities/src/ExpressionPtr.h"
-#include "PhysicsTools/Utilities/src/ExpressionBase.h"
-#include "PhysicsTools/Utilities/interface/expressionParser.h"
+#include "CommonTools/Utils/src/ExpressionPtr.h"
+#include "CommonTools/Utils/src/ExpressionBase.h"
+#include "CommonTools/Utils/interface/expressionParser.h"
 
 using namespace std;
 

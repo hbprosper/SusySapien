@@ -1,6 +1,6 @@
 <use name=PhysicsTools/LiteAnalysis>
 <use name=PhysicsTools/UtilAlgos>
-<use name=PhysicsTools/Utilities>
+<use name=CommonTools/Utils>
 
 <use name=FWCore/FWLite>
 <use name=FWCore/PluginManager>
