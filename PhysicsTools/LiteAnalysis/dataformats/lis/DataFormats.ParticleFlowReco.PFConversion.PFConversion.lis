@@ -1,2 +1,0 @@
-reco::PFConversion|const reco::ConversionRef&|originalConversion|void
-reco::PFConversion|std::vector<reco::PFRecTrackRef>|pfTracks|void

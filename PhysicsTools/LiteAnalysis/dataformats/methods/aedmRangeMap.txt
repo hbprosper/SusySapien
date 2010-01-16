@@ -1,3 +1,0 @@
-size_t	id_size()
-size_t	size()
-

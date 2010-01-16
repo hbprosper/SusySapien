@@ -1,2 +1,0 @@
-edm::OwnVector<T, P>|iterator|begin|void
-edm::OwnVector<T, P>|iterator|end|void

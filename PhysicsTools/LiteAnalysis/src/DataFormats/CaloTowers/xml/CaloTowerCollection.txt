@@ -1,1 +1,0 @@
-$CMSSW_RELEASE_BASE/src/DataFormats/CaloTowers/interface/CaloTowerCollection.h

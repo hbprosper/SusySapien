@@ -1,4 +1,0 @@
-edm::DetSetLazyVector<T>|bool|empty|void
-edm::DetSetLazyVector<T>|typename std::vector<detset>::size_type|size|void
-edm::DetSetLazyVector<T>|boost::transform_iterator<dslv::LazyAdapter<T>, typename collection_type::const_iterator >|begin|void
-edm::DetSetLazyVector<T>|boost::transform_iterator<dslv::LazyAdapter<T>, typename collection_type::const_iterator >|end|void

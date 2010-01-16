@@ -1,8 +1,0 @@
-reco::IsoDeposit|const isodeposit::Direction&|direction|void
-reco::IsoDeposit|double|eta|void
-reco::IsoDeposit|double|phi|void
-reco::IsoDeposit|const Veto&|veto|void
-reco::IsoDeposit|double|candEnergy|void
-reco::IsoDeposit|std::string|print|void
-reco::IsoDeposit|const_iterator|begin|void
-reco::IsoDeposit|const_iterator|end|void

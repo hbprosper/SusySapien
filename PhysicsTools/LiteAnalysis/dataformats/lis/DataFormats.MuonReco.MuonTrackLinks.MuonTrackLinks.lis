@@ -1,3 +1,0 @@
-reco::MuonTrackLinks|inline reco::TrackRef|trackerTrack|void
-reco::MuonTrackLinks|inline reco::TrackRef|standAloneTrack|void
-reco::MuonTrackLinks|inline reco::TrackRef|globalTrack|void

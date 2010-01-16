@@ -1,9 +1,0 @@
-Class:
-	reco::PFParticleIdTag
-
-Header:
-	DataFormats/ParticleFlowCandidate/interface/PFCandidate.h
-
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:56:54 2010	lsclass.py $Revision:$
-

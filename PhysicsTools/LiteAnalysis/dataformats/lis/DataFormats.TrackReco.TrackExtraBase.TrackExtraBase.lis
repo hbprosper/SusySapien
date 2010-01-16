@@ -1,5 +1,0 @@
-reco::TrackExtraBase|trackingRecHit_iterator|recHitsBegin|void
-reco::TrackExtraBase|trackingRecHit_iterator|recHitsEnd|void
-reco::TrackExtraBase|size_t|recHitsSize|void
-reco::TrackExtraBase|TrackingRecHitRef|recHit|size_t
-reco::TrackExtraBase|TrackingRecHitRefVector|recHits|void

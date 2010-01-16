@@ -1,9 +1,0 @@
-Class:
-	reco::helpers::FlavorHistoryEventHelper
-
-Header:
-	DataFormats/HepMCCandidate/interface/FlavorHistoryEvent.h
-
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:56:10 2010	lsclass.py $Revision:$
-
