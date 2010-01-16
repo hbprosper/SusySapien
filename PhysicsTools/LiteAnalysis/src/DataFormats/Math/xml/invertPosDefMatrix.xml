@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: invertPosDefMatrix.xml
+  Created:  Fri Jan 15 20:47:54 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Math/interface/invertPosDefMatrix.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/Math/interface/invertPosDefMatrix.h">
+
+    <include name="&quot;Math/SMatrix.h&quot;"/>
+    <include name="&quot;DataFormats/Math/interface/CholeskyDecomp.h&quot;"/>
+
+</header>

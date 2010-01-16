@@ -1,0 +1,39 @@
+Class:
+	reco::PhotonCore
+
+Header:
+	DataFormats/EgammaCandidates/interface/PhotonCore.h
+
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:15 2010	lsclass.py $Revision:$
+
+Methods from reco::PhotonCore
+
+	-o- clone
+		Return: PhotonCore*
+		Arguments: void	
+
+	-o- setSuperCluster
+		Return: void
+		Arguments: const reco::SuperClusterRef&	r
+
+	-o- addConversion
+		Return: void
+		Arguments: const reco::ConversionRef&	r
+
+	-o- addElectronPixelSeed
+		Return: void
+		Arguments: const reco::ElectronSeedRef&	r
+
+	-o- superCluster
+		Return: reco::SuperClusterRef
+		Arguments: void	
+
+	-o- conversions
+		Return: reco::ConversionRefVector
+		Arguments: void	
+
+	-o- electronPixelSeeds
+		Return: reco::ElectronSeedRefVector
+		Arguments: void	
+

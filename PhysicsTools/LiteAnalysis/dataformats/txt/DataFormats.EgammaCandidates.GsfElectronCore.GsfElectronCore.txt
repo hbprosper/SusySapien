@@ -1,0 +1,43 @@
+Class:
+	reco::GsfElectronCore
+
+Header:
+	DataFormats/EgammaCandidates/interface/GsfElectronCore.h
+
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:17 2010	lsclass.py $Revision:$
+
+Methods from reco::GsfElectronCore
+
+	-o- gsfTrack
+		Return: const GsfTrackRef&
+		Arguments: void	
+
+	-o- superCluster
+		Return: const SuperClusterRef&
+		Arguments: void	
+
+	-o- isEcalDriven
+		Return: bool
+		Arguments: void	
+
+	-o- isTrackerDriven
+		Return: bool
+		Arguments: void	
+
+	-o- setGsfTrack
+		Return: void
+		Arguments: const GsfTrackRef&	gsfTrack
+
+	-o- setSuperCluster
+		Return: void
+		Arguments: const SuperClusterRef&	scl
+
+	-o- pflowSuperCluster
+		Return: const SuperClusterRef&
+		Arguments: void	
+
+	-o- setPflowSuperCluster
+		Return: void
+		Arguments: const SuperClusterRef&	scl
+

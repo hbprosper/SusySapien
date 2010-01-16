@@ -1,0 +1,4 @@
+int	bunchCrossing()
+bool	isRealData()
+int	orbitNumber()
+

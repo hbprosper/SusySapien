@@ -1,0 +1,3 @@
+TimeSpec|long|tv_sec|void
+TimeSpec|long|tv_nsec|void
+TimeSpec|timespec|get_timespec|void

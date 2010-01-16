@@ -1,0 +1,218 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: ElectronSeed.xml
+  Created:  Fri Jan 15 20:46:22 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/EgammaReco/interface/ElectronSeed.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/EgammaReco/interface/ElectronSeed.h">
+
+    <include name="&quot;DataFormats/CaloRecHit/interface/CaloClusterFwd.h&quot;"/>
+    <include name="&quot;DataFormats/TrajectorySeed/interface/TrajectorySeed.h&quot;"/>
+    <include name="&quot;DataFormats/TrajectoryState/interface/TrackCharge.h&quot;"/>
+    <include name="&quot;DataFormats/TrackingRecHit/interface/TrackingRecHit.h&quot;"/>
+    <include name="&quot;DataFormats/TrackReco/interface/TrackFwd.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefToBase.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&lt;vector&gt;"/>
+    <include name="&lt;limits&gt;"/>
+
+    <namespace name="reco">
+
+        <class name="ElectronSeed"
+               fullname="reco::ElectronSeed"
+               module="DataFormats.EgammaReco"
+               project=""
+               type="regular">
+            <baseclass name="public TrajectorySeed"/>
+
+            <section name="public">
+                <typedef name="RecHitContainer"
+                         value="edm::OwnVector&lt;TrackingRecHit&gt;">
+typedef edm::OwnVector&lt;TrackingRecHit&gt; RecHitContainer;
+                </typedef>
+
+                <typedef name="CaloClusterRef"
+                         value="edm::RefToBase&lt;CaloCluster&gt;">
+typedef edm::RefToBase&lt;CaloCluster&gt; CaloClusterRef;
+                </typedef>
+
+                <typedef name="CtfTrackRef"
+                         value="edm::Ref&lt;TrackCollection&gt;">
+typedef edm::Ref&lt;TrackCollection&gt; CtfTrackRef;
+                </typedef>
+
+                <method1 name="name"
+                         return="static std::string const&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+static std::string const&amp; name();
+                </method1>
+
+                <constructor name="ElectronSeed"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+ElectronSeed();
+                    <comment>
+        Construction of base attributes
+                    </comment>
+                </constructor>
+
+                <constructor name="ElectronSeed"
+                             return=""
+                             args="['const TrajectorySeed&amp;']"
+                             vars="['']"
+                             qual="">
+ElectronSeed(const TrajectorySeed&amp;);
+                </constructor>
+
+                <constructor name="ElectronSeed"
+                             return=""
+                             args="['PTrajectoryStateOnDet&amp;','RecHitContainer&amp;','PropagationDirection&amp;']"
+                             vars="['pts','rh','dir']"
+                             qual="">
+ElectronSeed(PTrajectoryStateOnDet&amp; pts, RecHitContainer&amp; rh, PropagationDirection&amp; dir);
+                </constructor>
+
+                <method1 name="clone"
+                         return="ElectronSeed*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+ElectronSeed* clone() const;
+                </method1>
+
+                <destructor name="~ElectronSeed"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~ElectronSeed();
+                </destructor>
+
+                <method1 name="setCtfTrack"
+                         return="void"
+                         args="['const CtfTrackRef&amp;']"
+                         vars="['']"
+                         qual="">
+void setCtfTrack(const CtfTrackRef&amp;);
+                    <comment>
+        Set additional info
+                    </comment>
+                </method1>
+
+                <method2 name="setCaloCluster"
+                         return="void"
+                         args="['const CaloClusterRef&amp;','int=0','float=std::numeric_limits&lt;float&gt;::infinity()','float=std::numeric_limits&lt;float&gt;::infinity()']"
+                         vars="['','subDet2','dRz2','dPhi2']"
+                         qual="">
+void setCaloCluster(const CaloClusterRef&amp;, int subDet2=0, float dRz2=std::numeric_limits&lt;float&gt;::infinity(), float dPhi2=std::numeric_limits&lt;float&gt;::infinity());
+                </method2>
+
+                <method1 name="ctfTrack"
+                         return="CtfTrackRef"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+CtfTrackRef ctfTrack() const;
+                    <comment>
+        Accessors
+                    </comment>
+                </method1>
+
+                <method1 name="caloCluster"
+                         return="CaloClusterRef"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+CaloClusterRef caloCluster() const;
+                </method1>
+
+                <method1 name="subDet2"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int subDet2() const;
+                </method1>
+
+                <method1 name="dRz2"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float dRz2() const;
+                </method1>
+
+                <method1 name="dPhi2"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float dPhi2() const;
+                </method1>
+
+                <method1 name="getCharge"
+                         return="TrackCharge"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+TrackCharge getCharge() const;
+                    <comment>
+        Utility
+                    </comment>
+                </method1>
+
+                <method1 name="isEcalDriven"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isEcalDriven() const;
+                </method1>
+
+                <method1 name="isTrackerDriven"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isTrackerDriven() const;
+                </method1>
+
+            </section>
+
+            <typemap name="CaloClusterRef"
+                     value="edm::RefToBase&lt;CaloCluster&gt;"
+                     type="typedef"/>
+            <typemap name="CtfTrackRef"
+                     value="edm::Ref&lt;TrackCollection&gt;"
+                     type="typedef"/>
+            <typemap name="RecHitContainer"
+                     value="edm::OwnVector&lt;TrackingRecHit&gt;"
+                     type="typedef"/>
+
+        </class>
+    </namespace>
+
+    <type name="CaloClusterRef"/>
+    <type name="CtfTrackRef"/>
+    <type name="ElectronSeed*"/>
+    <type name="PTrajectoryStateOnDet&amp;"/>
+    <type name="PropagationDirection&amp;"/>
+    <type name="RecHitContainer&amp;"/>
+    <type name="TrackCharge"/>
+    <type name="TrajectorySeed"/>
+    <type name="bool"/>
+    <type name="const CaloClusterRef&amp;"/>
+    <type name="const CtfTrackRef&amp;"/>
+    <type name="const TrajectorySeed&amp;"/>
+    <type name="float"/>
+    <type name="int"/>
+    <type name="reco::ElectronSeed"/>
+    <type name="std::string const&amp;"/>
+    <type name="void"/>
+</header>

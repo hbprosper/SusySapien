@@ -1,0 +1,42 @@
+Level1TriggerScalers|std::string|name|void
+Level1TriggerScalers|bool|empty|void
+Level1TriggerScalers|int|version|void
+Level1TriggerScalers|unsigned int|trigType|void
+Level1TriggerScalers|unsigned int|eventID|void
+Level1TriggerScalers|unsigned int|sourceID|void
+Level1TriggerScalers|unsigned int|bunchNumber|void
+Level1TriggerScalers|struct timespec|collectionTime|void
+Level1TriggerScalers|unsigned int|lumiSegmentNr|void
+Level1TriggerScalers|unsigned int|lumiSegmentOrbits|void
+Level1TriggerScalers|unsigned int|orbitNr|void
+Level1TriggerScalers|unsigned int|gtResets|void
+Level1TriggerScalers|unsigned int|bunchCrossingErrors|void
+Level1TriggerScalers|unsigned long long|gtTriggers|void
+Level1TriggerScalers|unsigned long long|gtEvents|void
+Level1TriggerScalers|float|gtTriggersRate|void
+Level1TriggerScalers|float|gtEventsRate|void
+Level1TriggerScalers|int|prescaleIndexAlgo|void
+Level1TriggerScalers|int|prescaleIndexTech|void
+Level1TriggerScalers|struct timespec|collectionTimeLumiSeg|void
+Level1TriggerScalers|unsigned int|lumiSegmentNrLumiSeg|void
+Level1TriggerScalers|unsigned long long|triggersPhysicsGeneratedFDL|void
+Level1TriggerScalers|unsigned long long|triggersPhysicsLost|void
+Level1TriggerScalers|unsigned long long|triggersPhysicsLostBeamActive|void
+Level1TriggerScalers|unsigned long long|triggersPhysicsLostBeamInactive|void
+Level1TriggerScalers|unsigned long long|l1AsPhysics|void
+Level1TriggerScalers|unsigned long long|l1AsRandom|void
+Level1TriggerScalers|unsigned long long|l1AsTest|void
+Level1TriggerScalers|unsigned long long|l1AsCalibration|void
+Level1TriggerScalers|unsigned long long|deadtime|void
+Level1TriggerScalers|unsigned long long|deadtimeBeamActive|void
+Level1TriggerScalers|unsigned long long|deadtimeBeamActiveTriggerRules|void
+Level1TriggerScalers|unsigned long long|deadtimeBeamActiveCalibration|void
+Level1TriggerScalers|unsigned long long|deadtimeBeamActivePrivateOrbit|void
+Level1TriggerScalers|unsigned long long|deadtimeBeamActivePartitionController|void
+Level1TriggerScalers|unsigned long long|deadtimeBeamActiveTimeSlot|void
+Level1TriggerScalers|static double|rateLS|unsigned long long
+Level1TriggerScalers|static double|rateLS|unsigned int
+Level1TriggerScalers|static double|percentLS|unsigned long long
+Level1TriggerScalers|static double|percentLSActive|unsigned long long
+Level1TriggerScalers|std::vector<unsigned int>|gtAlgoCounts|void
+Level1TriggerScalers|std::vector<unsigned int>|gtTechCounts|void

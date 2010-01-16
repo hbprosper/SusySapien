@@ -1,0 +1,145 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: PhotonCore.xml
+  Created:  Fri Jan 15 20:46:20 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/EgammaCandidates/interface/PhotonCore.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/EgammaCandidates/interface/PhotonCore.h">
+
+    <include name="&quot;DataFormats/EgammaCandidates/interface/ConversionFwd.h&quot;"/>
+    <include name="&quot;DataFormats/EgammaCandidates/interface/PhotonCoreFwd.h&quot;"/>
+    <include name="&quot;DataFormats/EgammaReco/interface/SuperCluster.h&quot;"/>
+    <include name="&quot;DataFormats/EgammaReco/interface/SuperClusterFwd.h&quot;"/>
+    <include name="&quot;DataFormats/EgammaReco/interface/ElectronSeed.h&quot;"/>
+    <include name="&quot;DataFormats/EgammaReco/interface/ElectronSeedFwd.h&quot;"/>
+
+    <namespace name="reco">
+
+        <class name="PhotonCore"
+               fullname="reco::PhotonCore"
+               module="DataFormats.EgammaCandidates"
+               project=""
+               type="regular">
+
+            <section name="public">
+                <constructor name="PhotonCore"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+PhotonCore();
+                    <comment>
+        default constructor
+                    </comment>
+                </constructor>
+
+                <constructor name="PhotonCore"
+                             return=""
+                             args="['const reco::SuperClusterRef&amp;']"
+                             vars="['scl']"
+                             qual="">
+PhotonCore(const reco::SuperClusterRef&amp; scl);
+                </constructor>
+
+                <destructor name="~PhotonCore"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~PhotonCore();
+                    <comment>
+        destructor
+                    </comment>
+                </destructor>
+
+                <method1 name="clone"
+                         return="PhotonCore*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+PhotonCore* clone() const;
+                </method1>
+
+                <method1 name="setSuperCluster"
+                         return="void"
+                         args="['const reco::SuperClusterRef&amp;']"
+                         vars="['r']"
+                         qual="">
+void setSuperCluster(const reco::SuperClusterRef&amp; r);
+                    <comment>
+        set reference to SuperCluster
+                    </comment>
+                </method1>
+
+                <method1 name="addConversion"
+                         return="void"
+                         args="['const reco::ConversionRef&amp;']"
+                         vars="['r']"
+                         qual="">
+void addConversion(const reco::ConversionRef&amp; r);
+                    <comment>
+        add  single ConversionRef to the vector of Refs
+                    </comment>
+                </method1>
+
+                <method1 name="addElectronPixelSeed"
+                         return="void"
+                         args="['const reco::ElectronSeedRef&amp;']"
+                         vars="['r']"
+                         qual="">
+void addElectronPixelSeed(const reco::ElectronSeedRef&amp; r);
+                    <comment>
+        set electron pixel seed ref
+                    </comment>
+                </method1>
+
+                <method1 name="superCluster"
+                         return="reco::SuperClusterRef"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+reco::SuperClusterRef superCluster() const;
+                    <comment>
+        get reference to SuperCluster
+                    </comment>
+                </method1>
+
+                <method1 name="conversions"
+                         return="reco::ConversionRefVector"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+reco::ConversionRefVector conversions() const;
+                    <comment>
+        get vector of references to  Conversion's
+                    </comment>
+                </method1>
+
+                <method1 name="electronPixelSeeds"
+                         return="reco::ElectronSeedRefVector"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+reco::ElectronSeedRefVector electronPixelSeeds() const;
+                    <comment>
+        get reference to electron seed if existing
+                    </comment>
+                </method1>
+
+            </section>
+
+        </class>
+    </namespace>
+
+    <type name="PhotonCore*"/>
+    <type name="const reco::ConversionRef&amp;"/>
+    <type name="const reco::ElectronSeedRef&amp;"/>
+    <type name="const reco::SuperClusterRef&amp;"/>
+    <type name="reco::ConversionRefVector"/>
+    <type name="reco::ElectronSeedRefVector"/>
+    <type name="reco::PhotonCore"/>
+    <type name="reco::SuperClusterRef"/>
+    <type name="void"/>
+</header>

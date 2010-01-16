@@ -1,0 +1,5 @@
+reco::GsfElectronCore|const GsfTrackRef&|gsfTrack|void
+reco::GsfElectronCore|const SuperClusterRef&|superCluster|void
+reco::GsfElectronCore|bool|isEcalDriven|void
+reco::GsfElectronCore|bool|isTrackerDriven|void
+reco::GsfElectronCore|const SuperClusterRef&|pflowSuperCluster|void

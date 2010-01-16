@@ -1,0 +1,12 @@
+DcsStatus|std::string|name|void
+DcsStatus|bool|empty|void
+DcsStatus|unsigned int|trigType|void
+DcsStatus|unsigned int|eventID|void
+DcsStatus|unsigned int|sourceID|void
+DcsStatus|unsigned int|bunchNumber|void
+DcsStatus|int|version|void
+DcsStatus|timespec|collectionTime|void
+DcsStatus|unsigned int|ready|void
+DcsStatus|bool|ready|int
+DcsStatus|float|magnetCurrent|void
+DcsStatus|float|magnetTemperature|void

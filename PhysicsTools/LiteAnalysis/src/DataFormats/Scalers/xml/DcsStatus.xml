@@ -1,0 +1,360 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: DcsStatus.xml
+  Created:  Fri Jan 15 20:47:27 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Scalers/interface/DcsStatus.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/Scalers/interface/DcsStatus.h">
+
+    <include name="&quot;DataFormats/Scalers/interface/TimeSpec.h&quot;"/>
+    <include name="&lt;ctime&gt;"/>
+    <include name="&lt;iosfwd&gt;"/>
+    <include name="&lt;vector&gt;"/>
+    <include name="&lt;string&gt;"/>
+
+    <class name="DcsStatus"
+           fullname="DcsStatus"
+           module="DataFormats.Scalers"
+           project=""
+           type="regular">
+        <comment>
+    \brief Persistable copy of online DcsStatus flag values
+        </comment>
+
+        <section name="public">
+            <constant name="partitionList[]"
+                      type="static const int"
+                      value=""/>
+            <member>
+static const char* partitionName[];
+            </member>
+
+            <enum name="">
+enum
+  {
+
+    EBp=0, 
+    EBm=1, 
+    EEp=2, 
+    EEm=3, 
+    HBHEa=5, 
+    HBHEb=6, 
+    HBHEc=7, 
+    HF=8, 
+    HO=9, 
+    RPC=12, 
+    DT0=13, 
+    DTp=14, 
+    DTm=15, 
+    CSCp=16, 
+    CSCm=17, 
+    DTTF=18, 
+    CSCTF=19, 
+    CASTOR=20, 
+    TIBTID=24, 
+    TOB=25, 
+    TECp=26, 
+    TECm=27, 
+    BPIX=28, 
+    FPIX=29, 
+    ESp=30, 
+    ESm=31, 
+    nPartitions=26
+  };
+                <field name="EBp" value="0"/>
+                <field name="EBm" value="1"/>
+                <field name="EEp" value="2"/>
+                <field name="EEm" value="3"/>
+                <field name="HBHEa" value="5"/>
+                <field name="HBHEb" value="6"/>
+                <field name="HBHEc" value="7"/>
+                <field name="HF" value="8"/>
+                <field name="HO" value="9"/>
+                <field name="RPC" value="12"/>
+                <field name="DT0" value="13"/>
+                <field name="DTp" value="14"/>
+                <field name="DTm" value="15"/>
+                <field name="CSCp" value="16"/>
+                <field name="CSCm" value="17"/>
+                <field name="DTTF" value="18"/>
+                <field name="CSCTF" value="19"/>
+                <field name="CASTOR" value="20"/>
+                <field name="TIBTID" value="24"/>
+                <field name="TOB" value="25"/>
+                <field name="TECp" value="26"/>
+                <field name="TECm" value="27"/>
+                <field name="BPIX" value="28"/>
+                <field name="FPIX" value="29"/>
+                <field name="ESp" value="30"/>
+                <field name="ESm" value="31"/>
+                <field name="nPartitions" value="26"/>
+            </enum>
+
+            <constructor name="DcsStatus"
+                         return=""
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+DcsStatus();
+            </constructor>
+
+            <constructor name="DcsStatus"
+                         return=""
+                         args="['const unsigned char*']"
+                         vars="['rawData']"
+                         qual="">
+DcsStatus(const unsigned char* rawData);
+            </constructor>
+
+            <destructor name="~DcsStatus"
+                        return="virtual"
+                        args="['void']"
+                        vars="['']"
+                        qual="">
+virtual ~DcsStatus();
+            </destructor>
+
+            <method1 name="name"
+                     return="std::string"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+std::string name() const;
+                <comment>
+      name method
+                </comment>
+            </method1>
+
+            <method1 name="empty"
+                     return="bool"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+bool empty() const;
+                <comment>
+      empty method (= false)
+                </comment>
+            </method1>
+
+            <method1 name="trigType"
+                     return="unsigned int"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned int trigType() const;
+            </method1>
+
+            <method1 name="eventID"
+                     return="unsigned int"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned int eventID() const;
+            </method1>
+
+            <method1 name="sourceID"
+                     return="unsigned int"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned int sourceID() const;
+            </method1>
+
+            <method1 name="bunchNumber"
+                     return="unsigned int"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned int bunchNumber() const;
+            </method1>
+
+            <method1 name="version"
+                     return="int"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+int version() const;
+            </method1>
+
+            <method1 name="collectionTime"
+                     return="timespec"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+timespec collectionTime() const;
+            </method1>
+
+            <method1 name="ready"
+                     return="unsigned int"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned int ready() const;
+            </method1>
+
+            <method1 name="ready"
+                     return="bool"
+                     args="['int']"
+                     vars="['partitionNumber']"
+                     qual="const">
+bool ready(int partitionNumber) const;
+            </method1>
+
+            <method1 name="magnetCurrent"
+                     return="float"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+float magnetCurrent() const;
+            </method1>
+
+            <method1 name="magnetTemperature"
+                     return="float"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+float magnetTemperature() const;
+            </method1>
+
+            <operator name="operator=="
+                      return="int"
+                      args="['const DcsStatus&amp;']"
+                      vars="['e']"
+                      qual="const">
+int operator==(const DcsStatus&amp; e) const;
+                <comment>
+      equality operator
+                </comment>
+            </operator>
+
+            <operator name="operator!="
+                      return="int"
+                      args="['const DcsStatus&amp;']"
+                      vars="['e']"
+                      qual="const">
+int operator!=(const DcsStatus&amp; e) const;
+                <comment>
+      inequality operator
+                </comment>
+            </operator>
+
+        </section>
+
+        <typemap name="BPIX "
+                 value="DcsStatus::BPIX "
+                 type="enum"/>
+        <typemap name="CASTOR "
+                 value="DcsStatus::CASTOR "
+                 type="enum"/>
+        <typemap name="CSCTF "
+                 value="DcsStatus::CSCTF "
+                 type="enum"/>
+        <typemap name="CSCm "
+                 value="DcsStatus::CSCm "
+                 type="enum"/>
+        <typemap name="CSCp "
+                 value="DcsStatus::CSCp "
+                 type="enum"/>
+        <typemap name="DT0 "
+                 value="DcsStatus::DT0 "
+                 type="enum"/>
+        <typemap name="DTTF "
+                 value="DcsStatus::DTTF "
+                 type="enum"/>
+        <typemap name="DTm "
+                 value="DcsStatus::DTm "
+                 type="enum"/>
+        <typemap name="DTp "
+                 value="DcsStatus::DTp "
+                 type="enum"/>
+        <typemap name="EBm "
+                 value="DcsStatus::EBm "
+                 type="enum"/>
+        <typemap name="EBp "
+                 value="DcsStatus::EBp "
+                 type="enum"/>
+        <typemap name="EEm "
+                 value="DcsStatus::EEm "
+                 type="enum"/>
+        <typemap name="EEp "
+                 value="DcsStatus::EEp "
+                 type="enum"/>
+        <typemap name="ESm "
+                 value="DcsStatus::ESm "
+                 type="enum"/>
+        <typemap name="ESp "
+                 value="DcsStatus::ESp "
+                 type="enum"/>
+        <typemap name="FPIX "
+                 value="DcsStatus::FPIX "
+                 type="enum"/>
+        <typemap name="HBHEa "
+                 value="DcsStatus::HBHEa "
+                 type="enum"/>
+        <typemap name="HBHEb "
+                 value="DcsStatus::HBHEb "
+                 type="enum"/>
+        <typemap name="HBHEc "
+                 value="DcsStatus::HBHEc "
+                 type="enum"/>
+        <typemap name="HF "
+                 value="DcsStatus::HF "
+                 type="enum"/>
+        <typemap name="HO "
+                 value="DcsStatus::HO "
+                 type="enum"/>
+        <typemap name="RPC "
+                 value="DcsStatus::RPC "
+                 type="enum"/>
+        <typemap name="TECm "
+                 value="DcsStatus::TECm "
+                 type="enum"/>
+        <typemap name="TECp "
+                 value="DcsStatus::TECp "
+                 type="enum"/>
+        <typemap name="TIBTID "
+                 value="DcsStatus::TIBTID "
+                 type="enum"/>
+        <typemap name="TOB "
+                 value="DcsStatus::TOB "
+                 type="enum"/>
+        <typemap name="nPartitions "
+                 value="DcsStatus::nPartitions "
+                 type="enum"/>
+        <typemap name="partitionName[]"
+                 value="DcsStatus::partitionName[]"
+                 type="member"/>
+
+    </class>
+    <operator name="operator&lt;&lt;"
+              return="std::ostream&amp;"
+              args="['std::ostream&amp;','const DcsStatus&amp;']"
+              vars="['s','c']"
+              qual="">
+std::ostream&amp; operator&lt;&lt;(std::ostream&amp; s, const DcsStatus&amp; c);
+        <comment>
+    Pretty-print operator for DcsStatus
+        </comment>
+    </operator>
+
+    <typedef name="DcsStatusCollection"
+             value="std::vector&lt;DcsStatus&gt;">
+typedef std::vector&lt;DcsStatus&gt; DcsStatusCollection;
+    </typedef>
+
+
+    <type name="DcsStatus"/>
+    <type name="bool"/>
+    <type name="const DcsStatus&amp;"/>
+    <type name="const char*"/>
+    <type name="const unsigned char*"/>
+    <type name="enum"/>
+    <type name="float"/>
+    <type name="int"/>
+    <type name="std::string"/>
+    <type name="timespec"/>
+    <type name="unsigned int"/>
+    <type name="void"/>
+</header>

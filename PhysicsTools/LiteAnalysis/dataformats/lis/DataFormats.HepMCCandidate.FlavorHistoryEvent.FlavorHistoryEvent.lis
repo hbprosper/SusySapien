@@ -1,0 +1,11 @@
+reco::FlavorHistoryEvent|bool|isCached|void
+reco::FlavorHistoryEvent|unsigned int|nb|void
+reco::FlavorHistoryEvent|unsigned int|nc|void
+reco::FlavorHistoryEvent|double|deltaR|void
+reco::FlavorHistoryEvent|unsigned int|highestFlavor|void
+reco::FlavorHistoryEvent|FlavorHistory::FLAVOR_T|flavorSource|void
+reco::FlavorHistoryEvent|std::vector<value_type>::size_type|size|void
+reco::FlavorHistoryEvent|collection_type::const_iterator|begin|void
+reco::FlavorHistoryEvent|collection_type::const_iterator|end|void
+reco::FlavorHistoryEvent|collection_type::const_reverse_iterator|rbegin|void
+reco::FlavorHistoryEvent|collection_type::const_reverse_iterator|rend|void

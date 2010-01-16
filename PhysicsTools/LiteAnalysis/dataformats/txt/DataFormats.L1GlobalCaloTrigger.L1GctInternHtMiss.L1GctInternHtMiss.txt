@@ -1,0 +1,98 @@
+Class:
+	L1GctInternHtMiss
+
+Header:
+	DataFormats/L1GlobalCaloTrigger/interface/L1GctInternHtMiss.h
+
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:55:50 2010	lsclass.py $Revision:$
+
+Methods from L1GctInternHtMiss
+
+	-o- unpackerMissHtx
+		Return: static L1GctInternHtMiss
+		Arguments: const uint16_t	capBlock
+		           const uint16_t	capIndex
+		           const int16_t	bx
+		           const uint32_t	data
+
+	-o- unpackerMissHty
+		Return: static L1GctInternHtMiss
+		Arguments: const uint16_t	capBlock
+		           const uint16_t	capIndex
+		           const int16_t	bx
+		           const uint32_t	data
+
+	-o- unpackerMissHtxHty
+		Return: static L1GctInternHtMiss
+		Arguments: const uint16_t	capBlock
+		           const uint16_t	capIndex
+		           const int16_t	bx
+		           const uint32_t	data
+
+	-o- emulatorJetMissHt
+		Return: static L1GctInternHtMiss
+		Arguments: const int	htx
+		           const int	hty
+		           const bool	overFlow
+		           const int16_t	bx
+
+	-o- emulatorMissHtxHty
+		Return: static L1GctInternHtMiss
+		Arguments: const int	htx
+		           const int	hty
+		           const bool	overFlow
+		           const int16_t	bx
+
+	-o- emulatorMissHtx
+		Return: static L1GctInternHtMiss
+		Arguments: const int	htx
+		           const bool	overFlow
+		           const int16_t	bx
+
+	-o- emulatorMissHty
+		Return: static L1GctInternHtMiss
+		Arguments: const int	hty
+		           const bool	overFlow
+		           const int16_t	bx
+
+	-o- type
+		Return: L1GctInternHtMiss::L1GctInternHtMissType
+		Arguments: void	
+
+	-o- capBlock
+		Return: uint16_t
+		Arguments: void	
+
+	-o- capIndex
+		Return: uint16_t
+		Arguments: void	
+
+	-o- bx
+		Return: int16_t
+		Arguments: void	
+
+	-o- isThereHtx
+		Return: bool
+		Arguments: void	
+
+	-o- isThereHty
+		Return: bool
+		Arguments: void	
+
+	-o- raw
+		Return: uint32_t
+		Arguments: void	
+
+	-o- htx
+		Return: int16_t
+		Arguments: void	
+
+	-o- hty
+		Return: int16_t
+		Arguments: void	
+
+	-o- overflow
+		Return: bool
+		Arguments: void	
+

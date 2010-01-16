@@ -1,0 +1,44 @@
+Class:
+	edm::EventBase
+
+Header:
+	DataFormats/Common/interface/EventBase.h
+
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:35 2010	lsclass.py $Revision:$
+
+Methods from edm::EventBase
+
+	-o- id
+		Return: edm::EventID
+		Arguments: void	
+
+	-o- time
+		Return: edm::Timestamp
+		Arguments: void	
+
+	-o- luminosityBlock
+		Return: edm::LuminosityBlockNumber_t
+		Arguments: void	
+
+	-o- isRealData
+		Return: bool
+		Arguments: void	
+
+	-o- bunchCrossing
+		Return: int
+		Arguments: void	
+
+	-o- orbitNumber
+		Return: int
+		Arguments: void	
+
+	-o- eventAuxiliary
+		Return: edm::EventAuxiliary const&
+		Arguments: void	
+
+	-o- getByLabel
+		Return: template<class T> bool
+		Arguments: const InputTag&	
+		           Handle<T>&	
+

@@ -1,0 +1,10 @@
+reco::MuonTimeExtra|int|nDof|void
+reco::MuonTimeExtra|float|inverseBeta|void
+reco::MuonTimeExtra|float|inverseBetaErr|void
+reco::MuonTimeExtra|float|freeInverseBeta|void
+reco::MuonTimeExtra|float|freeInverseBetaErr|void
+reco::MuonTimeExtra|float|timeAtIpInOut|void
+reco::MuonTimeExtra|float|timeAtIpInOutErr|void
+reco::MuonTimeExtra|float|timeAtIpOutIn|void
+reco::MuonTimeExtra|float|timeAtIpOutInErr|void
+reco::MuonTimeExtra|Direction|direction|void

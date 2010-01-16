@@ -1,0 +1,7 @@
+edm::EventBase|edm::EventID|id|void
+edm::EventBase|edm::Timestamp|time|void
+edm::EventBase|edm::LuminosityBlockNumber_t|luminosityBlock|void
+edm::EventBase|bool|isRealData|void
+edm::EventBase|int|bunchCrossing|void
+edm::EventBase|int|orbitNumber|void
+edm::EventBase|edm::EventAuxiliary const&|eventAuxiliary|void

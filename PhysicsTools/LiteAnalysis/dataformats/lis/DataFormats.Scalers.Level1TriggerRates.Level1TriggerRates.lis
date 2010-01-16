@@ -1,0 +1,24 @@
+Level1TriggerRates|std::string|name|void
+Level1TriggerRates|bool|empty|void
+Level1TriggerRates|int|version|void
+Level1TriggerRates|timespec|collectionTime|void
+Level1TriggerRates|unsigned long long|deltaNS|void
+Level1TriggerRates|double|deltaT|void
+Level1TriggerRates|double|gtTriggersRate|void
+Level1TriggerRates|double|gtEventsRate|void
+Level1TriggerRates|timespec|collectionTimeLumiSeg|void
+Level1TriggerRates|double|triggersPhysicsGeneratedFDLRate|void
+Level1TriggerRates|double|triggersPhysicsLostRate|void
+Level1TriggerRates|double|triggersPhysicsLostBeamActiveRate|void
+Level1TriggerRates|double|triggersPhysicsLostBeamInactiveRate|void
+Level1TriggerRates|double|l1AsPhysicsRate|void
+Level1TriggerRates|double|l1AsRandomRate|void
+Level1TriggerRates|double|l1AsTestRate|void
+Level1TriggerRates|double|l1AsCalibrationRate|void
+Level1TriggerRates|double|deadtimePercent|void
+Level1TriggerRates|double|deadtimeBeamActivePercent|void
+Level1TriggerRates|double|deadtimeBeamActiveTriggerRulesPercent|void
+Level1TriggerRates|double|deadtimeBeamActiveCalibrationPercent|void
+Level1TriggerRates|double|deadtimeBeamActivePrivateOrbitPercent|void
+Level1TriggerRates|double|deadtimeBeamActivePartitionControllerPercent|void
+Level1TriggerRates|double|deadtimeBeamActiveTimeSlotPercent|void

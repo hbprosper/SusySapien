@@ -1,0 +1,39 @@
+Class:
+	edm::HandleBase
+
+Header:
+	DataFormats/Common/interface/HandleBase.h
+
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:19 2010	lsclass.py $Revision:$
+
+Methods from edm::HandleBase
+
+	-o- clear
+		Return: void
+		Arguments: void	
+
+	-o- swap
+		Return: void
+		Arguments: HandleBase&	other
+
+	-o- isValid
+		Return: bool
+		Arguments: void	
+
+	-o- failedToGet
+		Return: bool
+		Arguments: void	
+
+	-o- provenance
+		Return: Provenance const*
+		Arguments: void	
+
+	-o- id
+		Return: ProductID
+		Arguments: void	
+
+	-o- whyFailed
+		Return: boost::shared_ptr<cms::Exception>
+		Arguments: void	
+

@@ -1,0 +1,27 @@
+Class:
+	L1TriggerError
+
+Header:
+	DataFormats/L1Trigger/interface/L1TriggerError.h
+
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:07 2010	lsclass.py $Revision:$
+
+Methods from L1TriggerError
+
+	-o- setCode
+		Return: void
+		Arguments: int	code
+
+	-o- code
+		Return: unsigned
+		Arguments: void	
+
+	-o- prodID
+		Return: unsigned
+		Arguments: void	
+
+	-o- prodErr
+		Return: unsigned
+		Arguments: void	
+

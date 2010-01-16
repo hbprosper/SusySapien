@@ -1,0 +1,343 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: L1GctInternHtMiss.xml
+  Created:  Fri Jan 15 20:46:36 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/L1GlobalCaloTrigger/interface/L1GctInternHtMiss.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/L1GlobalCaloTrigger/interface/L1GctInternHtMiss.h">
+
+    <include name="&lt;ostream&gt;"/>
+    <include name="&lt;stdint.h&gt;"/>
+
+    <class name="L1GctInternHtMiss"
+           fullname="L1GctInternHtMiss"
+           module="DataFormats.L1GlobalCaloTrigger"
+           project=""
+           type="regular privatector">
+
+        <section name="public">
+            <enum name="L1GctInternHtMissType">
+enum L1GctInternHtMissType{
+ nulltype, 
+                              miss_htx, 
+                              miss_hty, 
+                              miss_htx_and_hty, 
+         jf_miss_htx_and_hty };
+                <field name="nulltype" value=""/>
+                <field name="miss_htx" value=""/>
+                <field name="miss_hty" value=""/>
+                <field name="miss_htx_and_hty" value=""/>
+                <field name="jf_miss_htx_and_hty" value=""/>
+                <comment>
+      Enum for the variants of Internal HtMiss.
+                </comment>
+            </enum>
+
+            <enum name="numberOfBits">
+enum numberOfBits {
+
+
+    kJetMissHtNBits=12, 
+    kMissHxAndHyNBits=14, 
+    kMissHxOrHyNBits=16
+  };
+                <field name="kJetMissHtNBits" value="12"/>
+                <field name="kMissHxAndHyNBits" value="14"/>
+                <field name="kMissHxOrHyNBits" value="16"/>
+            </enum>
+
+            <constructor name="L1GctInternHtMiss"
+                         return=""
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+L1GctInternHtMiss();
+                <comment>
+      default constructor (for vector initialisation etc.)
+                </comment>
+            </constructor>
+
+            <destructor name="~L1GctInternHtMiss"
+                        return=""
+                        args="['void']"
+                        vars="['']"
+                        qual="">
+~L1GctInternHtMiss();
+                <comment>
+      destructor
+                </comment>
+            </destructor>
+
+            <method1 name="unpackerMissHtx"
+                     return="static L1GctInternHtMiss"
+                     args="['const uint16_t','const uint16_t','const int16_t','const uint32_t']"
+                     vars="['capBlock','capIndex','bx','data']"
+                     qual="">
+static L1GctInternHtMiss unpackerMissHtx(const uint16_t capBlock, const uint16_t capIndex, const int16_t bx, const uint32_t data);
+                <comment>
+      Named ctor for making missing Ht x-component object from unpacker raw data.
+                </comment>
+            </method1>
+
+            <method1 name="unpackerMissHty"
+                     return="static L1GctInternHtMiss"
+                     args="['const uint16_t','const uint16_t','const int16_t','const uint32_t']"
+                     vars="['capBlock','capIndex','bx','data']"
+                     qual="">
+static L1GctInternHtMiss unpackerMissHty(const uint16_t capBlock, const uint16_t capIndex, const int16_t bx, const uint32_t data);
+                <comment>
+      Named ctor for making missing Ht y-component object from unpacker raw data.
+                </comment>
+            </method1>
+
+            <method1 name="unpackerMissHtxHty"
+                     return="static L1GctInternHtMiss"
+                     args="['const uint16_t','const uint16_t','const int16_t','const uint32_t']"
+                     vars="['capBlock','capIndex','bx','data']"
+                     qual="">
+static L1GctInternHtMiss unpackerMissHtxHty(const uint16_t capBlock, const uint16_t capIndex, const int16_t bx, const uint32_t data);
+                <comment>
+      Named ctor for making missing Ht x &amp; y components object from unpacker raw data (wheel input).
+                </comment>
+            </method1>
+
+            <method1 name="emulatorJetMissHt"
+                     return="static L1GctInternHtMiss"
+                     args="['const int','const int','const bool','const int16_t']"
+                     vars="['htx','hty','overFlow','bx']"
+                     qual="">
+static L1GctInternHtMiss emulatorJetMissHt(const int htx, const int hty, const bool overFlow, const int16_t bx);
+                <comment>
+      Named ctor for making missing Ht x &amp; y components object from emulator (jetFinder output).
+                </comment>
+            </method1>
+
+            <method1 name="emulatorMissHtxHty"
+                     return="static L1GctInternHtMiss"
+                     args="['const int','const int','const bool','const int16_t']"
+                     vars="['htx','hty','overFlow','bx']"
+                     qual="">
+static L1GctInternHtMiss emulatorMissHtxHty(const int htx, const int hty, const bool overFlow, const int16_t bx);
+                <comment>
+      Named ctor for making missing Ht x &amp; y components object from emulator (wheel input).
+                </comment>
+            </method1>
+
+            <method1 name="emulatorMissHtx"
+                     return="static L1GctInternHtMiss"
+                     args="['const int','const bool','const int16_t']"
+                     vars="['htx','overFlow','bx']"
+                     qual="">
+static L1GctInternHtMiss emulatorMissHtx(const int htx, const bool overFlow, const int16_t bx);
+                <comment>
+      Named ctor for making missing Ht x component object from emulator
+                </comment>
+            </method1>
+
+            <method1 name="emulatorMissHty"
+                     return="static L1GctInternHtMiss"
+                     args="['const int','const bool','const int16_t']"
+                     vars="['hty','overFlow','bx']"
+                     qual="">
+static L1GctInternHtMiss emulatorMissHty(const int hty, const bool overFlow, const int16_t bx);
+                <comment>
+      Named ctor for making missing Ht y component object from emulator
+                </comment>
+            </method1>
+
+            <method1 name="type"
+                     return="L1GctInternHtMiss::L1GctInternHtMissType"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+L1GctInternHtMiss::L1GctInternHtMissType type() const;
+                <comment>
+      'type' of object?
+                </comment>
+            </method1>
+
+            <method1 name="capBlock"
+                     return="uint16_t"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+uint16_t capBlock() const;
+                <comment>
+      Get capture block
+                </comment>
+            </method1>
+
+            <method1 name="capIndex"
+                     return="uint16_t"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+uint16_t capIndex() const;
+                <comment>
+      Get index within capture block
+                </comment>
+            </method1>
+
+            <method1 name="bx"
+                     return="int16_t"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+int16_t bx() const;
+                <comment>
+      Get BX number
+                </comment>
+            </method1>
+
+            <method1 name="isThereHtx"
+                     return="bool"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+bool isThereHtx() const;
+                <comment>
+      Is there a valid Ht x-component stored?
+                </comment>
+            </method1>
+
+            <method1 name="isThereHty"
+                     return="bool"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+bool isThereHty() const;
+                <comment>
+      Is there a valid Ht y-component stored?
+                </comment>
+            </method1>
+
+            <method1 name="raw"
+                     return="uint32_t"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+uint32_t raw() const;
+                <comment>
+      Get the raw data
+                </comment>
+            </method1>
+
+            <method1 name="htx"
+                     return="int16_t"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+int16_t htx() const;
+                <comment>
+      Get Ht x-component value
+                </comment>
+            </method1>
+
+            <method1 name="hty"
+                     return="int16_t"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+int16_t hty() const;
+                <comment>
+      Get Ht y-component
+                </comment>
+            </method1>
+
+            <method1 name="overflow"
+                     return="bool"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+bool overflow() const;
+                <comment>
+      Get overflow
+                </comment>
+            </method1>
+
+            <operator name="operator=="
+                      return="bool"
+                      args="['const L1GctInternHtMiss&amp;']"
+                      vars="['rhs']"
+                      qual="const">
+bool operator==(const L1GctInternHtMiss&amp; rhs) const;
+                <comment>
+      Equality operator
+                </comment>
+            </operator>
+
+            <operator name="operator!="
+                      return="bool"
+                      args="['const L1GctInternHtMiss&amp;']"
+                      vars="['rhs']"
+                      qual="const">
+bool operator!=(const L1GctInternHtMiss&amp; rhs) const;
+                <comment>
+      Inequality operator
+                </comment>
+            </operator>
+
+        </section>
+
+        <typemap name="L1GctInternHtMissType"
+                 value="L1GctInternHtMiss::L1GctInternHtMissType"
+                 type="enum"/>
+        <typemap name="jf_miss_htx_and_hty"
+                 value="L1GctInternHtMiss::jf_miss_htx_and_hty"
+                 type="enum"/>
+        <typemap name="kJetMissHtNBits "
+                 value="L1GctInternHtMiss::kJetMissHtNBits "
+                 type="enum"/>
+        <typemap name="kMissHxAndHyNBits "
+                 value="L1GctInternHtMiss::kMissHxAndHyNBits "
+                 type="enum"/>
+        <typemap name="kMissHxOrHyNBits "
+                 value="L1GctInternHtMiss::kMissHxOrHyNBits "
+                 type="enum"/>
+        <typemap name="miss_htx"
+                 value="L1GctInternHtMiss::miss_htx"
+                 type="enum"/>
+        <typemap name="miss_htx_and_hty"
+                 value="L1GctInternHtMiss::miss_htx_and_hty"
+                 type="enum"/>
+        <typemap name="miss_hty"
+                 value="L1GctInternHtMiss::miss_hty"
+                 type="enum"/>
+        <typemap name="nulltype"
+                 value="L1GctInternHtMiss::nulltype"
+                 type="enum"/>
+        <typemap name="numberOfBits"
+                 value="L1GctInternHtMiss::numberOfBits"
+                 type="enum"/>
+
+    </class>
+    <operator name="operator&lt;&lt;"
+              return="std::ostream&amp;"
+              args="['std::ostream&amp;','const L1GctInternHtMiss&amp;']"
+              vars="['os','rhs']"
+              qual="">
+std::ostream&amp; operator&lt;&lt;(std::ostream&amp; os, const L1GctInternHtMiss&amp; rhs);
+        <comment>
+   Pretty-print operator for L1GctInternHtMiss
+        </comment>
+    </operator>
+
+
+    <type name="L1GctInternHtMiss"/>
+    <type name="L1GctInternHtMiss::L1GctInternHtMissType"/>
+    <type name="bool"/>
+    <type name="const L1GctInternHtMiss&amp;"/>
+    <type name="const bool"/>
+    <type name="const int"/>
+    <type name="const int16_t"/>
+    <type name="const uint16_t"/>
+    <type name="const uint32_t"/>
+    <type name="enum L1GctInternHtMissType"/>
+    <type name="enum numberOfBits"/>
+    <type name="int16_t"/>
+    <type name="uint16_t"/>
+    <type name="uint32_t"/>
+    <type name="void"/>
+</header>

@@ -1,0 +1,71 @@
+Class:
+	reco::FlavorHistoryEvent
+
+Header:
+	DataFormats/HepMCCandidate/interface/FlavorHistoryEvent.h
+
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:10 2010	lsclass.py $Revision:$
+
+Methods from reco::FlavorHistoryEvent
+
+	-o- cache
+		Return: void
+		Arguments: void	
+
+	-o- isCached
+		Return: bool
+		Arguments: void	
+
+	-o- nb
+		Return: unsigned int
+		Arguments: void	
+
+	-o- nc
+		Return: unsigned int
+		Arguments: void	
+
+	-o- deltaR
+		Return: double
+		Arguments: void	
+
+	-o- highestFlavor
+		Return: unsigned int
+		Arguments: void	
+
+	-o- flavorSource
+		Return: FlavorHistory::FLAVOR_T
+		Arguments: void	
+
+	-o- size
+		Return: std::vector<value_type>::size_type
+		Arguments: void	
+
+	-o- begin
+		Return: collection_type::const_iterator
+		Arguments: void	
+
+	-o- end
+		Return: collection_type::const_iterator
+		Arguments: void	
+
+	-o- rbegin
+		Return: collection_type::const_reverse_iterator
+		Arguments: void	
+
+	-o- rend
+		Return: collection_type::const_reverse_iterator
+		Arguments: void	
+
+	-o- push_back
+		Return: void
+		Arguments: value_type	v
+
+	-o- resize
+		Return: void
+		Arguments: size_t	n
+
+	-o- clear
+		Return: void
+		Arguments: void	
+

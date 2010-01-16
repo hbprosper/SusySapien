@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: MuonMETCorrectionData.xml
+  Created:  Fri Jan 15 20:46:51 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/MuonReco/interface/MuonMETCorrectionData.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/MuonReco/interface/MuonMETCorrectionData.h">
+
+
+    <namespace name="reco">
+
+        <class name="MuonMETCorrectionData"
+               fullname="reco::MuonMETCorrectionData"
+               module="DataFormats.MuonReco"
+               project=""
+               type="regular">
+
+            <section name="public">
+                <enum name="Type">
+enum Type {
+ NotUsed=0, 
+  CombinedTrackUsed=1, GlobalTrackUsed=1, 
+  InnerTrackUsed=2, TrackUsed=2, 
+  OuterTrackUsed=3, StandAloneTrackUsed=3, 
+  TreatedAsPion=4};
+                    <field name="NotUsed" value="0"/>
+                    <field name="CombinedTrackUsed" value="1"/>
+                    <field name="GlobalTrackUsed" value="1"/>
+                    <field name="InnerTrackUsed" value="2"/>
+                    <field name="TrackUsed" value="2"/>
+                    <field name="OuterTrackUsed" value="3"/>
+                    <field name="StandAloneTrackUsed" value="3"/>
+                    <field name="TreatedAsPion" value="4"/>
+                </enum>
+
+                <constructor name="MuonMETCorrectionData"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+MuonMETCorrectionData();
+                </constructor>
+
+                <constructor name="MuonMETCorrectionData"
+                             return=""
+                             args="['Type','float','float']"
+                             vars="['type','corrX','corrY']"
+                             qual="">
+MuonMETCorrectionData(Type type, float corrX, float corrY);
+                </constructor>
+
+                <method1 name="type"
+                         return="Type"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+Type type();
+                </method1>
+
+                <method1 name="corrX"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+float corrX();
+                </method1>
+
+                <method1 name="corrY"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+float corrY();
+                </method1>
+
+                <method1 name="x"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+float x();
+                </method1>
+
+                <method1 name="y"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+float y();
+                </method1>
+
+                <method1 name="pt"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+float pt();
+                </method1>
+
+            </section>
+
+            <typemap name="CombinedTrackUsed "
+                     value="reco::MuonMETCorrectionData::CombinedTrackUsed "
+                     type="enum"/>
+            <typemap name="GlobalTrackUsed "
+                     value="reco::MuonMETCorrectionData::GlobalTrackUsed "
+                     type="enum"/>
+            <typemap name="InnerTrackUsed "
+                     value="reco::MuonMETCorrectionData::InnerTrackUsed "
+                     type="enum"/>
+            <typemap name="NotUsed "
+                     value="reco::MuonMETCorrectionData::NotUsed "
+                     type="enum"/>
+            <typemap name="OuterTrackUsed "
+                     value="reco::MuonMETCorrectionData::OuterTrackUsed "
+                     type="enum"/>
+            <typemap name="StandAloneTrackUsed "
+                     value="reco::MuonMETCorrectionData::StandAloneTrackUsed "
+                     type="enum"/>
+            <typemap name="TrackUsed "
+                     value="reco::MuonMETCorrectionData::TrackUsed "
+                     type="enum"/>
+            <typemap name="TreatedAsPion "
+                     value="reco::MuonMETCorrectionData::TreatedAsPion "
+                     type="enum"/>
+            <typemap name="Type"
+                     value="reco::MuonMETCorrectionData::Type"
+                     type="enum"/>
+
+        </class>
+    </namespace>
+
+    <type name="Type"/>
+    <type name="enum Type"/>
+    <type name="float"/>
+    <type name="reco::MuonMETCorrectionData"/>
+    <type name="void"/>
+</header>

@@ -1,0 +1,14 @@
+reco::ElectronSeed|static std::string const&|name|void
+reco::ElectronSeed|ElectronSeed*|clone|void
+reco::ElectronSeed|edm::Ref<TrackCollection>|ctfTrack|void
+reco::ElectronSeed|edm::RefToBase<CaloCluster>|caloCluster|void
+reco::ElectronSeed|int|subDet2|void
+reco::ElectronSeed|float|dRz2|void
+reco::ElectronSeed|float|dPhi2|void
+reco::ElectronSeed|TrackCharge|getCharge|void
+reco::ElectronSeed|bool|isEcalDriven|void
+reco::ElectronSeed|bool|isTrackerDriven|void
+TrajectorySeed|std::pair<recHitContainer::const_iterator, recHitContainer::const_iterator>|recHits|void
+TrajectorySeed|unsigned int|nHits|void
+TrajectorySeed|PropagationDirection|direction|void
+TrajectorySeed|PTrajectoryStateOnDet const&|startingState|void

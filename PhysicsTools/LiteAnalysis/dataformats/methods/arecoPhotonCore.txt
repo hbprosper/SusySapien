@@ -1,0 +1,13 @@
+size_t superCluster_clustersSize()
+double superCluster_energy()
+double superCluster_eta()
+double superCluster_etaWidth()
+double superCluster_phi()
+double superCluster_phiWidth()
+double superCluster_preshowerEnergy()
+double superCluster_rawEnergy()
+size_t superCluster_size()
+double superCluster_x()
+double superCluster_y()
+double superCluster_z()
+

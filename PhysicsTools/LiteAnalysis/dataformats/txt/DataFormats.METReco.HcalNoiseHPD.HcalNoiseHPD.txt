@@ -1,0 +1,95 @@
+Class:
+	reco::HcalNoiseHPD
+
+Header:
+	DataFormats/METReco/interface/HcalNoiseHPD.h
+
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:59 2010	lsclass.py $Revision:$
+
+Methods from reco::HcalNoiseHPD
+
+	-o- idnumber
+		Return: int
+		Arguments: void	
+
+	-o- bigChargeTotal
+		Return: float
+		Arguments: void	
+
+	-o- bigChargeHighest2TS
+		Return: float
+		Arguments: void	
+
+	-o- bigChargeHighest3TS
+		Return: float
+		Arguments: void	
+
+	-o- big5ChargeTotal
+		Return: float
+		Arguments: void	
+
+	-o- big5ChargeHighest2TS
+		Return: float
+		Arguments: void	
+
+	-o- big5ChargeHighest3TS
+		Return: float
+		Arguments: void	
+
+	-o- totalZeros
+		Return: int
+		Arguments: void	
+
+	-o- maxZeros
+		Return: int
+		Arguments: void	
+
+	-o- recHitEnergy
+		Return: float
+		Arguments: float=1.5	threshold
+
+	-o- minRecHitTime
+		Return: float
+		Arguments: float=10.0	threshold
+
+	-o- maxRecHitTime
+		Return: float
+		Arguments: float=10.0	threshold
+
+	-o- numRecHits
+		Return: int
+		Arguments: float=1.5	threshold
+
+	-o- caloTowerHadE
+		Return: double
+		Arguments: void	
+
+	-o- caloTowerEmE
+		Return: double
+		Arguments: void	
+
+	-o- caloTowerTotalE
+		Return: double
+		Arguments: void	
+
+	-o- caloTowerEmFraction
+		Return: double
+		Arguments: void	
+
+	-o- bigCharge
+		Return: const std::vector<float>
+		Arguments: void	
+
+	-o- big5Charge
+		Return: const std::vector<float>
+		Arguments: void	
+
+	-o- recHits
+		Return: const edm::RefVector<HBHERecHitCollection>
+		Arguments: void	
+
+	-o- caloTowers
+		Return: const edm::RefVector<CaloTowerCollection>
+		Arguments: void	
+

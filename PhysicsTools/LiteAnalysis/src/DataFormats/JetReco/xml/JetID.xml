@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: JetID.xml
+  Created:  Fri Jan 15 20:46:29 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/JetReco/interface/JetID.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/JetReco/interface/JetID.h">
+
+    <include name="&quot;DataFormats/Common/interface/ValueMap.h&quot;"/>
+
+    <namespace name="reco">
+
+        <class name="JetID"
+               fullname="reco::JetID"
+               module="DataFormats.JetReco"
+               project=""
+               type="regular struct">
+
+            <section>
+                <member>
+double fHPD;
+                </member>
+
+                <member>
+double fRBX;
+                </member>
+
+                <member>
+double n90Hits;
+                </member>
+
+                <member>
+double fSubDetector1;
+                </member>
+
+                <member>
+double fSubDetector2;
+                </member>
+
+                <member>
+double fSubDetector3;
+                </member>
+
+                <member>
+double fSubDetector4;
+                </member>
+
+                <member>
+double restrictedEMF;
+                </member>
+
+                <member>
+int nHCALTowers;
+                </member>
+
+                <member>
+int nECALTowers;
+                </member>
+
+                <member>
+double approximatefHPD;
+                </member>
+
+                <member>
+double approximatefRBX;
+                </member>
+
+                <member>
+int hitsInN90;
+                </member>
+
+            </section>
+
+            <typemap name="approximatefHPD"
+                     value="reco::JetID::approximatefHPD"
+                     type="member"/>
+            <typemap name="approximatefRBX"
+                     value="reco::JetID::approximatefRBX"
+                     type="member"/>
+            <typemap name="fHPD"
+                     value="reco::JetID::fHPD"
+                     type="member"/>
+            <typemap name="fRBX"
+                     value="reco::JetID::fRBX"
+                     type="member"/>
+            <typemap name="fSubDetector1"
+                     value="reco::JetID::fSubDetector1"
+                     type="member"/>
+            <typemap name="fSubDetector2"
+                     value="reco::JetID::fSubDetector2"
+                     type="member"/>
+            <typemap name="fSubDetector3"
+                     value="reco::JetID::fSubDetector3"
+                     type="member"/>
+            <typemap name="fSubDetector4"
+                     value="reco::JetID::fSubDetector4"
+                     type="member"/>
+            <typemap name="hitsInN90"
+                     value="reco::JetID::hitsInN90"
+                     type="member"/>
+            <typemap name="n90Hits"
+                     value="reco::JetID::n90Hits"
+                     type="member"/>
+            <typemap name="nECALTowers"
+                     value="reco::JetID::nECALTowers"
+                     type="member"/>
+            <typemap name="nHCALTowers"
+                     value="reco::JetID::nHCALTowers"
+                     type="member"/>
+            <typemap name="restrictedEMF"
+                     value="reco::JetID::restrictedEMF"
+                     type="member"/>
+
+        </class>
+        <typedef name="JetIDValueMap"
+                 value="edm::ValueMap&lt;JetID&gt;">
+typedef edm::ValueMap&lt;JetID&gt; JetIDValueMap;
+        </typedef>
+
+    </namespace>
+
+    <type name="double"/>
+    <type name="int"/>
+    <type name="reco::JetID"/>
+</header>

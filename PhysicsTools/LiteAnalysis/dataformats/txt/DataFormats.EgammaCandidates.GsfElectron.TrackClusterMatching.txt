@@ -1,0 +1,9 @@
+Class:
+	reco::GsfElectron::TrackClusterMatching
+
+Header:
+	DataFormats/EgammaCandidates/interface/GsfElectron.h
+
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:16 2010	lsclass.py $Revision:$
+

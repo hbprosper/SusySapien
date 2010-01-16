@@ -1,0 +1,3 @@
+L1TriggerError|unsigned|code|void
+L1TriggerError|unsigned|prodID|void
+L1TriggerError|unsigned|prodErr|void

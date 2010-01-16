@@ -1,0 +1,24 @@
+Class:
+	ProjectMatrix<T, N, D>
+
+Header:
+	DataFormats/Math/interface/ProjectMatrix.h
+
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:56:11 2010	lsclass.py $Revision:$
+
+Methods from ProjectMatrix<T, N, D>
+
+	-o- project
+		Return: ROOT::Math::SMatrix<T, N, D >
+		Arguments: SMatDD const&	s
+
+	-o- project
+		Return: ROOT::Math::SMatrix<T, N, N >
+		Arguments: SMatND const&	k
+
+	-o- projectAndSubtractFrom
+		Return: void
+		Arguments: SMatNN& __restrict__	s
+		           SMatND const& __restrict__	k
+

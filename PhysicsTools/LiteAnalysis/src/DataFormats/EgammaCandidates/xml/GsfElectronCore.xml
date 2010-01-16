@@ -1,0 +1,151 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: GsfElectronCore.xml
+  Created:  Fri Jan 15 20:46:19 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/EgammaCandidates/interface/GsfElectronCore.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/EgammaCandidates/interface/GsfElectronCore.h">
+
+    <include name="&quot;FWCore/MessageLogger/interface/MessageLogger.h&quot;"/>
+    <include name="&quot;DataFormats/GsfTrackReco/interface/GsfTrackFwd.h&quot;"/>
+    <include name="&quot;DataFormats/TrackReco/interface/TrackFwd.h&quot;"/>
+    <include name="&quot;DataFormats/EgammaReco/interface/SuperCluster.h&quot;"/>
+    <include name="&quot;DataFormats/EgammaReco/interface/SuperClusterFwd.h&quot;"/>
+    <include name="&lt;vector&gt;"/>
+
+    <namespace name="reco">
+
+        <class name="GsfElectronCore"
+               fullname="reco::GsfElectronCore"
+               module="DataFormats.EgammaCandidates"
+               project=""
+               type="regular">
+            <comment>
+   $Log: GsfElectronCore.h,v $
+   Revision 1.3  2009/04/06 11:18:05  chamont
+   few changes, should not affect users
+
+   Revision 1.2  2009/03/24 17:26:27  charlot
+   updated provenance and added comments in headers
+
+   Revision 1.1  2009/03/20 22:59:16  chamont
+   new class GsfElectronCore and new interface for GsfElectron
+
+   Revision 1.20  2009/02/14 11:00:26  charlot
+   new interface for fiducial regions
+            </comment>
+
+            <section name="public">
+                <constructor name="GsfElectronCore"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+GsfElectronCore();
+                    <comment>
+       construction
+                    </comment>
+                </constructor>
+
+                <constructor name="GsfElectronCore"
+                             return=""
+                             args="['const GsfTrackRef&amp;']"
+                             vars="['']"
+                             qual="">
+GsfElectronCore(const GsfTrackRef&amp;);
+                </constructor>
+
+                <destructor name="~GsfElectronCore"
+                            return=""
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+~GsfElectronCore();
+                </destructor>
+
+                <method1 name="gsfTrack"
+                         return="const GsfTrackRef&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const GsfTrackRef&amp; gsfTrack() const;
+                    <comment>
+       accessors
+                    </comment>
+                </method1>
+
+                <method1 name="superCluster"
+                         return="const SuperClusterRef&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const SuperClusterRef&amp; superCluster() const;
+                </method1>
+
+                <method1 name="isEcalDriven"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isEcalDriven() const;
+                </method1>
+
+                <method1 name="isTrackerDriven"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isTrackerDriven() const;
+                </method1>
+
+                <method1 name="setGsfTrack"
+                         return="void"
+                         args="['const GsfTrackRef&amp;']"
+                         vars="['gsfTrack']"
+                         qual="">
+void setGsfTrack(const GsfTrackRef&amp; gsfTrack);
+                    <comment>
+       setters, still useful to GsfElectronSelector.h ??
+                    </comment>
+                </method1>
+
+                <method1 name="setSuperCluster"
+                         return="void"
+                         args="['const SuperClusterRef&amp;']"
+                         vars="['scl']"
+                         qual="">
+void setSuperCluster(const SuperClusterRef&amp; scl);
+                </method1>
+
+                <method1 name="pflowSuperCluster"
+                         return="const SuperClusterRef&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const SuperClusterRef&amp; pflowSuperCluster() const;
+                    <comment>
+       pflow eventual additionnal info
+                    </comment>
+                </method1>
+
+                <method1 name="setPflowSuperCluster"
+                         return="void"
+                         args="['const SuperClusterRef&amp;']"
+                         vars="['scl']"
+                         qual="">
+void setPflowSuperCluster(const SuperClusterRef&amp; scl);
+                </method1>
+
+            </section>
+
+        </class>
+    </namespace>
+
+    <type name="bool"/>
+    <type name="const GsfTrackRef&amp;"/>
+    <type name="const SuperClusterRef&amp;"/>
+    <type name="reco::GsfElectronCore"/>
+    <type name="void"/>
+</header>

@@ -1,0 +1,480 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: Level1TriggerScalers.xml
+  Created:  Fri Jan 15 20:47:30 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Scalers/interface/Level1TriggerScalers.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/Scalers/interface/Level1TriggerScalers.h">
+
+    <include name="&lt;ostream&gt;"/>
+    <include name="&lt;vector&gt;"/>
+    <include name="&quot;DataFormats/Scalers/interface/TimeSpec.h&quot;"/>
+
+    <class name="Level1TriggerScalers"
+           fullname="Level1TriggerScalers"
+           module="DataFormats.Scalers"
+           project=""
+           type="regular">
+        <comment>
+    \brief Persistable copy of Level1 Trigger Scalers
+        </comment>
+
+        <section name="public">
+            <enum name="">
+enum
+  {
+
+    nLevel1Triggers=128, 
+    nLevel1TestTriggers=64
+  };
+                <field name="nLevel1Triggers" value="128"/>
+                <field name="nLevel1TestTriggers" value="64"/>
+            </enum>
+
+            <constant name="N_BX"
+                      type="static const unsigned long long"
+                      value="3564ULL"/>
+            <constant name="N_BX_ACTIVE"
+                      type="static const unsigned long long"
+                      value="2808ULL"/>
+            <constant name="N_ORBITS_LUMI_SECTION"
+                      type="static const unsigned long long"
+                      value="0x100000ULL"/>
+            <constant name="N_BX_LUMI_SECTION"
+                      type="static const unsigned long long"
+                      value="N_ORBITS_LUMI_SECTION* N_BX"/>
+            <constructor name="Level1TriggerScalers"
+                         return=""
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+Level1TriggerScalers();
+            </constructor>
+
+            <constructor name="Level1TriggerScalers"
+                         return=""
+                         args="['const unsigned char*']"
+                         vars="['rawData']"
+                         qual="">
+Level1TriggerScalers(const unsigned char* rawData);
+            </constructor>
+
+            <destructor name="~Level1TriggerScalers"
+                        return="virtual"
+                        args="['void']"
+                        vars="['']"
+                        qual="">
+virtual ~Level1TriggerScalers();
+            </destructor>
+
+            <method1 name="name"
+                     return="std::string"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+std::string name() const;
+                <comment>
+      name method
+                </comment>
+            </method1>
+
+            <method1 name="empty"
+                     return="bool"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+bool empty() const;
+                <comment>
+      empty method (= false)
+                </comment>
+            </method1>
+
+            <method1 name="version"
+                     return="int"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+int version() const;
+                <comment>
+     Data accessor methods
+                </comment>
+            </method1>
+
+            <method1 name="trigType"
+                     return="unsigned int"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned int trigType() const;
+            </method1>
+
+            <method1 name="eventID"
+                     return="unsigned int"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned int eventID() const;
+            </method1>
+
+            <method1 name="sourceID"
+                     return="unsigned int"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned int sourceID() const;
+            </method1>
+
+            <method1 name="bunchNumber"
+                     return="unsigned int"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned int bunchNumber() const;
+            </method1>
+
+            <method1 name="collectionTime"
+                     return="struct timespec"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+struct timespec collectionTime() const;
+            </method1>
+
+            <method1 name="lumiSegmentNr"
+                     return="unsigned int"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned int lumiSegmentNr() const;
+            </method1>
+
+            <method1 name="lumiSegmentOrbits"
+                     return="unsigned int"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned int lumiSegmentOrbits() const;
+            </method1>
+
+            <method1 name="orbitNr"
+                     return="unsigned int"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned int orbitNr() const;
+            </method1>
+
+            <method1 name="gtResets"
+                     return="unsigned int"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned int gtResets() const;
+            </method1>
+
+            <method1 name="bunchCrossingErrors"
+                     return="unsigned int"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned int bunchCrossingErrors() const;
+            </method1>
+
+            <method1 name="gtTriggers"
+                     return="unsigned long long"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned long long gtTriggers() const;
+            </method1>
+
+            <method1 name="gtEvents"
+                     return="unsigned long long"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned long long gtEvents() const;
+            </method1>
+
+            <method1 name="gtTriggersRate"
+                     return="float"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+float gtTriggersRate() const;
+            </method1>
+
+            <method1 name="gtEventsRate"
+                     return="float"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+float gtEventsRate() const;
+            </method1>
+
+            <method1 name="prescaleIndexAlgo"
+                     return="int"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+int prescaleIndexAlgo() const;
+            </method1>
+
+            <method1 name="prescaleIndexTech"
+                     return="int"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+int prescaleIndexTech() const;
+            </method1>
+
+            <method1 name="collectionTimeLumiSeg"
+                     return="struct timespec"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+struct timespec collectionTimeLumiSeg() const;
+            </method1>
+
+            <method1 name="lumiSegmentNrLumiSeg"
+                     return="unsigned int"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned int lumiSegmentNrLumiSeg() const;
+            </method1>
+
+            <method1 name="triggersPhysicsGeneratedFDL"
+                     return="unsigned long long"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned long long triggersPhysicsGeneratedFDL() const;
+            </method1>
+
+            <method1 name="triggersPhysicsLost"
+                     return="unsigned long long"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned long long triggersPhysicsLost() const;
+            </method1>
+
+            <method1 name="triggersPhysicsLostBeamActive"
+                     return="unsigned long long"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned long long triggersPhysicsLostBeamActive() const;
+            </method1>
+
+            <method1 name="triggersPhysicsLostBeamInactive"
+                     return="unsigned long long"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned long long triggersPhysicsLostBeamInactive() const;
+            </method1>
+
+            <method1 name="l1AsPhysics"
+                     return="unsigned long long"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned long long l1AsPhysics() const;
+            </method1>
+
+            <method1 name="l1AsRandom"
+                     return="unsigned long long"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned long long l1AsRandom() const;
+            </method1>
+
+            <method1 name="l1AsTest"
+                     return="unsigned long long"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned long long l1AsTest() const;
+            </method1>
+
+            <method1 name="l1AsCalibration"
+                     return="unsigned long long"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned long long l1AsCalibration() const;
+            </method1>
+
+            <method1 name="deadtime"
+                     return="unsigned long long"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned long long deadtime() const;
+            </method1>
+
+            <method1 name="deadtimeBeamActive"
+                     return="unsigned long long"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned long long deadtimeBeamActive() const;
+            </method1>
+
+            <method1 name="deadtimeBeamActiveTriggerRules"
+                     return="unsigned long long"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned long long deadtimeBeamActiveTriggerRules() const;
+            </method1>
+
+            <method1 name="deadtimeBeamActiveCalibration"
+                     return="unsigned long long"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned long long deadtimeBeamActiveCalibration() const;
+            </method1>
+
+            <method1 name="deadtimeBeamActivePrivateOrbit"
+                     return="unsigned long long"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned long long deadtimeBeamActivePrivateOrbit() const;
+            </method1>
+
+            <method1 name="deadtimeBeamActivePartitionController"
+                     return="unsigned long long"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned long long deadtimeBeamActivePartitionController() const;
+            </method1>
+
+            <method1 name="deadtimeBeamActiveTimeSlot"
+                     return="unsigned long long"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned long long deadtimeBeamActiveTimeSlot() const;
+            </method1>
+
+            <method1 name="rateLS"
+                     return="static double"
+                     args="['unsigned long long']"
+                     vars="['counts']"
+                     qual="">
+static double rateLS(unsigned long long counts);
+            </method1>
+
+            <method1 name="rateLS"
+                     return="static double"
+                     args="['unsigned int']"
+                     vars="['counts']"
+                     qual="">
+static double rateLS(unsigned int counts);
+            </method1>
+
+            <method1 name="percentLS"
+                     return="static double"
+                     args="['unsigned long long']"
+                     vars="['counts']"
+                     qual="">
+static double percentLS(unsigned long long counts);
+            </method1>
+
+            <method1 name="percentLSActive"
+                     return="static double"
+                     args="['unsigned long long']"
+                     vars="['counts']"
+                     qual="">
+static double percentLSActive(unsigned long long counts);
+            </method1>
+
+            <method2 name="gtAlgoCounts"
+                     return="std::vector&lt;unsigned int&gt;"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+std::vector&lt;unsigned int&gt; gtAlgoCounts() const;
+            </method2>
+
+            <method2 name="gtTechCounts"
+                     return="std::vector&lt;unsigned int&gt;"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+std::vector&lt;unsigned int&gt; gtTechCounts() const;
+            </method2>
+
+            <operator name="operator=="
+                      return="int"
+                      args="['const Level1TriggerScalers&amp;']"
+                      vars="['e']"
+                      qual="const">
+int operator==(const Level1TriggerScalers&amp; e) const;
+                <comment>
+      equality operator
+                </comment>
+            </operator>
+
+            <operator name="operator!="
+                      return="int"
+                      args="['const Level1TriggerScalers&amp;']"
+                      vars="['e']"
+                      qual="const">
+int operator!=(const Level1TriggerScalers&amp; e) const;
+                <comment>
+      inequality operator
+                </comment>
+            </operator>
+
+        </section>
+
+        <typemap name="nLevel1TestTriggers "
+                 value="Level1TriggerScalers::nLevel1TestTriggers "
+                 type="enum"/>
+        <typemap name="nLevel1Triggers "
+                 value="Level1TriggerScalers::nLevel1Triggers "
+                 type="enum"/>
+
+    </class>
+    <operator name="operator&lt;&lt;"
+              return="std::ostream&amp;"
+              args="['std::ostream&amp;','const Level1TriggerScalers&amp;']"
+              vars="['s','c']"
+              qual="">
+std::ostream&amp; operator&lt;&lt;(std::ostream&amp; s, const Level1TriggerScalers&amp; c);
+        <comment>
+    Pretty-print operator for Level1TriggerScalers
+        </comment>
+    </operator>
+
+    <typedef name="Level1TriggerScalersCollection"
+             value="std::vector&lt;Level1TriggerScalers&gt;">
+typedef std::vector&lt;Level1TriggerScalers&gt; Level1TriggerScalersCollection;
+    </typedef>
+
+
+    <type name="Level1TriggerScalers"/>
+    <type name="bool"/>
+    <type name="const Level1TriggerScalers&amp;"/>
+    <type name="const unsigned char*"/>
+    <type name="double"/>
+    <type name="enum"/>
+    <type name="float"/>
+    <type name="int"/>
+    <type name="std::string"/>
+    <type name="std::vector&lt;unsigned int&gt;"/>
+    <type name="struct timespec"/>
+    <type name="unsigned int"/>
+    <type name="unsigned long long"/>
+    <type name="void"/>
+</header>

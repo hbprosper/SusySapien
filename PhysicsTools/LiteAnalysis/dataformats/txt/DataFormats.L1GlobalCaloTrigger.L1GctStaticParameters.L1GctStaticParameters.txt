@@ -1,0 +1,9 @@
+Class:
+	L1GctStaticParameters
+
+Header:
+	DataFormats/L1GlobalCaloTrigger/interface/L1GctStaticParameters.h
+
+Version:     CMSSW_3_3_6
+Created:     Fri Jan 15 21:55:50 2010	lsclass.py $Revision:$
+

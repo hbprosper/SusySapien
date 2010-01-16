@@ -1,0 +1,301 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: BeamSpotOnline.xml
+  Created:  Fri Jan 15 20:47:27 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Scalers/interface/BeamSpotOnline.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/Scalers/interface/BeamSpotOnline.h">
+
+    <include name="&quot;DataFormats/Scalers/interface/TimeSpec.h&quot;"/>
+    <include name="&lt;ctime&gt;"/>
+    <include name="&lt;iosfwd&gt;"/>
+    <include name="&lt;vector&gt;"/>
+    <include name="&lt;string&gt;"/>
+
+    <class name="BeamSpotOnline"
+           fullname="BeamSpotOnline"
+           module="DataFormats.Scalers"
+           project=""
+           type="regular">
+        <comment>
+    \brief Persistable copy of online BeamSpotOnline value
+        </comment>
+
+        <section name="public">
+            <constructor name="BeamSpotOnline"
+                         return=""
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+BeamSpotOnline();
+            </constructor>
+
+            <constructor name="BeamSpotOnline"
+                         return=""
+                         args="['const unsigned char*']"
+                         vars="['rawData']"
+                         qual="">
+BeamSpotOnline(const unsigned char* rawData);
+            </constructor>
+
+            <destructor name="~BeamSpotOnline"
+                        return="virtual"
+                        args="['void']"
+                        vars="['']"
+                        qual="">
+virtual ~BeamSpotOnline();
+            </destructor>
+
+            <method1 name="name"
+                     return="std::string"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+std::string name() const;
+                <comment>
+      name method
+                </comment>
+            </method1>
+
+            <method1 name="empty"
+                     return="bool"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+bool empty() const;
+                <comment>
+      empty method (= false)
+                </comment>
+            </method1>
+
+            <method1 name="trigType"
+                     return="unsigned int"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned int trigType() const;
+            </method1>
+
+            <method1 name="eventID"
+                     return="unsigned int"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned int eventID() const;
+            </method1>
+
+            <method1 name="sourceID"
+                     return="unsigned int"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned int sourceID() const;
+            </method1>
+
+            <method1 name="bunchNumber"
+                     return="unsigned int"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned int bunchNumber() const;
+            </method1>
+
+            <method1 name="version"
+                     return="int"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+int version() const;
+            </method1>
+
+            <method1 name="collectionTime"
+                     return="timespec"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+timespec collectionTime() const;
+            </method1>
+
+            <method1 name="x"
+                     return="float"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+float x() const;
+            </method1>
+
+            <method1 name="y"
+                     return="float"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+float y() const;
+            </method1>
+
+            <method1 name="z"
+                     return="float"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+float z() const;
+            </method1>
+
+            <method1 name="dxdz"
+                     return="float"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+float dxdz() const;
+            </method1>
+
+            <method1 name="dydz"
+                     return="float"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+float dydz() const;
+            </method1>
+
+            <method1 name="err_x"
+                     return="float"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+float err_x() const;
+            </method1>
+
+            <method1 name="err_y"
+                     return="float"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+float err_y() const;
+            </method1>
+
+            <method1 name="err_z"
+                     return="float"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+float err_z() const;
+            </method1>
+
+            <method1 name="err_dxdz"
+                     return="float"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+float err_dxdz() const;
+            </method1>
+
+            <method1 name="err_dydz"
+                     return="float"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+float err_dydz() const;
+            </method1>
+
+            <method1 name="width_x"
+                     return="float"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+float width_x() const;
+            </method1>
+
+            <method1 name="width_y"
+                     return="float"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+float width_y() const;
+            </method1>
+
+            <method1 name="sigma_z"
+                     return="float"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+float sigma_z() const;
+            </method1>
+
+            <method1 name="err_width_x"
+                     return="float"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+float err_width_x() const;
+            </method1>
+
+            <method1 name="err_width_y"
+                     return="float"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+float err_width_y() const;
+            </method1>
+
+            <method1 name="err_sigma_z"
+                     return="float"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+float err_sigma_z() const;
+            </method1>
+
+            <operator name="operator=="
+                      return="int"
+                      args="['const BeamSpotOnline&amp;']"
+                      vars="['e']"
+                      qual="const">
+int operator==(const BeamSpotOnline&amp; e) const;
+                <comment>
+      equality operator
+                </comment>
+            </operator>
+
+            <operator name="operator!="
+                      return="int"
+                      args="['const BeamSpotOnline&amp;']"
+                      vars="['e']"
+                      qual="const">
+int operator!=(const BeamSpotOnline&amp; e) const;
+                <comment>
+      inequality operator
+                </comment>
+            </operator>
+
+        </section>
+
+    </class>
+    <operator name="operator&lt;&lt;"
+              return="std::ostream&amp;"
+              args="['std::ostream&amp;','const BeamSpotOnline&amp;']"
+              vars="['s','c']"
+              qual="">
+std::ostream&amp; operator&lt;&lt;(std::ostream&amp; s, const BeamSpotOnline&amp; c);
+        <comment>
+    Pretty-print operator for BeamSpotOnline
+        </comment>
+    </operator>
+
+    <typedef name="BeamSpotOnlineCollection"
+             value="std::vector&lt;BeamSpotOnline&gt;">
+typedef std::vector&lt;BeamSpotOnline&gt; BeamSpotOnlineCollection;
+    </typedef>
+
+
+    <type name="BeamSpotOnline"/>
+    <type name="bool"/>
+    <type name="const BeamSpotOnline&amp;"/>
+    <type name="const unsigned char*"/>
+    <type name="float"/>
+    <type name="int"/>
+    <type name="std::string"/>
+    <type name="timespec"/>
+    <type name="unsigned int"/>
+    <type name="void"/>
+</header>

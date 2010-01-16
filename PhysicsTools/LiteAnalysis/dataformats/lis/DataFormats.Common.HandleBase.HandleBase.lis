@@ -1,0 +1,5 @@
+edm::HandleBase|bool|isValid|void
+edm::HandleBase|bool|failedToGet|void
+edm::HandleBase|Provenance const*|provenance|void
+edm::HandleBase|ProductID|id|void
+edm::HandleBase|boost::shared_ptr<cms::Exception>|whyFailed|void

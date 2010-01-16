@@ -1,0 +1,263 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: HcalNoiseRBX.xml
+  Created:  Fri Jan 15 20:46:46 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/METReco/interface/HcalNoiseRBX.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_3_3_6/src/DataFormats/METReco/interface/HcalNoiseRBX.h">
+
+    <include name="&quot;boost/array.hpp&quot;"/>
+    <include name="&quot;DataFormats/METReco/interface/HcalNoiseHPD.h&quot;"/>
+
+    <namespace name="reco">
+        <forward name="HcalNoiseRBX"/>
+        <typedef name="HcalNoiseRBXCollection"
+                 value="std::vector&lt;HcalNoiseRBX&gt;">
+typedef std::vector&lt;HcalNoiseRBX&gt; HcalNoiseRBXCollection;
+            <comment>
+     typedefs
+            </comment>
+        </typedef>
+
+
+        <class name="HcalNoiseRBX"
+               fullname="reco::HcalNoiseRBX"
+               module="DataFormats.METReco"
+               project=""
+               type="regular">
+
+            <section>
+                <friend>
+friend class HcalNoiseInfoProducer;
+                </friend>
+
+                <friend>
+friend class HcalNoiseRBXArray;
+                </friend>
+
+            </section>
+            <section name="public">
+                <constructor name="HcalNoiseRBX"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+HcalNoiseRBX();
+                    <comment>
+       constructors
+                    </comment>
+                </constructor>
+
+                <destructor name="~HcalNoiseRBX"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~HcalNoiseRBX();
+                    <comment>
+       destructor
+                    </comment>
+                </destructor>
+
+                <method1 name="idnumber"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int idnumber(void) const;
+                    <comment>
+       accessors
+                    </comment>
+                </method1>
+
+                <method2 name="HPDs"
+                         return="const std::vector&lt;HcalNoiseHPD&gt;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const std::vector&lt;HcalNoiseHPD&gt; HPDs(void) const;
+                    <comment>
+       returns a reference to a vector of HcalNoiseHPDs
+                    </comment>
+                </method2>
+
+                <method2 name="maxHPD"
+                         return="std::vector&lt;HcalNoiseHPD&gt;::const_iterator"
+                         args="['double=1.5']"
+                         vars="['threshold']"
+                         qual="const">
+std::vector&lt;HcalNoiseHPD&gt;::const_iterator maxHPD(double threshold=1.5) const;
+                    <comment>
+       return HPD with the highest rechit energy in the RBX
+       individual rechits only contribute if they have E&gt;threshold
+                    </comment>
+                </method2>
+
+                <method2 name="allCharge"
+                         return="const std::vector&lt;float&gt;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const std::vector&lt;float&gt; allCharge(void) const;
+                    <comment>
+       pedestal subtracted fC information for all of the pixels in the RBX
+                    </comment>
+                </method2>
+
+                <method1 name="allChargeTotal"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float allChargeTotal(void) const;
+                </method1>
+
+                <method1 name="allChargeHighest2TS"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float allChargeHighest2TS(void) const;
+                </method1>
+
+                <method1 name="allChargeHighest3TS"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float allChargeHighest3TS(void) const;
+                </method1>
+
+                <method1 name="totalZeros"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int totalZeros(void) const;
+                    <comment>
+       total number of adc zeros in the RBX
+                    </comment>
+                </method1>
+
+                <method1 name="maxZeros"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int maxZeros(void) const;
+                    <comment>
+       largest number of zeros from an adc in the RBX
+                    </comment>
+                </method1>
+
+                <method1 name="recHitEnergy"
+                         return="double"
+                         args="['double=1.5']"
+                         vars="['theshold']"
+                         qual="const">
+double recHitEnergy(double theshold=1.5) const;
+                    <comment>
+       sum of the energy of rechits in the RBX with E&gt;threshold
+                    </comment>
+                </method1>
+
+                <method1 name="minRecHitTime"
+                         return="double"
+                         args="['double=20.0']"
+                         vars="['threshold']"
+                         qual="const">
+double minRecHitTime(double threshold=20.0) const;
+                    <comment>
+       minimum and maximum time for rechits in the RBX with E&gt;threshold
+                    </comment>
+                </method1>
+
+                <method1 name="maxRecHitTime"
+                         return="double"
+                         args="['double=20.0']"
+                         vars="['threshold']"
+                         qual="const">
+double maxRecHitTime(double threshold=20.0) const;
+                </method1>
+
+                <method1 name="numRecHits"
+                         return="int"
+                         args="['double=1.5']"
+                         vars="['threshold']"
+                         qual="const">
+int numRecHits(double threshold=1.5) const;
+                    <comment>
+       total number of rechits above some threshold in the RBX
+                    </comment>
+                </method1>
+
+                <method1 name="caloTowerHadE"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double caloTowerHadE(void) const;
+                    <comment>
+       calotower properties integrated over the entire RBX
+                    </comment>
+                </method1>
+
+                <method1 name="caloTowerEmE"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double caloTowerEmE(void) const;
+                </method1>
+
+                <method1 name="caloTowerTotalE"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double caloTowerTotalE(void) const;
+                </method1>
+
+                <method1 name="caloTowerEmFraction"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double caloTowerEmFraction(void) const;
+                </method1>
+
+            </section>
+            <section name="private">
+
+                <class name="twrcomp"
+                       fullname="reco::HcalNoiseRBX::twrcomp"
+                       module="DataFormats.METReco"
+                       project=""
+                       type="regular struct">
+                    <comment>
+       helper function to get the unique calotowers
+                    </comment>
+
+
+                    <typemap name="twrcomp"
+                             value="reco::HcalNoiseRBX::twrcomp"
+                             type="class"/>
+
+                </class>
+            </section>
+
+        </class>
+    </namespace>
+
+    <type name="const std::vector&lt;HcalNoiseHPD&gt;"/>
+    <type name="const std::vector&lt;float&gt;"/>
+    <type name="double"/>
+    <type name="float"/>
+    <type name="int"/>
+    <type name="reco::HcalNoiseRBX"/>
+    <type name="reco::HcalNoiseRBX::twrcomp"/>
+    <type name="std::vector&lt;HcalNoiseHPD&gt;::const_iterator"/>
+    <type name="void"/>
+</header>
