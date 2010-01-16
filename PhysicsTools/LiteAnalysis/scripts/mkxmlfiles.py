@@ -84,6 +84,8 @@ NAMES = {'projectfile':'config/Project.xml',
 		 'mod'    : 'Module',
 		 'space'  : '[ \\t]',
 		 'xml'    : 'xml',
+		 'noclasstest': False,
+		 'verbose': '',
 		 'problemsfile': 'problems.txt'}
 
 j = rfind(NAMES['pwd'],'/')
@@ -766,11 +768,6 @@ def main():
 		else:
 			NAMES['include'] = headerBasepaths(componentname, NAMES)
 			NAMES['headerlist'] = headers
-
-		if LOCALDEBUG:
-			print "\n\tComponent %(componentname)s Attributes\n" % NAMES
-			print pp.pprint(NAMES)
-			print ""
 
 		# Okay, let's get to work!
 
