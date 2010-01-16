@@ -1,3 +1,0 @@
-unsigned char	brotherLabel()
-unsigned char	subNodeLabel()
-
