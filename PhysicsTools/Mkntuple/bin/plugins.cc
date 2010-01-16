@@ -7,7 +7,8 @@
 // $Id$
 //
 //
-// Include its header first to avoid annoying compiler complaints.
+// If using Python, include its header first to avoid annoying compiler
+// complaints.
 #include <Python.h>
 #include <boost/python/type_id.hpp>
 #include <iostream>
@@ -99,7 +100,7 @@ struct Variable
 // var[i].first the name of the (simple) method to be called
 // var[i].second is the name of the n-tuple variable
 //
-// We use a base class (BufferThing) to permit polymorthic behavior, that is,
+// We use a base class (BufferThing) to permit polymorphic behavior, that is,
 // to allow generic calls to the buffer methods init(...) and fill(...) that
 // operate on objects of differing type.
 //
