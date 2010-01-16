@@ -4,8 +4,8 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
-// $Revision: 1.3 $
-// $Id: plugins.cc,v 1.3 2010/01/16 04:02:01 prosper Exp $
+// $Revision: 1.4 $
+// $Id: plugins.cc,v 1.4 2010/01/16 04:05:31 prosper Exp $
 //
 //
 // If using Python, include its header first to avoid 
@@ -107,7 +107,7 @@ struct Variable
 //
 // typenames:
 //   X = class of object to be extracted using getByLabel
-//   Y = template vale of objects of class Variable<Y>. Y can be the same
+//   Y = template value of objects of class Variable<Y>. Y can be the same
 //   as X.
 
 template <typename X, typename Y>
