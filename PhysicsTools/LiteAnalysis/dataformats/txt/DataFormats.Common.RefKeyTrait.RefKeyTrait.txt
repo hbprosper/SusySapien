@@ -1,0 +1,9 @@
+Class:
+	edm::reftobase::RefKeyTrait<REF>
+
+Header:
+	DataFormats/Common/interface/RefKeyTrait.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:16:06 2010	lsclass.py $Revision:$
+

@@ -1,0 +1,4 @@
+unsigned int	dataSize()
+bool	empty()
+unsigned int	size()
+

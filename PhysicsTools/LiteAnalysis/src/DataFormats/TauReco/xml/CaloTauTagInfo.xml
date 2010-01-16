@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: CaloTauTagInfo.xml
+  Created:  Thu Jan 14 22:48:40 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/TauReco/interface/CaloTauTagInfo.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/TauReco/interface/CaloTauTagInfo.h">
+
+    <include name="&quot;DataFormats/EgammaReco/interface/BasicClusterFwd.h&quot;"/>
+    <include name="&quot;DataFormats/JetReco/interface/CaloJetCollection.h&quot;"/>
+    <include name="&quot;DataFormats/Math/interface/Point3D.h&quot;"/>
+    <include name="&quot;DataFormats/TauReco/interface/BaseTauTagInfo.h&quot;"/>
+    <include name="&quot;DataFormats/TauReco/interface/CaloTauTagInfoFwd.h&quot;"/>
+
+    <namespace name="reco">
+
+        <class name="CaloTauTagInfo"
+               fullname="reco::CaloTauTagInfo"
+               module="DataFormats.TauReco"
+               project=""
+               type="regular">
+            <baseclass name="public BaseTauTagInfo"/>
+
+            <section name="public">
+                <constructor name="CaloTauTagInfo"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+CaloTauTagInfo();
+                </constructor>
+
+                <destructor name="~CaloTauTagInfo"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~CaloTauTagInfo();
+                </destructor>
+
+                <method1 name="clone"
+                         return="virtual CaloTauTagInfo*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual CaloTauTagInfo* clone() const;
+                </method1>
+
+                <method1 name="calojetRef"
+                         return="const CaloJetRef&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const CaloJetRef&amp; calojetRef() const;
+                    <comment>
+      the reference to the CaloJet
+                    </comment>
+                </method1>
+
+                <method1 name="setcalojetRef"
+                         return="void"
+                         args="['const CaloJetRef']"
+                         vars="['']"
+                         qual="">
+void setcalojetRef(const CaloJetRef);
+                </method1>
+
+                <method2 name="positionAndEnergyECALRecHits"
+                         return="const std::vector&lt;std::pair&lt;math::XYZPoint, float&gt; &gt;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const std::vector&lt;std::pair&lt;math::XYZPoint, float&gt; &gt; positionAndEnergyECALRecHits() const;
+                </method2>
+
+                <method2 name="setpositionAndEnergyECALRecHits"
+                         return="void"
+                         args="['std::vector&lt;std::pair&lt;math::XYZPoint, float&gt;']"
+                         vars="['&gt;']"
+                         qual="">
+void setpositionAndEnergyECALRecHits(std::vector&lt;std::pair&lt;math::XYZPoint, float&gt; &gt;);
+                </method2>
+
+                <method2 name="neutralECALBasicClusters"
+                         return="const std::vector&lt;BasicClusterRef&gt;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const std::vector&lt;BasicClusterRef&gt; neutralECALBasicClusters() const;
+                </method2>
+
+                <method2 name="setneutralECALBasicClusters"
+                         return="void"
+                         args="['std::vector&lt;BasicClusterRef&gt;']"
+                         vars="['']"
+                         qual="">
+void setneutralECALBasicClusters(std::vector&lt;BasicClusterRef&gt;);
+                </method2>
+
+            </section>
+
+        </class>
+    </namespace>
+
+    <type name="BaseTauTagInfo"/>
+    <type name="CaloTauTagInfo*"/>
+    <type name="const CaloJetRef"/>
+    <type name="const CaloJetRef&amp;"/>
+    <type name="const std::vector&lt;BasicClusterRef&gt;"/>
+    <type name="const std::vector&lt;std::pair&lt;math::XYZPoint, float&gt; &gt;"/>
+    <type name="reco::CaloTauTagInfo"/>
+    <type name="std::vector&lt;BasicClusterRef&gt;"/>
+    <type name="std::vector&lt;std::pair&lt;math::XYZPoint, float&gt;"/>
+    <type name="void"/>
+</header>

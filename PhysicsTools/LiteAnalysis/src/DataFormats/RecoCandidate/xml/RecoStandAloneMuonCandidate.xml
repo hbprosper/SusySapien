@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: RecoStandAloneMuonCandidate.xml
+  Created:  Thu Jan 14 22:48:32 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/RecoCandidate/interface/RecoStandAloneMuonCandidate.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/RecoCandidate/interface/RecoStandAloneMuonCandidate.h">
+
+    <include name="&quot;DataFormats/RecoCandidate/interface/RecoCandidate.h&quot;"/>
+
+    <namespace name="reco">
+
+        <class name="RecoStandAloneMuonCandidate"
+               fullname="reco::RecoStandAloneMuonCandidate"
+               module="DataFormats.RecoCandidate"
+               project=""
+               type="regular">
+            <baseclass name="public RecoCandidate"/>
+
+            <section name="public">
+                <constructor name="RecoStandAloneMuonCandidate"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+RecoStandAloneMuonCandidate();
+                    <comment>
+        default constructor
+                    </comment>
+                </constructor>
+
+                <constructor name="RecoStandAloneMuonCandidate"
+                             return=""
+                             args="['Charge','const LorentzVector&amp;','const Point&amp;=Point(0, 0, 0)','int=0','int=0']"
+                             vars="['q','p4','vtx','pdgId','status']"
+                             qual="">
+RecoStandAloneMuonCandidate(Charge q, const LorentzVector&amp; p4, const Point&amp; vtx=Point(0, 0, 0), int pdgId=0, int status=0);
+                    <comment>
+        constructor from values
+                    </comment>
+                </constructor>
+
+                <constructor name="RecoStandAloneMuonCandidate"
+                             return=""
+                             args="['Charge','const PolarLorentzVector&amp;','const Point&amp;=Point(0, 0, 0)','int=0','int=0']"
+                             vars="['q','p4','vtx','pdgId','status']"
+                             qual="">
+RecoStandAloneMuonCandidate(Charge q, const PolarLorentzVector&amp; p4, const Point&amp; vtx=Point(0, 0, 0), int pdgId=0, int status=0);
+                    <comment>
+        constructor from values
+                    </comment>
+                </constructor>
+
+                <destructor name="~RecoStandAloneMuonCandidate"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~RecoStandAloneMuonCandidate();
+                    <comment>
+        destructor
+                    </comment>
+                </destructor>
+
+                <method1 name="clone"
+                         return="virtual RecoStandAloneMuonCandidate*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual RecoStandAloneMuonCandidate* clone() const;
+                    <comment>
+        returns a clone of the candidate
+                    </comment>
+                </method1>
+
+                <method1 name="setTrack"
+                         return="void"
+                         args="['const reco::TrackRef&amp;']"
+                         vars="['r']"
+                         qual="">
+void setTrack(const reco::TrackRef&amp; r);
+                    <comment>
+        set reference to track
+                    </comment>
+                </method1>
+
+                <method1 name="standAloneMuon"
+                         return="virtual reco::TrackRef"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual reco::TrackRef standAloneMuon() const;
+                    <comment>
+        reference to a track
+                    </comment>
+                </method1>
+
+            </section>
+
+        </class>
+    </namespace>
+
+    <type name="Charge"/>
+    <type name="RecoCandidate"/>
+    <type name="RecoStandAloneMuonCandidate*"/>
+    <type name="const LorentzVector&amp;"/>
+    <type name="const Point&amp;"/>
+    <type name="const PolarLorentzVector&amp;"/>
+    <type name="const reco::TrackRef&amp;"/>
+    <type name="int"/>
+    <type name="reco::RecoStandAloneMuonCandidate"/>
+    <type name="reco::TrackRef"/>
+    <type name="void"/>
+</header>

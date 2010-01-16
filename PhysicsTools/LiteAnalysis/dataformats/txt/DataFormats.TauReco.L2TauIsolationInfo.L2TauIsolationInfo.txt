@@ -1,0 +1,9 @@
+Class:
+	reco::L2TauIsolationInfo
+
+Header:
+	DataFormats/TauReco/interface/L2TauIsolationInfo.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:08 2010	lsclass.py $Revision:$
+

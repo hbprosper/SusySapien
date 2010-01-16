@@ -1,0 +1,105 @@
+Class:
+	edm::SortedCollection<T, SORT>
+
+Header:
+	DataFormats/Common/interface/SortedCollection.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:40 2010	lsclass.py $Revision:$
+
+Methods from edm::SortedCollection<T, SORT>
+
+	-o- push_back
+		Return: void
+		Arguments: T const&	t
+
+	-o- swap
+		Return: void
+		Arguments: SortedCollection&	other
+
+	-o- empty
+		Return: bool
+		Arguments: void	
+
+	-o- size
+		Return: typename std::vector<T>::size_type
+		Arguments: void	
+
+	-o- capacity
+		Return: typename std::vector<T>::size_type
+		Arguments: void	
+
+	-o- reserve
+		Return: void
+		Arguments: size_type	n
+
+	-o- find
+		Return: typename std::vector<T>::iterator
+		Arguments: key_type	k
+
+	-o- find
+		Return: typename std::vector<T>::const_iterator
+		Arguments: key_type	k
+
+	-o- begin
+		Return: typename std::vector<T>::const_iterator
+		Arguments: void	
+
+	-o- end
+		Return: typename std::vector<T>::const_iterator
+		Arguments: void	
+
+	-o- begin
+		Return: typename std::vector<T>::iterator
+		Arguments: void	
+
+	-o- end
+		Return: typename std::vector<T>::iterator
+		Arguments: void	
+
+	-o- front
+		Return: typename std::vector<T>::const_reference
+		Arguments: void	
+
+	-o- front
+		Return: typename std::vector<T>::reference
+		Arguments: void	
+
+	-o- back
+		Return: typename std::vector<T>::const_reference
+		Arguments: void	
+
+	-o- back
+		Return: typename std::vector<T>::reference
+		Arguments: void	
+
+	-o- sort
+		Return: void
+		Arguments: void	
+
+	-o- post_insert
+		Return: void
+		Arguments: void	
+
+	-o- setPtr
+		Return: void
+		Arguments: std::type_info const&	toType
+		           unsigned long	index
+		           void const*&	ptr
+
+	-o- swap_contents
+		Return: void
+		Arguments: std::vector<T>&	other
+
+	-o- fillView
+		Return: void
+		Arguments: ProductID const&	id
+		           std::vector<void const*>&	pointers
+		           helper_vector&	helpers
+
+	-o- fillPtrVector
+		Return: void
+		Arguments: const std::type_info&	toType
+		           const std::vector<unsigned long>&	indices
+		           std::vector<void const*>&	ptrs
+

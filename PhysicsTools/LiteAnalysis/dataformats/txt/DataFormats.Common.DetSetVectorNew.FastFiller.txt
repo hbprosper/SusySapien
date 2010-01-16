@@ -1,0 +1,118 @@
+Class:
+	edmNew::DetSetVector<T>
+
+Header:
+	DataFormats/Common/interface/DetSetVectorNew.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:44 2010	lsclass.py $Revision:$
+
+Methods from edmNew::DetSetVector<T>
+
+	-o- swap
+		Return: void
+		Arguments: DetSetVector&	rh
+
+	-o- swap
+		Return: void
+		Arguments: IdContainer&	iic
+		           DataContainer&	idc
+
+	-o- reserve
+		Return: void
+		Arguments: size_t	isize
+		           size_t	dsize
+
+	-o- resize
+		Return: void
+		Arguments: size_t	isize
+		           size_t	dsize
+
+	-o- insert
+		Return: DetSet<T>
+		Arguments: id_type	iid
+		           data_type const*	idata
+		           size_type	isize
+
+	-o- insert
+		Return: DetSet<T>
+		Arguments: id_type	iid
+		           size_type	isize
+
+	-o- push_back
+		Return: dstvdetails::DetSetVectorTrans::Item&
+		Arguments: id_type	iid
+
+	-o- pop_back
+		Return: void
+		Arguments: id_type	iid
+
+	-o- exists
+		Return: bool
+		Arguments: id_type	i
+
+	-o- isValid
+		Return: bool
+		Arguments: id_type	i
+
+	-o- find
+		Return: boost::transform_iterator<IterHelp, typename IdContainer::const_iterator>
+		Arguments: id_type	i
+
+	-o- findItem
+		Return: typename IdContainer::const_iterator
+		Arguments: id_type	i
+
+	-o- begin
+		Return: boost::transform_iterator<IterHelp, typename IdContainer::const_iterator>
+		Arguments: void	
+
+	-o- end
+		Return: boost::transform_iterator<IterHelp, typename IdContainer::const_iterator>
+		Arguments: void	
+
+	-o- subdetId
+		Return: int
+		Arguments: void	
+
+	-o- empty
+		Return: bool
+		Arguments: void	
+
+	-o- dataSize
+		Return: unsigned int
+		Arguments: void	
+
+	-o- size
+		Return: unsigned int
+		Arguments: void	
+
+	-o- data
+		Return: T const*
+		Arguments: size_t	cell
+
+	-o- detsetSize
+		Return: unsigned int
+		Arguments: size_t	cell
+
+	-o- id
+		Return: unsigned int
+		Arguments: size_t	cell
+
+	-o- item
+		Return: dstvdetails::DetSetVectorTrans::Item const&
+		Arguments: size_t	cell
+
+	-o- data
+		Return: std::vector<T> const&
+		Arguments: void	
+
+	-o- update
+		Return: void
+		Arguments: Item const&	item
+
+	-o- equal_range
+		Return: template<typename CMP> std::pair<const_iterator, const_iterator>
+		Arguments: id_type	i
+		           CMP	cmp
+

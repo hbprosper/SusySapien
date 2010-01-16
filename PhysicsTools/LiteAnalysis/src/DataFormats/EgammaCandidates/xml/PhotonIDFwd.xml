@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: PhotonIDFwd.xml
+  Created:  Thu Jan 14 22:46:57 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/EgammaCandidates/interface/PhotonIDFwd.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/EgammaCandidates/interface/PhotonIDFwd.h">
+
+    <include name="&lt;vector&gt;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+    <include name="&quot;DataFormats/EgammaCandidates/interface/PhotonID.h&quot;"/>
+
+    <namespace name="reco">
+        <forward name="PhotonID"/>
+        <typedef name="PhotonIDCollection"
+                 value="std::vector&lt;PhotonID&gt;">
+typedef std::vector&lt;PhotonID&gt; PhotonIDCollection;
+            <comment>
+      collection of PhotonID objects
+            </comment>
+        </typedef>
+
+        <typedef name="PhotonIDRef"
+                 value="edm::Ref&lt;PhotonIDCollection&gt;">
+typedef edm::Ref&lt;PhotonIDCollection&gt; PhotonIDRef;
+            <comment>
+      reference to an object in a collection of PhotonID objects
+            </comment>
+        </typedef>
+
+        <typedef name="PhotonIDRefProd"
+                 value="edm::RefProd&lt;PhotonIDCollection&gt;">
+typedef edm::RefProd&lt;PhotonIDCollection&gt; PhotonIDRefProd;
+            <comment>
+      reference to a collection of PhotonID objects
+            </comment>
+        </typedef>
+
+        <typedef name="PhotonIDRefVector"
+                 value="edm::RefVector&lt;PhotonIDCollection&gt;">
+typedef edm::RefVector&lt;PhotonIDCollection&gt; PhotonIDRefVector;
+            <comment>
+      vector of objects in the same collection of PhotonID objects
+            </comment>
+        </typedef>
+
+        <typedef name="photonID_iterator"
+                 value="PhotonIDRefVector::iterator">
+typedef PhotonIDRefVector::iterator photonID_iterator;
+            <comment>
+      iterator over a vector of reference to PhotonID objects
+            </comment>
+        </typedef>
+
+    </namespace>
+
+</header>

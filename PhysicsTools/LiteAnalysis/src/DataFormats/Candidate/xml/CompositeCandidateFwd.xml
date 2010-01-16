@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: CompositeCandidateFwd.xml
+  Created:  Thu Jan 14 22:46:40 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Candidate/interface/CompositeCandidateFwd.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Candidate/interface/CompositeCandidateFwd.h">
+
+    <include name="&quot;DataFormats/Common/interface/OwnVector.h&quot;"/>
+
+    <namespace name="reco">
+        <forward name="CompositeCandidate"/>
+    </namespace>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefToBase.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefToBaseVector.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefToBaseProd.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/View.h&quot;"/>
+
+    <namespace name="reco">
+        <typedef name="CompositeCandidateCollection"
+                 value="std::vector&lt;CompositeCandidate&gt;">
+typedef std::vector&lt;CompositeCandidate&gt; CompositeCandidateCollection;
+            <comment>
+      collection of Candidate objects
+            </comment>
+        </typedef>
+
+        <typedef name="CompositeCandidateView"
+                 value="edm::View&lt;CompositeCandidate&gt;">
+typedef edm::View&lt;CompositeCandidate&gt; CompositeCandidateView;
+            <comment>
+      view of a collection containing candidates
+            </comment>
+        </typedef>
+
+        <typedef name="CompositeCandidateRef"
+                 value="edm::Ref&lt;CompositeCandidateCollection&gt;">
+typedef edm::Ref&lt;CompositeCandidateCollection&gt; CompositeCandidateRef;
+            <comment>
+      persistent reference to an object in a collection of Candidate objects
+            </comment>
+        </typedef>
+
+        <typedef name="CompositeCandidateBaseRef"
+                 value="edm::RefToBase&lt;CompositeCandidate&gt;">
+typedef edm::RefToBase&lt;CompositeCandidate&gt; CompositeCandidateBaseRef;
+            <comment>
+      persistent reference to an object in a collection of Candidate objects
+            </comment>
+        </typedef>
+
+        <typedef name="CompositeCandidateRefVector"
+                 value="edm::RefVector&lt;CompositeCandidateCollection&gt;">
+typedef edm::RefVector&lt;CompositeCandidateCollection&gt; CompositeCandidateRefVector;
+            <comment>
+      vector of references to objects in the same  collection of Candidate objects
+            </comment>
+        </typedef>
+
+        <typedef name="CompositeCandidateBaseRefVector"
+                 value="edm::RefToBaseVector&lt;CompositeCandidate&gt;">
+typedef edm::RefToBaseVector&lt;CompositeCandidate&gt; CompositeCandidateBaseRefVector;
+            <comment>
+      vector of references to objects in the same collection of Candidate objects via base type
+            </comment>
+        </typedef>
+
+        <typedef name="CompositeCandidateRefProd"
+                 value="edm::RefProd&lt;CompositeCandidateCollection&gt;">
+typedef edm::RefProd&lt;CompositeCandidateCollection&gt; CompositeCandidateRefProd;
+            <comment>
+      reference to a collection of Candidate objects
+            </comment>
+        </typedef>
+
+        <typedef name="CompositeCandidateBaseRefProd"
+                 value="edm::RefToBaseProd&lt;CompositeCandidate&gt;">
+typedef edm::RefToBaseProd&lt;CompositeCandidate&gt; CompositeCandidateBaseRefProd;
+            <comment>
+      vector of references to objects in the same collection of Candidate objects via base type
+            </comment>
+        </typedef>
+
+    </namespace>
+
+</header>

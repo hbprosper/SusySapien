@@ -1,0 +1,628 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: LazyGetter.xml
+  Created:  Thu Jan 14 22:46:07 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Common/interface/LazyGetter.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/LazyGetter.h">
+
+    <include name="&lt;algorithm&gt;"/>
+    <include name="&lt;vector&gt;"/>
+    <include name="&lt;iostream&gt;"/>
+    <include name="&quot;boost/concept_check.hpp&quot;"/>
+    <include name="&quot;boost/iterator/transform_iterator.hpp&quot;"/>
+    <include name="&quot;boost/shared_ptr.hpp&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/traits.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/DetSet.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/Handle.h&quot;"/>
+    <include name="&quot;FWCore/Utilities/interface/EDMException.h&quot;"/>
+
+    <namespace name="edm">
+        <forward name="template&lt;T&gt; LazyAdapter"/>
+        <forward name="template&lt;T&gt; LazyGetter"/>
+        <forward name="template&lt;T&gt; FindValue"/>
+
+        <namespace name="lazydetail">
+            <function1 name="_throw_range"
+                       return="inline void"
+                       args="['uint32_t']"
+                       vars="['region']"
+                       qual="">
+inline       void _throw_range(uint32_t region);
+            </function1>
+
+        </namespace>
+
+        <class name="RegionIndex"
+               fullname="edm::RegionIndex&lt;T&gt;"
+               module="DataFormats.Common"
+               project=""
+               type="template"
+               template="template&lt;class T&gt;">
+
+            <section>
+                <friend>
+friend class LazyAdapter&lt;T&gt;;
+                </friend>
+
+            </section>
+            <section name="public">
+                <typedef name="const_iterator"
+                         value="typename std::vector&lt;T&gt;::const_iterator">
+typedef typename std::vector&lt;T&gt;::const_iterator const_iterator;
+                </typedef>
+
+                <typedef name="pair_iterator"
+                         value="std::pair&lt;const_iterator, const_iterator&gt;">
+typedef std::pair&lt;const_iterator, const_iterator&gt; pair_iterator;
+                </typedef>
+
+                <constructor name="RegionIndex"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+RegionIndex();
+                    <comment>
+        Default constructor
+                    </comment>
+                </constructor>
+
+                <constructor name="RegionIndex"
+                             return=""
+                             args="['uint32_t','uint32_t','uint32_t','const LazyGetter&lt;T&gt;*']"
+                             vars="['region','start','finish','theLazyGetter']"
+                             qual="">
+RegionIndex(uint32_t region, uint32_t start, uint32_t finish, const LazyGetter&lt;T&gt;* theLazyGetter);
+                    <comment>
+        Constructor
+                    </comment>
+                </constructor>
+
+                <method1 name="region"
+                         return="uint32_t"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+uint32_t region() const;
+                    <comment>
+        Get region number
+                    </comment>
+                </method1>
+
+                <method1 name="start"
+                         return="uint32_t"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+uint32_t start() const;
+                    <comment>
+        Get start index
+                    </comment>
+                </method1>
+
+                <method1 name="finish"
+                         return="uint32_t"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+uint32_t finish() const;
+                    <comment>
+        Get off-the-end finish index
+                    </comment>
+                </method1>
+
+                <method1 name="unpacked"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool unpacked() const;
+                    <comment>
+        Get unpacking status
+                    </comment>
+                </method1>
+
+                <method1 name="begin"
+                         return="const_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const_iterator begin() const;
+                    <comment>
+        Get begin iterator
+                    </comment>
+                </method1>
+
+                <method1 name="end"
+                         return="const_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const_iterator end() const;
+                    <comment>
+        Get off the end iterator
+                    </comment>
+                </method1>
+
+                <method2 name="updateLazyGetter"
+                         return="RegionIndex&lt;T&gt;&amp;"
+                         args="['const LazyGetter&lt;T&gt;*']"
+                         vars="['newLazyGetter']"
+                         qual="">
+RegionIndex&lt;T&gt;&amp; updateLazyGetter(const LazyGetter&lt;T&gt;* newLazyGetter);
+                    <comment>
+        Update the pointer to the lazyGetter
+                    </comment>
+                </method2>
+
+                <method1 name="find"
+                         return="pair_iterator"
+                         args="['uint32_t']"
+                         vars="['id']"
+                         qual="const">
+pair_iterator find(uint32_t id) const;
+                    <comment>
+        Get range of T on on det
+                    </comment>
+                </method1>
+
+            </section>
+            <section name="private">
+                <constant name="getter_"
+                          type="const LazyGetter&amp;lt;T&amp;gt;*"
+                          value=""/>
+            </section>
+
+            <typemap name="const_iterator"
+                     value="typename std::vector&lt;T&gt;::const_iterator"
+                     type="typedef"/>
+            <typemap name="pair_iterator"
+                     value="typename std::pair&lt;typename std::vector&lt;T&gt;::const_iterator, typename std::vector&lt;T&gt;::const_iterator&gt;"
+                     type="typedef"/>
+
+        </class>
+
+        <class name="LazyUnpacker"
+               fullname="edm::LazyUnpacker&lt;T&gt;"
+               module="DataFormats.Common"
+               project=""
+               type="abstract template"
+               template="template&lt;typename T&gt;">
+
+            <section name="public">
+                <typedef name="record_type"
+                         value="std::vector&lt;T&gt;">
+typedef std::vector&lt;T&gt; record_type;
+                </typedef>
+
+                <method1 name="fill"
+                         return="virtual void"
+                         args="['const uint32_t&amp;','record_type&amp;']"
+                         vars="['','']"
+                         qual="=0">
+virtual void fill(const uint32_t&amp;, record_type&amp;)=0;
+                </method1>
+
+                <destructor name="~LazyUnpacker"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~LazyUnpacker();
+                </destructor>
+
+            </section>
+
+            <typemap name="record_type"
+                     value="std::vector&lt;T&gt;"
+                     type="typedef"/>
+
+        </class>
+
+        <class name="LazyAdapter"
+               fullname="edm::LazyAdapter&lt;T&gt;"
+               module="DataFormats.Common"
+               project=""
+               type="template"
+               template="template&lt;typename T&gt;">
+            <baseclass name="public std::unary_function&lt;const RegionIndex&lt;T&gt;&amp;, const RegionIndex&lt;T&gt;&amp;&gt;"/>
+
+            <section name="public">
+                <typedef name="record_type"
+                         value="std::vector&lt;T&gt;">
+typedef std::vector&lt;T&gt; record_type;
+                </typedef>
+
+                <constructor name="LazyAdapter"
+                             return=""
+                             args="['const LazyUnpacker&lt;T&gt;*','const record_type*','const LazyGetter&lt;T&gt;*']"
+                             vars="['','','']"
+                             qual="">
+LazyAdapter(const LazyUnpacker&lt;T&gt;*, const record_type*, const LazyGetter&lt;T&gt;*);
+                    <comment>
+          Constructor
+                    </comment>
+                </constructor>
+
+                <operator name="operator()"
+                          return="const RegionIndex&lt;T&gt;&amp;"
+                          args="['const RegionIndex&lt;T&gt;&amp;']"
+                          vars="['region']"
+                          qual="const">
+const RegionIndex&lt;T&gt;&amp; operatorPP(const RegionIndex&lt;T&gt;&amp; region) const;
+                    <comment>
+          () operator for construction of iterator
+                    </comment>
+                </operator>
+
+            </section>
+            <section name="private">
+                <constant name="getter_"
+                          type="const LazyGetter&amp;lt;T&amp;gt;*"
+                          value=""/>
+            </section>
+
+            <typemap name="record_type"
+                     value="std::vector&lt;T&gt;"
+                     type="typedef"/>
+
+        </class>
+
+        <class name="UpdateGetterAdapter"
+               fullname="edm::UpdateGetterAdapter&lt;T&gt;"
+               module="DataFormats.Common"
+               project=""
+               type="template"
+               template="template&lt;typename T&gt;">
+            <baseclass name="public std::unary_function&lt;const RegionIndex&lt;T&gt;&amp;, const RegionIndex&lt;T&gt;&amp;&gt;"/>
+
+            <section name="public">
+                <constructor name="UpdateGetterAdapter"
+                             return=""
+                             args="['const LazyGetter&lt;T&gt;*']"
+                             vars="['']"
+                             qual="">
+UpdateGetterAdapter(const LazyGetter&lt;T&gt;*);
+                    <comment>
+        Constructor
+                    </comment>
+                </constructor>
+
+                <operator name="operator()"
+                          return="const RegionIndex&lt;T&gt;&amp;"
+                          args="['const RegionIndex&lt;T&gt;&amp;']"
+                          vars="['']"
+                          qual="const">
+const RegionIndex&lt;T&gt;&amp; operatorPP(const RegionIndex&lt;T&gt;&amp;) const;
+                    <comment>
+        () operator for construction of iterator
+                    </comment>
+                </operator>
+
+            </section>
+            <section name="private">
+                <constant name="getter_"
+                          type="const LazyGetter&amp;lt;T&amp;gt;*"
+                          value=""/>
+            </section>
+
+        </class>
+
+        <class name="LazyGetter"
+               fullname="edm::LazyGetter&lt;T&gt;"
+               module="DataFormats.Common"
+               project=""
+               type="template"
+               template="template&lt;class T&gt;">
+
+            <section>
+                <constructor name="BOOST_CLASS_REQUIRE"
+                             return=""
+                             args="['T','boost','LessThanComparableConcept']"
+                             vars="['','','']"
+                             qual="">
+BOOST_CLASS_REQUIRE(T, boost, LessThanComparableConcept);
+                </constructor>
+
+            </section>
+            <section name="public">
+                <typedef name="register_type"
+                         value="std::vector&lt;RegionIndex&lt;T&gt; &gt;">
+typedef std::vector&lt;RegionIndex&lt;T&gt; &gt; register_type;
+                </typedef>
+
+                <typedef name="record_type"
+                         value="std::vector&lt;T&gt;">
+typedef std::vector&lt;T&gt; record_type;
+                </typedef>
+
+                <typedef name="register_iterator"
+                         value="boost::transform_iterator&lt;UpdateGetterAdapter&lt;T&gt;, typename register_type::const_iterator &gt;">
+typedef boost::transform_iterator&lt;UpdateGetterAdapter&lt;T&gt;, typename register_type::const_iterator &gt; register_iterator;
+                </typedef>
+
+                <typedef name="record_iterator"
+                         value="typename record_type::const_iterator">
+typedef typename record_type::const_iterator record_iterator;
+                </typedef>
+
+                <typedef name="const_iterator"
+                         value="boost::transform_iterator&lt;LazyAdapter&lt;T&gt;, typename register_type::const_iterator &gt;">
+typedef boost::transform_iterator&lt;LazyAdapter&lt;T&gt;, typename register_type::const_iterator &gt; const_iterator;
+                </typedef>
+
+                <typedef name="value_ref"
+                         value="Ref&lt;LazyGetter&lt;T&gt;, T, FindValue&lt;T&gt; &gt;">
+typedef Ref&lt;LazyGetter&lt;T&gt;, T, FindValue&lt;T&gt; &gt; value_ref;
+                </typedef>
+
+                <constructor name="LazyGetter"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+LazyGetter();
+                    <comment>
+        Default constructor.
+                    </comment>
+                </constructor>
+
+                <constructor name="LazyGetter"
+                             return=""
+                             args="['uint32_t','const boost::shared_ptr&lt;LazyUnpacker&lt;T&gt; &gt;&amp;']"
+                             vars="['','']"
+                             qual="">
+LazyGetter(uint32_t, const boost::shared_ptr&lt;LazyUnpacker&lt;T&gt; &gt;&amp;);
+                    <comment>
+        Constructor with unpacker.
+                    </comment>
+                </constructor>
+
+                <method1 name="regions"
+                         return="uint32_t"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+uint32_t regions() const;
+                    <comment>
+        Returns the size of LazyUnpacker::register_.
+                    </comment>
+                </method1>
+
+                <method1 name="find"
+                         return="const_iterator"
+                         args="['uint32_t']"
+                         vars="['index']"
+                         qual="const">
+const_iterator find(uint32_t index) const;
+                    <comment>
+        Returns an iterator to the register_ for a given index.
+                    </comment>
+                </method1>
+
+                <operator name="operator[]"
+                          return="const RegionIndex&lt;T&gt;&amp;"
+                          args="['uint32_t']"
+                          vars="['index']"
+                          qual="const">
+const RegionIndex&lt;T&gt;&amp; operator[](uint32_t index) const;
+                    <comment>
+        Returns a reference to the register_ for a given index.
+                    </comment>
+                </operator>
+
+                <method1 name="begin"
+                         return="const_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const_iterator begin() const;
+                    <comment>
+        Returns an iterator to the first register_
+                    </comment>
+                </method1>
+
+                <method1 name="end"
+                         return="const_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const_iterator end() const;
+                    <comment>
+        Returns the off-the-end iterator.
+                    </comment>
+                </method1>
+
+                <method1 name="begin_nounpack"
+                         return="register_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+register_iterator begin_nounpack() const;
+                    <comment>
+        Returns an iterator to the start of the register_ without unpacking.
+                    </comment>
+                </method1>
+
+                <method1 name="end_nounpack"
+                         return="register_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+register_iterator end_nounpack() const;
+                    <comment>
+        Returns the off-the-end iter.
+                    </comment>
+                </method1>
+
+                <method1 name="unpacked"
+                         return="bool"
+                         args="['uint32_t']"
+                         vars="['']"
+                         qual="const">
+bool unpacked(uint32_t) const;
+                    <comment>
+        without unpacking
+                    </comment>
+                </method1>
+
+                <method1 name="begin_record"
+                         return="record_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+record_iterator begin_record() const;
+                    <comment>
+        Returns an iterator to the start of record_.
+                    </comment>
+                </method1>
+
+                <method1 name="end_record"
+                         return="record_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+record_iterator end_record() const;
+                    <comment>
+        Returns an off-the-end iterator.
+                    </comment>
+                </method1>
+
+                <method1 name="size"
+                         return="uint32_t"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+uint32_t size() const;
+                    <comment>
+        Returns the size of the record_.
+                    </comment>
+                </method1>
+
+                <method1 name="empty"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool empty() const;
+                    <comment>
+        Returns true if record_ is empty.
+                    </comment>
+                </method1>
+
+                <method1 name="swap"
+                         return="void"
+                         args="['LazyGetter&amp;']"
+                         vars="['other']"
+                         qual="">
+void swap(LazyGetter&amp; other);
+                    <comment>
+        Swap contents of class
+                    </comment>
+                </method1>
+
+            </section>
+
+            <typemap name="const_iterator"
+                     value="typename boost::transform_iterator&lt;LazyAdapter&lt;T&gt;, typename std::vector&lt;RegionIndex&lt;T&gt; &gt;::const_iterator &gt;"
+                     type="typedef"/>
+            <typemap name="record_iterator"
+                     value="typename std::vector&lt;T&gt;::const_iterator"
+                     type="typedef"/>
+            <typemap name="record_type"
+                     value="std::vector&lt;T&gt;"
+                     type="typedef"/>
+            <typemap name="register_iterator"
+                     value="typename boost::transform_iterator&lt;UpdateGetterAdapter&lt;T&gt;, typename std::vector&lt;RegionIndex&lt;T&gt; &gt;::const_iterator &gt;"
+                     type="typedef"/>
+            <typemap name="register_type"
+                     value="std::vector&lt;RegionIndex&lt;T&gt; &gt;"
+                     type="typedef"/>
+            <typemap name="value_ref"
+                     value="Ref&lt;LazyGetter&lt;T&gt;, T, FindValue&lt;T&gt; &gt;"
+                     type="typedef"/>
+
+        </class>
+
+        <class name="FindRegion"
+               fullname="edm::FindRegion&lt;T&gt;"
+               module="DataFormats.Common"
+               project=""
+               type="template struct"
+               template="template&lt;typename T&gt;">
+            <baseclass name="public std::binary_function&lt;const LazyGetter&lt;T&gt;&amp;, const uint32_t, const RegionIndex&lt;T&gt;*&gt;"/>
+
+            <section>
+                <operator name="operator()"
+                          return="typename FindRegion&lt;T&gt;::result_type"
+                          args="['typename FindRegion&lt;T&gt;::first_argument_type','typename FindRegion&lt;T&gt;::second_argument_type']"
+                          vars="['iContainer','iIndex']"
+                          qual="">
+typename FindRegion&lt;T&gt;::result_type operatorPP(typename FindRegion&lt;T&gt;::first_argument_type iContainer, typename FindRegion&lt;T&gt;::second_argument_type iIndex);
+                </operator>
+
+            </section>
+
+        </class>
+
+        <class name="FindValue"
+               fullname="edm::FindValue&lt;T&gt;"
+               module="DataFormats.Common"
+               project=""
+               type="template struct"
+               template="template&lt;typename T&gt;">
+            <baseclass name="public std::binary_function&lt;const LazyGetter&lt;T&gt;&amp;, const uint32_t, const T*&gt;"/>
+
+            <section>
+                <operator name="operator()"
+                          return="typename FindValue&lt;T&gt;::result_type"
+                          args="['typename FindValue&lt;T&gt;::first_argument_type','typename FindValue&lt;T&gt;::second_argument_type']"
+                          vars="['container','index']"
+                          qual="const">
+typename FindValue&lt;T&gt;::result_type operatorPP(typename FindValue&lt;T&gt;::first_argument_type container, typename FindValue&lt;T&gt;::second_argument_type index) const;
+                </operator>
+
+            </section>
+
+        </class>
+    </namespace>
+
+    <type name="LazyGetter&amp;"/>
+    <type name="LessThanComparableConcept"/>
+    <type name="RegionIndex&lt;T&gt;&amp;"/>
+    <type name="bool"/>
+    <type name="boost"/>
+    <type name="const LazyGetter&lt;T&gt;*"/>
+    <type name="const LazyUnpacker&lt;T&gt;*"/>
+    <type name="const RegionIndex&lt;T&gt;&amp;"/>
+    <type name="const boost::shared_ptr&lt;LazyUnpacker&lt;T&gt; &gt;&amp;"/>
+    <type name="const record_type*"/>
+    <type name="const uint32_t&amp;"/>
+    <type name="const_iterator"/>
+    <type name="edm::FindRegion&lt;T&gt;"/>
+    <type name="edm::FindValue&lt;T&gt;"/>
+    <type name="edm::LazyAdapter&lt;T&gt;"/>
+    <type name="edm::LazyGetter&lt;T&gt;"/>
+    <type name="edm::LazyUnpacker&lt;T&gt;"/>
+    <type name="edm::RegionIndex&lt;T&gt;"/>
+    <type name="edm::UpdateGetterAdapter&lt;T&gt;"/>
+    <type name="pair_iterator"/>
+    <type name="record_iterator"/>
+    <type name="record_type&amp;"/>
+    <type name="register_iterator"/>
+    <type name="std::binary_function&lt;const LazyGetter&lt;T&gt;&amp;, const uint32_t, const RegionIndex&lt;T&gt;*&gt;"/>
+    <type name="std::binary_function&lt;const LazyGetter&lt;T&gt;&amp;, const uint32_t, const T*&gt;"/>
+    <type name="std::unary_function&lt;const RegionIndex&lt;T&gt;&amp;, const RegionIndex&lt;T&gt;&amp;&gt;"/>
+    <type name="typename FindRegion&lt;T&gt;::first_argument_type"/>
+    <type name="typename FindRegion&lt;T&gt;::result_type"/>
+    <type name="typename FindRegion&lt;T&gt;::second_argument_type"/>
+    <type name="typename FindValue&lt;T&gt;::first_argument_type"/>
+    <type name="typename FindValue&lt;T&gt;::result_type"/>
+    <type name="typename FindValue&lt;T&gt;::second_argument_type"/>
+    <type name="uint32_t"/>
+    <type name="void"/>
+</header>

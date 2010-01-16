@@ -1,0 +1,44 @@
+Class:
+	reco::PFBlockElementBrem
+
+Header:
+	DataFormats/ParticleFlowReco/interface/PFBlockElementBrem.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:14:30 2010	lsclass.py $Revision:$
+
+Methods from reco::PFBlockElementBrem
+
+	-o- clone
+		Return: PFBlockElement*
+		Arguments: void	
+
+	-o- Dump
+		Return: void
+		Arguments: std::ostream&=std::cout	out
+		           const char*=" "	tab
+
+	-o- GsftrackRefPF
+		Return: edm::Ref<std::vector<GsfPFRecTrack>>
+		Arguments: void	
+
+	-o- GsftrackRef
+		Return: reco::GsfTrackRef
+		Arguments: void	
+
+	-o- trackPF
+		Return: const PFRecTrack&
+		Arguments: void	
+
+	-o- DeltaP
+		Return: double
+		Arguments: void	
+
+	-o- SigmaDeltaP
+		Return: double
+		Arguments: void	
+
+	-o- indTrajPoint
+		Return: unsigned int
+		Arguments: void	
+

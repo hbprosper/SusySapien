@@ -1,0 +1,175 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: L1MonitorDigi.xml
+  Created:  Thu Jan 14 22:47:31 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/L1Trigger/interface/L1MonitorDigi.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/L1Trigger/interface/L1MonitorDigi.h">
+
+    <include name="&lt;ostream&gt;"/>
+    <include name="&lt;string&gt;"/>
+    <include name="&lt;utility&gt;"/>
+
+    <class name="L1MonitorDigi"
+           fullname="L1MonitorDigi"
+           module="DataFormats.L1Trigger"
+           project=""
+           type="regular">
+
+        <section name="public">
+            <constructor name="L1MonitorDigi"
+                         return=""
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+L1MonitorDigi();
+            </constructor>
+
+            <constructor name="L1MonitorDigi"
+                         return=""
+                         args="['unsigned','unsigned','unsigned','unsigned','unsigned','unsigned','unsigned']"
+                         vars="['sid','cid','x1','x2','x3','value','data']"
+                         qual="">
+L1MonitorDigi(unsigned sid, unsigned cid, unsigned x1, unsigned x2, unsigned x3, unsigned value, unsigned data);
+            </constructor>
+
+            <destructor name="~L1MonitorDigi"
+                        return=""
+                        args="['void']"
+                        vars="['']"
+                        qual="">
+~L1MonitorDigi();
+            </destructor>
+
+            <method1 name="setSid"
+                     return="void"
+                     args="['int']"
+                     vars="['sid']"
+                     qual="">
+void setSid(int sid);
+            </method1>
+
+            <method1 name="setCid"
+                     return="void"
+                     args="['int']"
+                     vars="['cid']"
+                     qual="">
+void setCid(int cid);
+            </method1>
+
+            <method1 name="setLoc"
+                     return="void"
+                     args="['unsigned','unsigned','unsigned']"
+                     vars="['x1','x2','x3']"
+                     qual="">
+void setLoc(unsigned x1, unsigned x2, unsigned x3);
+            </method1>
+
+            <method1 name="setRaw"
+                     return="void"
+                     args="['unsigned']"
+                     vars="['raw']"
+                     qual="">
+void setRaw(unsigned raw);
+            </method1>
+
+            <method1 name="setValue"
+                     return="void"
+                     args="['unsigned']"
+                     vars="['val']"
+                     qual="">
+void setValue(unsigned val);
+            </method1>
+
+            <method1 name="sid"
+                     return="unsigned"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned sid() const;
+            </method1>
+
+            <method1 name="cid"
+                     return="unsigned"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned cid() const;
+            </method1>
+
+            <method1 name="x1"
+                     return="unsigned"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned x1() const;
+            </method1>
+
+            <method1 name="x2"
+                     return="unsigned"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned x2() const;
+            </method1>
+
+            <method1 name="x3"
+                     return="unsigned"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned x3() const;
+            </method1>
+
+            <method1 name="raw"
+                     return="unsigned"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned raw() const;
+            </method1>
+
+            <method1 name="value"
+                     return="unsigned"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned value() const;
+            </method1>
+
+            <method1 name="reset"
+                     return="unsigned"
+                     args="['void']"
+                     vars="['']"
+                     qual="">
+unsigned reset();
+            </method1>
+
+            <method1 name="empty"
+                     return="bool"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+bool empty() const;
+            </method1>
+
+        </section>
+
+    </class>
+    <operator name="operator&lt;&lt;"
+              return="std::ostream&amp;"
+              args="['std::ostream&amp;','const L1MonitorDigi&amp;']"
+              vars="['','']"
+              qual="">
+std::ostream&amp; operator&lt;&lt;(std::ostream&amp;, const L1MonitorDigi&amp;);
+    </operator>
+
+
+    <type name="L1MonitorDigi"/>
+    <type name="bool"/>
+    <type name="int"/>
+    <type name="unsigned"/>
+    <type name="void"/>
+</header>

@@ -1,0 +1,244 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: CaloMuon.xml
+  Created:  Thu Jan 14 22:47:41 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/MuonReco/interface/CaloMuon.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/MuonReco/interface/CaloMuon.h">
+
+    <include name="&quot;DataFormats/MuonReco/interface/MuonEnergy.h&quot;"/>
+    <include name="&quot;DataFormats/TrackReco/interface/TrackFwd.h&quot;"/>
+    <include name="&quot;DataFormats/TrackReco/interface/Track.h&quot;"/>
+
+    <namespace name="reco">
+
+        <class name="CaloMuon"
+               fullname="reco::CaloMuon"
+               module="DataFormats.MuonReco"
+               project=""
+               type="regular">
+
+            <section name="public">
+                <constructor name="CaloMuon"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+CaloMuon();
+                </constructor>
+
+                <method1 name="track"
+                         return="TrackRef"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+TrackRef track() const;
+                    <comment>
+        reference to Track reconstructed in the tracker only
+                    </comment>
+                </method1>
+
+                <method1 name="setTrack"
+                         return="void"
+                         args="['const TrackRef&amp;']"
+                         vars="['t']"
+                         qual="">
+void setTrack(const TrackRef&amp; t);
+                    <comment>
+        set reference to Track
+                    </comment>
+                </method1>
+
+                <method1 name="isEnergyValid"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isEnergyValid() const;
+                    <comment>
+        energy deposition
+                    </comment>
+                </method1>
+
+                <method1 name="calEnergy"
+                         return="MuonEnergy"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+MuonEnergy calEnergy() const;
+                    <comment>
+        get energy deposition information
+                    </comment>
+                </method1>
+
+                <method1 name="getCalEnergy"
+                         return="MuonEnergy"
+                         args="['void']"
+                         vars="['']"
+                         qual="const ">
+MuonEnergy getCalEnergy() const ;
+                </method1>
+
+                <method1 name="setCalEnergy"
+                         return="void"
+                         args="['const MuonEnergy&amp;']"
+                         vars="['calEnergy']"
+                         qual="">
+void setCalEnergy(const MuonEnergy&amp; calEnergy);
+                    <comment>
+        set energy deposition information
+                    </comment>
+                </method1>
+
+                <method1 name="caloCompatibility"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float caloCompatibility() const;
+                    <comment>
+        L_muon/(L_muon+L_not_muon)
+                    </comment>
+                </method1>
+
+                <method1 name="getCaloCompatibility"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const ">
+float getCaloCompatibility() const ;
+                </method1>
+
+                <method1 name="setCaloCompatibility"
+                         return="void"
+                         args="['float']"
+                         vars="['input']"
+                         qual="">
+void setCaloCompatibility(float input);
+                </method1>
+
+                <method1 name="isCaloCompatibilityValid"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isCaloCompatibilityValid() const;
+                </method1>
+
+                <method1 name="charge"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int charge() const;
+                    <comment>
+        a bunch of useful accessors
+                    </comment>
+                </method1>
+
+                <method1 name="theta"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double theta() const;
+                    <comment>
+        polar angle
+                    </comment>
+                </method1>
+
+                <method1 name="p"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double p() const;
+                    <comment>
+        momentum vector magnitude
+                    </comment>
+                </method1>
+
+                <method1 name="pt"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double pt() const;
+                    <comment>
+        track transverse momentum
+                    </comment>
+                </method1>
+
+                <method1 name="px"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double px() const;
+                    <comment>
+        x coordinate of momentum vector
+                    </comment>
+                </method1>
+
+                <method1 name="py"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double py() const;
+                    <comment>
+        y coordinate of momentum vector
+                    </comment>
+                </method1>
+
+                <method1 name="pz"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double pz() const;
+                    <comment>
+        z coordinate of momentum vector
+                    </comment>
+                </method1>
+
+                <method1 name="phi"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double phi() const;
+                    <comment>
+        azimuthal angle of momentum vector
+                    </comment>
+                </method1>
+
+                <method1 name="eta"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double eta() const;
+                    <comment>
+        pseudorapidity of momentum vector
+                    </comment>
+                </method1>
+
+            </section>
+
+        </class>
+    </namespace>
+
+    <type name="MuonEnergy"/>
+    <type name="TrackRef"/>
+    <type name="bool"/>
+    <type name="const MuonEnergy&amp;"/>
+    <type name="const TrackRef&amp;"/>
+    <type name="double"/>
+    <type name="float"/>
+    <type name="int"/>
+    <type name="reco::CaloMuon"/>
+    <type name="void"/>
+</header>

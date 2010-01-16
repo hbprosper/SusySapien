@@ -1,0 +1,138 @@
+pat::Electron|Electron*|clone|void
+pat::Electron|reco::GsfTrackRef|gsfTrack|void
+pat::Electron|reco::SuperClusterRef|superCluster|void
+pat::Electron|reco::TrackRef|track|void
+pat::Electron|float|electronID|const std::string&
+pat::Electron|float|leptonID|const std::string&
+pat::Electron|bool|isElectronIDAvailable|const std::string&
+pat::Electron|bool|isLeptonIDAvailable|const std::string&
+pat::Electron|const float|scSigmaEtaEta|void
+pat::Electron|const float|scSigmaIEtaIEta|void
+pat::Electron|const float|scE1x5|void
+pat::Electron|const float|scE2x5Max|void
+pat::Electron|const float|scE5x5|void
+pat::Electron|reco::edm::Ref<std::vector<reco::PFCandidate>>|pfCandidateRef|void
+pat::Electron|const std::vector<std::pair<std::string, float>>&|electronIDs|void
+pat::Electron|const std::vector<std::pair<std::string, float>>&|leptonIDs|void
+pat::Lepton<reco::GsfElectron>|const reco::GenParticle*|genLepton|void
+pat::Lepton<reco::GsfElectron>|float|trackIso|void
+pat::Lepton<reco::GsfElectron>|float|caloIso|void
+pat::Lepton<reco::GsfElectron>|float|ecalIso|void
+pat::Lepton<reco::GsfElectron>|float|hcalIso|void
+pat::Lepton<reco::GsfElectron>|float|particleIso|void
+pat::Lepton<reco::GsfElectron>|float|chargedParticleIso|void
+pat::Lepton<reco::GsfElectron>|float|neutralParticleIso|void
+pat::Lepton<reco::GsfElectron>|float|gammaParticleIso|void
+pat::Lepton<reco::GsfElectron>|const reco::IsoDeposit*|trackerIsoDeposit|void
+pat::Lepton<reco::GsfElectron>|const reco::IsoDeposit*|ecalIsoDeposit|void
+pat::Lepton<reco::GsfElectron>|const reco::IsoDeposit*|hcalIsoDeposit|void
+pat::Lepton<reco::GsfElectron>|Lepton<reco::GsfElectron>*|clone|void
+pat::PATObject<reco::GsfElectron>|const reco::Candidate*|originalObject|void
+pat::PATObject<reco::GsfElectron>|const std::vector<TriggerObjectStandAlone >&|triggerObjectMatches|void
+pat::PATObject<reco::GsfElectron>|const std::vector<TriggerObjectStandAlone >|triggerObjectMatchesByFilterID|const unsigned
+pat::PATObject<reco::GsfElectron>|const std::vector<TriggerObjectStandAlone >|triggerObjectMatchesByCollection|const std::string&
+pat::PATObject<reco::GsfElectron>|const std::vector<TriggerObjectStandAlone >|triggerObjectMatchesByFilter|const std::string&
+pat::PATObject<reco::GsfElectron>|const std::vector<TriggerObjectStandAlone >|triggerObjectMatchesByPath|const std::string&
+pat::PATObject<reco::GsfElectron>|const pat::LookupTableRecord&|efficiency|const std::string&
+pat::PATObject<reco::GsfElectron>|reco::GenParticleRef|genParticleRef|size_t=0
+pat::PATObject<reco::GsfElectron>|const reco::GenParticle*|genParticle|size_t=0
+pat::PATObject<reco::GsfElectron>|size_t|genParticlesSize|void
+pat::PATObject<reco::GsfElectron>|bool|hasOverlaps|const std::string&
+pat::PATObject<reco::GsfElectron>|const reco::edm::PtrVector<Candidate>&|overlaps|const std::string&
+pat::PATObject<reco::GsfElectron>|bool|hasUserData|const std::string&
+pat::PATObject<reco::GsfElectron>|const std::string&|userDataObjectType|const std::string&
+pat::PATObject<reco::GsfElectron>|const void*|userDataBare|const std::string&
+pat::PATObject<reco::GsfElectron>|float|userFloat|const std::string&
+pat::PATObject<reco::GsfElectron>|bool|hasUserFloat|const std::string&
+pat::PATObject<reco::GsfElectron>|int32_t|userInt|const std::string&
+pat::PATObject<reco::GsfElectron>|bool|hasUserInt|const std::string&
+pat::PATObject<reco::GsfElectron>|const pat::CandKinResolution&|getKinResolution|const std::string&=""
+pat::PATObject<reco::GsfElectron>|bool|hasKinResolution|const std::string&=""
+pat::PATObject<reco::GsfElectron>|double|resolEta|const std::string&=""
+pat::PATObject<reco::GsfElectron>|double|resolTheta|const std::string&=""
+pat::PATObject<reco::GsfElectron>|double|resolPhi|const std::string&=""
+pat::PATObject<reco::GsfElectron>|double|resolE|const std::string&=""
+pat::PATObject<reco::GsfElectron>|double|resolEt|const std::string&=""
+pat::PATObject<reco::GsfElectron>|double|resolP|const std::string&=""
+pat::PATObject<reco::GsfElectron>|double|resolPt|const std::string&=""
+pat::PATObject<reco::GsfElectron>|double|resolPInv|const std::string&=""
+pat::PATObject<reco::GsfElectron>|double|resolPx|const std::string&=""
+pat::PATObject<reco::GsfElectron>|double|resolPy|const std::string&=""
+pat::PATObject<reco::GsfElectron>|double|resolPz|const std::string&=""
+pat::PATObject<reco::GsfElectron>|double|resolM|const std::string&=""
+pat::PATObject<reco::GsfElectron>|const edm::Ptr<reco::Candidate>&|originalObjectRef|void
+pat::PATObject<reco::GsfElectron>|const std::vector<TriggerPrimitive>&|triggerMatches|void
+pat::PATObject<reco::GsfElectron>|const std::vector<TriggerPrimitive>|triggerMatchesByFilter|const std::string&
+pat::PATObject<reco::GsfElectron>|std::vector<std::pair<std::string, pat::LookupTableRecord> >|efficiencies|void
+pat::PATObject<reco::GsfElectron>|const std::vector<std::string>&|efficiencyNames|void
+pat::PATObject<reco::GsfElectron>|const std::vector<pat::LookupTableRecord>&|efficiencyValues|void
+pat::PATObject<reco::GsfElectron>|std::vector<reco::GenParticleRef>|genParticleRefs|void
+pat::PATObject<reco::GsfElectron>|const std::vector<std::string>&|overlapLabels|void
+pat::PATObject<reco::GsfElectron>|template<typename T> const T*|userData|const std::string&
+pat::PATObject<reco::GsfElectron>|const std::vector<std::string>&|userDataNames|void
+pat::PATObject<reco::GsfElectron>|const std::vector<std::string>&|userFloatNames|void
+pat::PATObject<reco::GsfElectron>|const std::vector<std::string>&|userIntNames|void
+reco::GsfElectron|int|classification|void
+reco::GsfElectron|GsfElectron*|clone|void
+reco::GsfElectron|float|caloEnergy|void
+reco::GsfElectron|math::XYZPoint|caloPosition|void
+reco::GsfElectron|math::XYZVector|trackMomentumAtVtx|void
+reco::GsfElectron|math::XYZVector|TrackPositionAtVtx|void
+reco::GsfElectron|math::XYZVector|trackMomentumAtCalo|void
+reco::GsfElectron|math::XYZVector|trackMomentumOut|void
+reco::GsfElectron|math::XYZVector|TrackPositionAtCalo|void
+reco::GsfElectron|float|eSuperClusterOverP|void
+reco::GsfElectron|float|eSeedClusterOverPout|void
+reco::GsfElectron|float|deltaEtaSuperClusterTrackAtVtx|void
+reco::GsfElectron|float|deltaEtaSeedClusterTrackAtCalo|void
+reco::GsfElectron|float|deltaPhiSuperClusterTrackAtVtx|void
+reco::GsfElectron|float|deltaPhiSeedClusterTrackAtCalo|void
+reco::GsfElectron|float|hadronicOverEm|void
+reco::GsfElectron|bool|isEnergyScaleCorrected|void
+reco::GsfElectron|bool|isMomentumCorrected|void
+reco::GsfElectron|float|caloEnergyError|void
+reco::GsfElectron|float|trackMomentumError|void
+reco::GsfElectron|edm::Ref<std::vector<SuperCluster>>|superCluster|void
+reco::GsfElectron|reco::edm::Ref<GsfTrackCollection>|gsfTrack|void
+reco::GsfElectron|reco::edm::Ref<std::vector<Track>>|track|void
+reco::GsfElectron|int|numberOfClusters|void
+reco::GsfElectron|basicCluster_iterator|basicClustersBegin|void
+reco::GsfElectron|basicCluster_iterator|basicClustersEnd|void
+reco::GsfElectron|bool|isElectron|void
+reco::LeafCandidate|LeafCandidate*|clone|void
+reco::LeafCandidate|candidate::const_iterator|begin|void
+reco::LeafCandidate|candidate::const_iterator|end|void
+reco::LeafCandidate|candidate::iterator|begin|void
+reco::LeafCandidate|candidate::iterator|end|void
+reco::LeafCandidate|size_t|numberOfDaughters|void
+reco::LeafCandidate|size_t|numberOfMothers|void
+reco::Candidate|Candidate*|clone|void
+reco::Particle|int|charge|void
+reco::Particle|int|threeCharge|void
+reco::Particle|const math::XYZTLorentzVectorD&|p4|void
+reco::Particle|const math::ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> >&|polarP4|void
+reco::Particle|math::XYZVector|momentum|void
+reco::Particle|math::XYZVector|boostToCM|void
+reco::Particle|double|p|void
+reco::Particle|double|energy|void
+reco::Particle|double|et|void
+reco::Particle|double|mass|void
+reco::Particle|double|massSqr|void
+reco::Particle|double|mt|void
+reco::Particle|double|mtSqr|void
+reco::Particle|double|px|void
+reco::Particle|double|py|void
+reco::Particle|double|pz|void
+reco::Particle|double|pt|void
+reco::Particle|double|phi|void
+reco::Particle|double|theta|void
+reco::Particle|double|eta|void
+reco::Particle|double|rapidity|void
+reco::Particle|double|y|void
+reco::Particle|const math::XYZPoint&|vertex|void
+reco::Particle|double|vx|void
+reco::Particle|double|vy|void
+reco::Particle|double|vz|void
+reco::Particle|int|pdgId|void
+reco::Particle|int|status|void
+reco::Particle|bool|longLived|void

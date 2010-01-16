@@ -1,0 +1,59 @@
+Class:
+	pat::TriggerFilter
+
+Header:
+	DataFormats/PatCandidates/interface/TriggerFilter.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:14:14 2010	lsclass.py $Revision:$
+
+Methods from pat::TriggerFilter
+
+	-o- setLabel
+		Return: void
+		Arguments: const std::string&	label
+
+	-o- setType
+		Return: void
+		Arguments: const std::string&	type
+
+	-o- addObjectKey
+		Return: void
+		Arguments: unsigned	objectKey
+
+	-o- addObjectId
+		Return: void
+		Arguments: unsigned	objectId
+
+	-o- setStatus
+		Return: bool
+		Arguments: int	status
+
+	-o- label
+		Return: std::string
+		Arguments: void	
+
+	-o- type
+		Return: std::string
+		Arguments: void	
+
+	-o- status
+		Return: int
+		Arguments: void	
+
+	-o- hasObjectKey
+		Return: bool
+		Arguments: unsigned	objectKey
+
+	-o- hasObjectId
+		Return: bool
+		Arguments: unsigned	objectId
+
+	-o- objectKeys
+		Return: std::vector<unsigned >
+		Arguments: void	
+
+	-o- objectIds
+		Return: std::vector<unsigned >
+		Arguments: void	
+

@@ -1,0 +1,1 @@
+$CMSSW_RELEASE_BASE/src/DataFormats/EgammaReco/interface/SuperCluster.h

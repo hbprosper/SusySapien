@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: BasicTrajectorySeed.xml
+  Created:  Thu Jan 14 22:48:54 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/TrajectorySeed/interface/BasicTrajectorySeed.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/TrajectorySeed/interface/BasicTrajectorySeed.h">
+
+    <include name="&quot;DataFormats/TrajectorySeed/interface/TrajectorySeed.h&quot;"/>
+    <typedef name="BasicTrajectorySeed"
+             value="TrajectorySeed">
+typedef TrajectorySeed BasicTrajectorySeed;
+    </typedef>
+
+
+</header>

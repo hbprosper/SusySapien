@@ -1,0 +1,35 @@
+Class:
+	L1GctCand
+
+Header:
+	DataFormats/L1GlobalCaloTrigger/interface/L1GctCand.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:14:56 2010	lsclass.py $Revision:$
+
+Methods from L1GctCand
+
+	-o- regionId
+		Return: L1CaloRegionDetId
+		Arguments: void	
+
+	-o- empty
+		Return: bool
+		Arguments: void	
+
+	-o- rank
+		Return: unsigned
+		Arguments: void	
+
+	-o- etaIndex
+		Return: unsigned
+		Arguments: void	
+
+	-o- etaSign
+		Return: unsigned
+		Arguments: void	
+
+	-o- phiIndex
+		Return: unsigned
+		Arguments: void	
+

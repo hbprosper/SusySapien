@@ -1,0 +1,534 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: Vertex.xml
+  Created:  Thu Jan 14 22:48:57 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/VertexReco/interface/Vertex.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/VertexReco/interface/Vertex.h">
+
+    <include name="&lt;Rtypes.h&gt;"/>
+    <include name="&quot;DataFormats/Math/interface/Error.h&quot;"/>
+    <include name="&quot;DataFormats/Math/interface/Point3D.h&quot;"/>
+    <include name="&quot;DataFormats/TrackReco/interface/TrackFwd.h&quot;"/>
+    <include name="&quot;DataFormats/TrackReco/interface/Track.h&quot;"/>
+    <include name="&lt;iostream&gt;"/>
+    <include name="&quot;DataFormats/Common/interface/RefToBase.h&quot;"/>
+
+    <namespace name="reco">
+        <forward name="Track"/>
+
+        <class name="Vertex"
+               fullname="reco::Vertex"
+               module="DataFormats.VertexReco"
+               project=""
+               type="regular">
+
+            <section name="public">
+                <typedef name="trackRef_iterator"
+                         value="std::vector&lt;TrackBaseRef &gt;::const_iterator">
+typedef std::vector&lt;TrackBaseRef &gt;::const_iterator trackRef_iterator;
+                    <comment>
+        The iteratator for the vector&lt;TrackRef&gt;
+                    </comment>
+                </typedef>
+
+                <typedef name="Point"
+                         value="math::XYZPoint">
+typedef math::XYZPoint Point;
+                    <comment>
+        point in the space
+                    </comment>
+                </typedef>
+
+                <enum name="">
+enum {
+ dimension=3 };
+                    <field name="dimension" value="3"/>
+                    <comment>
+        error matrix dimension
+                    </comment>
+                </enum>
+
+                <typedef name="Error"
+                         value="math::Error&lt;dimension&gt;::type">
+typedef math::Error&lt;dimension&gt;::type Error;
+                    <comment>
+        covariance error matrix (3x3)
+                    </comment>
+                </typedef>
+
+                <typedef name="CovarianceMatrix"
+                         value="math::Error&lt;dimension&gt;::type">
+typedef math::Error&lt;dimension&gt;::type CovarianceMatrix;
+                    <comment>
+        covariance error matrix (3x3)
+                    </comment>
+                </typedef>
+
+                <enum name="">
+enum {
+ size=dimension* (dimension+1)/2 };
+                    <field name="size" value="dimension* (dimension+1)/2"/>
+                    <comment>
+        matix size
+                    </comment>
+                </enum>
+
+                <typedef name="index"
+                         value="unsigned int">
+typedef unsigned int index;
+                    <comment>
+        index type
+                    </comment>
+                </typedef>
+
+                <constructor name="Vertex"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+Vertex();
+                    <comment>
+        Use the isValid method to check that your vertex is valid.
+                    </comment>
+                </constructor>
+
+                <constructor name="Vertex"
+                             return=""
+                             args="['const Point&amp;','const Error&amp;']"
+                             vars="['','']"
+                             qual="">
+Vertex(const Point&amp;, const Error&amp;);
+                    <comment>
+        Constructor for a fake vertex.
+                    </comment>
+                </constructor>
+
+                <constructor name="Vertex"
+                             return=""
+                             args="['const Point&amp;','const Error&amp;','double','double','size_t']"
+                             vars="['','','chi2','ndof','size']"
+                             qual="">
+Vertex(const Point&amp;, const Error&amp;, double chi2, double ndof, size_t size);
+                    <comment>
+        constructor for a valid vertex, with all data
+                    </comment>
+                </constructor>
+
+                <method1 name="isValid"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isValid() const;
+                    <comment>
+        Tells whether the vertex is valid.
+                    </comment>
+                </method1>
+
+                <method1 name="isFake"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isFake() const;
+                    <comment>
+        For a primary vertex, it could simply be the beam line.
+                    </comment>
+                </method1>
+
+                <method1 name="add"
+                         return="void"
+                         args="['const TrackBaseRef&amp;','float=1.0']"
+                         vars="['r','w']"
+                         qual="">
+void add(const TrackBaseRef&amp; r, float w=1.0);
+                    <comment>
+        add a reference to a Track
+                    </comment>
+                </method1>
+
+                <method1 name="add"
+                         return="void"
+                         args="['const TrackBaseRef&amp;','const Track&amp;','float=1.0']"
+                         vars="['r','refTrack','w']"
+                         qual="">
+void add(const TrackBaseRef&amp; r, const Track&amp; refTrack, float w=1.0);
+                    <comment>
+        add the original a Track(reference) and the smoothed Track
+                    </comment>
+                </method1>
+
+                <method1 name="removeTracks"
+                         return="void"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+void removeTracks();
+                </method1>
+
+                <method1 name="trackWeight"
+                         return="float"
+                         args="['const TrackBaseRef&amp;']"
+                         vars="['r']"
+                         qual="const">
+float trackWeight (const TrackBaseRef&amp; r) const;
+                    <comment>
+       returns the weight with which a Track has contributed to the vertex-fit.
+                    </comment>
+                </method1>
+
+                <method1 name="trackWeight"
+                         return="float"
+                         args="['const TrackRef&amp;']"
+                         vars="['r']"
+                         qual="const">
+float trackWeight (const TrackRef&amp; r) const;
+                    <comment>
+       returns the weight with which a Track has contributed to the vertex-fit.
+                    </comment>
+                </method1>
+
+                <method1 name="tracks_begin"
+                         return="trackRef_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+trackRef_iterator tracks_begin() const;
+                    <comment>
+        first iterator over tracks
+                    </comment>
+                </method1>
+
+                <method1 name="tracks_end"
+                         return="trackRef_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+trackRef_iterator tracks_end() const;
+                    <comment>
+        last iterator over tracks
+                    </comment>
+                </method1>
+
+                <method1 name="tracksSize"
+                         return="size_t"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+size_t tracksSize() const;
+                    <comment>
+        number of tracks
+                    </comment>
+                </method1>
+
+                <method1 name="chi2"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double chi2() const;
+                    <comment>
+        chi-squares
+                    </comment>
+                </method1>
+
+                <method1 name="ndof"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double ndof() const;
+                    <comment>
+        Number of degrees of freedom
+        Meant to be Double32_t for soft-assignment fitters:
+        tracks may contribute to the vertex with fractional weights.
+        The ndof is then = to the sum of the track weights.
+        see e.g. CMS NOTE-2006/032, CMS NOTE-2004/002
+                    </comment>
+                </method1>
+
+                <method1 name="normalizedChi2"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double normalizedChi2() const;
+                    <comment>
+        chi-squared divided by n.d.o.f.
+                    </comment>
+                </method1>
+
+                <method1 name="position"
+                         return="const Point&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const Point&amp; position() const;
+                    <comment>
+        position
+                    </comment>
+                </method1>
+
+                <method1 name="x"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double x() const;
+                    <comment>
+        x coordinate
+                    </comment>
+                </method1>
+
+                <method1 name="y"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double y() const;
+                    <comment>
+        y coordinate
+                    </comment>
+                </method1>
+
+                <method1 name="z"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double z() const;
+                    <comment>
+        y coordinate
+                    </comment>
+                </method1>
+
+                <method1 name="xError"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double xError() const;
+                    <comment>
+        error on x
+                    </comment>
+                </method1>
+
+                <method1 name="yError"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double yError() const;
+                    <comment>
+        error on y
+                    </comment>
+                </method1>
+
+                <method1 name="zError"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double zError() const;
+                    <comment>
+        error on z
+                    </comment>
+                </method1>
+
+                <method1 name="error"
+                         return="double"
+                         args="['int','int']"
+                         vars="['i','j']"
+                         qual="const">
+double error(int i, int j) const;
+                    <comment>
+        (i, j)-th element of error matrix, i, j = 0, ... 2
+                    </comment>
+                </method1>
+
+                <method1 name="covariance"
+                         return="double"
+                         args="['int','int']"
+                         vars="['i','j']"
+                         qual="const">
+double covariance(int i, int j) const;
+                </method1>
+
+                <method1 name="covariance"
+                         return="CovarianceMatrix"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+CovarianceMatrix covariance() const;
+                    <comment>
+        return SMatrix
+                    </comment>
+                </method1>
+
+                <method1 name="error"
+                         return="Error"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+Error error() const;
+                    <comment>
+        return SMatrix
+                    </comment>
+                </method1>
+
+                <method1 name="fill"
+                         return="void"
+                         args="['CovarianceMatrix&amp;']"
+                         vars="['v']"
+                         qual="const">
+void fill(CovarianceMatrix&amp; v) const;
+                    <comment>
+        fill SMatrix
+                    </comment>
+                </method1>
+
+                <method1 name="hasRefittedTracks"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool hasRefittedTracks() const;
+                    <comment>
+        Checks whether refitted tracks are stored.
+                    </comment>
+                </method1>
+
+                <method1 name="originalTrack"
+                         return="TrackBaseRef"
+                         args="['const Track&amp;']"
+                         vars="['refTrack']"
+                         qual="const">
+TrackBaseRef originalTrack(const Track&amp; refTrack) const;
+                    <comment>
+        Throws an exception if now refitted tracks are stored ot the track is not found in the list
+                    </comment>
+                </method1>
+
+                <method1 name="refittedTrack"
+                         return="Track"
+                         args="['const TrackBaseRef&amp;']"
+                         vars="['track']"
+                         qual="const">
+Track refittedTrack(const TrackBaseRef&amp; track) const;
+                    <comment>
+        Throws an exception if now refitted tracks are stored ot the track is not found in the list
+                    </comment>
+                </method1>
+
+                <method1 name="refittedTrack"
+                         return="Track"
+                         args="['const TrackRef&amp;']"
+                         vars="['track']"
+                         qual="const">
+Track refittedTrack(const TrackRef&amp; track) const;
+                    <comment>
+        Throws an exception if now refitted tracks are stored ot the track is not found in the list
+                    </comment>
+                </method1>
+
+                <method2 name="refittedTracks"
+                         return="const std::vector&lt;Track&gt;&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const std::vector&lt;Track&gt;&amp; refittedTracks() const;
+                    <comment>
+        Returns the container of refitted tracks
+                    </comment>
+                </method2>
+
+            </section>
+            <section name="private">
+
+                <class name="TrackEqual"
+                       fullname="reco::Vertex::TrackEqual"
+                       module="DataFormats.VertexReco"
+                       project=""
+                       type="regular">
+
+                    <section name="public">
+                        <constructor name="TrackEqual"
+                                     return=""
+                                     args="['const Track&amp;']"
+                                     vars="['t']"
+                                     qual="">
+TrackEqual(const Track&amp; t);
+                        </constructor>
+
+                        <operator name="operator()"
+                                  return="bool"
+                                  args="['const Track&amp;']"
+                                  vars="['t']"
+                                  qual="const">
+bool operatorPP(const Track&amp; t) const;
+                        </operator>
+
+                    </section>
+                    <section name="private">
+                        <constant name="track_"
+                                  type="const Track&amp;amp;"
+                                  value=""/>
+                    </section>
+
+                    <typemap name="TrackEqual"
+                             value="reco::Vertex::TrackEqual"
+                             type="class"/>
+
+                </class>
+            </section>
+
+            <typemap name="CovarianceMatrix"
+                     value="math::math::Error&lt;dimension&gt;::type&lt;dimension&gt;::type"
+                     type="typedef"/>
+            <typemap name="Error"
+                     value="math::Error&lt;dimension&gt;::type"
+                     type="typedef"/>
+            <typemap name="Point"
+                     value="math::XYZPoint"
+                     type="typedef"/>
+            <typemap name="dimension "
+                     value="reco::Vertex::dimension "
+                     type="enum"/>
+            <typemap name="index"
+                     value="unsigned int"
+                     type="typedef"/>
+            <typemap name="size "
+                     value="reco::Vertex::size "
+                     type="enum"/>
+            <typemap name="trackRef_iterator"
+                     value="std::vector&lt;TrackBaseRef &gt;::const_iterator"
+                     type="typedef"/>
+
+        </class>
+    </namespace>
+
+    <type name="CovarianceMatrix"/>
+    <type name="CovarianceMatrix&amp;"/>
+    <type name="Error"/>
+    <type name="Track"/>
+    <type name="TrackBaseRef"/>
+    <type name="bool"/>
+    <type name="const Error&amp;"/>
+    <type name="const Point&amp;"/>
+    <type name="const Track&amp;"/>
+    <type name="const TrackBaseRef&amp;"/>
+    <type name="const TrackRef&amp;"/>
+    <type name="const std::vector&lt;Track&gt;&amp;"/>
+    <type name="double"/>
+    <type name="enum"/>
+    <type name="float"/>
+    <type name="int"/>
+    <type name="reco::Vertex"/>
+    <type name="reco::Vertex::TrackEqual"/>
+    <type name="size_t"/>
+    <type name="trackRef_iterator"/>
+    <type name="void"/>
+</header>

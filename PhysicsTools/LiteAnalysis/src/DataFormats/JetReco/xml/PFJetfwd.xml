@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: PFJetfwd.xml
+  Created:  Thu Jan 14 22:47:19 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/JetReco/interface/PFJetfwd.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/JetReco/interface/PFJetfwd.h">
+
+    <include name="&quot;DataFormats/JetReco/interface/PFJetCollection.h&quot;"/>
+
+</header>

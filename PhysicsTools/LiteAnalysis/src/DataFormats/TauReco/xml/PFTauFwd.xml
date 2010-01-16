@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: PFTauFwd.xml
+  Created:  Thu Jan 14 22:48:46 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/TauReco/interface/PFTauFwd.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/TauReco/interface/PFTauFwd.h">
+
+    <include name="&lt;vector&gt;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+
+    <namespace name="reco">
+        <forward name="PFTau"/>
+        <typedef name="PFTauCollection"
+                 value="std::vector&lt;PFTau&gt;">
+typedef std::vector&lt;PFTau&gt; PFTauCollection;
+            <comment>
+      collection of PFTau objects
+            </comment>
+        </typedef>
+
+        <typedef name="PFTauRef"
+                 value="edm::Ref&lt;PFTauCollection&gt;">
+typedef edm::Ref&lt;PFTauCollection&gt; PFTauRef;
+            <comment>
+      presistent reference to a PFTau
+            </comment>
+        </typedef>
+
+        <typedef name="PFTauRefProd"
+                 value="edm::RefProd&lt;PFTauCollection&gt;">
+typedef edm::RefProd&lt;PFTauCollection&gt; PFTauRefProd;
+            <comment>
+      references to PFTau collection
+            </comment>
+        </typedef>
+
+        <typedef name="PFTauRefVector"
+                 value="edm::RefVector&lt;PFTauCollection&gt;">
+typedef edm::RefVector&lt;PFTauCollection&gt; PFTauRefVector;
+            <comment>
+      vector of references to PFTau objects all in the same collection
+            </comment>
+        </typedef>
+
+        <typedef name="pftau_iterator"
+                 value="PFTauRefVector::iterator">
+typedef PFTauRefVector::iterator pftau_iterator;
+            <comment>
+      iterator over a vector of references to PFTau objects all in the same collection
+            </comment>
+        </typedef>
+
+    </namespace>
+
+</header>

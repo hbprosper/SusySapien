@@ -1,0 +1,7 @@
+bool	empty()
+unsigned short const*	frame(size_t x)
+unsigned int	id(size_t x)
+unsigned int	size()
+unsigned int	stride()
+int	subdetId()
+

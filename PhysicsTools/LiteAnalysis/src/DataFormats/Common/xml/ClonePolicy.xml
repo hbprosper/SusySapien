@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: ClonePolicy.xml
+  Created:  Thu Jan 14 22:45:53 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Common/interface/ClonePolicy.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/ClonePolicy.h">
+
+
+    <namespace name="edm">
+
+        <class name="ClonePolicy"
+               fullname="edm::ClonePolicy&lt;T&gt;"
+               module="DataFormats.Common"
+               project=""
+               type="template struct"
+               template="template&lt;typename T&gt;">
+
+            <section>
+                <method1 name="clone"
+                         return="static T*"
+                         args="['const T&amp;']"
+                         vars="['t']"
+                         qual="">
+static T* clone(const T&amp; t);
+                </method1>
+
+            </section>
+
+        </class>
+    </namespace>
+
+    <type name="edm::ClonePolicy&lt;T&gt;"/>
+</header>

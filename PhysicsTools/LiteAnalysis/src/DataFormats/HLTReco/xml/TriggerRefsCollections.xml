@@ -1,0 +1,1052 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: TriggerRefsCollections.xml
+  Created:  Thu Jan 14 22:49:05 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/HLTReco/interface/TriggerRefsCollections.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/HLTReco/interface/TriggerRefsCollections.h">
+
+    <include name="&quot;DataFormats/HLTReco/interface/TriggerTypeDefs.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
+    <include name="&quot;DataFormats/RecoCandidate/interface/RecoEcalCandidateFwd.h&quot;"/>
+    <include name="&quot;DataFormats/EgammaCandidates/interface/ElectronFwd.h&quot;"/>
+    <include name="&quot;DataFormats/RecoCandidate/interface/RecoChargedCandidateFwd.h&quot;"/>
+    <include name="&quot;DataFormats/JetReco/interface/CaloJetCollection.h&quot;"/>
+    <include name="&quot;DataFormats/Candidate/interface/CompositeCandidateFwd.h&quot;"/>
+    <include name="&quot;DataFormats/METReco/interface/METFwd.h&quot;"/>
+    <include name="&quot;DataFormats/METReco/interface/CaloMETFwd.h&quot;"/>
+    <include name="&quot;DataFormats/HcalIsolatedTrack/interface/IsolatedPixelTrackCandidateFwd.h&quot;"/>
+    <include name="&quot;DataFormats/L1Trigger/interface/L1EmParticleFwd.h&quot;"/>
+    <include name="&quot;DataFormats/L1Trigger/interface/L1JetParticleFwd.h&quot;"/>
+    <include name="&quot;DataFormats/L1Trigger/interface/L1MuonParticleFwd.h&quot;"/>
+    <include name="&quot;DataFormats/L1Trigger/interface/L1EtMissParticleFwd.h&quot;"/>
+    <include name="&lt;cassert&gt;"/>
+    <include name="&lt;vector&gt;"/>
+
+    <namespace name="trigger">
+        <typedef name="VRphoton"
+                 value="std::vector&lt;reco::RecoEcalCandidateRef&gt;">
+typedef std::vector&lt;reco::RecoEcalCandidateRef&gt; VRphoton;
+        </typedef>
+
+        <typedef name="VRelectron"
+                 value="std::vector&lt;reco::ElectronRef&gt;">
+typedef std::vector&lt;reco::ElectronRef&gt; VRelectron;
+        </typedef>
+
+        <typedef name="VRmuon"
+                 value="std::vector&lt;reco::RecoChargedCandidateRef&gt;">
+typedef std::vector&lt;reco::RecoChargedCandidateRef&gt; VRmuon;
+        </typedef>
+
+        <typedef name="VRjet"
+                 value="std::vector&lt;reco::CaloJetRef&gt;">
+typedef std::vector&lt;reco::CaloJetRef&gt; VRjet;
+        </typedef>
+
+        <typedef name="VRcomposite"
+                 value="std::vector&lt;reco::CompositeCandidateRef&gt;">
+typedef std::vector&lt;reco::CompositeCandidateRef&gt; VRcomposite;
+        </typedef>
+
+        <typedef name="VRbasemet"
+                 value="std::vector&lt;reco::METRef&gt;">
+typedef std::vector&lt;reco::METRef&gt; VRbasemet;
+        </typedef>
+
+        <typedef name="VRcalomet"
+                 value="std::vector&lt;reco::CaloMETRef&gt;">
+typedef std::vector&lt;reco::CaloMETRef&gt; VRcalomet;
+        </typedef>
+
+        <typedef name="VRpixtrack"
+                 value="std::vector&lt;reco::IsolatedPixelTrackCandidateRef&gt;">
+typedef std::vector&lt;reco::IsolatedPixelTrackCandidateRef&gt; VRpixtrack;
+        </typedef>
+
+        <typedef name="VRl1em"
+                 value="std::vector&lt;l1extra::L1EmParticleRef&gt;">
+typedef std::vector&lt;l1extra::L1EmParticleRef&gt; VRl1em;
+        </typedef>
+
+        <typedef name="VRl1muon"
+                 value="std::vector&lt;l1extra::L1MuonParticleRef&gt;">
+typedef std::vector&lt;l1extra::L1MuonParticleRef&gt; VRl1muon;
+        </typedef>
+
+        <typedef name="VRl1jet"
+                 value="std::vector&lt;l1extra::L1JetParticleRef&gt;">
+typedef std::vector&lt;l1extra::L1JetParticleRef&gt; VRl1jet;
+        </typedef>
+
+        <typedef name="VRl1etmiss"
+                 value="std::vector&lt;l1extra::L1EtMissParticleRef&gt;">
+typedef std::vector&lt;l1extra::L1EtMissParticleRef&gt; VRl1etmiss;
+        </typedef>
+
+
+        <class name="TriggerRefsCollections"
+               fullname="trigger::TriggerRefsCollections"
+               module="DataFormats.HLTReco"
+               project=""
+               type="regular">
+
+            <section name="public">
+                <constructor name="TriggerRefsCollections"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+TriggerRefsCollections();
+                    <comment>
+        constructors
+                    </comment>
+                </constructor>
+
+                <method1 name="swap"
+                         return="void"
+                         args="['TriggerRefsCollections&amp;']"
+                         vars="['other']"
+                         qual="">
+void swap(TriggerRefsCollections&amp; other);
+                    <comment>
+        utility
+                    </comment>
+                </method1>
+
+                <method1 name="addObject"
+                         return="void"
+                         args="['int','const reco::RecoEcalCandidateRef&amp;']"
+                         vars="['id','ref']"
+                         qual="">
+void addObject(int id, const reco::RecoEcalCandidateRef&amp; ref);
+                    <comment>
+        setters for L3 collections: (id=physics type, and Ref&lt;C&gt;)
+                    </comment>
+                </method1>
+
+                <method1 name="addObject"
+                         return="void"
+                         args="['int','const reco::ElectronRef&amp;']"
+                         vars="['id','ref']"
+                         qual="">
+void addObject(int id, const reco::ElectronRef&amp; ref);
+                </method1>
+
+                <method1 name="addObject"
+                         return="void"
+                         args="['int','const reco::RecoChargedCandidateRef&amp;']"
+                         vars="['id','ref']"
+                         qual="">
+void addObject(int id, const reco::RecoChargedCandidateRef&amp; ref);
+                </method1>
+
+                <method1 name="addObject"
+                         return="void"
+                         args="['int','const reco::CaloJetRef&amp;']"
+                         vars="['id','ref']"
+                         qual="">
+void addObject(int id, const reco::CaloJetRef&amp; ref);
+                </method1>
+
+                <method1 name="addObject"
+                         return="void"
+                         args="['int','const reco::CompositeCandidateRef&amp;']"
+                         vars="['id','ref']"
+                         qual="">
+void addObject(int id, const reco::CompositeCandidateRef&amp; ref);
+                </method1>
+
+                <method1 name="addObject"
+                         return="void"
+                         args="['int','const reco::METRef&amp;']"
+                         vars="['id','ref']"
+                         qual="">
+void addObject(int id, const reco::METRef&amp; ref);
+                </method1>
+
+                <method1 name="addObject"
+                         return="void"
+                         args="['int','const reco::CaloMETRef&amp;']"
+                         vars="['id','ref']"
+                         qual="">
+void addObject(int id, const reco::CaloMETRef&amp; ref);
+                </method1>
+
+                <method1 name="addObject"
+                         return="void"
+                         args="['int','const reco::IsolatedPixelTrackCandidateRef&amp;']"
+                         vars="['id','ref']"
+                         qual="">
+void addObject(int id, const reco::IsolatedPixelTrackCandidateRef&amp; ref);
+                </method1>
+
+                <method1 name="addObject"
+                         return="void"
+                         args="['int','const l1extra::L1EmParticleRef&amp;']"
+                         vars="['id','ref']"
+                         qual="">
+void addObject(int id, const l1extra::L1EmParticleRef&amp; ref);
+                </method1>
+
+                <method1 name="addObject"
+                         return="void"
+                         args="['int','const l1extra::L1MuonParticleRef&amp;']"
+                         vars="['id','ref']"
+                         qual="">
+void addObject(int id, const l1extra::L1MuonParticleRef&amp; ref);
+                </method1>
+
+                <method1 name="addObject"
+                         return="void"
+                         args="['int','const l1extra::L1JetParticleRef&amp;']"
+                         vars="['id','ref']"
+                         qual="">
+void addObject(int id, const l1extra::L1JetParticleRef&amp; ref);
+                </method1>
+
+                <method1 name="addObject"
+                         return="void"
+                         args="['int','const l1extra::L1EtMissParticleRef&amp;']"
+                         vars="['id','ref']"
+                         qual="">
+void addObject(int id, const l1extra::L1EtMissParticleRef&amp; ref);
+                </method1>
+
+                <method1 name="addObjects"
+                         return="size_type"
+                         args="['const Vids&amp;','const VRphoton&amp;']"
+                         vars="['ids','refs']"
+                         qual="">
+size_type addObjects (const Vids&amp; ids, const VRphoton&amp; refs);
+                </method1>
+
+                <method1 name="addObjects"
+                         return="size_type"
+                         args="['const Vids&amp;','const VRelectron&amp;']"
+                         vars="['ids','refs']"
+                         qual="">
+size_type addObjects (const Vids&amp; ids, const VRelectron&amp; refs);
+                </method1>
+
+                <method1 name="addObjects"
+                         return="size_type"
+                         args="['const Vids&amp;','const VRmuon&amp;']"
+                         vars="['ids','refs']"
+                         qual="">
+size_type addObjects (const Vids&amp; ids, const VRmuon&amp; refs);
+                </method1>
+
+                <method1 name="addObjects"
+                         return="size_type"
+                         args="['const Vids&amp;','const VRjet&amp;']"
+                         vars="['ids','refs']"
+                         qual="">
+size_type addObjects (const Vids&amp; ids, const VRjet&amp; refs);
+                </method1>
+
+                <method1 name="addObjects"
+                         return="size_type"
+                         args="['const Vids&amp;','const VRcomposite&amp;']"
+                         vars="['ids','refs']"
+                         qual="">
+size_type addObjects (const Vids&amp; ids, const VRcomposite&amp; refs);
+                </method1>
+
+                <method1 name="addObjects"
+                         return="size_type"
+                         args="['const Vids&amp;','const VRbasemet&amp;']"
+                         vars="['ids','refs']"
+                         qual="">
+size_type addObjects (const Vids&amp; ids, const VRbasemet&amp; refs);
+                </method1>
+
+                <method1 name="addObjects"
+                         return="size_type"
+                         args="['const Vids&amp;','const VRcalomet&amp;']"
+                         vars="['ids','refs']"
+                         qual="">
+size_type addObjects (const Vids&amp; ids, const VRcalomet&amp; refs);
+                </method1>
+
+                <method1 name="addObjects"
+                         return="size_type"
+                         args="['const Vids&amp;','const VRpixtrack&amp;']"
+                         vars="['ids','refs']"
+                         qual="">
+size_type addObjects (const Vids&amp; ids, const VRpixtrack&amp; refs);
+                </method1>
+
+                <method1 name="addObjects"
+                         return="size_type"
+                         args="['const Vids&amp;','const VRl1em&amp;']"
+                         vars="['ids','refs']"
+                         qual="">
+size_type addObjects (const Vids&amp; ids, const VRl1em&amp; refs);
+                </method1>
+
+                <method1 name="addObjects"
+                         return="size_type"
+                         args="['const Vids&amp;','const VRl1muon&amp;']"
+                         vars="['ids','refs']"
+                         qual="">
+size_type addObjects (const Vids&amp; ids, const VRl1muon&amp; refs);
+                </method1>
+
+                <method1 name="addObjects"
+                         return="size_type"
+                         args="['const Vids&amp;','const VRl1jet&amp;']"
+                         vars="['ids','refs']"
+                         qual="">
+size_type addObjects (const Vids&amp; ids, const VRl1jet&amp; refs);
+                </method1>
+
+                <method1 name="addObjects"
+                         return="size_type"
+                         args="['const Vids&amp;','const VRl1etmiss&amp;']"
+                         vars="['ids','refs']"
+                         qual="">
+size_type addObjects (const Vids&amp; ids, const VRl1etmiss&amp; refs);
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['Vids&amp;','VRphoton&amp;']"
+                         vars="['ids','refs']"
+                         qual="const">
+void getObjects(Vids&amp; ids, VRphoton&amp; refs) const;
+                    <comment>
+        various physics-level getters:
+                    </comment>
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['Vids&amp;','VRphoton&amp;','size_type','size_type']"
+                         vars="['ids','refs','begin','end']"
+                         qual="const">
+void getObjects(Vids&amp; ids, VRphoton&amp; refs, size_type begin, size_type end) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['int','VRphoton&amp;']"
+                         vars="['id','refs']"
+                         qual="const">
+void getObjects(int id, VRphoton&amp; refs) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['int','VRphoton&amp;','size_type','size_type']"
+                         vars="['id','refs','begin','end']"
+                         qual="const">
+void getObjects(int id, VRphoton&amp; refs, size_type begin, size_type end) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['Vids&amp;','VRelectron&amp;']"
+                         vars="['ids','refs']"
+                         qual="const">
+void getObjects(Vids&amp; ids, VRelectron&amp; refs) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['Vids&amp;','VRelectron&amp;','size_type','size_type']"
+                         vars="['ids','refs','begin','end']"
+                         qual="const">
+void getObjects(Vids&amp; ids, VRelectron&amp; refs, size_type begin, size_type end) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['int','VRelectron&amp;']"
+                         vars="['id','refs']"
+                         qual="const">
+void getObjects(int id, VRelectron&amp; refs) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['int','VRelectron&amp;','size_type','size_type']"
+                         vars="['id','refs','begin','end']"
+                         qual="const">
+void getObjects(int id, VRelectron&amp; refs, size_type begin, size_type end) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['Vids&amp;','VRmuon&amp;']"
+                         vars="['ids','refs']"
+                         qual="const">
+void getObjects(Vids&amp; ids, VRmuon&amp; refs) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['Vids&amp;','VRmuon&amp;','size_type','size_type']"
+                         vars="['ids','refs','begin','end']"
+                         qual="const">
+void getObjects(Vids&amp; ids, VRmuon&amp; refs, size_type begin, size_type end) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['int','VRmuon&amp;']"
+                         vars="['id','refs']"
+                         qual="const">
+void getObjects(int id, VRmuon&amp; refs) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['int','VRmuon&amp;','size_type','size_type']"
+                         vars="['id','refs','begin','end']"
+                         qual="const">
+void getObjects(int id, VRmuon&amp; refs, size_type begin, size_type end) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['Vids&amp;','VRjet&amp;']"
+                         vars="['ids','refs']"
+                         qual="const">
+void getObjects(Vids&amp; ids, VRjet&amp; refs) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['Vids&amp;','VRjet&amp;','size_type','size_type']"
+                         vars="['ids','refs','begin','end']"
+                         qual="const">
+void getObjects(Vids&amp; ids, VRjet&amp; refs, size_type begin, size_type end) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['int','VRjet&amp;']"
+                         vars="['id','refs']"
+                         qual="const">
+void getObjects(int id, VRjet&amp; refs) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['int','VRjet&amp;','size_type','size_type']"
+                         vars="['id','refs','begin','end']"
+                         qual="const">
+void getObjects(int id, VRjet&amp; refs, size_type begin, size_type end) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['Vids&amp;','VRcomposite&amp;']"
+                         vars="['ids','refs']"
+                         qual="const">
+void getObjects(Vids&amp; ids, VRcomposite&amp; refs) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['Vids&amp;','VRcomposite&amp;','size_type','size_type']"
+                         vars="['ids','refs','begin','end']"
+                         qual="const">
+void getObjects(Vids&amp; ids, VRcomposite&amp; refs, size_type begin, size_type end) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['int','VRcomposite&amp;']"
+                         vars="['id','refs']"
+                         qual="const">
+void getObjects(int id, VRcomposite&amp; refs) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['int','VRcomposite&amp;','size_type','size_type']"
+                         vars="['id','refs','begin','end']"
+                         qual="const">
+void getObjects(int id, VRcomposite&amp; refs, size_type begin, size_type end) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['Vids&amp;','VRbasemet&amp;']"
+                         vars="['ids','refs']"
+                         qual="const">
+void getObjects(Vids&amp; ids, VRbasemet&amp; refs) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['Vids&amp;','VRbasemet&amp;','size_type','size_type']"
+                         vars="['ids','refs','begin','end']"
+                         qual="const">
+void getObjects(Vids&amp; ids, VRbasemet&amp; refs, size_type begin, size_type end) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['int','VRbasemet&amp;']"
+                         vars="['id','refs']"
+                         qual="const">
+void getObjects(int id, VRbasemet&amp; refs) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['int','VRbasemet&amp;','size_type','size_type']"
+                         vars="['id','refs','begin','end']"
+                         qual="const">
+void getObjects(int id, VRbasemet&amp; refs, size_type begin, size_type end) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['Vids&amp;','VRcalomet&amp;']"
+                         vars="['ids','refs']"
+                         qual="const">
+void getObjects(Vids&amp; ids, VRcalomet&amp; refs) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['Vids&amp;','VRcalomet&amp;','size_type','size_type']"
+                         vars="['ids','refs','begin','end']"
+                         qual="const">
+void getObjects(Vids&amp; ids, VRcalomet&amp; refs, size_type begin, size_type end) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['int','VRcalomet&amp;']"
+                         vars="['id','refs']"
+                         qual="const">
+void getObjects(int id, VRcalomet&amp; refs) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['int','VRcalomet&amp;','size_type','size_type']"
+                         vars="['id','refs','begin','end']"
+                         qual="const">
+void getObjects(int id, VRcalomet&amp; refs, size_type begin, size_type end) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['Vids&amp;','VRpixtrack&amp;']"
+                         vars="['ids','refs']"
+                         qual="const">
+void getObjects(Vids&amp; ids, VRpixtrack&amp; refs) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['Vids&amp;','VRpixtrack&amp;','size_type','size_type']"
+                         vars="['ids','refs','begin','end']"
+                         qual="const">
+void getObjects(Vids&amp; ids, VRpixtrack&amp; refs, size_type begin, size_type end) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['int','VRpixtrack&amp;']"
+                         vars="['id','refs']"
+                         qual="const">
+void getObjects(int id, VRpixtrack&amp; refs) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['int','VRpixtrack&amp;','size_type','size_type']"
+                         vars="['id','refs','begin','end']"
+                         qual="const">
+void getObjects(int id, VRpixtrack&amp; refs, size_type begin, size_type end) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['Vids&amp;','VRl1em&amp;']"
+                         vars="['ids','refs']"
+                         qual="const">
+void getObjects(Vids&amp; ids, VRl1em&amp; refs) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['Vids&amp;','VRl1em&amp;','size_type','size_type']"
+                         vars="['ids','refs','begin','end']"
+                         qual="const">
+void getObjects(Vids&amp; ids, VRl1em&amp; refs, size_type begin, size_type end) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['int','VRl1em&amp;']"
+                         vars="['id','refs']"
+                         qual="const">
+void getObjects(int id, VRl1em&amp; refs) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['int','VRl1em&amp;','size_type','size_type']"
+                         vars="['id','refs','begin','end']"
+                         qual="const">
+void getObjects(int id, VRl1em&amp; refs, size_type begin, size_type end) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['Vids&amp;','VRl1muon&amp;']"
+                         vars="['ids','refs']"
+                         qual="const">
+void getObjects(Vids&amp; ids, VRl1muon&amp; refs) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['Vids&amp;','VRl1muon&amp;','size_type','size_type']"
+                         vars="['ids','refs','begin','end']"
+                         qual="const">
+void getObjects(Vids&amp; ids, VRl1muon&amp; refs, size_type begin, size_type end) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['int','VRl1muon&amp;']"
+                         vars="['id','refs']"
+                         qual="const">
+void getObjects(int id, VRl1muon&amp; refs) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['int','VRl1muon&amp;','size_type','size_type']"
+                         vars="['id','refs','begin','end']"
+                         qual="const">
+void getObjects(int id, VRl1muon&amp; refs, size_type begin, size_type end) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['Vids&amp;','VRl1jet&amp;']"
+                         vars="['ids','refs']"
+                         qual="const">
+void getObjects(Vids&amp; ids, VRl1jet&amp; refs) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['Vids&amp;','VRl1jet&amp;','size_type','size_type']"
+                         vars="['ids','refs','begin','end']"
+                         qual="const">
+void getObjects(Vids&amp; ids, VRl1jet&amp; refs, size_type begin, size_type end) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['int','VRl1jet&amp;']"
+                         vars="['id','refs']"
+                         qual="const">
+void getObjects(int id, VRl1jet&amp; refs) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['int','VRl1jet&amp;','size_type','size_type']"
+                         vars="['id','refs','begin','end']"
+                         qual="const">
+void getObjects(int id, VRl1jet&amp; refs, size_type begin, size_type end) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['Vids&amp;','VRl1etmiss&amp;']"
+                         vars="['ids','refs']"
+                         qual="const">
+void getObjects(Vids&amp; ids, VRl1etmiss&amp; refs) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['Vids&amp;','VRl1etmiss&amp;','size_type','size_type']"
+                         vars="['ids','refs','begin','end']"
+                         qual="const">
+void getObjects(Vids&amp; ids, VRl1etmiss&amp; refs, size_type begin, size_type end) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['int','VRl1etmiss&amp;']"
+                         vars="['id','refs']"
+                         qual="const">
+void getObjects(int id, VRl1etmiss&amp; refs) const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="void"
+                         args="['int','VRl1etmiss&amp;','size_type','size_type']"
+                         vars="['id','refs','begin','end']"
+                         qual="const">
+void getObjects(int id, VRl1etmiss&amp; refs, size_type begin, size_type end) const;
+                </method1>
+
+                <method1 name="photonSize"
+                         return="size_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+size_type photonSize() const;
+                    <comment>
+        low-level getters for data members
+                    </comment>
+                </method1>
+
+                <method1 name="photonIds"
+                         return="const Vids&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const Vids&amp; photonIds() const;
+                </method1>
+
+                <method1 name="photonRefs"
+                         return="const VRphoton&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const VRphoton&amp; photonRefs() const;
+                </method1>
+
+                <method1 name="electronSize"
+                         return="size_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+size_type electronSize() const;
+                </method1>
+
+                <method1 name="electronIds"
+                         return="const Vids&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const Vids&amp; electronIds() const;
+                </method1>
+
+                <method1 name="electronRefs"
+                         return="const VRelectron&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const VRelectron&amp; electronRefs() const;
+                </method1>
+
+                <method1 name="muonSize"
+                         return="size_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+size_type muonSize() const;
+                </method1>
+
+                <method1 name="muonIds"
+                         return="const Vids&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const Vids&amp; muonIds() const;
+                </method1>
+
+                <method1 name="muonRefs"
+                         return="const VRmuon&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const VRmuon&amp; muonRefs() const;
+                </method1>
+
+                <method1 name="jetSize"
+                         return="size_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+size_type jetSize() const;
+                </method1>
+
+                <method1 name="jetIds"
+                         return="const Vids&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const Vids&amp; jetIds() const;
+                </method1>
+
+                <method1 name="jetRefs"
+                         return="const VRjet&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const VRjet&amp; jetRefs() const;
+                </method1>
+
+                <method1 name="compositeSize"
+                         return="size_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+size_type compositeSize() const;
+                </method1>
+
+                <method1 name="compositeIds"
+                         return="const Vids&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const Vids&amp; compositeIds() const;
+                </method1>
+
+                <method1 name="compositeRefs"
+                         return="const VRcomposite&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const VRcomposite&amp; compositeRefs() const;
+                </method1>
+
+                <method1 name="basemetSize"
+                         return="size_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+size_type basemetSize() const;
+                </method1>
+
+                <method1 name="basemetIds"
+                         return="const Vids&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const Vids&amp; basemetIds() const;
+                </method1>
+
+                <method1 name="basemetRefs"
+                         return="const VRbasemet&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const VRbasemet&amp; basemetRefs() const;
+                </method1>
+
+                <method1 name="calometSize"
+                         return="size_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+size_type calometSize() const;
+                </method1>
+
+                <method1 name="calometIds"
+                         return="const Vids&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const Vids&amp; calometIds() const;
+                </method1>
+
+                <method1 name="calometRefs"
+                         return="const VRcalomet&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const VRcalomet&amp; calometRefs() const;
+                </method1>
+
+                <method1 name="pixtrackSize"
+                         return="size_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+size_type pixtrackSize() const;
+                </method1>
+
+                <method1 name="pixtrackIds"
+                         return="const Vids&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const Vids&amp; pixtrackIds() const;
+                </method1>
+
+                <method1 name="pixtrackRefs"
+                         return="const VRpixtrack&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const VRpixtrack&amp; pixtrackRefs() const;
+                </method1>
+
+                <method1 name="l1emSize"
+                         return="size_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+size_type l1emSize() const;
+                </method1>
+
+                <method1 name="l1emIds"
+                         return="const Vids&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const Vids&amp; l1emIds() const;
+                </method1>
+
+                <method1 name="l1emRefs"
+                         return="const VRl1em&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const VRl1em&amp; l1emRefs() const;
+                </method1>
+
+                <method1 name="l1muonSize"
+                         return="size_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+size_type l1muonSize() const;
+                </method1>
+
+                <method1 name="l1muonIds"
+                         return="const Vids&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const Vids&amp; l1muonIds() const;
+                </method1>
+
+                <method1 name="l1muonRefs"
+                         return="const VRl1muon&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const VRl1muon&amp; l1muonRefs() const;
+                </method1>
+
+                <method1 name="l1jetSize"
+                         return="size_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+size_type l1jetSize() const;
+                </method1>
+
+                <method1 name="l1jetIds"
+                         return="const Vids&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const Vids&amp; l1jetIds() const;
+                </method1>
+
+                <method1 name="l1jetRefs"
+                         return="const VRl1jet&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const VRl1jet&amp; l1jetRefs() const;
+                </method1>
+
+                <method1 name="l1etmissSize"
+                         return="size_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+size_type l1etmissSize() const;
+                </method1>
+
+                <method1 name="l1etmissIds"
+                         return="const Vids&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const Vids&amp; l1etmissIds() const;
+                </method1>
+
+                <method1 name="l1etmissRefs"
+                         return="const VRl1etmiss&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const VRl1etmiss&amp; l1etmissRefs() const;
+                </method1>
+
+            </section>
+
+        </class>
+        <function1 name="swap"
+                   return="inline void"
+                   args="['TriggerRefsCollections&amp;','TriggerRefsCollections&amp;']"
+                   vars="['first','second']"
+                   qual="">
+inline void swap(TriggerRefsCollections&amp; first, TriggerRefsCollections&amp; second);
+            <comment>
+     picked up via argument dependent lookup, e-g- by boost::swap()
+            </comment>
+        </function1>
+
+    </namespace>
+
+    <type name="TriggerRefsCollections&amp;"/>
+    <type name="VRbasemet&amp;"/>
+    <type name="VRcalomet&amp;"/>
+    <type name="VRcomposite&amp;"/>
+    <type name="VRelectron&amp;"/>
+    <type name="VRjet&amp;"/>
+    <type name="VRl1em&amp;"/>
+    <type name="VRl1etmiss&amp;"/>
+    <type name="VRl1jet&amp;"/>
+    <type name="VRl1muon&amp;"/>
+    <type name="VRmuon&amp;"/>
+    <type name="VRphoton&amp;"/>
+    <type name="VRpixtrack&amp;"/>
+    <type name="Vids&amp;"/>
+    <type name="const VRbasemet&amp;"/>
+    <type name="const VRcalomet&amp;"/>
+    <type name="const VRcomposite&amp;"/>
+    <type name="const VRelectron&amp;"/>
+    <type name="const VRjet&amp;"/>
+    <type name="const VRl1em&amp;"/>
+    <type name="const VRl1etmiss&amp;"/>
+    <type name="const VRl1jet&amp;"/>
+    <type name="const VRl1muon&amp;"/>
+    <type name="const VRmuon&amp;"/>
+    <type name="const VRphoton&amp;"/>
+    <type name="const VRpixtrack&amp;"/>
+    <type name="const Vids&amp;"/>
+    <type name="const l1extra::L1EmParticleRef&amp;"/>
+    <type name="const l1extra::L1EtMissParticleRef&amp;"/>
+    <type name="const l1extra::L1JetParticleRef&amp;"/>
+    <type name="const l1extra::L1MuonParticleRef&amp;"/>
+    <type name="const reco::CaloJetRef&amp;"/>
+    <type name="const reco::CaloMETRef&amp;"/>
+    <type name="const reco::CompositeCandidateRef&amp;"/>
+    <type name="const reco::ElectronRef&amp;"/>
+    <type name="const reco::IsolatedPixelTrackCandidateRef&amp;"/>
+    <type name="const reco::METRef&amp;"/>
+    <type name="const reco::RecoChargedCandidateRef&amp;"/>
+    <type name="const reco::RecoEcalCandidateRef&amp;"/>
+    <type name="int"/>
+    <type name="size_type"/>
+    <type name="trigger::TriggerRefsCollections"/>
+    <type name="void"/>
+</header>

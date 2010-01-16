@@ -1,0 +1,214 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: TauPFSpecific.xml
+  Created:  Thu Jan 14 22:48:21 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/PatCandidates/interface/TauPFSpecific.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/PatCandidates/interface/TauPFSpecific.h">
+
+    <include name="&quot;DataFormats/TauReco/interface/PFTau.h&quot;"/>
+
+    <namespace name="pat">
+
+        <namespace name="tau">
+
+            <class name="TauPFSpecific"
+                   fullname="pat::tau::TauPFSpecific"
+                   module="DataFormats.PatCandidates"
+                   project=""
+                   type="regular struct">
+
+                <section>
+                    <constructor name="TauPFSpecific"
+                                 return=""
+                                 args="['void']"
+                                 vars="['']"
+                                 qual="">
+TauPFSpecific();
+                        <comment>
+   dummy constructor for ROOT I/O
+                        </comment>
+                    </constructor>
+
+                    <constructor name="TauPFSpecific"
+                                 return=""
+                                 args="['const reco::PFTau&amp;']"
+                                 vars="['tau']"
+                                 qual="">
+TauPFSpecific(const reco::PFTau&amp; tau);
+                        <comment>
+   constructor from PFTau
+                        </comment>
+                    </constructor>
+
+                    <member>
+reco::PFTauTagInfoRef PFTauTagInfoRef_;
+                        <comment>
+   datamembers
+                        </comment>
+                    </member>
+
+                    <member>
+reco::PFCandidateRef leadPFChargedHadrCand_;
+                    </member>
+
+                    <member>
+float leadPFChargedHadrCandsignedSipt_;
+                    </member>
+
+                    <member>
+reco::PFCandidateRefVector selectedSignalPFCands_, selectedSignalPFChargedHadrCands_, selectedSignalPFNeutrHadrCands_, selectedSignalPFGammaCands_;
+                    </member>
+
+                    <member>
+reco::PFCandidateRefVector selectedIsolationPFCands_, selectedIsolationPFChargedHadrCands_, selectedIsolationPFNeutrHadrCands_, selectedIsolationPFGammaCands_;
+                    </member>
+
+                    <member>
+float isolationPFChargedHadrCandsPtSum_;
+                    </member>
+
+                    <member>
+float isolationPFGammaCandsEtSum_;
+                    </member>
+
+                    <member>
+float maximumHCALPFClusterEt_;
+                    </member>
+
+                    <member>
+float emFraction_;
+                    </member>
+
+                    <member>
+float hcalTotOverPLead_;
+                    </member>
+
+                    <member>
+float hcalMaxOverPLead_;
+                    </member>
+
+                    <member>
+float hcal3x3OverPLead_;
+                    </member>
+
+                    <member>
+float ecalStripSumEOverPLead_;
+                    </member>
+
+                    <member>
+float bremsRecoveryEOverPLead_;
+                    </member>
+
+                    <member>
+reco::TrackRef electronPreIDTrack_;
+                    </member>
+
+                    <member>
+float electronPreIDOutput_;
+                    </member>
+
+                    <member>
+bool electronPreIDDecision_;
+                    </member>
+
+                    <member>
+float caloComp_;
+                    </member>
+
+                    <member>
+float segComp_;
+                    </member>
+
+                    <member>
+bool muonDecision_;
+                    </member>
+
+                    <member>
+int decayMode_;
+                    </member>
+
+                </section>
+
+                <typemap name="PFTauTagInfoRef_"
+                         value="pat::tau::TauPFSpecific::PFTauTagInfoRef_"
+                         type="member"/>
+                <typemap name="bremsRecoveryEOverPLead_"
+                         value="pat::tau::TauPFSpecific::bremsRecoveryEOverPLead_"
+                         type="member"/>
+                <typemap name="caloComp_"
+                         value="pat::tau::TauPFSpecific::caloComp_"
+                         type="member"/>
+                <typemap name="decayMode_"
+                         value="pat::tau::TauPFSpecific::decayMode_"
+                         type="member"/>
+                <typemap name="ecalStripSumEOverPLead_"
+                         value="pat::tau::TauPFSpecific::ecalStripSumEOverPLead_"
+                         type="member"/>
+                <typemap name="electronPreIDDecision_"
+                         value="pat::tau::TauPFSpecific::electronPreIDDecision_"
+                         type="member"/>
+                <typemap name="electronPreIDOutput_"
+                         value="pat::tau::TauPFSpecific::electronPreIDOutput_"
+                         type="member"/>
+                <typemap name="electronPreIDTrack_"
+                         value="pat::tau::TauPFSpecific::electronPreIDTrack_"
+                         type="member"/>
+                <typemap name="emFraction_"
+                         value="pat::tau::TauPFSpecific::emFraction_"
+                         type="member"/>
+                <typemap name="hcal3x3OverPLead_"
+                         value="pat::tau::TauPFSpecific::hcal3x3OverPLead_"
+                         type="member"/>
+                <typemap name="hcalMaxOverPLead_"
+                         value="pat::tau::TauPFSpecific::hcalMaxOverPLead_"
+                         type="member"/>
+                <typemap name="hcalTotOverPLead_"
+                         value="pat::tau::TauPFSpecific::hcalTotOverPLead_"
+                         type="member"/>
+                <typemap name="isolationPFChargedHadrCandsPtSum_"
+                         value="pat::tau::TauPFSpecific::isolationPFChargedHadrCandsPtSum_"
+                         type="member"/>
+                <typemap name="isolationPFGammaCandsEtSum_"
+                         value="pat::tau::TauPFSpecific::isolationPFGammaCandsEtSum_"
+                         type="member"/>
+                <typemap name="leadPFChargedHadrCand_"
+                         value="pat::tau::TauPFSpecific::leadPFChargedHadrCand_"
+                         type="member"/>
+                <typemap name="leadPFChargedHadrCandsignedSipt_"
+                         value="pat::tau::TauPFSpecific::leadPFChargedHadrCandsignedSipt_"
+                         type="member"/>
+                <typemap name="maximumHCALPFClusterEt_"
+                         value="pat::tau::TauPFSpecific::maximumHCALPFClusterEt_"
+                         type="member"/>
+                <typemap name="muonDecision_"
+                         value="pat::tau::TauPFSpecific::muonDecision_"
+                         type="member"/>
+                <typemap name="segComp_"
+                         value="pat::tau::TauPFSpecific::segComp_"
+                         type="member"/>
+                <typemap name="selectedIsolationPFGammaCands_"
+                         value="pat::tau::TauPFSpecific::selectedIsolationPFGammaCands_"
+                         type="member"/>
+                <typemap name="selectedSignalPFGammaCands_"
+                         value="pat::tau::TauPFSpecific::selectedSignalPFGammaCands_"
+                         type="member"/>
+
+            </class>
+        </namespace>
+    </namespace>
+
+    <type name="bool"/>
+    <type name="const reco::PFTau&amp;"/>
+    <type name="float"/>
+    <type name="int"/>
+    <type name="pat::tau::TauPFSpecific"/>
+    <type name="reco::PFCandidateRef"/>
+    <type name="reco::PFCandidateRefVector selectedIsolationPFCands_, selectedIsolationPFChargedHadrCands_, selectedIsolationPFNeutrHadrCands_,"/>
+    <type name="reco::PFCandidateRefVector selectedSignalPFCands_, selectedSignalPFChargedHadrCands_, selectedSignalPFNeutrHadrCands_,"/>
+    <type name="reco::PFTauTagInfoRef"/>
+    <type name="reco::TrackRef"/>
+    <type name="void"/>
+</header>

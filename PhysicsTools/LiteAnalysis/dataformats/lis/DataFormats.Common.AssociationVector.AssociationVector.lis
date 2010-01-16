@@ -1,0 +1,5 @@
+edm::AssociationVector<KeyRefProd, CVal, KeyRef, SizeType, KeyReferenceHelper>|SizeType|size|void
+edm::AssociationVector<KeyRefProd, CVal, KeyRef, SizeType, KeyReferenceHelper>|bool|empty|void
+edm::AssociationVector<KeyRefProd, CVal, KeyRef, SizeType, KeyReferenceHelper>|const KeyRefProd&|keyProduct|void
+edm::AssociationVector<KeyRefProd, CVal, KeyRef, SizeType, KeyReferenceHelper>|typename std::vector<typename std::pair<KeyRef, typename CVal::value_type>>::const_iterator|begin|void
+edm::AssociationVector<KeyRefProd, CVal, KeyRef, SizeType, KeyReferenceHelper>|typename std::vector<typename std::pair<KeyRef, typename CVal::value_type>>::const_iterator|end|void

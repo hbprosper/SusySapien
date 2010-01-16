@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: PFClusterFwd.xml
+  Created:  Thu Jan 14 22:47:58 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/ParticleFlowReco/interface/PFClusterFwd.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/ParticleFlowReco/interface/PFClusterFwd.h">
+
+    <include name="&lt;vector&gt;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
+
+    <namespace name="reco">
+        <forward name="PFCluster"/>
+        <typedef name="PFClusterCollection"
+                 value="std::vector&lt;PFCluster&gt;">
+typedef std::vector&lt;PFCluster&gt; PFClusterCollection;
+            <comment>
+      collection of PFCluster objects
+            </comment>
+        </typedef>
+
+        <typedef name="PFClusterRef"
+                 value="edm::Ref&lt;PFClusterCollection&gt;">
+typedef edm::Ref&lt;PFClusterCollection&gt; PFClusterRef;
+            <comment>
+      persistent reference to PFCluster objects
+            </comment>
+        </typedef>
+
+        <typedef name="PFClusterRefProd"
+                 value="edm::RefProd&lt;PFClusterCollection&gt;">
+typedef edm::RefProd&lt;PFClusterCollection&gt; PFClusterRefProd;
+            <comment>
+      reference to PFCluster collection
+            </comment>
+        </typedef>
+
+        <typedef name="PFClusterRefVector"
+                 value="edm::RefVector&lt;PFClusterCollection&gt;">
+typedef edm::RefVector&lt;PFClusterCollection&gt; PFClusterRefVector;
+            <comment>
+      vector of references to PFCluster objects all in the same collection
+            </comment>
+        </typedef>
+
+        <typedef name="PFCluster_iterator"
+                 value="PFClusterRefVector::iterator">
+typedef PFClusterRefVector::iterator PFCluster_iterator;
+            <comment>
+      iterator over a vector of references to PFCluster objects
+            </comment>
+        </typedef>
+
+    </namespace>
+
+</header>

@@ -1,0 +1,6 @@
+edm::BasicHandle|bool|isValid|void
+edm::BasicHandle|bool|failedToGet|void
+edm::BasicHandle|EDProduct const*|wrapper|void
+edm::BasicHandle|Provenance const*|provenance|void
+edm::BasicHandle|ProductID|id|void
+edm::BasicHandle|boost::shared_ptr<cms::Exception>|whyFailed|void

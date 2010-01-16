@@ -1,0 +1,231 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: Holder.xml
+  Created:  Thu Jan 14 22:46:04 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Common/interface/Holder.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/Holder.h">
+
+    <include name="&quot;DataFormats/Common/interface/BaseHolder.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefHolder.h&quot;"/>
+
+    <namespace name="edm">
+
+        <namespace name="reftobase">
+
+            <class name="Holder"
+                   fullname="edm::reftobase::Holder&lt;T, REF&gt;"
+                   module="DataFormats.Common"
+                   project=""
+                   type="template"
+                   template="template&lt;class T, class REF&gt;">
+                <baseclass name="public BaseHolder&lt;T&gt;"/>
+                <comment>
+       Class template Holder&lt;T,REF&gt;
+                </comment>
+
+                <section name="public">
+                    <constructor name="Holder"
+                                 return=""
+                                 args="['void']"
+                                 vars="['']"
+                                 qual="">
+Holder();
+                    </constructor>
+
+                    <copyconstructor name="Holder"
+                                     return=""
+                                     args="['Holder const&amp;']"
+                                     vars="['other']"
+                                     qual="">
+Holder(Holder const&amp; other);
+                    </copyconstructor>
+
+                    <constructor name="Holder"
+                                 return="explicit"
+                                 args="['REF const&amp;']"
+                                 vars="['iRef']"
+                                 qual="">
+explicit Holder(REF const&amp; iRef);
+                    </constructor>
+
+                    <operator name="operator="
+                              return="Holder&amp;"
+                              args="['Holder const&amp;']"
+                              vars="['rhs']"
+                              qual="">
+Holder&amp; operator=(Holder const&amp; rhs);
+                    </operator>
+
+                    <method1 name="swap"
+                             return="void"
+                             args="['Holder&amp;']"
+                             vars="['other']"
+                             qual="">
+void swap(Holder&amp; other);
+                    </method1>
+
+                    <destructor name="~Holder"
+                                return="virtual"
+                                args="['void']"
+                                vars="['']"
+                                qual="">
+virtual ~Holder();
+                    </destructor>
+
+                    <method2 name="clone"
+                             return="virtual BaseHolder&lt;T&gt;*"
+                             args="['void']"
+                             vars="['']"
+                             qual="const">
+virtual BaseHolder&lt;T&gt;* clone() const;
+                    </method2>
+
+                    <method1 name="getPtr"
+                             return="virtual T const*"
+                             args="['void']"
+                             vars="['']"
+                             qual="const">
+virtual T const* getPtr() const;
+                    </method1>
+
+                    <method1 name="id"
+                             return="virtual ProductID"
+                             args="['void']"
+                             vars="['']"
+                             qual="const">
+virtual ProductID id() const;
+                    </method1>
+
+                    <method1 name="key"
+                             return="virtual size_t"
+                             args="['void']"
+                             vars="['']"
+                             qual="const">
+virtual size_t key() const;
+                    </method1>
+
+                    <method2 name="isEqualTo"
+                             return="virtual bool"
+                             args="['BaseHolder&lt;T&gt; const&amp;']"
+                             vars="['rhs']"
+                             qual="const">
+virtual bool isEqualTo(BaseHolder&lt;T&gt; const&amp; rhs) const;
+                    </method2>
+
+                    <method1 name="getRef"
+                             return="REF const&amp;"
+                             args="['void']"
+                             vars="['']"
+                             qual="const">
+REF const&amp; getRef() const;
+                    </method1>
+
+                    <method1 name="fillRefIfMyTypeMatches"
+                             return="virtual bool"
+                             args="['RefHolderBase&amp;','std::string&amp;']"
+                             vars="['fillme','msg']"
+                             qual="const">
+virtual bool fillRefIfMyTypeMatches(RefHolderBase&amp; fillme, std::string&amp; msg) const;
+                    </method1>
+
+                    <method2 name="holder"
+                             return="virtual std::auto_ptr&lt;RefHolderBase&gt;"
+                             args="['void']"
+                             vars="['']"
+                             qual="const">
+virtual std::auto_ptr&lt;RefHolderBase&gt; holder() const;
+                    </method2>
+
+                    <method2 name="makeVectorHolder"
+                             return="virtual std::auto_ptr&lt;BaseVectorHolder&lt;T&gt; &gt;"
+                             args="['void']"
+                             vars="['']"
+                             qual="const">
+virtual std::auto_ptr&lt;BaseVectorHolder&lt;T&gt; &gt; makeVectorHolder() const;
+                    </method2>
+
+                    <method2 name="makeVectorBaseHolder"
+                             return="virtual std::auto_ptr&lt;RefVectorHolderBase&gt;"
+                             args="['void']"
+                             vars="['']"
+                             qual="const">
+virtual std::auto_ptr&lt;RefVectorHolderBase&gt; makeVectorBaseHolder() const;
+                    </method2>
+
+                    <method1 name="productGetter"
+                             return="virtual EDProductGetter const*"
+                             args="['void']"
+                             vars="['']"
+                             qual="const">
+virtual EDProductGetter const* productGetter() const;
+                    </method1>
+
+                    <method1 name="hasProductCache"
+                             return="virtual bool"
+                             args="['void']"
+                             vars="['']"
+                             qual="const">
+virtual bool hasProductCache() const;
+                    </method1>
+
+                    <method1 name="product"
+                             return="virtual void const*"
+                             args="['void']"
+                             vars="['']"
+                             qual="const">
+virtual void const* product() const;
+                    </method1>
+
+                    <method1 name="isAvailable"
+                             return="virtual bool"
+                             args="['void']"
+                             vars="['']"
+                             qual="const">
+virtual bool isAvailable() const;
+                        <comment>
+          in the Event. No type checking is done.
+                        </comment>
+                    </method1>
+
+                </section>
+
+            </class>
+        </namespace>
+    </namespace>
+    <include name="&quot;DataFormats/Common/interface/HolderToVectorTrait.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+
+    <namespace name="edm">
+
+        <namespace name="reftobase">
+        </namespace>
+    </namespace>
+    <include name="&quot;DataFormats/Common/interface/RefKeyTrait.h&quot;"/>
+
+    <namespace name="edm">
+
+        <namespace name="reftobase">
+        </namespace>
+    </namespace>
+
+    <type name="BaseHolder&lt;T&gt;"/>
+    <type name="BaseHolder&lt;T&gt; const&amp;"/>
+    <type name="BaseHolder&lt;T&gt;*"/>
+    <type name="EDProductGetter const*"/>
+    <type name="Holder const&amp;"/>
+    <type name="Holder&amp;"/>
+    <type name="ProductID"/>
+    <type name="RefHolderBase&amp;"/>
+    <type name="bool"/>
+    <type name="edm::reftobase::Holder&lt;T, REF&gt;"/>
+    <type name="size_t"/>
+    <type name="std::auto_ptr&lt;BaseVectorHolder&lt;T&gt; &gt;"/>
+    <type name="std::auto_ptr&lt;RefHolderBase&gt;"/>
+    <type name="std::auto_ptr&lt;RefVectorHolderBase&gt;"/>
+    <type name="std::string&amp;"/>
+    <type name="void"/>
+    <type name="void const*"/>
+</header>

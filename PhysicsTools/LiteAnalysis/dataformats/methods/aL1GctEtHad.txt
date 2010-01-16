@@ -1,0 +1,5 @@
+int16_t	bx()
+bool	empty()
+unsigned	et()
+bool	overFlow()
+

@@ -1,0 +1,9 @@
+Class:
+	edm::has_fillView<RefToBaseVector<T> >
+
+Header:
+	DataFormats/Common/interface/RefToBaseVector.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:39 2010	lsclass.py $Revision:$
+

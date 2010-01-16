@@ -1,0 +1,7 @@
+reco::PFTrajectoryPoint|int|detId|void
+reco::PFTrajectoryPoint|int|layer|void
+reco::PFTrajectoryPoint|bool|isValid|void
+reco::PFTrajectoryPoint|bool|isTrackerLayer|void
+reco::PFTrajectoryPoint|const math::XYZPointD&|position|void
+reco::PFTrajectoryPoint|const ROOT::Math::PositionVector3D<ROOT::Math::CylindricalEta3D<Double32_t> >&|positionREP|void
+reco::PFTrajectoryPoint|const math::XYZTLorentzVectorD&|momentum|void

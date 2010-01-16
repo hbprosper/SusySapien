@@ -1,0 +1,9 @@
+Class:
+	pat::JetCorrFactors::FlavourCorrections
+
+Header:
+	DataFormats/PatCandidates/interface/JetCorrFactors.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:14:12 2010	lsclass.py $Revision:$
+

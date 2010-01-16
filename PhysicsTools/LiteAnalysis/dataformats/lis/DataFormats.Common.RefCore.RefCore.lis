@@ -1,0 +1,9 @@
+edm::RefCore|ProductID|id|void
+edm::RefCore|void const*|productPtr|void
+edm::RefCore|bool|isNull|void
+edm::RefCore|bool|isNonnull|void
+edm::RefCore|bool|isAvailable|void
+edm::RefCore|EDProductGetter const*|productGetter|void
+edm::RefCore|EDProduct const*|getProductPtr|void
+edm::RefCore|bool|isTransient|void
+edm::RefCore|int|isTransientInt|void

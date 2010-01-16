@@ -1,0 +1,27 @@
+/**	\mainpage	LiteAnalysis
+
+	\section	intro	Introduction
+
+This package contains a set of tools that may 
+be useful in exploratory physics analysis. 
+It contains, for example, an interface to
+the <b>BAYESPACK</b> 
+multi-dimensional integration package by 
+<a href=http://www.sci.wsu.edu/math/faculty/genz/homepage>Alan Genz</a>. It
+also contains a simple interface to Root files.
+
+	\subsection	pages	LiteAnalysis Package
+
+	\version	1.0
+	\date		4 November, 2009
+	\author		<i>Harrison B. Prosper, 
+			Department of Physics, Florida State University</i>
+
+*/
+
+
+
+
+
+
+

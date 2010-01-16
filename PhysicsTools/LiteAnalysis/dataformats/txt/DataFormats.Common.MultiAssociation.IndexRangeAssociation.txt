@@ -1,0 +1,38 @@
+Class:
+	edm::helper::IndexRangeAssociation
+
+Header:
+	DataFormats/Common/interface/MultiAssociation.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:43 2010	lsclass.py $Revision:$
+
+Methods from edm::helper::IndexRangeAssociation
+
+	-o- get
+		Return: std::pair<unsigned int, unsigned int>
+		Arguments: const edm::ProductID&	id
+		           unsigned int	t
+
+	-o- contains
+		Return: bool
+		Arguments: ProductID	id
+
+	-o- size
+		Return: unsigned int
+		Arguments: void	
+
+	-o- empty
+		Return: bool
+		Arguments: void	
+
+	-o- swap
+		Return: void
+		Arguments: IndexRangeAssociation&	other
+
+	-o- throwUnexpectedProductID
+		Return: static void
+		Arguments: ProductID	found
+		           ProductID	expected
+		           const char*	where
+

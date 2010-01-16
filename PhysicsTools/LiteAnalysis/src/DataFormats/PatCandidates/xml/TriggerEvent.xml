@@ -1,0 +1,487 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: TriggerEvent.xml
+  Created:  Thu Jan 14 22:48:21 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/PatCandidates/interface/TriggerEvent.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/PatCandidates/interface/TriggerEvent.h">
+
+    <include name="&quot;DataFormats/PatCandidates/interface/TriggerPath.h&quot;"/>
+    <include name="&quot;DataFormats/PatCandidates/interface/TriggerFilter.h&quot;"/>
+    <include name="&quot;DataFormats/PatCandidates/interface/TriggerObject.h&quot;"/>
+    <include name="&lt;string&gt;"/>
+    <include name="&lt;vector&gt;"/>
+    <include name="&quot;FWCore/Utilities/interface/InputTag.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/Handle.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/OrphanHandle.h&quot;"/>
+    <include name="&quot;DataFormats/Candidate/interface/Candidate.h&quot;"/>
+
+    <namespace name="pat">
+
+        <class name="TriggerEvent"
+               fullname="pat::TriggerEvent"
+               module="DataFormats.PatCandidates"
+               project=""
+               type="regular">
+
+            <section>
+                <member>
+std::string nameHltTable_;
+                    <comment>
+          event related data members
+                    </comment>
+                </member>
+
+                <member>
+bool run_;
+                </member>
+
+                <member>
+bool accept_;
+                </member>
+
+                <member>
+bool error_;
+                </member>
+
+                <member>
+TriggerPathRefProd paths_;
+                    <comment>
+          paths related data members
+                    </comment>
+                </member>
+
+                <member>
+TriggerFilterRefProd filters_;
+                    <comment>
+          filters related data members
+                    </comment>
+                </member>
+
+                <member>
+TriggerObjectRefProd objects_;
+                    <comment>
+          objects related data members
+                    </comment>
+                </member>
+
+                <member>
+TriggerObjectMatchContainer objectMatchResults_;
+                </member>
+
+            </section>
+            <section name="public">
+                <constructor name="TriggerEvent"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+TriggerEvent();
+                    <comment>
+          constructors and desctructor
+                    </comment>
+                </constructor>
+
+                <constructor name="TriggerEvent"
+                             return=""
+                             args="['const std::string&amp;','bool','bool','bool']"
+                             vars="['nameHltTable','run','accept','error']"
+                             qual="">
+TriggerEvent(const std::string&amp; nameHltTable, bool run, bool accept, bool error);
+                </constructor>
+
+                <destructor name="~TriggerEvent"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~TriggerEvent();
+                </destructor>
+
+                <method1 name="setNameHltTable"
+                         return="void"
+                         args="['const std::string&amp;']"
+                         vars="['name']"
+                         qual="">
+void setNameHltTable(const std::string&amp; name);
+                    <comment>
+          event related
+                    </comment>
+                </method1>
+
+                <method1 name="setRun"
+                         return="void"
+                         args="['bool']"
+                         vars="['run']"
+                         qual="">
+void setRun(bool run);
+                </method1>
+
+                <method1 name="setAccept"
+                         return="void"
+                         args="['bool']"
+                         vars="['accept']"
+                         qual="">
+void setAccept(bool accept);
+                </method1>
+
+                <method1 name="setError"
+                         return="void"
+                         args="['bool']"
+                         vars="['error']"
+                         qual="">
+void setError(bool error);
+                </method1>
+
+                <method1 name="nameHltTable"
+                         return="std::string"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+std::string nameHltTable() const;
+                </method1>
+
+                <method1 name="wasRun"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool wasRun() const;
+                </method1>
+
+                <method1 name="wasAccept"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool wasAccept() const;
+                </method1>
+
+                <method1 name="wasError"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool wasError() const;
+                </method1>
+
+                <method2 name="setPaths"
+                         return="void"
+                         args="['const edm::Handle&lt;TriggerPathCollection &gt;&amp;']"
+                         vars="['handleTriggerPaths']"
+                         qual="">
+void setPaths(const edm::Handle&lt;TriggerPathCollection &gt;&amp; handleTriggerPaths);
+                    <comment>
+          paths related
+                    </comment>
+                </method2>
+
+                <method1 name="paths"
+                         return="const TriggerPathCollection*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const TriggerPathCollection* paths() const;
+                </method1>
+
+                <method1 name="path"
+                         return="const TriggerPath*"
+                         args="['const std::string&amp;']"
+                         vars="['namePath']"
+                         qual="const">
+const TriggerPath* path(const std::string&amp; namePath) const;
+                </method1>
+
+                <method1 name="indexPath"
+                         return="unsigned"
+                         args="['const std::string&amp;']"
+                         vars="['namePath']"
+                         qual="const">
+unsigned indexPath(const std::string&amp; namePath) const;
+                </method1>
+
+                <method1 name="acceptedPaths"
+                         return="TriggerPathRefVector"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+TriggerPathRefVector acceptedPaths() const;
+                </method1>
+
+                <method2 name="setFilters"
+                         return="void"
+                         args="['const edm::Handle&lt;TriggerFilterCollection &gt;&amp;']"
+                         vars="['handleTriggerFilters']"
+                         qual="">
+void setFilters(const edm::Handle&lt;TriggerFilterCollection &gt;&amp; handleTriggerFilters);
+                    <comment>
+          filters related
+                    </comment>
+                </method2>
+
+                <method1 name="filters"
+                         return="const TriggerFilterCollection*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const TriggerFilterCollection* filters() const;
+                </method1>
+
+                <method1 name="filter"
+                         return="const TriggerFilter*"
+                         args="['const std::string&amp;']"
+                         vars="['labelFilter']"
+                         qual="const">
+const TriggerFilter* filter(const std::string&amp; labelFilter) const;
+                </method1>
+
+                <method1 name="indexFilter"
+                         return="unsigned"
+                         args="['const std::string&amp;']"
+                         vars="['labelFilter']"
+                         qual="const">
+unsigned indexFilter(const std::string&amp; labelFilter) const;
+                </method1>
+
+                <method1 name="acceptedFilters"
+                         return="TriggerFilterRefVector"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+TriggerFilterRefVector acceptedFilters() const;
+                </method1>
+
+                <method2 name="setObjects"
+                         return="void"
+                         args="['const edm::Handle&lt;TriggerObjectCollection &gt;&amp;']"
+                         vars="['handleTriggerObjects']"
+                         qual="">
+void setObjects(const edm::Handle&lt;TriggerObjectCollection &gt;&amp; handleTriggerObjects);
+                    <comment>
+          objects related
+                    </comment>
+                </method2>
+
+                <method1 name="addObjectMatchResult"
+                         return="bool"
+                         args="['const TriggerObjectMatchRefProd&amp;','const std::string&amp;']"
+                         vars="['trigMatches','labelMatcher']"
+                         qual="">
+bool addObjectMatchResult(const TriggerObjectMatchRefProd&amp; trigMatches, const std::string&amp; labelMatcher);
+                </method1>
+
+                <method2 name="addObjectMatchResult"
+                         return="bool"
+                         args="['const edm::Handle&lt;TriggerObjectMatch &gt;&amp;','const std::string&amp;']"
+                         vars="['trigMatches','labelMatcher']"
+                         qual="">
+bool addObjectMatchResult(const edm::Handle&lt;TriggerObjectMatch &gt;&amp; trigMatches, const std::string&amp; labelMatcher);
+                </method2>
+
+                <method2 name="addObjectMatchResult"
+                         return="bool"
+                         args="['const edm::OrphanHandle&lt;TriggerObjectMatch &gt;&amp;','const std::string&amp;']"
+                         vars="['trigMatches','labelMatcher']"
+                         qual="">
+bool addObjectMatchResult(const edm::OrphanHandle&lt;TriggerObjectMatch &gt;&amp; trigMatches, const std::string&amp; labelMatcher);
+                </method2>
+
+                <method1 name="objects"
+                         return="const TriggerObjectCollection*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const TriggerObjectCollection* objects() const;
+                </method1>
+
+                <method1 name="objects"
+                         return="TriggerObjectRefVector"
+                         args="['unsigned']"
+                         vars="['filterId']"
+                         qual="const">
+TriggerObjectRefVector objects(unsigned filterId) const;
+                </method1>
+
+                <method1 name="pathModules"
+                         return="TriggerFilterRefVector"
+                         args="['const std::string&amp;','bool=true']"
+                         vars="['namePath','all']"
+                         qual="const">
+TriggerFilterRefVector pathModules(const std::string&amp; namePath, bool all=true) const;
+                    <comment>
+          x-collection related
+                    </comment>
+                </method1>
+
+                <method1 name="pathFilters"
+                         return="TriggerFilterRefVector"
+                         args="['const std::string&amp;']"
+                         vars="['namePath']"
+                         qual="const">
+TriggerFilterRefVector pathFilters(const std::string&amp; namePath) const;
+                </method1>
+
+                <method1 name="filterInPath"
+                         return="bool"
+                         args="['const TriggerFilterRef&amp;','const std::string&amp;']"
+                         vars="['filterRef','namePath']"
+                         qual="const">
+bool filterInPath(const TriggerFilterRef&amp; filterRef, const std::string&amp; namePath) const;
+                </method1>
+
+                <method1 name="filterPaths"
+                         return="TriggerPathRefVector"
+                         args="['const TriggerFilterRef&amp;']"
+                         vars="['filterRef']"
+                         qual="const">
+TriggerPathRefVector filterPaths(const TriggerFilterRef&amp; filterRef) const;
+                </method1>
+
+                <method2 name="filterCollections"
+                         return="std::vector&lt;std::string &gt;"
+                         args="['const std::string&amp;']"
+                         vars="['labelFilter']"
+                         qual="const">
+std::vector&lt;std::string &gt; filterCollections(const std::string&amp; labelFilter) const;
+                </method2>
+
+                <method1 name="filterObjects"
+                         return="TriggerObjectRefVector"
+                         args="['const std::string&amp;']"
+                         vars="['labelFilter']"
+                         qual="const">
+TriggerObjectRefVector filterObjects(const std::string&amp; labelFilter) const;
+                </method1>
+
+                <method1 name="objectInFilter"
+                         return="bool"
+                         args="['const TriggerObjectRef&amp;','const std::string&amp;']"
+                         vars="['objectRef','labelFilter']"
+                         qual="const">
+bool objectInFilter(const TriggerObjectRef&amp; objectRef, const std::string&amp; labelFilter) const;
+                </method1>
+
+                <method1 name="objectFilters"
+                         return="TriggerFilterRefVector"
+                         args="['const TriggerObjectRef&amp;']"
+                         vars="['objectRef']"
+                         qual="const">
+TriggerFilterRefVector objectFilters(const TriggerObjectRef&amp; objectRef) const;
+                </method1>
+
+                <method1 name="pathObjects"
+                         return="TriggerObjectRefVector"
+                         args="['const std::string&amp;']"
+                         vars="['namePath']"
+                         qual="const">
+TriggerObjectRefVector pathObjects(const std::string&amp; namePath) const;
+                </method1>
+
+                <method1 name="objectInPath"
+                         return="bool"
+                         args="['const TriggerObjectRef&amp;','const std::string&amp;']"
+                         vars="['objectRef','namePath']"
+                         qual="const">
+bool objectInPath(const TriggerObjectRef&amp; objectRef, const std::string&amp; namePath) const;
+                </method1>
+
+                <method1 name="objectPaths"
+                         return="TriggerPathRefVector"
+                         args="['const TriggerObjectRef&amp;']"
+                         vars="['objectRef']"
+                         qual="const">
+TriggerPathRefVector objectPaths(const TriggerObjectRef&amp; objectRef) const;
+                </method1>
+
+                <method2 name="triggerMatchers"
+                         return="std::vector&lt;std::string &gt;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+std::vector&lt;std::string &gt; triggerMatchers() const;
+                    <comment>
+          trigger matches
+                    </comment>
+                </method2>
+
+                <method1 name="triggerObjectMatchResults"
+                         return="const TriggerObjectMatchContainer*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const TriggerObjectMatchContainer* triggerObjectMatchResults() const;
+                </method1>
+
+                <method1 name="triggerObjectMatchResult"
+                         return="const TriggerObjectMatch*"
+                         args="['const std::string&amp;']"
+                         vars="['labelMatcher']"
+                         qual="const">
+const TriggerObjectMatch* triggerObjectMatchResult(const std::string&amp; labelMatcher) const;
+                    <comment>
+         pat::TriggerObjectMatch can contain empty references in case no match for a PAT object was found.
+                    </comment>
+                </method1>
+
+            </section>
+
+            <typemap name="accept_"
+                     value="pat::TriggerEvent::accept_"
+                     type="member"/>
+            <typemap name="error_"
+                     value="pat::TriggerEvent::error_"
+                     type="member"/>
+            <typemap name="filters_"
+                     value="pat::TriggerEvent::filters_"
+                     type="member"/>
+            <typemap name="nameHltTable_"
+                     value="pat::TriggerEvent::nameHltTable_"
+                     type="member"/>
+            <typemap name="objectMatchResults_"
+                     value="pat::TriggerEvent::objectMatchResults_"
+                     type="member"/>
+            <typemap name="objects_"
+                     value="pat::TriggerEvent::objects_"
+                     type="member"/>
+            <typemap name="paths_"
+                     value="pat::TriggerEvent::paths_"
+                     type="member"/>
+            <typemap name="run_"
+                     value="pat::TriggerEvent::run_"
+                     type="member"/>
+
+        </class>
+    </namespace>
+
+    <type name="TriggerFilterRefProd"/>
+    <type name="TriggerFilterRefVector"/>
+    <type name="TriggerObjectMatchContainer"/>
+    <type name="TriggerObjectRefProd"/>
+    <type name="TriggerObjectRefVector"/>
+    <type name="TriggerPathRefProd"/>
+    <type name="TriggerPathRefVector"/>
+    <type name="bool"/>
+    <type name="const TriggerFilter*"/>
+    <type name="const TriggerFilterCollection*"/>
+    <type name="const TriggerFilterRef&amp;"/>
+    <type name="const TriggerObjectCollection*"/>
+    <type name="const TriggerObjectMatch*"/>
+    <type name="const TriggerObjectMatchContainer*"/>
+    <type name="const TriggerObjectMatchRefProd&amp;"/>
+    <type name="const TriggerObjectRef&amp;"/>
+    <type name="const TriggerPath*"/>
+    <type name="const TriggerPathCollection*"/>
+    <type name="const edm::Handle&lt;TriggerFilterCollection &gt;&amp;"/>
+    <type name="const edm::Handle&lt;TriggerObjectCollection &gt;&amp;"/>
+    <type name="const edm::Handle&lt;TriggerObjectMatch &gt;&amp;"/>
+    <type name="const edm::Handle&lt;TriggerPathCollection &gt;&amp;"/>
+    <type name="const edm::OrphanHandle&lt;TriggerObjectMatch &gt;&amp;"/>
+    <type name="const std::string&amp;"/>
+    <type name="pat::TriggerEvent"/>
+    <type name="std::string"/>
+    <type name="std::vector&lt;std::string &gt;"/>
+    <type name="unsigned"/>
+    <type name="void"/>
+</header>

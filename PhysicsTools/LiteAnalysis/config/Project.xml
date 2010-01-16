@@ -1,0 +1,212 @@
+<?xml version="1.0"?>
+<!-- ====================================================================== -->
+<!-- Project file for Python module cmssw                                   -->
+<!-- Created December, 2009 Harrison B. Prosper                             -->
+<!-- ====================================================================== -->
+<project name="cmssw">
+
+  <globals basepath="$CMSSW_RELEASE_BASE/src"
+           version="CMSSW_3_3_6"/>
+
+  <options h2xmlflags="-I$(basepath)" 
+           xml2bflags="-I$(basepath)"/>
+
+  <component name="beamspot" module="DataFormats/BeamSpot">
+    <headers name="beamspot" version="$(version)"
+             basepath="$(basepath)/DataFormats/BeamSpot/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="btaureco" module="DataFormats/BTauReco">
+    <headers name="btaureco" version="$(version)"
+             basepath="$(basepath)/DataFormats/BTauReco/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="caltowers" module="DataFormats/CaloTowers">
+    <headers name="caltowers" version="$(version)"
+             basepath="$(basepath)/DataFormats/CaloTowers/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="common" module="DataFormats/Common">
+    <headers name="common" version="$(version)"
+             basepath="$(basepath)/DataFormats/Common/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="calorechit" module="DataFormats/CaloRecHit">
+    <headers name="calorechit" version="$(version)"
+             basepath="$(basepath)/DataFormats/CaloRecHit/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="candidate" module="DataFormats/Candidate">
+    <headers name="candidate" version="$(version)"
+             basepath="$(basepath)/DataFormats/Candidate/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="egammacandidates" module="DataFormats/EgammaCandidates">
+    <headers name="egammacandidates" version="$(version)"
+             basepath="$(basepath)/DataFormats/EgammaCandidates/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="egammareco" module="DataFormats/EgammaReco">
+    <headers name="egammareco" version="$(version)"
+             basepath="$(basepath)/DataFormats/EgammaReco/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="gsftrackreco" module="DataFormats/GsfTrackReco">
+    <headers name="gsftrackreco" version="$(version)"
+             basepath="$(basepath)/DataFormats/GsfTrackReco/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="jetreco" module="DataFormats/JetReco">
+    <headers name="jetreco" version="$(version)"
+             basepath="$(basepath)/DataFormats/JetReco/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="l1globalcalotrigger" module="DataFormats/L1GlobalCaloTrigger">
+    <headers name="l1globalcalotrigger" version="$(version)"
+             basepath="$(basepath)/DataFormats/L1GlobalCaloTrigger/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="l1trigger" module="DataFormats/L1Trigger">
+    <headers name="l1trigger" version="$(version)"
+             basepath="$(basepath)/DataFormats/L1Trigger/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="metreco" module="DataFormats/METReco">
+    <headers name="metreco" version="$(version)"
+             basepath="$(basepath)/DataFormats/METReco/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="muonreco" module="DataFormats/MuonReco">
+    <headers name="muonreco" version="$(version)"
+             basepath="$(basepath)/DataFormats/MuonReco/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="particleflowcandidate" module="DataFormats/ParticleFlowCandidate">
+    <headers name="particleflowcandidate" version="$(version)"
+             basepath="$(basepath)/DataFormats/ParticleFlowCandidate/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="particleflowreco" module="DataFormats/ParticleFlowReco">
+    <headers name="particleflowreco" version="$(version)"
+             basepath="$(basepath)/DataFormats/ParticleFlowReco/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="patcandidates" module="DataFormats/PatCandidates">
+    <headers name="patcandidates" version="$(version)"
+             basepath="$(basepath)/DataFormats/PatCandidates/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="recocandidate" module="DataFormats/RecoCandidate">
+    <headers name="recocandidate" version="$(version)"
+             basepath="$(basepath)/DataFormats/RecoCandidate/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="scalers" module="DataFormats/Scalers">
+    <headers name="scalers" version="$(version)"
+             basepath="$(basepath)/DataFormats/Scalers/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="taureco" module="DataFormats/TauReco">
+    <headers name="taureco" version="$(version)"
+             basepath="$(basepath)/DataFormats/TauReco/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="trackreco" module="DataFormats/TrackReco">
+    <headers name="trackreco" version="$(version)"
+             basepath="$(basepath)/DataFormats/TrackReco/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="trajectoryseed" module="DataFormats/TrajectorySeed">
+    <headers name="trajectoryseed" version="$(version)"
+             basepath="$(basepath)/DataFormats/TrajectorySeed/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="vertexreco" module="DataFormats/VertexReco">
+    <headers name="vertexreco" version="$(version)"
+             basepath="$(basepath)/DataFormats/VertexReco/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="trackcandidate" module="DataFormats/TrackCandidate">
+    <headers name="trackcandidate" version="$(version)"
+             basepath="$(basepath)/DataFormats/TrackCandidate/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+
+  <component name="hepmc" module="DataFormats/HepMCCandidate">
+    <headers name="hepmc" version="$(version)"
+             basepath="$(basepath)/DataFormats/HepMCCandidate/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="hltreco" module="DataFormats/HLTReco">
+    <headers name="hltreco" version="$(version)"
+             basepath="$(basepath)/DataFormats/HLTReco/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+
+  <component name="detid" module="DataFormats/DetId">
+    <headers name="detid" version="$(version)"
+             basepath="$(basepath)/DataFormats/DetId/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="math" module="DataFormats/Math">
+    <headers name="basics" version="$(version)"
+             basepath="$(basepath)/DataFormats/Math/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+</project>

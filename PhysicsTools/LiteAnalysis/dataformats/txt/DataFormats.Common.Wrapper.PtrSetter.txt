@@ -1,0 +1,25 @@
+Class:
+	edm::helpers::PtrSetter<T>
+
+Header:
+	DataFormats/Common/interface/Wrapper.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:16:00 2010	lsclass.py $Revision:$
+
+Methods from edm::helpers::PtrSetter<RefToBaseVector<T>
+
+	-o- set
+		Return: static void
+		Arguments: T const&	obj
+		           const std::type_info&	iToType
+		           unsigned long	iIndex
+		           void const*&	oPtr
+
+	-o- fill
+		Return: static void
+		Arguments: T const&	obj
+		           const std::type_info&	iToType
+		           const std::vector<unsigned long>&	iIndex
+		           std::vector<void const*>&	oPtr
+

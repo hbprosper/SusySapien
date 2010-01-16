@@ -1,0 +1,6 @@
+L1GctCand|L1CaloRegionDetId|regionId|void
+L1GctCand|bool|empty|void
+L1GctCand|unsigned|rank|void
+L1GctCand|unsigned|etaIndex|void
+L1GctCand|unsigned|etaSign|void
+L1GctCand|unsigned|phiIndex|void

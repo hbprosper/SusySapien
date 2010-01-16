@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: ClusterShapeFwd.xml
+  Created:  Thu Jan 14 22:47:01 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/EgammaReco/interface/ClusterShapeFwd.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/EgammaReco/interface/ClusterShapeFwd.h">
+
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+
+    <namespace name="reco">
+        <forward name="ClusterShape"/>
+        <typedef name="ClusterShapeCollection"
+                 value="std::vector&lt;ClusterShape&gt;">
+typedef std::vector&lt;ClusterShape&gt; ClusterShapeCollection;
+            <comment>
+      collection of ClusterShape objects
+            </comment>
+        </typedef>
+
+        <typedef name="ClusterShapeRef"
+                 value="edm::Ref&lt;ClusterShapeCollection&gt;">
+typedef edm::Ref&lt;ClusterShapeCollection&gt; ClusterShapeRef;
+            <comment>
+      reference to an object in a collection of ClusterShape objects
+            </comment>
+        </typedef>
+
+        <typedef name="ClusterShapeRefProd"
+                 value="edm::RefProd&lt;ClusterShapeCollection&gt;">
+typedef edm::RefProd&lt;ClusterShapeCollection&gt; ClusterShapeRefProd;
+            <comment>
+      reference to a collection of ClusterShape objects
+            </comment>
+        </typedef>
+
+        <typedef name="ClusterShapeRefVector"
+                 value="edm::RefVector&lt;ClusterShapeCollection&gt;">
+typedef edm::RefVector&lt;ClusterShapeCollection&gt; ClusterShapeRefVector;
+            <comment>
+      vector of references to objects in the same collectin of ClusterShape objects
+            </comment>
+        </typedef>
+
+        <typedef name="clusterShape_iterator"
+                 value="ClusterShapeRefVector::iterator">
+typedef ClusterShapeRefVector::iterator clusterShape_iterator;
+            <comment>
+      iterator over a vector of references to ClusterShape objects
+            </comment>
+        </typedef>
+
+    </namespace>
+
+</header>

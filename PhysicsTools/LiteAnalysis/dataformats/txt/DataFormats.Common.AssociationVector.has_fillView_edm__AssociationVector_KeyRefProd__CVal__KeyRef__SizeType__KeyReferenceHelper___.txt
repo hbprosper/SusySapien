@@ -1,0 +1,9 @@
+Class:
+	edm::has_fillView<edm::AssociationVector<KeyRefProd, CVal, KeyRef, SizeType, KeyReferenceHelper> >
+
+Header:
+	DataFormats/Common/interface/AssociationVector.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:16:03 2010	lsclass.py $Revision:$
+

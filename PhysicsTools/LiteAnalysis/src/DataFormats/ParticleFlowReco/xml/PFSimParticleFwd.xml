@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: PFSimParticleFwd.xml
+  Created:  Thu Jan 14 22:48:04 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/ParticleFlowReco/interface/PFSimParticleFwd.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/ParticleFlowReco/interface/PFSimParticleFwd.h">
+
+    <include name="&lt;vector&gt;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
+
+    <namespace name="reco">
+        <forward name="PFSimParticle"/>
+        <typedef name="PFSimParticleCollection"
+                 value="std::vector&lt;PFSimParticle&gt;">
+typedef std::vector&lt;PFSimParticle&gt; PFSimParticleCollection;
+            <comment>
+      collection of PFSimParticle objects
+            </comment>
+        </typedef>
+
+        <typedef name="PFSimParticleRef"
+                 value="edm::Ref&lt;PFSimParticleCollection&gt;">
+typedef edm::Ref&lt;PFSimParticleCollection&gt; PFSimParticleRef;
+            <comment>
+      persistent reference to PFSimParticle objects
+            </comment>
+        </typedef>
+
+        <typedef name="PFSimParticleRefProd"
+                 value="edm::RefProd&lt;PFSimParticleCollection&gt;">
+typedef edm::RefProd&lt;PFSimParticleCollection&gt; PFSimParticleRefProd;
+            <comment>
+      reference to PFSimParticle collection
+            </comment>
+        </typedef>
+
+        <typedef name="PFSimParticleRefVector"
+                 value="edm::RefVector&lt;PFSimParticleCollection&gt;">
+typedef edm::RefVector&lt;PFSimParticleCollection&gt; PFSimParticleRefVector;
+            <comment>
+      vector of references to PFSimParticle objects all in the same collection
+            </comment>
+        </typedef>
+
+        <typedef name="pfParticle_iterator"
+                 value="PFSimParticleRefVector::iterator">
+typedef PFSimParticleRefVector::iterator pfParticle_iterator;
+            <comment>
+      iterator over a vector of references to PFSimParticle objects
+            </comment>
+        </typedef>
+
+    </namespace>
+
+</header>

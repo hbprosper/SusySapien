@@ -1,0 +1,15 @@
+edm::TriggerResults|const ParameterSetID&|parameterSetID|void
+edm::TriggerResults|const std::string&|name|unsigned int
+edm::TriggerResults|unsigned int|find|const std::string&
+edm::TriggerResults|const std::vector<std::string>&|getTriggerNames|void
+edm::HLTGlobalStatus|unsigned int|size|void
+edm::HLTGlobalStatus|bool|wasrun|void
+edm::HLTGlobalStatus|bool|accept|void
+edm::HLTGlobalStatus|bool|error|void
+edm::HLTGlobalStatus|const HLTPathStatus&|at|const unsigned int
+edm::HLTGlobalStatus|HLTPathStatus&|at|const unsigned int
+edm::HLTGlobalStatus|bool|wasrun|const unsigned int
+edm::HLTGlobalStatus|bool|accept|const unsigned int
+edm::HLTGlobalStatus|bool|error|const unsigned int
+edm::HLTGlobalStatus|hlt::HLTState|state|const unsigned int
+edm::HLTGlobalStatus|unsigned int|index|const unsigned int

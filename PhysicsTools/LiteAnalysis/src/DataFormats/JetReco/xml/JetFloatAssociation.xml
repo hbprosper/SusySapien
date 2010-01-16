@@ -1,0 +1,144 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: JetFloatAssociation.xml
+  Created:  Thu Jan 14 22:47:17 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/JetReco/interface/JetFloatAssociation.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/JetReco/interface/JetFloatAssociation.h">
+
+    <include name="&quot;DataFormats/Common/interface/AssociationVector.h&quot;"/>
+    <include name="&quot;DataFormats/JetReco/interface/JetCollection.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefToBase.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+
+    <namespace name="fwlite">
+        <forward name="Event"/>
+    </namespace>
+
+    <namespace name="reco">
+
+        <namespace name="JetFloatAssociation">
+            <typedef name="Value"
+                     value="float">
+typedef float Value;
+            </typedef>
+
+            <typedef name="Values"
+                     value="std::vector&lt;Value&gt;">
+typedef std::vector&lt;Value&gt; Values;
+            </typedef>
+
+            <typedef name="Container"
+                     value="edm::AssociationVector&lt;reco::JetRefBaseProd, Values&gt;">
+typedef edm::AssociationVector&lt;reco::JetRefBaseProd, Values&gt; Container;
+            </typedef>
+
+            <typedef name="value_type"
+                     value="Container::value_type">
+typedef Container::value_type value_type;
+            </typedef>
+
+            <typedef name="transient_vector_type"
+                     value="Container::transient_vector_type">
+typedef Container::transient_vector_type transient_vector_type;
+            </typedef>
+
+            <typedef name="Ref"
+                     value="edm::Ref&lt;Container&gt;">
+typedef edm::Ref&lt;Container&gt; Ref;
+            </typedef>
+
+            <typedef name="RefProd"
+                     value="edm::RefProd&lt;Container&gt;">
+typedef edm::RefProd&lt;Container&gt; RefProd;
+            </typedef>
+
+            <typedef name="RefVector"
+                     value="edm::RefVector&lt;Container&gt;">
+typedef edm::RefVector&lt;Container&gt; RefVector;
+            </typedef>
+
+            <function1 name="getValue"
+                       return="float"
+                       args="['const Container&amp;','const reco::JetBaseRef&amp;']"
+                       vars="['','']"
+                       qual="">
+float getValue (const Container&amp;, const reco::JetBaseRef&amp;);
+                <comment>
+        get value for the association. Throw exception if no association found
+                </comment>
+            </function1>
+
+            <function1 name="getValue"
+                       return="float"
+                       args="['const Container&amp;','const reco::Jet&amp;']"
+                       vars="['','']"
+                       qual="">
+float getValue (const Container&amp;, const reco::Jet&amp;);
+                <comment>
+        get value for the association. Throw exception if no association found
+                </comment>
+            </function1>
+
+            <function1 name="setValue"
+                       return="bool"
+                       args="['Container&amp;','const reco::JetBaseRef&amp;','float']"
+                       vars="['','','']"
+                       qual="">
+bool setValue (Container&amp;, const reco::JetBaseRef&amp;, float);
+                <comment>
+        associate jet with value
+                </comment>
+            </function1>
+
+            <function1 name="setValue"
+                       return="bool"
+                       args="['Container*','const reco::JetBaseRef&amp;','float']"
+                       vars="['','','']"
+                       qual="">
+bool setValue (Container*, const reco::JetBaseRef&amp;, float);
+                <comment>
+        associate jet with value
+                </comment>
+            </function1>
+
+            <function2 name="allJets"
+                       return="std::vector&lt;reco::JetBaseRef &gt;"
+                       args="['const Container&amp;']"
+                       vars="['']"
+                       qual="">
+std::vector&lt;reco::JetBaseRef &gt; allJets (const Container&amp;);
+                <comment>
+        fill list of all jets associated with values. Return # of jets in the list
+                </comment>
+            </function2>
+
+            <function1 name="hasJet"
+                       return="bool"
+                       args="['const Container&amp;','const reco::JetBaseRef&amp;']"
+                       vars="['','']"
+                       qual="">
+bool hasJet (const Container&amp;, const reco::JetBaseRef&amp;);
+                <comment>
+        check if jet is associated
+                </comment>
+            </function1>
+
+            <function1 name="hasJet"
+                       return="bool"
+                       args="['const Container&amp;','const reco::Jet&amp;']"
+                       vars="['','']"
+                       qual="">
+bool hasJet (const Container&amp;, const reco::Jet&amp;);
+                <comment>
+        check if jet is associated
+                </comment>
+            </function1>
+
+        </namespace>
+    </namespace>
+
+</header>

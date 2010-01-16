@@ -1,0 +1,9 @@
+Class:
+	edm::reftobase::HolderToVectorTrait<T, RefProd<C> >
+
+Header:
+	DataFormats/Common/interface/RefProd.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:16:04 2010	lsclass.py $Revision:$
+

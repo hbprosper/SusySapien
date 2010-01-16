@@ -1,0 +1,337 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: Muon.xml
+  Created:  Thu Jan 14 22:48:16 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/PatCandidates/interface/Muon.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/PatCandidates/interface/Muon.h">
+
+    <include name="&quot;DataFormats/MuonReco/interface/Muon.h&quot;"/>
+    <include name="&quot;DataFormats/MuonReco/interface/MuonFwd.h&quot;"/>
+    <include name="&quot;DataFormats/TrackReco/interface/Track.h&quot;"/>
+    <include name="&quot;DataFormats/PatCandidates/interface/Lepton.h&quot;"/>
+    <include name="&quot;DataFormats/ParticleFlowCandidate/interface/IsolatedPFCandidateFwd.h&quot;"/>
+    <include name="&quot;DataFormats/ParticleFlowCandidate/interface/IsolatedPFCandidate.h&quot;"/>
+
+    <namespace name="pat">
+        <comment>
+   Define typedefs for convenience
+        </comment>
+        <forward name="Muon"/>
+        <typedef name="MuonCollection"
+                 value="std::vector&lt;Muon&gt;">
+typedef std::vector&lt;Muon&gt; MuonCollection;
+        </typedef>
+
+        <typedef name="MuonRef"
+                 value="edm::Ref&lt;MuonCollection&gt;">
+typedef edm::Ref&lt;MuonCollection&gt; MuonRef;
+        </typedef>
+
+        <typedef name="MuonRefVector"
+                 value="edm::RefVector&lt;MuonCollection&gt;">
+typedef edm::RefVector&lt;MuonCollection&gt; MuonRefVector;
+        </typedef>
+
+    </namespace>
+
+    <namespace name="pat">
+        <comment>
+   Class definition
+        </comment>
+        <typedef name="MuonType"
+                 value="reco::Muon">
+typedef reco::Muon MuonType;
+        </typedef>
+
+        <typedef name="MuonTypeCollection"
+                 value="reco::MuonCollection">
+typedef reco::MuonCollection MuonTypeCollection;
+        </typedef>
+
+
+        <class name="Muon"
+               fullname="pat::Muon"
+               module="DataFormats.PatCandidates"
+               project=""
+               type="regular">
+            <baseclass name="public Lepton&lt;MuonType&gt;"/>
+
+            <section name="public">
+                <constructor name="Muon"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+Muon();
+                    <comment>
+          default constructor
+                    </comment>
+                </constructor>
+
+                <constructor name="Muon"
+                             return=""
+                             args="['const MuonType&amp;']"
+                             vars="['aMuon']"
+                             qual="">
+Muon(const MuonType&amp; aMuon);
+                    <comment>
+          constructor from a reco muon
+                    </comment>
+                </constructor>
+
+                <constructor name="Muon"
+                             return=""
+                             args="['const edm::RefToBase&lt;MuonType&gt;&amp;']"
+                             vars="['aMuonRef']"
+                             qual="">
+Muon(const edm::RefToBase&lt;MuonType&gt;&amp; aMuonRef);
+                    <comment>
+          constructor from a RefToBase to a reco muon (to be superseded by Ptr counterpart)
+                    </comment>
+                </constructor>
+
+                <constructor name="Muon"
+                             return=""
+                             args="['const edm::Ptr&lt;MuonType&gt;&amp;']"
+                             vars="['aMuonRef']"
+                             qual="">
+Muon(const edm::Ptr&lt;MuonType&gt;&amp; aMuonRef);
+                    <comment>
+          constructor from a Ptr to a reco muon
+                    </comment>
+                </constructor>
+
+                <destructor name="~Muon"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~Muon();
+                    <comment>
+          destructor
+                    </comment>
+                </destructor>
+
+                <method1 name="clone"
+                         return="virtual Muon*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual Muon* clone() const;
+                    <comment>
+          required reimplementation of the Candidate's clone method
+                    </comment>
+                </method1>
+
+                <method1 name="track"
+                         return="reco::TrackRef"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+reco::TrackRef track() const;
+                    <comment>
+          reference to Track reconstructed in the tracker only (reimplemented from reco::Muon)
+                    </comment>
+                </method1>
+
+                <method1 name="innerTrack"
+                         return="reco::TrackRef"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+reco::TrackRef innerTrack() const;
+                    <comment>
+          reference to Track reconstructed in the tracker only (reimplemented from reco::Muon)
+                    </comment>
+                </method1>
+
+                <method1 name="standAloneMuon"
+                         return="reco::TrackRef"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+reco::TrackRef standAloneMuon() const;
+                    <comment>
+          reference to Track reconstructed in the muon detector only (reimplemented from reco::Muon)
+                    </comment>
+                </method1>
+
+                <method1 name="outerTrack"
+                         return="reco::TrackRef"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+reco::TrackRef outerTrack() const;
+                    <comment>
+          reference to Track reconstructed in the muon detector only (reimplemented from reco::Muon)
+                    </comment>
+                </method1>
+
+                <method1 name="combinedMuon"
+                         return="reco::TrackRef"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+reco::TrackRef combinedMuon() const;
+                    <comment>
+          reference to Track reconstructed in both tracked and muon detector (reimplemented from reco::Muon)
+                    </comment>
+                </method1>
+
+                <method1 name="globalTrack"
+                         return="reco::TrackRef"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+reco::TrackRef globalTrack() const;
+                    <comment>
+          reference to Track reconstructed in both tracked and muon detector (reimplemented from reco::Muon)
+                    </comment>
+                </method1>
+
+                <method1 name="embedTrack"
+                         return="void"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+void embedTrack();
+                    <comment>
+          set reference to Track reconstructed in the tracker only (reimplemented from reco::Muon)
+                    </comment>
+                </method1>
+
+                <method1 name="embedStandAloneMuon"
+                         return="void"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+void embedStandAloneMuon();
+                    <comment>
+          set reference to Track reconstructed in the muon detector only (reimplemented from reco::Muon)
+                    </comment>
+                </method1>
+
+                <method1 name="embedCombinedMuon"
+                         return="void"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+void embedCombinedMuon();
+                    <comment>
+          set reference to Track reconstructed in both tracked and muon detector (reimplemented from reco::Muon)
+                    </comment>
+                </method1>
+
+                <method1 name="pickyMuon"
+                         return="reco::TrackRef"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+reco::TrackRef pickyMuon() const;
+                    <comment>
+          reference to Track reconstructed using hits in the tracker + &quot;good&quot; muon hits
+                    </comment>
+                </method1>
+
+                <method1 name="setPickyMuon"
+                         return="void"
+                         args="['const reco::TrackRef&amp;']"
+                         vars="['t']"
+                         qual="">
+void setPickyMuon(const reco::TrackRef&amp; t);
+                </method1>
+
+                <method1 name="tpfmsMuon"
+                         return="reco::TrackRef"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+reco::TrackRef tpfmsMuon() const;
+                    <comment>
+          reference to Track reconstructed using hits in the tracker + info from the first muon station that has hits
+                    </comment>
+                </method1>
+
+                <method1 name="setTpfmsMuon"
+                         return="void"
+                         args="['const reco::TrackRef&amp;']"
+                         vars="['t']"
+                         qual="">
+void setTpfmsMuon(const reco::TrackRef&amp; t);
+                </method1>
+
+                <method1 name="embedPickyMuon"
+                         return="void"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+void embedPickyMuon();
+                    <comment>
+          embed reference to the above picky Track
+                    </comment>
+                </method1>
+
+                <method1 name="embedTpfmsMuon"
+                         return="void"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+void embedTpfmsMuon();
+                    <comment>
+          embed reference to the above tpfms Track
+                    </comment>
+                </method1>
+
+                <method1 name="pfCandidateRef"
+                         return="reco::PFCandidateRef"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+reco::PFCandidateRef pfCandidateRef() const;
+                    <comment>
+          null if this has been built from a standard muon
+                    </comment>
+                </method1>
+
+                <method1 name="setPFCandidateRef"
+                         return="void"
+                         args="['const reco::PFCandidateRef&amp;']"
+                         vars="['ref']"
+                         qual="">
+void setPFCandidateRef(const reco::PFCandidateRef&amp; ref);
+                    <comment>
+          add a reference to the source IsolatedPFCandidate
+                    </comment>
+                </method1>
+
+                <method1 name="embedPFCandidate"
+                         return="void"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+void embedPFCandidate();
+                    <comment>
+          embed the IsolatedPFCandidate pointed to by pfCandidateRef_
+                    </comment>
+                </method1>
+
+            </section>
+
+        </class>
+    </namespace>
+
+    <type name="Lepton&lt;MuonType&gt;"/>
+    <type name="Muon*"/>
+    <type name="const MuonType&amp;"/>
+    <type name="const edm::Ptr&lt;MuonType&gt;&amp;"/>
+    <type name="const edm::RefToBase&lt;MuonType&gt;&amp;"/>
+    <type name="const reco::PFCandidateRef&amp;"/>
+    <type name="const reco::TrackRef&amp;"/>
+    <type name="pat::Muon"/>
+    <type name="reco::PFCandidateRef"/>
+    <type name="reco::TrackRef"/>
+    <type name="void"/>
+</header>

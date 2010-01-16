@@ -1,0 +1,582 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: Flags.xml
+  Created:  Thu Jan 14 22:48:10 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/PatCandidates/interface/Flags.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/PatCandidates/interface/Flags.h">
+
+    <include name="&quot;DataFormats/Candidate/interface/Particle.h&quot;"/>
+    <include name="&lt;string&gt;"/>
+    <include name="&lt;vector&gt;"/>
+    <include name="&lt;boost/cstdint.hpp&gt;"/>
+
+    <namespace name="pat">
+
+        <class name="Flags"
+               fullname="pat::Flags"
+               module="DataFormats.PatCandidates"
+               project=""
+               type="regular struct">
+
+            <section>
+                <enum name="CleanerFlags">
+enum CleanerFlags {
+
+            AllBits=0xFFFFFFFF, 
+            CoreBits=0x0000000F, 
+            SelectionBits=0x0000FFF0, 
+            OverlapBits=0x00FF0000, 
+            IsolationBits=0xFF000000
+
+        };
+                    <field name="AllBits" value="0xFFFFFFFF"/>
+                    <field name="CoreBits" value="0x0000000F"/>
+                    <field name="SelectionBits" value="0x0000FFF0"/>
+                    <field name="OverlapBits" value="0x00FF0000"/>
+                    <field name="IsolationBits" value="0xFF000000"/>
+                </enum>
+
+                <method1 name="test"
+                         return="inline static bool"
+                         args="['uint32_t','uint32_t']"
+                         vars="['val','mask']"
+                         qual="">
+inline static bool test(uint32_t val, uint32_t mask);
+                </method1>
+
+                <method1 name="test"
+                         return="inline static bool"
+                         args="['const reco::Particle&amp;','uint32_t']"
+                         vars="['p','mask']"
+                         qual="">
+inline static bool test(const reco::Particle&amp; p, uint32_t mask);
+                </method1>
+
+                <method1 name="bitToString"
+                         return="static const std::string&amp;"
+                         args="['uint32_t']"
+                         vars="['bit']"
+                         qual="">
+static const std::string&amp; bitToString(uint32_t bit);
+                </method1>
+
+                <method1 name="maskToString"
+                         return="static std::string"
+                         args="['uint32_t']"
+                         vars="['bit']"
+                         qual="">
+static std::string maskToString(uint32_t bit);
+                </method1>
+
+                <method1 name="get"
+                         return="static uint32_t"
+                         args="['const std::string&amp;']"
+                         vars="['str']"
+                         qual="">
+static uint32_t get (const std::string&amp; str);
+                </method1>
+
+                <method2 name="get"
+                         return="static uint32_t"
+                         args="['const std::vector&lt;std::string&gt;&amp;']"
+                         vars="['str']"
+                         qual="">
+static uint32_t get (const std::vector&lt;std::string&gt;&amp; str);
+                </method2>
+
+
+                <class name="Core"
+                       fullname="pat::Flags::Core"
+                       module="DataFormats.PatCandidates"
+                       project=""
+                       type="regular struct">
+
+                    <section>
+                        <enum name="">
+enum {
+ Shift=0 };
+                            <field name="Shift" value="0"/>
+                        </enum>
+
+                        <enum name="Bits">
+enum Bits {
+
+                All=0x0000000F, 
+                Duplicate=0x00000001, 
+                Preselection=0x00000002, 
+                Vertexing=0x00000004, 
+                Overflow=0x00000008, 
+
+                Undefined=0x00000000
+            };
+                            <field name="All" value="0x0000000F"/>
+                            <field name="Duplicate" value="0x00000001"/>
+                            <field name="Preselection" value="0x00000002"/>
+                            <field name="Vertexing" value="0x00000004"/>
+                            <field name="Overflow" value="0x00000008"/>
+                            <field name="Undefined" value="0x00000000"/>
+                        </enum>
+
+                        <method1 name="bitToString"
+                                 return="static const std::string&amp;"
+                                 args="['Bits']"
+                                 vars="['bit']"
+                                 qual="">
+static const std::string&amp; bitToString(Bits bit);
+                        </method1>
+
+                        <method1 name="get"
+                                 return="static Bits"
+                                 args="['const std::string&amp;']"
+                                 vars="['str']"
+                                 qual="">
+static Bits get (const std::string&amp; str);
+                        </method1>
+
+                        <method2 name="get"
+                                 return="static uint32_t"
+                                 args="['const std::vector&lt;std::string&gt;&amp;']"
+                                 vars="['str']"
+                                 qual="">
+static uint32_t get (const std::vector&lt;std::string&gt;&amp; str);
+                        </method2>
+
+                    </section>
+
+                    <typemap name="All "
+                             value="pat::Flags::Core::All "
+                             type="enum"/>
+                    <typemap name="Bits"
+                             value="pat::Flags::Core::Bits"
+                             type="enum"/>
+                    <typemap name="Core"
+                             value="pat::Flags::Core"
+                             type="class"/>
+                    <typemap name="Duplicate "
+                             value="pat::Flags::Core::Duplicate "
+                             type="enum"/>
+                    <typemap name="Overflow "
+                             value="pat::Flags::Core::Overflow "
+                             type="enum"/>
+                    <typemap name="Preselection "
+                             value="pat::Flags::Core::Preselection "
+                             type="enum"/>
+                    <typemap name="Shift "
+                             value="pat::Flags::Core::Shift "
+                             type="enum"/>
+                    <typemap name="Undefined "
+                             value="pat::Flags::Core::Undefined "
+                             type="enum"/>
+                    <typemap name="Vertexing "
+                             value="pat::Flags::Core::Vertexing "
+                             type="enum"/>
+
+                </class>
+
+                <class name="Overlap"
+                       fullname="pat::Flags::Overlap"
+                       module="DataFormats.PatCandidates"
+                       project=""
+                       type="regular struct">
+
+                    <section>
+                        <enum name="">
+enum {
+ Shift=16 };
+                            <field name="Shift" value="16"/>
+                        </enum>
+
+                        <enum name="Bits">
+enum Bits {
+
+                All=0x00FF0000, 
+                Jets=0x00010000, 
+                Electrons=0x00020000, 
+                Muons=0x00040000, 
+                Taus=0x00080000, 
+                Photons=0x00100000, 
+                User=0X00E00000, 
+                User1=0x00200000, 
+                User2=0x00400000, 
+                User3=0x00800000, 
+                Undefined=0x00000000
+            };
+                            <field name="All" value="0x00FF0000"/>
+                            <field name="Jets" value="0x00010000"/>
+                            <field name="Electrons" value="0x00020000"/>
+                            <field name="Muons" value="0x00040000"/>
+                            <field name="Taus" value="0x00080000"/>
+                            <field name="Photons" value="0x00100000"/>
+                            <field name="User" value="0X00E00000"/>
+                            <field name="User1" value="0x00200000"/>
+                            <field name="User2" value="0x00400000"/>
+                            <field name="User3" value="0x00800000"/>
+                            <field name="Undefined" value="0x00000000"/>
+                        </enum>
+
+                        <method1 name="bitToString"
+                                 return="static const std::string&amp;"
+                                 args="['Bits']"
+                                 vars="['bit']"
+                                 qual="">
+static const std::string&amp; bitToString(Bits bit);
+                        </method1>
+
+                        <method1 name="get"
+                                 return="static Bits"
+                                 args="['const std::string&amp;']"
+                                 vars="['str']"
+                                 qual="">
+static Bits get (const std::string&amp; str);
+                        </method1>
+
+                        <method2 name="get"
+                                 return="static uint32_t"
+                                 args="['const std::vector&lt;std::string&gt;&amp;']"
+                                 vars="['str']"
+                                 qual="">
+static uint32_t get (const std::vector&lt;std::string&gt;&amp; str);
+                        </method2>
+
+                    </section>
+
+                    <typemap name="All "
+                             value="pat::Flags::Overlap::All "
+                             type="enum"/>
+                    <typemap name="Bits"
+                             value="pat::Flags::Overlap::Bits"
+                             type="enum"/>
+                    <typemap name="Electrons "
+                             value="pat::Flags::Overlap::Electrons "
+                             type="enum"/>
+                    <typemap name="Jets "
+                             value="pat::Flags::Overlap::Jets "
+                             type="enum"/>
+                    <typemap name="Muons "
+                             value="pat::Flags::Overlap::Muons "
+                             type="enum"/>
+                    <typemap name="Overlap"
+                             value="pat::Flags::Overlap"
+                             type="class"/>
+                    <typemap name="Photons "
+                             value="pat::Flags::Overlap::Photons "
+                             type="enum"/>
+                    <typemap name="Shift "
+                             value="pat::Flags::Overlap::Shift "
+                             type="enum"/>
+                    <typemap name="Taus "
+                             value="pat::Flags::Overlap::Taus "
+                             type="enum"/>
+                    <typemap name="Undefined "
+                             value="pat::Flags::Overlap::Undefined "
+                             type="enum"/>
+                    <typemap name="User "
+                             value="pat::Flags::Overlap::User "
+                             type="enum"/>
+                    <typemap name="User1 "
+                             value="pat::Flags::Overlap::User1 "
+                             type="enum"/>
+                    <typemap name="User2 "
+                             value="pat::Flags::Overlap::User2 "
+                             type="enum"/>
+                    <typemap name="User3 "
+                             value="pat::Flags::Overlap::User3 "
+                             type="enum"/>
+
+                </class>
+
+                <class name="Selection"
+                       fullname="pat::Flags::Selection"
+                       module="DataFormats.PatCandidates"
+                       project=""
+                       type="regular struct">
+
+                    <section>
+                        <enum name="">
+enum {
+ Shift=4 };
+                            <field name="Shift" value="4"/>
+                        </enum>
+
+                        <enum name="Bits">
+enum Bits {
+
+                All=0x0000FFF0, 
+                Bit0=0x00000010, 
+                Bit1=0x00000020, 
+                Bit2=0x00000040, 
+                Bit3=0x00000080, 
+                Bit4=0x00000100, 
+                Bit5=0x00000200, 
+                Bit6=0x00000400, 
+                Bit7=0x00000800, 
+                Bit8=0x00001000, 
+                Bit9=0x00002000, 
+                Bit10=0x00004000, 
+                Bit11=0x00008000, 
+                Undefined=0x00000000
+            };
+                            <field name="All" value="0x0000FFF0"/>
+                            <field name="Bit0" value="0x00000010"/>
+                            <field name="Bit1" value="0x00000020"/>
+                            <field name="Bit2" value="0x00000040"/>
+                            <field name="Bit3" value="0x00000080"/>
+                            <field name="Bit4" value="0x00000100"/>
+                            <field name="Bit5" value="0x00000200"/>
+                            <field name="Bit6" value="0x00000400"/>
+                            <field name="Bit7" value="0x00000800"/>
+                            <field name="Bit8" value="0x00001000"/>
+                            <field name="Bit9" value="0x00002000"/>
+                            <field name="Bit10" value="0x00004000"/>
+                            <field name="Bit11" value="0x00008000"/>
+                            <field name="Undefined" value="0x00000000"/>
+                        </enum>
+
+                        <method1 name="bitToString"
+                                 return="static const std::string&amp;"
+                                 args="['Bits']"
+                                 vars="['bit']"
+                                 qual="">
+static const std::string&amp; bitToString(Bits bit);
+                        </method1>
+
+                        <method1 name="get"
+                                 return="static Bits"
+                                 args="['int8_t']"
+                                 vars="['bit']"
+                                 qual="">
+static Bits get (int8_t bit);
+                        </method1>
+
+                        <method1 name="get"
+                                 return="static Bits"
+                                 args="['const std::string&amp;']"
+                                 vars="['str']"
+                                 qual="">
+static Bits get (const std::string&amp; str);
+                        </method1>
+
+                        <method2 name="get"
+                                 return="static uint32_t"
+                                 args="['const std::vector&lt;std::string&gt;&amp;']"
+                                 vars="['str']"
+                                 qual="">
+static uint32_t get (const std::vector&lt;std::string&gt;&amp; str);
+                        </method2>
+
+                    </section>
+
+                    <typemap name="All "
+                             value="pat::Flags::Selection::All "
+                             type="enum"/>
+                    <typemap name="Bit0 "
+                             value="pat::Flags::Selection::Bit0 "
+                             type="enum"/>
+                    <typemap name="Bit1 "
+                             value="pat::Flags::Selection::Bit1 "
+                             type="enum"/>
+                    <typemap name="Bit10 "
+                             value="pat::Flags::Selection::Bit10 "
+                             type="enum"/>
+                    <typemap name="Bit11 "
+                             value="pat::Flags::Selection::Bit11 "
+                             type="enum"/>
+                    <typemap name="Bit2 "
+                             value="pat::Flags::Selection::Bit2 "
+                             type="enum"/>
+                    <typemap name="Bit3 "
+                             value="pat::Flags::Selection::Bit3 "
+                             type="enum"/>
+                    <typemap name="Bit4 "
+                             value="pat::Flags::Selection::Bit4 "
+                             type="enum"/>
+                    <typemap name="Bit5 "
+                             value="pat::Flags::Selection::Bit5 "
+                             type="enum"/>
+                    <typemap name="Bit6 "
+                             value="pat::Flags::Selection::Bit6 "
+                             type="enum"/>
+                    <typemap name="Bit7 "
+                             value="pat::Flags::Selection::Bit7 "
+                             type="enum"/>
+                    <typemap name="Bit8 "
+                             value="pat::Flags::Selection::Bit8 "
+                             type="enum"/>
+                    <typemap name="Bit9 "
+                             value="pat::Flags::Selection::Bit9 "
+                             type="enum"/>
+                    <typemap name="Bits"
+                             value="pat::Flags::Selection::Bits"
+                             type="enum"/>
+                    <typemap name="Selection"
+                             value="pat::Flags::Selection"
+                             type="class"/>
+                    <typemap name="Shift "
+                             value="pat::Flags::Selection::Shift "
+                             type="enum"/>
+                    <typemap name="Undefined "
+                             value="pat::Flags::Selection::Undefined "
+                             type="enum"/>
+
+                </class>
+
+                <class name="Isolation"
+                       fullname="pat::Flags::Isolation"
+                       module="DataFormats.PatCandidates"
+                       project=""
+                       type="regular struct">
+
+                    <section>
+                        <enum name="">
+enum {
+ Shift=24 };
+                            <field name="Shift" value="24"/>
+                        </enum>
+
+                        <enum name="Bits">
+enum Bits {
+
+                All=0xFF000000, 
+                Tracker=0x01000000, 
+                ECal=0x02000000, 
+                HCal=0x04000000, 
+                Calo=0x06000000, 
+                User=0xF8000000, 
+                User1=0x08000000, 
+                User2=0x10000000, 
+                User3=0x20000000, 
+                User4=0x40000000, 
+                User5=0x80000000, 
+                Undefined=0x00000000
+            };
+                            <field name="All" value="0xFF000000"/>
+                            <field name="Tracker" value="0x01000000"/>
+                            <field name="ECal" value="0x02000000"/>
+                            <field name="HCal" value="0x04000000"/>
+                            <field name="Calo" value="0x06000000"/>
+                            <field name="User" value="0xF8000000"/>
+                            <field name="User1" value="0x08000000"/>
+                            <field name="User2" value="0x10000000"/>
+                            <field name="User3" value="0x20000000"/>
+                            <field name="User4" value="0x40000000"/>
+                            <field name="User5" value="0x80000000"/>
+                            <field name="Undefined" value="0x00000000"/>
+                        </enum>
+
+                        <method1 name="bitToString"
+                                 return="static const std::string&amp;"
+                                 args="['Bits']"
+                                 vars="['bit']"
+                                 qual="">
+static const std::string&amp; bitToString(Bits bit);
+                        </method1>
+
+                        <method1 name="get"
+                                 return="static Bits"
+                                 args="['const std::string&amp;']"
+                                 vars="['str']"
+                                 qual="">
+static Bits get (const std::string&amp; str);
+                        </method1>
+
+                        <method2 name="get"
+                                 return="static uint32_t"
+                                 args="['const std::vector&lt;std::string&gt;&amp;']"
+                                 vars="['str']"
+                                 qual="">
+static uint32_t get (const std::vector&lt;std::string&gt;&amp; str);
+                        </method2>
+
+                    </section>
+
+                    <typemap name="All "
+                             value="pat::Flags::Isolation::All "
+                             type="enum"/>
+                    <typemap name="Bits"
+                             value="pat::Flags::Isolation::Bits"
+                             type="enum"/>
+                    <typemap name="Calo "
+                             value="pat::Flags::Isolation::Calo "
+                             type="enum"/>
+                    <typemap name="ECal "
+                             value="pat::Flags::Isolation::ECal "
+                             type="enum"/>
+                    <typemap name="HCal "
+                             value="pat::Flags::Isolation::HCal "
+                             type="enum"/>
+                    <typemap name="Isolation"
+                             value="pat::Flags::Isolation"
+                             type="class"/>
+                    <typemap name="Shift "
+                             value="pat::Flags::Isolation::Shift "
+                             type="enum"/>
+                    <typemap name="Tracker "
+                             value="pat::Flags::Isolation::Tracker "
+                             type="enum"/>
+                    <typemap name="Undefined "
+                             value="pat::Flags::Isolation::Undefined "
+                             type="enum"/>
+                    <typemap name="User "
+                             value="pat::Flags::Isolation::User "
+                             type="enum"/>
+                    <typemap name="User1 "
+                             value="pat::Flags::Isolation::User1 "
+                             type="enum"/>
+                    <typemap name="User2 "
+                             value="pat::Flags::Isolation::User2 "
+                             type="enum"/>
+                    <typemap name="User3 "
+                             value="pat::Flags::Isolation::User3 "
+                             type="enum"/>
+                    <typemap name="User4 "
+                             value="pat::Flags::Isolation::User4 "
+                             type="enum"/>
+                    <typemap name="User5 "
+                             value="pat::Flags::Isolation::User5 "
+                             type="enum"/>
+
+                </class>
+            </section>
+
+            <typemap name="AllBits "
+                     value="pat::Flags::AllBits "
+                     type="enum"/>
+            <typemap name="CleanerFlags"
+                     value="pat::Flags::CleanerFlags"
+                     type="enum"/>
+            <typemap name="CoreBits "
+                     value="pat::Flags::CoreBits "
+                     type="enum"/>
+            <typemap name="IsolationBits "
+                     value="pat::Flags::IsolationBits "
+                     type="enum"/>
+            <typemap name="OverlapBits "
+                     value="pat::Flags::OverlapBits "
+                     type="enum"/>
+            <typemap name="SelectionBits "
+                     value="pat::Flags::SelectionBits "
+                     type="enum"/>
+
+        </class>
+    </namespace>
+
+    <type name="Bits"/>
+    <type name="bool"/>
+    <type name="const reco::Particle&amp;"/>
+    <type name="const std::string&amp;"/>
+    <type name="const std::vector&lt;std::string&gt;&amp;"/>
+    <type name="enum"/>
+    <type name="enum Bits"/>
+    <type name="enum CleanerFlags"/>
+    <type name="int8_t"/>
+    <type name="pat::Flags"/>
+    <type name="pat::Flags::Core"/>
+    <type name="pat::Flags::Isolation"/>
+    <type name="pat::Flags::Overlap"/>
+    <type name="pat::Flags::Selection"/>
+    <type name="std::string"/>
+    <type name="uint32_t"/>
+</header>

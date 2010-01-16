@@ -1,0 +1,216 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: L1GctEtTotal.xml
+  Created:  Thu Jan 14 22:47:22 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/L1GlobalCaloTrigger/interface/L1GctEtTotal.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/L1GlobalCaloTrigger/interface/L1GctEtTotal.h">
+
+    <include name="&lt;ostream&gt;"/>
+
+    <class name="L1GctEtTotal"
+           fullname="L1GctEtTotal"
+           module="DataFormats.L1GlobalCaloTrigger"
+           project=""
+           type="regular">
+        <comment>
+    \brief Persistable copy of total Et measured at Level-1
+        </comment>
+
+        <section name="public">
+            <enum name="numberOfBits">
+enum numberOfBits {
+
+    kEtTotalNBits=12, 
+    kEtTotalOFlowBit=1&lt;&lt;kEtTotalNBits, 
+    kEtTotalMaxValue=kEtTotalOFlowBit-1, 
+    kRawCtorMask=kEtTotalOFlowBit | kEtTotalMaxValue
+  };
+                <field name="kEtTotalNBits" value="12"/>
+                <field name="kEtTotalOFlowBit"
+                       value="1&amp;lt;&amp;lt;kEtTotalNBits"/>
+                <field name="kEtTotalMaxValue" value="kEtTotalOFlowBit-1"/>
+                <field name="kRawCtorMask"
+                       value="kEtTotalOFlowBit | kEtTotalMaxValue"/>
+            </enum>
+
+            <constructor name="L1GctEtTotal"
+                         return=""
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+L1GctEtTotal();
+            </constructor>
+
+            <constructor name="L1GctEtTotal"
+                         return=""
+                         args="['uint16_t']"
+                         vars="['rawData']"
+                         qual="">
+L1GctEtTotal(uint16_t rawData);
+            </constructor>
+
+            <constructor name="L1GctEtTotal"
+                         return=""
+                         args="['uint16_t','int16_t']"
+                         vars="['rawData','bx']"
+                         qual="">
+L1GctEtTotal(uint16_t rawData, int16_t bx);
+            </constructor>
+
+            <constructor name="L1GctEtTotal"
+                         return=""
+                         args="['unsigned','bool']"
+                         vars="['et','oflow']"
+                         qual="">
+L1GctEtTotal(unsigned et, bool oflow);
+            </constructor>
+
+            <constructor name="L1GctEtTotal"
+                         return=""
+                         args="['unsigned','bool','int16_t']"
+                         vars="['et','oflow','bx']"
+                         qual="">
+L1GctEtTotal(unsigned et, bool oflow, int16_t bx);
+            </constructor>
+
+            <destructor name="~L1GctEtTotal"
+                        return="virtual"
+                        args="['void']"
+                        vars="['']"
+                        qual="">
+virtual ~L1GctEtTotal();
+            </destructor>
+
+            <method1 name="name"
+                     return="std::string"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+std::string name() const;
+                <comment>
+      name method
+                </comment>
+            </method1>
+
+            <method1 name="empty"
+                     return="bool"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+bool empty() const;
+                <comment>
+      empty method (= false; total Et is always calculated)
+                </comment>
+            </method1>
+
+            <method1 name="raw"
+                     return="uint16_t"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+uint16_t raw() const;
+                <comment>
+      get the data
+                </comment>
+            </method1>
+
+            <method1 name="et"
+                     return="unsigned"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned et() const;
+                <comment>
+      get the Et
+                </comment>
+            </method1>
+
+            <method1 name="overFlow"
+                     return="bool"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+bool overFlow() const;
+                <comment>
+      get the overflow
+                </comment>
+            </method1>
+
+            <method1 name="bx"
+                     return="int16_t"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+int16_t bx() const;
+                <comment>
+      get bunch-crossing index
+                </comment>
+            </method1>
+
+            <operator name="operator=="
+                      return="int"
+                      args="['const L1GctEtTotal&amp;']"
+                      vars="['e']"
+                      qual="const">
+int operator==(const L1GctEtTotal&amp; e) const;
+                <comment>
+      equality operator
+                </comment>
+            </operator>
+
+            <operator name="operator!="
+                      return="int"
+                      args="['const L1GctEtTotal&amp;']"
+                      vars="['e']"
+                      qual="const">
+int operator!=(const L1GctEtTotal&amp; e) const;
+                <comment>
+      inequality operator
+                </comment>
+            </operator>
+
+        </section>
+
+        <typemap name="kEtTotalMaxValue "
+                 value="L1GctEtTotal::kEtTotalMaxValue "
+                 type="enum"/>
+        <typemap name="kEtTotalNBits "
+                 value="L1GctEtTotal::kEtTotalNBits "
+                 type="enum"/>
+        <typemap name="kEtTotalOFlowBit "
+                 value="L1GctEtTotal::kEtTotalOFlowBit "
+                 type="enum"/>
+        <typemap name="kRawCtorMask "
+                 value="L1GctEtTotal::kRawCtorMask "
+                 type="enum"/>
+        <typemap name="numberOfBits"
+                 value="L1GctEtTotal::numberOfBits"
+                 type="enum"/>
+
+    </class>
+    <operator name="operator&lt;&lt;"
+              return="std::ostream&amp;"
+              args="['std::ostream&amp;','const L1GctEtTotal&amp;']"
+              vars="['s','c']"
+              qual="">
+std::ostream&amp; operator&lt;&lt;(std::ostream&amp; s, const L1GctEtTotal&amp; c);
+        <comment>
+    Pretty-print operator for L1GctEtTotal
+        </comment>
+    </operator>
+
+
+    <type name="L1GctEtTotal"/>
+    <type name="bool"/>
+    <type name="const L1GctEtTotal&amp;"/>
+    <type name="enum numberOfBits"/>
+    <type name="int"/>
+    <type name="int16_t"/>
+    <type name="std::string"/>
+    <type name="uint16_t"/>
+    <type name="unsigned"/>
+    <type name="void"/>
+</header>

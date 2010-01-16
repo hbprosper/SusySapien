@@ -1,0 +1,9 @@
+Class:
+	edm::helpers::PostReadFixupTrait<T>
+
+Header:
+	DataFormats/Common/interface/PostReadFixupTrait.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:38 2010	lsclass.py $Revision:$
+

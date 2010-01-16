@@ -1,0 +1,183 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: PFNuclearInteraction.xml
+  Created:  Thu Jan 14 22:48:01 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/ParticleFlowReco/interface/PFNuclearInteraction.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/ParticleFlowReco/interface/PFNuclearInteraction.h">
+
+    <include name="&quot;DataFormats/VertexReco/interface/NuclearInteraction.h&quot;"/>
+    <include name="&quot;DataFormats/VertexReco/interface/NuclearInteractionFwd.h&quot;"/>
+    <include name="&quot;DataFormats/ParticleFlowReco/interface/PFRecTrack.h&quot;"/>
+    <include name="&quot;DataFormats/ParticleFlowReco/interface/PFRecTrackFwd.h&quot;"/>
+
+    <namespace name="reco">
+
+        <class name="PFNuclearInteraction"
+               fullname="reco::PFNuclearInteraction"
+               module="DataFormats.ParticleFlowReco"
+               project=""
+               type="regular">
+
+            <section name="public">
+                <typedef name="trackRef_iterator"
+                         value="NuclearInteraction::trackRef_iterator">
+typedef NuclearInteraction::trackRef_iterator trackRef_iterator;
+                </typedef>
+
+                <typedef name="pfTrackref_iterator"
+                         value="PFRecTrackRefVector::const_iterator">
+typedef PFRecTrackRefVector::const_iterator pfTrackref_iterator;
+                </typedef>
+
+            </section>
+            <section name="public">
+                <constructor name="PFNuclearInteraction"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+PFNuclearInteraction();
+                </constructor>
+
+                <constructor name="PFNuclearInteraction"
+                             return=""
+                             args="['const NuclearInteractionRef&amp;','const PFRecTrackRefVector&amp;']"
+                             vars="['nuclref','pfSeconds']"
+                             qual="">
+PFNuclearInteraction(const NuclearInteractionRef&amp; nuclref, const PFRecTrackRefVector&amp; pfSeconds);
+                </constructor>
+
+                <method2 name="primaryTrack"
+                         return="const edm::RefToBase&lt;reco::Track&gt;&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const edm::RefToBase&lt;reco::Track&gt;&amp; primaryTrack() const;
+                    <comment>
+        \return the base reference to the primary track
+                    </comment>
+                </method2>
+
+                <method1 name="secondaryTracks_begin"
+                         return="trackRef_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+trackRef_iterator secondaryTracks_begin() const;
+                    <comment>
+        \return first iterator over secondary tracks
+                    </comment>
+                </method1>
+
+                <method1 name="secondaryTracks_end"
+                         return="trackRef_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+trackRef_iterator secondaryTracks_end() const;
+                    <comment>
+        \return last iterator over secondary tracks
+                    </comment>
+                </method1>
+
+                <method1 name="secPFRecTracks_begin"
+                         return="pfTrackref_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+pfTrackref_iterator secPFRecTracks_begin() const;
+                    <comment>
+        \return first iterator over secondary PFRecTracks
+                    </comment>
+                </method1>
+
+                <method1 name="secPFRecTracks_end"
+                         return="pfTrackref_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+pfTrackref_iterator secPFRecTracks_end() const;
+                    <comment>
+        \return last iterator over secondary PFRecTracks
+                    </comment>
+                </method1>
+
+                <method1 name="likelihood"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double likelihood() const;
+                    <comment>
+        \return the likelihood
+                    </comment>
+                </method1>
+
+                <method1 name="nuclInterRef"
+                         return="const NuclearInteractionRef&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const NuclearInteractionRef&amp; nuclInterRef() const;
+                    <comment>
+        \return the initial nuclear interaction
+                    </comment>
+                </method1>
+
+                <method1 name="secondaryTracksSize"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int secondaryTracksSize() const;
+                </method1>
+
+            </section>
+
+            <typemap name="pfTrackref_iterator"
+                     value="PFRecTrackRefVector::const_iterator"
+                     type="typedef"/>
+            <typemap name="trackRef_iterator"
+                     value="NuclearInteraction::trackRef_iterator"
+                     type="typedef"/>
+
+        </class>
+        <typedef name="PFNuclearInteractionCollection"
+                 value="std::vector&lt;PFNuclearInteraction&gt;">
+typedef std::vector&lt;PFNuclearInteraction&gt; PFNuclearInteractionCollection;
+            <comment>
+      collection of NuclearInteractions
+            </comment>
+        </typedef>
+
+        <typedef name="PFNuclearInteractionRef"
+                 value="edm::Ref&lt;PFNuclearInteractionCollection&gt;">
+typedef edm::Ref&lt;PFNuclearInteractionCollection&gt; PFNuclearInteractionRef;
+            <comment>
+      persistent reference to a NuclearInteraction
+            </comment>
+        </typedef>
+
+        <typedef name="PFNuclearInteractionRefVector"
+                 value="edm::RefVector&lt;PFNuclearInteractionCollection&gt;">
+typedef edm::RefVector&lt;PFNuclearInteractionCollection&gt; PFNuclearInteractionRefVector;
+            <comment>
+      vector of reference to Track in the same collection
+            </comment>
+        </typedef>
+
+    </namespace>
+
+    <type name="const NuclearInteractionRef&amp;"/>
+    <type name="const PFRecTrackRefVector&amp;"/>
+    <type name="const edm::RefToBase&lt;reco::Track&gt;&amp;"/>
+    <type name="double"/>
+    <type name="int"/>
+    <type name="pfTrackref_iterator"/>
+    <type name="reco::PFNuclearInteraction"/>
+    <type name="trackRef_iterator"/>
+    <type name="void"/>
+</header>

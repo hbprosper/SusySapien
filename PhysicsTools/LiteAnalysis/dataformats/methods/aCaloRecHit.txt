@@ -1,0 +1,5 @@
+float	energy()
+float	time()
+bool detid_null()
+int detid_subdetId()
+

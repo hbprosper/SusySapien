@@ -1,0 +1,566 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: L1TriggerRates.xml
+  Created:  Thu Jan 14 22:48:34 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Scalers/interface/L1TriggerRates.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Scalers/interface/L1TriggerRates.h">
+
+    <include name="&lt;ostream&gt;"/>
+    <include name="&lt;vector&gt;"/>
+
+    <class name="L1TriggerRates"
+           fullname="L1TriggerRates"
+           module="DataFormats.Scalers"
+           project=""
+           type="regular">
+        <comment>
+    \brief Persistable copy of L1 Trigger Rates
+        </comment>
+
+        <section name="public">
+            <enum name="">
+enum
+  {
+
+    N_BX=3654, 
+    N_BX_ACTIVE=2808
+  };
+                <field name="N_BX" value="3654"/>
+                <field name="N_BX_ACTIVE" value="2808"/>
+            </enum>
+
+            <constructor name="L1TriggerRates"
+                         return=""
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+L1TriggerRates();
+            </constructor>
+
+            <constructor name="L1TriggerRates"
+                         return=""
+                         args="['const L1TriggerScalers']"
+                         vars="['s']"
+                         qual="">
+L1TriggerRates(const L1TriggerScalers s);
+            </constructor>
+
+            <constructor name="L1TriggerRates"
+                         return=""
+                         args="['const L1TriggerScalers','const L1TriggerScalers']"
+                         vars="['s1','s2']"
+                         qual="">
+L1TriggerRates(const L1TriggerScalers s1, const L1TriggerScalers s2);
+            </constructor>
+
+            <destructor name="~L1TriggerRates"
+                        return="virtual"
+                        args="['void']"
+                        vars="['']"
+                        qual="">
+virtual ~L1TriggerRates();
+            </destructor>
+
+            <method1 name="computeRunRates"
+                     return="void"
+                     args="['const L1TriggerScalers']"
+                     vars="['t']"
+                     qual="">
+void computeRunRates(const L1TriggerScalers t);
+            </method1>
+
+            <method1 name="computeRates"
+                     return="void"
+                     args="['const L1TriggerScalers','const L1TriggerScalers']"
+                     vars="['t1','t2']"
+                     qual="">
+void computeRates(const L1TriggerScalers t1, const L1TriggerScalers t2);
+            </method1>
+
+            <method1 name="name"
+                     return="std::string"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+std::string name() const;
+                <comment>
+      name method
+                </comment>
+            </method1>
+
+            <method1 name="empty"
+                     return="bool"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+bool empty() const;
+                <comment>
+      empty method (= false)
+                </comment>
+            </method1>
+
+            <method1 name="version"
+                     return="int"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+int version() const;
+                <comment>
+      get the data
+                </comment>
+            </method1>
+
+            <method1 name="collectionTimeSummary"
+                     return="struct timespec"
+                     args="['void']"
+                     vars="['']"
+                     qual="">
+struct timespec collectionTimeSummary();
+            </method1>
+
+            <method1 name="deltaT"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double deltaT() const;
+            </method1>
+
+            <method1 name="deltaTActive"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double deltaTActive() const;
+            </method1>
+
+            <method1 name="deltaTRun"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double deltaTRun() const;
+            </method1>
+
+            <method1 name="deltaTRunActive"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double deltaTRunActive() const;
+            </method1>
+
+            <method1 name="triggerNumberRate"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double triggerNumberRate() const;
+                <comment>
+     Instantaneous Rate accessors
+                </comment>
+            </method1>
+
+            <method1 name="eventNumberRate"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double eventNumberRate() const;
+            </method1>
+
+            <method1 name="finalTriggersGeneratedRate"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double finalTriggersGeneratedRate() const;
+            </method1>
+
+            <method1 name="finalTriggersDistributedRate"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double finalTriggersDistributedRate() const;
+            </method1>
+
+            <method1 name="randomTriggersRate"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double randomTriggersRate() const;
+            </method1>
+
+            <method1 name="calibrationTriggersRate"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double calibrationTriggersRate() const;
+            </method1>
+
+            <method1 name="totalTestTriggersRate"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double totalTestTriggersRate() const;
+            </method1>
+
+            <method1 name="orbitNumberRate"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double orbitNumberRate() const;
+            </method1>
+
+            <method1 name="numberResetsRate"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double numberResetsRate() const;
+            </method1>
+
+            <method1 name="deadTimePercent"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double deadTimePercent() const;
+            </method1>
+
+            <method1 name="deadTimeActivePercent"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double deadTimeActivePercent() const;
+            </method1>
+
+            <method1 name="deadTimeActiveCalibrationPercent"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double deadTimeActiveCalibrationPercent() const;
+            </method1>
+
+            <method1 name="deadTimeActivePrivatePercent"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double deadTimeActivePrivatePercent() const;
+            </method1>
+
+            <method1 name="deadTimeActivePartitionPercent"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double deadTimeActivePartitionPercent() const;
+            </method1>
+
+            <method1 name="deadTimeActiveThrottlePercent"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double deadTimeActiveThrottlePercent() const;
+            </method1>
+
+            <method1 name="deadTimeActiveTimeSlotPercent"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double deadTimeActiveTimeSlotPercent() const;
+            </method1>
+
+            <method1 name="finalTriggersInvalidBCPercent"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double finalTriggersInvalidBCPercent() const;
+            </method1>
+
+            <method1 name="lostFinalTriggersPercent"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double lostFinalTriggersPercent() const;
+            </method1>
+
+            <method1 name="lostFinalTriggersActivePercent"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double lostFinalTriggersActivePercent() const;
+            </method1>
+
+            <method1 name="collectionTimeDetails"
+                     return="struct timespec"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+struct timespec collectionTimeDetails() const;
+            </method1>
+
+            <method2 name="triggersRate"
+                     return="std::vector&lt;double&gt;"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+std::vector&lt;double&gt; triggersRate() const;
+            </method2>
+
+            <method2 name="testTriggersRate"
+                     return="std::vector&lt;double&gt;"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+std::vector&lt;double&gt; testTriggersRate() const;
+            </method2>
+
+            <method1 name="triggerNumberRunRate"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double triggerNumberRunRate() const;
+                <comment>
+     Run Rate Accessors
+                </comment>
+            </method1>
+
+            <method1 name="eventNumberRunRate"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double eventNumberRunRate() const;
+            </method1>
+
+            <method1 name="finalTriggersDistributedRunRate"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double finalTriggersDistributedRunRate() const;
+            </method1>
+
+            <method1 name="finalTriggersGeneratedRunRate"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double finalTriggersGeneratedRunRate() const;
+            </method1>
+
+            <method1 name="randomTriggersRunRate"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double randomTriggersRunRate() const;
+            </method1>
+
+            <method1 name="calibrationTriggersRunRate"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double calibrationTriggersRunRate() const;
+            </method1>
+
+            <method1 name="totalTestTriggersRunRate"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double totalTestTriggersRunRate() const;
+            </method1>
+
+            <method1 name="orbitNumberRunRate"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double orbitNumberRunRate() const;
+            </method1>
+
+            <method1 name="numberResetsRunRate"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double numberResetsRunRate() const;
+            </method1>
+
+            <method1 name="deadTimeRunPercent"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double deadTimeRunPercent() const;
+            </method1>
+
+            <method1 name="deadTimeActiveRunPercent"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double deadTimeActiveRunPercent() const;
+            </method1>
+
+            <method1 name="deadTimeActiveCalibrationRunPercent"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double deadTimeActiveCalibrationRunPercent() const;
+            </method1>
+
+            <method1 name="deadTimeActivePrivateRunPercent"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double deadTimeActivePrivateRunPercent() const;
+            </method1>
+
+            <method1 name="deadTimeActivePartitionRunPercent"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double deadTimeActivePartitionRunPercent() const;
+            </method1>
+
+            <method1 name="deadTimeActiveThrottleRunPercent"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double deadTimeActiveThrottleRunPercent() const;
+            </method1>
+
+            <method1 name="deadTimeActiveTimeSlotRunPercent"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double deadTimeActiveTimeSlotRunPercent() const;
+            </method1>
+
+            <method1 name="finalTriggersInvalidBCRunPercent"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double finalTriggersInvalidBCRunPercent() const;
+            </method1>
+
+            <method1 name="lostFinalTriggersRunPercent"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double lostFinalTriggersRunPercent() const;
+            </method1>
+
+            <method1 name="lostFinalTriggersActiveRunPercent"
+                     return="double"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+double lostFinalTriggersActiveRunPercent() const;
+            </method1>
+
+            <method2 name="triggersRunRate"
+                     return="std::vector&lt;double&gt;"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+std::vector&lt;double&gt; triggersRunRate() const;
+            </method2>
+
+            <method2 name="testTriggersRunRate"
+                     return="std::vector&lt;double&gt;"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+std::vector&lt;double&gt; testTriggersRunRate() const;
+            </method2>
+
+            <operator name="operator=="
+                      return="int"
+                      args="['const L1TriggerRates&amp;']"
+                      vars="['e']"
+                      qual="const">
+int operator==(const L1TriggerRates&amp; e) const;
+                <comment>
+      equality operator
+                </comment>
+            </operator>
+
+            <operator name="operator!="
+                      return="int"
+                      args="['const L1TriggerRates&amp;']"
+                      vars="['e']"
+                      qual="const">
+int operator!=(const L1TriggerRates&amp; e) const;
+                <comment>
+      inequality operator
+                </comment>
+            </operator>
+
+        </section>
+
+        <typemap name="N_BX "
+                 value="L1TriggerRates::N_BX "
+                 type="enum"/>
+        <typemap name="N_BX_ACTIVE "
+                 value="L1TriggerRates::N_BX_ACTIVE "
+                 type="enum"/>
+
+    </class>
+    <operator name="operator&lt;&lt;"
+              return="std::ostream&amp;"
+              args="['std::ostream&amp;','const L1TriggerRates&amp;']"
+              vars="['s','c']"
+              qual="">
+std::ostream&amp; operator&lt;&lt;(std::ostream&amp; s, const L1TriggerRates&amp; c);
+        <comment>
+    Pretty-print operator for L1TriggerRates
+        </comment>
+    </operator>
+
+    <typedef name="L1TriggerRatesCollection"
+             value="std::vector&lt;L1TriggerRates&gt;">
+typedef std::vector&lt;L1TriggerRates&gt; L1TriggerRatesCollection;
+    </typedef>
+
+
+    <type name="L1TriggerRates"/>
+    <type name="bool"/>
+    <type name="const L1TriggerRates&amp;"/>
+    <type name="const L1TriggerScalers"/>
+    <type name="double"/>
+    <type name="enum"/>
+    <type name="int"/>
+    <type name="std::string"/>
+    <type name="std::vector&lt;double&gt;"/>
+    <type name="struct timespec"/>
+    <type name="void"/>
+</header>

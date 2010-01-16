@@ -1,0 +1,7 @@
+size_t	getModuleIndex(size_t x)
+size_t	numberOfModules()
+bool status_accept()
+bool status_error()
+unsigned int status_index()
+bool status_wasrun()
+

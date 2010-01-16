@@ -1,0 +1,19 @@
+Class:
+	edm::detail::GetProduct<COLLECTION>
+
+Header:
+	DataFormats/Common/interface/GetProduct.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:42 2010	lsclass.py $Revision:$
+
+Methods from edm::detail::GetProduct<COLLECTION>
+
+	-o- address
+		Return: static const typename COLLECTION::value_type*
+		Arguments: const iter&	i
+
+	-o- product
+		Return: static const COLLECTION*
+		Arguments: const COLLECTION&	coll
+

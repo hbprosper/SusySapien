@@ -1,0 +1,73 @@
+reco::CaloJet|float|maxEInEmTowers|void
+reco::CaloJet|float|maxEInHadTowers|void
+reco::CaloJet|float|energyFractionHadronic|void
+reco::CaloJet|float|emEnergyFraction|void
+reco::CaloJet|float|hadEnergyInHB|void
+reco::CaloJet|float|hadEnergyInHO|void
+reco::CaloJet|float|hadEnergyInHE|void
+reco::CaloJet|float|hadEnergyInHF|void
+reco::CaloJet|float|emEnergyInEB|void
+reco::CaloJet|float|emEnergyInEE|void
+reco::CaloJet|float|emEnergyInHF|void
+reco::CaloJet|float|towersArea|void
+reco::CaloJet|int|n90|void
+reco::CaloJet|int|n60|void
+reco::CaloJet|float|physicsEtaQuick|float
+reco::CaloJet|float|physicsEta|float
+reco::CaloJet|LorentzVector|physicsP4|float
+reco::CaloJet|float|physicsEtaDetailed|float
+reco::CaloJet|float|detectorEta|void
+reco::CaloJet|CaloTowerPtr|getCaloConstituent|unsigned
+reco::CaloJet|const Specific&|getSpecific|void
+reco::CaloJet|CaloJet*|clone|void
+reco::CaloJet|std::string|print|void
+reco::CaloJet|std::vector<CaloTowerPtr>|getCaloConstituents|void
+reco::CaloJet|std::vector<CaloTowerDetId>|getTowerIndices|void
+reco::Jet|EtaPhiMoments|etaPhiStatistics|void
+reco::Jet|float|etaetaMoment|void
+reco::Jet|float|phiphiMoment|void
+reco::Jet|float|etaphiMoment|void
+reco::Jet|int|nCarrying|float
+reco::Jet|float|maxDistance|void
+reco::Jet|int|nConstituents|void
+reco::Jet|std::vector<Constituent>|getJetConstituents|void
+reco::CompositePtrCandidate|CompositePtrCandidate*|clone|void
+reco::CompositePtrCandidate|candidate::const_iterator|begin|void
+reco::CompositePtrCandidate|candidate::const_iterator|end|void
+reco::CompositePtrCandidate|candidate::iterator|begin|void
+reco::CompositePtrCandidate|candidate::iterator|end|void
+reco::CompositePtrCandidate|size_t|numberOfDaughters|void
+reco::CompositePtrCandidate|size_t|numberOfMothers|void
+reco::CompositePtrCandidate|const std::vector<CandidatePtr>&|daughterPtrVector|void
+reco::CompositePtrCandidate|const Candidate*|mother|size_t=0
+reco::CompositePtrCandidate|size_t|numberOfSourceCandidatePtrs|void
+reco::Candidate|Candidate*|clone|void
+reco::Particle|int|charge|void
+reco::Particle|int|threeCharge|void
+reco::Particle|const math::XYZTLorentzVectorD&|p4|void
+reco::Particle|const math::ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> >&|polarP4|void
+reco::Particle|math::XYZVector|momentum|void
+reco::Particle|math::XYZVector|boostToCM|void
+reco::Particle|double|p|void
+reco::Particle|double|energy|void
+reco::Particle|double|et|void
+reco::Particle|double|mass|void
+reco::Particle|double|massSqr|void
+reco::Particle|double|mt|void
+reco::Particle|double|mtSqr|void
+reco::Particle|double|px|void
+reco::Particle|double|py|void
+reco::Particle|double|pz|void
+reco::Particle|double|pt|void
+reco::Particle|double|phi|void
+reco::Particle|double|theta|void
+reco::Particle|double|eta|void
+reco::Particle|double|rapidity|void
+reco::Particle|double|y|void
+reco::Particle|const math::XYZPoint&|vertex|void
+reco::Particle|double|vx|void
+reco::Particle|double|vy|void
+reco::Particle|double|vz|void
+reco::Particle|int|pdgId|void
+reco::Particle|int|status|void
+reco::Particle|bool|longLived|void

@@ -1,0 +1,9 @@
+Class:
+	math::ErrorF<N>
+
+Header:
+	DataFormats/Math/interface/Error.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:24 2010	lsclass.py $Revision:$
+

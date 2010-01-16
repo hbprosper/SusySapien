@@ -1,0 +1,180 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: DataFrame.xml
+  Created:  Thu Jan 14 22:45:55 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Common/interface/DataFrame.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/DataFrame.h">
+
+
+    <namespace name="edm">
+        <forward name="DataFrameContainer"/>
+
+        <class name="DataFrame"
+               fullname="edm::DataFrame"
+               module="DataFormats.Common"
+               project=""
+               type="regular">
+            <comment>
+     a proxy to a fixed size array of 16bit words belonging to
+     a &quot;channel&quot; identified by an 32bit id
+
+     FIXME interface to be finalized once use-cases fully identified
+            </comment>
+
+            <section name="public">
+                <typedef name="size_type"
+                         value="unsigned int">
+typedef unsigned int size_type;
+                </typedef>
+
+                <typedef name="id_type"
+                         value="unsigned int">
+typedef unsigned int id_type;
+                </typedef>
+
+                <typedef name="data_type"
+                         value="unsigned short">
+typedef unsigned short data_type;
+                </typedef>
+
+                <typedef name="iterator"
+                         value="data_type*">
+typedef data_type* iterator;
+                </typedef>
+
+                <typedef name="const_iterator"
+                         value="data_type const*">
+typedef data_type const* const_iterator;
+                </typedef>
+
+                <method1 name="DataFrame"
+                         return="inline"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+inline     DataFrame();
+                </method1>
+
+                <method1 name="DataFrame"
+                         return="inline"
+                         args="['id_type','data_type const*','size_type']"
+                         vars="['i','idata','isize']"
+                         qual="">
+inline     DataFrame(id_type i, data_type const* idata, size_type isize);
+                </method1>
+
+                <method1 name="DataFrame"
+                         return="inline"
+                         args="['DataFrameContainer const&amp;','size_type']"
+                         vars="['icont','i']"
+                         qual="">
+inline     DataFrame(DataFrameContainer const&amp; icont, size_type i);
+                </method1>
+
+                <method1 name="set"
+                         return="inline void"
+                         args="['DataFrameContainer const&amp;','size_type']"
+                         vars="['icont','i']"
+                         qual="">
+inline     void set(DataFrameContainer const&amp; icont, size_type i);
+                </method1>
+
+                <operator name="operator[]"
+                          return="inline data_type&amp;"
+                          args="['size_type']"
+                          vars="['i']"
+                          qual="">
+inline     data_type&amp; operator[](size_type i);
+                </operator>
+
+                <operator name="operator[]"
+                          return="inline data_type"
+                          args="['size_type']"
+                          vars="['i']"
+                          qual="const">
+inline     data_type operator[](size_type i) const;
+                </operator>
+
+                <method1 name="begin"
+                         return="inline iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+inline     iterator begin();
+                </method1>
+
+                <method1 name="end"
+                         return="inline iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+inline     iterator end();
+                </method1>
+
+                <method1 name="begin"
+                         return="inline const_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+inline     const_iterator begin() const;
+                </method1>
+
+                <method1 name="end"
+                         return="inline const_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+inline     const_iterator end() const;
+                </method1>
+
+                <method1 name="id"
+                         return="inline id_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+inline     id_type id() const;
+                </method1>
+
+                <method1 name="size"
+                         return="inline size_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+inline     size_type size() const;
+                </method1>
+
+            </section>
+
+            <typemap name="const_iterator"
+                     value="unsigned short const*"
+                     type="typedef"/>
+            <typemap name="data_type"
+                     value="unsigned short"
+                     type="typedef"/>
+            <typemap name="id_type"
+                     value="unsigned int"
+                     type="typedef"/>
+            <typemap name="iterator"
+                     value="unsigned short*"
+                     type="typedef"/>
+            <typemap name="size_type"
+                     value="unsigned int"
+                     type="typedef"/>
+
+        </class>
+    </namespace>
+
+    <type name="DataFrameContainer const&amp;"/>
+    <type name="const_iterator"/>
+    <type name="data_type"/>
+    <type name="data_type const*"/>
+    <type name="data_type&amp;"/>
+    <type name="edm::DataFrame"/>
+    <type name="id_type"/>
+    <type name="iterator"/>
+    <type name="size_type"/>
+    <type name="void"/>
+</header>

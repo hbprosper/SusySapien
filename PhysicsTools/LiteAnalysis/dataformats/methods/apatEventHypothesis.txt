@@ -1,0 +1,3 @@
+size_t	count()
+size_t	count(const std::string x)
+

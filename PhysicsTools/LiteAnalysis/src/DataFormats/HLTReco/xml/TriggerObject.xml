@@ -1,0 +1,235 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: TriggerObject.xml
+  Created:  Thu Jan 14 22:49:05 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/HLTReco/interface/TriggerObject.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/HLTReco/interface/TriggerObject.h">
+
+    <include name="&quot;DataFormats/Candidate/interface/Particle.h&quot;"/>
+    <include name="&lt;cmath&gt;"/>
+    <include name="&lt;vector&gt;"/>
+
+    <namespace name="trigger">
+
+        <class name="TriggerObject"
+               fullname="trigger::TriggerObject"
+               module="DataFormats.HLTReco"
+               project=""
+               type="regular">
+            <comment>
+      Single trigger physics object (e.g., an isolated muon)
+            </comment>
+
+            <section name="public">
+                <constructor name="TriggerObject"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+TriggerObject();
+                    <comment>
+        constructors
+                    </comment>
+                </constructor>
+
+                <constructor name="TriggerObject"
+                             return=""
+                             args="['int','float','float','float','float']"
+                             vars="['id','pt','eta','phi','mass']"
+                             qual="">
+TriggerObject(int id, float pt, float eta, float phi, float mass);
+                </constructor>
+
+                <method2 name="TriggerObject"
+                         return="template&lt;typename T&gt;"
+                         args="['int','const T&amp;']"
+                         vars="['id','o']"
+                         qual="">
+template&lt;typename T&gt;     TriggerObject(int id, const T&amp; o);
+                    <comment>
+        any type T object implementing the methods pt(), eta(), phi(), mass()
+                    </comment>
+                </method2>
+
+                <method2 name="TriggerObject"
+                         return="template&lt;typename T&gt;"
+                         args="['const T&amp;']"
+                         vars="['o']"
+                         qual="">
+template&lt;typename T&gt;     TriggerObject(const T&amp; o);
+                    <comment>
+        ... and pdgId()
+                    </comment>
+                </method2>
+
+                <method1 name="setId"
+                         return="void"
+                         args="['int']"
+                         vars="['id']"
+                         qual="">
+void setId (int id);
+                    <comment>
+        setters
+                    </comment>
+                </method1>
+
+                <method1 name="setPt"
+                         return="void"
+                         args="['float']"
+                         vars="['pt']"
+                         qual="">
+void setPt (float pt);
+                </method1>
+
+                <method1 name="setEta"
+                         return="void"
+                         args="['float']"
+                         vars="['eta']"
+                         qual="">
+void setEta (float eta);
+                </method1>
+
+                <method1 name="setPhi"
+                         return="void"
+                         args="['float']"
+                         vars="['phi']"
+                         qual="">
+void setPhi (float phi);
+                </method1>
+
+                <method1 name="setMass"
+                         return="void"
+                         args="['float']"
+                         vars="['mass']"
+                         qual="">
+void setMass(float mass);
+                </method1>
+
+                <method1 name="id"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int id() const;
+                    <comment>
+        getters
+                    </comment>
+                </method1>
+
+                <method1 name="pt"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float pt() const;
+                </method1>
+
+                <method1 name="eta"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float eta() const;
+                </method1>
+
+                <method1 name="phi"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float phi() const;
+                </method1>
+
+                <method1 name="mass"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float mass() const;
+                </method1>
+
+                <method1 name="px"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float px() const;
+                </method1>
+
+                <method1 name="py"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float py() const;
+                </method1>
+
+                <method1 name="pz"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float pz() const;
+                </method1>
+
+                <method1 name="p"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float p () const;
+                </method1>
+
+                <method1 name="energy"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float energy() const;
+                </method1>
+
+                <method1 name="et"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float et() const;
+                    <comment>
+       et = energy/cosh(eta)
+                    </comment>
+                </method1>
+
+                <method1 name="particle"
+                         return="reco::Particle"
+                         args="['reco::Particle::Charge=0','const reco::Particle::Point&amp;=reco::Particle::Point(0, 0, 0)','int=0','bool=true']"
+                         vars="['q','vertex','status','integerCharge']"
+                         qual="const">
+reco::Particle particle(reco::Particle::Charge q=0, const reco::Particle::Point&amp; vertex=reco::Particle::Point(0, 0, 0), int status=0, bool integerCharge=true) const;
+                </method1>
+
+            </section>
+
+        </class>
+        <typedef name="TriggerObjectCollection"
+                 value="std::vector&lt;TriggerObject&gt;">
+typedef std::vector&lt;TriggerObject&gt; TriggerObjectCollection;
+            <comment>
+      collection of trigger physics objects (e.g., all isolated muons)
+            </comment>
+        </typedef>
+
+    </namespace>
+
+    <type name="bool"/>
+    <type name="const reco::Particle::Point&amp;"/>
+    <type name="float"/>
+    <type name="int"/>
+    <type name="reco::Particle"/>
+    <type name="reco::Particle::Charge"/>
+    <type name="template&lt;typename T&gt;"/>
+    <type name="trigger::TriggerObject"/>
+    <type name="void"/>
+</header>

@@ -1,0 +1,278 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: GenJet.xml
+  Created:  Thu Jan 14 22:47:13 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/JetReco/interface/GenJet.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/JetReco/interface/GenJet.h">
+
+    <include name="&quot;DataFormats/JetReco/interface/Jet.h&quot;"/>
+
+    <namespace name="reco">
+        <forward name="GenParticle"/>
+
+        <class name="GenJet"
+               fullname="reco::GenJet"
+               module="DataFormats.JetReco"
+               project=""
+               type="regular">
+            <baseclass name="public Jet"/>
+
+            <section name="public">
+
+                <class name="Specific"
+                       fullname="reco::GenJet::Specific"
+                       module="DataFormats.JetReco"
+                       project=""
+                       type="regular struct">
+
+                    <section>
+                        <constructor name="Specific"
+                                     return=""
+                                     args="['void']"
+                                     vars="['']"
+                                     qual="">
+Specific ();
+                        </constructor>
+
+                        <member>
+float m_EmEnergy;
+                            <comment>
+        Energy of EM particles
+                            </comment>
+                        </member>
+
+                        <member>
+float m_HadEnergy;
+                            <comment>
+        Energy of Hadrons
+                            </comment>
+                        </member>
+
+                        <member>
+float m_InvisibleEnergy;
+                            <comment>
+        Invisible energy (mu, nu, ...)
+                            </comment>
+                        </member>
+
+                        <member>
+float m_AuxiliaryEnergy;
+                            <comment>
+        Anything else (undecayed Sigmas etc.)
+                            </comment>
+                        </member>
+
+                    </section>
+
+                    <typemap name="Specific"
+                             value="reco::GenJet::Specific"
+                             type="class"/>
+                    <typemap name="m_AuxiliaryEnergy"
+                             value="reco::GenJet::Specific::m_AuxiliaryEnergy"
+                             type="member"/>
+                    <typemap name="m_EmEnergy"
+                             value="reco::GenJet::Specific::m_EmEnergy"
+                             type="member"/>
+                    <typemap name="m_HadEnergy"
+                             value="reco::GenJet::Specific::m_HadEnergy"
+                             type="member"/>
+                    <typemap name="m_InvisibleEnergy"
+                             value="reco::GenJet::Specific::m_InvisibleEnergy"
+                             type="member"/>
+
+                </class>
+                <constructor name="GenJet"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+GenJet();
+                    <comment>
+      Default constructor
+                    </comment>
+                </constructor>
+
+                <constructor name="GenJet"
+                             return=""
+                             args="['const LorentzVector&amp;','const Point&amp;','const Specific&amp;','const Jet::Constituents&amp;']"
+                             vars="['fP4','fVertex','fSpecific','fConstituents']"
+                             qual="">
+GenJet(const LorentzVector&amp; fP4, const Point&amp; fVertex, const Specific&amp; fSpecific, const Jet::Constituents&amp; fConstituents);
+                    <comment>
+      Constructor from values
+                    </comment>
+                </constructor>
+
+                <constructor name="GenJet"
+                             return=""
+                             args="['const LorentzVector&amp;','const Point&amp;','const Specific&amp;']"
+                             vars="['fP4','fVertex','fSpecific']"
+                             qual="">
+GenJet(const LorentzVector&amp; fP4, const Point&amp; fVertex, const Specific&amp; fSpecific);
+                </constructor>
+
+                <constructor name="GenJet"
+                             return=""
+                             args="['const LorentzVector&amp;','const Specific&amp;','const Jet::Constituents&amp;']"
+                             vars="['fP4','fSpecific','fConstituents']"
+                             qual="">
+GenJet(const LorentzVector&amp; fP4, const Specific&amp; fSpecific, const Jet::Constituents&amp; fConstituents);
+                    <comment>
+      backward compatible, vertex=(0,0,0)
+                    </comment>
+                </constructor>
+
+                <destructor name="~GenJet"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~GenJet();
+                </destructor>
+
+                <method1 name="emEnergy"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float emEnergy() const;
+                    <comment>
+      Returns energy of electromagnetic particles
+                    </comment>
+                </method1>
+
+                <method1 name="hadEnergy"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float hadEnergy() const;
+                    <comment>
+      Returns energy of hadronic particles
+                    </comment>
+                </method1>
+
+                <method1 name="invisibleEnergy"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float invisibleEnergy() const;
+                    <comment>
+      Returns invisible energy
+                    </comment>
+                </method1>
+
+                <method1 name="auxiliaryEnergy"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float auxiliaryEnergy() const;
+                    <comment>
+      Returns other energy (undecayed Sigmas etc.)
+                    </comment>
+                </method1>
+
+                <method1 name="detectorEta"
+                         return="float"
+                         args="['float']"
+                         vars="['fZVertex']"
+                         qual="const">
+float detectorEta (float fZVertex) const;
+                    <comment>
+      Detector Eta (use reference Z and jet kinematics only)
+                    </comment>
+                </method1>
+
+                <method1 name="genParticle"
+                         return="static const GenParticle*"
+                         args="['const reco::Candidate*']"
+                         vars="['fConstituent']"
+                         qual="">
+static const GenParticle* genParticle (const reco::Candidate* fConstituent);
+                    <comment>
+      convert generic constituent to specific type
+                    </comment>
+                </method1>
+
+                <method1 name="getGenConstituent"
+                         return="virtual const GenParticle*"
+                         args="['unsigned']"
+                         vars="['fIndex']"
+                         qual="const">
+virtual const GenParticle* getGenConstituent (unsigned fIndex) const;
+                    <comment>
+      get specific constituent
+                    </comment>
+                </method1>
+
+                <method2 name="getGenConstituents"
+                         return="virtual std::vector&lt;const GenParticle*&gt;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual std::vector&lt;const GenParticle*&gt; getGenConstituents () const;
+                    <comment>
+      get all constituents
+                    </comment>
+                </method2>
+
+                <method1 name="getSpecific"
+                         return="const Specific&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const Specific&amp; getSpecific () const;
+                    <comment>
+     block accessors
+                    </comment>
+                </method1>
+
+                <method1 name="clone"
+                         return="virtual GenJet*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual GenJet* clone () const;
+                    <comment>
+      Polymorphic clone
+                    </comment>
+                </method1>
+
+                <method1 name="print"
+                         return="virtual std::string"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual std::string print () const;
+                    <comment>
+      Print object
+                    </comment>
+                </method1>
+
+            </section>
+
+        </class>
+    </namespace>
+    <include name="&quot;DataFormats/JetReco/interface/GenJetCollection.h&quot;"/>
+
+    <type name="GenJet*"/>
+    <type name="Jet"/>
+    <type name="const GenParticle*"/>
+    <type name="const Jet::Constituents&amp;"/>
+    <type name="const LorentzVector&amp;"/>
+    <type name="const Point&amp;"/>
+    <type name="const Specific&amp;"/>
+    <type name="const reco::Candidate*"/>
+    <type name="float"/>
+    <type name="reco::GenJet"/>
+    <type name="reco::GenJet::Specific"/>
+    <type name="std::string"/>
+    <type name="std::vector&lt;const GenParticle*&gt;"/>
+    <type name="unsigned"/>
+    <type name="void"/>
+</header>

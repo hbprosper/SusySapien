@@ -1,0 +1,23 @@
+Class:
+	reco::EgammaTrigger
+
+Header:
+	DataFormats/EgammaReco/interface/EgammaTrigger.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:16:19 2010	lsclass.py $Revision:$
+
+Methods from reco::EgammaTrigger
+
+	-o- l1word
+		Return: unsigned char
+		Arguments: void	
+
+	-o- match
+		Return: template<unsigned char 0> bool
+		Arguments: void	
+
+	-o- set
+		Return: template<unsigned char 0> void
+		Arguments: void	
+

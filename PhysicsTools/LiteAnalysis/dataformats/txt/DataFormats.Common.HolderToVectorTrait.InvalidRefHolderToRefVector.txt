@@ -1,0 +1,19 @@
+Class:
+	edm::reftobase::InvalidRefHolderToRefVector<REF>
+
+Header:
+	DataFormats/Common/interface/HolderToVectorTrait.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:38 2010	lsclass.py $Revision:$
+
+Methods from edm::reftobase::InvalidRefHolderToRefVector<REF>
+
+	-o- makeVectorHolder
+		Return: static std::auto_ptr<RefVectorHolderBase>
+		Arguments: void	
+
+	-o- makeVectorBaseHolder
+		Return: static std::auto_ptr<RefVectorHolderBase>
+		Arguments: void	
+

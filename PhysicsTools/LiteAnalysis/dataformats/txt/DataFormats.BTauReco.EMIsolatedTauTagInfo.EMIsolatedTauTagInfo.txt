@@ -1,0 +1,67 @@
+Class:
+	reco::EMIsolatedTauTagInfo
+
+Header:
+	DataFormats/BTauReco/interface/EMIsolatedTauTagInfo.h
+
+BaseClasses:
+	reco::BaseTagInfo	DataFormats/BTauReco/interface/BaseTagInfo.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:14:44 2010	lsclass.py $Revision:$
+
+Methods from reco::EMIsolatedTauTagInfo
+
+	-o- clone
+		Return: EMIsolatedTauTagInfo*
+		Arguments: void	
+
+	-o- lorentzVectorRecHits
+		Return: math::PtEtaPhiELorentzVectorRefVector
+		Arguments: void	
+
+	-o- jcaRef
+		Return: const JetCrystalsAssociationRef&
+		Arguments: void	
+
+	-o- discriminator
+		Return: float
+		Arguments: void	
+
+	-o- setDiscriminator
+		Return: void
+		Arguments: double	discriminator
+
+	-o- pIsol
+		Return: double
+		Arguments: float	rMax
+		           float	rMin
+
+	-o- discriminator
+		Return: float
+		Arguments: float	rMax
+		           float	rMin
+		           float	pIsolCut
+
+	-o- jet
+		Return: edm::RefToBase<Jet>
+		Arguments: void	
+
+Methods from reco::BaseTagInfo
+
+	-o- clone
+		Return: BaseTagInfo*
+		Arguments: void	
+
+	-o- tracks
+		Return: edm::RefVector<std::vector<Track>>
+		Arguments: void	
+
+	-o- hasTracks
+		Return: bool
+		Arguments: void	
+
+	-o- taggingVariables
+		Return: TaggingVariableList
+		Arguments: void	
+

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: MuIsoDeposit.xml
+  Created:  Thu Jan 14 22:47:42 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/MuonReco/interface/MuIsoDeposit.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/MuonReco/interface/MuIsoDeposit.h">
+
+
+</header>

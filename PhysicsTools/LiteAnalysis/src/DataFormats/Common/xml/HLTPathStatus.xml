@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: HLTPathStatus.xml
+  Created:  Thu Jan 14 22:46:03 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Common/interface/HLTPathStatus.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/HLTPathStatus.h">
+
+    <include name="&quot;DataFormats/Common/interface/HLTenums.h&quot;"/>
+    <include name="&lt;boost/cstdint.hpp&gt;"/>
+    <include name="&lt;cassert&gt;"/>
+
+    <namespace name="edm">
+
+        <class name="HLTPathStatus"
+               fullname="edm::HLTPathStatus"
+               module="DataFormats.Common"
+               project=""
+               type="regular">
+
+            <section name="public">
+                <constructor name="HLTPathStatus"
+                             return=""
+                             args="['const hlt::HLTState=hlt::Ready','const unsigned int=0']"
+                             vars="['state','index']"
+                             qual="">
+HLTPathStatus(const hlt::HLTState state=hlt::Ready, const unsigned int index=0);
+                    <comment>
+        constructor
+                    </comment>
+                </constructor>
+
+                <method1 name="state"
+                         return="hlt::HLTState"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+hlt::HLTState state() const;
+                    <comment>
+        get state of path
+                    </comment>
+                </method1>
+
+                <method1 name="index"
+                         return="unsigned int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+unsigned int index() const;
+                    <comment>
+        get index of module giving the status of this path
+                    </comment>
+                </method1>
+
+                <method1 name="reset"
+                         return="void"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+void reset();
+                    <comment>
+        reset this path
+                    </comment>
+                </method1>
+
+                <method1 name="wasrun"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool wasrun() const;
+                    <comment>
+        was this path run?
+                    </comment>
+                </method1>
+
+                <method1 name="accept"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool accept() const;
+                    <comment>
+        has this path accepted the event?
+                    </comment>
+                </method1>
+
+                <method1 name="error"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool error() const;
+                    <comment>
+        has this path encountered an error (exception)?
+                    </comment>
+                </method1>
+
+            </section>
+
+        </class>
+    </namespace>
+
+    <type name="bool"/>
+    <type name="const hlt::HLTState"/>
+    <type name="const unsigned int"/>
+    <type name="edm::HLTPathStatus"/>
+    <type name="hlt::HLTState"/>
+    <type name="unsigned int"/>
+    <type name="void"/>
+</header>

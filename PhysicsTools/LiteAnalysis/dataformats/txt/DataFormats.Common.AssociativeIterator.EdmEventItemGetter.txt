@@ -1,0 +1,16 @@
+Class:
+	edm::EdmEventItemGetter<RefType>
+
+Header:
+	DataFormats/Common/interface/AssociativeIterator.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:48 2010	lsclass.py $Revision:$
+
+Methods from edm::EdmEventItemGetter<RefType>
+
+	-o- get
+		Return: RefType
+		Arguments: const ProductID&	id
+		           size_t	idx
+

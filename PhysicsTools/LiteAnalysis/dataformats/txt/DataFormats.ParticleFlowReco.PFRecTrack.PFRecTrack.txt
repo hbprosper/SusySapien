@@ -1,0 +1,81 @@
+Class:
+	reco::PFRecTrack
+
+Header:
+	DataFormats/ParticleFlowReco/interface/PFRecTrack.h
+
+BaseClasses:
+	reco::PFTrack	DataFormats/ParticleFlowReco/interface/PFTrack.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:14:24 2010	lsclass.py $Revision:$
+
+Methods from reco::PFRecTrack
+
+	-o- algoType
+		Return: unsigned int
+		Arguments: void	
+
+	-o- trackId
+		Return: int
+		Arguments: void	
+
+	-o- trackRef
+		Return: const reco::edm::Ref<std::vector<Track>>&
+		Arguments: void	
+
+Methods from reco::PFTrack
+
+	-o- addPoint
+		Return: void
+		Arguments: const reco::PFTrajectoryPoint&	trajPt
+
+	-o- setPoint
+		Return: void
+		Arguments: unsigned int	index
+		           const reco::PFTrajectoryPoint&	measurement
+
+	-o- calculatePositionREP
+		Return: void
+		Arguments: void	
+
+	-o- charge
+		Return: double
+		Arguments: void	
+
+	-o- nTrajectoryPoints
+		Return: unsigned int
+		Arguments: void	
+
+	-o- nTrajectoryMeasurements
+		Return: unsigned int
+		Arguments: void	
+
+	-o- trajectoryPoint
+		Return: const reco::PFTrajectoryPoint&
+		Arguments: unsigned	index
+
+	-o- extrapolatedPoint
+		Return: const reco::PFTrajectoryPoint&
+		Arguments: unsigned	layerid
+
+	-o- setColor
+		Return: void
+		Arguments: int	color
+
+	-o- color
+		Return: int
+		Arguments: void	
+
+	-o- trajectoryPoints
+		Return: const std::vector<reco::PFTrajectoryPoint >&
+		Arguments: void	
+
+	-o- innermostMeasurement
+		Return: std::vector<reco::PFTrajectoryPoint >::const_iterator
+		Arguments: void	
+
+	-o- outermostMeasurement
+		Return: std::vector<reco::PFTrajectoryPoint >::const_iterator
+		Arguments: void	
+

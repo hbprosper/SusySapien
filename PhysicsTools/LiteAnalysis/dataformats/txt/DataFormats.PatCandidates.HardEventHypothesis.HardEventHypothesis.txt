@@ -1,0 +1,27 @@
+Class:
+	pat::HardEventHypothesis
+
+Header:
+	DataFormats/PatCandidates/interface/HardEventHypothesis.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:14:12 2010	lsclass.py $Revision:$
+
+Methods from pat::HardEventHypothesis
+
+	-o- setQuality
+		Return: inline void
+		Arguments: float	q
+
+	-o- getQuality
+		Return: inline float
+		Arguments: void	
+
+	-o- getCandidateRole
+		Return: const char*
+		Arguments: int=0	i
+
+	-o- getIsVector
+		Return: bool
+		Arguments: int=0	i
+

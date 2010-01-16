@@ -1,0 +1,47 @@
+Class:
+	reco::CaloCluster
+
+Header:
+	DataFormats/CaloRecHit/interface/CaloCluster.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:29 2010	lsclass.py $Revision:$
+
+Methods from reco::CaloCluster
+
+	-o- energy
+		Return: double
+		Arguments: void	
+
+	-o- position
+		Return: const math::ROOT::Math::PositionVector3D<ROOT::Math::Cartesian3D<double> >&
+		Arguments: void	
+
+	-o- x
+		Return: double
+		Arguments: void	
+
+	-o- y
+		Return: double
+		Arguments: void	
+
+	-o- z
+		Return: double
+		Arguments: void	
+
+	-o- eta
+		Return: double
+		Arguments: void	
+
+	-o- phi
+		Return: double
+		Arguments: void	
+
+	-o- caloID
+		Return: CaloID&
+		Arguments: void	
+
+	-o- caloID
+		Return: const CaloID&
+		Arguments: void	
+

@@ -1,0 +1,2 @@
+edm::ModuleTime|std::string|name|void
+edm::ModuleTime|double|time|void

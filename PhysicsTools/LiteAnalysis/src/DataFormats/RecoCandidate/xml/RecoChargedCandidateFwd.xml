@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: RecoChargedCandidateFwd.xml
+  Created:  Thu Jan 14 22:48:30 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/RecoCandidate/interface/RecoChargedCandidateFwd.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/RecoCandidate/interface/RecoChargedCandidateFwd.h">
+
+    <include name="&lt;vector&gt;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+
+    <namespace name="reco">
+        <forward name="RecoChargedCandidate"/>
+        <typedef name="RecoChargedCandidateCollection"
+                 value="std::vector&lt;RecoChargedCandidate&gt;">
+typedef std::vector&lt;RecoChargedCandidate&gt; RecoChargedCandidateCollection;
+            <comment>
+      collectin of RecoChargedCandidate objects
+            </comment>
+        </typedef>
+
+        <typedef name="RecoChargedCandidateRef"
+                 value="edm::Ref&lt;RecoChargedCandidateCollection&gt;">
+typedef edm::Ref&lt;RecoChargedCandidateCollection&gt; RecoChargedCandidateRef;
+            <comment>
+      reference to an object in a collection of RecoChargedCandidate objects
+            </comment>
+        </typedef>
+
+        <typedef name="RecoChargedCandidateRefProd"
+                 value="edm::RefProd&lt;RecoChargedCandidateCollection&gt;">
+typedef edm::RefProd&lt;RecoChargedCandidateCollection&gt; RecoChargedCandidateRefProd;
+            <comment>
+      reference to a collection of RecoChargedCandidate objects
+            </comment>
+        </typedef>
+
+        <typedef name="RecoChargedCandidateRefVector"
+                 value="edm::RefVector&lt;RecoChargedCandidateCollection&gt;">
+typedef edm::RefVector&lt;RecoChargedCandidateCollection&gt; RecoChargedCandidateRefVector;
+            <comment>
+      vector of objects in the same collection of RecoChargedCandidate objects
+            </comment>
+        </typedef>
+
+        <typedef name="recoChargedCandidate_iterator"
+                 value="RecoChargedCandidateRefVector::iterator">
+typedef RecoChargedCandidateRefVector::iterator recoChargedCandidate_iterator;
+            <comment>
+      iterator over a vector of reference to RecoChargedCandidate objects
+            </comment>
+        </typedef>
+
+    </namespace>
+
+</header>

@@ -1,0 +1,60 @@
+Class:
+	L1DataEmulRecord
+
+Header:
+	DataFormats/L1Trigger/interface/L1DataEmulRecord.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:20 2010	lsclass.py $Revision:$
+
+Methods from L1DataEmulRecord
+
+	-o- get_status
+		Return: bool
+		Arguments: void	
+
+	-o- get_status
+		Return: bool
+		Arguments: int	s
+
+	-o- get_status
+		Return: void
+		Arguments: bool[]	result[]
+
+	-o- getColl
+		Return: std::vector<L1DataEmulDigi>
+		Arguments: void	
+
+	-o- getGlt
+		Return: GltDEDigi
+		Arguments: void	
+
+	-o- getNCand
+		Return: int
+		Arguments: int	i
+		           int	j
+
+	-o- get_isComp
+		Return: bool
+		Arguments: int	i
+
+	-o- set_status
+		Return: void
+		Arguments: const bool	result
+
+	-o- set_status
+		Return: void
+		Arguments: const bool[]	result[]
+
+	-o- setColl
+		Return: void
+		Arguments: const L1DEDigiCollection	col
+
+	-o- setGlt
+		Return: void
+		Arguments: GltDEDigi	glt
+
+	-o- empty
+		Return: bool
+		Arguments: void	
+

@@ -1,0 +1,205 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: EDCollection.xml
+  Created:  Thu Jan 14 22:46:00 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Common/interface/EDCollection.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/EDCollection.h">
+
+    <include name="&lt;vector&gt;"/>
+
+    <namespace name="edm">
+
+        <class name="EDCollection"
+               fullname="edm::EDCollection&lt;T&gt;"
+               module="DataFormats.Common"
+               project=""
+               type="template"
+               template="template&lt;class T&gt;">
+
+            <section name="public">
+                <typedef name="value_type"
+                         value="T">
+typedef T value_type;
+                </typedef>
+
+                <typedef name="const_iterator"
+                         value="typename std::vector&lt;T&gt;::const_iterator">
+typedef typename std::vector&lt;T&gt;::const_iterator const_iterator;
+                </typedef>
+
+                <typedef name="size_type"
+                         value="typename std::vector&lt;T&gt;::size_type">
+typedef typename std::vector&lt;T&gt;::size_type size_type;
+                </typedef>
+
+                <constructor name="EDCollection"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+EDCollection();
+                </constructor>
+
+                <constructor name="EDCollection"
+                             return="explicit"
+                             args="['size_type']"
+                             vars="['n']"
+                             qual="">
+explicit EDCollection(size_type n);
+                </constructor>
+
+                <constructor name="EDCollection"
+                             return="explicit"
+                             args="['std::vector&lt;T&gt; const&amp;']"
+                             vars="['vec']"
+                             qual="">
+explicit EDCollection(std::vector&lt;T&gt; const&amp; vec);
+                </constructor>
+
+                <copyconstructor name="EDCollection"
+                                 return=""
+                                 args="['EDCollection&lt;T&gt; const&amp;']"
+                                 vars="['h']"
+                                 qual="">
+EDCollection(EDCollection&lt;T&gt; const&amp; h);
+                </copyconstructor>
+
+                <destructor name="~EDCollection"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~EDCollection();
+                </destructor>
+
+                <method1 name="push_back"
+                         return="void"
+                         args="['T const&amp;']"
+                         vars="['t']"
+                         qual="">
+void push_back(T const&amp; t);
+                </method1>
+
+                <method2 name="swap"
+                         return="void"
+                         args="['EDCollection&lt;T&gt;&amp;']"
+                         vars="['other']"
+                         qual="">
+void swap(EDCollection&lt;T&gt;&amp; other);
+                </method2>
+
+                <operator name="operator="
+                          return="EDCollection&lt;T&gt;&amp;"
+                          args="['EDCollection&lt;T&gt; const&amp;']"
+                          vars="['rhs']"
+                          qual="">
+EDCollection&lt;T&gt;&amp; operator=(EDCollection&lt;T&gt; const&amp; rhs);
+                </operator>
+
+                <method1 name="empty"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool empty() const;
+                </method1>
+
+                <method1 name="size"
+                         return="size_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+size_type size() const;
+                </method1>
+
+                <method1 name="capacity"
+                         return="size_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+size_type capacity() const;
+                </method1>
+
+                <method1 name="reserve"
+                         return="void"
+                         args="['size_type']"
+                         vars="['n']"
+                         qual="">
+void reserve(size_type n);
+                </method1>
+
+                <operator name="operator[]"
+                          return="T&amp;"
+                          args="['size_type']"
+                          vars="['i']"
+                          qual="">
+T&amp; operator[](size_type i);
+                </operator>
+
+                <operator name="operator[]"
+                          return="T const&amp;"
+                          args="['size_type']"
+                          vars="['i']"
+                          qual="const">
+T const&amp; operator[](size_type i) const;
+                </operator>
+
+                <method1 name="at"
+                         return="T&amp;"
+                         args="['size_type']"
+                         vars="['i']"
+                         qual="">
+T&amp; at(size_type i);
+                </method1>
+
+                <method1 name="at"
+                         return="T const&amp;"
+                         args="['size_type']"
+                         vars="['i']"
+                         qual="const">
+T const&amp; at(size_type i) const;
+                </method1>
+
+                <method1 name="begin"
+                         return="const_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const_iterator begin() const;
+                </method1>
+
+                <method1 name="end"
+                         return="const_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const_iterator end() const;
+                </method1>
+
+            </section>
+
+            <typemap name="const_iterator"
+                     value="typename std::vector&lt;T&gt;::const_iterator"
+                     type="typedef"/>
+            <typemap name="size_type"
+                     value="typename std::vector&lt;T&gt;::size_type"
+                     type="typedef"/>
+            <typemap name="value_type"
+                     value="T"
+                     type="typedef"/>
+
+        </class>
+    </namespace>
+
+    <type name="EDCollection&lt;T&gt; const&amp;"/>
+    <type name="EDCollection&lt;T&gt;&amp;"/>
+    <type name="bool"/>
+    <type name="const_iterator"/>
+    <type name="edm::EDCollection&lt;T&gt;"/>
+    <type name="size_type"/>
+    <type name="std::vector&lt;T&gt; const&amp;"/>
+    <type name="void"/>
+</header>

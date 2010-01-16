@@ -1,0 +1,31 @@
+Class:
+	edm::RefBase<KEY>
+
+Header:
+	DataFormats/Common/interface/RefBase.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:58 2010	lsclass.py $Revision:$
+
+Methods from edm::RefBase<KEY>
+
+	-o- refCore
+		Return: RefCore const&
+		Arguments: void	
+
+	-o- isValid
+		Return: bool
+		Arguments: void	
+
+	-o- isNull
+		Return: bool
+		Arguments: void	
+
+	-o- isNonnull
+		Return: bool
+		Arguments: void	
+
+	-o- item
+		Return: RefItem<KEY> const&
+		Arguments: void	
+

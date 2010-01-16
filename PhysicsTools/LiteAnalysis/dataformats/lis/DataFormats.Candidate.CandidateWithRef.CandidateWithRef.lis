@@ -1,0 +1,2 @@
+reco::CandidateWithRef<Ref>|CandidateWithRef*|clone|void
+reco::CandidateWithRef<Ref>|Ref|ref|void

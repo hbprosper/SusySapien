@@ -1,0 +1,6 @@
+bool	isAvailable()
+bool	isNonnull()
+bool	isNull()
+bool	isTransient()
+int	isTransientInt()
+

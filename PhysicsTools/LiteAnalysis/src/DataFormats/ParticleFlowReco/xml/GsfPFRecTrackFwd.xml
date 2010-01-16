@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: GsfPFRecTrackFwd.xml
+  Created:  Thu Jan 14 22:47:52 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/ParticleFlowReco/interface/GsfPFRecTrackFwd.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/ParticleFlowReco/interface/GsfPFRecTrackFwd.h">
+
+    <include name="&lt;vector&gt;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
+
+    <namespace name="reco">
+        <forward name="GsfPFRecTrack"/>
+        <typedef name="GsfPFRecTrackCollection"
+                 value="std::vector&lt;GsfPFRecTrack&gt;">
+typedef std::vector&lt;GsfPFRecTrack&gt; GsfPFRecTrackCollection;
+            <comment>
+      collection of GsfPFRecTrack objects
+            </comment>
+        </typedef>
+
+        <typedef name="GsfPFRecTrackRef"
+                 value="edm::Ref&lt;GsfPFRecTrackCollection&gt;">
+typedef edm::Ref&lt;GsfPFRecTrackCollection&gt; GsfPFRecTrackRef;
+            <comment>
+      persistent reference to GsfPFRecTrack objects
+            </comment>
+        </typedef>
+
+        <typedef name="GsfPFRecTrackRefProd"
+                 value="edm::RefProd&lt;GsfPFRecTrackCollection&gt;">
+typedef edm::RefProd&lt;GsfPFRecTrackCollection&gt; GsfPFRecTrackRefProd;
+            <comment>
+      reference to GsfPFRecTrack collection
+            </comment>
+        </typedef>
+
+        <typedef name="GsfPFRecTrackRefVector"
+                 value="edm::RefVector&lt;GsfPFRecTrackCollection&gt;">
+typedef edm::RefVector&lt;GsfPFRecTrackCollection&gt; GsfPFRecTrackRefVector;
+            <comment>
+      vector of references to GsfPFRecTrack objects all in the same collection
+            </comment>
+        </typedef>
+
+        <typedef name="gsfPfRecTrack_iterator"
+                 value="GsfPFRecTrackRefVector::iterator">
+typedef GsfPFRecTrackRefVector::iterator gsfPfRecTrack_iterator;
+            <comment>
+      iterator over a vector of references to GsfPFRecTrack objects
+            </comment>
+        </typedef>
+
+    </namespace>
+
+</header>

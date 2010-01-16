@@ -1,0 +1,10 @@
+L1DataEmulDigi|int|sid|void
+L1DataEmulDigi|int|cid|void
+L1DataEmulDigi|double|x1|void
+L1DataEmulDigi|double|x2|void
+L1DataEmulDigi|double|x3|void
+L1DataEmulDigi|int|type|void
+L1DataEmulDigi|L1MonitorDigi|data|void
+L1DataEmulDigi|L1MonitorDigi|emul|void
+L1DataEmulDigi|int|reset|void
+L1DataEmulDigi|bool|empty|void

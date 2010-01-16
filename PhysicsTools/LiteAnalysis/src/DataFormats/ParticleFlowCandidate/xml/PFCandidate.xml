@@ -1,0 +1,878 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: PFCandidate.xml
+  Created:  Thu Jan 14 22:47:49 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/ParticleFlowCandidate/interface/PFCandidate.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/ParticleFlowCandidate/interface/PFCandidate.h">
+
+    <include name="&lt;iostream&gt;"/>
+    <include name="&quot;DataFormats/Math/interface/Point3D.h&quot;"/>
+    <include name="&quot;DataFormats/Candidate/interface/CompositeCandidate.h&quot;"/>
+    <include name="&quot;DataFormats/ParticleFlowReco/interface/PFBlockFwd.h&quot;"/>
+    <include name="&quot;DataFormats/TrackReco/interface/TrackFwd.h&quot;"/>
+    <include name="&quot;DataFormats/GsfTrackReco/interface/GsfTrackFwd.h&quot;"/>
+    <include name="&quot;DataFormats/MuonReco/interface/MuonFwd.h&quot;"/>
+    <include name="&quot;DataFormats/ParticleFlowCandidate/interface/PFCandidateFwd.h&quot;"/>
+    <include name="&quot;DataFormats/VertexReco/interface/NuclearInteractionFwd.h&quot;"/>
+    <include name="&quot;DataFormats/EgammaCandidates/interface/ConversionFwd.h&quot;"/>
+
+    <namespace name="reco">
+
+        <class name="PFCandidate"
+               fullname="reco::PFCandidate"
+               module="DataFormats.ParticleFlowCandidate"
+               project=""
+               type="regular printable">
+            <baseclass name="public CompositeCandidate"/>
+            <comment>
+     \class PFCandidate
+     \brief Particle reconstructed by the particle flow algorithm.
+
+     \author Colin Bernet
+     \date   February 2007
+            </comment>
+
+            <section name="public">
+                <enum name="ParticleType">
+enum ParticleType {
+
+      X=0, 
+      h, 
+      e, 
+      mu, 
+      gamma, 
+      h0, 
+      h_HF, 
+      egamma_HF
+    };
+                    <field name="X" value="0"/>
+                    <field name="h" value=""/>
+                    <field name="e" value=""/>
+                    <field name="mu" value=""/>
+                    <field name="gamma" value=""/>
+                    <field name="h0" value=""/>
+                    <field name="h_HF" value=""/>
+                    <field name="egamma_HF" value=""/>
+                    <comment>
+        particle types
+                    </comment>
+                </enum>
+
+                <constructor name="PFCandidate"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+PFCandidate();
+                    <comment>
+        default constructor
+                    </comment>
+                </constructor>
+
+                <constructor name="PFCandidate"
+                             return=""
+                             args="['const PFCandidatePtr&amp;']"
+                             vars="['sourcePtr']"
+                             qual="">
+PFCandidate(const PFCandidatePtr&amp; sourcePtr);
+                    <comment>
+        constructor from a reference (keeps track of source relationship)
+                    </comment>
+                </constructor>
+
+                <constructor name="PFCandidate"
+                             return=""
+                             args="['Charge','const LorentzVector&amp;','ParticleType']"
+                             vars="['q','p4','particleId']"
+                             qual="">
+PFCandidate(Charge q, const LorentzVector&amp; p4, ParticleType particleId);
+                    <comment>
+                        reco::PFBlockRef blockRef );
+                    </comment>
+                </constructor>
+
+                <destructor name="~PFCandidate"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~PFCandidate();
+                    <comment>
+        destructor
+                    </comment>
+                </destructor>
+
+                <method1 name="clone"
+                         return="virtual PFCandidate*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual PFCandidate* clone() const;
+                    <comment>
+        return a clone
+                    </comment>
+                </method1>
+
+                <method1 name="setSourcePtr"
+                         return="void"
+                         args="['const PFCandidatePtr&amp;']"
+                         vars="['ptr']"
+                         qual="">
+void setSourcePtr(const PFCandidatePtr&amp; ptr);
+                    <comment>
+       }
+                    </comment>
+                </method1>
+
+                <method1 name="numberOfSourceCandidatePtrs"
+                         return="size_t"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+size_t numberOfSourceCandidatePtrs() const;
+                </method1>
+
+                <method1 name="sourceCandidatePtr"
+                         return="CandidatePtr"
+                         args="['size_type']"
+                         vars="['i']"
+                         qual="const">
+CandidatePtr sourceCandidatePtr(size_type i) const;
+                </method1>
+
+                <method1 name="translateTypeToPdgId"
+                         return="int"
+                         args="['ParticleType']"
+                         vars="['type']"
+                         qual="const">
+int translateTypeToPdgId(ParticleType type) const;
+                    <comment>
+        low priority
+                    </comment>
+                </method1>
+
+                <method1 name="setParticleType"
+                         return="void"
+                         args="['ParticleType']"
+                         vars="['type']"
+                         qual="">
+void setParticleType(ParticleType type);
+                    <comment>
+        set Particle Type
+                    </comment>
+                </method1>
+
+                <method1 name="addElementInBlock"
+                         return="void"
+                         args="['const reco::PFBlockRef&amp;','unsigned']"
+                         vars="['blockref','elementIndex']"
+                         qual="">
+void addElementInBlock(const reco::PFBlockRef&amp; blockref, unsigned elementIndex);
+                    <comment>
+        add element in block
+                    </comment>
+                </method1>
+
+                <method1 name="setTrackRef"
+                         return="void"
+                         args="['const reco::TrackRef&amp;']"
+                         vars="['ref']"
+                         qual="">
+void setTrackRef(const reco::TrackRef&amp; ref);
+                    <comment>
+        set track reference
+                    </comment>
+                </method1>
+
+                <method1 name="trackRef"
+                         return="reco::TrackRef"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+reco::TrackRef trackRef() const;
+                    <comment>
+        otherwise, return a null reference
+                    </comment>
+                </method1>
+
+                <method1 name="setGsfTrackRef"
+                         return="void"
+                         args="['const reco::GsfTrackRef&amp;']"
+                         vars="['ref']"
+                         qual="">
+void setGsfTrackRef(const reco::GsfTrackRef&amp; ref);
+                    <comment>
+        set gsftrack reference
+                    </comment>
+                </method1>
+
+                <method1 name="gsfTrackRef"
+                         return="reco::GsfTrackRef"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+reco::GsfTrackRef gsfTrackRef() const;
+                    <comment>
+        otherwise, return a null reference
+                    </comment>
+                </method1>
+
+                <method1 name="setMuonRef"
+                         return="void"
+                         args="['const reco::MuonRef&amp;']"
+                         vars="['ref']"
+                         qual="">
+void setMuonRef(const reco::MuonRef&amp; ref);
+                    <comment>
+        set muon reference
+                    </comment>
+                </method1>
+
+                <method1 name="muonRef"
+                         return="reco::MuonRef"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+reco::MuonRef muonRef() const;
+                    <comment>
+        otherwise, return a null reference
+                    </comment>
+                </method1>
+
+                <method1 name="setNuclearRef"
+                         return="void"
+                         args="['const reco::NuclearInteractionRef&amp;']"
+                         vars="['ref']"
+                         qual="">
+void setNuclearRef(const reco::NuclearInteractionRef&amp; ref);
+                    <comment>
+        set nuclear interaction reference
+                    </comment>
+                </method1>
+
+                <method1 name="nuclearRef"
+                         return="reco::NuclearInteractionRef"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+reco::NuclearInteractionRef nuclearRef() const;
+                    <comment>
+        otherwise, return a null reference
+                    </comment>
+                </method1>
+
+                <method1 name="setConversionRef"
+                         return="void"
+                         args="['const reco::ConversionRef&amp;']"
+                         vars="['ref']"
+                         qual="">
+void setConversionRef(const reco::ConversionRef&amp; ref);
+                    <comment>
+        set ref to original reco conversion
+                    </comment>
+                </method1>
+
+                <method1 name="conversionRef"
+                         return="reco::ConversionRef"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+reco::ConversionRef conversionRef() const;
+                    <comment>
+        return a reference to the original conversion
+                    </comment>
+                </method1>
+
+                <method1 name="setEcalEnergy"
+                         return="void"
+                         args="['float']"
+                         vars="['ee']"
+                         qual="">
+void setEcalEnergy(float ee);
+                    <comment>
+        set corrected Ecal energy
+                    </comment>
+                </method1>
+
+                <method1 name="ecalEnergy"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double ecalEnergy() const;
+                    <comment>
+        return corrected Ecal energy
+                    </comment>
+                </method1>
+
+                <method1 name="setHcalEnergy"
+                         return="void"
+                         args="['float']"
+                         vars="['eh']"
+                         qual="">
+void setHcalEnergy(float eh);
+                    <comment>
+        set corrected Hcal energy
+                    </comment>
+                </method1>
+
+                <method1 name="hcalEnergy"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double hcalEnergy() const;
+                    <comment>
+        return corrected Hcal energy
+                    </comment>
+                </method1>
+
+                <method1 name="setRawEcalEnergy"
+                         return="void"
+                         args="['float']"
+                         vars="['ee']"
+                         qual="">
+void setRawEcalEnergy(float ee);
+                    <comment>
+        set corrected Ecal energy
+                    </comment>
+                </method1>
+
+                <method1 name="rawEcalEnergy"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double rawEcalEnergy() const;
+                    <comment>
+        return corrected Ecal energy
+                    </comment>
+                </method1>
+
+                <method1 name="setRawHcalEnergy"
+                         return="void"
+                         args="['float']"
+                         vars="['eh']"
+                         qual="">
+void setRawHcalEnergy(float eh);
+                    <comment>
+        set corrected Hcal energy
+                    </comment>
+                </method1>
+
+                <method1 name="rawHcalEnergy"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double rawHcalEnergy() const;
+                    <comment>
+        return corrected Hcal energy
+                    </comment>
+                </method1>
+
+                <method1 name="setPs1Energy"
+                         return="void"
+                         args="['float']"
+                         vars="['e1']"
+                         qual="">
+void setPs1Energy(float e1);
+                    <comment>
+        set corrected PS1 energy
+                    </comment>
+                </method1>
+
+                <method1 name="pS1Energy"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double pS1Energy() const;
+                    <comment>
+        return corrected PS1 energy
+                    </comment>
+                </method1>
+
+                <method1 name="setPs2Energy"
+                         return="void"
+                         args="['float']"
+                         vars="['e2']"
+                         qual="">
+void setPs2Energy(float e2);
+                    <comment>
+        set corrected PS2 energy
+                    </comment>
+                </method1>
+
+                <method1 name="pS2Energy"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double pS2Energy() const;
+                    <comment>
+        return corrected PS2 energy
+                    </comment>
+                </method1>
+
+                <method1 name="rescaleMomentum"
+                         return="void"
+                         args="['double']"
+                         vars="['rescaleFactor']"
+                         qual="">
+void rescaleMomentum(double rescaleFactor);
+                    <comment>
+        particle momentum *= rescaleFactor
+                    </comment>
+                </method1>
+
+                <enum name="Flags">
+enum Flags {
+
+      NORMAL=0, 
+      E_PHI_SMODULES, 
+      E_ETA_0, 
+      E_ETA_MODULES, 
+      E_BARREL_ENDCAP, 
+      E_PRESHOWER_EDGE, 
+      E_PRESHOWER, 
+      E_ENDCAP_EDGE, 
+      H_ETA_0, 
+      H_BARREL_ENDCAP, 
+      H_ENDCAP_VFCAL, 
+      H_VFCAL_EDGE, 
+      T_TO_NUCLINT, 
+      T_FROM_NUCLINT, 
+      T_FROM_V0, 
+      T_FROM_GAMMACONV, 
+      GAMMA_TO_GAMMACONV
+    };
+                    <field name="NORMAL" value="0"/>
+                    <field name="E_PHI_SMODULES" value=""/>
+                    <field name="E_ETA_0" value=""/>
+                    <field name="E_ETA_MODULES" value=""/>
+                    <field name="E_BARREL_ENDCAP" value=""/>
+                    <field name="E_PRESHOWER_EDGE" value=""/>
+                    <field name="E_PRESHOWER" value=""/>
+                    <field name="E_ENDCAP_EDGE" value=""/>
+                    <field name="H_ETA_0" value=""/>
+                    <field name="H_BARREL_ENDCAP" value=""/>
+                    <field name="H_ENDCAP_VFCAL" value=""/>
+                    <field name="H_VFCAL_EDGE" value=""/>
+                    <field name="T_TO_NUCLINT" value=""/>
+                    <field name="T_FROM_NUCLINT" value=""/>
+                    <field name="T_FROM_V0" value=""/>
+                    <field name="T_FROM_GAMMACONV" value=""/>
+                    <field name="GAMMA_TO_GAMMACONV" value=""/>
+                </enum>
+
+                <method1 name="setFlag"
+                         return="void"
+                         args="['Flags','bool']"
+                         vars="['theFlag','value']"
+                         qual="">
+void setFlag(Flags theFlag, bool value);
+                    <comment>
+        set a given flag
+                    </comment>
+                </method1>
+
+                <method1 name="flag"
+                         return="bool"
+                         args="['Flags']"
+                         vars="['theFlag']"
+                         qual="const">
+bool flag(Flags theFlag) const;
+                    <comment>
+        return a given flag
+                    </comment>
+                </method1>
+
+                <method1 name="setDeltaP"
+                         return="void"
+                         args="['double']"
+                         vars="['dp']"
+                         qual="">
+void setDeltaP(double dp);
+                    <comment>
+        set uncertainty on momentum
+                    </comment>
+                </method1>
+
+                <method1 name="deltaP"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double deltaP() const;
+                    <comment>
+        uncertainty on 3-momentum
+                    </comment>
+                </method1>
+
+                <method1 name="set_mva_e_pi"
+                         return="void"
+                         args="['float']"
+                         vars="['mva']"
+                         qual="">
+void set_mva_e_pi(float mva);
+                    <comment>
+        For neutral particles, it is set to the default value
+                    </comment>
+                </method1>
+
+                <method1 name="mva_e_pi"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float mva_e_pi() const;
+                    <comment>
+        mva for electron-pion discrimination
+                    </comment>
+                </method1>
+
+                <method1 name="set_mva_e_mu"
+                         return="void"
+                         args="['float']"
+                         vars="['mva']"
+                         qual="">
+void set_mva_e_mu(float mva);
+                    <comment>
+        set mva for electron-muon discrimination
+                    </comment>
+                </method1>
+
+                <method1 name="mva_e_mu"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float mva_e_mu() const;
+                    <comment>
+        mva for electron-muon discrimination
+                    </comment>
+                </method1>
+
+                <method1 name="set_mva_pi_mu"
+                         return="void"
+                         args="['float']"
+                         vars="['mva']"
+                         qual="">
+void set_mva_pi_mu(float mva);
+                    <comment>
+        set mva for pi-muon discrimination
+                    </comment>
+                </method1>
+
+                <method1 name="mva_pi_mu"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float mva_pi_mu() const;
+                    <comment>
+        mva for pi-muon discrimination
+                    </comment>
+                </method1>
+
+                <method1 name="set_mva_nothing_gamma"
+                         return="void"
+                         args="['float']"
+                         vars="['mva']"
+                         qual="">
+void set_mva_nothing_gamma(float mva);
+                    <comment>
+        set mva for gamma detection
+                    </comment>
+                </method1>
+
+                <method1 name="mva_nothing_gamma"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float mva_nothing_gamma() const;
+                    <comment>
+        mva for gamma detection
+                    </comment>
+                </method1>
+
+                <method1 name="set_mva_nothing_nh"
+                         return="void"
+                         args="['float']"
+                         vars="['mva']"
+                         qual="">
+void set_mva_nothing_nh(float mva);
+                    <comment>
+        set mva for neutral hadron detection
+                    </comment>
+                </method1>
+
+                <method1 name="mva_nothing_nh"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float mva_nothing_nh() const;
+                    <comment>
+        mva for neutral hadron detection
+                    </comment>
+                </method1>
+
+                <method1 name="set_mva_gamma_nh"
+                         return="void"
+                         args="['float']"
+                         vars="['mva']"
+                         qual="">
+void set_mva_gamma_nh(float mva);
+                    <comment>
+        set mva for neutral hadron - gamma discrimination
+                    </comment>
+                </method1>
+
+                <method1 name="mva_gamma_nh"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float mva_gamma_nh() const;
+                    <comment>
+        mva for neutral hadron - gamma discrimination
+                    </comment>
+                </method1>
+
+                <method1 name="setPositionAtECALEntrance"
+                         return="void"
+                         args="['const math::XYZPointF&amp;']"
+                         vars="['pos']"
+                         qual="">
+void setPositionAtECALEntrance(const math::XYZPointF&amp; pos);
+                    <comment>
+        set position at ECAL entrance
+                    </comment>
+                </method1>
+
+                <method1 name="positionAtECALEntrance"
+                         return="const math::XYZPointF&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const math::XYZPointF&amp; positionAtECALEntrance() const;
+                    <comment>
+        \return position at ECAL entrance
+                    </comment>
+                </method1>
+
+                <method1 name="particleId"
+                         return="virtual ParticleType"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual ParticleType particleId() const;
+                    <comment>
+        \todo use Particle::pdgId_ and remove this data member
+                    </comment>
+                </method1>
+
+                <typedef name="ElementInBlock"
+                         value="std::pair&lt;reco::PFBlockRef, unsigned&gt;">
+typedef std::pair&lt;reco::PFBlockRef, unsigned&gt; ElementInBlock;
+                    <comment>
+        return elements in blocks
+                    </comment>
+                </typedef>
+
+                <typedef name="ElementsInBlocks"
+                         value="std::vector&lt;ElementInBlock &gt;">
+typedef std::vector&lt;ElementInBlock &gt; ElementsInBlocks;
+                </typedef>
+
+                <method1 name="elementsInBlocks"
+                         return="const ElementsInBlocks&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const ElementsInBlocks&amp; elementsInBlocks() const;
+                </method1>
+
+                <constant name="bigMva_"
+                          type="static const float"
+                          value=""/>
+                <operator name="operator&lt;&lt;"
+                          return="friend std::ostream&amp;"
+                          args="['std::ostream&amp;','const PFCandidate&amp;']"
+                          vars="['out','c']"
+                          qual="">
+friend std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, const PFCandidate&amp; c);
+                </operator>
+
+            </section>
+
+            <typemap name="E_BARREL_ENDCAP"
+                     value="reco::PFCandidate::E_BARREL_ENDCAP"
+                     type="enum"/>
+            <typemap name="E_ENDCAP_EDGE"
+                     value="reco::PFCandidate::E_ENDCAP_EDGE"
+                     type="enum"/>
+            <typemap name="E_ETA_0"
+                     value="reco::PFCandidate::E_ETA_0"
+                     type="enum"/>
+            <typemap name="E_ETA_MODULES"
+                     value="reco::PFCandidate::E_ETA_MODULES"
+                     type="enum"/>
+            <typemap name="E_PHI_SMODULES"
+                     value="reco::PFCandidate::E_PHI_SMODULES"
+                     type="enum"/>
+            <typemap name="E_PRESHOWER"
+                     value="reco::PFCandidate::E_PRESHOWER"
+                     type="enum"/>
+            <typemap name="E_PRESHOWER_EDGE"
+                     value="reco::PFCandidate::E_PRESHOWER_EDGE"
+                     type="enum"/>
+            <typemap name="ElementInBlock"
+                     value="std::pair&lt;reco::PFBlockRef, unsigned&gt;"
+                     type="typedef"/>
+            <typemap name="ElementsInBlocks"
+                     value="std::vector&lt;std::pair&lt;reco::PFBlockRef, unsigned&gt; &gt;"
+                     type="typedef"/>
+            <typemap name="Flags"
+                     value="reco::PFCandidate::Flags"
+                     type="enum"/>
+            <typemap name="GAMMA_TO_GAMMACONV"
+                     value="reco::PFCandidate::GAMMA_TO_GAMMACONV"
+                     type="enum"/>
+            <typemap name="H_BARREL_ENDCAP"
+                     value="reco::PFCandidate::H_BARREL_ENDCAP"
+                     type="enum"/>
+            <typemap name="H_ENDCAP_VFCAL"
+                     value="reco::PFCandidate::H_ENDCAP_VFCAL"
+                     type="enum"/>
+            <typemap name="H_ETA_0"
+                     value="reco::PFCandidate::H_ETA_0"
+                     type="enum"/>
+            <typemap name="H_VFCAL_EDGE"
+                     value="reco::PFCandidate::H_VFCAL_EDGE"
+                     type="enum"/>
+            <typemap name="NORMAL"
+                     value="reco::PFCandidate::NORMAL"
+                     type="enum"/>
+            <typemap name="ParticleType"
+                     value="reco::PFCandidate::ParticleType"
+                     type="enum"/>
+            <typemap name="T_FROM_GAMMACONV"
+                     value="reco::PFCandidate::T_FROM_GAMMACONV"
+                     type="enum"/>
+            <typemap name="T_FROM_NUCLINT"
+                     value="reco::PFCandidate::T_FROM_NUCLINT"
+                     type="enum"/>
+            <typemap name="T_FROM_V0"
+                     value="reco::PFCandidate::T_FROM_V0"
+                     type="enum"/>
+            <typemap name="T_TO_NUCLINT"
+                     value="reco::PFCandidate::T_TO_NUCLINT"
+                     type="enum"/>
+            <typemap name="X"
+                     value="reco::PFCandidate::X"
+                     type="enum"/>
+            <typemap name="e"
+                     value="reco::PFCandidate::e"
+                     type="enum"/>
+            <typemap name="egamma_HF"
+                     value="reco::PFCandidate::egamma_HF"
+                     type="enum"/>
+            <typemap name="gamma"
+                     value="reco::PFCandidate::gamma"
+                     type="enum"/>
+            <typemap name="h"
+                     value="reco::PFCandidate::h"
+                     type="enum"/>
+            <typemap name="h0"
+                     value="reco::PFCandidate::h0"
+                     type="enum"/>
+            <typemap name="h_HF"
+                     value="reco::PFCandidate::h_HF"
+                     type="enum"/>
+            <typemap name="mu"
+                     value="reco::PFCandidate::mu"
+                     type="enum"/>
+
+        </class>
+
+        <class name="PFParticleIdTag"
+               fullname="reco::PFParticleIdTag"
+               module="DataFormats.ParticleFlowCandidate"
+               project=""
+               type="regular struct">
+            <comment>
+      particle ID component tag
+            </comment>
+
+
+        </class>
+
+        <class name="component&lt;PFCandidate::ParticleType, componenthelper::SingleComponentTag, PFParticleIdTag&gt;"
+               fullname="reco::component&lt;PFCandidate::ParticleType, componenthelper::SingleComponentTag, PFParticleIdTag&gt;"
+               module="DataFormats.ParticleFlowCandidate"
+               project=""
+               type="specialized template struct"
+               template="template&lt;&gt;">
+            <comment>
+      as: pfcand-&gt;get&lt;int, PFParticleIdTag&gt;();
+            </comment>
+
+            <section>
+                <typedef name="type"
+                         value="componenthelper::SingleComponent&lt;PFCandidate, PFCandidate::ParticleType, &amp; PFCandidate::particleId&gt;">
+typedef componenthelper::SingleComponent&lt;PFCandidate, PFCandidate::ParticleType, &amp; PFCandidate::particleId&gt; type;
+                </typedef>
+
+            </section>
+
+            <typemap name="type"
+                     value="componenthelper::SingleComponent&lt;PFCandidate, PFCandidate::ParticleType, &amp; PFCandidate::particleId&gt;"
+                     type="typedef"/>
+
+        </class>
+    </namespace>
+
+    <type name="CandidatePtr"/>
+    <type name="Charge"/>
+    <type name="CompositeCandidate"/>
+    <type name="Flags"/>
+    <type name="PFCandidate*"/>
+    <type name="ParticleType"/>
+    <type name="bool"/>
+    <type name="const ElementsInBlocks&amp;"/>
+    <type name="const LorentzVector&amp;"/>
+    <type name="const PFCandidate&amp;"/>
+    <type name="const PFCandidatePtr&amp;"/>
+    <type name="const math::XYZPointF&amp;"/>
+    <type name="const reco::ConversionRef&amp;"/>
+    <type name="const reco::GsfTrackRef&amp;"/>
+    <type name="const reco::MuonRef&amp;"/>
+    <type name="const reco::NuclearInteractionRef&amp;"/>
+    <type name="const reco::PFBlockRef&amp;"/>
+    <type name="const reco::TrackRef&amp;"/>
+    <type name="double"/>
+    <type name="enum Flags"/>
+    <type name="enum ParticleType"/>
+    <type name="float"/>
+    <type name="int"/>
+    <type name="reco::ConversionRef"/>
+    <type name="reco::GsfTrackRef"/>
+    <type name="reco::MuonRef"/>
+    <type name="reco::NuclearInteractionRef"/>
+    <type name="reco::PFCandidate"/>
+    <type name="reco::PFParticleIdTag"/>
+    <type name="reco::TrackRef"/>
+    <type name="reco::component&lt;PFCandidate::ParticleType, componenthelper::SingleComponentTag, PFParticleIdTag&gt;"/>
+    <type name="size_t"/>
+    <type name="size_type"/>
+    <type name="std::ostream&amp;"/>
+    <type name="unsigned"/>
+    <type name="void"/>
+</header>

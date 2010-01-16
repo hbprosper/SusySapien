@@ -1,0 +1,346 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: RefToBaseVector.xml
+  Created:  Thu Jan 14 22:46:23 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Common/interface/RefToBaseVector.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/RefToBaseVector.h">
+
+    <include name="&quot;DataFormats/Provenance/interface/ProductID.h&quot;"/>
+    <include name="&quot;boost/shared_ptr.hpp&quot;"/>
+    <include name="&lt;vector&gt;"/>
+
+    <namespace name="edm">
+        <forward name="template&lt;typename T&gt; RefToBase"/>
+        <forward name="template&lt;typename T&gt; View"/>
+        <forward name="template&lt;typename C&gt; Handle"/>
+        <forward name="EDProductGetter"/>
+
+        <namespace name="reftobase">
+            <forward name="template&lt;typename T&gt; BaseVectorHolder"/>
+            <forward name="RefVectorHolderBase"/>
+        </namespace>
+
+        <class name="RefToBaseVector"
+               fullname="edm::RefToBaseVector&lt;T&gt;"
+               module="DataFormats.Common"
+               project=""
+               type="template"
+               template="template&lt;class T&gt;">
+
+            <section name="public">
+                <typedef name="value_type"
+                         value="RefToBase&lt;T&gt;">
+typedef RefToBase&lt;T&gt; value_type;
+                </typedef>
+
+                <typedef name="member_type"
+                         value="T">
+typedef T member_type;
+                </typedef>
+
+                <typedef name="holder_type"
+                         value="reftobase::BaseVectorHolder&lt;T&gt;">
+typedef reftobase::BaseVectorHolder&lt;T&gt; holder_type;
+                </typedef>
+
+                <typedef name="size_type"
+                         value="typename holder_type::size_type">
+typedef typename holder_type::size_type size_type;
+                </typedef>
+
+                <typedef name="const_iterator"
+                         value="typename holder_type::const_iterator">
+typedef typename holder_type::const_iterator const_iterator;
+                </typedef>
+
+                <constructor name="RefToBaseVector"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+RefToBaseVector();
+                </constructor>
+
+                <copyconstructor name="RefToBaseVector"
+                                 return=""
+                                 args="['RefToBaseVector const&amp;']"
+                                 vars="['']"
+                                 qual="">
+RefToBaseVector(RefToBaseVector const&amp;);
+                </copyconstructor>
+
+                <method2 name="RefToBaseVector"
+                         return="template&lt;class REFV&gt; explicit"
+                         args="['REFV const&amp;']"
+                         vars="['']"
+                         qual="">
+template&lt;class REFV&gt;     explicit RefToBaseVector(REFV const&amp;);
+                </method2>
+
+                <method2 name="RefToBaseVector"
+                         return="template&lt;typename C&gt; explicit"
+                         args="['Handle&lt;C&gt; const&amp;']"
+                         vars="['']"
+                         qual="">
+template&lt;typename C&gt;     explicit RefToBaseVector(Handle&lt;C&gt; const&amp;);
+                </method2>
+
+                <method2 name="RefToBaseVector"
+                         return="template&lt;typename T1&gt; explicit"
+                         args="['Handle&lt;View&lt;T1&gt; &gt; const&amp;']"
+                         vars="['']"
+                         qual="">
+template&lt;typename T1&gt;     explicit RefToBaseVector(Handle&lt;View&lt;T1&gt; &gt; const&amp;);
+                </method2>
+
+                <constructor name="RefToBaseVector"
+                             return=""
+                             args="['boost::shared_ptr&lt;reftobase::RefVectorHolderBase&gt;']"
+                             vars="['p']"
+                             qual="">
+RefToBaseVector(boost::shared_ptr&lt;reftobase::RefVectorHolderBase&gt; p);
+                </constructor>
+
+                <operator name="operator="
+                          return="RefToBaseVector&amp;"
+                          args="['RefToBaseVector const&amp;']"
+                          vars="['iRHS']"
+                          qual="">
+RefToBaseVector&amp; operator=(RefToBaseVector const&amp; iRHS);
+                </operator>
+
+                <method1 name="swap"
+                         return="void"
+                         args="['RefToBaseVector&amp;']"
+                         vars="['other']"
+                         qual="">
+void swap(RefToBaseVector&amp; other);
+                </method1>
+
+                <destructor name="~RefToBaseVector"
+                            return=""
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+~RefToBaseVector();
+                </destructor>
+
+                <method1 name="clear"
+                         return="void"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+void clear();
+                    <comment>
+      void reserve(size_type n);
+                    </comment>
+                </method1>
+
+                <method1 name="at"
+                         return="value_type"
+                         args="['size_type']"
+                         vars="['idx']"
+                         qual="const">
+value_type at(size_type idx) const;
+                </method1>
+
+                <operator name="operator[]"
+                          return="value_type"
+                          args="['size_type']"
+                          vars="['idx']"
+                          qual="const">
+value_type operator[](size_type idx) const;
+                </operator>
+
+                <method1 name="isValid"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isValid() const;
+                </method1>
+
+                <method1 name="isInvalid"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isInvalid() const;
+                </method1>
+
+                <method1 name="empty"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool empty() const;
+                </method1>
+
+                <method1 name="size"
+                         return="size_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+size_type size() const;
+                </method1>
+
+                <method1 name="id"
+                         return="ProductID"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+ProductID id() const;
+                    <comment>
+      size_type capacity() const;
+                    </comment>
+                </method1>
+
+                <method1 name="productGetter"
+                         return="EDProductGetter const*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+EDProductGetter const* productGetter() const;
+                </method1>
+
+                <method1 name="begin"
+                         return="const_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const_iterator begin() const;
+                </method1>
+
+                <method1 name="end"
+                         return="const_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const_iterator end() const;
+                </method1>
+
+                <method2 name="push_back"
+                         return="void"
+                         args="['const RefToBase&lt;T&gt;&amp;']"
+                         vars="['']"
+                         qual="">
+void push_back(const RefToBase&lt;T&gt;&amp;);
+                </method2>
+
+                <method2 name="fillView"
+                         return="void"
+                         args="['std::vector&lt;void const*&gt;&amp;']"
+                         vars="['pointers']"
+                         qual="const">
+void fillView(std::vector&lt;void const*&gt;&amp; pointers) const;
+                </method2>
+
+                <method2 name="vectorHolder"
+                         return="std::auto_ptr&lt;reftobase::RefVectorHolderBase&gt;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+std::auto_ptr&lt;reftobase::RefVectorHolderBase&gt; vectorHolder() const;
+                </method2>
+
+                <method1 name="product"
+                         return="const void*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const void* product() const;
+                </method1>
+
+                <method1 name="isAvailable"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isAvailable() const;
+                    <comment>
+        in the Event. No type checking is done.
+                    </comment>
+                </method1>
+
+            </section>
+
+            <typemap name="const_iterator"
+                     value="typename reftobase::BaseVectorHolder&lt;T&gt;::const_iterator"
+                     type="typedef"/>
+            <typemap name="holder_type"
+                     value="reftobase::BaseVectorHolder&lt;T&gt;"
+                     type="typedef"/>
+            <typemap name="member_type"
+                     value="T"
+                     type="typedef"/>
+            <typemap name="size_type"
+                     value="typename reftobase::BaseVectorHolder&lt;T&gt;::size_type"
+                     type="typedef"/>
+            <typemap name="value_type"
+                     value="RefToBase&lt;T&gt;"
+                     type="typedef"/>
+
+        </class>
+    </namespace>
+    <include name="&quot;DataFormats/Common/interface/RefToBase.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/VectorHolder.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/IndirectVectorHolder.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVectorHolder.h&quot;"/>
+    <include name="&quot;FWCore/Utilities/interface/EDMException.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/traits.h&quot;"/>
+
+    <namespace name="edm">
+
+        <class name="has_fillView&lt;RefToBaseVector&lt;T&gt; &gt;"
+               fullname="edm::has_fillView&lt;RefToBaseVector&lt;T&gt; &gt;"
+               module="DataFormats.Common"
+               project=""
+               type="specialized template struct"
+               template="template&lt;typename T&gt;">
+
+            <section>
+                <member>
+static bool const value=true;
+                </member>
+
+            </section>
+
+            <typemap name="true"
+                     value="edm::has_fillView&lt;RefToBaseVector&lt;T&gt; &gt;::true"
+                     type="member"/>
+
+        </class>
+    </namespace>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/Handle.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/View.h&quot;"/>
+
+    <namespace name="edm">
+    </namespace>
+
+    <type name="EDProductGetter const*"/>
+    <type name="Handle&lt;C&gt; const&amp;"/>
+    <type name="Handle&lt;View&lt;T1&gt; &gt; const&amp;"/>
+    <type name="ProductID"/>
+    <type name="RefToBaseVector const&amp;"/>
+    <type name="RefToBaseVector&amp;"/>
+    <type name="bool"/>
+    <type name="bool const value"/>
+    <type name="boost::shared_ptr&lt;reftobase::RefVectorHolderBase&gt;"/>
+    <type name="const RefToBase&lt;T&gt;&amp;"/>
+    <type name="const void*"/>
+    <type name="const_iterator"/>
+    <type name="edm::RefToBaseVector&lt;T&gt;"/>
+    <type name="edm::has_fillView&lt;RefToBaseVector&lt;T&gt; &gt;"/>
+    <type name="size_type"/>
+    <type name="std::auto_ptr&lt;reftobase::RefVectorHolderBase&gt;"/>
+    <type name="std::vector&lt;void const*&gt;&amp;"/>
+    <type name="template&lt;class REFV&gt; explicit"/>
+    <type name="template&lt;typename C&gt; explicit"/>
+    <type name="template&lt;typename T1&gt; explicit"/>
+    <type name="value_type"/>
+    <type name="void"/>
+</header>

@@ -1,0 +1,218 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: PtrVectorBase.xml
+  Created:  Thu Jan 14 22:46:15 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Common/interface/PtrVectorBase.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/PtrVectorBase.h">
+
+    <include name="&lt;vector&gt;"/>
+    <include name="&lt;typeinfo&gt;"/>
+    <include name="&quot;DataFormats/Common/interface/RefCore.h&quot;"/>
+
+    <namespace name="edm">
+        <comment>
+   forward declarations
+        </comment>
+
+        <class name="PtrVectorBase"
+               fullname="edm::PtrVectorBase"
+               module="DataFormats.Common"
+               project=""
+               type="abstract regular protecteddefctor">
+
+            <section name="public">
+                <typedef name="key_type"
+                         value="unsigned long">
+typedef unsigned long key_type;
+                </typedef>
+
+                <typedef name="size_type"
+                         value="key_type">
+typedef key_type size_type;
+                </typedef>
+
+                <destructor name="~PtrVectorBase"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~PtrVectorBase();
+                </destructor>
+
+                <method1 name="isNull"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isNull() const;
+                    <comment>
+        Checks for null
+                    </comment>
+                </method1>
+
+                <method1 name="isNonnull"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isNonnull() const;
+                    <comment>
+      bool isNonnull() const {return id().isValid(); }
+                    </comment>
+                </method1>
+
+                <operator name="operator!"
+                          return="bool"
+                          args="['void']"
+                          vars="['']"
+                          qual="const">
+bool operator!() const;
+                    <comment>
+        Checks for null
+                    </comment>
+                </operator>
+
+                <method1 name="id"
+                         return="ProductID"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+ProductID id() const;
+                    <comment>
+        Accessor for product ID.
+                    </comment>
+                </method1>
+
+                <method1 name="productGetter"
+                         return="EDProductGetter const*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+EDProductGetter const* productGetter() const;
+                    <comment>
+        Accessor for product getter.
+                    </comment>
+                </method1>
+
+                <method1 name="hasCache"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool hasCache() const;
+                </method1>
+
+                <method1 name="isAvailable"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isAvailable() const;
+                    <comment>
+        No type checking is done.
+                    </comment>
+                </method1>
+
+                <method1 name="empty"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool empty() const;
+                    <comment>
+        Is the RefVector empty
+                    </comment>
+                </method1>
+
+                <method1 name="size"
+                         return="size_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+size_type size() const;
+                    <comment>
+        Size of the RefVector
+                    </comment>
+                </method1>
+
+                <method1 name="capacity"
+                         return="size_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+size_type capacity() const;
+                    <comment>
+        Capacity of the RefVector
+                    </comment>
+                </method1>
+
+                <method1 name="clear"
+                         return="void"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+void clear();
+                    <comment>
+        Clear the PtrVector
+                    </comment>
+                </method1>
+
+                <operator name="operator=="
+                          return="bool"
+                          args="['PtrVectorBase const&amp;']"
+                          vars="['iRHS']"
+                          qual="const">
+bool operator==(PtrVectorBase const&amp; iRHS) const;
+                </operator>
+
+                <method1 name="reserve"
+                         return="void"
+                         args="['size_type']"
+                         vars="['n']"
+                         qual="">
+void reserve(size_type n);
+                    <comment>
+        Reserve space for RefVector
+                    </comment>
+                </method1>
+
+                <method1 name="setProductGetter"
+                         return="void"
+                         args="['EDProductGetter*']"
+                         vars="['iGetter']"
+                         qual="const">
+void setProductGetter(EDProductGetter* iGetter) const;
+                </method1>
+
+                <method1 name="isTransient"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isTransient() const;
+                </method1>
+
+            </section>
+
+            <typemap name="key_type"
+                     value="unsigned long"
+                     type="typedef"/>
+            <typemap name="size_type"
+                     value="unsigned long"
+                     type="typedef"/>
+
+        </class>
+    </namespace>
+
+    <type name="EDProductGetter const*"/>
+    <type name="EDProductGetter*"/>
+    <type name="ProductID"/>
+    <type name="PtrVectorBase const&amp;"/>
+    <type name="bool"/>
+    <type name="edm::PtrVectorBase"/>
+    <type name="size_type"/>
+    <type name="void"/>
+</header>

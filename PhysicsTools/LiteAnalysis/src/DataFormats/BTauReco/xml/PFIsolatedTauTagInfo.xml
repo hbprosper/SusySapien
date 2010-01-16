@@ -1,0 +1,533 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: PFIsolatedTauTagInfo.xml
+  Created:  Thu Jan 14 22:45:40 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/BTauReco/interface/PFIsolatedTauTagInfo.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/BTauReco/interface/PFIsolatedTauTagInfo.h">
+
+    <include name="&lt;math.h&gt;"/>
+    <include name="&quot;DataFormats/BTauReco/interface/RefMacros.h&quot;"/>
+    <include name="&quot;Math/GenVector/PxPyPzE4D.h&quot;"/>
+    <include name="&quot;DataFormats/ParticleFlowCandidate/interface/PFCandidate.h&quot;"/>
+    <include name="&quot;DataFormats/ParticleFlowCandidate/interface/PFCandidateFwd.h&quot;"/>
+    <include name="&quot;DataFormats/JetReco/interface/PFJetCollection.h&quot;"/>
+    <include name="&quot;DataFormats/BTauReco/interface/BaseTagInfo.h&quot;"/>
+    <constant name="PFChargedHadrCand_codenumber"
+              type="const int"
+              value="1"/>
+    <constant name="PFNeutrHadrCand_codenumber"
+              type="const int"
+              value="5"/>
+    <constant name="PFGammaCand_codenumber"
+              type="const int"
+              value="4"/>
+    <constant name="PFRecTrack_codenumber"
+              type="const int"
+              value="1"/>
+    <constant name="PFRecECALClus_codenumber"
+              type="const int"
+              value="4"/>
+    <constant name="PFRecHCALClus_codenumber"
+              type="const int"
+              value="5"/>
+
+    <namespace name="reco">
+
+        <class name="PFIsolatedTauTagInfo"
+               fullname="reco::PFIsolatedTauTagInfo"
+               module="DataFormats.BTauReco"
+               project=""
+               type="regular">
+            <baseclass name="public BaseTagInfo"/>
+
+            <section name="public">
+                <constructor name="PFIsolatedTauTagInfo"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+PFIsolatedTauTagInfo();
+                </constructor>
+
+                <constructor name="PFIsolatedTauTagInfo"
+                             return=""
+                             args="['PFCandidateRefVector']"
+                             vars="['PFCands']"
+                             qual="">
+PFIsolatedTauTagInfo(PFCandidateRefVector PFCands);
+                </constructor>
+
+                <destructor name="~PFIsolatedTauTagInfo"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~PFIsolatedTauTagInfo();
+                </destructor>
+
+                <method1 name="clone"
+                         return="virtual PFIsolatedTauTagInfo*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual PFIsolatedTauTagInfo* clone() const;
+                </method1>
+
+                <method1 name="PFCands"
+                         return="const PFCandidateRefVector&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const PFCandidateRefVector&amp; PFCands() const;
+                    <comment>
+      get the PFCandidates's which compose the PF jet and may be have been filtered by filterPFChargedHadrCands(.,.,.,.,.,.), filterPFNeutrHadrCands(.), filterPFGammaCands(.) member functions
+                    </comment>
+                </method1>
+
+                <method1 name="PFChargedHadrCands"
+                         return="const PFCandidateRefVector&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const PFCandidateRefVector&amp; PFChargedHadrCands() const;
+                </method1>
+
+                <method1 name="PFNeutrHadrCands"
+                         return="const PFCandidateRefVector&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const PFCandidateRefVector&amp; PFNeutrHadrCands() const;
+                </method1>
+
+                <method1 name="PFGammaCands"
+                         return="const PFCandidateRefVector&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const PFCandidateRefVector&amp; PFGammaCands() const;
+                </method1>
+
+                <method1 name="alternatLorentzVect"
+                         return="math::XYZTLorentzVector"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+math::XYZTLorentzVector alternatLorentzVect() const;
+                    <comment>
+       rec. jet Lorentz-vector combining charged hadr. PFCandidate's and gamma PFCandidate's
+                    </comment>
+                </method1>
+
+                <method1 name="setalternatLorentzVect"
+                         return="void"
+                         args="['math::XYZTLorentzVector']"
+                         vars="['x']"
+                         qual="">
+void setalternatLorentzVect(math::XYZTLorentzVector x);
+                </method1>
+
+                <method1 name="pfjetRef"
+                         return="const PFJetRef&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const PFJetRef&amp; pfjetRef() const;
+                    <comment>
+      the reference to the PFJet
+                    </comment>
+                </method1>
+
+                <method1 name="setpfjetRef"
+                         return="void"
+                         args="['const PFJetRef']"
+                         vars="['x']"
+                         qual="">
+void setpfjetRef(const PFJetRef x);
+                </method1>
+
+                <method1 name="passedtrackerisolation"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool passedtrackerisolation() const;
+                    <comment>
+       true if a lead. PFCandidate exists and no charged hadron PFCandidate was found in an DR isolation ring around it (DR isolation ring limits defined in the RecoTauTag/PFConeIsolation/data/pfConeIsolation.cfi file
+                    </comment>
+                </method1>
+
+                <method1 name="setpassedtrackerisolation"
+                         return="void"
+                         args="['bool']"
+                         vars="['x']"
+                         qual="">
+void setpassedtrackerisolation(bool x);
+                </method1>
+
+                <method1 name="passedECALisolation"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool passedECALisolation() const;
+                    <comment>
+       true if a lead. PFCandidate exists and no gamma PFCandidate was found in an DR isolation ring around it (DR isolation ring limits defined in the RecoTauTag/PFConeIsolation/data/pfConeIsolation.cfi file
+                    </comment>
+                </method1>
+
+                <method1 name="setpassedECALisolation"
+                         return="void"
+                         args="['bool']"
+                         vars="['x']"
+                         qual="">
+void setpassedECALisolation(bool x);
+                </method1>
+
+                <method1 name="discriminatorByIsolPFCandsN"
+                         return="double"
+                         args="['float','float','float','bool','float','float','int=0']"
+                         vars="['matchingcone_size','signalcone_size','isolcone_size','useOnlyChargedHadrforleadPFCand','minPt_leadPFCand','minPt_PFCand','IsolPFCands_maxN']"
+                         qual="const">
+double discriminatorByIsolPFCandsN(float matchingcone_size, float signalcone_size, float isolcone_size, bool useOnlyChargedHadrforleadPFCand, float minPt_leadPFCand, float minPt_PFCand, int IsolPFCands_maxN=0) const;
+                    <comment>
+      methods to be used to recompute the isolation with a new set of parameters
+                    </comment>
+                </method1>
+
+                <method1 name="discriminatorByIsolPFCandsN"
+                         return="double"
+                         args="['math::XYZVector','float','float','float','bool','float','float','int=0']"
+                         vars="['myVector','matchingcone_size','signalcone_size','isolcone_size','useOnlyChargedHadrforleadPFCand','minPt_leadPFCand','minPt_PFCand','IsolPFCands_maxN']"
+                         qual="const">
+double discriminatorByIsolPFCandsN(math::XYZVector myVector, float matchingcone_size, float signalcone_size, float isolcone_size, bool useOnlyChargedHadrforleadPFCand, float minPt_leadPFCand, float minPt_PFCand, int IsolPFCands_maxN=0) const;
+                </method1>
+
+                <method1 name="discriminatorByIsolPFChargedHadrCandsN"
+                         return="double"
+                         args="['float','float','float','bool','float','float','int=0']"
+                         vars="['matchingcone_size','signalcone_size','isolcone_size','useOnlyChargedHadrforleadPFCand','minPt_leadPFCand','minPt_PFCand','IsolPFCands_maxN']"
+                         qual="const">
+double discriminatorByIsolPFChargedHadrCandsN(float matchingcone_size, float signalcone_size, float isolcone_size, bool useOnlyChargedHadrforleadPFCand, float minPt_leadPFCand, float minPt_PFCand, int IsolPFCands_maxN=0) const;
+                </method1>
+
+                <method1 name="discriminatorByIsolPFChargedHadrCandsN"
+                         return="double"
+                         args="['math::XYZVector','float','float','float','bool','float','float','int=0']"
+                         vars="['myVector','matchingcone_size','signalcone_size','isolcone_size','useOnlyChargedHadrforleadPFCand','minPt_leadPFCand','minPt_PFCand','IsolPFCands_maxN']"
+                         qual="const">
+double discriminatorByIsolPFChargedHadrCandsN(math::XYZVector myVector, float matchingcone_size, float signalcone_size, float isolcone_size, bool useOnlyChargedHadrforleadPFCand, float minPt_leadPFCand, float minPt_PFCand, int IsolPFCands_maxN=0) const;
+                </method1>
+
+                <method1 name="discriminatorByIsolPFNeutrHadrCandsN"
+                         return="double"
+                         args="['float','float','float','bool','float','float','int=0']"
+                         vars="['matchingcone_size','signalcone_size','isolcone_size','useOnlyChargedHadrforleadPFCand','minPt_leadPFCand','minPt_PFCand','IsolPFCands_maxN']"
+                         qual="const">
+double discriminatorByIsolPFNeutrHadrCandsN(float matchingcone_size, float signalcone_size, float isolcone_size, bool useOnlyChargedHadrforleadPFCand, float minPt_leadPFCand, float minPt_PFCand, int IsolPFCands_maxN=0) const;
+                </method1>
+
+                <method1 name="discriminatorByIsolPFNeutrHadrCandsN"
+                         return="double"
+                         args="['math::XYZVector','float','float','float','bool','float','float','int=0']"
+                         vars="['myVector','matchingcone_size','signalcone_size','isolcone_size','useOnlyChargedHadrforleadPFCand','minPt_leadPFCand','minPt_PFCand','IsolPFCands_maxN']"
+                         qual="const">
+double discriminatorByIsolPFNeutrHadrCandsN(math::XYZVector myVector, float matchingcone_size, float signalcone_size, float isolcone_size, bool useOnlyChargedHadrforleadPFCand, float minPt_leadPFCand, float minPt_PFCand, int IsolPFCands_maxN=0) const;
+                </method1>
+
+                <method1 name="discriminatorByIsolPFGammaCandsN"
+                         return="double"
+                         args="['float','float','float','bool','float','float','int=0']"
+                         vars="['matchingcone_size','signalcone_size','isolcone_size','useOnlyChargedHadrforleadPFCand','minPt_leadPFCand','minPt_PFCand','IsolPFCands_maxN']"
+                         qual="const">
+double discriminatorByIsolPFGammaCandsN(float matchingcone_size, float signalcone_size, float isolcone_size, bool useOnlyChargedHadrforleadPFCand, float minPt_leadPFCand, float minPt_PFCand, int IsolPFCands_maxN=0) const;
+                </method1>
+
+                <method1 name="discriminatorByIsolPFGammaCandsN"
+                         return="double"
+                         args="['math::XYZVector','float','float','float','bool','float','float','int=0']"
+                         vars="['myVector','matchingcone_size','signalcone_size','isolcone_size','useOnlyChargedHadrforleadPFCand','minPt_leadPFCand','minPt_PFCand','IsolPFCands_maxN']"
+                         qual="const">
+double discriminatorByIsolPFGammaCandsN(math::XYZVector myVector, float matchingcone_size, float signalcone_size, float isolcone_size, bool useOnlyChargedHadrforleadPFCand, float minPt_leadPFCand, float minPt_PFCand, int IsolPFCands_maxN=0) const;
+                </method1>
+
+                <method1 name="discriminatorByIsolPFCandsEtSum"
+                         return="double"
+                         args="['float','float','float','bool','float','float','float=0']"
+                         vars="['matchingcone_size','signalcone_size','isolcone_size','useOnlyChargedHadrforleadPFCand','minPt_leadPFCand','minPt_PFCand','IsolPFCands_maxEtSum']"
+                         qual="const">
+double discriminatorByIsolPFCandsEtSum(float matchingcone_size, float signalcone_size, float isolcone_size, bool useOnlyChargedHadrforleadPFCand, float minPt_leadPFCand, float minPt_PFCand, float IsolPFCands_maxEtSum=0) const;
+                </method1>
+
+                <method1 name="discriminatorByIsolPFCandsEtSum"
+                         return="double"
+                         args="['math::XYZVector','float','float','float','bool','float','float','float=0']"
+                         vars="['myVector','matchingcone_size','signalcone_size','isolcone_size','useOnlyChargedHadrforleadPFCand','minPt_leadPFCand','minPt_PFCand','IsolPFCands_maxEtSum']"
+                         qual="const">
+double discriminatorByIsolPFCandsEtSum(math::XYZVector myVector, float matchingcone_size, float signalcone_size, float isolcone_size, bool useOnlyChargedHadrforleadPFCand, float minPt_leadPFCand, float minPt_PFCand, float IsolPFCands_maxEtSum=0) const;
+                </method1>
+
+                <method1 name="discriminatorByIsolPFChargedHadrCandsEtSum"
+                         return="double"
+                         args="['float','float','float','bool','float','float','float=0']"
+                         vars="['matchingcone_size','signalcone_size','isolcone_size','useOnlyChargedHadrforleadPFCand','minPt_leadPFCand','minPt_PFCand','IsolPFCands_maxEtSum']"
+                         qual="const">
+double discriminatorByIsolPFChargedHadrCandsEtSum(float matchingcone_size, float signalcone_size, float isolcone_size, bool useOnlyChargedHadrforleadPFCand, float minPt_leadPFCand, float minPt_PFCand, float IsolPFCands_maxEtSum=0) const;
+                </method1>
+
+                <method1 name="discriminatorByIsolPFChargedHadrCandsEtSum"
+                         return="double"
+                         args="['math::XYZVector','float','float','float','bool','float','float','float=0']"
+                         vars="['myVector','matchingcone_size','signalcone_size','isolcone_size','useOnlyChargedHadrforleadPFCand','minPt_leadPFCand','minPt_PFCand','IsolPFCands_maxEtSum']"
+                         qual="const">
+double discriminatorByIsolPFChargedHadrCandsEtSum(math::XYZVector myVector, float matchingcone_size, float signalcone_size, float isolcone_size, bool useOnlyChargedHadrforleadPFCand, float minPt_leadPFCand, float minPt_PFCand, float IsolPFCands_maxEtSum=0) const;
+                </method1>
+
+                <method1 name="discriminatorByIsolPFNeutrHadrCandsEtSum"
+                         return="double"
+                         args="['float','float','float','bool','float','float','float=0']"
+                         vars="['matchingcone_size','signalcone_size','isolcone_size','useOnlyChargedHadrforleadPFCand','minPt_leadPFCand','minPt_PFCand','IsolPFCands_maxEtSum']"
+                         qual="const">
+double discriminatorByIsolPFNeutrHadrCandsEtSum(float matchingcone_size, float signalcone_size, float isolcone_size, bool useOnlyChargedHadrforleadPFCand, float minPt_leadPFCand, float minPt_PFCand, float IsolPFCands_maxEtSum=0) const;
+                </method1>
+
+                <method1 name="discriminatorByIsolPFNeutrHadrCandsEtSum"
+                         return="double"
+                         args="['math::XYZVector','float','float','float','bool','float','float','float=0']"
+                         vars="['myVector','matchingcone_size','signalcone_size','isolcone_size','useOnlyChargedHadrforleadPFCand','minPt_leadPFCand','minPt_PFCand','IsolPFCands_maxEtSum']"
+                         qual="const">
+double discriminatorByIsolPFNeutrHadrCandsEtSum(math::XYZVector myVector, float matchingcone_size, float signalcone_size, float isolcone_size, bool useOnlyChargedHadrforleadPFCand, float minPt_leadPFCand, float minPt_PFCand, float IsolPFCands_maxEtSum=0) const;
+                </method1>
+
+                <method1 name="discriminatorByIsolPFGammaCandsEtSum"
+                         return="double"
+                         args="['float','float','float','bool','float','float','float=0']"
+                         vars="['matchingcone_size','signalcone_size','isolcone_size','useOnlyChargedHadrforleadPFCand','minPt_leadPFCand','minPt_PFCand','IsolPFCands_maxEtSum']"
+                         qual="const">
+double discriminatorByIsolPFGammaCandsEtSum(float matchingcone_size, float signalcone_size, float isolcone_size, bool useOnlyChargedHadrforleadPFCand, float minPt_leadPFCand, float minPt_PFCand, float IsolPFCands_maxEtSum=0) const;
+                </method1>
+
+                <method1 name="discriminatorByIsolPFGammaCandsEtSum"
+                         return="double"
+                         args="['math::XYZVector','float','float','float','bool','float','float','float=0']"
+                         vars="['myVector','matchingcone_size','signalcone_size','isolcone_size','useOnlyChargedHadrforleadPFCand','minPt_leadPFCand','minPt_PFCand','IsolPFCands_maxEtSum']"
+                         qual="const">
+double discriminatorByIsolPFGammaCandsEtSum(math::XYZVector myVector, float matchingcone_size, float signalcone_size, float isolcone_size, bool useOnlyChargedHadrforleadPFCand, float minPt_leadPFCand, float minPt_PFCand, float IsolPFCands_maxEtSum=0) const;
+                </method1>
+
+                <method1 name="PFCandsInCone"
+                         return="const PFCandidateRefVector"
+                         args="['const math::XYZVector','const float','const float']"
+                         vars="['myVector','conesize','minPt']"
+                         qual="const">
+const PFCandidateRefVector PFCandsInCone(const math::XYZVector myVector, const float conesize, const float minPt) const;
+                    <comment>
+       return all PFCandidate's in a cone of size &quot;conesize&quot; around a direction &quot;myVector&quot;
+                    </comment>
+                </method1>
+
+                <method1 name="PFChargedHadrCandsInCone"
+                         return="const PFCandidateRefVector"
+                         args="['const math::XYZVector','const float','const float']"
+                         vars="['myVector','conesize','minPt']"
+                         qual="const">
+const PFCandidateRefVector PFChargedHadrCandsInCone(const math::XYZVector myVector, const float conesize, const float minPt) const;
+                </method1>
+
+                <method1 name="PFNeutrHadrCandsInCone"
+                         return="const PFCandidateRefVector"
+                         args="['const math::XYZVector','const float','const float']"
+                         vars="['myVector','conesize','minPt']"
+                         qual="const">
+const PFCandidateRefVector PFNeutrHadrCandsInCone(const math::XYZVector myVector, const float conesize, const float minPt) const;
+                </method1>
+
+                <method1 name="PFGammaCandsInCone"
+                         return="const PFCandidateRefVector"
+                         args="['const math::XYZVector','const float','const float']"
+                         vars="['myVector','conesize','minPt']"
+                         qual="const">
+const PFCandidateRefVector PFGammaCandsInCone(const math::XYZVector myVector, const float conesize, const float minPt) const;
+                </method1>
+
+                <method1 name="PFCandsInBand"
+                         return="const PFCandidateRefVector"
+                         args="['const math::XYZVector','const float','const float','const float']"
+                         vars="['myVector','innercone_size','outercone_size','minPt']"
+                         qual="const">
+const PFCandidateRefVector PFCandsInBand(const math::XYZVector myVector, const float innercone_size, const float outercone_size, const float minPt) const;
+                    <comment>
+       return all PFCandidate's in a band defined by inner(size &quot;innercone_size&quot;) and outer(size &quot;outercone_size&quot;) cones around a direction &quot;myVector&quot;
+                    </comment>
+                </method1>
+
+                <method1 name="PFChargedHadrCandsInBand"
+                         return="const PFCandidateRefVector"
+                         args="['const math::XYZVector','const float','const float','const float']"
+                         vars="['myVector','innercone_size','outercone_size','minPt']"
+                         qual="const">
+const PFCandidateRefVector PFChargedHadrCandsInBand(const math::XYZVector myVector, const float innercone_size, const float outercone_size, const float minPt) const;
+                </method1>
+
+                <method1 name="PFNeutrHadrCandsInBand"
+                         return="const PFCandidateRefVector"
+                         args="['const math::XYZVector','const float','const float','const float']"
+                         vars="['myVector','innercone_size','outercone_size','minPt']"
+                         qual="const">
+const PFCandidateRefVector PFNeutrHadrCandsInBand(const math::XYZVector myVector, const float innercone_size, const float outercone_size, const float minPt) const;
+                </method1>
+
+                <method1 name="PFGammaCandsInBand"
+                         return="const PFCandidateRefVector"
+                         args="['const math::XYZVector','const float','const float','const float']"
+                         vars="['myVector','innercone_size','outercone_size','minPt']"
+                         qual="const">
+const PFCandidateRefVector PFGammaCandsInBand(const math::XYZVector myVector, const float innercone_size, const float outercone_size, const float minPt) const;
+                </method1>
+
+                <method1 name="leadPFCand"
+                         return="const PFCandidateRef"
+                         args="['const float','const float']"
+                         vars="['matchingcone_size','minPt']"
+                         qual="const">
+const PFCandidateRef leadPFCand(const float matchingcone_size, const float minPt) const;
+                    <comment>
+      return the leading PFCandidate in a given cone around the jet axis or a given direction
+                    </comment>
+                </method1>
+
+                <method1 name="leadPFCand"
+                         return="const PFCandidateRef"
+                         args="['const math::XYZVector','const float','const float']"
+                         vars="['myVector','matchingcone_size','minPt']"
+                         qual="const">
+const PFCandidateRef leadPFCand(const math::XYZVector myVector, const float matchingcone_size, const float minPt) const;
+                </method1>
+
+                <method1 name="leadPFChargedHadrCand"
+                         return="const PFCandidateRef"
+                         args="['const float','const float']"
+                         vars="['matchingcone_size','minPt']"
+                         qual="const">
+const PFCandidateRef leadPFChargedHadrCand(const float matchingcone_size, const float minPt) const;
+                </method1>
+
+                <method1 name="leadPFChargedHadrCand"
+                         return="const PFCandidateRef"
+                         args="['const math::XYZVector','const float','const float']"
+                         vars="['myVector','matchingcone_size','minPt']"
+                         qual="const">
+const PFCandidateRef leadPFChargedHadrCand(const math::XYZVector myVector, const float matchingcone_size, const float minPt) const;
+                </method1>
+
+                <method1 name="leadPFNeutrHadrCand"
+                         return="const PFCandidateRef"
+                         args="['const float','const float']"
+                         vars="['matchingcone_size','minPt']"
+                         qual="const">
+const PFCandidateRef leadPFNeutrHadrCand(const float matchingcone_size, const float minPt) const;
+                </method1>
+
+                <method1 name="leadPFNeutrHadrCand"
+                         return="const PFCandidateRef"
+                         args="['const math::XYZVector','const float','const float']"
+                         vars="['myVector','matchingcone_size','minPt']"
+                         qual="const">
+const PFCandidateRef leadPFNeutrHadrCand(const math::XYZVector myVector, const float matchingcone_size, const float minPt) const;
+                </method1>
+
+                <method1 name="leadPFGammaCand"
+                         return="const PFCandidateRef"
+                         args="['const float','const float']"
+                         vars="['matchingcone_size','minPt']"
+                         qual="const">
+const PFCandidateRef leadPFGammaCand(const float matchingcone_size, const float minPt) const;
+                </method1>
+
+                <method1 name="leadPFGammaCand"
+                         return="const PFCandidateRef"
+                         args="['const math::XYZVector','const float','const float']"
+                         vars="['myVector','matchingcone_size','minPt']"
+                         qual="const">
+const PFCandidateRef leadPFGammaCand(const math::XYZVector myVector, const float matchingcone_size, const float minPt) const;
+                </method1>
+
+                <method1 name="filterPFChargedHadrCands"
+                         return="void"
+                         args="['double','int','int','double','double','double','bool','double','bool','double','double']"
+                         vars="['ChargedHadrCand_tkminPt','ChargedHadrCand_tkminPixelHitsn','ChargedHadrCand_tkminTrackerHitsn','ChargedHadrCand_tkmaxipt','ChargedHadrCand_tkmaxChi2','ChargedHadrCand_tktorefpointDZ','UsePVconstraint','PVtx_Z','UseOnlyChargedHadr_for_LeadCand','LeadChargedHadrCandtoJet_MatchingConeSize','LeadChargedHadrCand_minPt']"
+                         qual="">
+void filterPFChargedHadrCands(double ChargedHadrCand_tkminPt, int ChargedHadrCand_tkminPixelHitsn, int ChargedHadrCand_tkminTrackerHitsn, double ChargedHadrCand_tkmaxipt, double ChargedHadrCand_tkmaxChi2, double ChargedHadrCand_tktorefpointDZ, bool UsePVconstraint, double PVtx_Z, bool UseOnlyChargedHadr_for_LeadCand, double LeadChargedHadrCandtoJet_MatchingConeSize, double LeadChargedHadrCand_minPt);
+                </method1>
+
+                <method1 name="filterPFNeutrHadrCands"
+                         return="void"
+                         args="['double']"
+                         vars="['NeutrHadrCand_HcalclusminEt']"
+                         qual="">
+void filterPFNeutrHadrCands(double NeutrHadrCand_HcalclusminEt);
+                </method1>
+
+                <method1 name="filterPFGammaCands"
+                         return="void"
+                         args="['double']"
+                         vars="['GammaCand_EcalclusminEt']"
+                         qual="">
+void filterPFGammaCands(double GammaCand_EcalclusminEt);
+                </method1>
+
+                <method1 name="removefilters"
+                         return="void"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+void removefilters();
+                </method1>
+
+            </section>
+
+        </class>
+        <typedef name="PFIsolatedTauTagInfoCollection"
+                 value="std::vector&lt;PFIsolatedTauTagInfo &gt;">
+typedef std::vector&lt;PFIsolatedTauTagInfo &gt; PFIsolatedTauTagInfoCollection;
+        </typedef>
+
+        <typedef name="PFIsolatedTauTagInfoRef"
+                 value="edm::Ref&lt;PFIsolatedTauTagInfoCollection&gt;">
+typedef edm::Ref&lt;PFIsolatedTauTagInfoCollection&gt; PFIsolatedTauTagInfoRef;
+        </typedef>
+
+        <typedef name="PFIsolatedTauTagInfoRefProd"
+                 value="edm::RefProd&lt;PFIsolatedTauTagInfoCollection&gt;">
+typedef edm::RefProd&lt;PFIsolatedTauTagInfoCollection&gt; PFIsolatedTauTagInfoRefProd;
+        </typedef>
+
+        <typedef name="PFIsolatedTauTagInfoRefVector"
+                 value="edm::RefVector&lt;PFIsolatedTauTagInfoCollection&gt;">
+typedef edm::RefVector&lt;PFIsolatedTauTagInfoCollection&gt; PFIsolatedTauTagInfoRefVector;
+        </typedef>
+
+    </namespace>
+
+    <type name="BaseTagInfo"/>
+    <type name="PFCandidateRefVector"/>
+    <type name="PFIsolatedTauTagInfo*"/>
+    <type name="bool"/>
+    <type name="const PFCandidateRef"/>
+    <type name="const PFCandidateRefVector"/>
+    <type name="const PFCandidateRefVector&amp;"/>
+    <type name="const PFJetRef"/>
+    <type name="const PFJetRef&amp;"/>
+    <type name="const float"/>
+    <type name="const math::XYZVector"/>
+    <type name="double"/>
+    <type name="float"/>
+    <type name="int"/>
+    <type name="math::XYZTLorentzVector"/>
+    <type name="math::XYZVector"/>
+    <type name="reco::PFIsolatedTauTagInfo"/>
+    <type name="void"/>
+</header>

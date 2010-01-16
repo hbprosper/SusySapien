@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: TrackCountingTagInfo.xml
+  Created:  Thu Jan 14 22:45:44 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/BTauReco/interface/TrackCountingTagInfo.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/BTauReco/interface/TrackCountingTagInfo.h">
+
+    <include name="&quot;DataFormats/BTauReco/interface/RefMacros.h&quot;"/>
+    <include name="&quot;DataFormats/JetReco/interface/JetTracksAssociation.h&quot;"/>
+    <include name="&quot;DataFormats/BTauReco/interface/JTATagInfo.h&quot;"/>
+
+    <namespace name="reco">
+
+        <class name="TrackCountingTagInfo"
+               fullname="reco::TrackCountingTagInfo"
+               module="DataFormats.BTauReco"
+               project=""
+               type="regular">
+            <baseclass name="public JTATagInfo"/>
+
+            <section name="public">
+                <constructor name="TrackCountingTagInfo"
+                             return=""
+                             args="['std::vector&lt;double&gt;','std::vector&lt;double&gt;','std::vector&lt;int&gt;','std::vector&lt;int&gt;','const JetTracksAssociationRef&amp;']"
+                             vars="['significance2d','significance3d','trackOrder2d','trackOrder3d','jtaRef']"
+                             qual="">
+TrackCountingTagInfo(    std::vector&lt;double&gt; significance2d, std::vector&lt;double&gt; significance3d, std::vector&lt;int&gt; trackOrder2d, std::vector&lt;int&gt; trackOrder3d, const JetTracksAssociationRef&amp; jtaRef);
+                </constructor>
+
+                <constructor name="TrackCountingTagInfo"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+TrackCountingTagInfo();
+                </constructor>
+
+                <destructor name="~TrackCountingTagInfo"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~TrackCountingTagInfo();
+                </destructor>
+
+                <method1 name="significance"
+                         return="virtual float"
+                         args="['size_t','int']"
+                         vars="['n','ip']"
+                         qual="const">
+virtual float significance(size_t n, int ip) const;
+                    <comment>
+     virtual const Track &amp; track(size_t n,int ipType) const
+  {
+    return tracks()[trackIndex(n,ipType)];
+  }
+                    </comment>
+                </method1>
+
+                <method1 name="trackIndex"
+                         return="virtual int"
+                         args="['size_t','int']"
+                         vars="['n','ip']"
+                         qual="const">
+virtual int trackIndex(size_t n, int ip) const;
+                </method1>
+
+                <method1 name="discriminator"
+                         return="virtual float"
+                         args="['size_t','int']"
+                         vars="['nth','ipType']"
+                         qual="const">
+virtual float discriminator(size_t nth, int ipType) const;
+                    <comment>
+  Recompute discriminator using nth track i.p. significance.
+  ipType = 0 means 3d impact parameter
+  ipType = 1 means transverse impact parameter
+                    </comment>
+                </method1>
+
+                <method1 name="selectedTracks"
+                         return="virtual int"
+                         args="['int']"
+                         vars="['ipType']"
+                         qual="const">
+virtual int selectedTracks(int ipType) const;
+                </method1>
+
+                <method1 name="clone"
+                         return="virtual TrackCountingTagInfo*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual TrackCountingTagInfo* clone() const;
+                </method1>
+
+            </section>
+
+        </class>
+        <typedef name="TrackCountingTagInfoCollection"
+                 value="std::vector&lt;TrackCountingTagInfo &gt;">
+typedef std::vector&lt;TrackCountingTagInfo &gt; TrackCountingTagInfoCollection;
+            <comment>
+  typedef edm::ExtCollection&lt; TrackCountingTagInfo,JetTagCollection&gt; TrackCountingExtCollection;
+  typedef edm::OneToOneAssociation&lt;JetTagCollection, TrackCountingTagInfo&gt; TrackCountingExtCollection;
+            </comment>
+        </typedef>
+
+        <typedef name="TrackCountingTagInfoRef"
+                 value="edm::Ref&lt;TrackCountingTagInfoCollection&gt;">
+typedef edm::Ref&lt;TrackCountingTagInfoCollection&gt; TrackCountingTagInfoRef;
+        </typedef>
+
+        <typedef name="TrackCountingTagInfoRefProd"
+                 value="edm::RefProd&lt;TrackCountingTagInfoCollection&gt;">
+typedef edm::RefProd&lt;TrackCountingTagInfoCollection&gt; TrackCountingTagInfoRefProd;
+        </typedef>
+
+        <typedef name="TrackCountingTagInfoRefVector"
+                 value="edm::RefVector&lt;TrackCountingTagInfoCollection&gt;">
+typedef edm::RefVector&lt;TrackCountingTagInfoCollection&gt; TrackCountingTagInfoRefVector;
+        </typedef>
+
+    </namespace>
+
+    <type name="JTATagInfo"/>
+    <type name="TrackCountingTagInfo*"/>
+    <type name="const JetTracksAssociationRef&amp;"/>
+    <type name="float"/>
+    <type name="int"/>
+    <type name="reco::TrackCountingTagInfo"/>
+    <type name="size_t"/>
+    <type name="std::vector&lt;double&gt;"/>
+    <type name="std::vector&lt;int&gt;"/>
+    <type name="void"/>
+</header>

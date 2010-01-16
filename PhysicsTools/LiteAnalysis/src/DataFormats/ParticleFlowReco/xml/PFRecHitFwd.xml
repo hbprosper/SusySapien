@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: PFRecHitFwd.xml
+  Created:  Thu Jan 14 22:48:02 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/ParticleFlowReco/interface/PFRecHitFwd.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/ParticleFlowReco/interface/PFRecHitFwd.h">
+
+    <include name="&lt;vector&gt;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
+
+    <namespace name="reco">
+        <forward name="PFRecHit"/>
+        <typedef name="PFRecHitCollection"
+                 value="std::vector&lt;PFRecHit&gt;">
+typedef std::vector&lt;PFRecHit&gt; PFRecHitCollection;
+            <comment>
+      collection of PFRecHit objects
+            </comment>
+        </typedef>
+
+        <typedef name="PFRecHitRef"
+                 value="edm::Ref&lt;PFRecHitCollection&gt;">
+typedef edm::Ref&lt;PFRecHitCollection&gt; PFRecHitRef;
+            <comment>
+      persistent reference to PFRecHit objects
+            </comment>
+        </typedef>
+
+        <typedef name="PFRecHitRefProd"
+                 value="edm::RefProd&lt;PFRecHitCollection&gt;">
+typedef edm::RefProd&lt;PFRecHitCollection&gt; PFRecHitRefProd;
+            <comment>
+      reference to PFRecHit collection
+            </comment>
+        </typedef>
+
+        <typedef name="PFRecHitRefVector"
+                 value="edm::RefVector&lt;PFRecHitCollection&gt;">
+typedef edm::RefVector&lt;PFRecHitCollection&gt; PFRecHitRefVector;
+            <comment>
+      vector of references to PFRecHit objects all in the same collection
+            </comment>
+        </typedef>
+
+        <typedef name="basicRecHit_iterator"
+                 value="PFRecHitRefVector::iterator">
+typedef PFRecHitRefVector::iterator basicRecHit_iterator;
+            <comment>
+      iterator over a vector of references to PFRecHit objects
+            </comment>
+        </typedef>
+
+    </namespace>
+
+</header>

@@ -1,0 +1,593 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: ScalersRaw.xml
+  Created:  Thu Jan 14 22:48:36 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Scalers/interface/ScalersRaw.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Scalers/interface/ScalersRaw.h">
+
+    <include name="&lt;ostream&gt;"/>
+    <include name="&lt;vector&gt;"/>
+
+    <class name="ScalersRaw"
+           fullname="ScalersRaw"
+           module="DataFormats.Scalers"
+           project=""
+           type="regular">
+        <comment>
+    \brief Raw Data Level 1 Global Trigger Scalers and Lumi Scalers
+        </comment>
+
+        <section name="public">
+            <enum name="">
+enum
+  {
+
+    N_L1_TRIGGERS_v1=128, 
+    N_L1_TEST_TRIGGERS_v1=64, 
+    N_LUMI_OCC_v1=2, 
+    N_BX_v2=4, 
+    SCALERS_FED_ID=735
+  };
+                <field name="N_L1_TRIGGERS_v1" value="128"/>
+                <field name="N_L1_TEST_TRIGGERS_v1" value="64"/>
+                <field name="N_LUMI_OCC_v1" value="2"/>
+                <field name="N_BX_v2" value="4"/>
+                <field name="SCALERS_FED_ID" value="735"/>
+            </enum>
+
+        </section>
+
+        <typemap name="N_BX_v2 "
+                 value="ScalersRaw::N_BX_v2 "
+                 type="enum"/>
+        <typemap name="N_L1_TEST_TRIGGERS_v1 "
+                 value="ScalersRaw::N_L1_TEST_TRIGGERS_v1 "
+                 type="enum"/>
+        <typemap name="N_L1_TRIGGERS_v1 "
+                 value="ScalersRaw::N_L1_TRIGGERS_v1 "
+                 type="enum"/>
+        <typemap name="N_LUMI_OCC_v1 "
+                 value="ScalersRaw::N_LUMI_OCC_v1 "
+                 type="enum"/>
+        <typemap name="SCALERS_FED_ID "
+                 value="ScalersRaw::SCALERS_FED_ID "
+                 type="enum"/>
+
+    </class>
+
+    <class name="TriggerScalersRaw_v1"
+           fullname="TriggerScalersRaw_v1"
+           module="DataFormats.Scalers"
+           project=""
+           type="regular struct">
+
+        <section>
+            <member>
+struct timespec collectionTimeSpecial;
+            </member>
+
+            <member>
+unsigned int ORBIT_NUMBER;
+            </member>
+
+            <member>
+unsigned int LUMINOSITY_SEGMENT;
+            </member>
+
+            <member>
+unsigned short BC_ERRORS;
+            </member>
+
+            <member>
+struct timespec collectionTimeSummary;
+            </member>
+
+            <member>
+unsigned int TRIGGER_NR;
+            </member>
+
+            <member>
+unsigned int EVENT_NR;
+            </member>
+
+            <member>
+unsigned int FINOR_DISTRIBUTED;
+            </member>
+
+            <member>
+unsigned int CAL_TRIGGER;
+            </member>
+
+            <member>
+unsigned int RANDOM_TRIGGER;
+            </member>
+
+            <member>
+unsigned int TEST_TRIGGER;
+            </member>
+
+            <member>
+unsigned int FINOR_GENERATED;
+            </member>
+
+            <member>
+unsigned int FINOR_IN_INVALID_BC;
+            </member>
+
+            <member>
+unsigned long long DEADTIME;
+            </member>
+
+            <member>
+unsigned long long LOST_FINOR;
+            </member>
+
+            <member>
+unsigned long long DEADTIMEA;
+            </member>
+
+            <member>
+unsigned long long LOST_FINORA;
+            </member>
+
+            <member>
+unsigned long long PRIV_DEADTIMEA;
+            </member>
+
+            <member>
+unsigned long long PTCSTATUS_DEADTIMEA;
+            </member>
+
+            <member>
+unsigned long long THROTTLE_DEADTIMEA;
+            </member>
+
+            <member>
+unsigned long long CALIBRATION_DEADTIMEA;
+            </member>
+
+            <member>
+unsigned long long TIMESLOT_DEADTIMEA;
+            </member>
+
+            <member>
+unsigned int NR_OF_RESETS;
+            </member>
+
+            <member>
+struct timespec collectionTimeDetails;
+            </member>
+
+            <member>
+unsigned int ALGO_RATE[ScalersRaw::N_L1_TRIGGERS_v1];
+            </member>
+
+            <member>
+unsigned int TEST_RATE[ScalersRaw::N_L1_TEST_TRIGGERS_v1];
+            </member>
+
+        </section>
+
+        <typemap name="ALGO_RATE[ScalersRaw::N_L1_TRIGGERS_v1]"
+                 value="TriggerScalersRaw_v1::ALGO_RATE[ScalersRaw::N_L1_TRIGGERS_v1]"
+                 type="member"/>
+        <typemap name="BC_ERRORS"
+                 value="TriggerScalersRaw_v1::BC_ERRORS"
+                 type="member"/>
+        <typemap name="CALIBRATION_DEADTIMEA"
+                 value="TriggerScalersRaw_v1::CALIBRATION_DEADTIMEA"
+                 type="member"/>
+        <typemap name="CAL_TRIGGER"
+                 value="TriggerScalersRaw_v1::CAL_TRIGGER"
+                 type="member"/>
+        <typemap name="DEADTIME"
+                 value="TriggerScalersRaw_v1::DEADTIME"
+                 type="member"/>
+        <typemap name="DEADTIMEA"
+                 value="TriggerScalersRaw_v1::DEADTIMEA"
+                 type="member"/>
+        <typemap name="EVENT_NR"
+                 value="TriggerScalersRaw_v1::EVENT_NR"
+                 type="member"/>
+        <typemap name="FINOR_DISTRIBUTED"
+                 value="TriggerScalersRaw_v1::FINOR_DISTRIBUTED"
+                 type="member"/>
+        <typemap name="FINOR_GENERATED"
+                 value="TriggerScalersRaw_v1::FINOR_GENERATED"
+                 type="member"/>
+        <typemap name="FINOR_IN_INVALID_BC"
+                 value="TriggerScalersRaw_v1::FINOR_IN_INVALID_BC"
+                 type="member"/>
+        <typemap name="LOST_FINOR"
+                 value="TriggerScalersRaw_v1::LOST_FINOR"
+                 type="member"/>
+        <typemap name="LOST_FINORA"
+                 value="TriggerScalersRaw_v1::LOST_FINORA"
+                 type="member"/>
+        <typemap name="LUMINOSITY_SEGMENT"
+                 value="TriggerScalersRaw_v1::LUMINOSITY_SEGMENT"
+                 type="member"/>
+        <typemap name="NR_OF_RESETS"
+                 value="TriggerScalersRaw_v1::NR_OF_RESETS"
+                 type="member"/>
+        <typemap name="ORBIT_NUMBER"
+                 value="TriggerScalersRaw_v1::ORBIT_NUMBER"
+                 type="member"/>
+        <typemap name="PRIV_DEADTIMEA"
+                 value="TriggerScalersRaw_v1::PRIV_DEADTIMEA"
+                 type="member"/>
+        <typemap name="PTCSTATUS_DEADTIMEA"
+                 value="TriggerScalersRaw_v1::PTCSTATUS_DEADTIMEA"
+                 type="member"/>
+        <typemap name="RANDOM_TRIGGER"
+                 value="TriggerScalersRaw_v1::RANDOM_TRIGGER"
+                 type="member"/>
+        <typemap name="TEST_RATE[ScalersRaw::N_L1_TEST_TRIGGERS_v1]"
+                 value="TriggerScalersRaw_v1::TEST_RATE[ScalersRaw::N_L1_TEST_TRIGGERS_v1]"
+                 type="member"/>
+        <typemap name="TEST_TRIGGER"
+                 value="TriggerScalersRaw_v1::TEST_TRIGGER"
+                 type="member"/>
+        <typemap name="THROTTLE_DEADTIMEA"
+                 value="TriggerScalersRaw_v1::THROTTLE_DEADTIMEA"
+                 type="member"/>
+        <typemap name="TIMESLOT_DEADTIMEA"
+                 value="TriggerScalersRaw_v1::TIMESLOT_DEADTIMEA"
+                 type="member"/>
+        <typemap name="TRIGGER_NR"
+                 value="TriggerScalersRaw_v1::TRIGGER_NR"
+                 type="member"/>
+        <typemap name="collectionTimeDetails"
+                 value="TriggerScalersRaw_v1::collectionTimeDetails"
+                 type="member"/>
+        <typemap name="collectionTimeSpecial"
+                 value="TriggerScalersRaw_v1::collectionTimeSpecial"
+                 type="member"/>
+        <typemap name="collectionTimeSummary"
+                 value="TriggerScalersRaw_v1::collectionTimeSummary"
+                 type="member"/>
+
+    </class>
+
+    <class name="LumiScalersRaw_v1"
+           fullname="LumiScalersRaw_v1"
+           module="DataFormats.Scalers"
+           project=""
+           type="regular struct">
+
+        <section>
+            <member>
+struct timespec collectionTime;
+            </member>
+
+            <member>
+float DeadtimeNormalization;
+            </member>
+
+            <member>
+float Normalization;
+            </member>
+
+            <member>
+float LumiFill;
+            </member>
+
+            <member>
+float LumiRun;
+            </member>
+
+            <member>
+float LiveLumiFill;
+            </member>
+
+            <member>
+float LiveLumiRun;
+            </member>
+
+            <member>
+float InstantLumi;
+            </member>
+
+            <member>
+float InstantLumiErr;
+            </member>
+
+            <member>
+unsigned char InstantLumiQlty;
+            </member>
+
+            <member>
+float LumiETFill;
+            </member>
+
+            <member>
+float LumiETRun;
+            </member>
+
+            <member>
+float LiveLumiETFill;
+            </member>
+
+            <member>
+float LiveLumiETRun;
+            </member>
+
+            <member>
+float InstantETLumi;
+            </member>
+
+            <member>
+float InstantETLumiErr;
+            </member>
+
+            <member>
+unsigned char InstantETLumiQlty;
+            </member>
+
+            <member>
+float LumiOccFill[ScalersRaw::N_LUMI_OCC_v1];
+            </member>
+
+            <member>
+float LumiOccRun[ScalersRaw::N_LUMI_OCC_v1];
+            </member>
+
+            <member>
+float LiveLumiOccFill[ScalersRaw::N_LUMI_OCC_v1];
+            </member>
+
+            <member>
+float LiveLumiOccRun[ScalersRaw::N_LUMI_OCC_v1];
+            </member>
+
+            <member>
+float InstantOccLumi[ScalersRaw::N_LUMI_OCC_v1];
+            </member>
+
+            <member>
+float InstantOccLumiErr[ScalersRaw::N_LUMI_OCC_v1];
+            </member>
+
+            <member>
+unsigned char InstantOccLumiQlty[ScalersRaw::N_LUMI_OCC_v1];
+            </member>
+
+            <member>
+float lumiNoise[ScalersRaw::N_LUMI_OCC_v1];
+            </member>
+
+            <member>
+unsigned int sectionNumber;
+            </member>
+
+            <member>
+unsigned int startOrbit;
+            </member>
+
+            <member>
+unsigned int numOrbits;
+            </member>
+
+        </section>
+
+        <typemap name="DeadtimeNormalization"
+                 value="LumiScalersRaw_v1::DeadtimeNormalization"
+                 type="member"/>
+        <typemap name="InstantETLumi"
+                 value="LumiScalersRaw_v1::InstantETLumi"
+                 type="member"/>
+        <typemap name="InstantETLumiErr"
+                 value="LumiScalersRaw_v1::InstantETLumiErr"
+                 type="member"/>
+        <typemap name="InstantETLumiQlty"
+                 value="LumiScalersRaw_v1::InstantETLumiQlty"
+                 type="member"/>
+        <typemap name="InstantLumi"
+                 value="LumiScalersRaw_v1::InstantLumi"
+                 type="member"/>
+        <typemap name="InstantLumiErr"
+                 value="LumiScalersRaw_v1::InstantLumiErr"
+                 type="member"/>
+        <typemap name="InstantLumiQlty"
+                 value="LumiScalersRaw_v1::InstantLumiQlty"
+                 type="member"/>
+        <typemap name="InstantOccLumiErr[ScalersRaw::N_LUMI_OCC_v1]"
+                 value="LumiScalersRaw_v1::InstantOccLumiErr[ScalersRaw::N_LUMI_OCC_v1]"
+                 type="member"/>
+        <typemap name="InstantOccLumiQlty[ScalersRaw::N_LUMI_OCC_v1]"
+                 value="LumiScalersRaw_v1::InstantOccLumiQlty[ScalersRaw::N_LUMI_OCC_v1]"
+                 type="member"/>
+        <typemap name="InstantOccLumi[ScalersRaw::N_LUMI_OCC_v1]"
+                 value="LumiScalersRaw_v1::InstantOccLumi[ScalersRaw::N_LUMI_OCC_v1]"
+                 type="member"/>
+        <typemap name="LiveLumiETFill"
+                 value="LumiScalersRaw_v1::LiveLumiETFill"
+                 type="member"/>
+        <typemap name="LiveLumiETRun"
+                 value="LumiScalersRaw_v1::LiveLumiETRun"
+                 type="member"/>
+        <typemap name="LiveLumiFill"
+                 value="LumiScalersRaw_v1::LiveLumiFill"
+                 type="member"/>
+        <typemap name="LiveLumiOccFill[ScalersRaw::N_LUMI_OCC_v1]"
+                 value="LumiScalersRaw_v1::LiveLumiOccFill[ScalersRaw::N_LUMI_OCC_v1]"
+                 type="member"/>
+        <typemap name="LiveLumiOccRun[ScalersRaw::N_LUMI_OCC_v1]"
+                 value="LumiScalersRaw_v1::LiveLumiOccRun[ScalersRaw::N_LUMI_OCC_v1]"
+                 type="member"/>
+        <typemap name="LiveLumiRun"
+                 value="LumiScalersRaw_v1::LiveLumiRun"
+                 type="member"/>
+        <typemap name="LumiETFill"
+                 value="LumiScalersRaw_v1::LumiETFill"
+                 type="member"/>
+        <typemap name="LumiETRun"
+                 value="LumiScalersRaw_v1::LumiETRun"
+                 type="member"/>
+        <typemap name="LumiFill"
+                 value="LumiScalersRaw_v1::LumiFill"
+                 type="member"/>
+        <typemap name="LumiOccFill[ScalersRaw::N_LUMI_OCC_v1]"
+                 value="LumiScalersRaw_v1::LumiOccFill[ScalersRaw::N_LUMI_OCC_v1]"
+                 type="member"/>
+        <typemap name="LumiOccRun[ScalersRaw::N_LUMI_OCC_v1]"
+                 value="LumiScalersRaw_v1::LumiOccRun[ScalersRaw::N_LUMI_OCC_v1]"
+                 type="member"/>
+        <typemap name="LumiRun"
+                 value="LumiScalersRaw_v1::LumiRun"
+                 type="member"/>
+        <typemap name="Normalization"
+                 value="LumiScalersRaw_v1::Normalization"
+                 type="member"/>
+        <typemap name="collectionTime"
+                 value="LumiScalersRaw_v1::collectionTime"
+                 type="member"/>
+        <typemap name="lumiNoise[ScalersRaw::N_LUMI_OCC_v1]"
+                 value="LumiScalersRaw_v1::lumiNoise[ScalersRaw::N_LUMI_OCC_v1]"
+                 type="member"/>
+        <typemap name="numOrbits"
+                 value="LumiScalersRaw_v1::numOrbits"
+                 type="member"/>
+        <typemap name="sectionNumber"
+                 value="LumiScalersRaw_v1::sectionNumber"
+                 type="member"/>
+        <typemap name="startOrbit"
+                 value="LumiScalersRaw_v1::startOrbit"
+                 type="member"/>
+
+    </class>
+
+    <class name="ScalersEventRecordRaw_v1"
+           fullname="ScalersEventRecordRaw_v1"
+           module="DataFormats.Scalers"
+           project=""
+           type="regular struct">
+
+        <section>
+            <member>
+unsigned long long header;
+            </member>
+
+            <member>
+int version;
+            </member>
+
+            <member>
+struct TriggerScalersRaw_v1 trig;
+            </member>
+
+            <member>
+struct LumiScalersRaw_v1 lumi;
+            </member>
+
+            <member>
+unsigned int filler;
+            </member>
+
+            <member>
+unsigned long long trailer;
+            </member>
+
+        </section>
+
+        <typemap name="filler"
+                 value="ScalersEventRecordRaw_v1::filler"
+                 type="member"/>
+        <typemap name="header"
+                 value="ScalersEventRecordRaw_v1::header"
+                 type="member"/>
+        <typemap name="lumi"
+                 value="ScalersEventRecordRaw_v1::lumi"
+                 type="member"/>
+        <typemap name="trailer"
+                 value="ScalersEventRecordRaw_v1::trailer"
+                 type="member"/>
+        <typemap name="trig"
+                 value="ScalersEventRecordRaw_v1::trig"
+                 type="member"/>
+        <typemap name="version"
+                 value="ScalersEventRecordRaw_v1::version"
+                 type="member"/>
+
+    </class>
+
+    <class name="ScalersEventRecordRaw_v2"
+           fullname="ScalersEventRecordRaw_v2"
+           module="DataFormats.Scalers"
+           project=""
+           type="regular struct">
+
+        <section>
+            <member>
+unsigned long long header;
+            </member>
+
+            <member>
+int version;
+            </member>
+
+            <member>
+struct TriggerScalersRaw_v1 trig;
+            </member>
+
+            <member>
+struct LumiScalersRaw_v1 lumi;
+            </member>
+
+            <member>
+unsigned int filler;
+            </member>
+
+            <member>
+unsigned long long bx[ScalersRaw::N_BX_v2];
+            </member>
+
+            <member>
+unsigned long long trailer;
+            </member>
+
+        </section>
+
+        <typemap name="bx[ScalersRaw::N_BX_v2]"
+                 value="ScalersEventRecordRaw_v2::bx[ScalersRaw::N_BX_v2]"
+                 type="member"/>
+        <typemap name="filler"
+                 value="ScalersEventRecordRaw_v2::filler"
+                 type="member"/>
+        <typemap name="header"
+                 value="ScalersEventRecordRaw_v2::header"
+                 type="member"/>
+        <typemap name="lumi"
+                 value="ScalersEventRecordRaw_v2::lumi"
+                 type="member"/>
+        <typemap name="trailer"
+                 value="ScalersEventRecordRaw_v2::trailer"
+                 type="member"/>
+        <typemap name="trig"
+                 value="ScalersEventRecordRaw_v2::trig"
+                 type="member"/>
+        <typemap name="version"
+                 value="ScalersEventRecordRaw_v2::version"
+                 type="member"/>
+
+    </class>
+
+    <type name="LumiScalersRaw_v1"/>
+    <type name="ScalersEventRecordRaw_v1"/>
+    <type name="ScalersEventRecordRaw_v2"/>
+    <type name="ScalersRaw"/>
+    <type name="TriggerScalersRaw_v1"/>
+    <type name="enum"/>
+    <type name="float"/>
+    <type name="int"/>
+    <type name="struct LumiScalersRaw_v1"/>
+    <type name="struct TriggerScalersRaw_v1"/>
+    <type name="struct timespec"/>
+    <type name="unsigned char"/>
+    <type name="unsigned int"/>
+    <type name="unsigned long long"/>
+    <type name="unsigned short"/>
+</header>

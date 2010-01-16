@@ -1,0 +1,4 @@
+edm::DetSetRefVector<T, C>|bool|empty|void
+edm::DetSetRefVector<T, C>|typename std::vector<Ref<C, DetSet<T>, refhelper::FindDetSetForDetSetVector<T, C> >>::size_type|size|void
+edm::DetSetRefVector<T, C>|boost::indirect_iterator<typename collection_type::const_iterator>|begin|void
+edm::DetSetRefVector<T, C>|boost::indirect_iterator<typename collection_type::const_iterator>|end|void

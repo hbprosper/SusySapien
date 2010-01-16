@@ -1,0 +1,9 @@
+Class:
+	reco::IsoDeposit::Veto
+
+Header:
+	DataFormats/RecoCandidate/interface/IsoDeposit.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:14:02 2010	lsclass.py $Revision:$
+

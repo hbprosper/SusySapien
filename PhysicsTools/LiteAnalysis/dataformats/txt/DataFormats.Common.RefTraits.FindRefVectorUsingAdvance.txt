@@ -1,0 +1,9 @@
+Class:
+	edm::refhelper::FindRefVectorUsingAdvance<REFV>
+
+Header:
+	DataFormats/Common/interface/RefTraits.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:37 2010	lsclass.py $Revision:$
+

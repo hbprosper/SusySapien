@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: RefKeyTrait.xml
+  Created:  Thu Jan 14 22:46:21 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Common/interface/RefKeyTrait.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/RefKeyTrait.h">
+
+    <include name="&quot;FWCore/Utilities/interface/EDMException.h&quot;"/>
+
+    <namespace name="edm">
+        <forward name="template&lt;typename C&gt; RefProd"/>
+
+        <namespace name="reftobase">
+
+            <class name="RefKey"
+                   fullname="edm::reftobase::RefKey"
+                   module="DataFormats.Common"
+                   project=""
+                   type="regular struct">
+
+                <section>
+                    <method2 name="key"
+                             return="template&lt;typename REF&gt; static size_t"
+                             args="['const REF&amp;']"
+                             vars="['r']"
+                             qual="">
+template&lt;typename REF&gt;       static size_t key(const REF&amp; r);
+                    </method2>
+
+                </section>
+
+            </class>
+
+            <class name="RefProdKey"
+                   fullname="edm::reftobase::RefProdKey"
+                   module="DataFormats.Common"
+                   project=""
+                   type="regular struct">
+
+                <section>
+                    <method2 name="key"
+                             return="template&lt;typename REF&gt; static size_t"
+                             args="['const REF&amp;']"
+                             vars="['r']"
+                             qual="">
+template&lt;typename REF&gt;       static size_t key(const REF&amp; r);
+                    </method2>
+
+                </section>
+
+            </class>
+
+            <class name="RefKeyTrait"
+                   fullname="edm::reftobase::RefKeyTrait&lt;REF&gt;"
+                   module="DataFormats.Common"
+                   project=""
+                   type="template struct"
+                   template="template&lt;typename REF&gt;">
+
+                <section>
+                    <typedef name="type"
+                             value="RefKey">
+typedef RefKey type;
+                    </typedef>
+
+                </section>
+
+                <typemap name="type"
+                         value="RefKey"
+                         type="typedef"/>
+
+            </class>
+
+            <class name="RefKeyTrait&lt;RefProd&lt;C&gt; &gt;"
+                   fullname="edm::reftobase::RefKeyTrait&lt;RefProd&lt;C&gt; &gt;"
+                   module="DataFormats.Common"
+                   project=""
+                   type="specialized template struct"
+                   template="template&lt;typename C&gt;">
+
+                <section>
+                    <typedef name="type"
+                             value="RefProdKey">
+typedef RefProdKey type;
+                    </typedef>
+
+                </section>
+
+                <typemap name="type"
+                         value="RefProdKey"
+                         type="typedef"/>
+
+            </class>
+        </namespace>
+    </namespace>
+
+    <type name="edm::reftobase::RefKey"/>
+    <type name="edm::reftobase::RefKeyTrait&lt;REF&gt;"/>
+    <type name="edm::reftobase::RefKeyTrait&lt;RefProd&lt;C&gt; &gt;"/>
+    <type name="edm::reftobase::RefProdKey"/>
+    <type name="template&lt;typename REF&gt; size_t"/>
+</header>

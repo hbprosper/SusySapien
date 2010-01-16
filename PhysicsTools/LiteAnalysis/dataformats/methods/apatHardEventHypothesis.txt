@@ -1,0 +1,2 @@
+bool	getIsVector(int x=0)
+

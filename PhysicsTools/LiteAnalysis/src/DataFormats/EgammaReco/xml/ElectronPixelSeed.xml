@@ -1,0 +1,145 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: ElectronPixelSeed.xml
+  Created:  Thu Jan 14 22:47:02 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/EgammaReco/interface/ElectronPixelSeed.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/EgammaReco/interface/ElectronPixelSeed.h">
+
+    <include name="&quot;DataFormats/EgammaReco/interface/SuperClusterFwd.h&quot;"/>
+    <include name="&quot;DataFormats/TrajectorySeed/interface/TrajectorySeed.h&quot;"/>
+    <include name="&quot;DataFormats/TrajectoryState/interface/TrackCharge.h&quot;"/>
+    <include name="&quot;DataFormats/TrackingRecHit/interface/TrackingRecHit.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&lt;vector&gt;"/>
+
+    <namespace name="reco">
+
+        <class name="ElectronPixelSeed"
+               fullname="reco::ElectronPixelSeed"
+               module="DataFormats.EgammaReco"
+               project=""
+               type="regular">
+            <baseclass name="public TrajectorySeed"/>
+
+            <section name="public">
+                <typedef name="recHitContainer"
+                         value="edm::OwnVector&lt;TrackingRecHit&gt;">
+typedef edm::OwnVector&lt;TrackingRecHit&gt; recHitContainer;
+                </typedef>
+
+                <method1 name="name"
+                         return="static std::string const&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+static std::string const&amp; name();
+                </method1>
+
+                <constructor name="ElectronPixelSeed"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+ElectronPixelSeed();
+                </constructor>
+
+                <copyconstructor name="ElectronPixelSeed"
+                                 return=""
+                                 args="['const ElectronPixelSeed&amp;']"
+                                 vars="['']"
+                                 qual="">
+ElectronPixelSeed(const ElectronPixelSeed&amp;);
+                </copyconstructor>
+
+                <operator name="operator="
+                          return="ElectronPixelSeed&amp;"
+                          args="['const ElectronPixelSeed&amp;']"
+                          vars="['']"
+                          qual="">
+ElectronPixelSeed&amp; operator=(const ElectronPixelSeed&amp;);
+                </operator>
+
+                <destructor name="~ElectronPixelSeed"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~ElectronPixelSeed();
+                </destructor>
+
+                <constructor name="ElectronPixelSeed"
+                             return=""
+                             args="['edm::Ref&lt;SuperClusterCollection&gt;&amp;','PTrajectoryStateOnDet&amp;','recHitContainer&amp;','PropagationDirection&amp;']"
+                             vars="['seed','pts','rh','dir']"
+                             qual="">
+ElectronPixelSeed(edm::Ref&lt;SuperClusterCollection&gt;&amp; seed, PTrajectoryStateOnDet&amp; pts, recHitContainer&amp; rh, PropagationDirection&amp; dir);
+                    <comment>
+        Constructor from two hits
+                    </comment>
+                </constructor>
+
+                <constructor name="ElectronPixelSeed"
+                             return=""
+                             args="['edm::Ref&lt;SuperClusterCollection&gt;&amp;','const TrajectorySeed&amp;']"
+                             vars="['scl','seed']"
+                             qual="">
+ElectronPixelSeed(edm::Ref&lt;SuperClusterCollection&gt;&amp; scl, const TrajectorySeed&amp; seed);
+                    <comment>
+       Constructor from TrajectorySeed
+                    </comment>
+                </constructor>
+
+                <method1 name="superCluster"
+                         return="SuperClusterRef"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+SuperClusterRef superCluster() const;
+                </method1>
+
+                <method1 name="getCharge"
+                         return="TrackCharge"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+TrackCharge getCharge() const;
+                    <comment>
+       interfaces
+                    </comment>
+                </method1>
+
+                <method1 name="clone"
+                         return="ElectronPixelSeed*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+ElectronPixelSeed* clone() const;
+                </method1>
+
+            </section>
+
+            <typemap name="recHitContainer"
+                     value="edm::OwnVector&lt;TrackingRecHit&gt;"
+                     type="typedef"/>
+
+        </class>
+    </namespace>
+
+    <type name="ElectronPixelSeed&amp;"/>
+    <type name="ElectronPixelSeed*"/>
+    <type name="PTrajectoryStateOnDet&amp;"/>
+    <type name="PropagationDirection&amp;"/>
+    <type name="SuperClusterRef"/>
+    <type name="TrackCharge"/>
+    <type name="TrajectorySeed"/>
+    <type name="const ElectronPixelSeed&amp;"/>
+    <type name="const TrajectorySeed&amp;"/>
+    <type name="edm::Ref&lt;SuperClusterCollection&gt;&amp;"/>
+    <type name="recHitContainer&amp;"/>
+    <type name="reco::ElectronPixelSeed"/>
+    <type name="std::string const&amp;"/>
+    <type name="void"/>
+</header>

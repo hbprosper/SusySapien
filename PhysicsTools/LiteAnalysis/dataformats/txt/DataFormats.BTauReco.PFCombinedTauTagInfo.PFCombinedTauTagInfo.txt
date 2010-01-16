@@ -1,0 +1,248 @@
+Class:
+	reco::PFCombinedTauTagInfo
+
+Header:
+	DataFormats/BTauReco/interface/PFCombinedTauTagInfo.h
+
+BaseClasses:
+	reco::BaseTagInfo	DataFormats/BTauReco/interface/BaseTagInfo.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:14:51 2010	lsclass.py $Revision:$
+
+Methods from reco::PFCombinedTauTagInfo
+
+	-o- pfjetRef
+		Return: const edm::Ref<PFJetCollection>&
+		Arguments: void	
+
+	-o- setpfjetRef
+		Return: void
+		Arguments: const PFJetRef	x
+
+	-o- isolatedtautaginfoRef
+		Return: const edm::Ref<PFIsolatedTauTagInfoCollection>&
+		Arguments: void	
+
+	-o- setisolatedtautaginfoRef
+		Return: void
+		Arguments: const PFIsolatedTauTagInfoRef	x
+
+	-o- PFChargedHadrCands
+		Return: const edm::RefVector<std::vector<reco::PFCandidate>>&
+		Arguments: void	
+
+	-o- setPFChargedHadrCands
+		Return: void
+		Arguments: const PFCandidateRefVector&	x
+
+	-o- selectedPFChargedHadrCands
+		Return: const edm::RefVector<std::vector<reco::PFCandidate>>&
+		Arguments: void	
+
+	-o- setselectedPFChargedHadrCands
+		Return: void
+		Arguments: const PFCandidateRefVector&	x
+
+	-o- signalPFChargedHadrCands
+		Return: const edm::RefVector<std::vector<reco::PFCandidate>>&
+		Arguments: void	
+
+	-o- setsignalPFChargedHadrCands
+		Return: void
+		Arguments: const PFCandidateRefVector&	x
+
+	-o- isolPFChargedHadrCands
+		Return: const edm::RefVector<std::vector<reco::PFCandidate>>&
+		Arguments: void	
+
+	-o- setisolPFChargedHadrCands
+		Return: void
+		Arguments: const PFCandidateRefVector&	x
+
+	-o- clone
+		Return: PFCombinedTauTagInfo*
+		Arguments: void	
+
+	-o- selectedByPFChargedHadrCands
+		Return: bool
+		Arguments: void	
+
+	-o- setselectedByPFChargedHadrCands
+		Return: void
+		Arguments: bool	x
+
+	-o- electronTagged
+		Return: bool
+		Arguments: void	
+
+	-o- setelectronTagged
+		Return: void
+		Arguments: bool	x
+
+	-o- muonTagged
+		Return: bool
+		Arguments: void	
+
+	-o- setmuonTagged
+		Return: void
+		Arguments: bool	x
+
+	-o- leadPFChargedHadrCandsignedSipt
+		Return: double
+		Arguments: void	
+
+	-o- setleadPFChargedHadrCandsignedSipt
+		Return: void
+		Arguments: double	x
+
+	-o- leadPFChargedHadrCandsignedSip3D
+		Return: double
+		Arguments: void	
+
+	-o- setleadPFChargedHadrCandsignedSip3D
+		Return: void
+		Arguments: double	x
+
+	-o- signedSflightpath
+		Return: double
+		Arguments: void	
+
+	-o- setsignedSflightpath
+		Return: void
+		Arguments: double	x
+
+	-o- PFChargedHadrCandsEtJetEtRatio
+		Return: double
+		Arguments: void	
+
+	-o- setPFChargedHadrCandsEtJetEtRatio
+		Return: void
+		Arguments: double	x
+
+	-o- PFNeutrHadrCandsE
+		Return: double
+		Arguments: void	
+
+	-o- setPFNeutrHadrCandsE
+		Return: void
+		Arguments: double	x
+
+	-o- PFNeutrHadrCandsN
+		Return: int
+		Arguments: void	
+
+	-o- setPFNeutrHadrCandsN
+		Return: void
+		Arguments: int	x
+
+	-o- PFNeutrHadrCandsRadius
+		Return: double
+		Arguments: void	
+
+	-o- setPFNeutrHadrCandsRadius
+		Return: void
+		Arguments: double	x
+
+	-o- PFGammaCandsE
+		Return: double
+		Arguments: void	
+
+	-o- setPFGammaCandsE
+		Return: void
+		Arguments: double	x
+
+	-o- isolPFGammaCandsE
+		Return: double
+		Arguments: void	
+
+	-o- setisolPFGammaCandsE
+		Return: void
+		Arguments: double	x
+
+	-o- PFGammaCandsN
+		Return: int
+		Arguments: void	
+
+	-o- setPFGammaCandsN
+		Return: void
+		Arguments: int	x
+
+	-o- PFGammaCandsRadius
+		Return: double
+		Arguments: void	
+
+	-o- setPFGammaCandsRadius
+		Return: void
+		Arguments: double	x
+
+	-o- PFGammaCandsEJetalternatERatio
+		Return: double
+		Arguments: void	
+
+	-o- setPFGammaCandsEJetalternatERatio
+		Return: void
+		Arguments: double	x
+
+	-o- isolPFGammaCandsEJetalternatERatio
+		Return: double
+		Arguments: void	
+
+	-o- setisolPFGammaCandsEJetalternatERatio
+		Return: void
+		Arguments: double	x
+
+	-o- PFGammaCandsERatio
+		Return: double
+		Arguments: void	
+
+	-o- setPFGammaCandsERatio
+		Return: void
+		Arguments: double	x
+
+	-o- alternatLorentzVect
+		Return: math::XYZTLorentzVector
+		Arguments: void	
+
+	-o- setalternatLorentzVect
+		Return: void
+		Arguments: math::XYZTLorentzVector	x
+
+	-o- ECALEtleadPFChargedHadrCandPtRatio
+		Return: double
+		Arguments: void	
+
+	-o- setECALEtleadPFChargedHadrCandPtRatio
+		Return: void
+		Arguments: double	x
+
+	-o- HCALEtleadPFChargedHadrCandPtRatio
+		Return: double
+		Arguments: void	
+
+	-o- setHCALEtleadPFChargedHadrCandPtRatio
+		Return: void
+		Arguments: double	x
+
+Methods from reco::BaseTagInfo
+
+	-o- clone
+		Return: BaseTagInfo*
+		Arguments: void	
+
+	-o- tracks
+		Return: edm::RefVector<std::vector<Track>>
+		Arguments: void	
+
+	-o- hasTracks
+		Return: bool
+		Arguments: void	
+
+	-o- taggingVariables
+		Return: TaggingVariableList
+		Arguments: void	
+
+	-o- jet
+		Return: edm::RefToBase<Jet>
+		Arguments: void	
+

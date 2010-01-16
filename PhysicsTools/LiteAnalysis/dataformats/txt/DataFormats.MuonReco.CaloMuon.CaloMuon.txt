@@ -1,0 +1,87 @@
+Class:
+	reco::CaloMuon
+
+Header:
+	DataFormats/MuonReco/interface/CaloMuon.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:18 2010	lsclass.py $Revision:$
+
+Methods from reco::CaloMuon
+
+	-o- track
+		Return: edm::Ref<std::vector<Track>>
+		Arguments: void	
+
+	-o- setTrack
+		Return: void
+		Arguments: const TrackRef&	t
+
+	-o- isEnergyValid
+		Return: bool
+		Arguments: void	
+
+	-o- calEnergy
+		Return: MuonEnergy
+		Arguments: void	
+
+	-o- getCalEnergy
+		Return: MuonEnergy
+		Arguments: void	
+
+	-o- setCalEnergy
+		Return: void
+		Arguments: const MuonEnergy&	calEnergy
+
+	-o- caloCompatibility
+		Return: float
+		Arguments: void	
+
+	-o- getCaloCompatibility
+		Return: float
+		Arguments: void	
+
+	-o- setCaloCompatibility
+		Return: void
+		Arguments: float	input
+
+	-o- isCaloCompatibilityValid
+		Return: bool
+		Arguments: void	
+
+	-o- charge
+		Return: int
+		Arguments: void	
+
+	-o- theta
+		Return: double
+		Arguments: void	
+
+	-o- p
+		Return: double
+		Arguments: void	
+
+	-o- pt
+		Return: double
+		Arguments: void	
+
+	-o- px
+		Return: double
+		Arguments: void	
+
+	-o- py
+		Return: double
+		Arguments: void	
+
+	-o- pz
+		Return: double
+		Arguments: void	
+
+	-o- phi
+		Return: double
+		Arguments: void	
+
+	-o- eta
+		Return: double
+		Arguments: void	
+

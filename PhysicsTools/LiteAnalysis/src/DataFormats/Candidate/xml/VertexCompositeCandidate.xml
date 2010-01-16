@@ -1,0 +1,210 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: VertexCompositeCandidate.xml
+  Created:  Thu Jan 14 22:46:45 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Candidate/interface/VertexCompositeCandidate.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Candidate/interface/VertexCompositeCandidate.h">
+
+    <include name="&quot;DataFormats/Candidate/interface/VertexCompositeCandidateFwd.h&quot;"/>
+    <include name="&quot;DataFormats/Candidate/interface/CompositeCandidate.h&quot;"/>
+
+    <namespace name="reco">
+
+        <class name="VertexCompositeCandidate"
+               fullname="reco::VertexCompositeCandidate"
+               module="DataFormats.Candidate"
+               project=""
+               type="regular">
+            <baseclass name="public CompositeCandidate"/>
+
+            <section name="public">
+                <constructor name="VertexCompositeCandidate"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+VertexCompositeCandidate();
+                </constructor>
+
+                <constructor name="VertexCompositeCandidate"
+                             return=""
+                             args="['Charge','const LorentzVector&amp;','const Point&amp;','int=0','int=0','bool=true']"
+                             vars="['q','p4','vtx','pdgId','status','integerCharge']"
+                             qual="">
+VertexCompositeCandidate(Charge q, const LorentzVector&amp; p4, const Point&amp; vtx, int pdgId=0, int status=0, bool integerCharge=true);
+                    <comment>
+        constructor from values
+                    </comment>
+                </constructor>
+
+                <constructor name="VertexCompositeCandidate"
+                             return=""
+                             args="['Charge','const LorentzVector&amp;','const Point&amp;','const CovarianceMatrix&amp;','double','double','int=0','int=0','bool=true']"
+                             vars="['q','p4','vtx','err','chi2','ndof','pdgId','status','integerCharge']"
+                             qual="">
+VertexCompositeCandidate(Charge q, const LorentzVector&amp; p4, const Point&amp; vtx, const CovarianceMatrix&amp; err, double chi2, double ndof, int pdgId=0, int status=0, bool integerCharge=true);
+                    <comment>
+        constructor from values
+                    </comment>
+                </constructor>
+
+                <constructor name="VertexCompositeCandidate"
+                             return="explicit"
+                             args="['const Particle&amp;']"
+                             vars="['p']"
+                             qual="">
+explicit VertexCompositeCandidate(const Particle&amp; p);
+                    <comment>
+        constructor from values
+                    </comment>
+                </constructor>
+
+                <constructor name="VertexCompositeCandidate"
+                             return="explicit"
+                             args="['const Candidate&amp;']"
+                             vars="['p']"
+                             qual="">
+explicit VertexCompositeCandidate(const Candidate&amp; p);
+                    <comment>
+         constructor from values
+                    </comment>
+                </constructor>
+
+                <constructor name="VertexCompositeCandidate"
+                             return="explicit"
+                             args="['const CompositeCandidate&amp;']"
+                             vars="['p']"
+                             qual="">
+explicit VertexCompositeCandidate(const CompositeCandidate&amp; p);
+                    <comment>
+         constructor from values
+                    </comment>
+                </constructor>
+
+                <destructor name="~VertexCompositeCandidate"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~VertexCompositeCandidate();
+                    <comment>
+        destructor
+                    </comment>
+                </destructor>
+
+                <method1 name="clone"
+                         return="virtual VertexCompositeCandidate*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual VertexCompositeCandidate* clone() const;
+                    <comment>
+        returns a clone of the candidate
+                    </comment>
+                </method1>
+
+                <method1 name="vertexChi2"
+                         return="virtual double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual double vertexChi2() const;
+                    <comment>
+        chi-squares
+                    </comment>
+                </method1>
+
+                <method1 name="vertexNdof"
+                         return="virtual double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual double vertexNdof() const;
+                    <comment>
+        Number of degrees of freedom
+        Meant to be Double32_t for soft-assignment fitters:
+        tracks may contribute to the vertex with fractional weights.
+        The ndof is then = to the sum of the track weights.
+        see e.g. CMS NOTE-2006/032, CMS NOTE-2004/002
+                    </comment>
+                </method1>
+
+                <method1 name="vertexNormalizedChi2"
+                         return="virtual double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual double vertexNormalizedChi2() const;
+                    <comment>
+        chi-squared divided by n.d.o.f.
+                    </comment>
+                </method1>
+
+                <method1 name="vertexCovariance"
+                         return="virtual double"
+                         args="['int','int']"
+                         vars="['i','j']"
+                         qual="const">
+virtual double vertexCovariance(int i, int j) const;
+                    <comment>
+        (i, j)-th element of error matrix, i, j = 0, ... 2
+                    </comment>
+                </method1>
+
+                <method1 name="fillVertexCovariance"
+                         return="virtual void"
+                         args="['CovarianceMatrix&amp;']"
+                         vars="['v']"
+                         qual="const">
+virtual void fillVertexCovariance(CovarianceMatrix&amp; v) const;
+                    <comment>
+        fill SMatrix
+                    </comment>
+                </method1>
+
+                <method1 name="setChi2AndNdof"
+                         return="void"
+                         args="['double','double']"
+                         vars="['chi2','ndof']"
+                         qual="">
+void setChi2AndNdof(double chi2, double ndof);
+                    <comment>
+        set chi2 and ndof
+                    </comment>
+                </method1>
+
+                <method1 name="setCovariance"
+                         return="void"
+                         args="['const CovarianceMatrix&amp;']"
+                         vars="['m']"
+                         qual="">
+void setCovariance(const CovarianceMatrix&amp; m);
+                    <comment>
+        set covariance matrix
+                    </comment>
+                </method1>
+
+            </section>
+
+        </class>
+    </namespace>
+
+    <type name="Charge"/>
+    <type name="CompositeCandidate"/>
+    <type name="CovarianceMatrix&amp;"/>
+    <type name="VertexCompositeCandidate*"/>
+    <type name="bool"/>
+    <type name="const Candidate&amp;"/>
+    <type name="const CompositeCandidate&amp;"/>
+    <type name="const CovarianceMatrix&amp;"/>
+    <type name="const LorentzVector&amp;"/>
+    <type name="const Particle&amp;"/>
+    <type name="const Point&amp;"/>
+    <type name="double"/>
+    <type name="int"/>
+    <type name="reco::VertexCompositeCandidate"/>
+    <type name="void"/>
+</header>

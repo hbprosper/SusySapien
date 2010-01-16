@@ -1,0 +1,11 @@
+edm::reftobase::BaseVectorHolder<T>|BaseVectorHolder*|clone|void
+edm::reftobase::BaseVectorHolder<T>|BaseVectorHolder*|cloneEmpty|void
+edm::reftobase::BaseVectorHolder<T>|bool|empty|void
+edm::reftobase::BaseVectorHolder<T>|size_t|size|void
+edm::reftobase::BaseVectorHolder<T>|ProductID|id|void
+edm::reftobase::BaseVectorHolder<T>|EDProductGetter const*|productGetter|void
+edm::reftobase::BaseVectorHolder<T>|const_iterator|begin|void
+edm::reftobase::BaseVectorHolder<T>|const_iterator|end|void
+edm::reftobase::BaseVectorHolder<T>|const void*|product|void
+edm::reftobase::BaseVectorHolder<T>|bool|isAvailable|void
+edm::reftobase::BaseVectorHolder<T>|std::auto_ptr<RefVectorHolderBase>|vectorHolder|void

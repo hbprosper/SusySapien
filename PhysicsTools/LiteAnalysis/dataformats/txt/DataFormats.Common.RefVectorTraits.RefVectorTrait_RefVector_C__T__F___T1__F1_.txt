@@ -1,0 +1,9 @@
+Class:
+	edm::refhelper::RefVectorTrait<C, T, F>
+
+Header:
+	DataFormats/Common/interface/RefVectorTraits.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:16:05 2010	lsclass.py $Revision:$
+

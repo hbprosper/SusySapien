@@ -1,0 +1,13 @@
+edm::Ref<C, T, F>|T const*|get|void
+edm::Ref<C, T, F>|bool|isNull|void
+edm::Ref<C, T, F>|bool|isNonnull|void
+edm::Ref<C, T, F>|ProductID|id|void
+edm::Ref<C, T, F>|EDProductGetter const*|productGetter|void
+edm::Ref<C, T, F>|C const*|product|void
+edm::Ref<C, T, F>|typename boost::remove_cv<typename boost::remove_reference<typename boost::binary_traits<F>::second_argument_type>::RefHolderToVector<T1, Ref<C, T, F> >>::RefHolderToVector<T1, Ref<C, T, F> >|key|void
+edm::Ref<C, T, F>|typename boost::remove_cv<typename boost::remove_reference<typename boost::binary_traits<F>::second_argument_type>::RefHolderToVector<T1, Ref<C, T, F> >>::RefHolderToVector<T1, Ref<C, T, F> >|index|void
+edm::Ref<C, T, F>|bool|hasProductCache|void
+edm::Ref<C, T, F>|bool|hasCache|void
+edm::Ref<C, T, F>|bool|isAvailable|void
+edm::Ref<C, T, F>|bool|isTransient|void
+edm::Ref<C, T, F>|RefBase<typename boost::remove_cv<typename boost::remove_reference<typename boost::binary_traits<F>::second_argument_type>::RefHolderToVector<T1, Ref<C, T, F> >>::RefHolderToVector<T1, Ref<C, T, F> >> const&|ref|void

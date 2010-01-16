@@ -1,0 +1,4 @@
+L1GctFibreWord|uint32_t|data|void
+L1GctFibreWord|uint16_t|block|void
+L1GctFibreWord|uint16_t|index|void
+L1GctFibreWord|int16_t|bx|void

@@ -1,0 +1,194 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: UserData.xml
+  Created:  Thu Jan 14 22:48:24 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/PatCandidates/interface/UserData.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/PatCandidates/interface/UserData.h">
+
+    <include name="&lt;string&gt;"/>
+    <include name="&lt;vector&gt;"/>
+    <include name="&lt;typeinfo&gt;"/>
+    <include name="&lt;cxxabi.h&gt;"/>
+    <include name="&lt;DataFormats/Common/interface/OwnVector.h&gt;"/>
+
+    <namespace name="pat">
+
+        <class name="UserData"
+               fullname="pat::UserData"
+               module="DataFormats.PatCandidates"
+               project=""
+               type="abstract regular">
+
+            <section name="public">
+                <constructor name="UserData"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+UserData();
+                </constructor>
+
+                <destructor name="~UserData"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~UserData();
+                </destructor>
+
+                <method1 name="clone"
+                         return="virtual UserData*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const = 0">
+virtual UserData* clone() const=0;
+                    <comment>
+        Necessary for deep copy in OwnVector
+                    </comment>
+                </method1>
+
+                <method1 name="typeId"
+                         return="virtual const std::type_info&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const = 0">
+virtual const std::type_info&amp; typeId() const=0;
+                    <comment>
+        Concrete type of stored data
+                    </comment>
+                </method1>
+
+                <method1 name="typeName"
+                         return="virtual const std::string&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const = 0">
+virtual const std::string&amp; typeName() const=0;
+                    <comment>
+        Human readable name of the concrete type of stored data
+                    </comment>
+                </method1>
+
+                <method2 name="get"
+                         return="template&lt;typename T&gt; const T*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+template&lt;typename T&gt; const T* get() const;
+                    <comment>
+        I don't think there is an easy way to get it working with generic type T,
+        barrying the use of ROOT::Reflex and all the edm::Ptr technicalities.
+        I'd say we can live without polymorphic storage of polymorphic data
+                    </comment>
+                </method2>
+
+                <method1 name="bareData"
+                         return="const void*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const void* bareData() const;
+                    <comment>
+        Really needed for CINT? I would really like to avoid this
+                    </comment>
+                </method1>
+
+                <method2 name="make"
+                         return="template&lt;typename T&gt; static std::auto_ptr&lt;UserData&gt;"
+                         args="['const T&amp;','bool=false']"
+                         vars="['value','transientOnly']"
+                         qual="">
+template&lt;typename T&gt;     static std::auto_ptr&lt;UserData&gt; make(const T&amp; value, bool transientOnly=false);
+                    <comment>
+        It will check for dictionaries, unless 'transientOnly' is true
+                    </comment>
+                </method2>
+
+            </section>
+
+        </class>
+
+        <class name="UserHolder"
+               fullname="pat::UserHolder&lt;T&gt;"
+               module="DataFormats.PatCandidates"
+               project=""
+               type="template"
+               template="template&lt;typename T&gt;">
+            <baseclass name="public UserData"/>
+
+            <section name="public">
+                <constructor name="UserHolder"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+UserHolder();
+                </constructor>
+
+                <constructor name="UserHolder"
+                             return=""
+                             args="['const T&amp;']"
+                             vars="['data']"
+                             qual="">
+UserHolder(const T&amp; data);
+                </constructor>
+
+                <method2 name="clone"
+                         return="virtual UserHolder&lt;T&gt;*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual UserHolder&lt;T&gt;* clone() const;
+                    <comment>
+            Clone
+                    </comment>
+                </method2>
+
+                <method1 name="typeId"
+                         return="virtual const std::type_info&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual const std::type_info&amp; typeId() const;
+                    <comment>
+            Concrete type of stored data
+                    </comment>
+                </method1>
+
+                <method1 name="typeName"
+                         return="virtual const std::string&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual const std::string&amp; typeName() const;
+                    <comment>
+            Human readable name of the concrete type of stored data
+                    </comment>
+                </method1>
+
+            </section>
+
+        </class>
+        <typedef name="UserDataCollection"
+                 value="edm::OwnVector&lt;pat::UserData&gt;">
+typedef edm::OwnVector&lt;pat::UserData&gt; UserDataCollection;
+        </typedef>
+
+    </namespace>
+
+    <type name="UserData"/>
+    <type name="UserData*"/>
+    <type name="UserHolder&lt;T&gt;*"/>
+    <type name="bool"/>
+    <type name="const std::string&amp;"/>
+    <type name="const std::type_info&amp;"/>
+    <type name="const void*"/>
+    <type name="pat::UserData"/>
+    <type name="pat::UserHolder&lt;T&gt;"/>
+    <type name="template&lt;typename T&gt; const T*"/>
+    <type name="template&lt;typename T&gt; std::auto_ptr&lt;UserData&gt;"/>
+    <type name="void"/>
+</header>

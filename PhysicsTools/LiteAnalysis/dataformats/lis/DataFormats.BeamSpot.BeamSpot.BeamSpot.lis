@@ -1,0 +1,18 @@
+reco::BeamSpot|const math::XYZPoint&|position|void
+reco::BeamSpot|double|x0|void
+reco::BeamSpot|double|y0|void
+reco::BeamSpot|double|z0|void
+reco::BeamSpot|double|sigmaZ|void
+reco::BeamSpot|double|dxdz|void
+reco::BeamSpot|double|dydz|void
+reco::BeamSpot|double|BeamWidth|void
+reco::BeamSpot|double|x0Error|void
+reco::BeamSpot|double|y0Error|void
+reco::BeamSpot|double|z0Error|void
+reco::BeamSpot|double|sigmaZ0Error|void
+reco::BeamSpot|double|dxdzError|void
+reco::BeamSpot|double|dydzError|void
+reco::BeamSpot|double|BeamWidthError|void
+reco::BeamSpot|math::Error<dimension>::ROOT::Math::SMatrix<double, N, N, ROOT::Math::MatRepSym<double, N> >|covariance|void
+reco::BeamSpot|math::Error<dim3>::ROOT::Math::SMatrix<double, N, N, ROOT::Math::MatRepSym<double, N> >|covariance3D|void
+reco::BeamSpot|math::Error<dim3>::ROOT::Math::SMatrix<double, N, N, ROOT::Math::MatRepSym<double, N> >|rotatedCovariance3D|void

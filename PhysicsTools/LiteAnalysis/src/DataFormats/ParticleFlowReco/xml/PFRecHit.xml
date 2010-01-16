@@ -1,0 +1,427 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: PFRecHit.xml
+  Created:  Thu Jan 14 22:48:01 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/ParticleFlowReco/interface/PFRecHit.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/ParticleFlowReco/interface/PFRecHit.h">
+
+    <include name="&lt;vector&gt;"/>
+    <include name="&lt;map&gt;"/>
+    <include name="&lt;iostream&gt;"/>
+    <include name="&quot;DataFormats/Math/interface/Point3D.h&quot;"/>
+    <include name="&quot;Rtypes.h&quot;"/>
+    <include name="&quot;DataFormats/Math/interface/Vector3D.h&quot;"/>
+    <include name="&quot;Math/GenVector/PositionVector3D.h&quot;"/>
+    <include name="&quot;DataFormats/ParticleFlowReco/interface/PFLayer.h&quot;"/>
+
+    <namespace name="reco">
+        <comment>
+  C decide what is the default rechit index.
+  C maybe 0 ? -&gt; compression
+  C then the position is index-1.
+  C provide a helper class to access the rechit.
+        </comment>
+
+        <class name="PFRecHit"
+               fullname="reco::PFRecHit"
+               module="DataFormats.ParticleFlowReco"
+               project=""
+               type="regular printable">
+            <comment>
+     \class PFRecHit
+     \brief Particle flow rechit (rechit + geometry and topology information). See clustering algorithm in PFClusterAlgo
+
+     \author Colin Bernet
+     \date   July 2006
+            </comment>
+
+            <section name="public">
+                <enum name="">
+enum {
+
+      NONE=0
+    };
+                    <field name="NONE" value="0"/>
+                </enum>
+
+                <typedef name="REPPoint"
+                         value="ROOT::Math::PositionVector3D&lt;ROOT::Math::CylindricalEta3D&lt;Double32_t&gt; &gt;">
+typedef ROOT::Math::PositionVector3D&lt;ROOT::Math::CylindricalEta3D&lt;Double32_t&gt; &gt; REPPoint;
+                </typedef>
+
+                <typedef name="REPPointVector"
+                         value="std::vector&lt;REPPoint&gt;">
+typedef std::vector&lt;REPPoint&gt; REPPointVector;
+                </typedef>
+
+                <constructor name="PFRecHit"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+PFRecHit();
+                    <comment>
+        default constructor. Sets energy and position to zero
+                    </comment>
+                </constructor>
+
+                <constructor name="PFRecHit"
+                             return=""
+                             args="['unsigned','PFLayer::Layer','double','const math::XYZPoint&amp;','const math::XYZVector&amp;','const std::vector&lt;math::XYZPoint &gt;&amp;']"
+                             vars="['detId','layer','energy','posxyz','axisxyz','cornersxyz']"
+                             qual="">
+PFRecHit(unsigned detId, PFLayer::Layer layer, double energy, const math::XYZPoint&amp; posxyz, const math::XYZVector&amp; axisxyz, const std::vector&lt;math::XYZPoint &gt;&amp; cornersxyz);
+                    <comment>
+        constructor from values
+                    </comment>
+                </constructor>
+
+                <constructor name="PFRecHit"
+                             return=""
+                             args="['unsigned','PFLayer::Layer','double','double','double','double','double','double','double']"
+                             vars="['detId','layer','energy','posx','posy','posz','axisx','axisy','axisz']"
+                             qual="">
+PFRecHit(unsigned detId, PFLayer::Layer layer, double energy, double posx, double posy, double posz, double axisx, double axisy, double axisz);
+                </constructor>
+
+                <copyconstructor name="PFRecHit"
+                                 return=""
+                                 args="['const PFRecHit&amp;']"
+                                 vars="['other']"
+                                 qual="">
+PFRecHit(const PFRecHit&amp; other);
+                    <comment>
+        copy
+                    </comment>
+                </copyconstructor>
+
+                <destructor name="~PFRecHit"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~PFRecHit();
+                    <comment>
+        destructor
+                    </comment>
+                </destructor>
+
+                <method1 name="calculatePositionREP"
+                         return="void"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+void calculatePositionREP();
+                    <comment>
+        calculates rho eta phi position once and for all
+                    </comment>
+                </method1>
+
+                <method1 name="add4Neighbour"
+                         return="void"
+                         args="['unsigned']"
+                         vars="['index']"
+                         qual="">
+void add4Neighbour(unsigned index);
+                    <comment>
+           void setNeighbours( const std::vector&lt; unsigned &gt;&amp; neighbours );
+                    </comment>
+                </method1>
+
+                <method1 name="add8Neighbour"
+                         return="void"
+                         args="['unsigned']"
+                         vars="['index']"
+                         qual="">
+void add8Neighbour(unsigned index);
+                </method1>
+
+                <method1 name="clearNeighbours"
+                         return="void"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+void clearNeighbours();
+                </method1>
+
+                <method1 name="setNWCorner"
+                         return="void"
+                         args="['double','double','double']"
+                         vars="['posx','posy','posz']"
+                         qual="">
+void setNWCorner(double posx, double posy, double posz);
+                    <comment>
+       void      findPtrsToNeighbours( const std::map&lt;unsigned,  reco::PFRecHit* &gt;&amp; allhits );
+                    </comment>
+                </method1>
+
+                <method1 name="setSWCorner"
+                         return="void"
+                         args="['double','double','double']"
+                         vars="['posx','posy','posz']"
+                         qual="">
+void setSWCorner(double posx, double posy, double posz);
+                </method1>
+
+                <method1 name="setSECorner"
+                         return="void"
+                         args="['double','double','double']"
+                         vars="['posx','posy','posz']"
+                         qual="">
+void setSECorner(double posx, double posy, double posz);
+                </method1>
+
+                <method1 name="setNECorner"
+                         return="void"
+                         args="['double','double','double']"
+                         vars="['posx','posy','posz']"
+                         qual="">
+void setNECorner(double posx, double posy, double posz);
+                </method1>
+
+                <method1 name="detId"
+                         return="unsigned"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+unsigned detId() const;
+                    <comment>
+        rechit detId
+                    </comment>
+                </method1>
+
+                <method1 name="layer"
+                         return="PFLayer::Layer"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+PFLayer::Layer layer() const;
+                    <comment>
+        rechit layer
+                    </comment>
+                </method1>
+
+                <method1 name="energy"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double energy() const;
+                    <comment>
+        rechit energy
+                    </comment>
+                </method1>
+
+                <method1 name="position"
+                         return="const math::XYZPoint&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const math::XYZPoint&amp; position() const;
+                    <comment>
+        rechit cell centre x, y, z
+                    </comment>
+                </method1>
+
+                <method1 name="positionREP"
+                         return="const REPPoint&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const REPPoint&amp; positionREP() const;
+                    <comment>
+        rechit cell centre rho, eta, phi. call calculatePositionREP before !
+                    </comment>
+                </method1>
+
+                <method1 name="getAxisXYZ"
+                         return="const math::XYZVector&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const math::XYZVector&amp; getAxisXYZ() const;
+                    <comment>
+        rechit cell axis x, y, z
+                    </comment>
+                </method1>
+
+                <method2 name="getCornersXYZ"
+                         return="const std::vector&lt;math::XYZPoint &gt;&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const std::vector&lt;math::XYZPoint &gt;&amp; getCornersXYZ() const;
+                    <comment>
+        rechit corners
+                    </comment>
+                </method2>
+
+                <method1 name="getCornersREP"
+                         return="const REPPointVector&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const REPPointVector&amp; getCornersREP() const;
+                    <comment>
+        rechit corners
+                    </comment>
+                </method1>
+
+                <method2 name="neighbours4"
+                         return="const std::vector&lt;unsigned &gt;&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const std::vector&lt;unsigned &gt;&amp; neighbours4() const;
+                </method2>
+
+                <method2 name="neighbours8"
+                         return="const std::vector&lt;unsigned &gt;&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const std::vector&lt;unsigned &gt;&amp; neighbours8() const;
+                </method2>
+
+                <method2 name="neighboursIds4"
+                         return="const std::vector&lt;unsigned &gt;&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const std::vector&lt;unsigned &gt;&amp; neighboursIds4() const;
+                </method2>
+
+                <method2 name="neighboursIds8"
+                         return="const std::vector&lt;unsigned &gt;&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const std::vector&lt;unsigned &gt;&amp; neighboursIds8() const;
+                </method2>
+
+                <method1 name="isNeighbour4"
+                         return="bool"
+                         args="['unsigned']"
+                         vars="['id']"
+                         qual="const">
+bool isNeighbour4(unsigned id) const;
+                    <comment>
+        id is the rechit index ! not the detId
+                    </comment>
+                </method1>
+
+                <method1 name="isNeighbour8"
+                         return="bool"
+                         args="['unsigned']"
+                         vars="['id']"
+                         qual="const">
+bool isNeighbour8(unsigned id) const;
+                    <comment>
+        id is the rechit index ! not the detId
+                    </comment>
+                </method1>
+
+                <method1 name="size"
+                         return="void"
+                         args="['double&amp;','double&amp;']"
+                         vars="['deta','dphi']"
+                         qual="const">
+void size(double&amp; deta, double&amp; dphi) const;
+                </method1>
+
+                <operator name="operator&gt;="
+                          return="bool"
+                          args="['const PFRecHit&amp;']"
+                          vars="['rhs']"
+                          qual="const">
+bool operator&gt;=(const PFRecHit&amp; rhs) const;
+                    <comment>
+        comparison &gt;= operator
+                    </comment>
+                </operator>
+
+                <operator name="operator&gt;"
+                          return="bool"
+                          args="['const PFRecHit&amp;']"
+                          vars="['rhs']"
+                          qual="const">
+bool operator&gt;(const PFRecHit&amp; rhs) const;
+                    <comment>
+        comparison &gt; operator
+                    </comment>
+                </operator>
+
+                <operator name="operator&lt;="
+                          return="bool"
+                          args="['const PFRecHit&amp;']"
+                          vars="['rhs']"
+                          qual="const">
+bool operator&lt;=(const PFRecHit&amp; rhs) const;
+                    <comment>
+        comparison &lt;= operator
+                    </comment>
+                </operator>
+
+                <operator name="operator&lt;"
+                          return="bool"
+                          args="['const PFRecHit&amp;']"
+                          vars="['rhs']"
+                          qual="const">
+bool operator&lt;(const PFRecHit&amp; rhs) const;
+                    <comment>
+        comparison &lt; operator
+                    </comment>
+                </operator>
+
+                <operator name="operator&lt;&lt;"
+                          return="friend std::ostream&amp;"
+                          args="['std::ostream&amp;','const reco::PFRecHit&amp;']"
+                          vars="['out','hit']"
+                          qual="">
+friend std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, const reco::PFRecHit&amp; hit);
+                </operator>
+
+            </section>
+            <section name="private">
+                <constant name="nNeighbours_"
+                          type="static const unsigned"
+                          value=""/>
+                <constant name="nCorners_"
+                          type="static const unsigned"
+                          value=""/>
+            </section>
+
+            <typemap name="NONE"
+                     value="reco::PFRecHit::NONE"
+                     type="enum"/>
+            <typemap name="REPPoint"
+                     value="ROOT::Math::PositionVector3D&lt;ROOT::Math::CylindricalEta3D&lt;Double32_t&gt; &gt;"
+                     type="typedef"/>
+            <typemap name="REPPointVector"
+                     value="std::vector&lt;ROOT::Math::PositionVector3D&lt;ROOT::Math::CylindricalEta3D&lt;Double32_t&gt; &gt; &gt;"
+                     type="typedef"/>
+
+        </class>
+    </namespace>
+
+    <type name="PFLayer::Layer"/>
+    <type name="bool"/>
+    <type name="const PFRecHit&amp;"/>
+    <type name="const REPPoint&amp;"/>
+    <type name="const REPPointVector&amp;"/>
+    <type name="const math::XYZPoint&amp;"/>
+    <type name="const math::XYZVector&amp;"/>
+    <type name="const reco::PFRecHit&amp;"/>
+    <type name="const std::vector&lt;math::XYZPoint &gt;&amp;"/>
+    <type name="const std::vector&lt;unsigned &gt;&amp;"/>
+    <type name="double"/>
+    <type name="double&amp;"/>
+    <type name="enum"/>
+    <type name="reco::PFRecHit"/>
+    <type name="std::ostream&amp;"/>
+    <type name="unsigned"/>
+    <type name="void"/>
+</header>

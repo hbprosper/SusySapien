@@ -1,0 +1,9 @@
+reco::PFBlockElementTrack|PFBlockElement*|clone|void
+reco::PFBlockElementTrack|const math::ROOT::Math::PositionVector3D<ROOT::Math::Cartesian3D<float> >&|positionAtECALEntrance|void
+reco::PFBlockElementTrack|edm::Ref<std::vector<PFRecTrack>>|trackRefPF|void
+reco::PFBlockElementTrack|reco::edm::Ref<std::vector<Track>>|trackRef|void
+reco::PFBlockElementTrack|bool|isSecondary|void
+reco::PFBlockElementTrack|NuclearInteractionRef|nuclearRef|void
+reco::PFBlockElementTrack|reco::MuonRef|muonRef|void
+reco::PFBlockElementTrack|ConversionRef|convRef|void
+reco::PFBlockElementTrack|VertexCompositeCandidateRef|V0Ref|void

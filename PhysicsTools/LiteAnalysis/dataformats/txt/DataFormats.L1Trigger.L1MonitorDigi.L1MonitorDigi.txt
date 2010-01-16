@@ -1,0 +1,69 @@
+Class:
+	L1MonitorDigi
+
+Header:
+	DataFormats/L1Trigger/interface/L1MonitorDigi.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:21 2010	lsclass.py $Revision:$
+
+Methods from L1MonitorDigi
+
+	-o- setSid
+		Return: void
+		Arguments: int	sid
+
+	-o- setCid
+		Return: void
+		Arguments: int	cid
+
+	-o- setLoc
+		Return: void
+		Arguments: unsigned	x1
+		           unsigned	x2
+		           unsigned	x3
+
+	-o- setRaw
+		Return: void
+		Arguments: unsigned	raw
+
+	-o- setValue
+		Return: void
+		Arguments: unsigned	val
+
+	-o- sid
+		Return: unsigned
+		Arguments: void	
+
+	-o- cid
+		Return: unsigned
+		Arguments: void	
+
+	-o- x1
+		Return: unsigned
+		Arguments: void	
+
+	-o- x2
+		Return: unsigned
+		Arguments: void	
+
+	-o- x3
+		Return: unsigned
+		Arguments: void	
+
+	-o- raw
+		Return: unsigned
+		Arguments: void	
+
+	-o- value
+		Return: unsigned
+		Arguments: void	
+
+	-o- reset
+		Return: unsigned
+		Arguments: void	
+
+	-o- empty
+		Return: bool
+		Arguments: void	
+

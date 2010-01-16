@@ -1,0 +1,19 @@
+Class:
+	PFLayer
+
+Header:
+	DataFormats/ParticleFlowReco/interface/PFLayer.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:14:28 2010	lsclass.py $Revision:$
+
+Methods from PFLayer
+
+	-o- toCaloID
+		Return: static reco::CaloID
+		Arguments: Layer	layer
+
+	-o- fromCaloID
+		Return: static Layer
+		Arguments: const reco::CaloID&	id
+

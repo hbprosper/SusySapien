@@ -1,0 +1,3 @@
+double	residualX(int x)
+double	residualY(int x)
+

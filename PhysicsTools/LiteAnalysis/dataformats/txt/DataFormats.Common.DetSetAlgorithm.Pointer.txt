@@ -1,0 +1,9 @@
+Class:
+	edmNew::dstvdetails::Pointer
+
+Header:
+	DataFormats/Common/interface/DetSetAlgorithm.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:16:08 2010	lsclass.py $Revision:$
+

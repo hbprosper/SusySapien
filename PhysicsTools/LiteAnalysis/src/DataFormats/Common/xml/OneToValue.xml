@@ -1,0 +1,246 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: OneToValue.xml
+  Created:  Thu Jan 14 22:46:11 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Common/interface/OneToValue.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/OneToValue.h">
+
+    <include name="&quot;DataFormats/Common/interface/AssociationMapHelpers.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
+    <include name="&lt;map&gt;"/>
+
+    <namespace name="edm">
+
+        <class name="OneToValue"
+               fullname="edm::OneToValue&lt;CKey, Val, index&gt;"
+               module="DataFormats.Common"
+               project=""
+               type="template"
+               template="template&lt;typename CKey, typename Val, typename index=unsigned int&gt;">
+
+            <section>
+                <typedef name="KeyRefProd"
+                         value="edm::RefProd&lt;CKey&gt;">
+typedef edm::RefProd&lt;CKey&gt; KeyRefProd;
+                    <comment>
+        reference to &quot;key&quot; collection
+                    </comment>
+                </typedef>
+
+                <typedef name="map_assoc"
+                         value="Val">
+typedef Val map_assoc;
+                    <comment>
+        internal map associated data
+                    </comment>
+                </typedef>
+
+            </section>
+            <section name="public">
+                <typedef name="val_type"
+                         value="Val">
+typedef Val val_type;
+                    <comment>
+        values reference collection type
+                    </comment>
+                </typedef>
+
+                <typedef name="key_type"
+                         value="edm::Ref&lt;CKey&gt;">
+typedef edm::Ref&lt;CKey&gt; key_type;
+                    <comment>
+        insert key type
+                    </comment>
+                </typedef>
+
+                <typedef name="data_type"
+                         value="Val">
+typedef Val data_type;
+                    <comment>
+        insert val type
+                    </comment>
+                </typedef>
+
+                <typedef name="index_type"
+                         value="index">
+typedef index index_type;
+                    <comment>
+        index type
+                    </comment>
+                </typedef>
+
+                <typedef name="map_type"
+                         value="std::map&lt;index_type, map_assoc&gt;">
+typedef std::map&lt;index_type, map_assoc&gt; map_type;
+                    <comment>
+        map type
+                    </comment>
+                </typedef>
+
+                <typedef name="ref_type"
+                         value="helpers::Key&lt;KeyRefProd&gt;">
+typedef helpers::Key&lt;KeyRefProd&gt; ref_type;
+                    <comment>
+        reference set type
+                    </comment>
+                </typedef>
+
+                <typedef name="transient_map_type"
+                         value="std::map&lt;const typename CKey::value_type*, Val&gt;">
+typedef std::map&lt;const typename CKey::value_type*, Val&gt; transient_map_type;
+                    <comment>
+        transient map type
+                    </comment>
+                </typedef>
+
+                <typedef name="transient_key_vector"
+                         value="std::vector&lt;const typename CKey::value_type*&gt;">
+typedef std::vector&lt;const typename CKey::value_type*&gt; transient_key_vector;
+                    <comment>
+        transient key vector
+                    </comment>
+                </typedef>
+
+                <typedef name="transient_val_vector"
+                         value="std::vector&lt;Val&gt;">
+typedef std::vector&lt;Val&gt; transient_val_vector;
+                    <comment>
+        transient val vector
+                    </comment>
+                </typedef>
+
+                <method1 name="insert"
+                         return="static void"
+                         args="['ref_type&amp;','map_type&amp;','const key_type&amp;','const data_type&amp;']"
+                         vars="['ref','m','k','v']"
+                         qual="">
+static void insert(ref_type&amp; ref, map_type&amp; m, const key_type&amp; k, const data_type&amp; v);
+                    <comment>
+        insert in the map
+                    </comment>
+                </method1>
+
+                <method1 name="val"
+                         return="static val_type"
+                         args="['const ref_type&amp;','const map_assoc&amp;']"
+                         vars="['ref','v']"
+                         qual="">
+static val_type val(const ref_type&amp; ref, const map_assoc&amp; v);
+                    <comment>
+        return values collection
+                    </comment>
+                </method1>
+
+                <method1 name="size"
+                         return="static typename map_type::size_type"
+                         args="['const map_assoc&amp;']"
+                         vars="['']"
+                         qual="">
+static typename map_type::size_type size(const map_assoc&amp;);
+                    <comment>
+        size of data_type
+                    </comment>
+                </method1>
+
+                <method1 name="sort"
+                         return="static void"
+                         args="['map_type&amp;']"
+                         vars="['']"
+                         qual="">
+static void sort(map_type&amp;);
+                    <comment>
+        sort
+                    </comment>
+                </method1>
+
+                <method1 name="transientMap"
+                         return="static transient_map_type"
+                         args="['const ref_type&amp;','const map_type&amp;']"
+                         vars="['ref','map']"
+                         qual="">
+static transient_map_type transientMap(const ref_type&amp; ref, const map_type&amp; map);
+                    <comment>
+        fill transient map
+                    </comment>
+                </method1>
+
+                <method1 name="transientKeyVector"
+                         return="static transient_key_vector"
+                         args="['const ref_type&amp;','const map_type&amp;']"
+                         vars="['ref','map']"
+                         qual="">
+static transient_key_vector transientKeyVector(const ref_type&amp; ref, const map_type&amp; map);
+                    <comment>
+        fill transient key vector
+                    </comment>
+                </method1>
+
+                <method1 name="transientValVector"
+                         return="static transient_val_vector"
+                         args="['const ref_type&amp;','const map_type&amp;']"
+                         vars="['ref','map']"
+                         qual="">
+static transient_val_vector transientValVector(const ref_type&amp; ref, const map_type&amp; map);
+                    <comment>
+        fill transient val vector
+                    </comment>
+                </method1>
+
+            </section>
+
+            <typemap name="KeyRefProd"
+                     value="edm::RefProd&lt;CKey&gt;"
+                     type="typedef"/>
+            <typemap name="data_type"
+                     value="Val"
+                     type="typedef"/>
+            <typemap name="index_type"
+                     value="index"
+                     type="typedef"/>
+            <typemap name="key_type"
+                     value="edm::Ref&lt;CKey&gt;"
+                     type="typedef"/>
+            <typemap name="map_assoc"
+                     value="Val"
+                     type="typedef"/>
+            <typemap name="map_type"
+                     value="std::map&lt;index, Val&gt;"
+                     type="typedef"/>
+            <typemap name="ref_type"
+                     value="helpers::Key&lt;edm::RefProd&lt;CKey&gt; &gt;"
+                     type="typedef"/>
+            <typemap name="transient_key_vector"
+                     value="std::vector&lt;const typename CKey::value_type*&gt;"
+                     type="typedef"/>
+            <typemap name="transient_map_type"
+                     value="std::map&lt;const typename CKey::value_type*, Val&gt;"
+                     type="typedef"/>
+            <typemap name="transient_val_vector"
+                     value="std::vector&lt;Val&gt;"
+                     type="typedef"/>
+            <typemap name="val_type"
+                     value="Val"
+                     type="typedef"/>
+
+        </class>
+    </namespace>
+
+    <type name="const data_type&amp;"/>
+    <type name="const key_type&amp;"/>
+    <type name="const map_assoc&amp;"/>
+    <type name="const map_type&amp;"/>
+    <type name="const ref_type&amp;"/>
+    <type name="edm::OneToValue&lt;CKey, Val, index&gt;"/>
+    <type name="map_type&amp;"/>
+    <type name="ref_type&amp;"/>
+    <type name="transient_key_vector"/>
+    <type name="transient_map_type"/>
+    <type name="transient_val_vector"/>
+    <type name="typename map_type::size_type"/>
+    <type name="val_type"/>
+    <type name="void"/>
+</header>

@@ -1,0 +1,14 @@
+reco::GsfPFRecTrack|const reco::edm::Ref<GsfTrackCollection>&|gsfTrackRef|void
+reco::GsfPFRecTrack|int|trackId|void
+reco::GsfPFRecTrack|const edm::Ref<std::vector<PFRecTrack> >&|kfPFRecTrackRef|void
+reco::GsfPFRecTrack|const std::vector<reco::PFBrem>&|PFRecBrem|void
+reco::PFRecTrack|unsigned int|algoType|void
+reco::PFTrack|double|charge|void
+reco::PFTrack|unsigned int|nTrajectoryPoints|void
+reco::PFTrack|unsigned int|nTrajectoryMeasurements|void
+reco::PFTrack|const reco::PFTrajectoryPoint&|trajectoryPoint|unsigned
+reco::PFTrack|const reco::PFTrajectoryPoint&|extrapolatedPoint|unsigned
+reco::PFTrack|int|color|void
+reco::PFTrack|const std::vector<reco::PFTrajectoryPoint >&|trajectoryPoints|void
+reco::PFTrack|std::vector<reco::PFTrajectoryPoint >::const_iterator|innermostMeasurement|void
+reco::PFTrack|std::vector<reco::PFTrajectoryPoint >::const_iterator|outermostMeasurement|void

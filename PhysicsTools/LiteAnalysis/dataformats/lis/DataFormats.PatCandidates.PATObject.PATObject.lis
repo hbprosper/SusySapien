@@ -1,0 +1,45 @@
+pat::PATObject<ObjectType>|const reco::Candidate*|originalObject|void
+pat::PATObject<ObjectType>|const std::vector<TriggerObjectStandAlone >&|triggerObjectMatches|void
+pat::PATObject<ObjectType>|const std::vector<TriggerObjectStandAlone >|triggerObjectMatchesByFilterID|const unsigned
+pat::PATObject<ObjectType>|const std::vector<TriggerObjectStandAlone >|triggerObjectMatchesByCollection|const std::string&
+pat::PATObject<ObjectType>|const std::vector<TriggerObjectStandAlone >|triggerObjectMatchesByFilter|const std::string&
+pat::PATObject<ObjectType>|const std::vector<TriggerObjectStandAlone >|triggerObjectMatchesByPath|const std::string&
+pat::PATObject<ObjectType>|const pat::LookupTableRecord&|efficiency|const std::string&
+pat::PATObject<ObjectType>|reco::GenParticleRef|genParticleRef|size_t=0
+pat::PATObject<ObjectType>|const reco::GenParticle*|genParticle|size_t=0
+pat::PATObject<ObjectType>|size_t|genParticlesSize|void
+pat::PATObject<ObjectType>|bool|hasOverlaps|const std::string&
+pat::PATObject<ObjectType>|const reco::edm::PtrVector<Candidate>&|overlaps|const std::string&
+pat::PATObject<ObjectType>|bool|hasUserData|const std::string&
+pat::PATObject<ObjectType>|const std::string&|userDataObjectType|const std::string&
+pat::PATObject<ObjectType>|const void*|userDataBare|const std::string&
+pat::PATObject<ObjectType>|float|userFloat|const std::string&
+pat::PATObject<ObjectType>|bool|hasUserFloat|const std::string&
+pat::PATObject<ObjectType>|int32_t|userInt|const std::string&
+pat::PATObject<ObjectType>|bool|hasUserInt|const std::string&
+pat::PATObject<ObjectType>|const pat::CandKinResolution&|getKinResolution|const std::string&=""
+pat::PATObject<ObjectType>|bool|hasKinResolution|const std::string&=""
+pat::PATObject<ObjectType>|double|resolEta|const std::string&=""
+pat::PATObject<ObjectType>|double|resolTheta|const std::string&=""
+pat::PATObject<ObjectType>|double|resolPhi|const std::string&=""
+pat::PATObject<ObjectType>|double|resolE|const std::string&=""
+pat::PATObject<ObjectType>|double|resolEt|const std::string&=""
+pat::PATObject<ObjectType>|double|resolP|const std::string&=""
+pat::PATObject<ObjectType>|double|resolPt|const std::string&=""
+pat::PATObject<ObjectType>|double|resolPInv|const std::string&=""
+pat::PATObject<ObjectType>|double|resolPx|const std::string&=""
+pat::PATObject<ObjectType>|double|resolPy|const std::string&=""
+pat::PATObject<ObjectType>|double|resolPz|const std::string&=""
+pat::PATObject<ObjectType>|double|resolM|const std::string&=""
+pat::PATObject<ObjectType>|const edm::Ptr<reco::Candidate>&|originalObjectRef|void
+pat::PATObject<ObjectType>|const std::vector<TriggerPrimitive>&|triggerMatches|void
+pat::PATObject<ObjectType>|const std::vector<TriggerPrimitive>|triggerMatchesByFilter|const std::string&
+pat::PATObject<ObjectType>|std::vector<std::pair<std::string, pat::LookupTableRecord> >|efficiencies|void
+pat::PATObject<ObjectType>|const std::vector<std::string>&|efficiencyNames|void
+pat::PATObject<ObjectType>|const std::vector<pat::LookupTableRecord>&|efficiencyValues|void
+pat::PATObject<ObjectType>|std::vector<reco::GenParticleRef>|genParticleRefs|void
+pat::PATObject<ObjectType>|const std::vector<std::string>&|overlapLabels|void
+pat::PATObject<ObjectType>|template<typename T> const T*|userData|const std::string&
+pat::PATObject<ObjectType>|const std::vector<std::string>&|userDataNames|void
+pat::PATObject<ObjectType>|const std::vector<std::string>&|userFloatNames|void
+pat::PATObject<ObjectType>|const std::vector<std::string>&|userIntNames|void

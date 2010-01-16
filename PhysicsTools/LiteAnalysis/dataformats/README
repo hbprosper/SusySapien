@@ -1,0 +1,10 @@
+$Revision:$
+Harrison B. Prosper
+
+Do
+	1. mkdocs.py 			to create txt, html and lis files
+	2. mkadapters.py		to create adapter headers,
+							../interface/adapters.h and
+							to update classes_def.xml
+	
+							

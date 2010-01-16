@@ -1,0 +1,157 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: TrajectorySeed.xml
+  Created:  Thu Jan 14 22:48:55 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/TrajectorySeed/interface/TrajectorySeed.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/TrajectorySeed/interface/TrajectorySeed.h">
+
+    <include name="&quot;DataFormats/TrajectorySeed/interface/PropagationDirection.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/OwnVector.h&quot;"/>
+    <include name="&quot;DataFormats/TrackingRecHit/interface/TrackingRecHit.h&quot;"/>
+    <include name="&quot;DataFormats/TrajectoryState/interface/PTrajectoryStateOnDet.h&quot;"/>
+    <include name="&lt;utility&gt;"/>
+    <include name="&lt;algorithm&gt;"/>
+
+    <class name="TrajectorySeed"
+           fullname="TrajectorySeed"
+           module="DataFormats.TrajectorySeed"
+           project=""
+           type="regular">
+        <comment>
+   TrajectorySeed contains
+   - a TSOS
+   - a vector of RecHits (with Own_vector to store polimorphic)
+   - a propagation direction
+        </comment>
+
+        <section name="public">
+            <typedef name="recHitContainer"
+                     value="edm::OwnVector&lt;TrackingRecHit&gt;">
+typedef edm::OwnVector&lt;TrackingRecHit&gt; recHitContainer;
+            </typedef>
+
+            <typedef name="const_iterator"
+                     value="recHitContainer::const_iterator">
+typedef recHitContainer::const_iterator const_iterator;
+            </typedef>
+
+            <typedef name="range"
+                     value="std::pair&lt;const_iterator, const_iterator&gt;">
+typedef std::pair&lt;const_iterator, const_iterator&gt; range;
+            </typedef>
+
+            <constructor name="TrajectorySeed"
+                         return=""
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+TrajectorySeed();
+            </constructor>
+
+            <destructor name="~TrajectorySeed"
+                        return="virtual"
+                        args="['void']"
+                        vars="['']"
+                        qual="">
+virtual ~TrajectorySeed();
+            </destructor>
+
+            <constructor name="TrajectorySeed"
+                         return=""
+                         args="['PTrajectoryStateOnDet const&amp;','recHitContainer const&amp;','PropagationDirection']"
+                         vars="['ptsos','rh','dir']"
+                         qual="">
+TrajectorySeed(PTrajectoryStateOnDet const&amp; ptsos, recHitContainer const&amp; rh, PropagationDirection dir);
+            </constructor>
+
+            <method1 name="swap"
+                     return="void"
+                     args="['PTrajectoryStateOnDet&amp;','recHitContainer&amp;','PropagationDirection&amp;']"
+                     vars="['ptsos','rh','dir']"
+                     qual="">
+void swap(PTrajectoryStateOnDet&amp; ptsos, recHitContainer&amp; rh, PropagationDirection&amp; dir);
+            </method1>
+
+            <method1 name="swap"
+                     return="void"
+                     args="['TrajectorySeed&amp;']"
+                     vars="['rh']"
+                     qual="">
+void swap(TrajectorySeed&amp; rh);
+            </method1>
+
+            <method1 name="recHits"
+                     return="range"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+range recHits() const;
+            </method1>
+
+            <method1 name="nHits"
+                     return="unsigned int"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned int nHits() const;
+            </method1>
+
+            <method1 name="direction"
+                     return="PropagationDirection"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+PropagationDirection direction() const;
+            </method1>
+
+            <method1 name="startingState"
+                     return="PTrajectoryStateOnDet const&amp;"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+PTrajectoryStateOnDet const&amp; startingState() const;
+            </method1>
+
+            <method1 name="clone"
+                     return="virtual TrajectorySeed*"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+virtual TrajectorySeed* clone() const;
+            </method1>
+
+        </section>
+
+        <typemap name="const_iterator"
+                 value="edm::OwnVector&lt;TrackingRecHit&gt;::const_iterator"
+                 type="typedef"/>
+        <typemap name="range"
+                 value="std::pair&lt;edm::OwnVector&lt;TrackingRecHit&gt;::const_iterator, edm::OwnVector&lt;TrackingRecHit&gt;::const_iterator&gt;"
+                 type="typedef"/>
+        <typemap name="recHitContainer"
+                 value="edm::OwnVector&lt;TrackingRecHit&gt;"
+                 type="typedef"/>
+
+    </class>
+    <typedef name="BasicTrajectorySeed"
+             value="TrajectorySeed">
+typedef TrajectorySeed BasicTrajectorySeed;
+    </typedef>
+
+
+    <type name="PTrajectoryStateOnDet const&amp;"/>
+    <type name="PTrajectoryStateOnDet&amp;"/>
+    <type name="PropagationDirection"/>
+    <type name="PropagationDirection&amp;"/>
+    <type name="TrajectorySeed"/>
+    <type name="TrajectorySeed&amp;"/>
+    <type name="TrajectorySeed*"/>
+    <type name="range"/>
+    <type name="recHitContainer const&amp;"/>
+    <type name="recHitContainer&amp;"/>
+    <type name="unsigned int"/>
+    <type name="void"/>
+</header>

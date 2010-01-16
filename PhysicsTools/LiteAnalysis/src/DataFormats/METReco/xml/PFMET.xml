@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: PFMET.xml
+  Created:  Thu Jan 14 22:47:38 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/METReco/interface/PFMET.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/METReco/interface/PFMET.h">
+
+    <include name="&quot;DataFormats/METReco/interface/MET.h&quot;"/>
+    <include name="&quot;DataFormats/METReco/interface/SpecificPFMETData.h&quot;"/>
+
+    <namespace name="reco">
+
+        <class name="PFMET"
+               fullname="reco::PFMET"
+               module="DataFormats.METReco"
+               project=""
+               type="regular">
+            <baseclass name="public MET"/>
+
+            <section name="public">
+                <constructor name="PFMET"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+PFMET();
+                </constructor>
+
+                <constructor name="PFMET"
+                             return=""
+                             args="['SpecificPFMETData','double','const LorentzVector&amp;','const Point&amp;']"
+                             vars="['pf_data_','sumet_','fP4','fVertex']"
+                             qual="">
+PFMET(SpecificPFMETData pf_data_, double sumet_, const LorentzVector&amp; fP4, const Point&amp; fVertex);
+                </constructor>
+
+                <destructor name="~PFMET"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~PFMET();
+                </destructor>
+
+                <method1 name="NeutralEMFraction"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double NeutralEMFraction() const;
+                    <comment>
+      getters
+                    </comment>
+                </method1>
+
+                <method1 name="NeutralHadFraction"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double NeutralHadFraction() const;
+                </method1>
+
+                <method1 name="ChargedEMFraction"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double ChargedEMFraction() const;
+                </method1>
+
+                <method1 name="ChargedHadFraction"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double ChargedHadFraction() const;
+                </method1>
+
+                <method1 name="MuonFraction"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double MuonFraction() const;
+                </method1>
+
+                <method1 name="getSpecific"
+                         return="SpecificPFMETData"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+SpecificPFMETData getSpecific() const;
+                    <comment>
+       block accessors
+                    </comment>
+                </method1>
+
+            </section>
+
+        </class>
+    </namespace>
+
+    <type name="MET"/>
+    <type name="SpecificPFMETData"/>
+    <type name="const LorentzVector&amp;"/>
+    <type name="const Point&amp;"/>
+    <type name="double"/>
+    <type name="reco::PFMET"/>
+    <type name="void"/>
+</header>

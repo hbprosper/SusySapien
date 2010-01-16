@@ -1,0 +1,9 @@
+Class:
+	pat::tau::TauPFSpecific
+
+Header:
+	DataFormats/PatCandidates/interface/TauPFSpecific.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:14:15 2010	lsclass.py $Revision:$
+

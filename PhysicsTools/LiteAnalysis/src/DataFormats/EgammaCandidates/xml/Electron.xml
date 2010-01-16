@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: Electron.xml
+  Created:  Thu Jan 14 22:46:51 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/EgammaCandidates/interface/Electron.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/EgammaCandidates/interface/Electron.h">
+
+    <include name="&quot;DataFormats/RecoCandidate/interface/RecoCandidate.h&quot;"/>
+
+    <namespace name="reco">
+
+        <class name="Electron"
+               fullname="reco::Electron"
+               module="DataFormats.EgammaCandidates"
+               project=""
+               type="regular">
+            <baseclass name="public RecoCandidate"/>
+
+            <section name="public">
+                <constructor name="Electron"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+Electron();
+                    <comment>
+        default constructor
+                    </comment>
+                </constructor>
+
+                <constructor name="Electron"
+                             return=""
+                             args="['Charge','const LorentzVector&amp;','const Point&amp;=Point(0, 0, 0)']"
+                             vars="['q','p4','vtx']"
+                             qual="">
+Electron(Charge q, const LorentzVector&amp; p4, const Point&amp; vtx=Point(0, 0, 0));
+                    <comment>
+        constructor from values
+                    </comment>
+                </constructor>
+
+                <destructor name="~Electron"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~Electron();
+                    <comment>
+        destructor
+                    </comment>
+                </destructor>
+
+                <method1 name="clone"
+                         return="virtual Electron*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual Electron* clone() const;
+                    <comment>
+        returns a clone of the candidate
+                    </comment>
+                </method1>
+
+                <method1 name="track"
+                         return="virtual reco::TrackRef"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual reco::TrackRef track() const;
+                    <comment>
+        refrence to a Track
+                    </comment>
+                </method1>
+
+                <method1 name="superCluster"
+                         return="virtual reco::SuperClusterRef"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual reco::SuperClusterRef superCluster() const;
+                    <comment>
+        reference to a SuperCluster
+                    </comment>
+                </method1>
+
+                <method1 name="setSuperCluster"
+                         return="void"
+                         args="['const reco::SuperClusterRef&amp;']"
+                         vars="['r']"
+                         qual="">
+void setSuperCluster(const reco::SuperClusterRef&amp; r);
+                    <comment>
+        set refrence to Photon component
+                    </comment>
+                </method1>
+
+                <method1 name="setTrack"
+                         return="void"
+                         args="['const reco::TrackRef&amp;']"
+                         vars="['r']"
+                         qual="">
+void setTrack(const reco::TrackRef&amp; r);
+                    <comment>
+        set refrence to Track component
+                    </comment>
+                </method1>
+
+                <method1 name="isElectron"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isElectron() const;
+                </method1>
+
+            </section>
+
+        </class>
+    </namespace>
+
+    <type name="Charge"/>
+    <type name="Electron*"/>
+    <type name="RecoCandidate"/>
+    <type name="bool"/>
+    <type name="const LorentzVector&amp;"/>
+    <type name="const Point&amp;"/>
+    <type name="const reco::SuperClusterRef&amp;"/>
+    <type name="const reco::TrackRef&amp;"/>
+    <type name="reco::Electron"/>
+    <type name="reco::SuperClusterRef"/>
+    <type name="reco::TrackRef"/>
+    <type name="void"/>
+</header>

@@ -1,0 +1,43 @@
+Class:
+	reco::HLTTau
+
+Header:
+	DataFormats/TauReco/interface/HLTTau.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:10 2010	lsclass.py $Revision:$
+
+Methods from reco::HLTTau
+
+	-o- getEta
+		Return: float
+		Arguments: void	
+
+	-o- getPhi
+		Return: float
+		Arguments: void	
+
+	-o- getPt
+		Return: float
+		Arguments: void	
+
+	-o- getEMIsolationValue
+		Return: float
+		Arguments: void	
+
+	-o- getL25TrackIsolationResponse
+		Return: int
+		Arguments: void	
+
+	-o- getL25LeadTrackPtValue
+		Return: float
+		Arguments: void	
+
+	-o- getL3TrackIsolationResponse
+		Return: int
+		Arguments: void	
+
+	-o- getL3LeadTrackPtValue
+		Return: float
+		Arguments: void	
+

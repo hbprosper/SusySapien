@@ -1,0 +1,4 @@
+bool	hasPhi()
+bool	hasZed()
+bool	isMask(unsigned int x=Arbitrated)
+

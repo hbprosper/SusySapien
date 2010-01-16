@@ -1,0 +1,11 @@
+edm::reftobase::BaseHolder<T>|T const*|getPtr|void
+edm::reftobase::BaseHolder<T>|ProductID|id|void
+edm::reftobase::BaseHolder<T>|size_t|key|void
+edm::reftobase::BaseHolder<T>|EDProductGetter const*|productGetter|void
+edm::reftobase::BaseHolder<T>|bool|hasProductCache|void
+edm::reftobase::BaseHolder<T>|void const*|product|void
+edm::reftobase::BaseHolder<T>|bool|isAvailable|void
+edm::reftobase::BaseHolder<T>|BaseHolder<T>*|clone|void
+edm::reftobase::BaseHolder<T>|std::auto_ptr<RefHolderBase>|holder|void
+edm::reftobase::BaseHolder<T>|std::auto_ptr<BaseVectorHolder<T> >|makeVectorHolder|void
+edm::reftobase::BaseHolder<T>|std::auto_ptr<RefVectorHolderBase>|makeVectorBaseHolder|void

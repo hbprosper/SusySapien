@@ -1,0 +1,569 @@
+#!/usr/bin/env python
+#------------------------------------------------------------------------------
+# File:        lsclass.py
+# Description: Exhaustive listing of a CMS class
+# Created:     26-Sep-2008, Harrison B. Prosper
+# Revised:     14-Aug-2009, HBP - Add ".lis" format
+#              10-Dec-2009m HBP - Fix siglist bug
+#$Revison:$
+#------------------------------------------------------------------------------
+import os, sys, re
+from sys    import exit
+from time   import *
+from string import *
+from getopt import getopt, GetoptError
+from pprint import PrettyPrinter
+from boostlib import \
+	 nameonly, readXmlFile, findClassElements, stripBlanklines, \
+	 templatepar, istemplate, templateParList, findTypedefElements, \
+	 baseclassNames
+#------------------------------------------------------------------------------
+REVISION = '$Revision:$'
+cname    = re.compile(r'(?<=Class: ).*$',re.M)
+methname = re.compile(r'(?<=-o- ).*$',re.M)
+version  = re.compile(r'(?<=CMSSW_).*(?=\/src)')
+#package  = re.compile(r'(?<=\/src\/).*(?=\/interface\/)',re.M)
+package  = re.compile(r'(?<=\/src\/).*',re.M)
+stripnamespace = re.compile(r'\w+::')
+striptemplate  = re.compile(r'\<.*$')
+stripvirtual   = re.compile(r'^virtual +')
+stripincdir    = re.compile(r'interface/|include/')
+getsubsystem = re.compile(r'DataFormats.+(?=/interface)')
+getheader = re.compile(r'(?<=/interface/).*(?=\.h)')
+skipstuff = re.compile(r'iterator|component|Fwd$')
+
+SHORTOPTIONS = 'h'
+
+T_COLOR = '"black"'
+R_COLOR = '"darkmagenta"'
+A_COLOR = '"darkgreen"'
+B_COLOR = '"darkyellow"'
+C_COLOR = '"darkred"'
+D_COLOR = '"red"'
+V_COLOR = '"green"'
+M_COLOR = '"darkblue"'
+N_COLOR = '"blue"'
+#-----------------------------------------------------------------------------
+if not os.environ.has_key('PYTHON_PROJECTS'):
+	print 'PYTHON_PROJECTS not defined!\n'
+	exit(0)
+BASE = os.environ['PYTHON_PROJECTS']
+PP = PrettyPrinter()
+try:
+	from XmlMap import XmlMap
+except:
+	print "Unable to import XmlMap.py"
+	sys.exit(0)
+#-----------------------------------------------------------------------------
+def usage():
+	print '''
+Usage:
+	lsclass.py xmlfile
+	'''
+	sys.exit(0)
+#----------------------------------------------------------------------------
+def goodriddance(message):
+	print "** error ** %s" % message
+	sys.exit(0)
+#----------------------------------------------------------------------------
+def printKey(key, XmlMap):
+	if XmlMap.has_key(key):
+		print "%s:" % key
+		PP.pprint(XmlMap[key])
+	else:
+		print "entry %s not found" % key
+	sys.exit(0)
+#----------------------------------------------------------------------------
+def mksignature(retv, name, args):
+	s = [retv, name]+args
+	return joinfields(s,'|')
+#----------------------------------------------------------------------------
+def translate(data, str):
+	return str
+	#for key in data['typedef'].keys():
+	#    oldname = re.compile(r'%s' % key)
+	#    newname = data['typedef'][key]
+	#    str = oldname.sub(newname, str)
+	#return str
+#----------------------------------------------------------------------------
+def convert2html(record):
+	record = replace(record,'&','&amp;')
+	record = replace(record,'<','&lt;')
+	record = replace(record,'>','&gt;')
+	record = replace(record,'~','&atilde;')
+	record = replace(record,"\t","&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;")
+	record = replace(record,"\n","<br>")
+	record = replace(record," ","&nbsp;")
+	return record
+#----------------------------------------------------------------------------
+def color(c,s):
+	return '<font color=%s>%s</font>' % (c,s)
+#----------------------------------------------------------------------------
+def boldcolor(c,s):
+	return '<b><font color=%s>%s</font></b>' % (c,s)
+#-----------------------------------------------------------------------------
+def printMethods(data, out):
+	for cname, fname, pkg in data['class']:
+		if not data['method'].has_key(cname): continue
+
+		out.write('  Methods from %s\n\n' % fname)
+		str = ''
+		for name, retv, args, vars, comment in data['method'][cname]:
+			str += '\t-o- %s\n' % name
+			str += '\t\tReturn: %s\n' % translate(data, retv)
+			str += '\t\tArguments: '
+			buf  = ''
+			for i in range(len(args)):
+				str += buf + '%s\t%s\n' % (translate(data, args[i]), vars[i])
+				buf  = '\t\t           '
+## 			if comment != '':
+## 				str += '\t\tDescription\n'
+## 				str += comment + '\n'
+			str += '\n'        
+		out.write(str)
+#-----------------------------------------------------------------------------
+def printHeader(data, out):
+	clist = data['class']
+	inclist = data['xmldb']['include'].keys()
+	inclist.sort()
+	inclist = filter(lambda x: find(x, "DataFormats") > -1, inclist)
+
+	if len(clist) == 0:
+		filename = data["outfilestem"]
+		print "\t** not processed!", filename
+		out.close()
+		os.system("rm -rf %s*" % filename)
+		sys.exit(0)
+
+	# Write class name and its header file
+	
+	classname, fullname, package = clist[0]
+	out.write('Class:\n\t%s\n\n'  % classname)
+	out.write('Header:\n\t%s\n\n' % package)
+
+	# Write base class names
+	
+	if len(clist) > 1:
+		out.write('BaseClasses:\n')
+		for i, (name, fname, pkg) in enumerate(clist[1:]):
+			out.write('\t%s\t%s\n' % (fname, pkg))
+		out.write("\n")
+
+	# Write includes
+	
+	if len(inclist) > 1:
+		out.write('Includes:\n')
+		for i, include in enumerate(inclist):
+			out.write('\t%s\n' % include)
+		out.write("\n")
+	out.write('Version:     CMSSW_%s\n' % data['version'])
+	out.write('Created:     %s\tlsclass.py %s\n\n' % \
+			  (ctime(time()), REVISION))
+#-----------------------------------------------------------------------------
+def printTXT(filename, data):
+	out = open(filename,'w')
+	printHeader(data, out)
+	printMethods(data, out)
+	out.close()
+
+def printLIS(filename, data):
+	out = open(filename,'w')
+	printHeader(data, out)
+	if data.has_key('siglist'):
+		out.write(joinfields(data['siglist'],'\n') + '\n')
+	out.close()	
+#-----------------------------------------------------------------------------
+def populateXMLDB(include, xmldb, depth=0):
+	depth += 1
+	if depth > 20:
+		print "populateXMLDB is lost amongst the trees...woe is me!"
+		return
+
+	##D
+	print "INCLUDE( %s )" % include
+
+	if not xmldb.has_key('include'):
+		xmldb['include'] = {}
+		xmldb['class']   = {}
+		
+	if xmldb['include'].has_key(include): return
+
+	cname = nameonly(include)
+	
+	if skipstuff.search(cname) != None: return
+	
+	if not XmlMap.has_key(cname): return
+
+	# strip away iterface/ or include/ and replace by xml/
+	xmlstr = stripincdir.sub("xml/",split(include, ".")[0])
+
+	tab = (depth-1)*'  '
+    ##D
+	print "%s  XMLSTR( %s )" % (tab, xmlstr)
+
+	# Get associated xml file
+	xml = None
+	xmllist = XmlMap[cname]
+	for file in xmllist:
+		if find(file, xmlstr) < 0: continue
+		if not os.path.exists(file):
+			file = BASE + "/" + file
+			if not os.path.exists(file):
+				print "getIncludes - can't find xml file: %s" % file
+				return
+			
+		xml = readXmlFile(file)
+		if xml == None: return
+		break
+	if xml == None: return
+	
+	##D
+	#print "%s\tfound XML file" % tab
+	
+	# found xml file associated with current include.
+	# now find associated class object
+
+	classelement = None
+	classes = []
+	findClassElements(xml, classes)
+	for e in classes:
+		name = e.attrib['name']
+		if not name == cname: continue
+		classelement = e
+		break
+
+	xmldb['include'][include] = xml
+	if not xmldb['classname'].has_key(cname): xmldb['classname'][cname] = []
+	
+	if classelement != None:
+		fullname = classelement.attrib['fullname']
+		xmldb['classname'][fullname]  = [(include, xml, classelement)]
+		if not classelement in xmldb['classname'][cname]:
+			xmldb['classname'][cname].append((include, xml, classelement))
+	
+	    ##D
+		#print "%s\t\tFULLCLASSNAME( %s )\n" % (tab, fullname)
+	
+	# now find includes within this include
+	
+	for inc in xml.findall('include'):
+			include = inc.attrib['name'][1:-1]
+			populateXMLDB(include, xmldb, depth)
+#-----------------------------------------------------------------------------
+def getMethodData(methods, data):
+	for m in methods:
+		name = m.attrib['name']        
+		args = eval(m.attrib['args'])
+		retv = stripvirtual.sub("", m.attrib['return'])
+
+		# Add method only if this is a new signature
+		signature = stripnamespace.sub("",mksignature(retv, name, args))
+        ##D
+		#print "SIGNATURE(%s)" % signature
+		
+		if data['signature'].has_key(signature): continue
+
+		data['signature'][signature] = 1
+
+		vars = eval(m.attrib['vars'])
+		com  = m.findall('comment')
+		comment = ''
+		if len(com) > 0:comment = stripBlanklines(com[0].text)
+		classname = data['currentclass']
+
+		if not data.has_key('siglist'): data['siglist'] = []
+		sig = "%s|%s" % (classname, signature)
+		data['siglist'].append(sig)
+
+		if not data['method'].has_key(classname): data['method'][classname]=[]
+		data['method'][classname].append((name, retv, args, vars, comment))
+#-----------------------------------------------------------------------------
+# Note: The class name must be a fully qualified name
+#-----------------------------------------------------------------------------
+def getClassData(classname, subsystem, data, depth=0):
+	depth += 1
+	if depth > 20:
+		print "Lost in trees !"
+		return
+
+	#DD
+	print "\ngetClassData depth(%d) classname(%s)" % (depth, classname)
+	
+	# Make sure we initialize data keys
+
+	if not data.has_key('class'):  data['class'] = []
+	if not data.has_key('templateclass'):  data['templateclass'] = {}
+	if not data.has_key('signature'):      data['signature'] = {}
+	if not data.has_key('method'):         data['method'] = {}
+	if not data.has_key('typedef'):        data['typedef'] = {}
+	data['outfilestem'] = replace(subsystem,'.', '') + classname
+
+	xmldb = data['xmldb']
+	
+	fclassname = ''
+
+	# Check for templates
+
+	isAtemplate = istemplate.search(classname) != None
+
+	if isAtemplate:
+
+		# Template Class
+
+		t = templateParList(classname)
+
+		# Translate, if possible, using typedefs
+
+		for i, x in enumerate(t):
+			if data['typedef'].has_key(x):
+				t[i] = data['typedef'][x]
+
+		classname = striptemplate.sub("", classname)
+		if not xmldb['classname'].has_key(classname):
+			print "\t\tCan't find class %s" % classname
+			data['class'].append((classname, classname,''))
+			return
+
+		if not data['templateclass'].has_key(classname):
+			data['templateclass'][classname] = t
+
+	elif not xmldb['classname'].has_key(classname):
+
+		# Try translation
+
+		if data['typedef'].has_key(classname):
+		   fclassname = data['typedef'][classname]
+		   classname  = stripnamespace.sub("", fclassname)
+		else:
+			return
+
+	if not xmldb.has_key(classname):
+		##D
+		print "\t\t** XML for class %s NOT found"
+		return
+
+	# Ok, we seem to have a class that is recognized
+	
+	include, xml, element = xmldb['classname'][classname][0]
+	
+	#DB
+	print
+	print "CLASSNAME( %s )" % classname
+
+	##D
+	print "  INCLUDE( %s )" % include
+
+	# Cache current class
+
+	data['currentclass'] = element.attrib['fullname']
+
+	vers = version.findall(xml.attrib['file'])[0]
+	data['version'] = vers
+
+	pkg = package.findall(xml.attrib['file'])[0]
+
+	# Find all typedef elements in current class
+
+	telem = []
+	findTypedefElements(xml, telem)
+	for e in telem:
+		name  = e.attrib['name']
+		value = e.attrib['value']
+		data['typedef'][name] = value
+
+	# Get fully qualified name of current class
+	# If this is a template class, replace template parameters
+	# with their current values
+
+	name = element.attrib['name']
+	fname = element.attrib['fullname']
+	fullname = fname
+	if isAtemplate:
+		t = templateParList(fname)
+		for i, x in enumerate(t):
+			oldname = re.compile(r'%s' % x)
+			newname = data['templateclass'][classname][i]
+			data['typedef'][x] = newname
+			fullname = oldname.sub(newname, fname)
+	data['class'].append((fname, fullname, pkg))
+
+	sections = element.findall('section')
+	for s in sections:
+		if s.attrib.has_key('name'):
+			if s.attrib['name'] in ['private','protected']: continue
+
+		# Get methods
+
+		getMethodData(s.findall("method1"), data)
+
+		# Get methods
+
+		getMethodData(s.findall("method2"), data)
+
+	# Get includes from current xml object
+
+	incs = xml.findall('include')
+	includes = []
+	for inc in incs:
+		include = inc.attrib['name'][1:-1]
+		c = nameonly(include)
+		includes.append((include, c))
+		##D
+		print "\tinclude( %s ) c( %s )" % (include, c)
+		
+	# Loop over base classes
+	
+	bases = baseclassNames(element)
+	for classname in bases:
+		#DB
+		#print "    BASECLASS( %s )" % classname
+	
+		# The classname could be a template parameter
+		
+		if data['typedef'].has_key(classname):
+			classname = data['typedef'][classname]
+
+		#DB
+		print "          base-class( %s )" % classname,
+
+		cname = classname
+			
+		# strip away possible namespace
+		cname = stripnamespace.sub("", cname)
+		cname = striptemplate.sub("", cname)
+
+		#DB
+		print "( %s )" % cname
+
+		# try to determine the correct subsystem
+
+		found = False
+		for include, c in includes:
+			if c == cname:
+				t = getsubsystem.findall(include)
+				if len(t) == 0:
+					print "**** can't get subsystem"
+					exit(0)
+				subsystem = t[0]
+				found = True
+				#DB
+				print "          subsystem( %s )" % subsystem
+				break
+		if found:
+			getClassData(classname, subsystem, data, depth)
+		else:
+			##D
+			print "\tsubsystem not found"
+#-----------------------------------------------------------------------------
+def main():        
+	try:
+		opts, infiles = getopt(sys.argv[1:],SHORTOPTIONS)
+	except GetoptError, m:
+		print
+		print m
+		usage()
+
+	# Decode option, value pairs
+
+	subsystem = ''
+	for option, value in opts:
+
+		if option == "-h":
+			usage()
+
+	if len(infiles) == 0: usage()
+	xmlfile = infiles[0]
+	print "processing: ", xmlfile
+
+	# Make sure file exists
+	if not os.path.exists(xmlfile):
+		goodriddance("")
+		
+	# Construct include file name, assuming that we
+	# are starting at a level higher than the directory src/
+	if find(xmlfile, 'src/') < 0:
+		goodriddance("lsclass.py - directory src/ not found in %s" % xmlfile)
+		
+
+	include=replace(replace(split(xmlfile,
+								  'src/')[1],'xml/','interface/'),'.xml','.h')
+	classname = nameonly(include)
+	
+	XMLDB = {}
+	populateXMLDB(include, XMLDB)
+	#PP.pprint(XMLDB['include'])
+	
+	data = {'xmldb':XMLDB}
+	getClassData(classname, subsystem, data)
+	if not data.has_key('class'):
+		print "\t*** Unable to find class %s in subsystem %s" % (classname,
+																 subsystem)
+		printKey(classname, XmlMap)
+		sys.exit(0)
+	
+	# Write in a non-html formats
+
+	subsystem = replace(subsystem,"/", ".")
+	
+	txtfile = '%s.txt' % classname
+	if subsystem != '':
+		#subsystem = replace(subsystem, ".", "") # Get rid of any periods
+		txtfile = subsystem + "." + txtfile
+
+	printTXT(txtfile, data)
+
+	lisfile = replace(txtfile,'.txt','.lis')
+	printLIS(lisfile, data)
+
+	#-----------------------------------
+	# Write html format
+	#-----------------------------------
+	record = open(txtfile).read()
+	allmethods = methname.findall(record)    
+
+	record = convert2html(record)
+
+	outfile = '%s.html' % classname
+	if subsystem != '': outfile = subsystem + "." + outfile
+
+	out = open(outfile, 'w')
+
+	Name     = boldcolor(T_COLOR, 'Name:')
+	Fullname = boldcolor(T_COLOR, 'Class:')
+	Package  = boldcolor(T_COLOR, 'Header:')
+	Return   = color(R_COLOR,     'Return:')
+	Arguments= color(A_COLOR,     'Arguments')
+	Description= color(D_COLOR,   'Description')
+	Methods  = boldcolor(M_COLOR, 'Methods')
+	Includes = boldcolor(M_COLOR, 'Includes')
+	Bases    = boldcolor(B_COLOR, 'BaseClasses')
+
+	cname = data['class'][0][0]
+	record = replace(record, 'Class:&nbsp;&nbsp;&nbsp;%s' % cname,
+					 '<b><font size=+2>Class:&nbsp;&nbsp;&nbsp;%s</font></b>'\
+					 % cname)
+
+	record = replace(record, 'Name:',      Name)
+	record = replace(record, 'Class:',     Fullname)
+	record = replace(record, 'Header:',    Package)
+	record = replace(record, 'Return:',    Return)
+	record = replace(record, 'Arguments',  Arguments)
+	record = replace(record, 'Description',Description)
+	record = replace(record, 'Methods',    Methods)
+	record = replace(record, 'Includes',   Includes)
+	record = replace(record, 'BaseClasses',Bases)
+
+	for a in allmethods:
+		b = '-o-&nbsp;%s' % a
+		c = boldcolor(N_COLOR, a)
+		m = re.compile(r'%s(?=\<)' % b ,re.M)
+		record = m.sub(c, record)
+
+	out.write('<code>\n')
+	out.write('\t<font size=+1 color=%s>\n' % T_COLOR)
+	out.write(record)
+	out.write('\t</font>\n')
+	out.write('</code>\n')
+#-----------------------------------------------------------------------------
+main()
+

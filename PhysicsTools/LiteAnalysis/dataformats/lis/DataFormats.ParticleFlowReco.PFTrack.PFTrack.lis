@@ -1,0 +1,9 @@
+reco::PFTrack|double|charge|void
+reco::PFTrack|unsigned int|nTrajectoryPoints|void
+reco::PFTrack|unsigned int|nTrajectoryMeasurements|void
+reco::PFTrack|const reco::PFTrajectoryPoint&|trajectoryPoint|unsigned
+reco::PFTrack|const reco::PFTrajectoryPoint&|extrapolatedPoint|unsigned
+reco::PFTrack|int|color|void
+reco::PFTrack|const std::vector<reco::PFTrajectoryPoint >&|trajectoryPoints|void
+reco::PFTrack|std::vector<reco::PFTrajectoryPoint >::const_iterator|innermostMeasurement|void
+reco::PFTrack|std::vector<reco::PFTrajectoryPoint >::const_iterator|outermostMeasurement|void

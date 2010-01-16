@@ -1,0 +1,296 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: TriggerEvent.xml
+  Created:  Thu Jan 14 22:49:03 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/HLTReco/interface/TriggerEvent.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/HLTReco/interface/TriggerEvent.h">
+
+    <include name="&quot;DataFormats/HLTReco/interface/TriggerTypeDefs.h&quot;"/>
+    <include name="&quot;DataFormats/HLTReco/interface/TriggerObject.h&quot;"/>
+    <include name="&quot;FWCore/Utilities/interface/InputTag.h&quot;"/>
+    <include name="&lt;string&gt;"/>
+    <include name="&lt;vector&gt;"/>
+
+    <namespace name="trigger">
+
+        <class name="TriggerEvent"
+               fullname="trigger::TriggerEvent"
+               module="DataFormats.HLTReco"
+               project=""
+               type="regular">
+            <comment>
+      The single EDProduct to be saved for each event (AOD case)
+            </comment>
+
+            <section name="public">
+
+                <class name="TriggerFilterObject"
+                       fullname="trigger::TriggerEvent::TriggerFilterObject"
+                       module="DataFormats.HLTReco"
+                       project=""
+                       type="regular">
+                    <comment>
+        Helper class: recording trigger objects firing a single filter
+                    </comment>
+
+                    <section name="public">
+                        <member>
+std::string filterTag_;
+                            <comment>
+          encoded InputTag of filter product
+                            </comment>
+                        </member>
+
+                        <member>
+Vids filterIds_;
+                            <comment>
+          physics object type as per filter
+                            </comment>
+                        </member>
+
+                        <member>
+Keys filterKeys_;
+                            <comment>
+          indices pointing into collection of unique TriggerObjects
+                            </comment>
+                        </member>
+
+                        <constructor name="TriggerFilterObject"
+                                     return=""
+                                     args="['void']"
+                                     vars="['']"
+                                     qual="">
+TriggerFilterObject();
+                            <comment>
+          constructors
+                            </comment>
+                        </constructor>
+
+                        <constructor name="TriggerFilterObject"
+                                     return=""
+                                     args="['const edm::InputTag&amp;']"
+                                     vars="['filterTag']"
+                                     qual="">
+TriggerFilterObject(const edm::InputTag&amp; filterTag);
+                        </constructor>
+
+                        <constructor name="TriggerFilterObject"
+                                     return=""
+                                     args="['const edm::InputTag&amp;','const Vids&amp;','const Keys&amp;']"
+                                     vars="['filterTag','filterIds','filterKeys']"
+                                     qual="">
+TriggerFilterObject(const edm::InputTag&amp; filterTag, const Vids&amp; filterIds, const Keys&amp; filterKeys);
+                        </constructor>
+
+                    </section>
+
+                    <typemap name="TriggerFilterObject"
+                             value="trigger::TriggerEvent::TriggerFilterObject"
+                             type="class"/>
+                    <typemap name="filterIds_"
+                             value="trigger::TriggerEvent::TriggerFilterObject::filterIds_"
+                             type="member"/>
+                    <typemap name="filterKeys_"
+                             value="trigger::TriggerEvent::TriggerFilterObject::filterKeys_"
+                             type="member"/>
+                    <typemap name="filterTag_"
+                             value="trigger::TriggerEvent::TriggerFilterObject::filterTag_"
+                             type="member"/>
+
+                </class>
+            </section>
+            <section name="public">
+                <constructor name="TriggerEvent"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+TriggerEvent();
+                    <comment>
+        constructors
+                    </comment>
+                </constructor>
+
+                <constructor name="TriggerEvent"
+                             return=""
+                             args="['const std::string&amp;','size_type','size_type','size_type']"
+                             vars="['usedProcessName','nc','no','nf']"
+                             qual="">
+TriggerEvent(const std::string&amp; usedProcessName, size_type nc, size_type no, size_type nf);
+                </constructor>
+
+                <method1 name="addObjects"
+                         return="void"
+                         args="['const TriggerObjectCollection&amp;']"
+                         vars="['triggerObjects']"
+                         qual="">
+void addObjects(const TriggerObjectCollection&amp; triggerObjects);
+                    <comment>
+        setters
+                    </comment>
+                </method1>
+
+                <method2 name="addCollections"
+                         return="void"
+                         args="['const std::vector&lt;edm::InputTag&gt;&amp;','const Keys&amp;']"
+                         vars="['collectionTags','collectionKeys']"
+                         qual="">
+void addCollections(const std::vector&lt;edm::InputTag&gt;&amp; collectionTags, const Keys&amp; collectionKeys);
+                </method2>
+
+                <method1 name="addFilter"
+                         return="void"
+                         args="['const edm::InputTag&amp;','const Vids&amp;','const Keys&amp;']"
+                         vars="['filterTag','filterIds','filterKeys']"
+                         qual="">
+void addFilter(const edm::InputTag&amp; filterTag, const Vids&amp; filterIds, const Keys&amp; filterKeys);
+                </method1>
+
+                <method1 name="usedProcessName"
+                         return="const std::string&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const std::string&amp; usedProcessName() const;
+                    <comment>
+        getters
+                    </comment>
+                </method1>
+
+                <method2 name="collectionTags"
+                         return="const std::vector&lt;std::string&gt;&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const std::vector&lt;std::string&gt;&amp; collectionTags() const;
+                </method2>
+
+                <method1 name="collectionKeys"
+                         return="const Keys&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const Keys&amp; collectionKeys() const;
+                </method1>
+
+                <method1 name="getObjects"
+                         return="const TriggerObjectCollection&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const TriggerObjectCollection&amp; getObjects() const;
+                </method1>
+
+                <method1 name="collectionTag"
+                         return="const edm::InputTag"
+                         args="['size_type']"
+                         vars="['index']"
+                         qual="const">
+const edm::InputTag collectionTag(size_type index) const;
+                </method1>
+
+                <method1 name="collectionKey"
+                         return="size_type"
+                         args="['size_type']"
+                         vars="['index']"
+                         qual="const">
+size_type collectionKey(size_type index) const;
+                </method1>
+
+                <method1 name="filterTag"
+                         return="const edm::InputTag"
+                         args="['size_type']"
+                         vars="['index']"
+                         qual="const">
+const edm::InputTag filterTag(size_type index) const;
+                </method1>
+
+                <method1 name="filterIds"
+                         return="const Vids&amp;"
+                         args="['size_type']"
+                         vars="['index']"
+                         qual="const">
+const Vids&amp; filterIds(size_type index) const;
+                </method1>
+
+                <method1 name="filterKeys"
+                         return="const Keys&amp;"
+                         args="['size_type']"
+                         vars="['index']"
+                         qual="const">
+const Keys&amp; filterKeys(size_type index) const;
+                </method1>
+
+                <method1 name="collectionIndex"
+                         return="size_type"
+                         args="['const edm::InputTag&amp;']"
+                         vars="['collectionTag']"
+                         qual="const">
+size_type collectionIndex(const edm::InputTag&amp; collectionTag) const;
+                    <comment>
+        find index of collection from collection tag
+                    </comment>
+                </method1>
+
+                <method1 name="filterIndex"
+                         return="size_type"
+                         args="['const edm::InputTag&amp;']"
+                         vars="['filterTag']"
+                         qual="const">
+size_type filterIndex(const edm::InputTag&amp; filterTag) const;
+                    <comment>
+        find index of filter in data-member vector from filter tag
+                    </comment>
+                </method1>
+
+                <method1 name="sizeCollections"
+                         return="size_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+size_type sizeCollections() const;
+                    <comment>
+        other
+                    </comment>
+                </method1>
+
+                <method1 name="sizeObjects"
+                         return="size_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+size_type sizeObjects() const;
+                </method1>
+
+                <method1 name="sizeFilters"
+                         return="size_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+size_type sizeFilters() const;
+                </method1>
+
+            </section>
+
+        </class>
+    </namespace>
+
+    <type name="Keys"/>
+    <type name="Vids"/>
+    <type name="const Keys&amp;"/>
+    <type name="const TriggerObjectCollection&amp;"/>
+    <type name="const Vids&amp;"/>
+    <type name="const edm::InputTag"/>
+    <type name="const edm::InputTag&amp;"/>
+    <type name="const std::string&amp;"/>
+    <type name="const std::vector&lt;edm::InputTag&gt;&amp;"/>
+    <type name="const std::vector&lt;std::string&gt;&amp;"/>
+    <type name="size_type"/>
+    <type name="std::string"/>
+    <type name="trigger::TriggerEvent"/>
+    <type name="trigger::TriggerEvent::TriggerFilterObject"/>
+    <type name="void"/>
+</header>

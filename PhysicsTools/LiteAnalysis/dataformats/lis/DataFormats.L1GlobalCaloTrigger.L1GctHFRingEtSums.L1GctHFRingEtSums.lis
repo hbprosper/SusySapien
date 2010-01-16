@@ -1,0 +1,7 @@
+L1GctHFRingEtSums|static unsigned|nSums|void
+L1GctHFRingEtSums|uint16_t|capBlock|void
+L1GctHFRingEtSums|uint16_t|capIndex|void
+L1GctHFRingEtSums|int16_t|bx|void
+L1GctHFRingEtSums|bool|empty|void
+L1GctHFRingEtSums|uint16_t|raw|void
+L1GctHFRingEtSums|uint16_t|etSum|unsigned const

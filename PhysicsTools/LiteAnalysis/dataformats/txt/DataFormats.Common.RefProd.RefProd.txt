@@ -1,0 +1,67 @@
+Class:
+	edm::RefProd<C>
+
+Header:
+	DataFormats/Common/interface/RefProd.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:16:04 2010	lsclass.py $Revision:$
+
+Methods from edm::RefProd<C>
+
+	-o- get
+		Return: C const*
+		Arguments: void	
+
+	-o- product
+		Return: C const*
+		Arguments: void	
+
+	-o- refCore
+		Return: RefCore const&
+		Arguments: void	
+
+	-o- isNull
+		Return: bool
+		Arguments: void	
+
+	-o- isNonnull
+		Return: bool
+		Arguments: void	
+
+	-o- id
+		Return: ProductID
+		Arguments: void	
+
+	-o- productGetter
+		Return: EDProductGetter const*
+		Arguments: void	
+
+	-o- hasCache
+		Return: bool
+		Arguments: void	
+
+	-o- hasProductCache
+		Return: bool
+		Arguments: void	
+
+	-o- isAvailable
+		Return: bool
+		Arguments: void	
+
+	-o- isTransient
+		Return: bool
+		Arguments: void	
+
+	-o- RefProd
+		Return: template<typename T, typename F> explicit
+		Arguments: Ref<C, T, F> const&	ref
+
+	-o- RefProd
+		Return: template<typename T, typename F> explicit
+		Arguments: RefVector<C, T, F> const&	ref
+
+	-o- swap
+		Return: void
+		Arguments: RefProd<C>&	
+

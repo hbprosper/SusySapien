@@ -1,0 +1,19 @@
+Class:
+	reco::PFRecHitFraction
+
+Header:
+	DataFormats/ParticleFlowReco/interface/PFRecHitFraction.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:14:23 2010	lsclass.py $Revision:$
+
+Methods from reco::PFRecHitFraction
+
+	-o- recHitRef
+		Return: const edm::Ref<std::vector<PFRecHit>>&
+		Arguments: void	
+
+	-o- fraction
+		Return: double
+		Arguments: void	
+

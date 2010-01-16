@@ -1,0 +1,49 @@
+Class:
+	edm::EDProduct
+
+Header:
+	DataFormats/Common/interface/EDProduct.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:41 2010	lsclass.py $Revision:$
+
+Methods from edm::EDProduct
+
+	-o- isPresent
+		Return: bool
+		Arguments: void	
+
+	-o- setPtr
+		Return: void
+		Arguments: const std::type_info&	iToType
+		           unsigned long	iIndex
+		           void const*&	oPtr
+
+	-o- isMergeable
+		Return: bool
+		Arguments: void	
+
+	-o- mergeProduct
+		Return: bool
+		Arguments: EDProduct*	newProduct
+
+	-o- hasIsProductEqual
+		Return: bool
+		Arguments: void	
+
+	-o- isProductEqual
+		Return: bool
+		Arguments: EDProduct*	newProduct
+
+	-o- fillView
+		Return: void
+		Arguments: ProductID const&	id
+		           std::vector<void const*>&	view
+		           helper_vector_ptr&	helpers
+
+	-o- fillPtrVector
+		Return: void
+		Arguments: const std::type_info&	iToType
+		           const std::vector<unsigned long>&	iIndicies
+		           std::vector<void const*>&	oPtr
+

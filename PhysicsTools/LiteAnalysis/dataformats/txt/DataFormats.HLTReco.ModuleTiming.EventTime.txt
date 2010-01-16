@@ -1,0 +1,39 @@
+Class:
+	edm::EventTime
+
+Header:
+	DataFormats/HLTReco/interface/ModuleTiming.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:16:11 2010	lsclass.py $Revision:$
+
+Methods from edm::EventTime
+
+	-o- size
+		Return: unsigned
+		Arguments: void	
+
+	-o- moduleTime
+		Return: const ModuleTime&
+		Arguments: unsigned	i
+
+	-o- tot_time
+		Return: double
+		Arguments: void	
+
+	-o- name
+		Return: std::string
+		Arguments: unsigned	i
+
+	-o- time
+		Return: double
+		Arguments: unsigned	i
+
+	-o- addModuleTime
+		Return: void
+		Arguments: const ModuleTime&	m
+
+	-o- reset
+		Return: void
+		Arguments: void	
+

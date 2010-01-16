@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: EgammaTriggerFwd.xml
+  Created:  Thu Jan 14 22:47:02 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/EgammaReco/interface/EgammaTriggerFwd.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/EgammaReco/interface/EgammaTriggerFwd.h">
+
+    <include name="&lt;vector&gt;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+
+    <namespace name="reco">
+        <forward name="EgammaTrigger"/>
+        <typedef name="EgammaTriggerCollection"
+                 value="std::vector&lt;EgammaTrigger&gt;">
+typedef std::vector&lt;EgammaTrigger&gt; EgammaTriggerCollection;
+            <comment>
+      collection of EgammaTrigger objects
+            </comment>
+        </typedef>
+
+        <typedef name="EgammaTriggerRef"
+                 value="edm::Ref&lt;EgammaTriggerCollection&gt;">
+typedef edm::Ref&lt;EgammaTriggerCollection&gt; EgammaTriggerRef;
+            <comment>
+      persistent reference to EgammaTrigger objects
+            </comment>
+        </typedef>
+
+        <typedef name="EgammaTriggerRefProd"
+                 value="edm::RefProd&lt;EgammaTriggerCollection&gt;">
+typedef edm::RefProd&lt;EgammaTriggerCollection&gt; EgammaTriggerRefProd;
+            <comment>
+      reference to a EgammaTrigger collection
+            </comment>
+        </typedef>
+
+        <typedef name="EgammaTriggerRefVector"
+                 value="edm::RefVector&lt;EgammaTriggerCollection&gt;">
+typedef edm::RefVector&lt;EgammaTriggerCollection&gt; EgammaTriggerRefVector;
+            <comment>
+      vector of references to EgammaTrigger objects in the same collection
+            </comment>
+        </typedef>
+
+        <typedef name="egammaTrigger_iterator"
+                 value="EgammaTriggerRefVector::iterator">
+typedef EgammaTriggerRefVector::iterator egammaTrigger_iterator;
+            <comment>
+      iterator over a vector of references to EgammaTrigger objects
+            </comment>
+        </typedef>
+
+    </namespace>
+
+</header>

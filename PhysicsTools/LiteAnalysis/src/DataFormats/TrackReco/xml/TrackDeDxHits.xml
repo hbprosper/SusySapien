@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: TrackDeDxHits.xml
+  Created:  Thu Jan 14 22:48:50 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/TrackReco/interface/TrackDeDxHits.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/TrackReco/interface/TrackDeDxHits.h">
+
+    <include name="&quot;DataFormats/TrackReco/interface/TrackFwd.h&quot;"/>
+    <include name="&quot;DataFormats/TrackReco/interface/DeDxHit.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/AssociationVector.h&quot;"/>
+    <include name="&lt;vector&gt;"/>
+
+    <namespace name="reco">
+        <typedef name="TrackDeDxHitsCollection"
+                 value="edm::AssociationVector&lt;reco::TrackRefProd, std::vector&lt;reco::DeDxHitCollection&gt; &gt;">
+typedef edm::AssociationVector&lt;reco::TrackRefProd, std::vector&lt;reco::DeDxHitCollection&gt; &gt; TrackDeDxHitsCollection;
+            <comment>
+   Association Track -&gt; DeDx hits
+            </comment>
+        </typedef>
+
+        <typedef name="TrackDeDxHits"
+                 value="TrackDeDxHitsCollection::value_type">
+typedef TrackDeDxHitsCollection::value_type TrackDeDxHits;
+        </typedef>
+
+        <typedef name="TrackDeDxHitsRef"
+                 value="edm::Ref&lt;TrackDeDxHitsCollection&gt;">
+typedef edm::Ref&lt;TrackDeDxHitsCollection&gt; TrackDeDxHitsRef;
+        </typedef>
+
+        <typedef name="TrackDeDxHitsRefProd"
+                 value="edm::RefProd&lt;TrackDeDxHitsCollection&gt;">
+typedef edm::RefProd&lt;TrackDeDxHitsCollection&gt; TrackDeDxHitsRefProd;
+        </typedef>
+
+        <typedef name="TrackDeDxHitsRefVector"
+                 value="edm::RefVector&lt;TrackDeDxHitsCollection&gt;">
+typedef edm::RefVector&lt;TrackDeDxHitsCollection&gt; TrackDeDxHitsRefVector;
+        </typedef>
+
+    </namespace>
+
+</header>

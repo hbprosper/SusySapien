@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: GenericJetCollection.xml
+  Created:  Thu Jan 14 22:47:14 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/JetReco/interface/GenericJetCollection.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/JetReco/interface/GenericJetCollection.h">
+
+    <include name="&lt;vector&gt;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+    <include name="&quot;DataFormats/JetReco/interface/GenericJet.h&quot;"/>
+
+    <namespace name="reco">
+        <forward name="GenericJet"/>
+        <typedef name="GenericJetCollection"
+                 value="std::vector&lt;GenericJet&gt;">
+typedef std::vector&lt;GenericJet&gt; GenericJetCollection;
+            <comment>
+      collection of GenericJet objects
+            </comment>
+        </typedef>
+
+        <typedef name="GenericJetRef"
+                 value="edm::Ref&lt;GenericJetCollection&gt;">
+typedef edm::Ref&lt;GenericJetCollection&gt; GenericJetRef;
+            <comment>
+      edm references
+            </comment>
+        </typedef>
+
+        <typedef name="GenericJetRefVector"
+                 value="edm::RefVector&lt;GenericJetCollection&gt;">
+typedef edm::RefVector&lt;GenericJetCollection&gt; GenericJetRefVector;
+        </typedef>
+
+        <typedef name="GenericJetRefProd"
+                 value="edm::RefProd&lt;GenericJetCollection&gt;">
+typedef edm::RefProd&lt;GenericJetCollection&gt; GenericJetRefProd;
+        </typedef>
+
+    </namespace>
+
+</header>

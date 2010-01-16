@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: print.xml
+  Created:  Thu Jan 14 22:48:58 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/VertexReco/interface/print.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/VertexReco/interface/print.h">
+
+    <include name="&quot;FWCore/Utilities/interface/Verbosity.h&quot;"/>
+    <include name="&lt;string&gt;"/>
+
+    <namespace name="reco">
+        <forward name="Vertex"/>
+        <function1 name="print"
+                   return="std::string"
+                   args="['const Vertex&amp;','edm::Verbosity=edm::Concise']"
+                   vars="['','']"
+                   qual="">
+std::string print(const Vertex&amp;, edm::Verbosity=edm::Concise);
+            <comment>
+       Vertex print utility
+            </comment>
+        </function1>
+
+    </namespace>
+
+</header>

@@ -1,0 +1,7 @@
+unsigned int	dataSize()
+unsigned int	detsetSize(size_t x)
+bool	empty()
+unsigned int	id(size_t x)
+unsigned int	size()
+int	subdetId()
+

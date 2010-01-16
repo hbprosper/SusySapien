@@ -1,0 +1,4 @@
+TrackCandidate|PTrajectoryStateOnDet const&|trajectoryStateOnDet|void
+TrackCandidate|std::pair<RecHitContainer::const_iterator, RecHitContainer::const_iterator>|recHits|void
+TrackCandidate|TrajectorySeed const&|seed|void
+TrackCandidate|edm::RefToBase<TrajectorySeed>|seedRef|void

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: RefMacros.xml
+  Created:  Thu Jan 14 22:45:41 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/BTauReco/interface/RefMacros.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/BTauReco/interface/RefMacros.h">
+
+    <include name="&lt;vector&gt;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
+
+</header>

@@ -1,0 +1,106 @@
+Class:
+	edm::DataFrameContainer
+
+Header:
+	DataFormats/Common/interface/DataFrameContainer.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:39 2010	lsclass.py $Revision:$
+
+Methods from edm::DataFrameContainer
+
+	-o- swap
+		Return: void
+		Arguments: DataFrameContainer&	rh
+
+	-o- swap
+		Return: void
+		Arguments: IdContainer&	iic
+		           DataContainer&	idc
+
+	-o- reserve
+		Return: void
+		Arguments: size_t	isize
+
+	-o- resize
+		Return: void
+		Arguments: size_t	isize
+
+	-o- sort
+		Return: void
+		Arguments: void	
+
+	-o- push_back
+		Return: void
+		Arguments: id_type	iid
+		           data_type const*	idata
+
+	-o- push_back
+		Return: void
+		Arguments: id_type	iid
+
+	-o- set_back
+		Return: void
+		Arguments: id_type	iid
+		           data_type const*	idata
+
+	-o- set_back
+		Return: void
+		Arguments: id_type	iid
+
+	-o- set_back
+		Return: void
+		Arguments: data_type const*	idata
+
+	-o- back
+		Return: DataFrame
+		Arguments: void	
+
+	-o- pop_back
+		Return: void
+		Arguments: void	
+
+	-o- pair
+		Return: std::pair<std::vector<unsigned int>::data_type*, std::vector<data_type>::iterator>
+		Arguments: size_t	i
+
+	-o- pair
+		Return: std::pair<const_IdIter, const_DataIter>
+		Arguments: size_t	i
+
+	-o- find
+		Return: boost::transform_iterator<IterHelp, boost::counting_iterator<int> >
+		Arguments: id_type	i
+
+	-o- begin
+		Return: boost::transform_iterator<IterHelp, boost::counting_iterator<int> >
+		Arguments: void	
+
+	-o- end
+		Return: boost::transform_iterator<IterHelp, boost::counting_iterator<int> >
+		Arguments: void	
+
+	-o- subdetId
+		Return: int
+		Arguments: void	
+
+	-o- stride
+		Return: unsigned int
+		Arguments: void	
+
+	-o- empty
+		Return: bool
+		Arguments: void	
+
+	-o- size
+		Return: unsigned int
+		Arguments: void	
+
+	-o- frame
+		Return: unsigned short const*
+		Arguments: size_t	cell
+
+	-o- id
+		Return: unsigned int
+		Arguments: size_t	cell
+

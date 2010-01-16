@@ -1,0 +1,47 @@
+Class:
+	edm::OutputHandle<T>
+
+Header:
+	DataFormats/Common/interface/OutputHandle.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:55 2010	lsclass.py $Revision:$
+
+Methods from edm::OutputHandle<T>
+
+	-o- swap
+		Return: void
+		Arguments: OutputHandle&	other
+
+	-o- isValid
+		Return: bool
+		Arguments: void	
+
+	-o- failedToGet
+		Return: bool
+		Arguments: void	
+
+	-o- wrapper
+		Return: EDProduct const*
+		Arguments: void	
+
+	-o- id
+		Return: ProductID
+		Arguments: void	
+
+	-o- entryInfo
+		Return: T const*
+		Arguments: void	
+
+	-o- desc
+		Return: ConstBranchDescription const*
+		Arguments: void	
+
+	-o- whyFailed
+		Return: boost::shared_ptr<cms::Exception>
+		Arguments: void	
+
+	-o- entryInfoSharedPtr
+		Return: boost::shared_ptr<T>
+		Arguments: void	
+

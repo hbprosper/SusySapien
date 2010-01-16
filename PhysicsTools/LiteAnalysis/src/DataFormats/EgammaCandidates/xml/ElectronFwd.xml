@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: ElectronFwd.xml
+  Created:  Thu Jan 14 22:46:51 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/EgammaCandidates/interface/ElectronFwd.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/EgammaCandidates/interface/ElectronFwd.h">
+
+    <include name="&lt;vector&gt;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+
+    <namespace name="reco">
+        <forward name="Electron"/>
+        <typedef name="ElectronCollection"
+                 value="std::vector&lt;Electron&gt;">
+typedef std::vector&lt;Electron&gt; ElectronCollection;
+            <comment>
+      collectin of Electron objects
+            </comment>
+        </typedef>
+
+        <typedef name="ElectronRef"
+                 value="edm::Ref&lt;ElectronCollection&gt;">
+typedef edm::Ref&lt;ElectronCollection&gt; ElectronRef;
+            <comment>
+      reference to an object in a collection of Electron objects
+            </comment>
+        </typedef>
+
+        <typedef name="ElectronRefProd"
+                 value="edm::RefProd&lt;ElectronCollection&gt;">
+typedef edm::RefProd&lt;ElectronCollection&gt; ElectronRefProd;
+            <comment>
+      reference to a collection of Electron objects
+            </comment>
+        </typedef>
+
+        <typedef name="ElectronRefVector"
+                 value="edm::RefVector&lt;ElectronCollection&gt;">
+typedef edm::RefVector&lt;ElectronCollection&gt; ElectronRefVector;
+            <comment>
+      vector of objects in the same collection of Electron objects
+            </comment>
+        </typedef>
+
+        <typedef name="electron_iterator"
+                 value="ElectronRefVector::iterator">
+typedef ElectronRefVector::iterator electron_iterator;
+            <comment>
+      iterator over a vector of reference to Electron objects
+            </comment>
+        </typedef>
+
+    </namespace>
+
+</header>

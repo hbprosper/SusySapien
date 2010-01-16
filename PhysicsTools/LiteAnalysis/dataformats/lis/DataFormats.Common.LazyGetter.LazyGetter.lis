@@ -1,0 +1,9 @@
+edm::LazyGetter<T>|uint32_t|regions|void
+edm::LazyGetter<T>|typename std::vector<T>::const_iterator|begin|void
+edm::LazyGetter<T>|typename std::vector<T>::const_iterator|end|void
+edm::LazyGetter<T>|boost::transform_iterator<UpdateGetterAdapter<T>, typename std::vector<RegionIndex<T> >::typename std::vector<T>::const_iterator >|begin_nounpack|void
+edm::LazyGetter<T>|boost::transform_iterator<UpdateGetterAdapter<T>, typename std::vector<RegionIndex<T> >::typename std::vector<T>::const_iterator >|end_nounpack|void
+edm::LazyGetter<T>|typename std::vector<T>::typename std::vector<T>::const_iterator|begin_record|void
+edm::LazyGetter<T>|typename std::vector<T>::typename std::vector<T>::const_iterator|end_record|void
+edm::LazyGetter<T>|uint32_t|size|void
+edm::LazyGetter<T>|bool|empty|void

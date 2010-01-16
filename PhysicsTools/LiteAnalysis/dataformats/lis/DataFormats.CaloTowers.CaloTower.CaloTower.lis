@@ -1,0 +1,60 @@
+CaloTower|CaloTowerDetId|id|void
+CaloTower|size_t|constituentsSize|void
+CaloTower|DetId|constituent|size_t
+CaloTower|double|emEnergy|void
+CaloTower|double|hadEnergy|void
+CaloTower|double|outerEnergy|void
+CaloTower|double|emEt|void
+CaloTower|double|hadEt|void
+CaloTower|double|outerEt|void
+CaloTower|const GlobalPoint&|emPosition|void
+CaloTower|const GlobalPoint&|hadPosition|void
+CaloTower|int|emLvl1|void
+CaloTower|int|hadLv11|void
+CaloTower|double|hadEnergyHeOuterLayer|void
+CaloTower|double|hadEnergyHeInnerLayer|void
+CaloTower|float|ecalTime|void
+CaloTower|float|hcalTime|void
+CaloTower|int|ieta|void
+CaloTower|int|ietaAbs|void
+CaloTower|int|iphi|void
+CaloTower|int|zside|void
+CaloTower|int|numCrystals|void
+CaloTower|const std::vector<DetId>&|constituents|void
+reco::LeafCandidate|LeafCandidate*|clone|void
+reco::LeafCandidate|candidate::const_iterator|begin|void
+reco::LeafCandidate|candidate::const_iterator|end|void
+reco::LeafCandidate|candidate::iterator|begin|void
+reco::LeafCandidate|candidate::iterator|end|void
+reco::LeafCandidate|size_t|numberOfDaughters|void
+reco::LeafCandidate|size_t|numberOfMothers|void
+reco::Candidate|Candidate*|clone|void
+reco::Particle|int|charge|void
+reco::Particle|int|threeCharge|void
+reco::Particle|const math::XYZTLorentzVectorD&|p4|void
+reco::Particle|const math::ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> >&|polarP4|void
+reco::Particle|math::XYZVector|momentum|void
+reco::Particle|math::XYZVector|boostToCM|void
+reco::Particle|double|p|void
+reco::Particle|double|energy|void
+reco::Particle|double|et|void
+reco::Particle|double|mass|void
+reco::Particle|double|massSqr|void
+reco::Particle|double|mt|void
+reco::Particle|double|mtSqr|void
+reco::Particle|double|px|void
+reco::Particle|double|py|void
+reco::Particle|double|pz|void
+reco::Particle|double|pt|void
+reco::Particle|double|phi|void
+reco::Particle|double|theta|void
+reco::Particle|double|eta|void
+reco::Particle|double|rapidity|void
+reco::Particle|double|y|void
+reco::Particle|const math::XYZPoint&|vertex|void
+reco::Particle|double|vx|void
+reco::Particle|double|vy|void
+reco::Particle|double|vz|void
+reco::Particle|int|pdgId|void
+reco::Particle|int|status|void
+reco::Particle|bool|longLived|void

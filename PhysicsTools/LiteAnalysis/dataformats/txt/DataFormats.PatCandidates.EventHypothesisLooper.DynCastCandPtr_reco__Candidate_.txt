@@ -1,0 +1,23 @@
+Class:
+	pat::eventhypothesis::DynCastCandPtr<T>
+
+Header:
+	DataFormats/PatCandidates/interface/EventHypothesisLooper.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:14:19 2010	lsclass.py $Revision:$
+
+Methods from pat::eventhypothesis::DynCastCandPtr<reco::Candidate>
+
+	-o- get
+		Return: const reco::Candidate*
+		Arguments: const reco::Candidate*	ptr
+
+	-o- clearCache
+		Return: void
+		Arguments: void	
+
+	-o- typeOk
+		Return: bool
+		Arguments: const reco::Candidate*	ptr
+

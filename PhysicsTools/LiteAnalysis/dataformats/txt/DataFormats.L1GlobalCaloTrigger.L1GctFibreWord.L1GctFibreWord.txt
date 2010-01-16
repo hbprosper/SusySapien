@@ -1,0 +1,27 @@
+Class:
+	L1GctFibreWord
+
+Header:
+	DataFormats/L1GlobalCaloTrigger/interface/L1GctFibreWord.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:14:56 2010	lsclass.py $Revision:$
+
+Methods from L1GctFibreWord
+
+	-o- data
+		Return: uint32_t
+		Arguments: void	
+
+	-o- block
+		Return: uint16_t
+		Arguments: void	
+
+	-o- index
+		Return: uint16_t
+		Arguments: void	
+
+	-o- bx
+		Return: int16_t
+		Arguments: void	
+

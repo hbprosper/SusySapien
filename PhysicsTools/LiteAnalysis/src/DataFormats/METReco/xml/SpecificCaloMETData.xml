@@ -1,0 +1,163 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: SpecificCaloMETData.xml
+  Created:  Thu Jan 14 22:47:40 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/METReco/interface/SpecificCaloMETData.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/METReco/interface/SpecificCaloMETData.h">
+
+
+    <class name="SpecificCaloMETData"
+           fullname="SpecificCaloMETData"
+           module="DataFormats.METReco"
+           project=""
+           type="regular struct">
+        <comment>
+    \class SpecificCaloMETData
+
+   \short MET made from CaloTowers
+
+   SpecificCaloMETData represents MET made from CaloTowers
+   Provide energy contributions from different subdetectors
+   in addition to generic MET parameters
+
+   \author    R. Cavanaugh, UFL
+        </comment>
+
+        <section>
+            <member>
+double MaxEtInEmTowers;
+            </member>
+
+            <member>
+double MaxEtInHadTowers;
+            </member>
+
+            <member>
+double HadEtInHO;
+            </member>
+
+            <member>
+double HadEtInHB;
+            </member>
+
+            <member>
+double HadEtInHF;
+            </member>
+
+            <member>
+double HadEtInHE;
+            </member>
+
+            <member>
+double EmEtInEB;
+            </member>
+
+            <member>
+double EmEtInEE;
+            </member>
+
+            <member>
+double EmEtInHF;
+            </member>
+
+            <member>
+double EtFractionHadronic;
+            </member>
+
+            <member>
+double EtFractionEm;
+            </member>
+
+            <member>
+double METSignificance;
+            </member>
+
+            <member>
+double CaloMETInpHF;
+            </member>
+
+            <member>
+double CaloMETInmHF;
+            </member>
+
+            <member>
+double CaloSETInpHF;
+            </member>
+
+            <member>
+double CaloSETInmHF;
+            </member>
+
+            <member>
+double CaloMETPhiInpHF;
+            </member>
+
+            <member>
+double CaloMETPhiInmHF;
+            </member>
+
+        </section>
+
+        <typemap name="CaloMETInmHF"
+                 value="SpecificCaloMETData::CaloMETInmHF"
+                 type="member"/>
+        <typemap name="CaloMETInpHF"
+                 value="SpecificCaloMETData::CaloMETInpHF"
+                 type="member"/>
+        <typemap name="CaloMETPhiInmHF"
+                 value="SpecificCaloMETData::CaloMETPhiInmHF"
+                 type="member"/>
+        <typemap name="CaloMETPhiInpHF"
+                 value="SpecificCaloMETData::CaloMETPhiInpHF"
+                 type="member"/>
+        <typemap name="CaloSETInmHF"
+                 value="SpecificCaloMETData::CaloSETInmHF"
+                 type="member"/>
+        <typemap name="CaloSETInpHF"
+                 value="SpecificCaloMETData::CaloSETInpHF"
+                 type="member"/>
+        <typemap name="EmEtInEB"
+                 value="SpecificCaloMETData::EmEtInEB"
+                 type="member"/>
+        <typemap name="EmEtInEE"
+                 value="SpecificCaloMETData::EmEtInEE"
+                 type="member"/>
+        <typemap name="EmEtInHF"
+                 value="SpecificCaloMETData::EmEtInHF"
+                 type="member"/>
+        <typemap name="EtFractionEm"
+                 value="SpecificCaloMETData::EtFractionEm"
+                 type="member"/>
+        <typemap name="EtFractionHadronic"
+                 value="SpecificCaloMETData::EtFractionHadronic"
+                 type="member"/>
+        <typemap name="HadEtInHB"
+                 value="SpecificCaloMETData::HadEtInHB"
+                 type="member"/>
+        <typemap name="HadEtInHE"
+                 value="SpecificCaloMETData::HadEtInHE"
+                 type="member"/>
+        <typemap name="HadEtInHF"
+                 value="SpecificCaloMETData::HadEtInHF"
+                 type="member"/>
+        <typemap name="HadEtInHO"
+                 value="SpecificCaloMETData::HadEtInHO"
+                 type="member"/>
+        <typemap name="METSignificance"
+                 value="SpecificCaloMETData::METSignificance"
+                 type="member"/>
+        <typemap name="MaxEtInEmTowers"
+                 value="SpecificCaloMETData::MaxEtInEmTowers"
+                 type="member"/>
+        <typemap name="MaxEtInHadTowers"
+                 value="SpecificCaloMETData::MaxEtInHadTowers"
+                 type="member"/>
+
+    </class>
+
+    <type name="SpecificCaloMETData"/>
+    <type name="double"/>
+</header>

@@ -1,0 +1,2 @@
+reco::TrackResiduals|double|residualX|int
+reco::TrackResiduals|double|residualY|int

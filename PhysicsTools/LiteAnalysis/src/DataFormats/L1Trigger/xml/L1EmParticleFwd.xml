@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: L1EmParticleFwd.xml
+  Created:  Thu Jan 14 22:47:28 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/L1Trigger/interface/L1EmParticleFwd.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/L1Trigger/interface/L1EmParticleFwd.h">
+
+    <include name="&lt;vector&gt;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+
+    <namespace name="l1extra">
+        <forward name="L1EmParticle"/>
+        <typedef name="L1EmParticleCollection"
+                 value="std::vector&lt;L1EmParticle &gt;">
+typedef std::vector&lt;L1EmParticle &gt; L1EmParticleCollection;
+        </typedef>
+
+        <typedef name="L1EmParticleRef"
+                 value="edm::Ref&lt;L1EmParticleCollection &gt;">
+typedef edm::Ref&lt;L1EmParticleCollection &gt; L1EmParticleRef;
+        </typedef>
+
+        <typedef name="L1EmParticleRefVector"
+                 value="edm::RefVector&lt;L1EmParticleCollection &gt;">
+typedef edm::RefVector&lt;L1EmParticleCollection &gt; L1EmParticleRefVector;
+        </typedef>
+
+        <typedef name="L1EmParticleVectorRef"
+                 value="std::vector&lt;L1EmParticleRef &gt;">
+typedef std::vector&lt;L1EmParticleRef &gt; L1EmParticleVectorRef;
+        </typedef>
+
+    </namespace>
+
+</header>

@@ -1,0 +1,246 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: DetSet.xml
+  Created:  Thu Jan 14 22:45:56 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Common/interface/DetSet.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/DetSet.h">
+
+    <include name="&lt;vector&gt;"/>
+
+    <namespace name="edm">
+        <typedef name="det_id_type"
+                 value="uint32_t">
+typedef uint32_t det_id_type;
+        </typedef>
+
+
+        <class name="DetSet"
+               fullname="edm::DetSet&lt;T&gt;"
+               module="DataFormats.Common"
+               project=""
+               type="template"
+               template="template&lt;class T&gt;">
+
+            <section>
+                <typedef name="collection_type"
+                         value="std::vector&lt;T&gt;">
+typedef std::vector&lt;T&gt; collection_type;
+                </typedef>
+
+                <typedef name="value_type"
+                         value="typename collection_type::value_type">
+typedef typename collection_type::value_type value_type;
+                    <comment>
+       We don't just use T as value-type, in case we switch to a
+       fancier underlying container.
+                    </comment>
+                </typedef>
+
+                <typedef name="reference"
+                         value="typename collection_type::reference">
+typedef typename collection_type::reference reference;
+                </typedef>
+
+                <typedef name="const_reference"
+                         value="typename collection_type::const_reference">
+typedef typename collection_type::const_reference const_reference;
+                </typedef>
+
+                <typedef name="iterator"
+                         value="typename collection_type::iterator">
+typedef typename collection_type::iterator iterator;
+                </typedef>
+
+                <typedef name="const_iterator"
+                         value="typename collection_type::const_iterator">
+typedef typename collection_type::const_iterator const_iterator;
+                </typedef>
+
+                <typedef name="size_type"
+                         value="typename collection_type::size_type">
+typedef typename collection_type::size_type size_type;
+                </typedef>
+
+                <constructor name="DetSet"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+DetSet();
+                    <comment>
+        default constructor
+                    </comment>
+                </constructor>
+
+                <constructor name="DetSet"
+                             return="explicit"
+                             args="['det_id_type']"
+                             vars="['i']"
+                             qual="">
+explicit DetSet(det_id_type i);
+                    <comment>
+        constructor by detector identifier
+                    </comment>
+                </constructor>
+
+                <method1 name="begin"
+                         return="iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+iterator begin();
+                </method1>
+
+                <method1 name="end"
+                         return="iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+iterator end();
+                </method1>
+
+                <method1 name="begin"
+                         return="const_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const_iterator begin() const;
+                </method1>
+
+                <method1 name="end"
+                         return="const_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const_iterator end() const;
+                </method1>
+
+                <method1 name="size"
+                         return="size_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+size_type size() const;
+                </method1>
+
+                <method1 name="empty"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool empty() const;
+                </method1>
+
+                <operator name="operator[]"
+                          return="reference"
+                          args="['size_type']"
+                          vars="['i']"
+                          qual="">
+reference operator[](size_type i);
+                </operator>
+
+                <operator name="operator[]"
+                          return="const_reference"
+                          args="['size_type']"
+                          vars="['i']"
+                          qual="const">
+const_reference operator[](size_type i) const;
+                </operator>
+
+                <method1 name="reserve"
+                         return="void"
+                         args="['size_t']"
+                         vars="['s']"
+                         qual="">
+void reserve(size_t s);
+                </method1>
+
+                <method1 name="push_back"
+                         return="void"
+                         args="['const T&amp;']"
+                         vars="['t']"
+                         qual="">
+void push_back(const T&amp; t);
+                </method1>
+
+                <method1 name="clear"
+                         return="void"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+void clear();
+                </method1>
+
+                <method2 name="swap"
+                         return="void"
+                         args="['DetSet&lt;T&gt;&amp;']"
+                         vars="['other']"
+                         qual="">
+void swap(DetSet&lt;T&gt;&amp; other);
+                </method2>
+
+                <method1 name="detId"
+                         return="det_id_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+det_id_type detId() const;
+                </method1>
+
+                <member>
+det_id_type id;
+                </member>
+
+                <member>
+collection_type data;
+                </member>
+
+            </section>
+
+            <typemap name="collection_type"
+                     value="std::vector&lt;T&gt;"
+                     type="typedef"/>
+            <typemap name="const_iterator"
+                     value="typename std::vector&lt;T&gt;::const_iterator"
+                     type="typedef"/>
+            <typemap name="const_reference"
+                     value="typename std::vector&lt;T&gt;::const_reference"
+                     type="typedef"/>
+            <typemap name="data"
+                     value="edm::DetSet&lt;T&gt;::data"
+                     type="member"/>
+            <typemap name="id"
+                     value="edm::DetSet&lt;T&gt;::id"
+                     type="member"/>
+            <typemap name="iterator"
+                     value="typename std::vector&lt;T&gt;::iterator"
+                     type="typedef"/>
+            <typemap name="reference"
+                     value="typename std::vector&lt;T&gt;::reference"
+                     type="typedef"/>
+            <typemap name="size_type"
+                     value="typename std::vector&lt;T&gt;::size_type"
+                     type="typedef"/>
+            <typemap name="value_type"
+                     value="typename std::vector&lt;T&gt;::value_type"
+                     type="typedef"/>
+
+        </class>
+    </namespace>
+
+    <type name="DetSet&lt;T&gt;&amp;"/>
+    <type name="bool"/>
+    <type name="collection_type"/>
+    <type name="const_iterator"/>
+    <type name="const_reference"/>
+    <type name="det_id_type"/>
+    <type name="edm::DetSet&lt;T&gt;"/>
+    <type name="iterator"/>
+    <type name="reference"/>
+    <type name="size_t"/>
+    <type name="size_type"/>
+    <type name="void"/>
+</header>

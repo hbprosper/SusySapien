@@ -1,0 +1,47 @@
+Class:
+	HLTPerformanceInfo::Path
+
+Header:
+	DataFormats/HLTReco/interface/HLTPerformanceInfo.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:16:09 2010	lsclass.py $Revision:$
+
+Methods from HLTPerformanceInfo::Path
+
+	-o- name
+		Return: std::string
+		Arguments: void	
+
+	-o- setStatus
+		Return: void
+		Arguments: const edm::HLTPathStatus&	result
+
+	-o- status
+		Return: edm::HLTPathStatus
+		Arguments: void	
+
+	-o- clear
+		Return: void
+		Arguments: void	
+
+	-o- addModuleRef
+		Return: void
+		Arguments: size_t	m
+
+	-o- begin
+		Return: std::vector<size_t>::const_iterator
+		Arguments: void	
+
+	-o- end
+		Return: std::vector<size_t>::const_iterator
+		Arguments: void	
+
+	-o- getModuleIndex
+		Return: size_t
+		Arguments: size_t	j
+
+	-o- numberOfModules
+		Return: size_t
+		Arguments: void	
+

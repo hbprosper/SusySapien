@@ -1,0 +1,96 @@
+Class:
+	reco::BeamSpot
+
+Header:
+	DataFormats/BeamSpot/interface/BeamSpot.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:25 2010	lsclass.py $Revision:$
+
+Methods from reco::BeamSpot
+
+	-o- dummy
+		Return: void
+		Arguments: void	
+
+	-o- position
+		Return: const math::XYZPoint&
+		Arguments: void	
+
+	-o- x0
+		Return: double
+		Arguments: void	
+
+	-o- y0
+		Return: double
+		Arguments: void	
+
+	-o- z0
+		Return: double
+		Arguments: void	
+
+	-o- sigmaZ
+		Return: double
+		Arguments: void	
+
+	-o- dxdz
+		Return: double
+		Arguments: void	
+
+	-o- dydz
+		Return: double
+		Arguments: void	
+
+	-o- BeamWidth
+		Return: double
+		Arguments: void	
+
+	-o- x0Error
+		Return: double
+		Arguments: void	
+
+	-o- y0Error
+		Return: double
+		Arguments: void	
+
+	-o- z0Error
+		Return: double
+		Arguments: void	
+
+	-o- sigmaZ0Error
+		Return: double
+		Arguments: void	
+
+	-o- dxdzError
+		Return: double
+		Arguments: void	
+
+	-o- dydzError
+		Return: double
+		Arguments: void	
+
+	-o- BeamWidthError
+		Return: double
+		Arguments: void	
+
+	-o- covariance
+		Return: double
+		Arguments: int	i
+		           int	j
+
+	-o- covariance
+		Return: math::Error<dimension>::ROOT::Math::SMatrix<double, N, N, ROOT::Math::MatRepSym<double, N> >
+		Arguments: void	
+
+	-o- covariance3D
+		Return: math::Error<dim3>::ROOT::Math::SMatrix<double, N, N, ROOT::Math::MatRepSym<double, N> >
+		Arguments: void	
+
+	-o- rotatedCovariance3D
+		Return: math::Error<dim3>::ROOT::Math::SMatrix<double, N, N, ROOT::Math::MatRepSym<double, N> >
+		Arguments: void	
+
+	-o- print
+		Return: void
+		Arguments: std::stringstream&	ss
+

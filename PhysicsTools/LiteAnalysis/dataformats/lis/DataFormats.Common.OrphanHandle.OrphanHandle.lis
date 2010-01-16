@@ -1,0 +1,3 @@
+edm::OrphanHandle<T>|bool|isValid|void
+edm::OrphanHandle<T>|T const*|product|void
+edm::OrphanHandle<T>|ProductID|id|void

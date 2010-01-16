@@ -1,0 +1,388 @@
+Class:
+	reco::CaloTau
+
+Header:
+	DataFormats/TauReco/interface/CaloTau.h
+
+BaseClasses:
+	reco::BaseTau	DataFormats/TauReco/interface/BaseTau.h
+	reco::RecoCandidate	DataFormats/RecoCandidate/interface/RecoCandidate.h
+	reco::LeafCandidate	DataFormats/Candidate/interface/LeafCandidate.h
+	reco::Candidate	DataFormats/Candidate/interface/Candidate.h
+	reco::Particle	DataFormats/Candidate/interface/Particle.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:09 2010	lsclass.py $Revision:$
+
+Methods from reco::CaloTau
+
+	-o- clone
+		Return: CaloTau*
+		Arguments: void	
+
+	-o- caloTauTagInfoRef
+		Return: const CaloTauTagInfoRef&
+		Arguments: void	
+
+	-o- setcaloTauTagInfoRef
+		Return: void
+		Arguments: const CaloTauTagInfoRef	
+
+	-o- leadTracksignedSipt
+		Return: float
+		Arguments: void	
+
+	-o- setleadTracksignedSipt
+		Return: void
+		Arguments: const float&	
+
+	-o- leadTrackHCAL3x3hitsEtSum
+		Return: float
+		Arguments: void	
+
+	-o- setleadTrackHCAL3x3hitsEtSum
+		Return: void
+		Arguments: const float&	
+
+	-o- leadTrackHCAL3x3hottesthitDEta
+		Return: float
+		Arguments: void	
+
+	-o- setleadTrackHCAL3x3hottesthitDEta
+		Return: void
+		Arguments: const float&	
+
+	-o- signalTracksInvariantMass
+		Return: float
+		Arguments: void	
+
+	-o- setsignalTracksInvariantMass
+		Return: void
+		Arguments: const float&	
+
+	-o- TracksInvariantMass
+		Return: float
+		Arguments: void	
+
+	-o- setTracksInvariantMass
+		Return: void
+		Arguments: const float&	
+
+	-o- isolationTracksPtSum
+		Return: float
+		Arguments: void	
+
+	-o- setisolationTracksPtSum
+		Return: void
+		Arguments: const float&	
+
+	-o- isolationECALhitsEtSum
+		Return: float
+		Arguments: void	
+
+	-o- setisolationECALhitsEtSum
+		Return: void
+		Arguments: const float&	
+
+	-o- maximumHCALhitEt
+		Return: float
+		Arguments: void	
+
+	-o- setmaximumHCALhitEt
+		Return: void
+		Arguments: const float&	
+
+Methods from reco::BaseTau
+
+	-o- clone
+		Return: BaseTau*
+		Arguments: void	
+
+	-o- alternatLorentzVect
+		Return: math::ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> >
+		Arguments: void	
+
+	-o- setalternatLorentzVect
+		Return: void
+		Arguments: math::XYZTLorentzVector	
+
+	-o- leadTrack
+		Return: reco::edm::Ref<std::vector<Track>>
+		Arguments: void	
+
+	-o- setleadTrack
+		Return: void
+		Arguments: const TrackRef&	
+
+	-o- signalTracks
+		Return: const reco::edm::RefVector<std::vector<Track>>&
+		Arguments: void	
+
+	-o- setsignalTracks
+		Return: void
+		Arguments: const TrackRefVector&	
+
+	-o- isolationTracks
+		Return: const reco::edm::RefVector<std::vector<Track>>&
+		Arguments: void	
+
+	-o- setisolationTracks
+		Return: void
+		Arguments: const TrackRefVector&	
+
+Methods from reco::RecoCandidate
+
+	-o- overlap
+		Return: bool
+		Arguments: const Candidate&	
+
+	-o- track
+		Return: reco::edm::Ref<std::vector<Track>>
+		Arguments: void	
+
+	-o- track
+		Return: reco::edm::Ref<std::vector<Track>>
+		Arguments: size_t	
+
+	-o- numberOfTracks
+		Return: size_t
+		Arguments: void	
+
+	-o- gsfTrack
+		Return: reco::edm::Ref<GsfTrackCollection>
+		Arguments: void	
+
+	-o- standAloneMuon
+		Return: reco::edm::Ref<std::vector<Track>>
+		Arguments: void	
+
+	-o- combinedMuon
+		Return: reco::edm::Ref<std::vector<Track>>
+		Arguments: void	
+
+	-o- superCluster
+		Return: reco::edm::Ref<std::vector<SuperCluster>>
+		Arguments: void	
+
+	-o- caloTower
+		Return: edm::Ref<CaloTowerCollection>
+		Arguments: void	
+
+	-o- bestTrack
+		Return: const Track*
+		Arguments: void	
+
+	-o- bestTrackRef
+		Return: edm::RefToBase<reco::Track>
+		Arguments: void	
+
+	-o- bestTrackType
+		Return: TrackType
+		Arguments: void	
+
+Methods from reco::LeafCandidate
+
+	-o- clone
+		Return: LeafCandidate*
+		Arguments: void	
+
+	-o- begin
+		Return: candidate::const_iterator
+		Arguments: void	
+
+	-o- end
+		Return: candidate::const_iterator
+		Arguments: void	
+
+	-o- begin
+		Return: candidate::iterator
+		Arguments: void	
+
+	-o- end
+		Return: candidate::iterator
+		Arguments: void	
+
+	-o- numberOfDaughters
+		Return: size_t
+		Arguments: void	
+
+	-o- daughter
+		Return: const Candidate*
+		Arguments: size_type	
+
+	-o- numberOfMothers
+		Return: size_t
+		Arguments: void	
+
+	-o- mother
+		Return: const Candidate*
+		Arguments: size_type	
+
+	-o- daughter
+		Return: Candidate*
+		Arguments: size_type	
+
+Methods from reco::Candidate
+
+	-o- clone
+		Return: Candidate*
+		Arguments: void	
+
+Methods from reco::Particle
+
+	-o- charge
+		Return: int
+		Arguments: void	
+
+	-o- setCharge
+		Return: void
+		Arguments: Charge	q
+
+	-o- threeCharge
+		Return: int
+		Arguments: void	
+
+	-o- setThreeCharge
+		Return: void
+		Arguments: Charge	qx3
+
+	-o- p4
+		Return: const math::XYZTLorentzVectorD&
+		Arguments: void	
+
+	-o- polarP4
+		Return: const math::ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> >&
+		Arguments: void	
+
+	-o- momentum
+		Return: math::XYZVector
+		Arguments: void	
+
+	-o- boostToCM
+		Return: math::XYZVector
+		Arguments: void	
+
+	-o- p
+		Return: double
+		Arguments: void	
+
+	-o- energy
+		Return: double
+		Arguments: void	
+
+	-o- et
+		Return: double
+		Arguments: void	
+
+	-o- mass
+		Return: double
+		Arguments: void	
+
+	-o- massSqr
+		Return: double
+		Arguments: void	
+
+	-o- mt
+		Return: double
+		Arguments: void	
+
+	-o- mtSqr
+		Return: double
+		Arguments: void	
+
+	-o- px
+		Return: double
+		Arguments: void	
+
+	-o- py
+		Return: double
+		Arguments: void	
+
+	-o- pz
+		Return: double
+		Arguments: void	
+
+	-o- pt
+		Return: double
+		Arguments: void	
+
+	-o- phi
+		Return: double
+		Arguments: void	
+
+	-o- theta
+		Return: double
+		Arguments: void	
+
+	-o- eta
+		Return: double
+		Arguments: void	
+
+	-o- rapidity
+		Return: double
+		Arguments: void	
+
+	-o- y
+		Return: double
+		Arguments: void	
+
+	-o- setP4
+		Return: void
+		Arguments: const LorentzVector&	p4
+
+	-o- setP4
+		Return: void
+		Arguments: const PolarLorentzVector&	p4
+
+	-o- setMass
+		Return: void
+		Arguments: double	m
+
+	-o- setPz
+		Return: void
+		Arguments: double	pz
+
+	-o- vertex
+		Return: const math::XYZPoint&
+		Arguments: void	
+
+	-o- vx
+		Return: double
+		Arguments: void	
+
+	-o- vy
+		Return: double
+		Arguments: void	
+
+	-o- vz
+		Return: double
+		Arguments: void	
+
+	-o- setVertex
+		Return: void
+		Arguments: const Point&	vertex
+
+	-o- pdgId
+		Return: int
+		Arguments: void	
+
+	-o- setPdgId
+		Return: void
+		Arguments: int	pdgId
+
+	-o- status
+		Return: int
+		Arguments: void	
+
+	-o- setStatus
+		Return: void
+		Arguments: int	status
+
+	-o- setLongLived
+		Return: void
+		Arguments: void	
+
+	-o- longLived
+		Return: bool
+		Arguments: void	
+

@@ -1,0 +1,23 @@
+Class:
+	reco::HLTResult<numberOfBits, word>
+
+Header:
+	DataFormats/HLTReco/interface/HLTResult.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:16:09 2010	lsclass.py $Revision:$
+
+Methods from reco::HLTResult<numberOfBits, word>
+
+	-o- match
+		Return: template<unsigned short 0> bool
+		Arguments: void	
+
+	-o- set
+		Return: template<unsigned short 0> void
+		Arguments: void	
+
+	-o- unSet
+		Return: template<unsigned short 0> void
+		Arguments: void	
+

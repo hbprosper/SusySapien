@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: GsfElectronIsoCollection.xml
+  Created:  Thu Jan 14 22:46:53 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/EgammaCandidates/interface/GsfElectronIsoCollection.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/EgammaCandidates/interface/GsfElectronIsoCollection.h">
+
+    <include name="&quot;DataFormats/Common/interface/AssociationVector.h&quot;"/>
+    <include name="&quot;DataFormats/EgammaCandidates/interface/GsfElectronFwd.h&quot;"/>
+    <include name="&lt;vector&gt;"/>
+
+    <namespace name="reco">
+        <typedef name="GsfElectronIsoCollection"
+                 value="edm::AssociationVector&lt;reco::GsfElectronRefProd, std::vector&lt;double&gt; &gt;">
+typedef edm::AssociationVector&lt;reco::GsfElectronRefProd, std::vector&lt;double&gt; &gt; GsfElectronIsoCollection;
+        </typedef>
+
+        <typedef name="GsfElectronIso"
+                 value="GsfElectronIsoCollection::value_type">
+typedef GsfElectronIsoCollection::value_type GsfElectronIso;
+        </typedef>
+
+        <typedef name="GsfElectronIsoCollectionRef"
+                 value="edm::Ref&lt;GsfElectronIsoCollection&gt;">
+typedef edm::Ref&lt;GsfElectronIsoCollection&gt; GsfElectronIsoCollectionRef;
+        </typedef>
+
+        <typedef name="GsfElectronIsoCollectionRefProd"
+                 value="edm::RefProd&lt;GsfElectronIsoCollection&gt;">
+typedef edm::RefProd&lt;GsfElectronIsoCollection&gt; GsfElectronIsoCollectionRefProd;
+        </typedef>
+
+        <typedef name="GsfElectronIsoCollectionRefVector"
+                 value="edm::RefVector&lt;GsfElectronIsoCollection&gt;">
+typedef edm::RefVector&lt;GsfElectronIsoCollection&gt; GsfElectronIsoCollectionRefVector;
+        </typedef>
+
+    </namespace>
+
+</header>

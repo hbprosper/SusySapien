@@ -1,0 +1,143 @@
+Class:
+	L1TriggerScalers
+
+Header:
+	DataFormats/Scalers/interface/L1TriggerScalers.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:16:13 2010	lsclass.py $Revision:$
+
+Methods from L1TriggerScalers
+
+	-o- name
+		Return: std::string
+		Arguments: void	
+
+	-o- empty
+		Return: bool
+		Arguments: void	
+
+	-o- version
+		Return: int
+		Arguments: void	
+
+	-o- trigType
+		Return: unsigned int
+		Arguments: void	
+
+	-o- eventID
+		Return: unsigned int
+		Arguments: void	
+
+	-o- sourceID
+		Return: unsigned int
+		Arguments: void	
+
+	-o- bunchNumber
+		Return: unsigned int
+		Arguments: void	
+
+	-o- collectionTimeSpecial
+		Return: struct timespec
+		Arguments: void	
+
+	-o- orbitNumber
+		Return: unsigned int
+		Arguments: void	
+
+	-o- luminositySection
+		Return: unsigned int
+		Arguments: void	
+
+	-o- bunchCrossingErrors
+		Return: unsigned int
+		Arguments: void	
+
+	-o- collectionTimeSummary
+		Return: struct timespec
+		Arguments: void	
+
+	-o- triggerNumber
+		Return: unsigned int
+		Arguments: void	
+
+	-o- eventNumber
+		Return: unsigned int
+		Arguments: void	
+
+	-o- finalTriggersDistributed
+		Return: unsigned int
+		Arguments: void	
+
+	-o- calibrationTriggers
+		Return: unsigned int
+		Arguments: void	
+
+	-o- randomTriggers
+		Return: unsigned int
+		Arguments: void	
+
+	-o- totalTestTriggers
+		Return: unsigned int
+		Arguments: void	
+
+	-o- finalTriggersGenerated
+		Return: unsigned int
+		Arguments: void	
+
+	-o- finalTriggersInvalidBC
+		Return: unsigned int
+		Arguments: void	
+
+	-o- deadTime
+		Return: unsigned long long
+		Arguments: void	
+
+	-o- lostFinalTriggers
+		Return: unsigned long long
+		Arguments: void	
+
+	-o- deadTimeActive
+		Return: unsigned long long
+		Arguments: void	
+
+	-o- lostFinalTriggersActive
+		Return: unsigned long long
+		Arguments: void	
+
+	-o- deadTimeActivePrivate
+		Return: unsigned long long
+		Arguments: void	
+
+	-o- deadTimeActivePartition
+		Return: unsigned long long
+		Arguments: void	
+
+	-o- deadTimeActiveThrottle
+		Return: unsigned long long
+		Arguments: void	
+
+	-o- deadTimeActiveCalibration
+		Return: unsigned long long
+		Arguments: void	
+
+	-o- deadTimeActiveTimeSlot
+		Return: unsigned long long
+		Arguments: void	
+
+	-o- numberResets
+		Return: unsigned int
+		Arguments: void	
+
+	-o- collectionTimeDetails
+		Return: struct timespec
+		Arguments: void	
+
+	-o- triggers
+		Return: std::vector<unsigned int>
+		Arguments: void	
+
+	-o- testTriggers
+		Return: std::vector<unsigned int>
+		Arguments: void	
+

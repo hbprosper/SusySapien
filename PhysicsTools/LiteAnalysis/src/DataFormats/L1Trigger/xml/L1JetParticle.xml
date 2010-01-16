@@ -1,0 +1,193 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: L1JetParticle.xml
+  Created:  Thu Jan 14 22:47:30 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/L1Trigger/interface/L1JetParticle.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/L1Trigger/interface/L1JetParticle.h">
+
+    <include name="&quot;DataFormats/Candidate/interface/LeafCandidate.h&quot;"/>
+    <include name="&quot;DataFormats/L1GlobalCaloTrigger/interface/L1GctCollections.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+
+    <namespace name="l1extra">
+        <comment>
+   forward declarations
+        </comment>
+
+        <class name="L1JetParticle"
+               fullname="l1extra::L1JetParticle"
+               module="DataFormats.L1Trigger"
+               project=""
+               type="regular">
+            <baseclass name="public reco::LeafCandidate"/>
+
+            <section name="public">
+                <enum name="JetType">
+enum JetType
+         {
+
+            kCentral, 
+            kForward, 
+            kTau, 
+     kUndefined, 
+            kNumOfJetTypes
+         };
+                    <field name="kCentral" value=""/>
+                    <field name="kForward" value=""/>
+                    <field name="kTau" value=""/>
+                    <field name="kUndefined" value=""/>
+                    <field name="kNumOfJetTypes" value=""/>
+                </enum>
+
+                <constructor name="L1JetParticle"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+L1JetParticle();
+                </constructor>
+
+                <constructor name="L1JetParticle"
+                             return=""
+                             args="['const LorentzVector&amp;','const edm::Ref&lt;L1GctJetCandCollection &gt;&amp;','int=0']"
+                             vars="['p4','aRef','bx']"
+                             qual="">
+L1JetParticle(const LorentzVector&amp; p4, const edm::Ref&lt;L1GctJetCandCollection &gt;&amp; aRef, int bx=0);
+                </constructor>
+
+                <constructor name="L1JetParticle"
+                             return=""
+                             args="['const PolarLorentzVector&amp;','const edm::Ref&lt;L1GctJetCandCollection &gt;&amp;','int=0']"
+                             vars="['p4','aRef','bx']"
+                             qual="">
+L1JetParticle(const PolarLorentzVector&amp; p4, const edm::Ref&lt;L1GctJetCandCollection &gt;&amp; aRef, int bx=0);
+                </constructor>
+
+                <constructor name="L1JetParticle"
+                             return=""
+                             args="['const LorentzVector&amp;','JetType=kUndefined','int=0']"
+                             vars="['p4','type','bx']"
+                             qual="">
+L1JetParticle(const LorentzVector&amp; p4, JetType type=kUndefined, int bx=0);
+                    <comment>
+            Creates null Ref.
+                    </comment>
+                </constructor>
+
+                <constructor name="L1JetParticle"
+                             return=""
+                             args="['const PolarLorentzVector&amp;','JetType=kUndefined','int=0']"
+                             vars="['p4','type','bx']"
+                             qual="">
+L1JetParticle(const PolarLorentzVector&amp; p4, JetType type=kUndefined, int bx=0);
+                </constructor>
+
+                <destructor name="~L1JetParticle"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~L1JetParticle();
+                </destructor>
+
+                <method1 name="type"
+                         return="JetType"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+JetType type() const;
+                    <comment>
+	    ---------- const member functions ---------------------
+                    </comment>
+                </method1>
+
+                <method2 name="gctJetCandRef"
+                         return="const edm::Ref&lt;L1GctJetCandCollection &gt;&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const edm::Ref&lt;L1GctJetCandCollection &gt;&amp; gctJetCandRef() const;
+                </method2>
+
+                <method1 name="gctJetCand"
+                         return="const L1GctJetCand*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const L1GctJetCand* gctJetCand() const;
+                </method1>
+
+                <method1 name="clone"
+                         return="virtual L1JetParticle*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual L1JetParticle* clone() const;
+                </method1>
+
+                <method1 name="bx"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int bx() const;
+                </method1>
+
+                <method1 name="setType"
+                         return="void"
+                         args="['JetType']"
+                         vars="['type']"
+                         qual="">
+void setType(JetType type);
+                    <comment>
+	    ---------- member functions ---------------------------
+                    </comment>
+                </method1>
+
+                <method1 name="setBx"
+                         return="void"
+                         args="['int']"
+                         vars="['bx']"
+                         qual="">
+void setBx(int bx);
+                </method1>
+
+            </section>
+
+            <typemap name="JetType"
+                     value="l1extra::L1JetParticle::JetType"
+                     type="enum"/>
+            <typemap name="kCentral"
+                     value="l1extra::L1JetParticle::kCentral"
+                     type="enum"/>
+            <typemap name="kForward"
+                     value="l1extra::L1JetParticle::kForward"
+                     type="enum"/>
+            <typemap name="kNumOfJetTypes"
+                     value="l1extra::L1JetParticle::kNumOfJetTypes"
+                     type="enum"/>
+            <typemap name="kTau"
+                     value="l1extra::L1JetParticle::kTau"
+                     type="enum"/>
+            <typemap name="kUndefined"
+                     value="l1extra::L1JetParticle::kUndefined"
+                     type="enum"/>
+
+        </class>
+    </namespace>
+
+    <type name="JetType"/>
+    <type name="L1JetParticle*"/>
+    <type name="const L1GctJetCand*"/>
+    <type name="const LorentzVector&amp;"/>
+    <type name="const PolarLorentzVector&amp;"/>
+    <type name="const edm::Ref&lt;L1GctJetCandCollection &gt;&amp;"/>
+    <type name="enum JetType"/>
+    <type name="int"/>
+    <type name="l1extra::L1JetParticle"/>
+    <type name="reco::LeafCandidate"/>
+    <type name="void"/>
+</header>

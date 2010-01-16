@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: CaloMETFwd.xml
+  Created:  Thu Jan 14 22:47:34 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/METReco/interface/CaloMETFwd.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/METReco/interface/CaloMETFwd.h">
+
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
+
+    <namespace name="reco">
+        <forward name="CaloMET"/>
+        <typedef name="CaloMETCollection"
+                 value="std::vector&lt;CaloMET&gt;">
+typedef std::vector&lt;CaloMET&gt; CaloMETCollection;
+            <comment>
+      collection of CaloMET objects
+            </comment>
+        </typedef>
+
+        <typedef name="CaloMETRef"
+                 value="edm::Ref&lt;CaloMETCollection&gt;">
+typedef edm::Ref&lt;CaloMETCollection&gt; CaloMETRef;
+            <comment>
+      edm references
+            </comment>
+        </typedef>
+
+        <typedef name="CaloMETRefVector"
+                 value="edm::RefVector&lt;CaloMETCollection&gt;">
+typedef edm::RefVector&lt;CaloMETCollection&gt; CaloMETRefVector;
+        </typedef>
+
+        <typedef name="CaloMETRefProd"
+                 value="edm::RefProd&lt;CaloMETCollection&gt;">
+typedef edm::RefProd&lt;CaloMETCollection&gt; CaloMETRefProd;
+        </typedef>
+
+    </namespace>
+
+</header>

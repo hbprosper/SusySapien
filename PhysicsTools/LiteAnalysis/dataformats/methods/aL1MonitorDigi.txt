@@ -1,0 +1,10 @@
+unsigned	cid()
+bool	empty()
+unsigned	raw()
+unsigned	reset()
+unsigned	sid()
+unsigned	value()
+unsigned	x1()
+unsigned	x2()
+unsigned	x3()
+

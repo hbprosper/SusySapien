@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: DeDxData.xml
+  Created:  Thu Jan 14 22:48:48 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/TrackReco/interface/DeDxData.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/TrackReco/interface/DeDxData.h">
+
+    <include name="&quot;DataFormats/Common/interface/ValueMap.h&quot;"/>
+
+    <namespace name="reco">
+
+        <class name="DeDxData"
+               fullname="reco::DeDxData"
+               module="DataFormats.TrackReco"
+               project=""
+               type="regular">
+
+            <section name="public">
+                <constructor name="DeDxData"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+DeDxData();
+                </constructor>
+
+                <constructor name="DeDxData"
+                             return=""
+                             args="['float','float','unsigned int']"
+                             vars="['val','er','num']"
+                             qual="">
+DeDxData(float val, float er, unsigned int num);
+                </constructor>
+
+                <destructor name="~DeDxData"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~DeDxData();
+                </destructor>
+
+                <method1 name="dEdx"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float dEdx() const;
+                </method1>
+
+                <method1 name="dEdxError"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float dEdxError() const;
+                </method1>
+
+                <method1 name="numberOfMeasurements"
+                         return="unsigned int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+unsigned int numberOfMeasurements() const;
+                </method1>
+
+            </section>
+
+        </class>
+        <typedef name="DeDxDataCollection"
+                 value="std::vector&lt;reco::DeDxData&gt;">
+typedef std::vector&lt;reco::DeDxData&gt; DeDxDataCollection;
+            <comment>
+   //Association Track -&gt; float estimator
+            </comment>
+        </typedef>
+
+        <typedef name="DeDxDataValueMap"
+                 value="edm::ValueMap&lt;reco::DeDxData&gt;">
+typedef edm::ValueMap&lt;reco::DeDxData&gt; DeDxDataValueMap;
+        </typedef>
+
+    </namespace>
+
+    <type name="float"/>
+    <type name="reco::DeDxData"/>
+    <type name="unsigned int"/>
+    <type name="void"/>
+</header>

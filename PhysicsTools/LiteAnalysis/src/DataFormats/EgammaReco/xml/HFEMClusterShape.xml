@@ -1,0 +1,209 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: HFEMClusterShape.xml
+  Created:  Thu Jan 14 22:47:04 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/EgammaReco/interface/HFEMClusterShape.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/EgammaReco/interface/HFEMClusterShape.h">
+
+    <include name="&lt;Rtypes.h&gt;"/>
+    <include name="&quot;DataFormats/EgammaReco/interface/HFEMClusterShapeFwd.h&quot;"/>
+    <include name="&quot;DataFormats/DetId/interface/DetId.h&quot;"/>
+
+    <namespace name="reco">
+        <comment>
+  class reco::HFEMClusterShape HFEMClusterShape.h DataFormats/EgammaReco/interface/HFEMClusterShape.h
+
+   A Cluster Shape of a Possible EM cluster in the HF detector
+   Contains the DetId of its Seed
+
+   \author Kevin Klapoetke, University of Minnesota
+
+   \version $Id: HFEMClusterShape.h,v 1.3 2007/10/08 18:52:13 futyand Exp $
+        </comment>
+
+        <class name="HFEMClusterShape"
+               fullname="reco::HFEMClusterShape"
+               module="DataFormats.EgammaReco"
+               project=""
+               type="regular">
+
+            <section name="public">
+                <constructor name="HFEMClusterShape"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+HFEMClusterShape();
+                </constructor>
+
+                <constructor name="HFEMClusterShape"
+                             return=""
+                             args="['double','double','double','double','double','double','double','double','double','DetId']"
+                             vars="['eLong1x1','eShort1x1','eLong3x3','eShort3x3','eLong5x5','eShort5x5','eLongCore','CellEta','CellPhi','seed']"
+                             qual="">
+HFEMClusterShape(double eLong1x1, double eShort1x1, double eLong3x3, double eShort3x3, double eLong5x5, double eShort5x5, double eLongCore, double CellEta, double CellPhi, DetId seed);
+                </constructor>
+
+                <method1 name="eLong1x1"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double eLong1x1() const;
+                    <comment>
+      energy in long or short fibers various cluster sizes
+                    </comment>
+                </method1>
+
+                <method1 name="eShort1x1"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double eShort1x1() const;
+                </method1>
+
+                <method1 name="eLong3x3"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double eLong3x3() const;
+                </method1>
+
+                <method1 name="eShort3x3"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double eShort3x3() const;
+                </method1>
+
+                <method1 name="eLong5x5"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double eLong5x5() const;
+                </method1>
+
+                <method1 name="eShort5x5"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double eShort5x5() const;
+                </method1>
+
+                <method1 name="e1x1"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double e1x1() const;
+                    <comment>
+      total energy in various clusters
+                    </comment>
+                </method1>
+
+                <method1 name="e3x3"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double e3x3() const;
+                </method1>
+
+                <method1 name="e5x5"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double e5x5() const;
+                </method1>
+
+                <method1 name="eSeL"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double eSeL() const;
+                    <comment>
+      Identification Variables
+      Longetudinal variable: E(3x3,short fibers)/E(3x3,long fibers)
+                    </comment>
+                </method1>
+
+                <method1 name="eCOREe9"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double eCOREe9() const;
+                    <comment>
+      Transverse Variable: E(Core of cluster)/E(3x3)
+                    </comment>
+                </method1>
+
+                <method1 name="e9e25"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double e9e25() const;
+                    <comment>
+      Shower Exclusion Variable: E(3x3)/E(5x5)
+                    </comment>
+                </method1>
+
+                <method1 name="eCore"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double eCore() const;
+                    <comment>
+      energy in central highest energy cells (at least 50% energy of previous total energy startign with seed cell)
+                    </comment>
+                </method1>
+
+                <method1 name="CellEta"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double CellEta() const;
+                </method1>
+
+                <method1 name="CellPhi"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double CellPhi() const;
+                </method1>
+
+                <method1 name="seed"
+                         return="DetId"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+DetId seed() const;
+                    <comment>
+      seed cell of cluster DetId
+                    </comment>
+                </method1>
+
+            </section>
+
+        </class>
+    </namespace>
+
+    <type name="DetId"/>
+    <type name="double"/>
+    <type name="reco::HFEMClusterShape"/>
+    <type name="void"/>
+</header>

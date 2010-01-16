@@ -1,0 +1,5 @@
+edm::RefVectorBase<KEY>|RefCore const&|refCore|void
+edm::RefVectorBase<KEY>|std::vector<RefItem<KEY> > const&|items|void
+edm::RefVectorBase<KEY>|bool|empty|void
+edm::RefVectorBase<KEY>|typename std::vector<RefItem<KEY> >::size_type|size|void
+edm::RefVectorBase<KEY>|typename std::vector<RefItem<KEY> >::size_type|capacity|void

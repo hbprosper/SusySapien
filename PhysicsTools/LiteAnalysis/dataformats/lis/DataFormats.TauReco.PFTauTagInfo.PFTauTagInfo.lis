@@ -1,0 +1,7 @@
+reco::PFTauTagInfo|PFTauTagInfo*|clone|void
+reco::PFTauTagInfo|edm::RefVector<PFCandidateCollection>|PFCands|void
+reco::PFTauTagInfo|const edm::RefVector<PFCandidateCollection>&|PFChargedHadrCands|void
+reco::PFTauTagInfo|const edm::RefVector<PFCandidateCollection>&|PFNeutrHadrCands|void
+reco::PFTauTagInfo|const edm::RefVector<PFCandidateCollection>&|PFGammaCands|void
+reco::PFTauTagInfo|const edm::Ref<PFJetCollection>&|pfjetRef|void
+reco::BaseTauTagInfo|const reco::edm::RefVector<std::vector<Track>>&|Tracks|void

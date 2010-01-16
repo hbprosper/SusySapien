@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: GsfTrackExtraFwd.xml
+  Created:  Thu Jan 14 22:47:09 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/GsfTrackReco/interface/GsfTrackExtraFwd.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/GsfTrackReco/interface/GsfTrackExtraFwd.h">
+
+    <include name="&lt;vector&gt;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+
+    <namespace name="reco">
+        <forward name="GsfTrackExtra"/>
+        <typedef name="GsfTrackExtraCollection"
+                 value="std::vector&lt;GsfTrackExtra&gt;">
+typedef std::vector&lt;GsfTrackExtra&gt; GsfTrackExtraCollection;
+            <comment>
+      collection of GsfTrackExtra objects
+            </comment>
+        </typedef>
+
+        <typedef name="GsfTrackExtraRef"
+                 value="edm::Ref&lt;GsfTrackExtraCollection&gt;">
+typedef edm::Ref&lt;GsfTrackExtraCollection&gt; GsfTrackExtraRef;
+            <comment>
+      persistent reference to a GsfTrackExtra
+            </comment>
+        </typedef>
+
+        <typedef name="GsfTrackExtraRefProd"
+                 value="edm::RefProd&lt;GsfTrackExtraCollection&gt;">
+typedef edm::RefProd&lt;GsfTrackExtraCollection&gt; GsfTrackExtraRefProd;
+            <comment>
+      reference to a GsfTrackExtra collection
+            </comment>
+        </typedef>
+
+        <typedef name="GsfTrackExtraRefVector"
+                 value="edm::RefVector&lt;GsfTrackExtraCollection&gt;">
+typedef edm::RefVector&lt;GsfTrackExtraCollection&gt; GsfTrackExtraRefVector;
+            <comment>
+      vector of references to GsfTrackExtra in the same collection
+            </comment>
+        </typedef>
+
+        <typedef name="gsfTrackExtra_iterator"
+                 value="GsfTrackExtraRefVector::iterator">
+typedef GsfTrackExtraRefVector::iterator gsfTrackExtra_iterator;
+            <comment>
+      iterator over a vector of references to GsfTrackExtra in the same collection
+            </comment>
+        </typedef>
+
+    </namespace>
+
+</header>

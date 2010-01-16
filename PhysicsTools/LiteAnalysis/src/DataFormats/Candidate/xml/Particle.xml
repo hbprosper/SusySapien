@@ -1,0 +1,570 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: Particle.xml
+  Created:  Thu Jan 14 22:46:44 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Candidate/interface/Particle.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Candidate/interface/Particle.h">
+
+    <include name="&quot;DataFormats/Math/interface/Point3D.h&quot;"/>
+    <include name="&quot;DataFormats/Math/interface/Vector3D.h&quot;"/>
+    <include name="&quot;DataFormats/Math/interface/LorentzVector.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/BoolCache.h&quot;"/>
+    <include name="&quot;Rtypes.h&quot;"/>
+
+    <namespace name="reco">
+
+        <class name="Particle"
+               fullname="reco::Particle"
+               module="DataFormats.Candidate"
+               project=""
+               type="regular">
+
+            <section name="public">
+                <typedef name="Charge"
+                         value="int">
+typedef int Charge;
+                    <comment>
+        electric charge type
+                    </comment>
+                </typedef>
+
+                <typedef name="LorentzVector"
+                         value="math::XYZTLorentzVector">
+typedef math::XYZTLorentzVector LorentzVector;
+                    <comment>
+        Lorentz vector
+                    </comment>
+                </typedef>
+
+                <typedef name="PolarLorentzVector"
+                         value="math::PtEtaPhiMLorentzVector">
+typedef math::PtEtaPhiMLorentzVector PolarLorentzVector;
+                    <comment>
+        Lorentz vector
+                    </comment>
+                </typedef>
+
+                <typedef name="Point"
+                         value="math::XYZPoint">
+typedef math::XYZPoint Point;
+                    <comment>
+        point in the space
+                    </comment>
+                </typedef>
+
+                <typedef name="Vector"
+                         value="math::XYZVector">
+typedef math::XYZVector Vector;
+                    <comment>
+        point in the space
+                    </comment>
+                </typedef>
+
+                <constructor name="Particle"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+Particle();
+                    <comment>
+        default constructor
+                    </comment>
+                </constructor>
+
+                <constructor name="Particle"
+                             return=""
+                             args="['Charge','const LorentzVector&amp;','const Point&amp;=Point(0, 0, 0)','int=0','int=0','bool=true']"
+                             vars="['q','p4','vertex','pdgId','status','integerCharge']"
+                             qual="">
+Particle(Charge q, const LorentzVector&amp; p4, const Point&amp; vertex=Point(0, 0, 0), int pdgId=0, int status=0, bool integerCharge=true);
+                    <comment>
+        constructor from values
+                    </comment>
+                </constructor>
+
+                <constructor name="Particle"
+                             return=""
+                             args="['Charge','const PolarLorentzVector&amp;','const Point&amp;=Point(0, 0, 0)','int=0','int=0','bool=true']"
+                             vars="['q','p4','vertex','pdgId','status','integerCharge']"
+                             qual="">
+Particle(Charge q, const PolarLorentzVector&amp; p4, const Point&amp; vertex=Point(0, 0, 0), int pdgId=0, int status=0, bool integerCharge=true);
+                    <comment>
+        constructor from values
+                    </comment>
+                </constructor>
+
+                <destructor name="~Particle"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~Particle();
+                    <comment>
+        destructor
+                    </comment>
+                </destructor>
+
+                <method1 name="charge"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int charge() const;
+                    <comment>
+        electric charge
+                    </comment>
+                </method1>
+
+                <method1 name="setCharge"
+                         return="void"
+                         args="['Charge']"
+                         vars="['q']"
+                         qual="">
+void setCharge(Charge q);
+                    <comment>
+        set electric charge
+                    </comment>
+                </method1>
+
+                <method1 name="threeCharge"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int threeCharge() const;
+                    <comment>
+        electric charge
+                    </comment>
+                </method1>
+
+                <method1 name="setThreeCharge"
+                         return="void"
+                         args="['Charge']"
+                         vars="['qx3']"
+                         qual="">
+void setThreeCharge(Charge qx3);
+                    <comment>
+        set electric charge
+                    </comment>
+                </method1>
+
+                <method1 name="p4"
+                         return="const LorentzVector&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const LorentzVector&amp; p4() const;
+                    <comment>
+        four-momentum Lorentz vector
+                    </comment>
+                </method1>
+
+                <method1 name="polarP4"
+                         return="const PolarLorentzVector&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const PolarLorentzVector&amp; polarP4() const;
+                    <comment>
+        four-momentum Lorentz vector
+                    </comment>
+                </method1>
+
+                <method1 name="momentum"
+                         return="Vector"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+Vector momentum() const;
+                    <comment>
+        spatial momentum vector
+                    </comment>
+                </method1>
+
+                <method1 name="boostToCM"
+                         return="Vector"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+Vector boostToCM() const;
+                    <comment>
+        to the particle center of mass system
+                    </comment>
+                </method1>
+
+                <method1 name="p"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double p() const;
+                    <comment>
+        magnitude of momentum vector
+                    </comment>
+                </method1>
+
+                <method1 name="energy"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double energy() const;
+                    <comment>
+        energy
+                    </comment>
+                </method1>
+
+                <method1 name="et"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double et() const;
+                    <comment>
+        transverse energy
+                    </comment>
+                </method1>
+
+                <method1 name="mass"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double mass() const;
+                    <comment>
+        mass
+                    </comment>
+                </method1>
+
+                <method1 name="massSqr"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double massSqr() const;
+                    <comment>
+        mass squared
+                    </comment>
+                </method1>
+
+                <method1 name="mt"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double mt() const;
+                    <comment>
+        transverse mass
+                    </comment>
+                </method1>
+
+                <method1 name="mtSqr"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double mtSqr() const;
+                    <comment>
+        transverse mass squared
+                    </comment>
+                </method1>
+
+                <method1 name="px"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double px() const;
+                    <comment>
+        x coordinate of momentum vector
+                    </comment>
+                </method1>
+
+                <method1 name="py"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double py() const;
+                    <comment>
+        y coordinate of momentum vector
+                    </comment>
+                </method1>
+
+                <method1 name="pz"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double pz() const;
+                    <comment>
+        z coordinate of momentum vector
+                    </comment>
+                </method1>
+
+                <method1 name="pt"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double pt() const;
+                    <comment>
+        transverse momentum
+                    </comment>
+                </method1>
+
+                <method1 name="phi"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double phi() const;
+                    <comment>
+        momentum azimuthal angle
+                    </comment>
+                </method1>
+
+                <method1 name="theta"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double theta() const;
+                    <comment>
+        momentum polar angle
+                    </comment>
+                </method1>
+
+                <method1 name="eta"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double eta() const;
+                    <comment>
+        momentum pseudorapidity
+                    </comment>
+                </method1>
+
+                <method1 name="rapidity"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double rapidity() const;
+                    <comment>
+        repidity
+                    </comment>
+                </method1>
+
+                <method1 name="y"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double y() const;
+                    <comment>
+        repidity
+                    </comment>
+                </method1>
+
+                <method1 name="setP4"
+                         return="void"
+                         args="['const LorentzVector&amp;']"
+                         vars="['p4']"
+                         qual="">
+void setP4(const LorentzVector&amp; p4);
+                    <comment>
+        set 4-momentum
+                    </comment>
+                </method1>
+
+                <method1 name="setP4"
+                         return="void"
+                         args="['const PolarLorentzVector&amp;']"
+                         vars="['p4']"
+                         qual="">
+void setP4(const PolarLorentzVector&amp; p4);
+                    <comment>
+        set 4-momentum
+                    </comment>
+                </method1>
+
+                <method1 name="setMass"
+                         return="void"
+                         args="['double']"
+                         vars="['m']"
+                         qual="">
+void setMass(double m);
+                    <comment>
+        set particle mass
+                    </comment>
+                </method1>
+
+                <method1 name="setPz"
+                         return="void"
+                         args="['double']"
+                         vars="['pz']"
+                         qual="">
+void setPz(double pz);
+                </method1>
+
+                <method1 name="vertex"
+                         return="const Point&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const Point&amp; vertex() const;
+                    <comment>
+        vertex position
+                    </comment>
+                </method1>
+
+                <method1 name="vx"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double vx() const;
+                    <comment>
+        x coordinate of vertex position
+                    </comment>
+                </method1>
+
+                <method1 name="vy"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double vy() const;
+                    <comment>
+        y coordinate of vertex position
+                    </comment>
+                </method1>
+
+                <method1 name="vz"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double vz() const;
+                    <comment>
+        z coordinate of vertex position
+                    </comment>
+                </method1>
+
+                <method1 name="setVertex"
+                         return="void"
+                         args="['const Point&amp;']"
+                         vars="['vertex']"
+                         qual="">
+void setVertex(const Point&amp; vertex);
+                    <comment>
+        set vertex
+                    </comment>
+                </method1>
+
+                <method1 name="pdgId"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int pdgId() const;
+                    <comment>
+        PDG identifier
+                    </comment>
+                </method1>
+
+                <method1 name="setPdgId"
+                         return="void"
+                         args="['int']"
+                         vars="['pdgId']"
+                         qual="">
+void setPdgId(int pdgId);
+                    <comment>
+       set PDG identifier
+                    </comment>
+                </method1>
+
+                <method1 name="status"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int status() const;
+                    <comment>
+        status word
+                    </comment>
+                </method1>
+
+                <method1 name="setStatus"
+                         return="void"
+                         args="['int']"
+                         vars="['status']"
+                         qual="">
+void setStatus(int status);
+                    <comment>
+        set status word
+                    </comment>
+                </method1>
+
+                <constant name="longLivedTag"
+                          type="static const unsigned int"
+                          value=""/>
+                <method1 name="setLongLived"
+                         return="void"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+void setLongLived();
+                    <comment>
+        set long lived flag
+                    </comment>
+                </method1>
+
+                <method1 name="longLived"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool longLived() const;
+                    <comment>
+        is long lived?
+                    </comment>
+                </method1>
+
+            </section>
+
+            <typemap name="Charge"
+                     value="int"
+                     type="typedef"/>
+            <typemap name="LorentzVector"
+                     value="math::XYZTLorentzVector"
+                     type="typedef"/>
+            <typemap name="Point"
+                     value="math::XYZPoint"
+                     type="typedef"/>
+            <typemap name="PolarLorentzVector"
+                     value="math::PtEtaPhiMLorentzVector"
+                     type="typedef"/>
+            <typemap name="Vector"
+                     value="math::XYZVector"
+                     type="typedef"/>
+
+        </class>
+    </namespace>
+
+    <type name="Charge"/>
+    <type name="Vector"/>
+    <type name="bool"/>
+    <type name="const LorentzVector&amp;"/>
+    <type name="const Point&amp;"/>
+    <type name="const PolarLorentzVector&amp;"/>
+    <type name="double"/>
+    <type name="int"/>
+    <type name="reco::Particle"/>
+    <type name="void"/>
+</header>

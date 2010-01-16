@@ -1,0 +1,352 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: Ptr.xml
+  Created:  Thu Jan 14 22:46:14 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Common/interface/Ptr.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/Ptr.h">
+
+    <include name="&quot;boost/type_traits/is_base_of.hpp&quot;"/>
+    <include name="&quot;boost/utility/enable_if.hpp&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefCore.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/traits.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/GetProduct.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/EDProduct.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/EDProductGetter.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/Handle.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/OrphanHandle.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/TestHandle.h&quot;"/>
+    <include name="&quot;FWCore/Utilities/interface/EDMException.h&quot;"/>
+
+    <namespace name="edm">
+        <comment>
+   forward declarations
+        </comment>
+
+        <class name="Ptr"
+               fullname="edm::Ptr&lt;T&gt;"
+               module="DataFormats.Common"
+               project=""
+               type="template privatector"
+               template="template&lt;typename T&gt;">
+
+            <section>
+                <friend>
+friend class PtrVectorBase;
+                </friend>
+
+            </section>
+            <section name="public">
+                <typedef name="key_type"
+                         value="unsigned long">
+typedef unsigned long key_type;
+                </typedef>
+
+                <typedef name="value_type"
+                         value="T">
+typedef T value_type;
+                </typedef>
+
+                <method2 name="Ptr"
+                         return="template&lt;typename C&gt;"
+                         args="['Handle&lt;C&gt; const&amp;','key_type','bool=true']"
+                         vars="['handle','itemKey','setNow']"
+                         qual="">
+template&lt;typename C&gt;     Ptr(Handle&lt;C&gt; const&amp; handle, key_type itemKey, bool setNow=true);
+                    <comment>
+       General purpose constructor from handle.
+                    </comment>
+                </method2>
+
+                <method2 name="Ptr"
+                         return="template&lt;typename C&gt;"
+                         args="['OrphanHandle&lt;C&gt; const&amp;','key_type','bool=true']"
+                         vars="['handle','itemKey','setNow']"
+                         qual="">
+template&lt;typename C&gt;     Ptr(OrphanHandle&lt;C&gt; const&amp; handle, key_type itemKey, bool setNow=true);
+                    <comment>
+       General purpose constructor from orphan handle.
+                    </comment>
+                </method2>
+
+                <method2 name="Ptr"
+                         return="template&lt;typename C&gt;"
+                         args="['C const*','key_type','bool=true']"
+                         vars="['product','itemKey','setNow']"
+                         qual="">
+template&lt;typename C&gt;     Ptr(C const* product, key_type itemKey, bool setNow=true);
+                    <comment>
+       Constructor for ref to object that is not in an event.
+       An exception will be thrown if an attempt is made to persistify
+       any object containing this Ptr.  Also, in the future work will
+       be done to throw an exception if an attempt is made to put any object
+       containing this Ptr into an event(or run or lumi).
+                    </comment>
+                </method2>
+
+                <method2 name="Ptr"
+                         return="template&lt;typename C&gt;"
+                         args="['TestHandle&lt;C&gt; const&amp;','key_type','bool=true']"
+                         vars="['handle','itemKey','setNow']"
+                         qual="">
+template&lt;typename C&gt;     Ptr(TestHandle&lt;C&gt; const&amp; handle, key_type itemKey, bool setNow=true);
+                    <comment>
+       Constructor from test handle.
+       An exception will be thrown if an attempt is made to persistify
+       any object containing this Ptr.
+                    </comment>
+                </method2>
+
+                <constructor name="Ptr"
+                             return=""
+                             args="['ProductID const&amp;','key_type','EDProductGetter const*']"
+                             vars="['productID','itemKey','prodGetter']"
+                             qual="">
+Ptr(ProductID const&amp; productID, key_type itemKey, EDProductGetter const* prodGetter);
+                    <comment>
+        Constructor for those users who do not have a product handle,
+     but have a pointer to a product getter (such as the EventPrincipal).
+     prodGetter will ususally be a pointer to the event principal.
+                    </comment>
+                </constructor>
+
+                <constructor name="Ptr"
+                             return=""
+                             args="['ProductID const&amp;','T const*','key_type']"
+                             vars="['productID','item','item_key']"
+                             qual="">
+Ptr(ProductID const&amp; productID, T const* item, key_type item_key);
+                    <comment>
+        Constructor for use in the various X::fillView(...) functions
+     or for extracting a persistent Ptr from a PtrVector.
+     It is an error (not diagnosable at compile- or run-time) to call
+     this constructor with a pointer to a T unless the pointed-to T
+     object is already in a collection of type C stored in the
+     Event. The given ProductID must be the id of the collection
+     in the Event.
+                    </comment>
+                </constructor>
+
+                <constructor name="Ptr"
+                             return="explicit"
+                             args="['ProductID const&amp;']"
+                             vars="['id']"
+                             qual="">
+explicit Ptr(ProductID const&amp; id);
+                    <comment>
+        Constructor that creates an invalid (&quot;null&quot;) Ptr that is
+     associated with a given product (denoted by that product's
+     ProductID).
+                    </comment>
+                </constructor>
+
+                <constructor name="Ptr"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+Ptr();
+                </constructor>
+
+                <copyconstructor name="Ptr"
+                                 return=""
+                                 args="['Ptr&lt;T&gt; const&amp;']"
+                                 vars="['iOther']"
+                                 qual="">
+Ptr(Ptr&lt;T&gt; const&amp; iOther);
+                </copyconstructor>
+
+                <method2 name="Ptr"
+                         return="template&lt;typename U&gt;"
+                         args="['Ptr&lt;U&gt; const&amp;','typename boost::enable_if_c&lt;boost::is_base_of&lt;T, U&gt;::value&gt;::type*=0']"
+                         vars="['iOther','']"
+                         qual="">
+template&lt;typename U&gt;     Ptr(Ptr&lt;U&gt; const&amp; iOther, typename boost::enable_if_c&lt;boost::is_base_of&lt;T, U&gt;::value&gt;::type*=0);
+                </method2>
+
+                <method2 name="Ptr"
+                         return="template&lt;typename U&gt; explicit"
+                         args="['Ptr&lt;U&gt; const&amp;','typename boost::enable_if_c&lt;boost::is_base_of&lt;U, T&gt;::value&gt;::type*=0']"
+                         vars="['iOther','']"
+                         qual="">
+template&lt;typename U&gt;     explicit     Ptr(Ptr&lt;U&gt; const&amp; iOther, typename boost::enable_if_c&lt;boost::is_base_of&lt;U, T&gt;::value&gt;::type*=0);
+                </method2>
+
+                <destructor name="~Ptr"
+                            return=""
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+~Ptr();
+                    <comment>
+        Destructor
+                    </comment>
+                </destructor>
+
+                <operator name="operator*"
+                          return="T const&amp;"
+                          args="['void']"
+                          vars="['']"
+                          qual="const">
+T const&amp;     operator*() const;
+                    <comment>
+        Dereference operator
+                    </comment>
+                </operator>
+
+                <operator name="operator-&gt;"
+                          return="T const*"
+                          args="['void']"
+                          vars="['']"
+                          qual="const">
+T const*     operator-&gt;() const;
+                    <comment>
+        Member dereference operator
+                    </comment>
+                </operator>
+
+                <method1 name="get"
+                         return="T const*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+T const* get() const;
+                    <comment>
+        Returns C++ pointer to the item
+                    </comment>
+                </method1>
+
+                <method1 name="isNull"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isNull() const;
+                    <comment>
+        Checks for null
+                    </comment>
+                </method1>
+
+                <method1 name="isNonnull"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isNonnull() const;
+                    <comment>
+      bool isNonnull() const {return id().isValid(); }
+                    </comment>
+                </method1>
+
+                <operator name="operator!"
+                          return="bool"
+                          args="['void']"
+                          vars="['']"
+                          qual="const">
+bool operator!() const;
+                    <comment>
+        Checks for null
+                    </comment>
+                </operator>
+
+                <method1 name="isAvailable"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isAvailable() const;
+                    <comment>
+        in the event. No type checking is done.
+                    </comment>
+                </method1>
+
+                <method1 name="isTransient"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isTransient() const;
+                    <comment>
+        Checks if this Ptr is transient (i.e. not persistable).
+                    </comment>
+                </method1>
+
+                <method1 name="id"
+                         return="ProductID"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+ProductID id() const;
+                    <comment>
+        Accessor for product ID.
+                    </comment>
+                </method1>
+
+                <method1 name="productGetter"
+                         return="EDProductGetter const*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+EDProductGetter const* productGetter() const;
+                    <comment>
+        Accessor for product getter.
+                    </comment>
+                </method1>
+
+                <method1 name="key"
+                         return="key_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+key_type key() const;
+                </method1>
+
+                <method1 name="hasCache"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool hasCache() const;
+                </method1>
+
+                <method1 name="refCore"
+                         return="RefCore const&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+RefCore const&amp; refCore() const;
+                </method1>
+
+            </section>
+
+            <typemap name="key_type"
+                     value="unsigned long"
+                     type="typedef"/>
+            <typemap name="value_type"
+                     value="T"
+                     type="typedef"/>
+
+        </class>
+    </namespace>
+
+    <type name="EDProductGetter const*"/>
+    <type name="Handle&lt;C&gt; const&amp;"/>
+    <type name="OrphanHandle&lt;C&gt; const&amp;"/>
+    <type name="ProductID"/>
+    <type name="ProductID const&amp;"/>
+    <type name="Ptr&lt;T&gt; const&amp;"/>
+    <type name="Ptr&lt;U&gt; const&amp;"/>
+    <type name="RefCore const&amp;"/>
+    <type name="TestHandle&lt;C&gt; const&amp;"/>
+    <type name="bool"/>
+    <type name="edm::Ptr&lt;T&gt;"/>
+    <type name="key_type"/>
+    <type name="template&lt;typename C&gt;"/>
+    <type name="template&lt;typename U&gt;"/>
+    <type name="template&lt;typename U&gt; explicit"/>
+    <type name="typename boost::enable_if_c&lt;boost::is_base_of&lt;T, U&gt;::value&gt;::type*"/>
+    <type name="typename boost::enable_if_c&lt;boost::is_base_of&lt;U, T&gt;::value&gt;::type*"/>
+    <type name="void"/>
+</header>

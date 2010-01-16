@@ -1,0 +1,9 @@
+Class:
+	edm::refhelper::FindTrait<AssociationMap<Tag>,        typename AssociationMap<Tag>::value_type>
+
+Header:
+	DataFormats/Common/interface/AssociationMap.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:41 2010	lsclass.py $Revision:$
+

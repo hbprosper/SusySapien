@@ -1,0 +1,52 @@
+Class:
+	edm::RefVectorBase<KEY>
+
+Header:
+	DataFormats/Common/interface/RefVectorBase.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:59 2010	lsclass.py $Revision:$
+
+Methods from edm::RefVectorBase<KEY>
+
+	-o- refCore
+		Return: RefCore const&
+		Arguments: void	
+
+	-o- items
+		Return: std::vector<RefItem<KEY> > const&
+		Arguments: void	
+
+	-o- empty
+		Return: bool
+		Arguments: void	
+
+	-o- size
+		Return: typename std::vector<RefItem<KEY> >::size_type
+		Arguments: void	
+
+	-o- capacity
+		Return: typename std::vector<RefItem<KEY> >::size_type
+		Arguments: void	
+
+	-o- reserve
+		Return: void
+		Arguments: size_type	n
+
+	-o- eraseAtIndex
+		Return: typename std::vector<RefItem<KEY> >::iterator
+		Arguments: size_type	index
+
+	-o- clear
+		Return: void
+		Arguments: void	
+
+	-o- pushBack
+		Return: void
+		Arguments: RefCore const&	product
+		           RefItem<KEY> const&	item_
+
+	-o- swap
+		Return: void
+		Arguments: RefVectorBase<KEY>&	other
+

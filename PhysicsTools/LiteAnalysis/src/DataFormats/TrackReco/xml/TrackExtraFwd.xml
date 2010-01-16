@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: TrackExtraFwd.xml
+  Created:  Thu Jan 14 22:48:52 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/TrackReco/interface/TrackExtraFwd.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/TrackReco/interface/TrackExtraFwd.h">
+
+    <include name="&lt;vector&gt;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+
+    <namespace name="reco">
+        <forward name="TrackExtra"/>
+        <typedef name="TrackExtraCollection"
+                 value="std::vector&lt;TrackExtra&gt;">
+typedef std::vector&lt;TrackExtra&gt; TrackExtraCollection;
+            <comment>
+      collection of TrackExtra objects
+            </comment>
+        </typedef>
+
+        <typedef name="TrackExtraRef"
+                 value="edm::Ref&lt;TrackExtraCollection&gt;">
+typedef edm::Ref&lt;TrackExtraCollection&gt; TrackExtraRef;
+            <comment>
+      persistent reference to a TrackExtra
+            </comment>
+        </typedef>
+
+        <typedef name="TrackExtraRefProd"
+                 value="edm::RefProd&lt;TrackExtraCollection&gt;">
+typedef edm::RefProd&lt;TrackExtraCollection&gt; TrackExtraRefProd;
+            <comment>
+      reference to a TrackExtra collection
+            </comment>
+        </typedef>
+
+        <typedef name="TrackExtraRefVector"
+                 value="edm::RefVector&lt;TrackExtraCollection&gt;">
+typedef edm::RefVector&lt;TrackExtraCollection&gt; TrackExtraRefVector;
+            <comment>
+      vector of references to TrackExtra in the same collection
+            </comment>
+        </typedef>
+
+        <typedef name="trackExtra_iterator"
+                 value="TrackExtraRefVector::iterator">
+typedef TrackExtraRefVector::iterator trackExtra_iterator;
+            <comment>
+      iterator over a vector of references to TrackExtra in the same collection
+            </comment>
+        </typedef>
+
+    </namespace>
+
+</header>

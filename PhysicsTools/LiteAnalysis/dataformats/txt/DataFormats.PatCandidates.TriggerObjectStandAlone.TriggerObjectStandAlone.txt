@@ -1,0 +1,124 @@
+Class:
+	pat::TriggerObjectStandAlone
+
+Header:
+	DataFormats/PatCandidates/interface/TriggerObjectStandAlone.h
+
+BaseClasses:
+	trigger::TriggerObject	DataFormats/HLTReco/interface/TriggerObject.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:14:08 2010	lsclass.py $Revision:$
+
+Methods from pat::TriggerObjectStandAlone
+
+	-o- addFilterLabel
+		Return: void
+		Arguments: const std::string&	filterLabel
+
+	-o- addPathName
+		Return: void
+		Arguments: const std::string&	pathName
+
+	-o- hasFilterLabel
+		Return: bool
+		Arguments: const std::string&	filterLabel
+
+	-o- hasPathName
+		Return: bool
+		Arguments: const std::string&	pathName
+
+	-o- triggerObject
+		Return: TriggerObject
+		Arguments: void	
+
+	-o- filterLabels
+		Return: std::vector<std::string >
+		Arguments: void	
+
+	-o- pathNames
+		Return: std::vector<std::string >
+		Arguments: void	
+
+Methods from trigger::TriggerObject
+
+	-o- setId
+		Return: void
+		Arguments: int	id
+
+	-o- setPt
+		Return: void
+		Arguments: float	pt
+
+	-o- setEta
+		Return: void
+		Arguments: float	eta
+
+	-o- setPhi
+		Return: void
+		Arguments: float	phi
+
+	-o- setMass
+		Return: void
+		Arguments: float	mass
+
+	-o- id
+		Return: int
+		Arguments: void	
+
+	-o- pt
+		Return: float
+		Arguments: void	
+
+	-o- eta
+		Return: float
+		Arguments: void	
+
+	-o- phi
+		Return: float
+		Arguments: void	
+
+	-o- mass
+		Return: float
+		Arguments: void	
+
+	-o- px
+		Return: float
+		Arguments: void	
+
+	-o- py
+		Return: float
+		Arguments: void	
+
+	-o- pz
+		Return: float
+		Arguments: void	
+
+	-o- p
+		Return: float
+		Arguments: void	
+
+	-o- energy
+		Return: float
+		Arguments: void	
+
+	-o- et
+		Return: float
+		Arguments: void	
+
+	-o- particle
+		Return: reco::Particle
+		Arguments: reco::Particle::Charge=0	q
+		           const reco::Particle::Point&=reco::Particle::Point(0, 0, 0)	vertex
+		           int=0	status
+		           bool=true	integerCharge
+
+	-o- TriggerObject
+		Return: template<typename T>
+		Arguments: int	id
+		           const T&	o
+
+	-o- TriggerObject
+		Return: template<typename T>
+		Arguments: const T&	o
+

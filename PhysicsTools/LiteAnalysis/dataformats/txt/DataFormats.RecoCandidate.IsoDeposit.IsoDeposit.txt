@@ -1,0 +1,145 @@
+Class:
+	reco::IsoDeposit
+
+Header:
+	DataFormats/RecoCandidate/interface/IsoDeposit.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:14:02 2010	lsclass.py $Revision:$
+
+Methods from reco::IsoDeposit
+
+	-o- direction
+		Return: const isodeposit::Direction&
+		Arguments: void	
+
+	-o- eta
+		Return: double
+		Arguments: void	
+
+	-o- phi
+		Return: double
+		Arguments: void	
+
+	-o- veto
+		Return: const Veto&
+		Arguments: void	
+
+	-o- setVeto
+		Return: void
+		Arguments: const Veto&	aVeto
+
+	-o- addDeposit
+		Return: void
+		Arguments: double	dr
+		           double	deposit
+
+	-o- addDeposit
+		Return: void
+		Arguments: const Direction&	depDir
+		           double	deposit
+
+	-o- depositWithin
+		Return: double
+		Arguments: double	coneSize
+		           const Vetos&=Vetos()	vetos
+		           bool=false	skipDepositVeto
+
+	-o- depositWithin
+		Return: double
+		Arguments: Direction	dir
+		           double	coneSize
+		           const Vetos&=Vetos()	vetos
+		           bool=false	skipDepositVeto
+
+	-o- depositWithin
+		Return: double
+		Arguments: double	coneSize
+		           const AbsVetos&	vetos
+		           bool=false	skipDepositVeto
+
+	-o- candEnergy
+		Return: double
+		Arguments: void	
+
+	-o- addCandEnergy
+		Return: void
+		Arguments: double	et
+
+	-o- print
+		Return: std::string
+		Arguments: void	
+
+	-o- begin
+		Return: const_iterator
+		Arguments: void	
+
+	-o- end
+		Return: const_iterator
+		Arguments: void	
+
+	-o- countWithin
+		Return: double
+		Arguments: double	coneSize
+		           const AbsVetos&=AbsVetos()	vetos
+		           bool=false	skipDepositVeto
+
+	-o- sumWithin
+		Return: double
+		Arguments: double	coneSize
+		           const AbsVetos&=AbsVetos()	vetos
+		           bool=false	skipDepositVeto
+
+	-o- sumWithin
+		Return: double
+		Arguments: const Direction&	dir
+		           double	coneSize
+		           const AbsVetos&=AbsVetos()	vetos
+		           bool=false	skipDepositVeto
+
+	-o- sum2Within
+		Return: double
+		Arguments: double	coneSize
+		           const AbsVetos&=AbsVetos()	vetos
+		           bool=false	skipDepositVeto
+
+	-o- maxWithin
+		Return: double
+		Arguments: double	coneSize
+		           const AbsVetos&=AbsVetos()	vetos
+		           bool=false	skipDepositVeto
+
+	-o- depositAndCountWithin
+		Return: std::pair<double, int>
+		Arguments: double	coneSize
+		           const Vetos&=Vetos()	vetos
+		           double=-1e+36	threshold
+		           bool=false	skipDepositVeto
+
+	-o- depositAndCountWithin
+		Return: std::pair<double, int>
+		Arguments: Direction	dir
+		           double	coneSize
+		           const Vetos&=Vetos()	vetos
+		           double=-1e+36	threshold
+		           bool=false	skipDepositVeto
+
+	-o- depositAndCountWithin
+		Return: std::pair<double, int>
+		Arguments: double	coneSize
+		           const AbsVetos&	vetos
+		           bool=false	skipDepositVeto
+
+	-o- algoWithin
+		Return: template<typename Algo> double
+		Arguments: double	coneSize
+		           const AbsVetos&=AbsVetos()	vetos
+		           bool=false	skipDepositVeto
+
+	-o- algoWithin
+		Return: template<typename Algo> double
+		Arguments: const Direction&	
+		           double	coneSize
+		           const AbsVetos&=AbsVetos()	vetos
+		           bool=false	skipDepositVeto
+

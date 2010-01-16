@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: GenericJet.xml
+  Created:  Thu Jan 14 22:47:14 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/JetReco/interface/GenericJet.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/JetReco/interface/GenericJet.h">
+
+    <include name="&lt;string&gt;"/>
+    <include name="&quot;DataFormats/Candidate/interface/CompositeRefBaseCandidate.h&quot;"/>
+
+    <namespace name="reco">
+
+        <class name="GenericJet"
+               fullname="reco::GenericJet"
+               module="DataFormats.JetReco"
+               project=""
+               type="regular">
+            <baseclass name="public CompositeRefBaseCandidate"/>
+
+            <section name="public">
+                <constructor name="GenericJet"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+GenericJet ();
+                    <comment>
+        Default constructor
+                    </comment>
+                </constructor>
+
+                <constructor name="GenericJet"
+                             return=""
+                             args="['const LorentzVector&amp;','const Point&amp;','const std::vector&lt;CandidateBaseRef&gt;&amp;']"
+                             vars="['fP4','fVertex','fConstituents']"
+                             qual="">
+GenericJet (const LorentzVector&amp; fP4, const Point&amp; fVertex, const std::vector&lt;CandidateBaseRef&gt;&amp; fConstituents);
+                    <comment>
+        Initiator
+                    </comment>
+                </constructor>
+
+                <destructor name="~GenericJet"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~GenericJet ();
+                    <comment>
+        Destructor
+                    </comment>
+                </destructor>
+
+                <method1 name="nConstituents"
+                         return="virtual int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual int nConstituents () const;
+                    <comment>
+        # of constituents
+                    </comment>
+                </method1>
+
+                <method1 name="print"
+                         return="virtual std::string"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual std::string print () const;
+                    <comment>
+      Print object
+                    </comment>
+                </method1>
+
+            </section>
+
+        </class>
+    </namespace>
+    <include name="&quot;DataFormats/JetReco/interface/GenericJetCollection.h&quot;"/>
+
+    <type name="CompositeRefBaseCandidate"/>
+    <type name="const LorentzVector&amp;"/>
+    <type name="const Point&amp;"/>
+    <type name="const std::vector&lt;CandidateBaseRef&gt;&amp;"/>
+    <type name="int"/>
+    <type name="reco::GenericJet"/>
+    <type name="std::string"/>
+    <type name="void"/>
+</header>

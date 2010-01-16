@@ -1,0 +1,27 @@
+Class:
+	DetId
+
+Header:
+	DataFormats/DetId/interface/DetId.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:28 2010	lsclass.py $Revision:$
+
+Methods from DetId
+
+	-o- det
+		Return: Detector
+		Arguments: void	
+
+	-o- subdetId
+		Return: int
+		Arguments: void	
+
+	-o- rawId
+		Return: uint32_t
+		Arguments: void	
+
+	-o- null
+		Return: bool
+		Arguments: void	
+

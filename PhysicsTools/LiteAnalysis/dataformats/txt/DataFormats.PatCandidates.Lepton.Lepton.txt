@@ -1,0 +1,379 @@
+Class:
+	pat::Lepton<LeptonType>
+
+Header:
+	DataFormats/PatCandidates/interface/Lepton.h
+
+BaseClasses:
+	pat::PATObject<LeptonType>	DataFormats/PatCandidates/interface/PATObject.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:14:10 2010	lsclass.py $Revision:$
+
+Methods from pat::Lepton<LeptonType>
+
+	-o- genLepton
+		Return: const reco::GenParticle*
+		Arguments: void	
+
+	-o- setGenLepton
+		Return: void
+		Arguments: const reco::GenParticleRef&	gl
+		           bool=false	embed
+
+	-o- isolation
+		Return: float
+		Arguments: IsolationKeys	key
+
+	-o- setIsolation
+		Return: void
+		Arguments: IsolationKeys	key
+		           float	value
+
+	-o- trackIso
+		Return: float
+		Arguments: void	
+
+	-o- caloIso
+		Return: float
+		Arguments: void	
+
+	-o- ecalIso
+		Return: float
+		Arguments: void	
+
+	-o- hcalIso
+		Return: float
+		Arguments: void	
+
+	-o- particleIso
+		Return: float
+		Arguments: void	
+
+	-o- chargedParticleIso
+		Return: float
+		Arguments: void	
+
+	-o- neutralParticleIso
+		Return: float
+		Arguments: void	
+
+	-o- gammaParticleIso
+		Return: float
+		Arguments: void	
+
+	-o- userIso
+		Return: float
+		Arguments: uint8_t=0	index
+
+	-o- setTrackIso
+		Return: void
+		Arguments: float	trackIso
+
+	-o- setECalIso
+		Return: void
+		Arguments: float	caloIso
+
+	-o- setHCalIso
+		Return: void
+		Arguments: float	caloIso
+
+	-o- setUserIso
+		Return: void
+		Arguments: float	value
+		           uint8_t=0	index
+
+	-o- isoDeposit
+		Return: const reco::IsoDeposit*
+		Arguments: IsolationKeys	key
+
+	-o- setIsoDeposit
+		Return: void
+		Arguments: IsolationKeys	key
+		           const IsoDeposit&	dep
+
+	-o- trackerIsoDeposit
+		Return: const reco::IsoDeposit*
+		Arguments: void	
+
+	-o- ecalIsoDeposit
+		Return: const reco::IsoDeposit*
+		Arguments: void	
+
+	-o- hcalIsoDeposit
+		Return: const reco::IsoDeposit*
+		Arguments: void	
+
+	-o- userIsoDeposit
+		Return: const reco::IsoDeposit*
+		Arguments: uint8_t=0	index
+
+	-o- trackerIsoDeposit
+		Return: void
+		Arguments: const IsoDeposit&	dep
+
+	-o- ecalIsoDeposit
+		Return: void
+		Arguments: const IsoDeposit&	dep
+
+	-o- hcalIsoDeposit
+		Return: void
+		Arguments: const IsoDeposit&	dep
+
+	-o- userIsoDeposit
+		Return: void
+		Arguments: const IsoDeposit&	dep
+		           uint8_t=0	index
+
+	-o- clone
+		Return: Lepton<LeptonType>*
+		Arguments: void	
+
+Methods from pat::PATObject<LeptonType>
+
+	-o- originalObject
+		Return: const reco::Candidate*
+		Arguments: void	
+
+	-o- addTriggerMatch
+		Return: void
+		Arguments: const pat::TriggerPrimitive&	aTrigPrim
+
+	-o- triggerObjectMatches
+		Return: const std::vector<TriggerObjectStandAlone >&
+		Arguments: void	
+
+	-o- triggerObjectMatchesByFilterID
+		Return: const std::vector<TriggerObjectStandAlone >
+		Arguments: const unsigned	id
+
+	-o- triggerObjectMatchesByCollection
+		Return: const std::vector<TriggerObjectStandAlone >
+		Arguments: const std::string&	coll
+
+	-o- triggerObjectMatchesByFilter
+		Return: const std::vector<TriggerObjectStandAlone >
+		Arguments: const std::string&	labelFilter
+
+	-o- triggerObjectMatchesByPath
+		Return: const std::vector<TriggerObjectStandAlone >
+		Arguments: const std::string&	namePath
+
+	-o- addTriggerObjectMatch
+		Return: void
+		Arguments: const TriggerObjectStandAlone&	trigObj
+
+	-o- efficiency
+		Return: const pat::LookupTableRecord&
+		Arguments: const std::string&	name
+
+	-o- setEfficiency
+		Return: void
+		Arguments: const std::string&	name
+		           const pat::LookupTableRecord&	value
+
+	-o- genParticleRef
+		Return: reco::GenParticleRef
+		Arguments: size_t=0	idx
+
+	-o- genParticleById
+		Return: reco::GenParticleRef
+		Arguments: int	pdgId
+		           int	status
+
+	-o- genParticle
+		Return: const reco::GenParticle*
+		Arguments: size_t=0	idx
+
+	-o- genParticlesSize
+		Return: size_t
+		Arguments: void	
+
+	-o- setGenParticleRef
+		Return: void
+		Arguments: const reco::GenParticleRef&	ref
+		           bool=false	embed
+
+	-o- addGenParticleRef
+		Return: void
+		Arguments: const reco::GenParticleRef&	ref
+
+	-o- setGenParticle
+		Return: void
+		Arguments: const reco::GenParticle&	particle
+
+	-o- embedGenParticle
+		Return: void
+		Arguments: void	
+
+	-o- hasOverlaps
+		Return: bool
+		Arguments: const std::string&	label
+
+	-o- overlaps
+		Return: const reco::edm::PtrVector<Candidate>&
+		Arguments: const std::string&	label
+
+	-o- setOverlaps
+		Return: void
+		Arguments: const std::string&	label
+		           const reco::CandidatePtrVector&	overlaps
+
+	-o- hasUserData
+		Return: bool
+		Arguments: const std::string&	key
+
+	-o- userDataObjectType
+		Return: const std::string&
+		Arguments: const std::string&	key
+
+	-o- userDataBare
+		Return: const void*
+		Arguments: const std::string&	key
+
+	-o- userFloat
+		Return: float
+		Arguments: const std::string&	key
+
+	-o- addUserFloat
+		Return: void
+		Arguments: const std::string&	label
+		           float	data
+
+	-o- hasUserFloat
+		Return: bool
+		Arguments: const std::string&	key
+
+	-o- userInt
+		Return: int32_t
+		Arguments: const std::string&	key
+
+	-o- addUserInt
+		Return: void
+		Arguments: const std::string&	label
+		           int32_t	data
+
+	-o- hasUserInt
+		Return: bool
+		Arguments: const std::string&	key
+
+	-o- getKinResolution
+		Return: const pat::CandKinResolution&
+		Arguments: const std::string&=""	label
+
+	-o- hasKinResolution
+		Return: bool
+		Arguments: const std::string&=""	label
+
+	-o- setKinResolution
+		Return: void
+		Arguments: const pat::CandKinResolution&	resol
+		           const std::string&=""	label
+
+	-o- resolEta
+		Return: double
+		Arguments: const std::string&=""	label
+
+	-o- resolTheta
+		Return: double
+		Arguments: const std::string&=""	label
+
+	-o- resolPhi
+		Return: double
+		Arguments: const std::string&=""	label
+
+	-o- resolE
+		Return: double
+		Arguments: const std::string&=""	label
+
+	-o- resolEt
+		Return: double
+		Arguments: const std::string&=""	label
+
+	-o- resolP
+		Return: double
+		Arguments: const std::string&=""	label
+
+	-o- resolPt
+		Return: double
+		Arguments: const std::string&=""	label
+
+	-o- resolPInv
+		Return: double
+		Arguments: const std::string&=""	label
+
+	-o- resolPx
+		Return: double
+		Arguments: const std::string&=""	label
+
+	-o- resolPy
+		Return: double
+		Arguments: const std::string&=""	label
+
+	-o- resolPz
+		Return: double
+		Arguments: const std::string&=""	label
+
+	-o- resolM
+		Return: double
+		Arguments: const std::string&=""	label
+
+	-o- originalObjectRef
+		Return: const edm::Ptr<reco::Candidate>&
+		Arguments: void	
+
+	-o- triggerMatches
+		Return: const std::vector<TriggerPrimitive>&
+		Arguments: void	
+
+	-o- triggerMatchesByFilter
+		Return: const std::vector<TriggerPrimitive>
+		Arguments: const std::string&	aFilt
+
+	-o- efficiencies
+		Return: std::vector<std::pair<std::string, pat::LookupTableRecord> >
+		Arguments: void	
+
+	-o- efficiencyNames
+		Return: const std::vector<std::string>&
+		Arguments: void	
+
+	-o- efficiencyValues
+		Return: const std::vector<pat::LookupTableRecord>&
+		Arguments: void	
+
+	-o- genParticleRefs
+		Return: std::vector<reco::GenParticleRef>
+		Arguments: void	
+
+	-o- overlapLabels
+		Return: const std::vector<std::string>&
+		Arguments: void	
+
+	-o- userData
+		Return: template<typename T> const T*
+		Arguments: const std::string&	key
+
+	-o- userDataNames
+		Return: const std::vector<std::string>&
+		Arguments: void	
+
+	-o- addUserData
+		Return: template<typename T> void
+		Arguments: const std::string&	label
+		           const T&	data
+		           bool=false	transientOnly
+
+	-o- addUserDataFromPtr
+		Return: void
+		Arguments: const std::string&	label
+		           const edm::Ptr<pat::UserData>&	data
+
+	-o- userFloatNames
+		Return: const std::vector<std::string>&
+		Arguments: void	
+
+	-o- userIntNames
+		Return: const std::vector<std::string>&
+		Arguments: void	
+

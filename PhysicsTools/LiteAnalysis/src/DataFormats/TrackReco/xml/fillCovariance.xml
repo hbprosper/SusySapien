@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: fillCovariance.xml
+  Created:  Thu Jan 14 22:48:54 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/TrackReco/interface/fillCovariance.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/TrackReco/interface/fillCovariance.h">
+
+    <include name="&quot;DataFormats/Math/interface/Error.h&quot;"/>
+
+    <namespace name="reco">
+        <typedef name="PerigeeCovarianceMatrix"
+                 value="math::Error&lt;5&gt;::type">
+typedef math::Error&lt;5&gt;::type PerigeeCovarianceMatrix;
+        </typedef>
+
+        <function1 name="fillCovariance"
+                   return="PerigeeCovarianceMatrix&amp;"
+                   args="['PerigeeCovarianceMatrix&amp;','const float*']"
+                   vars="['v','data']"
+                   qual="">
+PerigeeCovarianceMatrix&amp; fillCovariance(PerigeeCovarianceMatrix&amp; v, const float* data);
+        </function1>
+
+    </namespace>
+
+</header>

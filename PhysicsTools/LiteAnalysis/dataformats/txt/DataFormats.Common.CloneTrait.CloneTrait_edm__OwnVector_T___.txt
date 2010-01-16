@@ -1,0 +1,9 @@
+Class:
+	edm::clonehelper::CloneTrait<std::vector<T> >
+
+Header:
+	DataFormats/Common/interface/CloneTrait.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:45 2010	lsclass.py $Revision:$
+

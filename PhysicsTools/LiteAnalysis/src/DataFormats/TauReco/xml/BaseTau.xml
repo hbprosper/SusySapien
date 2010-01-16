@@ -1,0 +1,152 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: BaseTau.xml
+  Created:  Thu Jan 14 22:48:36 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/TauReco/interface/BaseTau.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/TauReco/interface/BaseTau.h">
+
+    <include name="&quot;DataFormats/Math/interface/LorentzVector.h&quot;"/>
+    <include name="&quot;DataFormats/TauReco/interface/BaseTauFwd.h&quot;"/>
+    <include name="&quot;DataFormats/RecoCandidate/interface/RecoCandidate.h&quot;"/>
+    <include name="&quot;DataFormats/TrackReco/interface/TrackFwd.h&quot;"/>
+    <include name="&lt;limits&gt;"/>
+
+    <namespace name="reco">
+
+        <class name="BaseTau"
+               fullname="reco::BaseTau"
+               module="DataFormats.TauReco"
+               project=""
+               type="regular">
+            <baseclass name="public RecoCandidate"/>
+
+            <section name="public">
+                <constructor name="BaseTau"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+BaseTau();
+                </constructor>
+
+                <constructor name="BaseTau"
+                             return=""
+                             args="['Charge','const LorentzVector&amp;','const Point&amp;=Point(0, 0, 0)']"
+                             vars="['q','','']"
+                             qual="">
+BaseTau(Charge q, const LorentzVector&amp;, const Point&amp;=Point(0, 0, 0));
+                </constructor>
+
+                <destructor name="~BaseTau"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~BaseTau();
+                </destructor>
+
+                <method1 name="clone"
+                         return="BaseTau*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+BaseTau* clone() const;
+                </method1>
+
+                <method1 name="alternatLorentzVect"
+                         return="math::XYZTLorentzVector"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+math::XYZTLorentzVector alternatLorentzVect() const;
+                    <comment>
+       rec. jet Lorentz-vector combining (Tracks and neutral ECAL Island BasicClusters) or (charged hadr. PFCandidates and gamma PFCandidates)
+                    </comment>
+                </method1>
+
+                <method1 name="setalternatLorentzVect"
+                         return="void"
+                         args="['math::XYZTLorentzVector']"
+                         vars="['']"
+                         qual="">
+void setalternatLorentzVect(math::XYZTLorentzVector);
+                </method1>
+
+                <method1 name="leadTrack"
+                         return="virtual reco::TrackRef"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual reco::TrackRef leadTrack() const;
+                    <comment>
+       leading Track
+                    </comment>
+                </method1>
+
+                <method1 name="setleadTrack"
+                         return="void"
+                         args="['const TrackRef&amp;']"
+                         vars="['']"
+                         qual="">
+void setleadTrack(const TrackRef&amp;);
+                </method1>
+
+                <method1 name="signalTracks"
+                         return="virtual const reco::TrackRefVector&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual const reco::TrackRefVector&amp; signalTracks() const;
+                    <comment>
+       Tracks which passed quality cuts and are inside a tracker signal cone around leading Track
+                    </comment>
+                </method1>
+
+                <method1 name="setsignalTracks"
+                         return="void"
+                         args="['const TrackRefVector&amp;']"
+                         vars="['']"
+                         qual="">
+void setsignalTracks(const TrackRefVector&amp;);
+                </method1>
+
+                <method1 name="isolationTracks"
+                         return="virtual const reco::TrackRefVector&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual const reco::TrackRefVector&amp; isolationTracks() const;
+                    <comment>
+       Tracks which passed quality cuts and are inside a tracker isolation annulus around leading Track
+                    </comment>
+                </method1>
+
+                <method1 name="setisolationTracks"
+                         return="void"
+                         args="['const TrackRefVector&amp;']"
+                         vars="['']"
+                         qual="">
+void setisolationTracks(const TrackRefVector&amp;);
+                </method1>
+
+            </section>
+
+        </class>
+    </namespace>
+
+    <type name="BaseTau*"/>
+    <type name="Charge"/>
+    <type name="RecoCandidate"/>
+    <type name="const LorentzVector&amp;"/>
+    <type name="const Point&amp;"/>
+    <type name="const TrackRef&amp;"/>
+    <type name="const TrackRefVector&amp;"/>
+    <type name="const reco::TrackRefVector&amp;"/>
+    <type name="math::XYZTLorentzVector"/>
+    <type name="reco::BaseTau"/>
+    <type name="reco::TrackRef"/>
+    <type name="void"/>
+</header>

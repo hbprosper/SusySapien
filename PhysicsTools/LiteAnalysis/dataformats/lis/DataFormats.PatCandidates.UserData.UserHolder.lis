@@ -1,0 +1,3 @@
+pat::UserHolder<T>|const std::type_info&|typeId|void
+pat::UserHolder<T>|const std::string&|typeName|void
+pat::UserHolder<T>|UserHolder<T>*|clone|void

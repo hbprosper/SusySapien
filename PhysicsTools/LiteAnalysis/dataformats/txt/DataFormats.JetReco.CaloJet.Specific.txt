@@ -1,0 +1,9 @@
+Class:
+	reco::CaloJet::Specific
+
+Header:
+	DataFormats/JetReco/interface/CaloJet.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:14:31 2010	lsclass.py $Revision:$
+

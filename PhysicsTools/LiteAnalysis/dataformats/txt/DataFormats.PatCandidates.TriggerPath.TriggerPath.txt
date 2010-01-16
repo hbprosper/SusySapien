@@ -1,0 +1,87 @@
+Class:
+	pat::TriggerPath
+
+Header:
+	DataFormats/PatCandidates/interface/TriggerPath.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:14:06 2010	lsclass.py $Revision:$
+
+Methods from pat::TriggerPath
+
+	-o- setName
+		Return: void
+		Arguments: const std::string&	name
+
+	-o- setIndex
+		Return: void
+		Arguments: unsigned	index
+
+	-o- setPrescale
+		Return: void
+		Arguments: unsigned	prescale
+
+	-o- setRun
+		Return: void
+		Arguments: bool	run
+
+	-o- setAccept
+		Return: void
+		Arguments: bool	accept
+
+	-o- setError
+		Return: void
+		Arguments: bool	error
+
+	-o- setLastActiveFilterSlot
+		Return: void
+		Arguments: unsigned	lastActiveFilterSlot
+
+	-o- addModule
+		Return: void
+		Arguments: const std::string&	name
+
+	-o- addFilterIndex
+		Return: void
+		Arguments: const unsigned	index
+
+	-o- name
+		Return: std::string
+		Arguments: void	
+
+	-o- index
+		Return: unsigned
+		Arguments: void	
+
+	-o- prescale
+		Return: unsigned
+		Arguments: void	
+
+	-o- wasRun
+		Return: bool
+		Arguments: void	
+
+	-o- wasAccept
+		Return: bool
+		Arguments: void	
+
+	-o- wasError
+		Return: bool
+		Arguments: void	
+
+	-o- lastActiveFilterSlot
+		Return: unsigned
+		Arguments: void	
+
+	-o- indexModule
+		Return: int
+		Arguments: const std::string&	name
+
+	-o- modules
+		Return: std::vector<std::string >
+		Arguments: void	
+
+	-o- filterIndices
+		Return: std::vector<unsigned >
+		Arguments: void	
+

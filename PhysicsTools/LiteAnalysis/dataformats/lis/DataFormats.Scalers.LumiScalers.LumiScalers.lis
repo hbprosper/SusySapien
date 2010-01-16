@@ -1,0 +1,35 @@
+LumiScalers|std::string|name|void
+LumiScalers|bool|empty|void
+LumiScalers|unsigned int|trigType|void
+LumiScalers|unsigned int|eventID|void
+LumiScalers|unsigned int|sourceID|void
+LumiScalers|unsigned int|bunchNumber|void
+LumiScalers|int|version|void
+LumiScalers|struct timespec|collectionTime|void
+LumiScalers|float|normalization|void
+LumiScalers|float|deadTimeNormalization|void
+LumiScalers|float|lumiFill|void
+LumiScalers|float|lumiRun|void
+LumiScalers|float|liveLumiFill|void
+LumiScalers|float|liveLumiRun|void
+LumiScalers|float|instantLumi|void
+LumiScalers|float|instantLumiErr|void
+LumiScalers|unsigned char|instantLumiQlty|void
+LumiScalers|float|lumiETFill|void
+LumiScalers|float|lumiETRun|void
+LumiScalers|float|liveLumiETFill|void
+LumiScalers|float|liveLumiETRun|void
+LumiScalers|float|instantETLumi|void
+LumiScalers|float|instantETLumiErr|void
+LumiScalers|unsigned char|instantETLumiQlty|void
+LumiScalers|unsigned int|sectionNumber|void
+LumiScalers|unsigned int|startOrbit|void
+LumiScalers|unsigned int|numOrbits|void
+LumiScalers|std::vector<float>|lumiOccFill|void
+LumiScalers|std::vector<float>|lumiOccRun|void
+LumiScalers|std::vector<float>|liveLumiOccFill|void
+LumiScalers|std::vector<float>|liveLumiOccRun|void
+LumiScalers|std::vector<float>|instantOccLumi|void
+LumiScalers|std::vector<float>|instantOccLumiErr|void
+LumiScalers|std::vector<unsigned char>|instantOccLumiQlty|void
+LumiScalers|std::vector<float>|lumiNoise|void

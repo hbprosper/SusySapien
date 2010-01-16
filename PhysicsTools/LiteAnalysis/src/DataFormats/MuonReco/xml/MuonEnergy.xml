@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: MuonEnergy.xml
+  Created:  Thu Jan 14 22:47:45 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/MuonReco/interface/MuonEnergy.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/MuonReco/interface/MuonEnergy.h">
+
+
+    <namespace name="reco">
+
+        <class name="MuonEnergy"
+               fullname="reco::MuonEnergy"
+               module="DataFormats.MuonReco"
+               project=""
+               type="regular struct">
+
+            <section>
+                <member>
+float tower;
+                    <comment>
+           total energy
+                    </comment>
+                </member>
+
+                <member>
+float towerS9;
+                    <comment>
+           total energy in 3x3 tower shape
+                    </comment>
+                </member>
+
+                <member>
+float em;
+                    <comment>
+           energy deposited in crossed ECAL crystals
+                    </comment>
+                </member>
+
+                <member>
+float emS9;
+                    <comment>
+           crossed crystal
+                    </comment>
+                </member>
+
+                <member>
+float had;
+                    <comment>
+           energy deposited in crossed HCAL tower (RecHits)
+                    </comment>
+                </member>
+
+                <member>
+float hadS9;
+                    <comment>
+           crossed tower (RecHits)
+                    </comment>
+                </member>
+
+                <member>
+float ho;
+                    <comment>
+           energy deposited in crossed HO tower (RecHits)
+                    </comment>
+                </member>
+
+                <member>
+float hoS9;
+                    <comment>
+           crossed tower (RecHits)
+                    </comment>
+                </member>
+
+                <constructor name="MuonEnergy"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+MuonEnergy();
+                </constructor>
+
+            </section>
+
+            <typemap name="em"
+                     value="reco::MuonEnergy::em"
+                     type="member"/>
+            <typemap name="emS9"
+                     value="reco::MuonEnergy::emS9"
+                     type="member"/>
+            <typemap name="had"
+                     value="reco::MuonEnergy::had"
+                     type="member"/>
+            <typemap name="hadS9"
+                     value="reco::MuonEnergy::hadS9"
+                     type="member"/>
+            <typemap name="ho"
+                     value="reco::MuonEnergy::ho"
+                     type="member"/>
+            <typemap name="hoS9"
+                     value="reco::MuonEnergy::hoS9"
+                     type="member"/>
+            <typemap name="tower"
+                     value="reco::MuonEnergy::tower"
+                     type="member"/>
+            <typemap name="towerS9"
+                     value="reco::MuonEnergy::towerS9"
+                     type="member"/>
+
+        </class>
+    </namespace>
+
+    <type name="float"/>
+    <type name="reco::MuonEnergy"/>
+    <type name="void"/>
+</header>

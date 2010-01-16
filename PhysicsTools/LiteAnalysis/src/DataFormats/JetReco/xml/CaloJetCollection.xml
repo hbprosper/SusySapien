@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: CaloJetCollection.xml
+  Created:  Thu Jan 14 22:47:12 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/JetReco/interface/CaloJetCollection.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/JetReco/interface/CaloJetCollection.h">
+
+    <include name="&lt;vector&gt;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+    <include name="&quot;DataFormats/JetReco/interface/CaloJet.h&quot;"/>
+
+    <namespace name="reco">
+        <typedef name="CaloJetCollection"
+                 value="std::vector&lt;CaloJet&gt;">
+typedef std::vector&lt;CaloJet&gt; CaloJetCollection;
+            <comment>
+      collection of CaloJet objects
+            </comment>
+        </typedef>
+
+        <typedef name="CaloJetRef"
+                 value="edm::Ref&lt;CaloJetCollection&gt;">
+typedef edm::Ref&lt;CaloJetCollection&gt; CaloJetRef;
+            <comment>
+      edm references
+            </comment>
+        </typedef>
+
+        <typedef name="CaloJetRefVector"
+                 value="edm::RefVector&lt;CaloJetCollection&gt;">
+typedef edm::RefVector&lt;CaloJetCollection&gt; CaloJetRefVector;
+        </typedef>
+
+        <typedef name="CaloJetRefProd"
+                 value="edm::RefProd&lt;CaloJetCollection&gt;">
+typedef edm::RefProd&lt;CaloJetCollection&gt; CaloJetRefProd;
+        </typedef>
+
+    </namespace>
+
+</header>

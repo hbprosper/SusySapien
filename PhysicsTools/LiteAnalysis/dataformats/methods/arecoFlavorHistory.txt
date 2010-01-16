@@ -1,0 +1,4 @@
+bool	hasParton()
+bool	hasProgenitor()
+bool	hasSister()
+

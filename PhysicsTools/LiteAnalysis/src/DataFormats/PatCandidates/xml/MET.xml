@@ -1,0 +1,512 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: MET.xml
+  Created:  Thu Jan 14 22:48:15 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/PatCandidates/interface/MET.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/PatCandidates/interface/MET.h">
+
+    <include name="&quot;DataFormats/METReco/interface/CaloMET.h&quot;"/>
+    <include name="&quot;DataFormats/METReco/interface/GenMET.h&quot;"/>
+    <include name="&quot;DataFormats/PatCandidates/interface/PATObject.h&quot;"/>
+
+    <namespace name="pat">
+        <comment>
+   Define typedefs for convenience
+        </comment>
+        <forward name="MET"/>
+        <typedef name="METCollection"
+                 value="std::vector&lt;MET&gt;">
+typedef std::vector&lt;MET&gt; METCollection;
+        </typedef>
+
+        <typedef name="METRef"
+                 value="edm::Ref&lt;METCollection&gt;">
+typedef edm::Ref&lt;METCollection&gt; METRef;
+        </typedef>
+
+        <typedef name="METRefVector"
+                 value="edm::RefVector&lt;METCollection&gt;">
+typedef edm::RefVector&lt;METCollection&gt; METRefVector;
+        </typedef>
+
+    </namespace>
+
+    <namespace name="pat">
+        <comment>
+   Class definition
+        </comment>
+        <typedef name="METType"
+                 value="reco::MET">
+typedef reco::MET METType;
+        </typedef>
+
+
+        <class name="MET"
+               fullname="pat::MET"
+               module="DataFormats.PatCandidates"
+               project=""
+               type="regular">
+            <baseclass name="public PATObject&lt;METType&gt;"/>
+
+            <section name="public">
+                <constructor name="MET"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+MET();
+                    <comment>
+          default constructor
+                    </comment>
+                </constructor>
+
+                <constructor name="MET"
+                             return=""
+                             args="['const METType&amp;']"
+                             vars="['aMET']"
+                             qual="">
+MET(const METType&amp; aMET);
+                    <comment>
+          constructor from METType
+                    </comment>
+                </constructor>
+
+                <constructor name="MET"
+                             return=""
+                             args="['const edm::RefToBase&lt;METType&gt;&amp;']"
+                             vars="['aMETRef']"
+                             qual="">
+MET(const edm::RefToBase&lt;METType&gt;&amp; aMETRef);
+                    <comment>
+          constructor from a RefToBase to METType (to be superseded by Ptr counterpart)
+                    </comment>
+                </constructor>
+
+                <constructor name="MET"
+                             return=""
+                             args="['const edm::Ptr&lt;METType&gt;&amp;']"
+                             vars="['aMETRef']"
+                             qual="">
+MET(const edm::Ptr&lt;METType&gt;&amp; aMETRef);
+                    <comment>
+          constructor from a Ptr to a METType
+                    </comment>
+                </constructor>
+
+                <destructor name="~MET"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~MET();
+                    <comment>
+          destructor
+                    </comment>
+                </destructor>
+
+                <method1 name="clone"
+                         return="virtual MET*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual MET* clone() const;
+                    <comment>
+          required reimplementation of the Candidate's clone method
+                    </comment>
+                </method1>
+
+                <method1 name="genMET"
+                         return="const reco::GenMET*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const reco::GenMET* genMET() const;
+                    <comment>
+          return the associated GenMET
+                    </comment>
+                </method1>
+
+                <method1 name="setGenMET"
+                         return="void"
+                         args="['const reco::GenMET&amp;']"
+                         vars="['gm']"
+                         qual="">
+void setGenMET(const reco::GenMET&amp; gm);
+                    <comment>
+          set the associated GenMET
+                    </comment>
+                </method1>
+
+                <method1 name="nCorrections"
+                         return="unsigned int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+unsigned int nCorrections() const;
+                    <comment>
+         ---- methods for MET corrections ----
+          uses internal info from mEtCorr
+          except for full uncorrection, how do you know which is which?
+          you don't,
+          present ordering:
+          1: jet escale Type1 correction
+          2: muon Type1 (?) correction
+          3: tau Type1 (?) correction
+                    </comment>
+                </method1>
+
+                <enum name="UncorrectionType">
+enum UncorrectionType {
+
+ uncorrNONE=-1, 
+ uncorrALL=0, 
+ uncorrJES, 
+ uncorrMUON, 
+ uncorrTAU, 
+ uncorrMAXN
+      };
+                    <field name="uncorrNONE" value="-1"/>
+                    <field name="uncorrALL" value="0"/>
+                    <field name="uncorrJES" value=""/>
+                    <field name="uncorrMUON" value=""/>
+                    <field name="uncorrTAU" value=""/>
+                    <field name="uncorrMAXN" value=""/>
+                </enum>
+
+                <method1 name="corEx"
+                         return="float"
+                         args="['UncorrectionType=uncorrALL']"
+                         vars="['ix']"
+                         qual="const">
+float corEx(UncorrectionType ix=uncorrALL) const;
+                </method1>
+
+                <method1 name="corEy"
+                         return="float"
+                         args="['UncorrectionType=uncorrALL']"
+                         vars="['ix']"
+                         qual="const">
+float corEy(UncorrectionType ix=uncorrALL) const;
+                </method1>
+
+                <method1 name="corSumEt"
+                         return="float"
+                         args="['UncorrectionType=uncorrALL']"
+                         vars="['ix']"
+                         qual="const">
+float corSumEt(UncorrectionType ix=uncorrALL) const;
+                </method1>
+
+                <method1 name="uncorrectedPt"
+                         return="float"
+                         args="['UncorrectionType=uncorrALL']"
+                         vars="['ix']"
+                         qual="const">
+float uncorrectedPt(UncorrectionType ix=uncorrALL) const;
+                </method1>
+
+                <method1 name="uncorrectedPhi"
+                         return="float"
+                         args="['UncorrectionType=uncorrALL']"
+                         vars="['ix']"
+                         qual="const">
+float uncorrectedPhi(UncorrectionType ix=uncorrALL) const;
+                </method1>
+
+                <method1 name="isCaloMET"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isCaloMET() const;
+                    <comment>
+          True if this pat::MET was made from a reco::CaloMET
+                    </comment>
+                </method1>
+
+                <method1 name="isRecoMET"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isRecoMET() const;
+                    <comment>
+          True if this pat::MET was NOT made from a reco::CaloMET
+                    </comment>
+                </method1>
+
+                <method1 name="maxEtInEmTowers"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double maxEtInEmTowers() const;
+                    <comment>
+          Returns the maximum energy deposited in ECAL towers
+                    </comment>
+                </method1>
+
+                <method1 name="maxEtInHadTowers"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double maxEtInHadTowers() const;
+                    <comment>
+          Returns the maximum energy deposited in HCAL towers
+                    </comment>
+                </method1>
+
+                <method1 name="etFractionHadronic"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double etFractionHadronic () const;
+                    <comment>
+          Returns the event hadronic energy fraction
+                    </comment>
+                </method1>
+
+                <method1 name="emEtFraction"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double emEtFraction() const;
+                    <comment>
+          Returns the event electromagnetic energy fraction
+                    </comment>
+                </method1>
+
+                <method1 name="hadEtInHB"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double hadEtInHB() const;
+                    <comment>
+          Returns the event hadronic energy in HB
+                    </comment>
+                </method1>
+
+                <method1 name="hadEtInHO"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double hadEtInHO() const;
+                    <comment>
+          Returns the event hadronic energy in HO
+                    </comment>
+                </method1>
+
+                <method1 name="hadEtInHE"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double hadEtInHE() const;
+                    <comment>
+          Returns the event hadronic energy in HE
+                    </comment>
+                </method1>
+
+                <method1 name="hadEtInHF"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double hadEtInHF() const;
+                    <comment>
+          Returns the event hadronic energy in HF
+                    </comment>
+                </method1>
+
+                <method1 name="emEtInEB"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double emEtInEB() const;
+                    <comment>
+          Returns the event electromagnetic energy in EB
+                    </comment>
+                </method1>
+
+                <method1 name="emEtInEE"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double emEtInEE() const;
+                    <comment>
+          Returns the event electromagnetic energy in EE
+                    </comment>
+                </method1>
+
+                <method1 name="emEtInHF"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double emEtInHF() const;
+                    <comment>
+          Returns the event electromagnetic energy extracted from HF
+                    </comment>
+                </method1>
+
+                <method1 name="metSignificance"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double metSignificance() const;
+                    <comment>
+          Returns the event MET Significance
+                    </comment>
+                </method1>
+
+                <method1 name="CaloSETInpHF"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double CaloSETInpHF() const;
+                    <comment>
+          Returns the event SET in HF+
+                    </comment>
+                </method1>
+
+                <method1 name="CaloSETInmHF"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double CaloSETInmHF() const;
+                    <comment>
+          Returns the event SET in HF-
+                    </comment>
+                </method1>
+
+                <method1 name="CaloMETInpHF"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double CaloMETInpHF() const;
+                    <comment>
+          Returns the event MET in HF+
+                    </comment>
+                </method1>
+
+                <method1 name="CaloMETInmHF"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double CaloMETInmHF() const;
+                    <comment>
+          Returns the event MET in HF-
+                    </comment>
+                </method1>
+
+                <method1 name="CaloMETPhiInpHF"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double CaloMETPhiInpHF() const;
+                    <comment>
+          Returns the event MET-phi in HF+
+                    </comment>
+                </method1>
+
+                <method1 name="CaloMETPhiInmHF"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double CaloMETPhiInmHF() const;
+                    <comment>
+          Returns the event MET-phi in HF-
+                    </comment>
+                </method1>
+
+                <method1 name="caloSpecific"
+                         return="const SpecificCaloMETData&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const SpecificCaloMETData&amp; caloSpecific() const;
+                    <comment>
+          accessor for the CaloMET-specific structure
+                    </comment>
+                </method1>
+
+            </section>
+            <section name="protected">
+
+                <class name="UncorInfo"
+                       fullname="pat::MET::UncorInfo"
+                       module="DataFormats.PatCandidates"
+                       project=""
+                       type="regular struct protecteddefctor">
+                    <comment>
+         ---- members for MET corrections ----
+                    </comment>
+
+
+                    <typemap name="UncorInfo"
+                             value="pat::MET::UncorInfo"
+                             type="class"/>
+
+                </class>
+            </section>
+
+            <typemap name="UncorrectionType"
+                     value="pat::MET::UncorrectionType"
+                     type="enum"/>
+            <typemap name="uncorrALL "
+                     value="pat::MET::uncorrALL "
+                     type="enum"/>
+            <typemap name="uncorrJES"
+                     value="pat::MET::uncorrJES"
+                     type="enum"/>
+            <typemap name="uncorrMAXN"
+                     value="pat::MET::uncorrMAXN"
+                     type="enum"/>
+            <typemap name="uncorrMUON"
+                     value="pat::MET::uncorrMUON"
+                     type="enum"/>
+            <typemap name="uncorrNONE "
+                     value="pat::MET::uncorrNONE "
+                     type="enum"/>
+            <typemap name="uncorrTAU"
+                     value="pat::MET::uncorrTAU"
+                     type="enum"/>
+
+        </class>
+    </namespace>
+
+    <type name="MET*"/>
+    <type name="PATObject&lt;METType&gt;"/>
+    <type name="UncorrectionType"/>
+    <type name="bool"/>
+    <type name="const METType&amp;"/>
+    <type name="const SpecificCaloMETData&amp;"/>
+    <type name="const edm::Ptr&lt;METType&gt;&amp;"/>
+    <type name="const edm::RefToBase&lt;METType&gt;&amp;"/>
+    <type name="const reco::GenMET&amp;"/>
+    <type name="const reco::GenMET*"/>
+    <type name="double"/>
+    <type name="enum UncorrectionType"/>
+    <type name="float"/>
+    <type name="pat::MET"/>
+    <type name="pat::MET::UncorInfo"/>
+    <type name="unsigned int"/>
+    <type name="void"/>
+</header>

@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: LookupTableRecord.xml
+  Created:  Thu Jan 14 22:48:14 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/PatCandidates/interface/LookupTableRecord.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/PatCandidates/interface/LookupTableRecord.h">
+
+    <include name="&quot;DataFormats/GeometryCommonDetAlgo/interface/Measurement1DFloat.h&quot;"/>
+    <include name="&lt;boost/cstdint.hpp&gt;"/>
+
+    <namespace name="pat">
+
+        <class name="LookupTableRecord"
+               fullname="pat::LookupTableRecord"
+               module="DataFormats.PatCandidates"
+               project=""
+               type="regular">
+
+            <section name="public">
+                <constructor name="LookupTableRecord"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+LookupTableRecord();
+                </constructor>
+
+                <constructor name="LookupTableRecord"
+                             return=""
+                             args="['float','float','uint16_t=0']"
+                             vars="['value','error','bin']"
+                             qual="">
+LookupTableRecord(float value, float error, uint16_t bin=0);
+                </constructor>
+
+                <constructor name="LookupTableRecord"
+                             return=""
+                             args="['float','uint16_t=0']"
+                             vars="['value','bin']"
+                             qual="">
+LookupTableRecord(float value, uint16_t bin=0);
+                </constructor>
+
+                <constructor name="LookupTableRecord"
+                             return=""
+                             args="['const Measurement1DFloat&amp;','uint16_t=0']"
+                             vars="['meas','bin']"
+                             qual="">
+LookupTableRecord(const Measurement1DFloat&amp; meas, uint16_t bin=0);
+                </constructor>
+
+                <method1 name="value"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float value() const;
+                    <comment>
+               Get the stored value
+                    </comment>
+                </method1>
+
+                <method1 name="error"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float error() const;
+                    <comment>
+               Get the uncertainty on the stored value (note: it CAN be ZERO)
+                    </comment>
+                </method1>
+
+                <method1 name="bin"
+                         return="uint16_t"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+uint16_t bin() const;
+                    <comment>
+               Get the bin of the table used to compute this value (if available, otherwise 0)
+                    </comment>
+                </method1>
+
+            </section>
+
+        </class>
+    </namespace>
+
+    <type name="const Measurement1DFloat&amp;"/>
+    <type name="float"/>
+    <type name="pat::LookupTableRecord"/>
+    <type name="uint16_t"/>
+    <type name="void"/>
+</header>

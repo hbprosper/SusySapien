@@ -1,0 +1,59 @@
+Class:
+	edm::MultiAssociation<C>
+
+Header:
+	DataFormats/Common/interface/MultiAssociation.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:43 2010	lsclass.py $Revision:$
+
+Methods from edm::MultiAssociation<C>
+
+	-o- contains
+		Return: bool
+		Arguments: const edm::ProductID&	id
+
+	-o- get
+		Return: boost::sub_range<const C>
+		Arguments: const edm::ProductID&	id
+		           unsigned int	t
+
+	-o- get
+		Return: std::pair<unsigned int, unsigned int>
+		Arguments: const edm::ProductID&	id
+		           unsigned int	t
+
+	-o- getValues
+		Return: C
+		Arguments: const edm::ProductID&	id
+		           unsigned int	t
+
+	-o- swap
+		Return: void
+		Arguments: MultiAssociation&	other
+
+	-o- dataSize
+		Return: unsigned int
+		Arguments: void	
+
+	-o- size
+		Return: unsigned int
+		Arguments: void	
+
+	-o- empty
+		Return: bool
+		Arguments: void	
+
+	-o- getValues
+		Return: template<typename RefKey> C
+		Arguments: const RefKey&	r
+
+	-o- fastFiller
+		Return: template<typename HandleType> FastFiller
+		Arguments: const HandleType&	handle
+
+	-o- lazyFiller
+		Return: template<typename HandleType> LazyFiller
+		Arguments: const HandleType&	h
+		           bool=false	fillOnExit
+

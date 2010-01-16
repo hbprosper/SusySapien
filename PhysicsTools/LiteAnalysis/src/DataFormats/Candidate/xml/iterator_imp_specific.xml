@@ -1,0 +1,295 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: iterator_imp_specific.xml
+  Created:  Thu Jan 14 22:46:49 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Candidate/interface/iterator_imp_specific.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Candidate/interface/iterator_imp_specific.h">
+
+    <include name="&quot;DataFormats/Candidate/interface/iterator_deref.h&quot;"/>
+    <include name="&quot;DataFormats/Candidate/interface/const_iterator_imp_specific.h&quot;"/>
+    <include name="&quot;DataFormats/Candidate/interface/iterator_imp.h&quot;"/>
+    <include name="&quot;FWCore/Utilities/interface/Exception.h&quot;"/>
+
+    <namespace name="reco">
+
+        <namespace name="candidate">
+
+            <class name="iterator_imp_specific"
+                   fullname="reco::candidate::iterator_imp_specific&lt;C&gt;"
+                   module="DataFormats.Candidate"
+                   project=""
+                   type="template struct"
+                   template="template&lt;typename C&gt;">
+                <baseclass name="public iterator_imp"/>
+
+                <section name="public">
+                    <typedef name="difference_type"
+                             value="ptrdiff_t">
+typedef ptrdiff_t difference_type;
+                    </typedef>
+
+                    <constructor name="iterator_imp_specific"
+                                 return=""
+                                 args="['void']"
+                                 vars="['']"
+                                 qual="">
+iterator_imp_specific();
+                    </constructor>
+
+                    <constructor name="iterator_imp_specific"
+                                 return="explicit"
+                                 args="['const iterator&amp;']"
+                                 vars="['it']"
+                                 qual="">
+explicit iterator_imp_specific(const iterator&amp; it);
+                    </constructor>
+
+                    <destructor name="~iterator_imp_specific"
+                                return=""
+                                args="['void']"
+                                vars="['']"
+                                qual="">
+~iterator_imp_specific();
+                    </destructor>
+
+                    <method1 name="clone"
+                             return="iterator_imp_specific*"
+                             args="['void']"
+                             vars="['']"
+                             qual="const">
+iterator_imp_specific* clone() const;
+                    </method1>
+
+                    <method2 name="const_clone"
+                             return="const_iterator_imp_specific&lt;C&gt;*"
+                             args="['void']"
+                             vars="['']"
+                             qual="const">
+const_iterator_imp_specific&lt;C&gt;* const_clone() const;
+                    </method2>
+
+                    <method1 name="increase"
+                             return="void"
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+void increase();
+                    </method1>
+
+                    <method1 name="decrease"
+                             return="void"
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+void decrease();
+                    </method1>
+
+                    <method1 name="increase"
+                             return="void"
+                             args="['difference_type']"
+                             vars="['d']"
+                             qual="">
+void increase(difference_type d);
+                    </method1>
+
+                    <method1 name="decrease"
+                             return="void"
+                             args="['difference_type']"
+                             vars="['d']"
+                             qual="">
+void decrease(difference_type d);
+                    </method1>
+
+                    <method1 name="equal_to"
+                             return="bool"
+                             args="['const iterator_imp*']"
+                             vars="['o']"
+                             qual="const">
+bool equal_to(const iterator_imp* o) const;
+                    </method1>
+
+                    <method1 name="less_than"
+                             return="bool"
+                             args="['const iterator_imp*']"
+                             vars="['o']"
+                             qual="const">
+bool less_than(const iterator_imp* o) const;
+                    </method1>
+
+                    <method1 name="assign"
+                             return="void"
+                             args="['const iterator_imp*']"
+                             vars="['o']"
+                             qual="">
+void assign(const iterator_imp* o);
+                    </method1>
+
+                    <method1 name="deref"
+                             return="Candidate&amp;"
+                             args="['void']"
+                             vars="['']"
+                             qual="const">
+Candidate&amp; deref() const;
+                    </method1>
+
+                    <method1 name="difference"
+                             return="difference_type"
+                             args="['const iterator_imp*']"
+                             vars="['o']"
+                             qual="const">
+difference_type difference(const iterator_imp* o) const;
+                    </method1>
+
+                </section>
+
+                <typemap name="difference_type"
+                         value="ptrdiff_t"
+                         type="typedef"/>
+
+            </class>
+
+            <class name="iterator_imp_specific_dummy"
+                   fullname="reco::candidate::iterator_imp_specific_dummy&lt;C&gt;"
+                   module="DataFormats.Candidate"
+                   project=""
+                   type="template struct"
+                   template="template&lt;typename C&gt;">
+                <baseclass name="public iterator_imp"/>
+
+                <section>
+                    <typedef name="difference_type"
+                             value="ptrdiff_t">
+typedef ptrdiff_t difference_type;
+                    </typedef>
+
+                    <constructor name="iterator_imp_specific_dummy"
+                                 return=""
+                                 args="['void']"
+                                 vars="['']"
+                                 qual="">
+iterator_imp_specific_dummy();
+                    </constructor>
+
+                    <destructor name="~iterator_imp_specific_dummy"
+                                return=""
+                                args="['void']"
+                                vars="['']"
+                                qual="">
+~iterator_imp_specific_dummy();
+                    </destructor>
+
+                    <method1 name="clone"
+                             return="iterator_imp_specific_dummy*"
+                             args="['void']"
+                             vars="['']"
+                             qual="const">
+iterator_imp_specific_dummy* clone() const;
+                    </method1>
+
+                    <method2 name="const_clone"
+                             return="const_iterator_imp_specific_dummy&lt;C&gt;*"
+                             args="['void']"
+                             vars="['']"
+                             qual="const">
+const_iterator_imp_specific_dummy&lt;C&gt;* const_clone() const;
+                    </method2>
+
+                    <method1 name="increase"
+                             return="void"
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+void increase();
+                    </method1>
+
+                    <method1 name="decrease"
+                             return="void"
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+void decrease();
+                    </method1>
+
+                    <method1 name="increase"
+                             return="void"
+                             args="['difference_type']"
+                             vars="['d']"
+                             qual="">
+void increase(difference_type d);
+                    </method1>
+
+                    <method1 name="decrease"
+                             return="void"
+                             args="['difference_type']"
+                             vars="['d']"
+                             qual="">
+void decrease(difference_type d);
+                    </method1>
+
+                    <method1 name="equal_to"
+                             return="bool"
+                             args="['const iterator_imp*']"
+                             vars="['o']"
+                             qual="const">
+bool equal_to(const iterator_imp* o) const;
+                    </method1>
+
+                    <method1 name="less_than"
+                             return="bool"
+                             args="['const iterator_imp*']"
+                             vars="['o']"
+                             qual="const">
+bool less_than(const iterator_imp* o) const;
+                    </method1>
+
+                    <method1 name="assign"
+                             return="void"
+                             args="['const iterator_imp*']"
+                             vars="['o']"
+                             qual="">
+void assign(const iterator_imp* o);
+                    </method1>
+
+                    <method1 name="deref"
+                             return="Candidate&amp;"
+                             args="['void']"
+                             vars="['']"
+                             qual="const">
+Candidate&amp; deref() const;
+                    </method1>
+
+                    <method1 name="difference"
+                             return="difference_type"
+                             args="['const iterator_imp*']"
+                             vars="['o']"
+                             qual="const">
+difference_type difference(const iterator_imp* o) const;
+                    </method1>
+
+                </section>
+
+                <typemap name="difference_type"
+                         value="ptrdiff_t"
+                         type="typedef"/>
+
+            </class>
+        </namespace>
+    </namespace>
+
+    <type name="Candidate&amp;"/>
+    <type name="bool"/>
+    <type name="const iterator&amp;"/>
+    <type name="const iterator_imp*"/>
+    <type name="const_iterator_imp_specific&lt;C&gt;*"/>
+    <type name="const_iterator_imp_specific_dummy&lt;C&gt;*"/>
+    <type name="difference_type"/>
+    <type name="iterator_imp"/>
+    <type name="iterator_imp_specific*"/>
+    <type name="iterator_imp_specific_dummy*"/>
+    <type name="reco::candidate::iterator_imp_specific&lt;C&gt;"/>
+    <type name="reco::candidate::iterator_imp_specific_dummy&lt;C&gt;"/>
+    <type name="void"/>
+</header>

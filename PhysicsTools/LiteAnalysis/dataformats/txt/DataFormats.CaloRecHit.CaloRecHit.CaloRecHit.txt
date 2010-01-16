@@ -1,0 +1,23 @@
+Class:
+	CaloRecHit
+
+Header:
+	DataFormats/CaloRecHit/interface/CaloRecHit.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:28 2010	lsclass.py $Revision:$
+
+Methods from CaloRecHit
+
+	-o- energy
+		Return: float
+		Arguments: void	
+
+	-o- time
+		Return: float
+		Arguments: void	
+
+	-o- detid
+		Return: const DetId&
+		Arguments: void	
+

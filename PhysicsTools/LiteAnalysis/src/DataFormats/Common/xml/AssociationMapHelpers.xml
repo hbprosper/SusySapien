@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: AssociationMapHelpers.xml
+  Created:  Thu Jan 14 22:45:49 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Common/interface/AssociationMapHelpers.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/AssociationMapHelpers.h">
+
+    <include name="&quot;FWCore/Utilities/interface/EDMException.h&quot;"/>
+
+    <namespace name="edm">
+
+        <namespace name="helpers">
+
+            <class name="KeyVal"
+                   fullname="edm::helpers::KeyVal&lt;K, V&gt;"
+                   module="DataFormats.Common"
+                   project=""
+                   type="template struct"
+                   template="template&lt;typename K, typename V&gt;">
+
+                <section>
+                    <typedef name="key_type"
+                             value="K">
+typedef K key_type;
+                    </typedef>
+
+                    <typedef name="value_type"
+                             value="V">
+typedef V value_type;
+                    </typedef>
+
+                    <constructor name="KeyVal"
+                                 return=""
+                                 args="['void']"
+                                 vars="['']"
+                                 qual="">
+KeyVal();
+                    </constructor>
+
+                    <constructor name="KeyVal"
+                                 return=""
+                                 args="['const K&amp;','const V&amp;']"
+                                 vars="['k','v']"
+                                 qual="">
+KeyVal(const K&amp; k, const V&amp; v);
+                    </constructor>
+
+                    <member>
+K key;
+                    </member>
+
+                    <member>
+V val;
+                    </member>
+
+                </section>
+
+                <typemap name="key"
+                         value="edm::helpers::KeyVal&lt;K, V&gt;::key"
+                         type="member"/>
+                <typemap name="key_type"
+                         value="K"
+                         type="typedef"/>
+                <typemap name="val"
+                         value="edm::helpers::KeyVal&lt;K, V&gt;::val"
+                         type="member"/>
+                <typemap name="value_type"
+                         value="V"
+                         type="typedef"/>
+
+            </class>
+
+            <class name="Key"
+                   fullname="edm::helpers::Key&lt;K&gt;"
+                   module="DataFormats.Common"
+                   project=""
+                   type="template struct"
+                   template="template&lt;typename K&gt;">
+
+                <section>
+                    <typedef name="key_type"
+                             value="K">
+typedef K key_type;
+                    </typedef>
+
+                    <constructor name="Key"
+                                 return=""
+                                 args="['void']"
+                                 vars="['']"
+                                 qual="">
+Key();
+                    </constructor>
+
+                    <constructor name="Key"
+                                 return=""
+                                 args="['const K&amp;']"
+                                 vars="['k']"
+                                 qual="">
+Key(const K&amp; k);
+                    </constructor>
+
+                    <member>
+K key;
+                    </member>
+
+                </section>
+
+                <typemap name="key"
+                         value="edm::helpers::Key&lt;K&gt;::key"
+                         type="member"/>
+                <typemap name="key_type"
+                         value="K"
+                         type="typedef"/>
+
+            </class>
+        </namespace>
+    </namespace>
+
+    <type name="edm::helpers::Key&lt;K&gt;"/>
+    <type name="edm::helpers::KeyVal&lt;K, V&gt;"/>
+    <type name="void"/>
+</header>

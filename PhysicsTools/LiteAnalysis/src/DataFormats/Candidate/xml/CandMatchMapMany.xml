@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: CandMatchMapMany.xml
+  Created:  Thu Jan 14 22:46:37 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Candidate/interface/CandMatchMapMany.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Candidate/interface/CandMatchMapMany.h">
+
+    <include name="&quot;DataFormats/Common/interface/AssociationMap.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/OneToManyWithQuality.h&quot;"/>
+    <include name="&quot;DataFormats/Candidate/interface/Candidate.h&quot;"/>
+
+    <namespace name="reco">
+        <typedef name="CandMatchMapMany"
+                 value="edm::AssociationMap&lt;
+            edm::OneToManyWithQuality&lt;reco::CandidateCollection, 
+                                      reco::CandidateCollection, 
+                                      double
+                                     &gt;
+                             &gt;">
+typedef edm::AssociationMap&lt;
+            edm::OneToManyWithQuality&lt;reco::CandidateCollection, 
+                                      reco::CandidateCollection, 
+                                      double
+                                     &gt;
+                             &gt; CandMatchMapMany;
+        </typedef>
+
+    </namespace>
+
+</header>

@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: CompositeCandidate.xml
+  Created:  Thu Jan 14 22:48:07 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/PatCandidates/interface/CompositeCandidate.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/PatCandidates/interface/CompositeCandidate.h">
+
+    <include name="&quot;DataFormats/Candidate/interface/CompositeCandidate.h&quot;"/>
+    <include name="&quot;DataFormats/PatCandidates/interface/PATObject.h&quot;"/>
+
+    <namespace name="pat">
+        <comment>
+   Define typedefs for convenience
+        </comment>
+        <forward name="CompositeCandidate"/>
+        <typedef name="CompositeCandidateCollection"
+                 value="std::vector&lt;CompositeCandidate&gt;">
+typedef std::vector&lt;CompositeCandidate&gt; CompositeCandidateCollection;
+        </typedef>
+
+        <typedef name="CompositeCandidateRef"
+                 value="edm::Ref&lt;CompositeCandidateCollection&gt;">
+typedef edm::Ref&lt;CompositeCandidateCollection&gt; CompositeCandidateRef;
+        </typedef>
+
+        <typedef name="CompositeCandidateRefVector"
+                 value="edm::RefVector&lt;CompositeCandidateCollection&gt;">
+typedef edm::RefVector&lt;CompositeCandidateCollection&gt; CompositeCandidateRefVector;
+        </typedef>
+
+    </namespace>
+
+    <namespace name="pat">
+        <typedef name="CompositeCandidateType"
+                 value="reco::CompositeCandidate">
+typedef reco::CompositeCandidate CompositeCandidateType;
+        </typedef>
+
+
+        <class name="CompositeCandidate"
+               fullname="pat::CompositeCandidate"
+               module="DataFormats.PatCandidates"
+               project=""
+               type="regular">
+            <baseclass name="public PATObject&lt;reco::CompositeCandidate&gt;"/>
+
+            <section name="public">
+                <constructor name="CompositeCandidate"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+CompositeCandidate();
+                </constructor>
+
+                <constructor name="CompositeCandidate"
+                             return=""
+                             args="['const CompositeCandidateType&amp;']"
+                             vars="['aCompositeCandidate']"
+                             qual="">
+CompositeCandidate(const CompositeCandidateType&amp; aCompositeCandidate);
+                </constructor>
+
+                <destructor name="~CompositeCandidate"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~CompositeCandidate();
+                </destructor>
+
+                <method1 name="clone"
+                         return="virtual CompositeCandidate*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual CompositeCandidate* clone() const;
+                </method1>
+
+            </section>
+
+        </class>
+    </namespace>
+
+    <type name="CompositeCandidate*"/>
+    <type name="PATObject&lt;reco::CompositeCandidate&gt;"/>
+    <type name="const CompositeCandidateType&amp;"/>
+    <type name="pat::CompositeCandidate"/>
+    <type name="void"/>
+</header>

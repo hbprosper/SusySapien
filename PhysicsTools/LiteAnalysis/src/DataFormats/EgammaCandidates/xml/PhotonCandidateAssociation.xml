@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: PhotonCandidateAssociation.xml
+  Created:  Thu Jan 14 22:46:55 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/EgammaCandidates/interface/PhotonCandidateAssociation.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/EgammaCandidates/interface/PhotonCandidateAssociation.h">
+
+    <include name="&quot;DataFormats/Common/interface/AssociationMap.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/OneToOne.h&quot;"/>
+    <include name="&quot;DataFormats/EgammaCandidates/interface/Photon.h&quot;"/>
+    <include name="&quot;DataFormats/Candidate/interface/Candidate.h&quot;"/>
+    <include name="&quot;DataFormats/EgammaCandidates/interface/PhotonFwd.h&quot;"/>
+    <include name="&quot;DataFormats/Candidate/interface/CandidateFwd.h&quot;"/>
+
+    <namespace name="reco">
+        <typedef name="PhotonCandidateAssociation"
+                 value="edm::AssociationMap&lt;edm::OneToOne&lt;reco::PhotonCollection, reco::CandidateCollection&gt; &gt;">
+typedef edm::AssociationMap&lt;edm::OneToOne&lt;reco::PhotonCollection, reco::CandidateCollection&gt; &gt; PhotonCandidateAssociation;
+        </typedef>
+
+    </namespace>
+
+</header>

@@ -1,0 +1,1053 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: DetSetVectorNew.xml
+  Created:  Thu Jan 14 22:45:59 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Common/interface/DetSetVectorNew.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/DetSetVectorNew.h">
+
+    <include name="&quot;DataFormats/Common/interface/DetSet.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/DetSetNew.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/traits.h&quot;"/>
+    <include name="&lt;boost/iterator_adaptors.hpp&gt;"/>
+    <include name="&lt;boost/iterator/transform_iterator.hpp&gt;"/>
+    <include name="&lt;boost/iterator/counting_iterator.hpp&gt;"/>
+    <include name="&lt;boost/any.hpp&gt;"/>
+    <include name="&lt;boost/shared_ptr.hpp&gt;"/>
+
+    <namespace name="edm">
+
+        <namespace name="refhelper">
+        </namespace>
+    </namespace>
+
+    <namespace name="edmNew">
+        <comment>
+  FIXME remove New when ready
+        </comment>
+
+        <namespace name="dslv">
+            <forward name="template&lt;typename T&gt; LazyGetter"/>
+        </namespace>
+
+        <namespace name="dstvdetails">
+            <comment>
+     transient component of DetSetVector
+     for pure conviniency of dictioanary declaration
+            </comment>
+
+            <class name="DetSetVectorTrans"
+                   fullname="edmNew::dstvdetails::DetSetVectorTrans"
+                   module="DataFormats.Common"
+                   project=""
+                   type="regular struct">
+
+                <section>
+                    <constructor name="DetSetVectorTrans"
+                                 return=""
+                                 args="['void']"
+                                 vars="['']"
+                                 qual="">
+DetSetVectorTrans();
+                    </constructor>
+
+                    <member>
+bool filling;
+                    </member>
+
+                    <member>
+boost::any getter;
+                    </member>
+
+                    <typedef name="size_type"
+                             value="unsigned int">
+typedef unsigned int size_type;
+                    </typedef>
+
+                    <typedef name="id_type"
+                             value="unsigned int">
+typedef unsigned int id_type;
+                    </typedef>
+
+
+                    <class name="Item"
+                           fullname="edmNew::dstvdetails::DetSetVectorTrans::Item"
+                           module="DataFormats.Common"
+                           project=""
+                           type="regular struct">
+
+                        <section>
+                            <constructor name="Item"
+                                         return=""
+                                         args="['id_type=0','int=-1','size_type=0']"
+                                         vars="['i','io','is']"
+                                         qual="">
+Item(id_type i=0, int io=-1, size_type is=0);
+                            </constructor>
+
+                            <member>
+id_type id;
+                            </member>
+
+                            <member>
+int offset;
+                            </member>
+
+                            <member>
+size_type size;
+                            </member>
+
+                            <operator name="operator&lt;"
+                                      return="bool"
+                                      args="['Item const&amp;']"
+                                      vars="['rh']"
+                                      qual="const">
+bool operator&lt;(Item const&amp; rh) const;
+                            </operator>
+
+                            <operator name="operator id_type"
+                                      return=""
+                                      args="['void']"
+                                      vars="['']"
+                                      qual="const">
+operator id_type() const;
+                            </operator>
+
+                        </section>
+
+                        <typemap name="Item"
+                                 value="edmNew::dstvdetails::DetSetVectorTrans::Item"
+                                 type="class"/>
+                        <typemap name="id"
+                                 value="edmNew::dstvdetails::DetSetVectorTrans::Item::id"
+                                 type="member"/>
+                        <typemap name="offset"
+                                 value="edmNew::dstvdetails::DetSetVectorTrans::Item::offset"
+                                 type="member"/>
+                        <typemap name="size"
+                                 value="edmNew::dstvdetails::DetSetVectorTrans::Item::size"
+                                 type="member"/>
+
+                    </class>
+                </section>
+
+                <typemap name="filling"
+                         value="edmNew::dstvdetails::DetSetVectorTrans::filling"
+                         type="member"/>
+                <typemap name="getter"
+                         value="edmNew::dstvdetails::DetSetVectorTrans::getter"
+                         type="member"/>
+                <typemap name="id_type"
+                         value="unsigned int"
+                         type="typedef"/>
+                <typemap name="size_type"
+                         value="unsigned int"
+                         type="typedef"/>
+
+            </class>
+            <function1 name="errorFilling"
+                       return="void"
+                       args="['void']"
+                       vars="['']"
+                       qual="">
+void errorFilling();
+            </function1>
+
+            <function1 name="errorIdExists"
+                       return="void"
+                       args="['det_id_type']"
+                       vars="['iid']"
+                       qual="">
+void errorIdExists(det_id_type iid);
+            </function1>
+
+            <function1 name="throw_range"
+                       return="void"
+                       args="['det_id_type']"
+                       vars="['iid']"
+                       qual="">
+void throw_range(det_id_type iid);
+            </function1>
+
+        </namespace>
+
+        <class name="DetSetVector"
+               fullname="edmNew::DetSetVector&lt;T&gt;"
+               module="DataFormats.Common"
+               project=""
+               type="template"
+               template="template&lt;typename T&gt;">
+            <baseclass name="private dstvdetails::DetSetVectorTrans"/>
+            <comment>
+      an optitimized container that linearized a &quot;map of vector&quot;.
+      It corresponds to a set of variable size array of T each belonging
+      to a &quot;Det&quot; identified by an 32bit id
+
+     FIXME interface to be finalized once use-cases fully identified
+
+     although it is sorted internally it is strongly adviced to
+     fill it already sorted....
+            </comment>
+
+            <section name="public">
+                <typedef name="Trans"
+                         value="dstvdetails::DetSetVectorTrans">
+typedef dstvdetails::DetSetVectorTrans Trans;
+                </typedef>
+
+                <typedef name="Item"
+                         value="Trans::Item">
+typedef Trans::Item Item;
+                </typedef>
+
+                <typedef name="size_type"
+                         value="unsigned int">
+typedef unsigned int size_type;
+                </typedef>
+
+                <typedef name="id_type"
+                         value="unsigned int">
+typedef unsigned int id_type;
+                </typedef>
+
+                <typedef name="data_type"
+                         value="T">
+typedef T data_type;
+                </typedef>
+
+                <typedef name="self"
+                         value="DetSetVector&lt;T&gt;">
+typedef DetSetVector&lt;T&gt; self;
+                </typedef>
+
+                <typedef name="DetSet"
+                         value="DetSet&lt;T&gt;">
+typedef DetSet&lt;T&gt; DetSet;
+                </typedef>
+
+                <typedef name="Getter"
+                         value="dslv::LazyGetter&lt;T&gt;">
+typedef dslv::LazyGetter&lt;T&gt; Getter;
+                </typedef>
+
+                <typedef name="value_type"
+                         value="DetSet">
+typedef DetSet value_type;
+                    <comment>
+       FIXME not sure make sense....
+                    </comment>
+                </typedef>
+
+                <typedef name="key_type"
+                         value="id_type">
+typedef id_type key_type;
+                </typedef>
+
+                <typedef name="IdContainer"
+                         value="std::vector&lt;Item&gt;">
+typedef std::vector&lt;Item&gt; IdContainer;
+                </typedef>
+
+                <typedef name="DataContainer"
+                         value="std::vector&lt;data_type&gt;">
+typedef std::vector&lt;data_type&gt; DataContainer;
+                </typedef>
+
+                <typedef name="IdIter"
+                         value="typename IdContainer::iterator">
+typedef typename IdContainer::iterator IdIter;
+                </typedef>
+
+                <typedef name="DataIter"
+                         value="typename std::vector&lt;data_type&gt;::iterator">
+typedef typename std::vector&lt;data_type&gt;::iterator DataIter;
+                </typedef>
+
+                <typedef name="IterPair"
+                         value="std::pair&lt;IdIter, DataIter&gt;">
+typedef std::pair&lt;IdIter, DataIter&gt; IterPair;
+                </typedef>
+
+                <typedef name="const_IdIter"
+                         value="typename IdContainer::const_iterator">
+typedef typename IdContainer::const_iterator const_IdIter;
+                </typedef>
+
+                <typedef name="const_DataIter"
+                         value="typename std::vector&lt;data_type&gt;::const_iterator">
+typedef typename std::vector&lt;data_type&gt;::const_iterator const_DataIter;
+                </typedef>
+
+                <typedef name="const_IterPair"
+                         value="std::pair&lt;const_IdIter, const_DataIter&gt;">
+typedef std::pair&lt;const_IdIter, const_DataIter&gt; const_IterPair;
+                </typedef>
+
+                <typedef name="RefFinder"
+                         value="typename edm::refhelper::FindForNewDetSetVector&lt;data_type&gt;">
+typedef typename edm::refhelper::FindForNewDetSetVector&lt;data_type&gt; RefFinder;
+                </typedef>
+
+
+                <class name="IterHelp"
+                       fullname="edmNew::DetSetVector&lt;T&gt;::IterHelp"
+                       module="DataFormats.Common"
+                       project=""
+                       type="regular struct">
+
+                    <section>
+                        <typedef name="result_type"
+                                 value="DetSet">
+typedef DetSet result_type;
+                        </typedef>
+
+                        <constructor name="IterHelp"
+                                     return=""
+                                     args="['DetSetVector&lt;T&gt; const&amp;']"
+                                     vars="['iv']"
+                                     qual="">
+IterHelp(DetSetVector&lt;T&gt; const&amp; iv);
+                        </constructor>
+
+                        <operator name="operator()"
+                                  return="result_type&amp;"
+                                  args="['Item const&amp;']"
+                                  vars="['item']"
+                                  qual="const">
+result_type&amp; operatorPP(Item const&amp; item) const;
+                        </operator>
+
+                    </section>
+
+                    <typemap name="IterHelp"
+                             value="edmNew::DetSetVector&lt;T&gt;::IterHelp"
+                             type="class"/>
+                    <typemap name="result_type"
+                             value="DetSet"
+                             type="typedef"/>
+
+                </class>
+                <typedef name="const_iterator"
+                         value="boost::transform_iterator&lt;IterHelp, const_IdIter&gt;">
+typedef boost::transform_iterator&lt;IterHelp, const_IdIter&gt; const_iterator;
+                </typedef>
+
+                <typedef name="Range"
+                         value="std::pair&lt;const_iterator, const_iterator&gt;">
+typedef std::pair&lt;const_iterator, const_iterator&gt; Range;
+                </typedef>
+
+
+                <class name="FastFiller"
+                       fullname="edmNew::DetSetVector&lt;T&gt;::FastFiller"
+                       module="DataFormats.Common"
+                       project=""
+                       type="regular">
+                    <comment>
+       fill the lastest inserted DetSet
+                    </comment>
+
+                    <section name="public">
+                        <typedef name="value_type"
+                                 value="typename DetSetVector&lt;T&gt;::data_type">
+typedef typename DetSetVector&lt;T&gt;::data_type value_type;
+                        </typedef>
+
+                        <typedef name="key_type"
+                                 value="typename DetSetVector&lt;T&gt;::id_type">
+typedef typename DetSetVector&lt;T&gt;::id_type key_type;
+                        </typedef>
+
+                        <typedef name="id_type"
+                                 value="typename DetSetVector&lt;T&gt;::id_type">
+typedef typename DetSetVector&lt;T&gt;::id_type id_type;
+                        </typedef>
+
+                        <typedef name="size_type"
+                                 value="typename DetSetVector&lt;T&gt;::size_type">
+typedef typename DetSetVector&lt;T&gt;::size_type size_type;
+                        </typedef>
+
+                        <constructor name="FastFiller"
+                                     return=""
+                                     args="['DetSetVector&lt;T&gt;&amp;','id_type','bool=false']"
+                                     vars="['iv','id','isaveEmpty']"
+                                     qual="">
+FastFiller(DetSetVector&lt;T&gt;&amp; iv, id_type id, bool isaveEmpty=false);
+                        </constructor>
+
+                        <constructor name="FastFiller"
+                                     return=""
+                                     args="['DetSetVector&lt;T&gt;&amp;','typename DetSetVector&lt;T&gt;::Item&amp;','bool=false']"
+                                     vars="['iv','it','isaveEmpty']"
+                                     qual="">
+FastFiller(DetSetVector&lt;T&gt;&amp; iv, typename DetSetVector&lt;T&gt;::Item&amp; it, bool isaveEmpty=false);
+                        </constructor>
+
+                        <destructor name="~FastFiller"
+                                    return=""
+                                    args="['void']"
+                                    vars="['']"
+                                    qual="">
+~FastFiller();
+                        </destructor>
+
+                        <method1 name="abort"
+                                 return="void"
+                                 args="['void']"
+                                 vars="['']"
+                                 qual="">
+void abort();
+                        </method1>
+
+                        <method1 name="reserve"
+                                 return="void"
+                                 args="['size_type']"
+                                 vars="['s']"
+                                 qual="">
+void reserve(size_type s);
+                        </method1>
+
+                        <method1 name="resize"
+                                 return="void"
+                                 args="['size_type']"
+                                 vars="['s']"
+                                 qual="">
+void resize(size_type s);
+                        </method1>
+
+                        <method1 name="id"
+                                 return="id_type"
+                                 args="['void']"
+                                 vars="['']"
+                                 qual="const">
+id_type id() const;
+                        </method1>
+
+                        <method1 name="size"
+                                 return="size_type"
+                                 args="['void']"
+                                 vars="['']"
+                                 qual="const">
+size_type size() const;
+                        </method1>
+
+                        <method1 name="empty"
+                                 return="bool"
+                                 args="['void']"
+                                 vars="['']"
+                                 qual="const">
+bool empty() const;
+                        </method1>
+
+                        <operator name="operator[]"
+                                  return="data_type&amp;"
+                                  args="['size_type']"
+                                  vars="['i']"
+                                  qual="">
+data_type&amp; operator[](size_type i);
+                        </operator>
+
+                        <method1 name="begin"
+                                 return="DataIter"
+                                 args="['void']"
+                                 vars="['']"
+                                 qual="">
+DataIter begin();
+                        </method1>
+
+                        <method1 name="end"
+                                 return="DataIter"
+                                 args="['void']"
+                                 vars="['']"
+                                 qual="">
+DataIter end();
+                        </method1>
+
+                        <method1 name="push_back"
+                                 return="void"
+                                 args="['data_type const&amp;']"
+                                 vars="['d']"
+                                 qual="">
+void push_back(data_type const&amp; d);
+                        </method1>
+
+                    </section>
+
+                    <typemap name="FastFiller"
+                             value="edmNew::DetSetVector&lt;T&gt;::FastFiller"
+                             type="class"/>
+                    <typemap name="id_type"
+                             value="typename DetSetVector&lt;T&gt;::id_type"
+                             type="typedef"/>
+                    <typemap name="key_type"
+                             value="typename DetSetVector&lt;T&gt;::typename DetSetVector&lt;T&gt;::id_type"
+                             type="typedef"/>
+                    <typemap name="size_type"
+                             value="typename DetSetVector&lt;T&gt;::size_type"
+                             type="typedef"/>
+                    <typemap name="value_type"
+                             value="typename DetSetVector&lt;T&gt;::data_type"
+                             type="typedef"/>
+
+                </class>
+                <friend>
+friend class FastFiller;
+                </friend>
+
+
+                <class name="FindForDetSetVector"
+                       fullname="edmNew::DetSetVector&lt;T&gt;::FindForDetSetVector"
+                       module="DataFormats.Common"
+                       project=""
+                       type="regular struct">
+                    <baseclass name="public std::binary_function&lt;const edmNew::DetSetVector&lt;T&gt;&amp;, size_t, const T*&gt;"/>
+
+                    <section>
+                        <typedef name="self"
+                                 value="FindForDetSetVector">
+typedef FindForDetSetVector self;
+                        </typedef>
+
+                        <operator name="operator()"
+                                  return="typename self::result_type"
+                                  args="['typename self::first_argument_type','typename self::second_argument_type']"
+                                  vars="['iContainer','iIndex']"
+                                  qual="">
+typename self::result_type operatorPP(typename self::first_argument_type iContainer, typename self::second_argument_type iIndex);
+                        </operator>
+
+                    </section>
+
+                    <typemap name="FindForDetSetVector"
+                             value="edmNew::DetSetVector&lt;T&gt;::FindForDetSetVector"
+                             type="class"/>
+                    <typemap name="self"
+                             value="FindForDetSetVector"
+                             type="typedef"/>
+
+                </class>
+                <friend>
+friend class FindForDetSetVector;
+                </friend>
+
+                <constructor name="DetSetVector"
+                             return="explicit"
+                             args="['int=0']"
+                             vars="['isubdet']"
+                             qual="">
+explicit DetSetVector(int isubdet=0);
+                </constructor>
+
+                <constructor name="DetSetVector"
+                             return=""
+                             args="['boost::shared_ptr&lt;dslv::LazyGetter&lt;T&gt; &gt;','const std::vector&lt;det_id_type&gt;&amp;','int=0']"
+                             vars="['iGetter','iDets','isubdet']"
+                             qual="">
+DetSetVector(boost::shared_ptr&lt;dslv::LazyGetter&lt;T&gt; &gt; iGetter, const std::vector&lt;det_id_type&gt;&amp; iDets, int isubdet=0);
+                </constructor>
+
+                <destructor name="~DetSetVector"
+                            return=""
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+~DetSetVector();
+                </destructor>
+
+                <method1 name="swap"
+                         return="void"
+                         args="['DetSetVector&amp;']"
+                         vars="['rh']"
+                         qual="">
+void swap(DetSetVector&amp; rh);
+                </method1>
+
+                <method1 name="swap"
+                         return="void"
+                         args="['IdContainer&amp;','DataContainer&amp;']"
+                         vars="['iic','idc']"
+                         qual="">
+void swap(IdContainer&amp; iic, DataContainer&amp; idc);
+                </method1>
+
+                <method1 name="reserve"
+                         return="void"
+                         args="['size_t','size_t']"
+                         vars="['isize','dsize']"
+                         qual="">
+void reserve(size_t isize, size_t dsize);
+                </method1>
+
+                <method1 name="resize"
+                         return="void"
+                         args="['size_t','size_t']"
+                         vars="['isize','dsize']"
+                         qual="">
+void resize(size_t isize, size_t dsize);
+                </method1>
+
+                <method1 name="insert"
+                         return="DetSet"
+                         args="['id_type','data_type const*','size_type']"
+                         vars="['iid','idata','isize']"
+                         qual="">
+DetSet insert(id_type iid, data_type const* idata, size_type isize);
+                    <comment>
+       FIXME not sure what the best way to add one cell to cont
+                    </comment>
+                </method1>
+
+                <method1 name="insert"
+                         return="DetSet"
+                         args="['id_type','size_type']"
+                         vars="['iid','isize']"
+                         qual="">
+DetSet insert(id_type iid, size_type isize);
+                    <comment>
+      make space for it
+                    </comment>
+                </method1>
+
+                <method1 name="push_back"
+                         return="Item&amp;"
+                         args="['id_type']"
+                         vars="['iid']"
+                         qual="">
+Item&amp; push_back(id_type iid);
+                    <comment>
+       to be used with a FastFiller
+                    </comment>
+                </method1>
+
+                <method1 name="pop_back"
+                         return="void"
+                         args="['id_type']"
+                         vars="['iid']"
+                         qual="">
+void pop_back(id_type iid);
+                    <comment>
+       remove last entry (usually only if empty...)
+                    </comment>
+                </method1>
+
+            </section>
+            <section name="public">
+                <method1 name="exists"
+                         return="bool"
+                         args="['id_type']"
+                         vars="['i']"
+                         qual="const">
+bool exists(id_type i) const;
+                </method1>
+
+                <method1 name="isValid"
+                         return="bool"
+                         args="['id_type']"
+                         vars="['i']"
+                         qual="const">
+bool isValid(id_type i) const;
+                </method1>
+
+                <operator name="operator[]"
+                          return="DetSet"
+                          args="['id_type']"
+                          vars="['i']"
+                          qual="const">
+DetSet operator[](id_type i) const;
+                    <comment>
+    DetSet operator[](id_type i) {
+      const_IdIter p = findItem(i);
+      if (p==m_ids.end()) what???
+      return DetSet(*this,p-m_ids.begin());
+    }
+                    </comment>
+                </operator>
+
+                <method1 name="find"
+                         return="const_iterator"
+                         args="['id_type']"
+                         vars="['i']"
+                         qual="const">
+const_iterator find(id_type i) const;
+                    <comment>
+       slow interface
+                    </comment>
+                </method1>
+
+                <method1 name="findItem"
+                         return="const_IdIter"
+                         args="['id_type']"
+                         vars="['i']"
+                         qual="const">
+const_IdIter findItem(id_type i) const;
+                    <comment>
+       slow interface
+                    </comment>
+                </method1>
+
+                <method1 name="begin"
+                         return="const_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const_iterator begin() const;
+                </method1>
+
+                <method1 name="end"
+                         return="const_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const_iterator end() const;
+                </method1>
+
+                <method2 name="equal_range"
+                         return="template&lt;typename CMP&gt; Range"
+                         args="['id_type','CMP']"
+                         vars="['i','cmp']"
+                         qual="const">
+template&lt;typename CMP&gt;     Range equal_range(id_type i, CMP cmp) const;
+                    <comment>
+       return an iterator range (implemented here to avoid dereference of detset)
+                    </comment>
+                </method2>
+
+                <method1 name="subdetId"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int subdetId() const;
+                </method1>
+
+                <method1 name="empty"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool empty() const;
+                </method1>
+
+                <method1 name="dataSize"
+                         return="size_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+size_type dataSize() const;
+                </method1>
+
+                <method1 name="size"
+                         return="size_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+size_type size() const;
+                </method1>
+
+                <operator name="operator()"
+                          return="data_type"
+                          args="['size_t','size_t']"
+                          vars="['cell','frame']"
+                          qual="const">
+data_type operatorPP(size_t cell, size_t frame) const;
+                    <comment>
+      FIXME fast interfaces, not consistent with associative nature of container....
+                    </comment>
+                </operator>
+
+                <method1 name="data"
+                         return="data_type const*"
+                         args="['size_t']"
+                         vars="['cell']"
+                         qual="const">
+data_type const* data(size_t cell) const;
+                </method1>
+
+                <method1 name="detsetSize"
+                         return="size_type"
+                         args="['size_t']"
+                         vars="['cell']"
+                         qual="const">
+size_type detsetSize(size_t cell) const;
+                </method1>
+
+                <method1 name="id"
+                         return="id_type"
+                         args="['size_t']"
+                         vars="['cell']"
+                         qual="const">
+id_type id(size_t cell) const;
+                </method1>
+
+                <method1 name="item"
+                         return="Item const&amp;"
+                         args="['size_t']"
+                         vars="['cell']"
+                         qual="const">
+Item const&amp; item(size_t cell) const;
+                </method1>
+
+                <method1 name="data"
+                         return="DataContainer const&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+DataContainer const&amp; data() const;
+                    <comment>
+       IdContainer const &amp; ids() const { return m_ids;}
+                    </comment>
+                </method1>
+
+                <method1 name="update"
+                         return="void"
+                         args="['Item const&amp;']"
+                         vars="['item']"
+                         qual="const">
+void update(Item const&amp; item) const;
+                </method1>
+
+            </section>
+
+            <typemap name="DataContainer"
+                     value="std::vector&lt;T&gt;"
+                     type="typedef"/>
+            <typemap name="DataIter"
+                     value="typename std::vector&lt;T&gt;::iterator"
+                     type="typedef"/>
+            <typemap name="DetSet"
+                     value="DetSet&lt;T&gt;"
+                     type="typedef"/>
+            <typemap name="Getter"
+                     value="dslv::LazyGetter&lt;T&gt;"
+                     type="typedef"/>
+            <typemap name="IdContainer"
+                     value="std::vector&lt;dstvdetails::DetSetVectorTrans::Item&gt;"
+                     type="typedef"/>
+            <typemap name="IdIter"
+                     value="typename std::vector&lt;dstvdetails::DetSetVectorTrans::Item&gt;::iterator"
+                     type="typedef"/>
+            <typemap name="Item"
+                     value="dstvdetails::DetSetVectorTrans::Item"
+                     type="typedef"/>
+            <typemap name="IterPair"
+                     value="typename std::pair&lt;typename std::vector&lt;dstvdetails::DetSetVectorTrans::Item&gt;::iterator, typename std::vector&lt;T&gt;::iterator&gt;"
+                     type="typedef"/>
+            <typemap name="Range"
+                     value="typename std::pair&lt;boost::transform_iterator&lt;IterHelp, typename std::vector&lt;dstvdetails::DetSetVectorTrans::Item&gt;::const_iterator&gt;, boost::transform_iterator&lt;IterHelp, typename std::vector&lt;dstvdetails::DetSetVectorTrans::Item&gt;::const_iterator&gt; &gt;"
+                     type="typedef"/>
+            <typemap name="RefFinder"
+                     value="typename edm::refhelper::FindForNewDetSetVector&lt;T&gt;"
+                     type="typedef"/>
+            <typemap name="Trans"
+                     value="dstvdetails::DetSetVectorTrans"
+                     type="typedef"/>
+            <typemap name="const_DataIter"
+                     value="typename std::vector&lt;T&gt;::const_iterator"
+                     type="typedef"/>
+            <typemap name="const_IdIter"
+                     value="typename std::vector&lt;dstvdetails::DetSetVectorTrans::Item&gt;::const_iterator"
+                     type="typedef"/>
+            <typemap name="const_IterPair"
+                     value="typename std::pair&lt;typename std::vector&lt;dstvdetails::DetSetVectorTrans::Item&gt;::const_iterator, typename std::vector&lt;T&gt;::const_iterator&gt;"
+                     type="typedef"/>
+            <typemap name="const_iterator"
+                     value="typename boost::transform_iterator&lt;IterHelp, typename std::vector&lt;dstvdetails::DetSetVectorTrans::Item&gt;::const_iterator&gt;"
+                     type="typedef"/>
+            <typemap name="data_type"
+                     value="T"
+                     type="typedef"/>
+            <typemap name="id_type"
+                     value="unsigned int"
+                     type="typedef"/>
+            <typemap name="key_type"
+                     value="unsigned int"
+                     type="typedef"/>
+            <typemap name="self"
+                     value="DetSetVector&lt;T&gt;"
+                     type="typedef"/>
+            <typemap name="size_type"
+                     value="unsigned int"
+                     type="typedef"/>
+            <typemap name="value_type"
+                     value="DetSet&lt;T&gt;"
+                     type="typedef"/>
+
+        </class>
+
+        <namespace name="dslv">
+
+            <class name="LazyGetter"
+                   fullname="edmNew::dslv::LazyGetter&lt;T&gt;"
+                   module="DataFormats.Common"
+                   project=""
+                   type="abstract template"
+                   template="template&lt;typename T&gt;">
+
+                <section name="public">
+                    <destructor name="~LazyGetter"
+                                return="virtual"
+                                args="['void']"
+                                vars="['']"
+                                qual="">
+virtual ~LazyGetter();
+                    </destructor>
+
+                    <method2 name="fill"
+                             return="virtual void"
+                             args="['typename DetSetVector&lt;T&gt;::FastFiller&amp;']"
+                             vars="['']"
+                             qual="= 0">
+virtual void fill(typename DetSetVector&lt;T&gt;::FastFiller&amp;)=0;
+                    </method2>
+
+                </section>
+
+            </class>
+        </namespace>
+    </namespace>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&lt;boost/mpl/assert.hpp&gt;"/>
+    <include name="&lt;boost/type_traits/is_same.hpp&gt;"/>
+
+    <namespace name="edm">
+        <comment>
+  specialize behavior of edm::Ref to get access to the 'Det'
+        </comment>
+
+        <namespace name="refhelper">
+            <comment>
+       Reference to an item inside a new DetSetVector ...
+            </comment>
+
+            <class name="FindTrait&lt;typename edmNew::DetSetVector&lt;T&gt;,T&gt;"
+                   fullname="edm::refhelper::FindTrait&lt;typename edmNew::DetSetVector&lt;T&gt;,T&gt;"
+                   module="DataFormats.Common"
+                   project=""
+                   type="specialized template struct"
+                   template="template&lt;typename T&gt;">
+
+                <section>
+                    <typedef name="value"
+                             value="typename edmNew::DetSetVector&lt;T&gt;::FindForDetSetVector">
+typedef typename edmNew::DetSetVector&lt;T&gt;::FindForDetSetVector value;
+                    </typedef>
+
+                </section>
+
+                <typemap name="value"
+                         value="typename edmNew::DetSetVector&lt;T&gt;::FindForDetSetVector"
+                         type="typedef"/>
+
+            </class>
+        </namespace>
+
+        <namespace name="refhelper">
+            <comment>
+       Probably this one is not that useful ....
+            </comment>
+
+            <class name="FindSetForNewDetSetVector"
+                   fullname="edm::refhelper::FindSetForNewDetSetVector&lt;T&gt;"
+                   module="DataFormats.Common"
+                   project=""
+                   type="template struct"
+                   template="template&lt;typename T&gt;">
+                <baseclass name="public std::binary_function&lt;const edmNew::DetSetVector&lt;T&gt;&amp;, size_t, edmNew::DetSet&lt;T&gt; &gt;"/>
+
+                <section>
+                    <typedef name="self"
+                             value="FindSetForNewDetSetVector&lt;T&gt;">
+typedef FindSetForNewDetSetVector&lt;T&gt; self;
+                    </typedef>
+
+                    <operator name="operator()"
+                              return="typename self::result_type"
+                              args="['typename self::first_argument_type','typename self::second_argument_type']"
+                              vars="['iContainer','iIndex']"
+                              qual="">
+typename self::result_type operatorPP(typename self::first_argument_type iContainer, typename self::second_argument_type iIndex);
+                    </operator>
+
+                </section>
+
+                <typemap name="self"
+                         value="FindSetForNewDetSetVector&lt;T&gt;"
+                         type="typedef"/>
+
+            </class>
+
+            <class name="FindTrait&lt;edmNew::DetSetVector&lt;T&gt;, edmNew::DetSet&lt;T&gt; &gt;"
+                   fullname="edm::refhelper::FindTrait&lt;edmNew::DetSetVector&lt;T&gt;, edmNew::DetSet&lt;T&gt; &gt;"
+                   module="DataFormats.Common"
+                   project=""
+                   type="specialized template struct"
+                   template="template&lt;typename T&gt;">
+
+                <section>
+                    <typedef name="value"
+                             value="FindSetForNewDetSetVector&lt;T&gt;">
+typedef FindSetForNewDetSetVector&lt;T&gt; value;
+                    </typedef>
+
+                </section>
+
+                <typemap name="value"
+                         value="FindSetForNewDetSetVector&lt;T&gt;"
+                         type="typedef"/>
+
+            </class>
+        </namespace>
+    </namespace>
+
+    <namespace name="edmNew">
+    </namespace>
+
+    <type name="DataContainer const&amp;"/>
+    <type name="DataContainer&amp;"/>
+    <type name="DataIter"/>
+    <type name="DetSet"/>
+    <type name="DetSetVector&amp;"/>
+    <type name="DetSetVector&lt;T&gt; const&amp;"/>
+    <type name="DetSetVector&lt;T&gt;&amp;"/>
+    <type name="IdContainer&amp;"/>
+    <type name="Item const&amp;"/>
+    <type name="Item&amp;"/>
+    <type name="bool"/>
+    <type name="boost::any"/>
+    <type name="boost::shared_ptr&lt;dslv::LazyGetter&lt;T&gt; &gt;"/>
+    <type name="const std::vector&lt;det_id_type&gt;&amp;"/>
+    <type name="const_IdIter"/>
+    <type name="const_iterator"/>
+    <type name="data_type"/>
+    <type name="data_type const&amp;"/>
+    <type name="data_type const*"/>
+    <type name="data_type&amp;"/>
+    <type name="dstvdetails::DetSetVectorTrans"/>
+    <type name="edm::refhelper::FindSetForNewDetSetVector&lt;T&gt;"/>
+    <type name="edm::refhelper::FindTrait&lt;edmNew::DetSetVector&lt;T&gt;, edmNew::DetSet&lt;T&gt; &gt;"/>
+    <type name="edm::refhelper::FindTrait&lt;typename edmNew::DetSetVector&lt;T&gt;, T&gt;"/>
+    <type name="edmNew::DetSetVector&lt;T&gt;"/>
+    <type name="edmNew::DetSetVector&lt;T&gt;::FastFiller"/>
+    <type name="edmNew::DetSetVector&lt;T&gt;::FindForDetSetVector"/>
+    <type name="edmNew::DetSetVector&lt;T&gt;::IterHelp"/>
+    <type name="edmNew::dslv::LazyGetter&lt;T&gt;"/>
+    <type name="edmNew::dstvdetails::DetSetVectorTrans"/>
+    <type name="edmNew::dstvdetails::DetSetVectorTrans::Item"/>
+    <type name="id_type"/>
+    <type name="int"/>
+    <type name="result_type&amp;"/>
+    <type name="size_t"/>
+    <type name="size_type"/>
+    <type name="std::binary_function&lt;const edmNew::DetSetVector&lt;T&gt;&amp;, size_t, const T*&gt;"/>
+    <type name="std::binary_function&lt;const edmNew::DetSetVector&lt;T&gt;&amp;, size_t, edmNew::DetSet&lt;T&gt; &gt;"/>
+    <type name="template&lt;typename CMP&gt; Range"/>
+    <type name="typename DetSetVector&lt;T&gt;::FastFiller&amp;"/>
+    <type name="typename DetSetVector&lt;T&gt;::Item&amp;"/>
+    <type name="typename self::first_argument_type"/>
+    <type name="typename self::result_type"/>
+    <type name="typename self::second_argument_type"/>
+    <type name="void"/>
+</header>

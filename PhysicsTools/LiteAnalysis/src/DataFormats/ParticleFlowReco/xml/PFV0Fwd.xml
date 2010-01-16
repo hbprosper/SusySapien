@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: PFV0Fwd.xml
+  Created:  Thu Jan 14 22:48:06 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/ParticleFlowReco/interface/PFV0Fwd.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/ParticleFlowReco/interface/PFV0Fwd.h">
+
+    <include name="&lt;vector&gt;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
+
+    <namespace name="reco">
+        <forward name="PFV0"/>
+        <typedef name="PFV0Collection"
+                 value="std::vector&lt;PFV0&gt;">
+typedef std::vector&lt;PFV0&gt; PFV0Collection;
+            <comment>
+      collection of PFV0 objects
+            </comment>
+        </typedef>
+
+        <typedef name="PFV0Ref"
+                 value="edm::Ref&lt;PFV0Collection&gt;">
+typedef edm::Ref&lt;PFV0Collection&gt; PFV0Ref;
+            <comment>
+      persistent reference to PFV0 objects
+            </comment>
+        </typedef>
+
+        <typedef name="PFV0RefProd"
+                 value="edm::RefProd&lt;PFV0Collection&gt;">
+typedef edm::RefProd&lt;PFV0Collection&gt; PFV0RefProd;
+            <comment>
+      reference to PFV0 collection
+            </comment>
+        </typedef>
+
+        <typedef name="PFV0RefVector"
+                 value="edm::RefVector&lt;PFV0Collection&gt;">
+typedef edm::RefVector&lt;PFV0Collection&gt; PFV0RefVector;
+            <comment>
+      vector of references to PFV0 objects all in the same collection
+            </comment>
+        </typedef>
+
+        <typedef name="PFV0_iterator"
+                 value="PFV0RefVector::iterator">
+typedef PFV0RefVector::iterator PFV0_iterator;
+            <comment>
+      iterator over a vector of references to PFV0 objects
+            </comment>
+        </typedef>
+
+    </namespace>
+
+</header>

@@ -1,0 +1,25 @@
+Class:
+	edm::helper::Filler<Map>
+
+Header:
+	DataFormats/Common/interface/ValueMap.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:16:02 2010	lsclass.py $Revision:$
+
+Methods from edm::helper::Filler<Map>
+
+	-o- add
+		Return: void
+		Arguments: const Map&	map
+
+	-o- fill
+		Return: void
+		Arguments: void	
+
+	-o- insert
+		Return: template<typename H, typename I> void
+		Arguments: const H&	h
+		           I	begin
+		           I	end
+

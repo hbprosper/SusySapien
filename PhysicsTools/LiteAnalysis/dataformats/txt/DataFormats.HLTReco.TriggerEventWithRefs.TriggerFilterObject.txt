@@ -1,0 +1,9 @@
+Class:
+	trigger::TriggerEventWithRefs::TriggerFilterObject
+
+Header:
+	DataFormats/HLTReco/interface/TriggerEventWithRefs.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:16:10 2010	lsclass.py $Revision:$
+

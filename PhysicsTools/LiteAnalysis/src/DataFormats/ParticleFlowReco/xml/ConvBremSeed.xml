@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: ConvBremSeed.xml
+  Created:  Thu Jan 14 22:47:51 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/ParticleFlowReco/interface/ConvBremSeed.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/ParticleFlowReco/interface/ConvBremSeed.h">
+
+    <include name="&quot;DataFormats/ParticleFlowReco/interface/GsfPFRecTrackFwd.h&quot;"/>
+    <include name="&quot;DataFormats/TrajectorySeed/interface/TrajectorySeed.h&quot;"/>
+    <include name="&quot;DataFormats/TrackingRecHit/interface/TrackingRecHit.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&lt;vector&gt;"/>
+
+    <namespace name="reco">
+
+        <class name="ConvBremSeed"
+               fullname="reco::ConvBremSeed"
+               module="DataFormats.ParticleFlowReco"
+               project=""
+               type="regular">
+            <baseclass name="public TrajectorySeed"/>
+
+            <section name="public">
+                <typedef name="recHitContainer"
+                         value="edm::OwnVector&lt;TrackingRecHit&gt;">
+typedef edm::OwnVector&lt;TrackingRecHit&gt; recHitContainer;
+                </typedef>
+
+                <constructor name="ConvBremSeed"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+ConvBremSeed();
+                </constructor>
+
+                <destructor name="~ConvBremSeed"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~ConvBremSeed();
+                </destructor>
+
+                <constructor name="ConvBremSeed"
+                             return=""
+                             args="['const TrajectorySeed&amp;','edm::Ref&lt;GsfPFRecTrackCollection&gt;&amp;']"
+                             vars="['seed','pfgsf']"
+                             qual="">
+ConvBremSeed(const TrajectorySeed&amp; seed, edm::Ref&lt;GsfPFRecTrackCollection&gt;&amp; pfgsf);
+                    <comment>
+        Constructor from TrajectorySeed
+                    </comment>
+                </constructor>
+
+                <method1 name="GsfPFTrack"
+                         return="GsfPFRecTrackRef"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+GsfPFRecTrackRef GsfPFTrack() const;
+                    <comment>
+        reference to the GSDPFRecTrack
+                    </comment>
+                </method1>
+
+                <method1 name="clone"
+                         return="ConvBremSeed*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+ConvBremSeed* clone() const;
+                </method1>
+
+            </section>
+
+            <typemap name="recHitContainer"
+                     value="edm::OwnVector&lt;TrackingRecHit&gt;"
+                     type="typedef"/>
+
+        </class>
+    </namespace>
+
+    <type name="ConvBremSeed*"/>
+    <type name="GsfPFRecTrackRef"/>
+    <type name="TrajectorySeed"/>
+    <type name="const TrajectorySeed&amp;"/>
+    <type name="edm::Ref&lt;GsfPFRecTrackCollection&gt;&amp;"/>
+    <type name="reco::ConvBremSeed"/>
+    <type name="void"/>
+</header>

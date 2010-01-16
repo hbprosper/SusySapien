@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: CaloTowerFwd.xml
+  Created:  Thu Jan 14 22:45:47 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/CaloTowers/interface/CaloTowerFwd.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/CaloTowers/interface/CaloTowerFwd.h">
+
+    <include name="&quot;DataFormats/Common/interface/Ptr.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/SortedCollection.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
+    <forward name="CaloTower"/>
+    <typedef name="CaloTowerPtr"
+             value="edm::Ptr&lt;CaloTower&gt;">
+typedef edm::Ptr&lt;CaloTower&gt; CaloTowerPtr;
+    </typedef>
+
+    <typedef name="CaloTowerCollection"
+             value="edm::SortedCollection&lt;CaloTower&gt;">
+typedef edm::SortedCollection&lt;CaloTower&gt; CaloTowerCollection;
+    </typedef>
+
+    <typedef name="CaloTowerRef"
+             value="edm::Ref&lt;CaloTowerCollection&gt;">
+typedef edm::Ref&lt;CaloTowerCollection&gt; CaloTowerRef;
+    </typedef>
+
+    <typedef name="CaloTowerRefs"
+             value="edm::RefVector&lt;CaloTowerCollection&gt;">
+typedef edm::RefVector&lt;CaloTowerCollection&gt; CaloTowerRefs;
+    </typedef>
+
+    <typedef name="CaloTowersRef"
+             value="edm::RefProd&lt;CaloTowerCollection&gt;">
+typedef edm::RefProd&lt;CaloTowerCollection&gt; CaloTowersRef;
+    </typedef>
+
+
+</header>

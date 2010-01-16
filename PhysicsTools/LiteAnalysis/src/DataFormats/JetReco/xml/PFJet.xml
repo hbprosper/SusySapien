@@ -1,0 +1,407 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: PFJet.xml
+  Created:  Thu Jan 14 22:47:18 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/JetReco/interface/PFJet.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/JetReco/interface/PFJet.h">
+
+    <include name="&quot;DataFormats/JetReco/interface/Jet.h&quot;"/>
+    <include name="&quot;DataFormats/ParticleFlowCandidate/interface/PFCandidateFwd.h&quot;"/>
+    <include name="&quot;DataFormats/ParticleFlowCandidate/interface/PFCandidateFwd.h&quot;"/>
+    <include name="&quot;DataFormats/TrackReco/interface/TrackFwd.h&quot;"/>
+
+    <namespace name="reco">
+
+        <class name="PFJet"
+               fullname="reco::PFJet"
+               module="DataFormats.JetReco"
+               project=""
+               type="regular printable">
+            <baseclass name="public Jet"/>
+
+            <section name="public">
+
+                <class name="Specific"
+                       fullname="reco::PFJet::Specific"
+                       module="DataFormats.JetReco"
+                       project=""
+                       type="regular struct">
+
+                    <section>
+                        <constructor name="Specific"
+                                     return=""
+                                     args="['void']"
+                                     vars="['']"
+                                     qual="">
+Specific ();
+                        </constructor>
+
+                        <member>
+float mChargedHadronEnergy;
+                        </member>
+
+                        <member>
+float mNeutralHadronEnergy;
+                        </member>
+
+                        <member>
+float mChargedEmEnergy;
+                        </member>
+
+                        <member>
+float mChargedMuEnergy;
+                        </member>
+
+                        <member>
+float mNeutralEmEnergy;
+                        </member>
+
+                        <member>
+int mChargedMultiplicity;
+                        </member>
+
+                        <member>
+int mNeutralMultiplicity;
+                        </member>
+
+                        <member>
+int mMuonMultiplicity;
+                        </member>
+
+                    </section>
+
+                    <typemap name="Specific"
+                             value="reco::PFJet::Specific"
+                             type="class"/>
+                    <typemap name="mChargedEmEnergy"
+                             value="reco::PFJet::Specific::mChargedEmEnergy"
+                             type="member"/>
+                    <typemap name="mChargedHadronEnergy"
+                             value="reco::PFJet::Specific::mChargedHadronEnergy"
+                             type="member"/>
+                    <typemap name="mChargedMuEnergy"
+                             value="reco::PFJet::Specific::mChargedMuEnergy"
+                             type="member"/>
+                    <typemap name="mChargedMultiplicity"
+                             value="reco::PFJet::Specific::mChargedMultiplicity"
+                             type="member"/>
+                    <typemap name="mMuonMultiplicity"
+                             value="reco::PFJet::Specific::mMuonMultiplicity"
+                             type="member"/>
+                    <typemap name="mNeutralEmEnergy"
+                             value="reco::PFJet::Specific::mNeutralEmEnergy"
+                             type="member"/>
+                    <typemap name="mNeutralHadronEnergy"
+                             value="reco::PFJet::Specific::mNeutralHadronEnergy"
+                             type="member"/>
+                    <typemap name="mNeutralMultiplicity"
+                             value="reco::PFJet::Specific::mNeutralMultiplicity"
+                             type="member"/>
+
+                </class>
+                <constructor name="PFJet"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+PFJet();
+                    <comment>
+      Default constructor
+                    </comment>
+                </constructor>
+
+                <constructor name="PFJet"
+                             return=""
+                             args="['const LorentzVector&amp;','const Point&amp;','const Specific&amp;','const Jet::Constituents&amp;']"
+                             vars="['fP4','fVertex','fSpecific','fConstituents']"
+                             qual="">
+PFJet(const LorentzVector&amp; fP4, const Point&amp; fVertex, const Specific&amp; fSpecific, const Jet::Constituents&amp; fConstituents);
+                    <comment>
+      Constructor from values
+                    </comment>
+                </constructor>
+
+                <constructor name="PFJet"
+                             return=""
+                             args="['const LorentzVector&amp;','const Point&amp;','const Specific&amp;']"
+                             vars="['fP4','fVertex','fSpecific']"
+                             qual="">
+PFJet(const LorentzVector&amp; fP4, const Point&amp; fVertex, const Specific&amp; fSpecific);
+                </constructor>
+
+                <constructor name="PFJet"
+                             return=""
+                             args="['const LorentzVector&amp;','const Specific&amp;','const Jet::Constituents&amp;']"
+                             vars="['fP4','fSpecific','fConstituents']"
+                             qual="">
+PFJet(const LorentzVector&amp; fP4, const Specific&amp; fSpecific, const Jet::Constituents&amp; fConstituents);
+                    <comment>
+      backward compatible, vertex=(0,0,0)
+                    </comment>
+                </constructor>
+
+                <destructor name="~PFJet"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~PFJet();
+                </destructor>
+
+                <method1 name="chargedHadronEnergy"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float chargedHadronEnergy () const;
+                    <comment>
+      chargedHadronEnergy
+                    </comment>
+                </method1>
+
+                <method1 name="chargedHadronEnergyFraction"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float chargedHadronEnergyFraction () const;
+                    <comment>
+       chargedHadronEnergyFraction
+                    </comment>
+                </method1>
+
+                <method1 name="neutralHadronEnergy"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float neutralHadronEnergy () const;
+                    <comment>
+      neutralHadronEnergy
+                    </comment>
+                </method1>
+
+                <method1 name="neutralHadronEnergyFraction"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float neutralHadronEnergyFraction () const;
+                    <comment>
+      neutralHadronEnergyFraction
+                    </comment>
+                </method1>
+
+                <method1 name="chargedEmEnergy"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float chargedEmEnergy () const;
+                    <comment>
+      chargedEmEnergy
+                    </comment>
+                </method1>
+
+                <method1 name="chargedEmEnergyFraction"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float chargedEmEnergyFraction () const;
+                    <comment>
+      chargedEmEnergyFraction
+                    </comment>
+                </method1>
+
+                <method1 name="chargedMuEnergy"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float chargedMuEnergy () const;
+                    <comment>
+      chargedMuEnergy
+                    </comment>
+                </method1>
+
+                <method1 name="chargedMuEnergyFraction"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float chargedMuEnergyFraction () const;
+                    <comment>
+      chargedMuEnergyFraction
+                    </comment>
+                </method1>
+
+                <method1 name="neutralEmEnergy"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float neutralEmEnergy () const;
+                    <comment>
+      neutralEmEnergy
+                    </comment>
+                </method1>
+
+                <method1 name="neutralEmEnergyFraction"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float neutralEmEnergyFraction () const;
+                    <comment>
+      neutralEmEnergyFraction
+                    </comment>
+                </method1>
+
+                <method1 name="chargedMultiplicity"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int chargedMultiplicity () const;
+                    <comment>
+      chargedMultiplicity
+                    </comment>
+                </method1>
+
+                <method1 name="neutralMultiplicity"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int neutralMultiplicity () const;
+                    <comment>
+      neutralMultiplicity
+                    </comment>
+                </method1>
+
+                <method1 name="muonMultiplicity"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int muonMultiplicity () const;
+                    <comment>
+      muonMultiplicity
+                    </comment>
+                </method1>
+
+                <method1 name="getPFCandidate"
+                         return="static const reco::PFCandidate*"
+                         args="['const reco::Candidate*']"
+                         vars="['fConstituent']"
+                         qual="">
+static const reco::PFCandidate* getPFCandidate (const reco::Candidate* fConstituent);
+                    <comment>
+      convert generic constituent to specific type
+                    </comment>
+                </method1>
+
+                <method1 name="getPFConstituent"
+                         return="virtual const reco::PFCandidate*"
+                         args="['unsigned']"
+                         vars="['fIndex']"
+                         qual="const">
+virtual const reco::PFCandidate* getPFConstituent (unsigned fIndex) const;
+                    <comment>
+      get specific constituent
+                    </comment>
+                </method1>
+
+                <method2 name="getPFConstituents"
+                         return="virtual std::vector&lt;const reco::PFCandidate*&gt;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual std::vector&lt;const reco::PFCandidate*&gt; getPFConstituents () const;
+                    <comment>
+      get all constituents
+                    </comment>
+                </method2>
+
+                <method1 name="getTrackRefs"
+                         return="reco::TrackRefVector"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+reco::TrackRefVector getTrackRefs() const;
+                    <comment>
+      references are added to the returned TrackRefVector
+                    </comment>
+                </method1>
+
+                <method1 name="getSpecific"
+                         return="const Specific&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const Specific&amp; getSpecific () const;
+                    <comment>
+     block accessors
+                    </comment>
+                </method1>
+
+                <method1 name="clone"
+                         return="virtual PFJet*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual PFJet* clone () const;
+                    <comment>
+      Polymorphic clone
+                    </comment>
+                </method1>
+
+                <method1 name="print"
+                         return="virtual std::string"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual std::string print () const;
+                    <comment>
+      Print object
+                    </comment>
+                </method1>
+
+                <operator name="operator&lt;&lt;"
+                          return="friend std::ostream&amp;"
+                          args="['std::ostream&amp;','const reco::PFJet&amp;']"
+                          vars="['out','jet']"
+                          qual="">
+friend std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, const reco::PFJet&amp; jet);
+                </operator>
+
+            </section>
+
+        </class>
+    </namespace>
+    <include name="&quot;DataFormats/JetReco/interface/PFJetCollection.h&quot;"/>
+
+    <type name="Jet"/>
+    <type name="PFJet*"/>
+    <type name="const Jet::Constituents&amp;"/>
+    <type name="const LorentzVector&amp;"/>
+    <type name="const Point&amp;"/>
+    <type name="const Specific&amp;"/>
+    <type name="const reco::Candidate*"/>
+    <type name="const reco::PFCandidate*"/>
+    <type name="const reco::PFJet&amp;"/>
+    <type name="float"/>
+    <type name="int"/>
+    <type name="reco::PFJet"/>
+    <type name="reco::PFJet::Specific"/>
+    <type name="reco::TrackRefVector"/>
+    <type name="std::ostream&amp;"/>
+    <type name="std::string"/>
+    <type name="std::vector&lt;const reco::PFCandidate*&gt;"/>
+    <type name="unsigned"/>
+    <type name="void"/>
+</header>

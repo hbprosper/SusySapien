@@ -1,0 +1,27 @@
+Class:
+	reco::MuonSegmentMatch
+
+Header:
+	DataFormats/MuonReco/interface/MuonSegmentMatch.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:16 2010	lsclass.py $Revision:$
+
+Methods from reco::MuonSegmentMatch
+
+	-o- isMask
+		Return: bool
+		Arguments: unsigned int=Arbitrated	flag
+
+	-o- setMask
+		Return: void
+		Arguments: unsigned int	flag
+
+	-o- hasZed
+		Return: bool
+		Arguments: void	
+
+	-o- hasPhi
+		Return: bool
+		Arguments: void	
+

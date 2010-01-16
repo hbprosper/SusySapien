@@ -1,0 +1,74 @@
+Class:
+	edm::TrieNode<T>
+
+Header:
+	DataFormats/Common/interface/Trie.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:16:03 2010	lsclass.py $Revision:$
+
+Methods from edm::TrieNode<T>
+
+	-o- setValue
+		Return: void
+		Arguments: const T&	val
+
+	-o- value
+		Return: const T&
+		Arguments: void	
+
+	-o- brotherLabel
+		Return: unsigned char
+		Arguments: void	
+
+	-o- subNodeLabel
+		Return: unsigned char
+		Arguments: void	
+
+	-o- display
+		Return: void
+		Arguments: std::ostream&	os
+		           unsigned	offset
+		           unsigned char	label
+
+	-o- clear
+		Return: void
+		Arguments: void	
+
+	-o- brother
+		Return: const TrieNode<T>*
+		Arguments: void	
+
+	-o- brother
+		Return: TrieNode<T>*
+		Arguments: void	
+
+	-o- begin
+		Return: TrieNodeIter<T>
+		Arguments: void	
+
+	-o- end
+		Return: TrieNodeIter<T>
+		Arguments: void	
+
+	-o- subNode
+		Return: const TrieNode<T>*
+		Arguments: void	
+
+	-o- subNode
+		Return: TrieNode<T>*
+		Arguments: void	
+
+	-o- subNodeByLabel
+		Return: const TrieNode<T>*
+		Arguments: unsigned char	chr
+
+	-o- subNodeByLabel
+		Return: TrieNode<T>*
+		Arguments: unsigned char	chr
+
+	-o- addSubNode
+		Return: void
+		Arguments: unsigned char	chr
+		           TrieNode<T>*	node
+

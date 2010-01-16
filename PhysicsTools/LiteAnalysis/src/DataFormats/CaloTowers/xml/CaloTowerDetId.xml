@@ -1,0 +1,279 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: CaloTowerDetId.xml
+  Created:  Thu Jan 14 22:45:47 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/CaloTowers/interface/CaloTowerDetId.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/CaloTowers/interface/CaloTowerDetId.h">
+
+    <include name="&quot;DataFormats/DetId/interface/DetId.h&quot;"/>
+
+    <class name="CaloTowerDetId"
+           fullname="CaloTowerDetId"
+           module="DataFormats.CaloTowers"
+           project=""
+           type="regular">
+        <baseclass name="public DetId"/>
+        <comment>
+    \class CaloTowerDetId
+
+   CaloTowerDetId uses DetId::Det of Calo and subdetId() of 1.
+
+   $Date: 2008/06/25 22:14:35 $
+   $Revision: 1.6 $
+   \author J. Mans - Minnesota
+        </comment>
+
+        <section name="public">
+            <constructor name="CaloTowerDetId"
+                         return=""
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+CaloTowerDetId();
+                <comment>
+      Create a null cellid
+                </comment>
+            </constructor>
+
+            <constructor name="CaloTowerDetId"
+                         return="explicit"
+                         args="['uint32_t']"
+                         vars="['rawid']"
+                         qual="">
+explicit CaloTowerDetId(uint32_t rawid);
+                <comment>
+      Create cellid from raw id (0=invalid tower id)
+                </comment>
+            </constructor>
+
+            <constructor name="CaloTowerDetId"
+                         return=""
+                         args="['int','int']"
+                         vars="['tower_ieta','tower_iphi']"
+                         qual="">
+CaloTowerDetId(int tower_ieta, int tower_iphi);
+                <comment>
+      Constructor from signed tower ieta and iphi
+                </comment>
+            </constructor>
+
+            <constructor name="CaloTowerDetId"
+                         return=""
+                         args="['const DetId&amp;']"
+                         vars="['id']"
+                         qual="">
+CaloTowerDetId(const DetId&amp; id);
+                <comment>
+      Constructor from a generic cell id
+                </comment>
+            </constructor>
+
+            <operator name="operator="
+                      return="CaloTowerDetId&amp;"
+                      args="['const DetId&amp;']"
+                      vars="['id']"
+                      qual="">
+CaloTowerDetId&amp; operator=(const DetId&amp; id);
+                <comment>
+      Assignment from a generic cell id
+                </comment>
+            </operator>
+
+            <method1 name="zside"
+                     return="int"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+int zside() const;
+                <comment>
+      get the z-side of the tower (1/-1)
+                </comment>
+            </method1>
+
+            <method1 name="ietaAbs"
+                     return="int"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+int ietaAbs() const;
+                <comment>
+      get the absolute value of the tower ieta
+                </comment>
+            </method1>
+
+            <method1 name="ieta"
+                     return="int"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+int ieta() const;
+                <comment>
+      get the tower ieta
+                </comment>
+            </method1>
+
+            <method1 name="iphi"
+                     return="int"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+int iphi() const;
+                <comment>
+      get the tower iphi
+                </comment>
+            </method1>
+
+            <constant name="SubdetId"
+                      type="static const int"
+                      value="1"/>
+            <method1 name="validDetId"
+                     return="static bool"
+                     args="['int','int']"
+                     vars="['ie','ip']"
+                     qual="">
+static bool validDetId(int ie, int ip);
+            </method1>
+
+            <method1 name="denseIndex"
+                     return="uint32_t"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+uint32_t denseIndex() const;
+            </method1>
+
+            <method1 name="detIdFromDenseIndex"
+                     return="static CaloTowerDetId"
+                     args="['uint32_t']"
+                     vars="['din']"
+                     qual="">
+static CaloTowerDetId detIdFromDenseIndex(uint32_t din);
+            </method1>
+
+            <method1 name="validDenseIndex"
+                     return="static bool"
+                     args="['uint32_t']"
+                     vars="['din']"
+                     qual="">
+static bool validDenseIndex(uint32_t din);
+            </method1>
+
+            <enum name="">
+enum {
+ kMaxIEta=41, 
+      kMaxIPhi=72, 
+      kBarNPhi=kMaxIPhi, 
+      kEndNPhi=kMaxIPhi/2, 
+      kForNPhi=kMaxIPhi/4, 
+      kBarIEta=20, 
+      kEndIEta=39, 
+      kForIEta=kMaxIEta, 
+      kBarNEta=kBarIEta, 
+      kEndNEta=kEndIEta-kBarNEta, 
+      kForNEta=kForIEta-kEndIEta, 
+      kBarNTot=kBarNPhi*kBarNEta, 
+      kEndNTot=kEndNPhi*kEndNEta, 
+      kForNTot=kForNPhi*kForNEta, 
+      kAllNTot=kBarNTot+kEndNTot+kForNTot, 
+      kNIndex=2*kAllNTot };
+                <field name="kMaxIEta" value="41"/>
+                <field name="kMaxIPhi" value="72"/>
+                <field name="kBarNPhi" value="kMaxIPhi"/>
+                <field name="kEndNPhi" value="kMaxIPhi/2"/>
+                <field name="kForNPhi" value="kMaxIPhi/4"/>
+                <field name="kBarIEta" value="20"/>
+                <field name="kEndIEta" value="39"/>
+                <field name="kForIEta" value="kMaxIEta"/>
+                <field name="kBarNEta" value="kBarIEta"/>
+                <field name="kEndNEta" value="kEndIEta-kBarNEta"/>
+                <field name="kForNEta" value="kForIEta-kEndIEta"/>
+                <field name="kBarNTot" value="kBarNPhi*kBarNEta"/>
+                <field name="kEndNTot" value="kEndNPhi*kEndNEta"/>
+                <field name="kForNTot" value="kForNPhi*kForNEta"/>
+                <field name="kAllNTot" value="kBarNTot+kEndNTot+kForNTot"/>
+                <field name="kNIndex" value="2*kAllNTot"/>
+            </enum>
+
+            <enum name="">
+enum {
+ kSizeForDenseIndexing=kNIndex };
+                <field name="kSizeForDenseIndexing" value="kNIndex"/>
+            </enum>
+
+        </section>
+
+        <typemap name="kAllNTot "
+                 value="CaloTowerDetId::kAllNTot "
+                 type="enum"/>
+        <typemap name="kBarIEta "
+                 value="CaloTowerDetId::kBarIEta "
+                 type="enum"/>
+        <typemap name="kBarNEta "
+                 value="CaloTowerDetId::kBarNEta "
+                 type="enum"/>
+        <typemap name="kBarNPhi "
+                 value="CaloTowerDetId::kBarNPhi "
+                 type="enum"/>
+        <typemap name="kBarNTot "
+                 value="CaloTowerDetId::kBarNTot "
+                 type="enum"/>
+        <typemap name="kEndIEta "
+                 value="CaloTowerDetId::kEndIEta "
+                 type="enum"/>
+        <typemap name="kEndNEta "
+                 value="CaloTowerDetId::kEndNEta "
+                 type="enum"/>
+        <typemap name="kEndNPhi "
+                 value="CaloTowerDetId::kEndNPhi "
+                 type="enum"/>
+        <typemap name="kEndNTot "
+                 value="CaloTowerDetId::kEndNTot "
+                 type="enum"/>
+        <typemap name="kForIEta "
+                 value="CaloTowerDetId::kForIEta "
+                 type="enum"/>
+        <typemap name="kForNEta "
+                 value="CaloTowerDetId::kForNEta "
+                 type="enum"/>
+        <typemap name="kForNPhi "
+                 value="CaloTowerDetId::kForNPhi "
+                 type="enum"/>
+        <typemap name="kForNTot "
+                 value="CaloTowerDetId::kForNTot "
+                 type="enum"/>
+        <typemap name="kMaxIEta "
+                 value="CaloTowerDetId::kMaxIEta "
+                 type="enum"/>
+        <typemap name="kMaxIPhi "
+                 value="CaloTowerDetId::kMaxIPhi "
+                 type="enum"/>
+        <typemap name="kNIndex "
+                 value="CaloTowerDetId::kNIndex "
+                 type="enum"/>
+        <typemap name="kSizeForDenseIndexing "
+                 value="CaloTowerDetId::kSizeForDenseIndexing "
+                 type="enum"/>
+
+    </class>
+    <operator name="operator&lt;&lt;"
+              return="std::ostream&amp;"
+              args="['std::ostream&amp;','const CaloTowerDetId&amp;']"
+              vars="['','id']"
+              qual="">
+std::ostream&amp; operator&lt;&lt;(std::ostream&amp;, const CaloTowerDetId&amp; id);
+    </operator>
+
+
+    <type name="CaloTowerDetId"/>
+    <type name="CaloTowerDetId&amp;"/>
+    <type name="DetId"/>
+    <type name="bool"/>
+    <type name="const DetId&amp;"/>
+    <type name="enum"/>
+    <type name="int"/>
+    <type name="uint32_t"/>
+    <type name="void"/>
+</header>

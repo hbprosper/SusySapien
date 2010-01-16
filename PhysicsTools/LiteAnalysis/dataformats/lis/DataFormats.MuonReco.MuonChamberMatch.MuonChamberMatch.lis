@@ -1,0 +1,4 @@
+reco::MuonChamberMatch|int|detector|void
+reco::MuonChamberMatch|int|station|void
+reco::MuonChamberMatch|float|dist|void
+reco::MuonChamberMatch|float|distErr|void

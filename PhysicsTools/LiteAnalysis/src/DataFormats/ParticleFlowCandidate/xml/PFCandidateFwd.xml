@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: PFCandidateFwd.xml
+  Created:  Thu Jan 14 22:47:49 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/ParticleFlowCandidate/interface/PFCandidateFwd.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/ParticleFlowCandidate/interface/PFCandidateFwd.h">
+
+    <include name="&lt;vector&gt;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/Ptr.h&quot;"/>
+
+    <namespace name="reco">
+        <forward name="PFCandidate"/>
+        <typedef name="PFCandidateCollection"
+                 value="std::vector&lt;reco::PFCandidate&gt;">
+typedef std::vector&lt;reco::PFCandidate&gt; PFCandidateCollection;
+            <comment>
+      collection of PFCandidates
+            </comment>
+        </typedef>
+
+        <typedef name="PFCandidateConstIterator"
+                 value="PFCandidateCollection::const_iterator">
+typedef PFCandidateCollection::const_iterator PFCandidateConstIterator;
+            <comment>
+      iterator
+            </comment>
+        </typedef>
+
+        <typedef name="PFCandidateIterator"
+                 value="PFCandidateCollection::iterator">
+typedef PFCandidateCollection::iterator PFCandidateIterator;
+            <comment>
+      iterator
+            </comment>
+        </typedef>
+
+        <typedef name="PFCandidateRef"
+                 value="edm::Ref&lt;PFCandidateCollection&gt;">
+typedef edm::Ref&lt;PFCandidateCollection&gt; PFCandidateRef;
+            <comment>
+      persistent reference to a PFCandidate
+            </comment>
+        </typedef>
+
+        <typedef name="PFCandidatePtr"
+                 value="edm::Ptr&lt;PFCandidate&gt;">
+typedef edm::Ptr&lt;PFCandidate&gt; PFCandidatePtr;
+            <comment>
+      persistent Ptr to a PFCandidate
+            </comment>
+        </typedef>
+
+        <typedef name="PFCandidateRefProd"
+                 value="edm::RefProd&lt;PFCandidateCollection&gt;">
+typedef edm::RefProd&lt;PFCandidateCollection&gt; PFCandidateRefProd;
+            <comment>
+      persistent reference to a PFCandidates collection
+            </comment>
+        </typedef>
+
+        <typedef name="PFCandidateRefVector"
+                 value="edm::RefVector&lt;PFCandidateCollection&gt;">
+typedef edm::RefVector&lt;PFCandidateCollection&gt; PFCandidateRefVector;
+            <comment>
+      vector of reference to GenParticleCandidate in the same collection
+            </comment>
+        </typedef>
+
+    </namespace>
+
+</header>

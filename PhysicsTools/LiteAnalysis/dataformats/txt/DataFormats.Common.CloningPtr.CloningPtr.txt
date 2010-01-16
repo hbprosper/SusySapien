@@ -1,0 +1,19 @@
+Class:
+	edm::CloningPtr<T, P>
+
+Header:
+	DataFormats/Common/interface/CloningPtr.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:52 2010	lsclass.py $Revision:$
+
+Methods from edm::CloningPtr<T, P>
+
+	-o- get
+		Return: T*
+		Arguments: void	
+
+	-o- swap
+		Return: void
+		Arguments: CloningPtr<T, P>&	iPtr
+

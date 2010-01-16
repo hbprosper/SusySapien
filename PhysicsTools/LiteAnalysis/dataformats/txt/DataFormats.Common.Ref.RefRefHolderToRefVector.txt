@@ -1,0 +1,15 @@
+Class:
+	edm::reftobase::RefRefHolderToRefVector<REF>
+
+Header:
+	DataFormats/Common/interface/Ref.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:43 2010	lsclass.py $Revision:$
+
+Methods from edm::reftobase::RefRefHolderToRefVector<REF>
+
+	-o- makeVectorHolder
+		Return: static std::auto_ptr<RefVectorHolderBase>
+		Arguments: void	
+

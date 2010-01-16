@@ -1,0 +1,80 @@
+Class:
+	edm::Association<C>
+
+Header:
+	DataFormats/Common/interface/Association.h
+
+BaseClasses:
+	edm::ValueMap<int>	DataFormats/Common/interface/ValueMap.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:53 2010	lsclass.py $Revision:$
+
+Methods from edm::Association<C>
+
+	-o- get
+		Return: Ref<typename refprod_type::product_type>
+		Arguments: size_t	rawIdx
+
+	-o- get
+		Return: Ref<typename refprod_type::product_type>
+		Arguments: ProductID	id
+		           size_t	idx
+
+	-o- setRef
+		Return: void
+		Arguments: const refprod_type&	ref
+
+	-o- contains
+		Return: bool
+		Arguments: ProductID	id
+
+	-o- size
+		Return: size_t
+		Arguments: void	
+
+	-o- empty
+		Return: bool
+		Arguments: void	
+
+	-o- clear
+		Return: void
+		Arguments: void	
+
+	-o- ref
+		Return: edm::RefProd<C>
+		Arguments: void	
+
+	-o- swap
+		Return: void
+		Arguments: Association&	other
+
+	-o- ids
+		Return: const std::vector<std::pair<ProductID, typename base::offset> >&
+		Arguments: void	
+
+	-o- Association
+		Return: template<typename H> explicit
+		Arguments: const H&	h
+
+Methods from edm::ValueMap<int>
+
+	-o- swap
+		Return: void
+		Arguments: ValueMap&	other
+
+	-o- rawIndexOf
+		Return: size_t
+		Arguments: ProductID	id
+		           size_t	idx
+
+	-o- get
+		Return: typename std::vector<int>::const_reference
+		Arguments: ProductID	id
+		           size_t	idx
+
+	-o- get
+		Return: typename container::reference
+		Arguments: ProductID	id
+		           size_t	idx
+

@@ -1,0 +1,16 @@
+Class:
+	edm::helper::MatcherGetRef<C>
+
+Header:
+	DataFormats/Common/interface/getRef.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:53 2010	lsclass.py $Revision:$
+
+Methods from edm::helper::MatcherGetRef<C>
+
+	-o- getRef
+		Return: static Ref<C>
+		Arguments: const Handle<C>&	c
+		           size_t	k
+

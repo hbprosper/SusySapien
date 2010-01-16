@@ -1,0 +1,200 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: RefHolder_.xml
+  Created:  Thu Jan 14 22:46:20 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Common/interface/RefHolder_.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/RefHolder_.h">
+
+    <include name="&quot;DataFormats/Common/interface/RefHolderBase.h&quot;"/>
+    <include name="&quot;DataFormats/Provenance/interface/ProductID.h&quot;"/>
+    <include name="&quot;Reflex/Object.h&quot;"/>
+    <include name="&quot;Reflex/Type.h&quot;"/>
+
+    <namespace name="edm">
+
+        <namespace name="reftobase">
+
+            <class name="RefHolder"
+                   fullname="edm::reftobase::RefHolder&lt;REF&gt;"
+                   module="DataFormats.Common"
+                   project=""
+                   type="template"
+                   template="template&lt;class REF&gt;">
+                <baseclass name="public RefHolderBase"/>
+                <comment>
+       Class template RefHolder&lt;REF&gt;
+                </comment>
+
+                <section name="public">
+                    <constructor name="RefHolder"
+                                 return=""
+                                 args="['void']"
+                                 vars="['']"
+                                 qual="">
+RefHolder();
+                    </constructor>
+
+                    <constructor name="RefHolder"
+                                 return="explicit"
+                                 args="['REF const&amp;']"
+                                 vars="['ref']"
+                                 qual="">
+explicit RefHolder(REF const&amp; ref);
+                    </constructor>
+
+                    <copyconstructor name="RefHolder"
+                                     return=""
+                                     args="['RefHolder const&amp;']"
+                                     vars="['other']"
+                                     qual="">
+RefHolder(RefHolder const&amp; other);
+                    </copyconstructor>
+
+                    <operator name="operator="
+                              return="RefHolder&amp;"
+                              args="['RefHolder const&amp;']"
+                              vars="['rhs']"
+                              qual="">
+RefHolder&amp; operator=(RefHolder const&amp; rhs);
+                    </operator>
+
+                    <method1 name="swap"
+                             return="void"
+                             args="['RefHolder&amp;']"
+                             vars="['other']"
+                             qual="">
+void swap(RefHolder&amp; other);
+                    </method1>
+
+                    <destructor name="~RefHolder"
+                                return="virtual"
+                                args="['void']"
+                                vars="['']"
+                                qual="">
+virtual ~RefHolder();
+                    </destructor>
+
+                    <method1 name="clone"
+                             return="virtual RefHolderBase*"
+                             args="['void']"
+                             vars="['']"
+                             qual="const">
+virtual RefHolderBase* clone() const;
+                    </method1>
+
+                    <method1 name="id"
+                             return="virtual ProductID"
+                             args="['void']"
+                             vars="['']"
+                             qual="const">
+virtual ProductID id() const;
+                    </method1>
+
+                    <method1 name="key"
+                             return="virtual size_t"
+                             args="['void']"
+                             vars="['']"
+                             qual="const">
+virtual size_t key() const;
+                    </method1>
+
+                    <method1 name="isEqualTo"
+                             return="virtual bool"
+                             args="['RefHolderBase const&amp;']"
+                             vars="['rhs']"
+                             qual="const">
+virtual bool isEqualTo(RefHolderBase const&amp; rhs) const;
+                    </method1>
+
+                    <method1 name="fillRefIfMyTypeMatches"
+                             return="virtual bool"
+                             args="['RefHolderBase&amp;','std::string&amp;']"
+                             vars="['fillme','msg']"
+                             qual="const">
+virtual bool fillRefIfMyTypeMatches(RefHolderBase&amp; fillme, std::string&amp; msg) const;
+                    </method1>
+
+                    <method1 name="getRef"
+                             return="REF const&amp;"
+                             args="['void']"
+                             vars="['']"
+                             qual="const">
+REF const&amp; getRef() const;
+                    </method1>
+
+                    <method1 name="setRef"
+                             return="void"
+                             args="['REF const&amp;']"
+                             vars="['r']"
+                             qual="">
+void setRef(REF const&amp; r);
+                    </method1>
+
+                    <method2 name="makeVectorHolder"
+                             return="virtual std::auto_ptr&lt;RefVectorHolderBase&gt;"
+                             args="['void']"
+                             vars="['']"
+                             qual="const">
+virtual std::auto_ptr&lt;RefVectorHolderBase&gt; makeVectorHolder() const;
+                    </method2>
+
+                    <method1 name="productGetter"
+                             return="virtual EDProductGetter const*"
+                             args="['void']"
+                             vars="['']"
+                             qual="const">
+virtual EDProductGetter const* productGetter() const;
+                    </method1>
+
+                    <method1 name="hasProductCache"
+                             return="virtual bool"
+                             args="['void']"
+                             vars="['']"
+                             qual="const">
+virtual bool hasProductCache() const;
+                    </method1>
+
+                    <method1 name="product"
+                             return="virtual void const*"
+                             args="['void']"
+                             vars="['']"
+                             qual="const">
+virtual void const* product() const;
+                    </method1>
+
+                    <method1 name="isAvailable"
+                             return="virtual bool"
+                             args="['void']"
+                             vars="['']"
+                             qual="const">
+virtual bool isAvailable() const;
+                        <comment>
+          in the Event. No type checking is done.
+                        </comment>
+                    </method1>
+
+                </section>
+
+            </class>
+        </namespace>
+    </namespace>
+
+    <type name="EDProductGetter const*"/>
+    <type name="ProductID"/>
+    <type name="RefHolder const&amp;"/>
+    <type name="RefHolder&amp;"/>
+    <type name="RefHolderBase"/>
+    <type name="RefHolderBase const&amp;"/>
+    <type name="RefHolderBase&amp;"/>
+    <type name="RefHolderBase*"/>
+    <type name="bool"/>
+    <type name="edm::reftobase::RefHolder&lt;REF&gt;"/>
+    <type name="size_t"/>
+    <type name="std::auto_ptr&lt;RefVectorHolderBase&gt;"/>
+    <type name="std::string&amp;"/>
+    <type name="void"/>
+    <type name="void const*"/>
+</header>

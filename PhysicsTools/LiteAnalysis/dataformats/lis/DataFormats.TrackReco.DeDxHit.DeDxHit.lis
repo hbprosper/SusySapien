@@ -1,0 +1,7 @@
+reco::DeDxHit|float|charge|void
+reco::DeDxHit|float|distance|void
+reco::DeDxHit|float|pathLength|void
+reco::DeDxHit|int|subDet|void
+reco::DeDxHit|int|subDetSide|void
+reco::DeDxHit|int|layer|void
+reco::DeDxHit|char|subDetId|void

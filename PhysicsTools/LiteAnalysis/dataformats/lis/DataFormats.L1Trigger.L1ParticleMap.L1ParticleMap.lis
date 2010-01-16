@@ -1,0 +1,11 @@
+l1extra::L1ParticleMap|L1TriggerType|triggerType|void
+l1extra::L1ParticleMap|const std::string&|triggerName|void
+l1extra::L1ParticleMap|bool|triggerDecision|void
+l1extra::L1ParticleMap|const std::vector<L1ObjectType >&|objectTypes|void
+l1extra::L1ParticleMap|int|numOfObjects|void
+l1extra::L1ParticleMap|const std::vector<L1EmParticleRef >&|emParticles|void
+l1extra::L1ParticleMap|const std::vector<edm::Ref<L1JetParticleCollection > >&|jetParticles|void
+l1extra::L1ParticleMap|const std::vector<L1MuonParticleRef >&|muonParticles|void
+l1extra::L1ParticleMap|const edm::RefProd<L1EtMissParticle >&|etMissParticle|void
+l1extra::L1ParticleMap|const std::vector<std::vector<unsigned int > >&|indexCombos|void
+l1extra::L1ParticleMap|static L1TriggerType|triggerType|const std::string&

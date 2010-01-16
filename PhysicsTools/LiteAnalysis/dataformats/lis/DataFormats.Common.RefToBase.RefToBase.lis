@@ -1,0 +1,11 @@
+edm::RefToBase<T>|T const*|get|void
+edm::RefToBase<T>|ProductID|id|void
+edm::RefToBase<T>|size_t|key|void
+edm::RefToBase<T>|bool|isNull|void
+edm::RefToBase<T>|bool|isNonnull|void
+edm::RefToBase<T>|EDProductGetter const*|productGetter|void
+edm::RefToBase<T>|bool|hasProductCache|void
+edm::RefToBase<T>|void const*|product|void
+edm::RefToBase<T>|bool|isAvailable|void
+edm::RefToBase<T>|template<class REF> REF|castTo|void
+edm::RefToBase<T>|std::auto_ptr<reftobase::RefHolderBase>|holder|void

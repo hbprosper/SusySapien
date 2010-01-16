@@ -1,0 +1,4 @@
+bool	empty()
+size_t	idSize()
+size_t	size()
+

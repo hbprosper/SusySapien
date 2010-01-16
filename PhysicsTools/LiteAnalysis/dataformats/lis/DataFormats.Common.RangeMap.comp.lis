@@ -1,0 +1,7 @@
+edm::RangeMap<ID, C, P>|size_t|size|void
+edm::RangeMap<ID, C, P>|typename C::typename C::const_iterator|begin|void
+edm::RangeMap<ID, C, P>|typename C::typename C::const_iterator|end|void
+edm::RangeMap<ID, C, P>|id_iterator|id_begin|void
+edm::RangeMap<ID, C, P>|id_iterator|id_end|void
+edm::RangeMap<ID, C, P>|size_t|id_size|void
+edm::RangeMap<ID, C, P>|std::vector<ID>|ids|void

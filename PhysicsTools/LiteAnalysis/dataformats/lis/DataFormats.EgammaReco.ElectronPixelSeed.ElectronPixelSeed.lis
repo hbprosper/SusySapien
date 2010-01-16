@@ -1,0 +1,9 @@
+reco::ElectronPixelSeed|static std::string const&|name|void
+reco::ElectronPixelSeed|edm::Ref<SuperClusterCollection>|superCluster|void
+reco::ElectronPixelSeed|TrackCharge|getCharge|void
+reco::ElectronPixelSeed|ElectronPixelSeed*|clone|void
+TrajectorySeed|std::pair<recHitContainer::const_iterator, recHitContainer::const_iterator>|recHits|void
+TrajectorySeed|unsigned int|nHits|void
+TrajectorySeed|PropagationDirection|direction|void
+TrajectorySeed|PTrajectoryStateOnDet const&|startingState|void
+TrajectorySeed|TrajectorySeed*|clone|void

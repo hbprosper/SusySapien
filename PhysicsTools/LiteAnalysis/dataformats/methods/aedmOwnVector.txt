@@ -1,0 +1,3 @@
+bool	empty()
+bool	is_back_safe()
+

@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: PFTauDecayModeFwd.xml
+  Created:  Thu Jan 14 22:48:45 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/TauReco/interface/PFTauDecayModeFwd.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/TauReco/interface/PFTauDecayModeFwd.h">
+
+    <include name="&lt;vector&gt;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+
+    <namespace name="reco">
+        <forward name="PFTauDecayMode"/>
+        <typedef name="PFTauDecayModeCollection"
+                 value="std::vector&lt;PFTauDecayMode&gt;">
+typedef std::vector&lt;PFTauDecayMode&gt; PFTauDecayModeCollection;
+            <comment>
+      collection of PFTauDecayMode objects
+            </comment>
+        </typedef>
+
+        <typedef name="PFTauDecayModeRef"
+                 value="edm::Ref&lt;PFTauDecayModeCollection&gt;">
+typedef edm::Ref&lt;PFTauDecayModeCollection&gt; PFTauDecayModeRef;
+            <comment>
+      presistent reference to a PFTauDecayMode
+            </comment>
+        </typedef>
+
+        <typedef name="PFTauDecayModeRefProd"
+                 value="edm::RefProd&lt;PFTauDecayModeCollection&gt;">
+typedef edm::RefProd&lt;PFTauDecayModeCollection&gt; PFTauDecayModeRefProd;
+            <comment>
+      references to PFTauDecayMode collection
+            </comment>
+        </typedef>
+
+        <typedef name="PFTauDecayModeRefVector"
+                 value="edm::RefVector&lt;PFTauDecayModeCollection&gt;">
+typedef edm::RefVector&lt;PFTauDecayModeCollection&gt; PFTauDecayModeRefVector;
+            <comment>
+      vector of references to PFTauDecayMode objects all in the same collection
+            </comment>
+        </typedef>
+
+        <typedef name="pftaudecaymode_iterator"
+                 value="PFTauDecayModeRefVector::iterator">
+typedef PFTauDecayModeRefVector::iterator pftaudecaymode_iterator;
+            <comment>
+      iterator over a vector of references to PFTauDecayMode objects all in the same collection
+            </comment>
+        </typedef>
+
+    </namespace>
+
+</header>

@@ -1,0 +1,5 @@
+edm::RefBase<KEY>|RefCore const&|refCore|void
+edm::RefBase<KEY>|bool|isValid|void
+edm::RefBase<KEY>|bool|isNull|void
+edm::RefBase<KEY>|bool|isNonnull|void
+edm::RefBase<KEY>|RefItem<KEY> const&|item|void

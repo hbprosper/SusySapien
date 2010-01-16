@@ -1,0 +1,19 @@
+Class:
+	edm::detail::GetProduct<RefVector<C, T, F> >
+
+Header:
+	DataFormats/Common/interface/RefVector.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:48 2010	lsclass.py $Revision:$
+
+Methods from edm::detail::GetProduct<RefVector<C, T, F> >
+
+	-o- address
+		Return: static const T*
+		Arguments: const iter&	i
+
+	-o- product
+		Return: static const C*
+		Arguments: const RefVector<C, T, F>&	coll
+

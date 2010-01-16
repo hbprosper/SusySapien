@@ -1,0 +1,623 @@
+\hypertarget{classjetnet_1_1NN}{
+\section{jetnet::NN Class Reference}
+\label{classjetnet_1_1NN}\index{jetnet::NN@{jetnet::NN}}
+}
+{\tt \#include $<$jetnet.hpp$>$}
+
+
+
+\subsection{Detailed Description}
+Feed-forward neural network using JETNET 3.4. 
+
+\subsection*{Public Types}
+\begin{CompactItemize}
+\item 
+enum \hyperlink{classjetnet_1_1NN_w16}{Divergence} \{ \hyperlink{classjetnet_1_1NN_w16w0}{k\-BYBINNING} =  0, 
+\hyperlink{classjetnet_1_1NN_w16w1}{k\-BYMC} =  1
+ \}
+\item 
+enum \hyperlink{classjetnet_1_1NN_w17}{Sample} \{ \hyperlink{classjetnet_1_1NN_w17w2}{k\-TRAINING} =  0, 
+\hyperlink{classjetnet_1_1NN_w17w3}{k\-TESTING} =  1
+ \}
+\item 
+enum \hyperlink{classjetnet_1_1NN_w18}{Output} \{ \hyperlink{classjetnet_1_1NN_w18w4}{k\-SIGMOID} =  0, 
+\hyperlink{classjetnet_1_1NN_w18w5}{k\-LINEAR} =  1
+ \}
+\item 
+enum \hyperlink{classjetnet_1_1NN_w19}{Status} \{ \par
+\hyperlink{classjetnet_1_1NN_w19w6}{k\-SUCCESS} =  0, 
+\hyperlink{classjetnet_1_1NN_w19w7}{k\-FAILURE} = -1, 
+\hyperlink{classjetnet_1_1NN_w19w8}{k\-BADVARSIZE} = -2, 
+\hyperlink{classjetnet_1_1NN_w19w9}{k\-UNINITIALIZED} = -3, 
+\par
+\hyperlink{classjetnet_1_1NN_w19w10}{k\-BADNAME} = -4, 
+\hyperlink{classjetnet_1_1NN_w19w11}{k\-BADSAMPLE} = -5, 
+\hyperlink{classjetnet_1_1NN_w19w12}{k\-FILEOPENERROR} = -6, 
+\hyperlink{classjetnet_1_1NN_w19w13}{k\-NOWEIGHTS} = -7, 
+\par
+\hyperlink{classjetnet_1_1NN_w19w14}{k\-BADINPSIZE} = -8, 
+\hyperlink{classjetnet_1_1NN_w19w15}{k\-BADOUTSIZE} = -9
+ \}
+\end{CompactItemize}
+\subsection*{Public Member Functions}
+\begin{CompactItemize}
+\item 
+\hyperlink{classjetnet_1_1NN_a0}{NN} ()
+\begin{CompactList}\small\item\em Constructor. \item\end{CompactList}\item 
+\hyperlink{classjetnet_1_1NN_a1}{NN} (std::string variab, int hidden, \hyperlink{classjetnet_1_1NN_w18}{Output} output=k\-SIGMOID)
+\begin{CompactList}\small\item\em Create a network. \item\end{CompactList}\item 
+\hyperlink{classjetnet_1_1NN_a2}{NN} (std::vector$<$ std::string $>$ \&variab, int hidden, \hyperlink{classjetnet_1_1NN_w18}{Output} output=k\-SIGMOID)
+\begin{CompactList}\small\item\em Create a network. \item\end{CompactList}\item 
+\hyperlink{classjetnet_1_1NN_a3}{NN} (std::string filename)
+\begin{CompactList}\small\item\em Create an already-trained network, given a file of weights. \item\end{CompactList}\item 
+virtual \hyperlink{classjetnet_1_1NN_a4}{$\sim$NN} ()
+\item 
+void \hyperlink{classjetnet_1_1NN_a5}{set\-Parameter} (std::string name, float val)
+\begin{CompactList}\small\item\em Set name of parameter. \item\end{CompactList}\item 
+void \hyperlink{classjetnet_1_1NN_a6}{set\-Method} (int val)
+\begin{CompactList}\small\item\em Set minimization method. \item\end{CompactList}\item 
+void \hyperlink{classjetnet_1_1NN_a7}{set\-Eta} (float val)
+\item 
+void \hyperlink{classjetnet_1_1NN_a8}{set\-Alpha} (float val)
+\item 
+void \hyperlink{classjetnet_1_1NN_a9}{set\-Epsilon} (float val)
+\item 
+void \hyperlink{classjetnet_1_1NN_a10}{set\-Width} (float val)
+\item 
+void \hyperlink{classjetnet_1_1NN_a11}{set\-Dalpha} (float val)
+\item 
+void \hyperlink{classjetnet_1_1NN_a12}{set\-Deta} (float val)
+\item 
+void \hyperlink{classjetnet_1_1NN_a13}{set\-Sample} (\hyperlink{classjetnet_1_1NN_w17}{Sample} sample=k\-TRAINING)
+\begin{CompactList}\small\item\em Set sample (0 for training, 1 for testing). \item\end{CompactList}\item 
+void \hyperlink{classjetnet_1_1NN_a14}{set\-Pattern} (\hyperlink{jetnet_8hpp_a0}{vfloat} \&inp, float out, float weight=1.0)
+\begin{CompactList}\small\item\em Set pattern. \item\end{CompactList}\item 
+void \hyperlink{classjetnet_1_1NN_a15}{set\-Pattern} (\hyperlink{PoissonGammaFit_8hpp_a0}{vdouble} \&inp, double out, double weight=1.0)
+\item 
+void \hyperlink{classjetnet_1_1NN_a16}{load\-Patterns} (\hyperlink{jetnet_8hpp_a4}{vvfloat} \&inp, \hyperlink{jetnet_8hpp_a0}{vfloat} \&out, \hyperlink{jetnet_8hpp_a0}{vfloat} \&weight)
+\item 
+float \hyperlink{classjetnet_1_1NN_a17}{parameter} (std::string name)
+\begin{CompactList}\small\item\em Return value of network training parameter. \item\end{CompactList}\item 
+\hyperlink{jetnet_8hpp_a3}{vstring} \& \hyperlink{classjetnet_1_1NN_a18}{names} ()
+\begin{CompactList}\small\item\em Return names of network inputs. \item\end{CompactList}\item 
+void \hyperlink{classjetnet_1_1NN_a19}{save} (std::string name, bool savecpp=true)
+\begin{CompactList}\small\item\em Save network weights and, by default, the network function. \item\end{CompactList}\item 
+void \hyperlink{classjetnet_1_1NN_a20}{print\-Parameters} (int flag=0)
+\item 
+bool \hyperlink{classjetnet_1_1NN_a21}{begin} (std::string name=\char`\"{}\char`\"{})
+\begin{CompactList}\small\item\em Initialize network training. \item\end{CompactList}\item 
+void \hyperlink{classjetnet_1_1NN_a22}{end} ()
+\begin{CompactList}\small\item\em Finalize network training. \item\end{CompactList}\item 
+float \hyperlink{classjetnet_1_1NN_a23}{train} (int epoch)
+\begin{CompactList}\small\item\em Train network. \item\end{CompactList}\item 
+float \hyperlink{classjetnet_1_1NN_a24}{test} (\hyperlink{classjetnet_1_1NN_w17}{Sample} sample=k\-TRAINING, float cutpoint=0.5, int number\-Bins=50)
+\begin{CompactList}\small\item\em Test on specified sample. \item\end{CompactList}\item 
+float \hyperlink{classjetnet_1_1NN_a25}{power} ()
+\begin{CompactList}\small\item\em Compute network power. \item\end{CompactList}\item 
+float \hyperlink{classjetnet_1_1NN_a26}{area} ()
+\begin{CompactList}\small\item\em Compute area under the ROC curve. \item\end{CompactList}\item 
+float \hyperlink{classjetnet_1_1NN_a27}{divergence} (\hyperlink{classjetnet_1_1NN_w16}{Divergence} how=k\-BYBINNING)
+\begin{CompactList}\small\item\em Compute network divergence. \item\end{CompactList}\item 
+float \hyperlink{classjetnet_1_1NN_a28}{error} ()
+\begin{CompactList}\small\item\em Mis-classification rate. \item\end{CompactList}\item 
+\hyperlink{jetnet_8hpp_a2}{vint} \& \hyperlink{classjetnet_1_1NN_a29}{histogram} (int target)
+\item 
+\hyperlink{jetnet_8hpp_a0}{vfloat} \& \hyperlink{classjetnet_1_1NN_a30}{efficiencies} (int target)
+\item 
+float \hyperlink{classjetnet_1_1NN_a31}{evaluate} (\hyperlink{jetnet_8hpp_a0}{vfloat} \&inp)
+\begin{CompactList}\small\item\em Compute network output for a single output network. \item\end{CompactList}\item 
+float \hyperlink{classjetnet_1_1NN_a32}{evaluate} (\hyperlink{PoissonGammaFit_8hpp_a0}{vdouble} \&inp)
+\item 
+bool \hyperlink{classjetnet_1_1NN_a33}{good} ()
+\begin{CompactList}\small\item\em False on error. \item\end{CompactList}\item 
+\hyperlink{classjetnet_1_1NN_w19}{Status} \hyperlink{classjetnet_1_1NN_a34}{status} ()
+\begin{CompactList}\small\item\em Return status code. \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Member Enumeration Documentation}
+\hypertarget{classjetnet_1_1NN_w16}{
+\index{jetnet::NN@{jetnet::NN}!Divergence@{Divergence}}
+\index{Divergence@{Divergence}!jetnet::NN@{jetnet::NN}}
+\subsubsection[Divergence]{\setlength{\rightskip}{0pt plus 5cm}enum \hyperlink{classjetnet_1_1NN_w16}{jetnet::NN::Divergence}}}
+\label{classjetnet_1_1NN_w16}
+
+
+\begin{Desc}
+\item[Enumeration values: ]\par
+\begin{description}
+\index{kBYBINNING@{kBYBINNING}!jetnet::NN@{jetnet::NN}}\index{jetnet::NN@{jetnet::NN}!kBYBINNING@{kBYBINNING}}\item[{\em 
+\hypertarget{classjetnet_1_1NN_w16w0}{
+k\-BYBINNING}
+\label{classjetnet_1_1NN_w16w0}
+}]\index{kBYMC@{kBYMC}!jetnet::NN@{jetnet::NN}}\index{jetnet::NN@{jetnet::NN}!kBYMC@{kBYMC}}\item[{\em 
+\hypertarget{classjetnet_1_1NN_w16w1}{
+k\-BYMC}
+\label{classjetnet_1_1NN_w16w1}
+}]\end{description}
+\end{Desc}
+
+\hypertarget{classjetnet_1_1NN_w18}{
+\index{jetnet::NN@{jetnet::NN}!Output@{Output}}
+\index{Output@{Output}!jetnet::NN@{jetnet::NN}}
+\subsubsection[Output]{\setlength{\rightskip}{0pt plus 5cm}enum \hyperlink{classjetnet_1_1NN_w18}{jetnet::NN::Output}}}
+\label{classjetnet_1_1NN_w18}
+
+
+\begin{Desc}
+\item[Enumeration values: ]\par
+\begin{description}
+\index{kSIGMOID@{kSIGMOID}!jetnet::NN@{jetnet::NN}}\index{jetnet::NN@{jetnet::NN}!kSIGMOID@{kSIGMOID}}\item[{\em 
+\hypertarget{classjetnet_1_1NN_w18w4}{
+k\-SIGMOID}
+\label{classjetnet_1_1NN_w18w4}
+}]\index{kLINEAR@{kLINEAR}!jetnet::NN@{jetnet::NN}}\index{jetnet::NN@{jetnet::NN}!kLINEAR@{kLINEAR}}\item[{\em 
+\hypertarget{classjetnet_1_1NN_w18w5}{
+k\-LINEAR}
+\label{classjetnet_1_1NN_w18w5}
+}]\end{description}
+\end{Desc}
+
+\hypertarget{classjetnet_1_1NN_w17}{
+\index{jetnet::NN@{jetnet::NN}!Sample@{Sample}}
+\index{Sample@{Sample}!jetnet::NN@{jetnet::NN}}
+\subsubsection[Sample]{\setlength{\rightskip}{0pt plus 5cm}enum \hyperlink{classjetnet_1_1NN_w17}{jetnet::NN::Sample}}}
+\label{classjetnet_1_1NN_w17}
+
+
+\begin{Desc}
+\item[Enumeration values: ]\par
+\begin{description}
+\index{kTRAINING@{kTRAINING}!jetnet::NN@{jetnet::NN}}\index{jetnet::NN@{jetnet::NN}!kTRAINING@{kTRAINING}}\item[{\em 
+\hypertarget{classjetnet_1_1NN_w17w2}{
+k\-TRAINING}
+\label{classjetnet_1_1NN_w17w2}
+}]\index{kTESTING@{kTESTING}!jetnet::NN@{jetnet::NN}}\index{jetnet::NN@{jetnet::NN}!kTESTING@{kTESTING}}\item[{\em 
+\hypertarget{classjetnet_1_1NN_w17w3}{
+k\-TESTING}
+\label{classjetnet_1_1NN_w17w3}
+}]\end{description}
+\end{Desc}
+
+\hypertarget{classjetnet_1_1NN_w19}{
+\index{jetnet::NN@{jetnet::NN}!Status@{Status}}
+\index{Status@{Status}!jetnet::NN@{jetnet::NN}}
+\subsubsection[Status]{\setlength{\rightskip}{0pt plus 5cm}enum \hyperlink{classjetnet_1_1NN_w19}{jetnet::NN::Status}}}
+\label{classjetnet_1_1NN_w19}
+
+
+\begin{Desc}
+\item[Enumeration values: ]\par
+\begin{description}
+\index{kSUCCESS@{kSUCCESS}!jetnet::NN@{jetnet::NN}}\index{jetnet::NN@{jetnet::NN}!kSUCCESS@{kSUCCESS}}\item[{\em 
+\hypertarget{classjetnet_1_1NN_w19w6}{
+k\-SUCCESS}
+\label{classjetnet_1_1NN_w19w6}
+}]\index{kFAILURE@{kFAILURE}!jetnet::NN@{jetnet::NN}}\index{jetnet::NN@{jetnet::NN}!kFAILURE@{kFAILURE}}\item[{\em 
+\hypertarget{classjetnet_1_1NN_w19w7}{
+k\-FAILURE}
+\label{classjetnet_1_1NN_w19w7}
+}]\index{kBADVARSIZE@{kBADVARSIZE}!jetnet::NN@{jetnet::NN}}\index{jetnet::NN@{jetnet::NN}!kBADVARSIZE@{kBADVARSIZE}}\item[{\em 
+\hypertarget{classjetnet_1_1NN_w19w8}{
+k\-BADVARSIZE}
+\label{classjetnet_1_1NN_w19w8}
+}]\index{kUNINITIALIZED@{kUNINITIALIZED}!jetnet::NN@{jetnet::NN}}\index{jetnet::NN@{jetnet::NN}!kUNINITIALIZED@{kUNINITIALIZED}}\item[{\em 
+\hypertarget{classjetnet_1_1NN_w19w9}{
+k\-UNINITIALIZED}
+\label{classjetnet_1_1NN_w19w9}
+}]\index{kBADNAME@{kBADNAME}!jetnet::NN@{jetnet::NN}}\index{jetnet::NN@{jetnet::NN}!kBADNAME@{kBADNAME}}\item[{\em 
+\hypertarget{classjetnet_1_1NN_w19w10}{
+k\-BADNAME}
+\label{classjetnet_1_1NN_w19w10}
+}]\index{kBADSAMPLE@{kBADSAMPLE}!jetnet::NN@{jetnet::NN}}\index{jetnet::NN@{jetnet::NN}!kBADSAMPLE@{kBADSAMPLE}}\item[{\em 
+\hypertarget{classjetnet_1_1NN_w19w11}{
+k\-BADSAMPLE}
+\label{classjetnet_1_1NN_w19w11}
+}]\index{kFILEOPENERROR@{kFILEOPENERROR}!jetnet::NN@{jetnet::NN}}\index{jetnet::NN@{jetnet::NN}!kFILEOPENERROR@{kFILEOPENERROR}}\item[{\em 
+\hypertarget{classjetnet_1_1NN_w19w12}{
+k\-FILEOPENERROR}
+\label{classjetnet_1_1NN_w19w12}
+}]\index{kNOWEIGHTS@{kNOWEIGHTS}!jetnet::NN@{jetnet::NN}}\index{jetnet::NN@{jetnet::NN}!kNOWEIGHTS@{kNOWEIGHTS}}\item[{\em 
+\hypertarget{classjetnet_1_1NN_w19w13}{
+k\-NOWEIGHTS}
+\label{classjetnet_1_1NN_w19w13}
+}]\index{kBADINPSIZE@{kBADINPSIZE}!jetnet::NN@{jetnet::NN}}\index{jetnet::NN@{jetnet::NN}!kBADINPSIZE@{kBADINPSIZE}}\item[{\em 
+\hypertarget{classjetnet_1_1NN_w19w14}{
+k\-BADINPSIZE}
+\label{classjetnet_1_1NN_w19w14}
+}]\index{kBADOUTSIZE@{kBADOUTSIZE}!jetnet::NN@{jetnet::NN}}\index{jetnet::NN@{jetnet::NN}!kBADOUTSIZE@{kBADOUTSIZE}}\item[{\em 
+\hypertarget{classjetnet_1_1NN_w19w15}{
+k\-BADOUTSIZE}
+\label{classjetnet_1_1NN_w19w15}
+}]\end{description}
+\end{Desc}
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classjetnet_1_1NN_a0}{
+\index{jetnet::NN@{jetnet::NN}!NN@{NN}}
+\index{NN@{NN}!jetnet::NN@{jetnet::NN}}
+\subsubsection[NN]{\setlength{\rightskip}{0pt plus 5cm}jetnet::NN::NN ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classjetnet_1_1NN_a0}
+
+
+Constructor. 
+
+\hypertarget{classjetnet_1_1NN_a1}{
+\index{jetnet::NN@{jetnet::NN}!NN@{NN}}
+\index{NN@{NN}!jetnet::NN@{jetnet::NN}}
+\subsubsection[NN]{\setlength{\rightskip}{0pt plus 5cm}jetnet::NN::NN (std::string {\em variab}, int {\em hidden}, \hyperlink{classjetnet_1_1NN_w18}{Output} {\em output} = {\tt kSIGMOID})}}
+\label{classjetnet_1_1NN_a1}
+
+
+Create a network. 
+
+The network structure is specified by giving the names of the input variables and the number of hidden nodes.\par
+
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em variab}]Names of variables \item[{\em hidden}]Number of hidden nodes \end{description}
+\end{Desc}
+\hypertarget{classjetnet_1_1NN_a2}{
+\index{jetnet::NN@{jetnet::NN}!NN@{NN}}
+\index{NN@{NN}!jetnet::NN@{jetnet::NN}}
+\subsubsection[NN]{\setlength{\rightskip}{0pt plus 5cm}jetnet::NN::NN (std::vector$<$ std::string $>$ \& {\em variab}, int {\em hidden}, \hyperlink{classjetnet_1_1NN_w18}{Output} {\em output} = {\tt kSIGMOID})}}
+\label{classjetnet_1_1NN_a2}
+
+
+Create a network. 
+
+The network structure is specified by giving the names of the input variables and the number of hidden nodes.\par
+
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em variab}]Vector of variable names \item[{\em hidden}]Number of hidden nodes \end{description}
+\end{Desc}
+\hypertarget{classjetnet_1_1NN_a3}{
+\index{jetnet::NN@{jetnet::NN}!NN@{NN}}
+\index{NN@{NN}!jetnet::NN@{jetnet::NN}}
+\subsubsection[NN]{\setlength{\rightskip}{0pt plus 5cm}jetnet::NN::NN (std::string {\em filename})}}
+\label{classjetnet_1_1NN_a3}
+
+
+Create an already-trained network, given a file of weights. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em filename}]Filename of the weights \end{description}
+\end{Desc}
+\hypertarget{classjetnet_1_1NN_a4}{
+\index{jetnet::NN@{jetnet::NN}!~NN@{$\sim$NN}}
+\index{~NN@{$\sim$NN}!jetnet::NN@{jetnet::NN}}
+\subsubsection[$\sim$NN]{\setlength{\rightskip}{0pt plus 5cm}virtual jetnet::NN::$\sim$\hyperlink{classjetnet_1_1NN}{NN} ()\hspace{0.3cm}{\tt  \mbox{[}virtual\mbox{]}}}}
+\label{classjetnet_1_1NN_a4}
+
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classjetnet_1_1NN_a26}{
+\index{jetnet::NN@{jetnet::NN}!area@{area}}
+\index{area@{area}!jetnet::NN@{jetnet::NN}}
+\subsubsection[area]{\setlength{\rightskip}{0pt plus 5cm}float jetnet::NN::area ()}}
+\label{classjetnet_1_1NN_a26}
+
+
+Compute area under the ROC curve. 
+
+\hypertarget{classjetnet_1_1NN_a21}{
+\index{jetnet::NN@{jetnet::NN}!begin@{begin}}
+\index{begin@{begin}!jetnet::NN@{jetnet::NN}}
+\subsubsection[begin]{\setlength{\rightskip}{0pt plus 5cm}bool jetnet::NN::begin (std::string {\em name} = {\tt \char`\"{}\char`\"{}})}}
+\label{classjetnet_1_1NN_a21}
+
+
+Initialize network training. 
+
+\hypertarget{classjetnet_1_1NN_a27}{
+\index{jetnet::NN@{jetnet::NN}!divergence@{divergence}}
+\index{divergence@{divergence}!jetnet::NN@{jetnet::NN}}
+\subsubsection[divergence]{\setlength{\rightskip}{0pt plus 5cm}float jetnet::NN::divergence (\hyperlink{classjetnet_1_1NN_w16}{Divergence} {\em how} = {\tt kBYBINNING})}}
+\label{classjetnet_1_1NN_a27}
+
+
+Compute network divergence. 
+
+$\mbox{divergence} = min(D(p|q), D(q|p)) $
+
+where
+
+$D(p|q) = \int p(x) ln p(x) / q(x) dx $
+
+is the Kullback-Liebler divergence between two densities $p(x)$ and $q(x)$. The symmetric version was introduced by Professor Jose Bernardo. \hypertarget{classjetnet_1_1NN_a30}{
+\index{jetnet::NN@{jetnet::NN}!efficiencies@{efficiencies}}
+\index{efficiencies@{efficiencies}!jetnet::NN@{jetnet::NN}}
+\subsubsection[efficiencies]{\setlength{\rightskip}{0pt plus 5cm}\hyperlink{jetnet_8hpp_a0}{vfloat}\& jetnet::NN::efficiencies (int {\em target})}}
+\label{classjetnet_1_1NN_a30}
+
+
+\hypertarget{classjetnet_1_1NN_a22}{
+\index{jetnet::NN@{jetnet::NN}!end@{end}}
+\index{end@{end}!jetnet::NN@{jetnet::NN}}
+\subsubsection[end]{\setlength{\rightskip}{0pt plus 5cm}void jetnet::NN::end ()}}
+\label{classjetnet_1_1NN_a22}
+
+
+Finalize network training. 
+
+\hypertarget{classjetnet_1_1NN_a28}{
+\index{jetnet::NN@{jetnet::NN}!error@{error}}
+\index{error@{error}!jetnet::NN@{jetnet::NN}}
+\subsubsection[error]{\setlength{\rightskip}{0pt plus 5cm}float jetnet::NN::error ()}}
+\label{classjetnet_1_1NN_a28}
+
+
+Mis-classification rate. 
+
+\hypertarget{classjetnet_1_1NN_a32}{
+\index{jetnet::NN@{jetnet::NN}!evaluate@{evaluate}}
+\index{evaluate@{evaluate}!jetnet::NN@{jetnet::NN}}
+\subsubsection[evaluate]{\setlength{\rightskip}{0pt plus 5cm}float jetnet::NN::evaluate (\hyperlink{PoissonGammaFit_8hpp_a0}{vdouble} \& {\em inp})}}
+\label{classjetnet_1_1NN_a32}
+
+
+\hypertarget{classjetnet_1_1NN_a31}{
+\index{jetnet::NN@{jetnet::NN}!evaluate@{evaluate}}
+\index{evaluate@{evaluate}!jetnet::NN@{jetnet::NN}}
+\subsubsection[evaluate]{\setlength{\rightskip}{0pt plus 5cm}float jetnet::NN::evaluate (\hyperlink{jetnet_8hpp_a0}{vfloat} \& {\em inp})}}
+\label{classjetnet_1_1NN_a31}
+
+
+Compute network output for a single output network. 
+
+\hypertarget{classjetnet_1_1NN_a33}{
+\index{jetnet::NN@{jetnet::NN}!good@{good}}
+\index{good@{good}!jetnet::NN@{jetnet::NN}}
+\subsubsection[good]{\setlength{\rightskip}{0pt plus 5cm}bool jetnet::NN::good ()}}
+\label{classjetnet_1_1NN_a33}
+
+
+False on error. 
+
+\begin{Desc}
+\item[See also:]\hyperlink{classjetnet_1_1NN_a34}{status} \end{Desc}
+\hypertarget{classjetnet_1_1NN_a29}{
+\index{jetnet::NN@{jetnet::NN}!histogram@{histogram}}
+\index{histogram@{histogram}!jetnet::NN@{jetnet::NN}}
+\subsubsection[histogram]{\setlength{\rightskip}{0pt plus 5cm}\hyperlink{jetnet_8hpp_a2}{vint}\& jetnet::NN::histogram (int {\em target})}}
+\label{classjetnet_1_1NN_a29}
+
+
+\hypertarget{classjetnet_1_1NN_a16}{
+\index{jetnet::NN@{jetnet::NN}!loadPatterns@{loadPatterns}}
+\index{loadPatterns@{loadPatterns}!jetnet::NN@{jetnet::NN}}
+\subsubsection[loadPatterns]{\setlength{\rightskip}{0pt plus 5cm}void jetnet::NN::load\-Patterns (\hyperlink{jetnet_8hpp_a4}{vvfloat} \& {\em inp}, \hyperlink{jetnet_8hpp_a0}{vfloat} \& {\em out}, \hyperlink{jetnet_8hpp_a0}{vfloat} \& {\em weight})}}
+\label{classjetnet_1_1NN_a16}
+
+
+\hypertarget{classjetnet_1_1NN_a18}{
+\index{jetnet::NN@{jetnet::NN}!names@{names}}
+\index{names@{names}!jetnet::NN@{jetnet::NN}}
+\subsubsection[names]{\setlength{\rightskip}{0pt plus 5cm}\hyperlink{jetnet_8hpp_a3}{vstring}\& jetnet::NN::names ()}}
+\label{classjetnet_1_1NN_a18}
+
+
+Return names of network inputs. 
+
+\hypertarget{classjetnet_1_1NN_a17}{
+\index{jetnet::NN@{jetnet::NN}!parameter@{parameter}}
+\index{parameter@{parameter}!jetnet::NN@{jetnet::NN}}
+\subsubsection[parameter]{\setlength{\rightskip}{0pt plus 5cm}float jetnet::NN::parameter (std::string {\em name})}}
+\label{classjetnet_1_1NN_a17}
+
+
+Return value of network training parameter. 
+
+\hypertarget{classjetnet_1_1NN_a25}{
+\index{jetnet::NN@{jetnet::NN}!power@{power}}
+\index{power@{power}!jetnet::NN@{jetnet::NN}}
+\subsubsection[power]{\setlength{\rightskip}{0pt plus 5cm}float jetnet::NN::power ()}}
+\label{classjetnet_1_1NN_a25}
+
+
+Compute network power. 
+
+$\mbox{power} = \frac{1}{2}\int_0^1 |f(x|1) - f(x|0)| \, dx$
+
+where
+
+$f(x|1)$
+
+is the network output probability density for the class with desired output $>$ 0.5 and
+
+$f(x|0)$
+
+is the corresponding density for $<$ 0.5. This quantity was - flag = 0 read MLPfit formatted weight file (extension .net).\begin{itemize}
+\item flag = 1 read MLPfit and JETNET formatted file (extension .jetnet). proposed by Dr. Chip Stewart. \end{itemize}
+\hypertarget{classjetnet_1_1NN_a20}{
+\index{jetnet::NN@{jetnet::NN}!printParameters@{printParameters}}
+\index{printParameters@{printParameters}!jetnet::NN@{jetnet::NN}}
+\subsubsection[printParameters]{\setlength{\rightskip}{0pt plus 5cm}void jetnet::NN::print\-Parameters (int {\em flag} = {\tt 0})}}
+\label{classjetnet_1_1NN_a20}
+
+
+\hypertarget{classjetnet_1_1NN_a19}{
+\index{jetnet::NN@{jetnet::NN}!save@{save}}
+\index{save@{save}!jetnet::NN@{jetnet::NN}}
+\subsubsection[save]{\setlength{\rightskip}{0pt plus 5cm}void jetnet::NN::save (std::string {\em name}, bool {\em savecpp} = {\tt true})}}
+\label{classjetnet_1_1NN_a19}
+
+
+Save network weights and, by default, the network function. 
+
+\hypertarget{classjetnet_1_1NN_a8}{
+\index{jetnet::NN@{jetnet::NN}!setAlpha@{setAlpha}}
+\index{setAlpha@{setAlpha}!jetnet::NN@{jetnet::NN}}
+\subsubsection[setAlpha]{\setlength{\rightskip}{0pt plus 5cm}void jetnet::NN::set\-Alpha (float {\em val})}}
+\label{classjetnet_1_1NN_a8}
+
+
+\hypertarget{classjetnet_1_1NN_a11}{
+\index{jetnet::NN@{jetnet::NN}!setDalpha@{setDalpha}}
+\index{setDalpha@{setDalpha}!jetnet::NN@{jetnet::NN}}
+\subsubsection[setDalpha]{\setlength{\rightskip}{0pt plus 5cm}void jetnet::NN::set\-Dalpha (float {\em val})}}
+\label{classjetnet_1_1NN_a11}
+
+
+\hypertarget{classjetnet_1_1NN_a12}{
+\index{jetnet::NN@{jetnet::NN}!setDeta@{setDeta}}
+\index{setDeta@{setDeta}!jetnet::NN@{jetnet::NN}}
+\subsubsection[setDeta]{\setlength{\rightskip}{0pt plus 5cm}void jetnet::NN::set\-Deta (float {\em val})}}
+\label{classjetnet_1_1NN_a12}
+
+
+\hypertarget{classjetnet_1_1NN_a9}{
+\index{jetnet::NN@{jetnet::NN}!setEpsilon@{setEpsilon}}
+\index{setEpsilon@{setEpsilon}!jetnet::NN@{jetnet::NN}}
+\subsubsection[setEpsilon]{\setlength{\rightskip}{0pt plus 5cm}void jetnet::NN::set\-Epsilon (float {\em val})}}
+\label{classjetnet_1_1NN_a9}
+
+
+\hypertarget{classjetnet_1_1NN_a7}{
+\index{jetnet::NN@{jetnet::NN}!setEta@{setEta}}
+\index{setEta@{setEta}!jetnet::NN@{jetnet::NN}}
+\subsubsection[setEta]{\setlength{\rightskip}{0pt plus 5cm}void jetnet::NN::set\-Eta (float {\em val})}}
+\label{classjetnet_1_1NN_a7}
+
+
+\hypertarget{classjetnet_1_1NN_a6}{
+\index{jetnet::NN@{jetnet::NN}!setMethod@{setMethod}}
+\index{setMethod@{setMethod}!jetnet::NN@{jetnet::NN}}
+\subsubsection[setMethod]{\setlength{\rightskip}{0pt plus 5cm}void jetnet::NN::set\-Method (int {\em val})}}
+\label{classjetnet_1_1NN_a6}
+
+
+Set minimization method. 
+
+\begin{TabularC}{2}
+\hline
+{\bf Method Code} &{\bf Description} 
+
+\\\hline
+0 &Stochastic minimization 
+
+\\\hline
+1 &Manhattan 
+
+\\\hline
+2 &Langevin 
+
+\\\hline
+3 &Quickprop 
+
+\\\hline
+4 &Conjugate gradient (Polak-Ribiere) 
+
+\\\hline
+5 &Conjugate gradient (Hestenes-Stiefel) 
+
+\\\hline
+6 &Conjugate gradient (Fletcher-Reeves) 
+
+\\\hline
+7 &Conjugate gradient (Shanno) 
+
+\\\hline
+\end{TabularC}
+
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em val}]Minimization code \end{description}
+\end{Desc}
+\hypertarget{classjetnet_1_1NN_a5}{
+\index{jetnet::NN@{jetnet::NN}!setParameter@{setParameter}}
+\index{setParameter@{setParameter}!jetnet::NN@{jetnet::NN}}
+\subsubsection[setParameter]{\setlength{\rightskip}{0pt plus 5cm}void jetnet::NN::set\-Parameter (std::string {\em name}, float {\em val})}}
+\label{classjetnet_1_1NN_a5}
+
+
+Set name of parameter. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em name}]Name of network parameter \item[{\em val}]Value of network parameter \end{description}
+\end{Desc}
+\hypertarget{classjetnet_1_1NN_a15}{
+\index{jetnet::NN@{jetnet::NN}!setPattern@{setPattern}}
+\index{setPattern@{setPattern}!jetnet::NN@{jetnet::NN}}
+\subsubsection[setPattern]{\setlength{\rightskip}{0pt plus 5cm}void jetnet::NN::set\-Pattern (\hyperlink{PoissonGammaFit_8hpp_a0}{vdouble} \& {\em inp}, double {\em out}, double {\em weight} = {\tt 1.0})}}
+\label{classjetnet_1_1NN_a15}
+
+
+\hypertarget{classjetnet_1_1NN_a14}{
+\index{jetnet::NN@{jetnet::NN}!setPattern@{setPattern}}
+\index{setPattern@{setPattern}!jetnet::NN@{jetnet::NN}}
+\subsubsection[setPattern]{\setlength{\rightskip}{0pt plus 5cm}void jetnet::NN::set\-Pattern (\hyperlink{jetnet_8hpp_a0}{vfloat} \& {\em inp}, float {\em out}, float {\em weight} = {\tt 1.0})}}
+\label{classjetnet_1_1NN_a14}
+
+
+Set pattern. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em inp}]Input values \item[{\em out}]Output value \item[{\em weight}]Pattern weight \end{description}
+\end{Desc}
+\hypertarget{classjetnet_1_1NN_a13}{
+\index{jetnet::NN@{jetnet::NN}!setSample@{setSample}}
+\index{setSample@{setSample}!jetnet::NN@{jetnet::NN}}
+\subsubsection[setSample]{\setlength{\rightskip}{0pt plus 5cm}void jetnet::NN::set\-Sample (\hyperlink{classjetnet_1_1NN_w17}{Sample} {\em sample} = {\tt kTRAINING})}}
+\label{classjetnet_1_1NN_a13}
+
+
+Set sample (0 for training, 1 for testing). 
+
+\hypertarget{classjetnet_1_1NN_a10}{
+\index{jetnet::NN@{jetnet::NN}!setWidth@{setWidth}}
+\index{setWidth@{setWidth}!jetnet::NN@{jetnet::NN}}
+\subsubsection[setWidth]{\setlength{\rightskip}{0pt plus 5cm}void jetnet::NN::set\-Width (float {\em val})}}
+\label{classjetnet_1_1NN_a10}
+
+
+\hypertarget{classjetnet_1_1NN_a34}{
+\index{jetnet::NN@{jetnet::NN}!status@{status}}
+\index{status@{status}!jetnet::NN@{jetnet::NN}}
+\subsubsection[status]{\setlength{\rightskip}{0pt plus 5cm}\hyperlink{classjetnet_1_1NN_w19}{Status} jetnet::NN::status ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classjetnet_1_1NN_a34}
+
+
+Return status code. 
+
+\begin{Desc}
+\item[See also:]\hyperlink{classjetnet_1_1NN_a28}{error} \end{Desc}
+\hypertarget{classjetnet_1_1NN_a24}{
+\index{jetnet::NN@{jetnet::NN}!test@{test}}
+\index{test@{test}!jetnet::NN@{jetnet::NN}}
+\subsubsection[test]{\setlength{\rightskip}{0pt plus 5cm}float jetnet::NN::test (\hyperlink{classjetnet_1_1NN_w17}{Sample} {\em sample} = {\tt kTRAINING}, float {\em cutpoint} = {\tt 0.5}, int {\em number\-Bins} = {\tt 50})}}
+\label{classjetnet_1_1NN_a24}
+
+
+Test on specified sample. 
+
+Note: The error returned is the mean squared error. \hypertarget{classjetnet_1_1NN_a23}{
+\index{jetnet::NN@{jetnet::NN}!train@{train}}
+\index{train@{train}!jetnet::NN@{jetnet::NN}}
+\subsubsection[train]{\setlength{\rightskip}{0pt plus 5cm}float jetnet::NN::train (int {\em epoch})}}
+\label{classjetnet_1_1NN_a23}
+
+
+Train network. 
+
+
+
+The documentation for this class was generated from the following file:\begin{CompactItemize}
+\item 
+/home/harry/CMS/cmssw/CMSSW\_\-3\_\-2\_\-5/src/Physics\-Tools/Lite\-Analysis/interface/\hyperlink{jetnet_8hpp}{jetnet.hpp}\end{CompactItemize}

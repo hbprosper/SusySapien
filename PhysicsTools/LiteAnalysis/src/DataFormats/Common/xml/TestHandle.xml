@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: TestHandle.xml
+  Created:  Thu Jan 14 22:46:28 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Common/interface/TestHandle.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/TestHandle.h">
+
+    <include name="&lt;algorithm&gt;"/>
+    <include name="&lt;stdexcept&gt;"/>
+    <include name="&lt;typeinfo&gt;"/>
+    <include name="&quot;DataFormats/Provenance/interface/ProductID.h&quot;"/>
+    <include name="&quot;FWCore/Utilities/interface/EDMException.h&quot;"/>
+
+    <namespace name="edm">
+
+        <class name="TestHandle"
+               fullname="edm::TestHandle&lt;T&gt;"
+               module="DataFormats.Common"
+               project=""
+               type="template"
+               template="template&lt;class T&gt;">
+
+            <section name="public">
+                <typedef name="element_type"
+                         value="T">
+typedef T element_type;
+                </typedef>
+
+                <constructor name="TestHandle"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+TestHandle();
+                    <comment>
+       Default constructed handles are invalid.
+                    </comment>
+                </constructor>
+
+                <copyconstructor name="TestHandle"
+                                 return=""
+                                 args="['const TestHandle&lt;T&gt;&amp;']"
+                                 vars="['h']"
+                                 qual="">
+TestHandle(const TestHandle&lt;T&gt;&amp; h);
+                </copyconstructor>
+
+                <constructor name="TestHandle"
+                             return=""
+                             args="['T const*','ProductID const&amp;']"
+                             vars="['prod','id']"
+                             qual="">
+TestHandle(T const* prod, ProductID const&amp; id);
+                </constructor>
+
+                <destructor name="~TestHandle"
+                            return=""
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+~TestHandle();
+                </destructor>
+
+                <method2 name="swap"
+                         return="void"
+                         args="['TestHandle&lt;T&gt;&amp;']"
+                         vars="['other']"
+                         qual="">
+void swap(TestHandle&lt;T&gt;&amp; other);
+                </method2>
+
+                <operator name="operator="
+                          return="TestHandle&lt;T&gt;&amp;"
+                          args="['const TestHandle&lt;T&gt;&amp;']"
+                          vars="['rhs']"
+                          qual="">
+TestHandle&lt;T&gt;&amp; operator=(const TestHandle&lt;T&gt;&amp; rhs);
+                </operator>
+
+                <method1 name="isValid"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isValid() const;
+                </method1>
+
+                <method1 name="product"
+                         return="T const*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+T const* product() const;
+                </method1>
+
+                <operator name="operator-&gt;"
+                          return="T const*"
+                          args="['void']"
+                          vars="['']"
+                          qual="const">
+T const* operator-&gt;() const;
+                </operator>
+
+                <operator name="operator*"
+                          return="T const&amp;"
+                          args="['void']"
+                          vars="['']"
+                          qual="const">
+T const&amp; operator*() const;
+                </operator>
+
+                <method1 name="id"
+                         return="ProductID"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+ProductID id() const;
+                </method1>
+
+            </section>
+
+            <typemap name="element_type"
+                     value="T"
+                     type="typedef"/>
+
+        </class>
+    </namespace>
+
+    <type name="ProductID"/>
+    <type name="ProductID const&amp;"/>
+    <type name="TestHandle&lt;T&gt;&amp;"/>
+    <type name="bool"/>
+    <type name="const TestHandle&lt;T&gt;&amp;"/>
+    <type name="edm::TestHandle&lt;T&gt;"/>
+    <type name="void"/>
+</header>

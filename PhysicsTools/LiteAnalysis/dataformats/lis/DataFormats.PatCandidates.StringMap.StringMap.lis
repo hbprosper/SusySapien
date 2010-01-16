@@ -1,0 +1,5 @@
+StringMap|std::vector<std::pair<std::string, int32_t>>::const_iterator|find|const std::string&
+StringMap|std::vector<std::pair<std::string, int32_t>>::const_iterator|find|int32_t
+StringMap|std::vector<std::pair<std::string, int32_t>>::const_iterator|begin|void
+StringMap|std::vector<std::pair<std::string, int32_t>>::const_iterator|end|void
+StringMap|size_t|size|void

@@ -1,0 +1,5 @@
+bool	empty()
+bool	get_isComp(int x)
+bool	get_status()
+bool	get_status(int x)
+

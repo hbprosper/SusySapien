@@ -1,0 +1,15 @@
+Class:
+	edm::ClonePolicy<T>
+
+Header:
+	DataFormats/Common/interface/ClonePolicy.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:52 2010	lsclass.py $Revision:$
+
+Methods from edm::ClonePolicy<T>
+
+	-o- clone
+		Return: static T*
+		Arguments: const T&	t
+

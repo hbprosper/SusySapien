@@ -1,0 +1,5 @@
+edm::Handle<T>|bool|isValid|void
+edm::Handle<T>|bool|failedToGet|void
+edm::Handle<T>|T const*|product|void
+edm::Handle<T>|Provenance const*|provenance|void
+edm::Handle<T>|ProductID|id|void

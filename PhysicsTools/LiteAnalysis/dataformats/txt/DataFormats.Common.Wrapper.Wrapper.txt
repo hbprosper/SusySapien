@@ -1,0 +1,66 @@
+Class:
+	edm::Wrapper<T>
+
+Header:
+	DataFormats/Common/interface/Wrapper.h
+
+BaseClasses:
+	edm::EDProduct	DataFormats/Common/interface/EDProduct.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:16:00 2010	lsclass.py $Revision:$
+
+Methods from edm::Wrapper<T>
+
+	-o- product
+		Return: T const*
+		Arguments: void	
+
+	-o- productTypeInfo
+		Return: static const std::type_info&
+		Arguments: void	
+
+	-o- typeInfo
+		Return: static const std::type_info&
+		Arguments: void	
+
+Methods from edm::EDProduct
+
+	-o- isPresent
+		Return: bool
+		Arguments: void	
+
+	-o- setPtr
+		Return: void
+		Arguments: const std::type_info&	iToType
+		           unsigned long	iIndex
+		           void const*&	oPtr
+
+	-o- isMergeable
+		Return: bool
+		Arguments: void	
+
+	-o- mergeProduct
+		Return: bool
+		Arguments: EDProduct*	newProduct
+
+	-o- hasIsProductEqual
+		Return: bool
+		Arguments: void	
+
+	-o- isProductEqual
+		Return: bool
+		Arguments: EDProduct*	newProduct
+
+	-o- fillView
+		Return: void
+		Arguments: ProductID const&	id
+		           std::vector<void const*>&	view
+		           helper_vector_ptr&	helpers
+
+	-o- fillPtrVector
+		Return: void
+		Arguments: const std::type_info&	iToType
+		           const std::vector<unsigned long>&	iIndicies
+		           std::vector<void const*>&	oPtr
+

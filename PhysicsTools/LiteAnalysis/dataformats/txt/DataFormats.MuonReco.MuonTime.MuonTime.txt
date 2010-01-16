@@ -1,0 +1,15 @@
+Class:
+	reco::MuonTime
+
+Header:
+	DataFormats/MuonReco/interface/MuonTime.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:17 2010	lsclass.py $Revision:$
+
+Methods from reco::MuonTime
+
+	-o- direction
+		Return: Direction
+		Arguments: void	
+

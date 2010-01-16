@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: ConvBremSeedFwd.xml
+  Created:  Thu Jan 14 22:47:51 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/ParticleFlowReco/interface/ConvBremSeedFwd.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/ParticleFlowReco/interface/ConvBremSeedFwd.h">
+
+    <include name="&lt;vector&gt;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+
+    <namespace name="reco">
+        <forward name="ConvBremSeed"/>
+        <typedef name="ConvBremSeedCollection"
+                 value="std::vector&lt;ConvBremSeed&gt;">
+typedef std::vector&lt;ConvBremSeed&gt; ConvBremSeedCollection;
+            <comment>
+      collectin of ConvBremSeed objects
+            </comment>
+        </typedef>
+
+        <typedef name="ConvBremSeedRef"
+                 value="edm::Ref&lt;ConvBremSeedCollection&gt;">
+typedef edm::Ref&lt;ConvBremSeedCollection&gt; ConvBremSeedRef;
+            <comment>
+      reference to an object in a collection of ConvBremSeed objects
+            </comment>
+        </typedef>
+
+        <typedef name="ConvBremSeedRefProd"
+                 value="edm::RefProd&lt;ConvBremSeedCollection&gt;">
+typedef edm::RefProd&lt;ConvBremSeedCollection&gt; ConvBremSeedRefProd;
+            <comment>
+      reference to a collection of ConvBremSeed objects
+            </comment>
+        </typedef>
+
+        <typedef name="ConvBremSeedRefVector"
+                 value="edm::RefVector&lt;ConvBremSeedCollection&gt;">
+typedef edm::RefVector&lt;ConvBremSeedCollection&gt; ConvBremSeedRefVector;
+            <comment>
+      vector of objects in the same collection of ConvBremSeed objects
+            </comment>
+        </typedef>
+
+        <typedef name="electronephltseed_iterator"
+                 value="ConvBremSeedRefVector::iterator">
+typedef ConvBremSeedRefVector::iterator electronephltseed_iterator;
+            <comment>
+      iterator over a vector of reference to ConvBremSeed objects
+            </comment>
+        </typedef>
+
+    </namespace>
+
+</header>

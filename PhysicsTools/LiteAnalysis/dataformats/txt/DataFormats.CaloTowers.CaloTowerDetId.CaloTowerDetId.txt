@@ -1,0 +1,65 @@
+Class:
+	CaloTowerDetId
+
+Header:
+	DataFormats/CaloTowers/interface/CaloTowerDetId.h
+
+BaseClasses:
+	DetId	DataFormats/DetId/interface/DetId.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:16:09 2010	lsclass.py $Revision:$
+
+Methods from CaloTowerDetId
+
+	-o- zside
+		Return: int
+		Arguments: void	
+
+	-o- ietaAbs
+		Return: int
+		Arguments: void	
+
+	-o- ieta
+		Return: int
+		Arguments: void	
+
+	-o- iphi
+		Return: int
+		Arguments: void	
+
+	-o- validDetId
+		Return: static bool
+		Arguments: int	ie
+		           int	ip
+
+	-o- denseIndex
+		Return: uint32_t
+		Arguments: void	
+
+	-o- detIdFromDenseIndex
+		Return: static CaloTowerDetId
+		Arguments: uint32_t	din
+
+	-o- validDenseIndex
+		Return: static bool
+		Arguments: uint32_t	din
+
+Methods from DetId
+
+	-o- det
+		Return: Detector
+		Arguments: void	
+
+	-o- subdetId
+		Return: int
+		Arguments: void	
+
+	-o- rawId
+		Return: uint32_t
+		Arguments: void	
+
+	-o- null
+		Return: bool
+		Arguments: void	
+

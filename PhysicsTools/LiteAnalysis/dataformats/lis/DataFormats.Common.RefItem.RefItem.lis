@@ -1,0 +1,6 @@
+edm::RefItem<KEY>|KEY|key|void
+edm::RefItem<KEY>|void const*|ptr|void
+edm::RefItem<KEY>|void const*|setPtr|void const*
+edm::RefItem<KEY>|bool|isValid|void
+edm::RefItem<KEY>|bool|isNonnull|void
+edm::RefItem<KEY>|bool|isNull|void

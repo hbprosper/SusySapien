@@ -1,0 +1,23 @@
+Class:
+	reco::CaloRecHitCandidate
+
+Header:
+	DataFormats/RecoCandidate/interface/CaloRecHitCandidate.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:14:01 2010	lsclass.py $Revision:$
+
+Methods from reco::CaloRecHitCandidate
+
+	-o- clone
+		Return: CaloRecHitCandidate*
+		Arguments: void	
+
+	-o- setCaloRecHit
+		Return: void
+		Arguments: const CaloRecHitRef&	r
+
+	-o- caloRecHit
+		Return: edm::RefToBase<CaloRecHit>
+		Arguments: void	
+

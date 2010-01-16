@@ -1,0 +1,22 @@
+<bin name=testplugins file=testplugins.cc>
+<use name=CommonTools/Utils>
+<use name=boost_regex>
+<use name=boost_python>
+<use name=rootrflx>
+<use name=rootminuit>
+<use name=rootmath>
+<use name=f77compiler>
+<use name=PhysicsTools/LiteAnalysis>
+<use name=FWCore/FWLite>
+<use name=FWCore/PluginManager>
+</bin>
+
+<library file=Things.cc name=ThingPlugins>
+<use name=FWCore/PluginManager>
+<lib name=ThingPlugins>
+<flags EDM_PLUGIN=1>
+</library>
+
+
+
+

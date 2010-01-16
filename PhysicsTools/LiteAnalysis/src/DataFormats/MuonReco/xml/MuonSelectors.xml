@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: MuonSelectors.xml
+  Created:  Thu Jan 14 22:47:47 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/MuonReco/interface/MuonSelectors.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/MuonReco/interface/MuonSelectors.h">
+
+    <include name="&quot;DataFormats/MuonReco/interface/Muon.h&quot;"/>
+    <include name="&quot;TMath.h&quot;"/>
+
+    <namespace name="muon">
+        <function1 name="isGoodMuon"
+                   return="bool"
+                   args="['const reco::Muon&amp;','reco::Muon::SelectionType']"
+                   vars="['muon','type']"
+                   qual="">
+bool isGoodMuon(const reco::Muon&amp; muon, reco::Muon::SelectionType type);
+            <comment>
+       main GoodMuon wrapper call
+            </comment>
+        </function1>
+
+        <enum name="AlgorithmType">
+enum AlgorithmType {
+ TMLastStation, TM2DCompatibility, TMOneStation };
+            <field name="TMLastStation" value=""/>
+            <field name="TM2DCompatibility" value=""/>
+            <field name="TMOneStation" value=""/>
+            <comment>
+      ===========================================================================
+                                    Support functions
+            </comment>
+        </enum>
+
+        <function1 name="isGoodMuon"
+                   return="bool"
+                   args="['const reco::Muon&amp;','AlgorithmType','double']"
+                   vars="['muon','type','minCompatibility']"
+                   qual="">
+bool isGoodMuon(const reco::Muon&amp; muon, AlgorithmType type, double minCompatibility);
+            <comment>
+      specialized GoodMuon functions called from main wrapper
+            </comment>
+        </function1>
+
+        <function1 name="isGoodMuon"
+                   return="bool"
+                   args="['const reco::Muon&amp;','AlgorithmType','int','double','double','double','double','double','double','reco::Muon::ArbitrationType']"
+                   vars="['muon','type','minNumberOfMatches','maxAbsDx','maxAbsPullX','maxAbsDy','maxAbsPullY','maxChamberDist','maxChamberDistPull','arbitrationType']"
+                   qual="">
+bool isGoodMuon(const reco::Muon&amp; muon, AlgorithmType type, int minNumberOfMatches, double maxAbsDx, double maxAbsPullX, double maxAbsDy, double maxAbsPullY, double maxChamberDist, double maxChamberDistPull, reco::Muon::ArbitrationType arbitrationType);
+        </function1>
+
+        <function1 name="RequiredStationMask"
+                   return="unsigned int"
+                   args="['const reco::Muon&amp;','double','double','reco::Muon::ArbitrationType']"
+                   vars="['muon','maxChamberDist','maxChamberDistPull','arbitrationType']"
+                   qual="">
+unsigned int RequiredStationMask(const reco::Muon&amp; muon, double maxChamberDist, double maxChamberDistPull, reco::Muon::ArbitrationType arbitrationType);
+            <comment>
+      determine if station was crossed well withing active volume
+            </comment>
+        </function1>
+
+        <function1 name="caloCompatibility"
+                   return="float"
+                   args="['const reco::Muon&amp;']"
+                   vars="['muon']"
+                   qual="">
+float caloCompatibility(const reco::Muon&amp; muon);
+            <comment>
+      ------------ method to return the calo compatibility for a track with matched muon info  ------------
+            </comment>
+        </function1>
+
+        <function1 name="segmentCompatibility"
+                   return="float"
+                   args="['const reco::Muon&amp;']"
+                   vars="['muon']"
+                   qual="">
+float segmentCompatibility(const reco::Muon&amp; muon);
+            <comment>
+      ------------ method to calculate the segment compatibility for a track with matched muon info  ------------
+            </comment>
+        </function1>
+
+    </namespace>
+
+</header>

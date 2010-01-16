@@ -1,0 +1,71 @@
+Class:
+	edm::RefToBase<T>
+
+Header:
+	DataFormats/Common/interface/RefToBase.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:59 2010	lsclass.py $Revision:$
+
+Methods from edm::RefToBase<T>
+
+	-o- get
+		Return: T const*
+		Arguments: void	
+
+	-o- id
+		Return: ProductID
+		Arguments: void	
+
+	-o- key
+		Return: size_t
+		Arguments: void	
+
+	-o- isNull
+		Return: bool
+		Arguments: void	
+
+	-o- isNonnull
+		Return: bool
+		Arguments: void	
+
+	-o- swap
+		Return: void
+		Arguments: RefToBase&	other
+
+	-o- productGetter
+		Return: EDProductGetter const*
+		Arguments: void	
+
+	-o- hasProductCache
+		Return: bool
+		Arguments: void	
+
+	-o- product
+		Return: void const*
+		Arguments: void	
+
+	-o- isAvailable
+		Return: bool
+		Arguments: void	
+
+	-o- RefToBase
+		Return: template<typename C1, typename T1, typename F1> explicit
+		Arguments: Ref<C1, T1, F1> const&	r
+
+	-o- RefToBase
+		Return: template<typename C> explicit
+		Arguments: RefProd<C> const&	r
+
+	-o- RefToBase
+		Return: template<typename T1> explicit
+		Arguments: RefToBase<T1> const&	r
+
+	-o- castTo
+		Return: template<class REF> REF
+		Arguments: void	
+
+	-o- holder
+		Return: std::auto_ptr<reftobase::RefHolderBase>
+		Arguments: void	
+

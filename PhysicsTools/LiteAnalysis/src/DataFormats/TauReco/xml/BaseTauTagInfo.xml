@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: BaseTauTagInfo.xml
+  Created:  Thu Jan 14 22:48:37 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/TauReco/interface/BaseTauTagInfo.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/TauReco/interface/BaseTauTagInfo.h">
+
+    <include name="&quot;DataFormats/TauReco/interface/BaseTauTagInfoFwd.h&quot;"/>
+    <include name="&quot;DataFormats/TrackReco/interface/TrackFwd.h&quot;"/>
+    <include name="&quot;DataFormats/JetReco/interface/CaloJetCollection.h&quot;"/>
+
+    <namespace name="reco">
+
+        <class name="BaseTauTagInfo"
+               fullname="reco::BaseTauTagInfo"
+               module="DataFormats.TauReco"
+               project=""
+               type="regular">
+
+            <section name="public">
+                <constructor name="BaseTauTagInfo"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+BaseTauTagInfo();
+                </constructor>
+
+                <destructor name="~BaseTauTagInfo"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~BaseTauTagInfo();
+                </destructor>
+
+                <method1 name="Tracks"
+                         return="const reco::TrackRefVector&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const reco::TrackRefVector&amp; Tracks() const;
+                    <comment>
+       Tracks which are components of JetTracksAssociation object and which were filtered by RecoTauTag/TauTagTools/ TauTagTools::filteredTracks(.,...) function through RecoTauTag/RecoTauTag/ CaloRecoTauTagInfoProducer or PFRecoTauTagInfoProducer EDProducer
+                    </comment>
+                </method1>
+
+                <method1 name="setTracks"
+                         return="void"
+                         args="['const TrackRefVector']"
+                         vars="['']"
+                         qual="">
+void setTracks(const TrackRefVector);
+                </method1>
+
+            </section>
+
+        </class>
+    </namespace>
+
+    <type name="const TrackRefVector"/>
+    <type name="const reco::TrackRefVector&amp;"/>
+    <type name="reco::BaseTauTagInfo"/>
+    <type name="void"/>
+</header>

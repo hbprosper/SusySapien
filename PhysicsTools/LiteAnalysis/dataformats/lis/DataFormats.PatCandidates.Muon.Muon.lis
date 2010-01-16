@@ -1,0 +1,116 @@
+pat::Muon|Muon*|clone|void
+pat::Muon|reco::TrackRef|track|void
+pat::Muon|reco::TrackRef|innerTrack|void
+pat::Muon|reco::TrackRef|standAloneMuon|void
+pat::Muon|reco::TrackRef|outerTrack|void
+pat::Muon|reco::TrackRef|combinedMuon|void
+pat::Muon|reco::TrackRef|globalTrack|void
+pat::Muon|reco::TrackRef|pickyMuon|void
+pat::Muon|reco::TrackRef|tpfmsMuon|void
+pat::Muon|reco::PFCandidateRef|pfCandidateRef|void
+pat::Lepton<reco::Muon>|const reco::GenParticle*|genLepton|void
+pat::Lepton<reco::Muon>|float|trackIso|void
+pat::Lepton<reco::Muon>|float|caloIso|void
+pat::Lepton<reco::Muon>|float|ecalIso|void
+pat::Lepton<reco::Muon>|float|hcalIso|void
+pat::Lepton<reco::Muon>|float|particleIso|void
+pat::Lepton<reco::Muon>|float|chargedParticleIso|void
+pat::Lepton<reco::Muon>|float|neutralParticleIso|void
+pat::Lepton<reco::Muon>|float|gammaParticleIso|void
+pat::Lepton<reco::Muon>|const reco::IsoDeposit*|trackerIsoDeposit|void
+pat::Lepton<reco::Muon>|const reco::IsoDeposit*|ecalIsoDeposit|void
+pat::Lepton<reco::Muon>|const reco::IsoDeposit*|hcalIsoDeposit|void
+pat::Lepton<reco::Muon>|Lepton<reco::Muon>*|clone|void
+pat::PATObject<reco::Muon>|const reco::Candidate*|originalObject|void
+pat::PATObject<reco::Muon>|const std::vector<TriggerObjectStandAlone >&|triggerObjectMatches|void
+pat::PATObject<reco::Muon>|const std::vector<TriggerObjectStandAlone >|triggerObjectMatchesByFilterID|const unsigned
+pat::PATObject<reco::Muon>|const std::vector<TriggerObjectStandAlone >|triggerObjectMatchesByCollection|const std::string&
+pat::PATObject<reco::Muon>|const std::vector<TriggerObjectStandAlone >|triggerObjectMatchesByFilter|const std::string&
+pat::PATObject<reco::Muon>|const std::vector<TriggerObjectStandAlone >|triggerObjectMatchesByPath|const std::string&
+pat::PATObject<reco::Muon>|const pat::LookupTableRecord&|efficiency|const std::string&
+pat::PATObject<reco::Muon>|reco::GenParticleRef|genParticleRef|size_t=0
+pat::PATObject<reco::Muon>|const reco::GenParticle*|genParticle|size_t=0
+pat::PATObject<reco::Muon>|size_t|genParticlesSize|void
+pat::PATObject<reco::Muon>|bool|hasOverlaps|const std::string&
+pat::PATObject<reco::Muon>|const reco::edm::PtrVector<Candidate>&|overlaps|const std::string&
+pat::PATObject<reco::Muon>|bool|hasUserData|const std::string&
+pat::PATObject<reco::Muon>|const std::string&|userDataObjectType|const std::string&
+pat::PATObject<reco::Muon>|const void*|userDataBare|const std::string&
+pat::PATObject<reco::Muon>|float|userFloat|const std::string&
+pat::PATObject<reco::Muon>|bool|hasUserFloat|const std::string&
+pat::PATObject<reco::Muon>|int32_t|userInt|const std::string&
+pat::PATObject<reco::Muon>|bool|hasUserInt|const std::string&
+pat::PATObject<reco::Muon>|const pat::CandKinResolution&|getKinResolution|const std::string&=""
+pat::PATObject<reco::Muon>|bool|hasKinResolution|const std::string&=""
+pat::PATObject<reco::Muon>|double|resolEta|const std::string&=""
+pat::PATObject<reco::Muon>|double|resolTheta|const std::string&=""
+pat::PATObject<reco::Muon>|double|resolPhi|const std::string&=""
+pat::PATObject<reco::Muon>|double|resolE|const std::string&=""
+pat::PATObject<reco::Muon>|double|resolEt|const std::string&=""
+pat::PATObject<reco::Muon>|double|resolP|const std::string&=""
+pat::PATObject<reco::Muon>|double|resolPt|const std::string&=""
+pat::PATObject<reco::Muon>|double|resolPInv|const std::string&=""
+pat::PATObject<reco::Muon>|double|resolPx|const std::string&=""
+pat::PATObject<reco::Muon>|double|resolPy|const std::string&=""
+pat::PATObject<reco::Muon>|double|resolPz|const std::string&=""
+pat::PATObject<reco::Muon>|double|resolM|const std::string&=""
+pat::PATObject<reco::Muon>|const edm::Ptr<reco::Candidate>&|originalObjectRef|void
+pat::PATObject<reco::Muon>|const std::vector<TriggerPrimitive>&|triggerMatches|void
+pat::PATObject<reco::Muon>|const std::vector<TriggerPrimitive>|triggerMatchesByFilter|const std::string&
+pat::PATObject<reco::Muon>|std::vector<std::pair<std::string, pat::LookupTableRecord> >|efficiencies|void
+pat::PATObject<reco::Muon>|const std::vector<std::string>&|efficiencyNames|void
+pat::PATObject<reco::Muon>|const std::vector<pat::LookupTableRecord>&|efficiencyValues|void
+pat::PATObject<reco::Muon>|std::vector<reco::GenParticleRef>|genParticleRefs|void
+pat::PATObject<reco::Muon>|const std::vector<std::string>&|overlapLabels|void
+pat::PATObject<reco::Muon>|template<typename T> const T*|userData|const std::string&
+pat::PATObject<reco::Muon>|const std::vector<std::string>&|userDataNames|void
+pat::PATObject<reco::Muon>|const std::vector<std::string>&|userFloatNames|void
+pat::PATObject<reco::Muon>|const std::vector<std::string>&|userIntNames|void
+reco::RecoCandidate|reco::edm::Ref<std::vector<Track>>|track|void
+reco::RecoCandidate|reco::edm::Ref<std::vector<Track>>|track|
+reco::RecoCandidate|size_t|numberOfTracks|void
+reco::RecoCandidate|reco::edm::Ref<GsfTrackCollection>|gsfTrack|void
+reco::RecoCandidate|reco::edm::Ref<std::vector<Track>>|standAloneMuon|void
+reco::RecoCandidate|reco::edm::Ref<std::vector<Track>>|combinedMuon|void
+reco::RecoCandidate|reco::edm::Ref<std::vector<SuperCluster>>|superCluster|void
+reco::RecoCandidate|edm::Ref<CaloTowerCollection>|caloTower|void
+reco::RecoCandidate|const Track*|bestTrack|void
+reco::RecoCandidate|edm::RefToBase<reco::Track>|bestTrackRef|void
+reco::RecoCandidate|TrackType|bestTrackType|void
+reco::LeafCandidate|LeafCandidate*|clone|void
+reco::LeafCandidate|candidate::const_iterator|begin|void
+reco::LeafCandidate|candidate::const_iterator|end|void
+reco::LeafCandidate|candidate::iterator|begin|void
+reco::LeafCandidate|candidate::iterator|end|void
+reco::LeafCandidate|size_t|numberOfDaughters|void
+reco::LeafCandidate|size_t|numberOfMothers|void
+reco::Candidate|Candidate*|clone|void
+reco::Particle|int|charge|void
+reco::Particle|int|threeCharge|void
+reco::Particle|const math::XYZTLorentzVectorD&|p4|void
+reco::Particle|const math::ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> >&|polarP4|void
+reco::Particle|math::XYZVector|momentum|void
+reco::Particle|math::XYZVector|boostToCM|void
+reco::Particle|double|p|void
+reco::Particle|double|energy|void
+reco::Particle|double|et|void
+reco::Particle|double|mass|void
+reco::Particle|double|massSqr|void
+reco::Particle|double|mt|void
+reco::Particle|double|mtSqr|void
+reco::Particle|double|px|void
+reco::Particle|double|py|void
+reco::Particle|double|pz|void
+reco::Particle|double|pt|void
+reco::Particle|double|phi|void
+reco::Particle|double|theta|void
+reco::Particle|double|eta|void
+reco::Particle|double|rapidity|void
+reco::Particle|double|y|void
+reco::Particle|const math::XYZPoint&|vertex|void
+reco::Particle|double|vx|void
+reco::Particle|double|vy|void
+reco::Particle|double|vz|void
+reco::Particle|int|pdgId|void
+reco::Particle|int|status|void
+reco::Particle|bool|longLived|void

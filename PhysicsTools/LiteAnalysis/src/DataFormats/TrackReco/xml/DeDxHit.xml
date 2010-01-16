@@ -1,0 +1,145 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: DeDxHit.xml
+  Created:  Thu Jan 14 22:48:48 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/TrackReco/interface/DeDxHit.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/TrackReco/interface/DeDxHit.h">
+
+    <include name="&quot;DataFormats/DetId/interface/DetId.h&quot;"/>
+    <include name="&lt;vector&gt;"/>
+
+    <namespace name="reco">
+
+        <class name="DeDxHit"
+               fullname="reco::DeDxHit"
+               module="DataFormats.TrackReco"
+               project=""
+               type="regular">
+            <comment>
+   Class defining the dedx hits, i.e. track hits with only dedx need informations
+            </comment>
+
+            <section name="public">
+                <constructor name="DeDxHit"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+DeDxHit();
+                </constructor>
+
+                <constructor name="DeDxHit"
+                             return=""
+                             args="['float','float','float','DetId']"
+                             vars="['ch','dist','len','detId']"
+                             qual="">
+DeDxHit(float ch, float dist, float len, DetId detId);
+                </constructor>
+
+                <method1 name="charge"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float charge() const;
+                    <comment>
+     Return the angle and thick normalized, calibrated energy release
+                    </comment>
+                </method1>
+
+                <method1 name="distance"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float distance() const;
+                    <comment>
+     Return the distance of the hit from the interaction point
+                    </comment>
+                </method1>
+
+                <method1 name="pathLength"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float pathLength() const;
+                    <comment>
+     Return the path length
+                    </comment>
+                </method1>
+
+                <method1 name="subDet"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int subDet() const;
+                    <comment>
+      Return the subdet
+                    </comment>
+                </method1>
+
+                <method1 name="subDetSide"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int subDetSide() const;
+                    <comment>
+      Return the plus/minus side for TEC/TID
+                    </comment>
+                </method1>
+
+                <method1 name="layer"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int layer() const;
+                    <comment>
+      Return the layer/disk
+                    </comment>
+                </method1>
+
+                <method1 name="subDetId"
+                         return="char"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+char subDetId() const;
+                    <comment>
+      Return the encoded layer + sub det id
+                    </comment>
+                </method1>
+
+                <operator name="operator&lt;"
+                          return="bool"
+                          args="['const DeDxHit&amp;']"
+                          vars="['other']"
+                          qual="const">
+bool operator&lt;(const DeDxHit&amp; other) const;
+                </operator>
+
+            </section>
+
+        </class>
+        <typedef name="DeDxHitCollection"
+                 value="std::vector&lt;DeDxHit&gt;">
+typedef std::vector&lt;DeDxHit&gt; DeDxHitCollection;
+        </typedef>
+
+    </namespace>
+
+    <type name="DetId"/>
+    <type name="bool"/>
+    <type name="char"/>
+    <type name="const DeDxHit&amp;"/>
+    <type name="float"/>
+    <type name="int"/>
+    <type name="reco::DeDxHit"/>
+    <type name="void"/>
+</header>

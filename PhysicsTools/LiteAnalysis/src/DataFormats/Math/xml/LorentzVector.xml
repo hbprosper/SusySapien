@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: LorentzVector.xml
+  Created:  Thu Jan 14 22:49:08 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Math/interface/LorentzVector.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Math/interface/LorentzVector.h">
+
+    <include name="&quot;Math/PtEtaPhiE4D.h&quot;"/>
+    <include name="&quot;Math/PtEtaPhiM4D.h&quot;"/>
+    <include name="&quot;Math/LorentzVector.h&quot;"/>
+
+    <namespace name="math">
+        <typedef name="PtEtaPhiMLorentzVectorD"
+                 value="ROOT::Math::LorentzVector&lt;ROOT::Math::PtEtaPhiM4D&lt;double&gt; &gt;">
+typedef ROOT::Math::LorentzVector&lt;ROOT::Math::PtEtaPhiM4D&lt;double&gt; &gt; PtEtaPhiMLorentzVectorD;
+            <comment>
+      Lorentz vector with cartesian internal representation
+            </comment>
+        </typedef>
+
+        <typedef name="PtEtaPhiELorentzVectorD"
+                 value="ROOT::Math::LorentzVector&lt;ROOT::Math::PtEtaPhiE4D&lt;double&gt; &gt;">
+typedef ROOT::Math::LorentzVector&lt;ROOT::Math::PtEtaPhiE4D&lt;double&gt; &gt; PtEtaPhiELorentzVectorD;
+            <comment>
+      Lorentz vector with cartesian internal representation
+            </comment>
+        </typedef>
+
+        <typedef name="XYZTLorentzVectorD"
+                 value="ROOT::Math::LorentzVector&lt;ROOT::Math::PxPyPzE4D&lt;double&gt; &gt;">
+typedef ROOT::Math::LorentzVector&lt;ROOT::Math::PxPyPzE4D&lt;double&gt; &gt; XYZTLorentzVectorD;
+            <comment>
+      Lorentz vector with cylindrical internal representation using pseudorapidity
+            </comment>
+        </typedef>
+
+        <typedef name="PtEtaPhiMLorentzVectorF"
+                 value="ROOT::Math::LorentzVector&lt;ROOT::Math::PtEtaPhiM4D&lt;float&gt; &gt;">
+typedef ROOT::Math::LorentzVector&lt;ROOT::Math::PtEtaPhiM4D&lt;float&gt; &gt; PtEtaPhiMLorentzVectorF;
+            <comment>
+      Lorentz vector with cartesian internal representation
+            </comment>
+        </typedef>
+
+        <typedef name="PtEtaPhiELorentzVectorF"
+                 value="ROOT::Math::LorentzVector&lt;ROOT::Math::PtEtaPhiE4D&lt;float&gt; &gt;">
+typedef ROOT::Math::LorentzVector&lt;ROOT::Math::PtEtaPhiE4D&lt;float&gt; &gt; PtEtaPhiELorentzVectorF;
+            <comment>
+      Lorentz vector with cartesian internal representation
+            </comment>
+        </typedef>
+
+        <typedef name="XYZTLorentzVectorF"
+                 value="ROOT::Math::LorentzVector&lt;ROOT::Math::PxPyPzE4D&lt;float&gt; &gt;">
+typedef ROOT::Math::LorentzVector&lt;ROOT::Math::PxPyPzE4D&lt;float&gt; &gt; XYZTLorentzVectorF;
+            <comment>
+      Lorentz vector with cylindrical internal representation using pseudorapidity
+            </comment>
+        </typedef>
+
+        <typedef name="PtEtaPhiMLorentzVector"
+                 value="PtEtaPhiMLorentzVectorD">
+typedef PtEtaPhiMLorentzVectorD PtEtaPhiMLorentzVector;
+            <comment>
+      Lorentz vector with cartesian internal representation
+            </comment>
+        </typedef>
+
+        <typedef name="PtEtaPhiELorentzVector"
+                 value="PtEtaPhiELorentzVectorD">
+typedef PtEtaPhiELorentzVectorD PtEtaPhiELorentzVector;
+            <comment>
+      Lorentz vector with cartesian internal representation
+            </comment>
+        </typedef>
+
+        <typedef name="XYZTLorentzVector"
+                 value="XYZTLorentzVectorD">
+typedef XYZTLorentzVectorD XYZTLorentzVector;
+            <comment>
+      Lorentz vector with cylindrical internal representation using pseudorapidity
+            </comment>
+        </typedef>
+
+    </namespace>
+
+</header>

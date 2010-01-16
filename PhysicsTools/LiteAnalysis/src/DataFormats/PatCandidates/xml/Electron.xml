@@ -1,0 +1,399 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: Electron.xml
+  Created:  Thu Jan 14 22:48:08 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/PatCandidates/interface/Electron.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/PatCandidates/interface/Electron.h">
+
+    <include name="&quot;DataFormats/EgammaCandidates/interface/GsfElectron.h&quot;"/>
+    <include name="&quot;DataFormats/EgammaCandidates/interface/GsfElectronFwd.h&quot;"/>
+    <include name="&quot;DataFormats/GsfTrackReco/interface/GsfTrack.h&quot;"/>
+    <include name="&quot;DataFormats/PatCandidates/interface/Lepton.h&quot;"/>
+    <include name="&quot;DataFormats/ParticleFlowCandidate/interface/PFCandidateFwd.h&quot;"/>
+    <include name="&quot;DataFormats/ParticleFlowCandidate/interface/PFCandidate.h&quot;"/>
+
+    <namespace name="pat">
+        <comment>
+   Define typedefs for convenience
+        </comment>
+        <forward name="Electron"/>
+        <typedef name="ElectronCollection"
+                 value="std::vector&lt;Electron&gt;">
+typedef std::vector&lt;Electron&gt; ElectronCollection;
+        </typedef>
+
+        <typedef name="ElectronRef"
+                 value="edm::Ref&lt;ElectronCollection&gt;">
+typedef edm::Ref&lt;ElectronCollection&gt; ElectronRef;
+        </typedef>
+
+        <typedef name="ElectronRefVector"
+                 value="edm::RefVector&lt;ElectronCollection&gt;">
+typedef edm::RefVector&lt;ElectronCollection&gt; ElectronRefVector;
+        </typedef>
+
+    </namespace>
+
+    <namespace name="pat">
+        <comment>
+   Class definition
+        </comment>
+        <typedef name="ElectronType"
+                 value="reco::GsfElectron">
+typedef reco::GsfElectron ElectronType;
+        </typedef>
+
+        <typedef name="ElectronTypeCollection"
+                 value="reco::GsfElectronCollection">
+typedef reco::GsfElectronCollection ElectronTypeCollection;
+        </typedef>
+
+
+        <class name="Electron"
+               fullname="pat::Electron"
+               module="DataFormats.PatCandidates"
+               project=""
+               type="regular">
+            <baseclass name="public Lepton&lt;ElectronType&gt;"/>
+
+            <section name="public">
+                <typedef name="IdPair"
+                         value="std::pair&lt;std::string, float&gt;">
+typedef std::pair&lt;std::string, float&gt; IdPair;
+                </typedef>
+
+                <constructor name="Electron"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+Electron();
+                    <comment>
+          default constructor
+                    </comment>
+                </constructor>
+
+                <constructor name="Electron"
+                             return=""
+                             args="['const ElectronType&amp;']"
+                             vars="['anElectron']"
+                             qual="">
+Electron(const ElectronType&amp; anElectron);
+                    <comment>
+          constructor from a reco electron
+                    </comment>
+                </constructor>
+
+                <constructor name="Electron"
+                             return=""
+                             args="['const edm::RefToBase&lt;ElectronType&gt;&amp;']"
+                             vars="['anElectronRef']"
+                             qual="">
+Electron(const edm::RefToBase&lt;ElectronType&gt;&amp; anElectronRef);
+                    <comment>
+          constructor from a RefToBase to a reco electron (to be superseded by Ptr counterpart)
+                    </comment>
+                </constructor>
+
+                <constructor name="Electron"
+                             return=""
+                             args="['const edm::Ptr&lt;ElectronType&gt;&amp;']"
+                             vars="['anElectronRef']"
+                             qual="">
+Electron(const edm::Ptr&lt;ElectronType&gt;&amp; anElectronRef);
+                    <comment>
+          constructor from a Ptr to a reco electron
+                    </comment>
+                </constructor>
+
+                <destructor name="~Electron"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~Electron();
+                    <comment>
+          destructor
+                    </comment>
+                </destructor>
+
+                <method1 name="clone"
+                         return="virtual Electron*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual Electron* clone() const;
+                    <comment>
+          required reimplementation of the Candidate's clone method
+                    </comment>
+                </method1>
+
+                <method1 name="gsfTrack"
+                         return="reco::GsfTrackRef"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+reco::GsfTrackRef gsfTrack() const;
+                    <comment>
+          override the ElectronType::gsfTrack method, to access the internal storage of the supercluster
+                    </comment>
+                </method1>
+
+                <method1 name="superCluster"
+                         return="reco::SuperClusterRef"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+reco::SuperClusterRef superCluster() const;
+                    <comment>
+          override the ElectronType::superCluster method, to access the internal storage of the supercluster
+                    </comment>
+                </method1>
+
+                <method1 name="track"
+                         return="reco::TrackRef"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+reco::TrackRef track() const;
+                    <comment>
+          override the ElectronType::track method, to access the internal storage of the track
+                    </comment>
+                </method1>
+
+                <method1 name="embedGsfTrack"
+                         return="void"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+void embedGsfTrack();
+                    <comment>
+          method to store the electron's GsfTrack internally
+                    </comment>
+                </method1>
+
+                <method1 name="embedSuperCluster"
+                         return="void"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+void embedSuperCluster();
+                    <comment>
+          method to store the electron's SuperCluster internally
+                    </comment>
+                </method1>
+
+                <method1 name="embedTrack"
+                         return="void"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+void embedTrack();
+                    <comment>
+          method to store the electron's Track internally
+                    </comment>
+                </method1>
+
+                <method1 name="electronID"
+                         return="float"
+                         args="['const std::string&amp;']"
+                         vars="['name']"
+                         qual="const">
+float electronID(const std::string&amp; name) const;
+                    <comment>
+          Note: an exception is thrown if the specified ID is not available
+                    </comment>
+                </method1>
+
+                <method1 name="leptonID"
+                         return="float"
+                         args="['const std::string&amp;']"
+                         vars="['name']"
+                         qual="const">
+float leptonID(const std::string&amp; name) const;
+                    <comment>
+          deprecated !!!
+                    </comment>
+                </method1>
+
+                <method1 name="isElectronIDAvailable"
+                         return="bool"
+                         args="['const std::string&amp;']"
+                         vars="['name']"
+                         qual="const">
+bool isElectronIDAvailable(const std::string&amp; name) const;
+                    <comment>
+          Returns true if a specific ID is available in this pat::Electron
+                    </comment>
+                </method1>
+
+                <method1 name="isLeptonIDAvailable"
+                         return="bool"
+                         args="['const std::string&amp;']"
+                         vars="['name']"
+                         qual="const">
+bool isLeptonIDAvailable(const std::string&amp; name) const;
+                    <comment>
+          deprecated !!!
+                    </comment>
+                </method1>
+
+                <method2 name="electronIDs"
+                         return="const std::vector&lt;IdPair&gt;&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const std::vector&lt;IdPair&gt;&amp; electronIDs() const;
+                    <comment>
+          The 'default' ID is the first in the list
+                    </comment>
+                </method2>
+
+                <method2 name="leptonIDs"
+                         return="const std::vector&lt;IdPair&gt;&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const std::vector&lt;IdPair&gt;&amp; leptonIDs() const;
+                    <comment>
+          deprecated !!!
+                    </comment>
+                </method2>
+
+                <method2 name="setElectronIDs"
+                         return="void"
+                         args="['const std::vector&lt;IdPair&gt;&amp;']"
+                         vars="['ids']"
+                         qual="">
+void setElectronIDs(const std::vector&lt;IdPair&gt;&amp; ids);
+                    <comment>
+          The first one in the list becomes the 'default' electron id
+                    </comment>
+                </method2>
+
+                <method2 name="setLeptonIDs"
+                         return="void"
+                         args="['const std::vector&lt;IdPair&gt;&amp;']"
+                         vars="['ids']"
+                         qual="">
+void setLeptonIDs(const std::vector&lt;IdPair&gt;&amp; ids);
+                    <comment>
+          deprecated !!!
+                    </comment>
+                </method2>
+
+                <method1 name="setClusterShapes"
+                         return="void"
+                         args="['const float&amp;','const float&amp;','const float&amp;','const float&amp;','const float&amp;']"
+                         vars="['','','','','']"
+                         qual="">
+void setClusterShapes (const float&amp;, const float&amp;, const float&amp;, const float&amp;, const float&amp;);
+                    <comment>
+          Store the cluster shape variables associated to the electron
+                    </comment>
+                </method1>
+
+                <method1 name="scSigmaEtaEta"
+                         return="const float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const float scSigmaEtaEta() const;
+                </method1>
+
+                <method1 name="scSigmaIEtaIEta"
+                         return="const float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const float scSigmaIEtaIEta() const;
+                </method1>
+
+                <method1 name="scE1x5"
+                         return="const float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const float scE1x5() const;
+                </method1>
+
+                <method1 name="scE2x5Max"
+                         return="const float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const float scE2x5Max() const;
+                </method1>
+
+                <method1 name="scE5x5"
+                         return="const float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const float scE5x5() const;
+                </method1>
+
+                <method1 name="pfCandidateRef"
+                         return="reco::PFCandidateRef"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+reco::PFCandidateRef pfCandidateRef() const;
+                    <comment>
+          null if this has been built from a standard electron
+                    </comment>
+                </method1>
+
+                <method1 name="setPFCandidateRef"
+                         return="void"
+                         args="['const reco::PFCandidateRef&amp;']"
+                         vars="['ref']"
+                         qual="">
+void setPFCandidateRef(const reco::PFCandidateRef&amp; ref);
+                    <comment>
+          add a reference to the source IsolatedPFCandidate
+                    </comment>
+                </method1>
+
+                <method1 name="embedPFCandidate"
+                         return="void"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+void embedPFCandidate();
+                    <comment>
+          embed the PFCandidate pointed to by pfCandidateRef_
+                    </comment>
+                </method1>
+
+            </section>
+
+            <typemap name="IdPair"
+                     value="std::pair&lt;std::string, float&gt;"
+                     type="typedef"/>
+
+        </class>
+    </namespace>
+
+    <type name="Electron*"/>
+    <type name="Lepton&lt;ElectronType&gt;"/>
+    <type name="bool"/>
+    <type name="const ElectronType&amp;"/>
+    <type name="const edm::Ptr&lt;ElectronType&gt;&amp;"/>
+    <type name="const edm::RefToBase&lt;ElectronType&gt;&amp;"/>
+    <type name="const float"/>
+    <type name="const float&amp;"/>
+    <type name="const reco::PFCandidateRef&amp;"/>
+    <type name="const std::string&amp;"/>
+    <type name="const std::vector&lt;IdPair&gt;&amp;"/>
+    <type name="float"/>
+    <type name="pat::Electron"/>
+    <type name="reco::GsfTrackRef"/>
+    <type name="reco::PFCandidateRef"/>
+    <type name="reco::SuperClusterRef"/>
+    <type name="reco::TrackRef"/>
+    <type name="void"/>
+</header>

@@ -1,0 +1,104 @@
+Class:
+	reco::PFBlockElement
+
+Header:
+	DataFormats/ParticleFlowReco/interface/PFBlockElement.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:14:26 2010	lsclass.py $Revision:$
+
+Methods from reco::PFBlockElement
+
+	-o- Dump
+		Return: void
+		Arguments: std::ostream&=std::cout	out
+		           const char*=" "	tab
+
+	-o- clone
+		Return: PFBlockElement*
+		Arguments: void	
+
+	-o- lock
+		Return: void
+		Arguments: void	
+
+	-o- unLock
+		Return: void
+		Arguments: void	
+
+	-o- type
+		Return: Type
+		Arguments: void	
+
+	-o- trackType
+		Return: bool
+		Arguments: TrackType	trType
+
+	-o- setTrackType
+		Return: void
+		Arguments: TrackType	trType
+		           bool	value
+
+	-o- locked
+		Return: bool
+		Arguments: void	
+
+	-o- setIndex
+		Return: void
+		Arguments: unsigned	index
+
+	-o- index
+		Return: unsigned
+		Arguments: void	
+
+	-o- trackRef
+		Return: reco::edm::Ref<std::vector<Track>>
+		Arguments: void	
+
+	-o- trackRefPF
+		Return: edm::Ref<std::vector<PFRecTrack>>
+		Arguments: void	
+
+	-o- clusterRef
+		Return: edm::Ref<std::vector<PFCluster>>
+		Arguments: void	
+
+	-o- nuclearRef
+		Return: NuclearInteractionRef
+		Arguments: void	
+
+	-o- convRef
+		Return: edm::Ref<std::vector<Conversion>>
+		Arguments: void	
+
+	-o- muonRef
+		Return: edm::Ref<MuonCollection>
+		Arguments: void	
+
+	-o- V0Ref
+		Return: edm::Ref<VertexCompositeCandidateCollection>
+		Arguments: void	
+
+	-o- setNuclearRef
+		Return: void
+		Arguments: const NuclearInteractionRef&	niref
+		           TrackType	trType
+
+	-o- setConversionRef
+		Return: void
+		Arguments: const ConversionRef&	convRef
+		           TrackType	trType
+
+	-o- setMuonRef
+		Return: void
+		Arguments: const MuonRef&	muref
+
+	-o- setV0Ref
+		Return: void
+		Arguments: const VertexCompositeCandidateRef&	v0ref
+		           TrackType	trType
+
+	-o- isSecondary
+		Return: bool
+		Arguments: void	
+

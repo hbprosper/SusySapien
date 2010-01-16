@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: ResolutionHelper.xml
+  Created:  Thu Jan 14 22:48:19 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/PatCandidates/interface/ResolutionHelper.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/PatCandidates/interface/ResolutionHelper.h">
+
+    <include name="&quot;DataFormats/PatCandidates/interface/CandKinResolution.h&quot;"/>
+
+    <namespace name="pat">
+
+        <namespace name="helper">
+
+            <namespace name="ResolutionHelper">
+                <function1 name="rescaleForKinFitter"
+                           return="void"
+                           args="['const pat::CandKinResolution::Parametrization','AlgebraicSymMatrix44&amp;','const math::XYZTLorentzVector&amp;']"
+                           vars="['parametrization','covariance','initialP4']"
+                           qual="">
+void rescaleForKinFitter(const pat::CandKinResolution::Parametrization parametrization, AlgebraicSymMatrix44&amp; covariance, const math::XYZTLorentzVector&amp; initialP4);
+                </function1>
+
+                <function1 name="getResolEta"
+                           return="double"
+                           args="['pat::CandKinResolution::Parametrization','const AlgebraicSymMatrix44&amp;','const pat::CandKinResolution::LorentzVector&amp;']"
+                           vars="['parametrization','covariance','p4']"
+                           qual="">
+double getResolEta(pat::CandKinResolution::Parametrization parametrization, const AlgebraicSymMatrix44&amp; covariance, const pat::CandKinResolution::LorentzVector&amp; p4);
+                </function1>
+
+                <function1 name="getResolTheta"
+                           return="double"
+                           args="['pat::CandKinResolution::Parametrization','const AlgebraicSymMatrix44&amp;','const pat::CandKinResolution::LorentzVector&amp;']"
+                           vars="['parametrization','covariance','p4']"
+                           qual="">
+double getResolTheta(pat::CandKinResolution::Parametrization parametrization, const AlgebraicSymMatrix44&amp; covariance, const pat::CandKinResolution::LorentzVector&amp; p4);
+                </function1>
+
+                <function1 name="getResolPhi"
+                           return="double"
+                           args="['pat::CandKinResolution::Parametrization','const AlgebraicSymMatrix44&amp;','const pat::CandKinResolution::LorentzVector&amp;']"
+                           vars="['parametrization','covariance','p4']"
+                           qual="">
+double getResolPhi(pat::CandKinResolution::Parametrization parametrization, const AlgebraicSymMatrix44&amp; covariance, const pat::CandKinResolution::LorentzVector&amp; p4);
+                </function1>
+
+                <function1 name="getResolE"
+                           return="double"
+                           args="['pat::CandKinResolution::Parametrization','const AlgebraicSymMatrix44&amp;','const pat::CandKinResolution::LorentzVector&amp;']"
+                           vars="['parametrization','covariance','p4']"
+                           qual="">
+double getResolE(pat::CandKinResolution::Parametrization parametrization, const AlgebraicSymMatrix44&amp; covariance, const pat::CandKinResolution::LorentzVector&amp; p4);
+                </function1>
+
+                <function1 name="getResolEt"
+                           return="double"
+                           args="['pat::CandKinResolution::Parametrization','const AlgebraicSymMatrix44&amp;','const pat::CandKinResolution::LorentzVector&amp;']"
+                           vars="['parametrization','covariance','p4']"
+                           qual="">
+double getResolEt(pat::CandKinResolution::Parametrization parametrization, const AlgebraicSymMatrix44&amp; covariance, const pat::CandKinResolution::LorentzVector&amp; p4);
+                </function1>
+
+                <function1 name="getResolM"
+                           return="double"
+                           args="['pat::CandKinResolution::Parametrization','const AlgebraicSymMatrix44&amp;','const pat::CandKinResolution::LorentzVector&amp;']"
+                           vars="['parametrization','covariance','p4']"
+                           qual="">
+double getResolM(pat::CandKinResolution::Parametrization parametrization, const AlgebraicSymMatrix44&amp; covariance, const pat::CandKinResolution::LorentzVector&amp; p4);
+                </function1>
+
+                <function1 name="getResolP"
+                           return="double"
+                           args="['pat::CandKinResolution::Parametrization','const AlgebraicSymMatrix44&amp;','const pat::CandKinResolution::LorentzVector&amp;']"
+                           vars="['parametrization','covariance','p4']"
+                           qual="">
+double getResolP(pat::CandKinResolution::Parametrization parametrization, const AlgebraicSymMatrix44&amp; covariance, const pat::CandKinResolution::LorentzVector&amp; p4);
+                </function1>
+
+                <function1 name="getResolPt"
+                           return="double"
+                           args="['pat::CandKinResolution::Parametrization','const AlgebraicSymMatrix44&amp;','const pat::CandKinResolution::LorentzVector&amp;']"
+                           vars="['parametrization','covariance','p4']"
+                           qual="">
+double getResolPt(pat::CandKinResolution::Parametrization parametrization, const AlgebraicSymMatrix44&amp; covariance, const pat::CandKinResolution::LorentzVector&amp; p4);
+                </function1>
+
+                <function1 name="getResolPInv"
+                           return="double"
+                           args="['pat::CandKinResolution::Parametrization','const AlgebraicSymMatrix44&amp;','const pat::CandKinResolution::LorentzVector&amp;']"
+                           vars="['parametrization','covariance','p4']"
+                           qual="">
+double getResolPInv(pat::CandKinResolution::Parametrization parametrization, const AlgebraicSymMatrix44&amp; covariance, const pat::CandKinResolution::LorentzVector&amp; p4);
+                </function1>
+
+                <function1 name="getResolPx"
+                           return="double"
+                           args="['pat::CandKinResolution::Parametrization','const AlgebraicSymMatrix44&amp;','const pat::CandKinResolution::LorentzVector&amp;']"
+                           vars="['parametrization','covariance','p4']"
+                           qual="">
+double getResolPx(pat::CandKinResolution::Parametrization parametrization, const AlgebraicSymMatrix44&amp; covariance, const pat::CandKinResolution::LorentzVector&amp; p4);
+                </function1>
+
+                <function1 name="getResolPy"
+                           return="double"
+                           args="['pat::CandKinResolution::Parametrization','const AlgebraicSymMatrix44&amp;','const pat::CandKinResolution::LorentzVector&amp;']"
+                           vars="['parametrization','covariance','p4']"
+                           qual="">
+double getResolPy(pat::CandKinResolution::Parametrization parametrization, const AlgebraicSymMatrix44&amp; covariance, const pat::CandKinResolution::LorentzVector&amp; p4);
+                </function1>
+
+                <function1 name="getResolPz"
+                           return="double"
+                           args="['pat::CandKinResolution::Parametrization','const AlgebraicSymMatrix44&amp;','const pat::CandKinResolution::LorentzVector&amp;']"
+                           vars="['parametrization','covariance','p4']"
+                           qual="">
+double getResolPz(pat::CandKinResolution::Parametrization parametrization, const AlgebraicSymMatrix44&amp; covariance, const pat::CandKinResolution::LorentzVector&amp; p4);
+                </function1>
+
+            </namespace>
+        </namespace>
+    </namespace>
+
+</header>

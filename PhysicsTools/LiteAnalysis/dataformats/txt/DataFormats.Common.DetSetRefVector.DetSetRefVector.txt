@@ -1,0 +1,35 @@
+Class:
+	edm::DetSetRefVector<T, C>
+
+Header:
+	DataFormats/Common/interface/DetSetRefVector.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:49 2010	lsclass.py $Revision:$
+
+Methods from edm::DetSetRefVector<T, C>
+
+	-o- swap
+		Return: void
+		Arguments: DetSetRefVector&	other
+
+	-o- empty
+		Return: bool
+		Arguments: void	
+
+	-o- size
+		Return: typename std::vector<Ref<C, DetSet<T>, refhelper::FindDetSetForDetSetVector<T, C> >>::size_type
+		Arguments: void	
+
+	-o- find
+		Return: boost::indirect_iterator<typename collection_type::const_iterator>
+		Arguments: det_id_type	id
+
+	-o- begin
+		Return: boost::indirect_iterator<typename collection_type::const_iterator>
+		Arguments: void	
+
+	-o- end
+		Return: boost::indirect_iterator<typename collection_type::const_iterator>
+		Arguments: void	
+

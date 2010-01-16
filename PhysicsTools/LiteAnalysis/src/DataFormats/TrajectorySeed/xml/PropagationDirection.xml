@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: PropagationDirection.xml
+  Created:  Thu Jan 14 22:48:55 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/TrajectorySeed/interface/PropagationDirection.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/TrajectorySeed/interface/PropagationDirection.h">
+
+    <enum name="PropagationDirection">
+enum PropagationDirection {
+oppositeToMomentum, alongMomentum, anyDirection};
+        <field name="oppositeToMomentum" value=""/>
+        <field name="alongMomentum" value=""/>
+        <field name="anyDirection" value=""/>
+    </enum>
+
+
+</header>

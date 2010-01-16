@@ -1,0 +1,297 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: RefToBase.xml
+  Created:  Thu Jan 14 22:46:22 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Common/interface/RefToBase.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/RefToBase.h">
+
+    <include name="&quot;boost/shared_ptr.hpp&quot;"/>
+    <include name="&quot;boost/static_assert.hpp&quot;"/>
+    <include name="&quot;boost/type_traits/is_base_of.hpp&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/EDProductfwd.h&quot;"/>
+    <include name="&quot;FWCore/Utilities/interface/EDMException.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/BaseHolder.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/Holder.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/IndirectHolder.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefHolder.h&quot;"/>
+
+    <namespace name="edm">
+        <forward name="template&lt;typename T&gt; RefToBaseVector"/>
+        <forward name="template&lt;typename C, typename T, typename F&gt; Ref"/>
+        <forward name="template&lt;typename C&gt; RefProd"/>
+        <forward name="template&lt;typename T&gt; RefToBaseProd"/>
+        <forward name="template&lt;typename T&gt; View"/>
+
+        <class name="RefToBase"
+               fullname="edm::RefToBase&lt;T&gt;"
+               module="DataFormats.Common"
+               project=""
+               type="template"
+               template="template&lt;class T&gt;">
+
+            <section name="public">
+                <typedef name="value_type"
+                         value="T">
+typedef T value_type;
+                </typedef>
+
+                <constructor name="RefToBase"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+RefToBase();
+                </constructor>
+
+                <copyconstructor name="RefToBase"
+                                 return=""
+                                 args="['RefToBase const&amp;']"
+                                 vars="['other']"
+                                 qual="">
+RefToBase(RefToBase const&amp; other);
+                </copyconstructor>
+
+                <method2 name="RefToBase"
+                         return="template&lt;typename C1, typename T1, typename F1&gt; explicit"
+                         args="['Ref&lt;C1, T1, F1&gt; const&amp;']"
+                         vars="['r']"
+                         qual="">
+template&lt;typename C1, typename T1, typename F1&gt;     explicit RefToBase(Ref&lt;C1, T1, F1&gt; const&amp; r);
+                </method2>
+
+                <method2 name="RefToBase"
+                         return="template&lt;typename C&gt; explicit"
+                         args="['RefProd&lt;C&gt; const&amp;']"
+                         vars="['r']"
+                         qual="">
+template&lt;typename C&gt;     explicit RefToBase(RefProd&lt;C&gt; const&amp; r);
+                </method2>
+
+                <constructor name="RefToBase"
+                             return=""
+                             args="['RefToBaseProd&lt;T&gt; const&amp;','size_t']"
+                             vars="['r','i']"
+                             qual="">
+RefToBase(RefToBaseProd&lt;T&gt; const&amp; r, size_t i);
+                </constructor>
+
+                <constructor name="RefToBase"
+                             return=""
+                             args="['Handle&lt;View&lt;T&gt; &gt; const&amp;','size_t']"
+                             vars="['handle','i']"
+                             qual="">
+RefToBase(Handle&lt;View&lt;T&gt; &gt; const&amp; handle, size_t i);
+                </constructor>
+
+                <method2 name="RefToBase"
+                         return="template&lt;typename T1&gt; explicit"
+                         args="['RefToBase&lt;T1&gt; const&amp;']"
+                         vars="['r']"
+                         qual="">
+template&lt;typename T1&gt;     explicit RefToBase(RefToBase&lt;T1&gt; const&amp; r);
+                </method2>
+
+                <constructor name="RefToBase"
+                             return=""
+                             args="['boost::shared_ptr&lt;reftobase::RefHolderBase&gt;']"
+                             vars="['p']"
+                             qual="">
+RefToBase(boost::shared_ptr&lt;reftobase::RefHolderBase&gt; p);
+                </constructor>
+
+                <destructor name="~RefToBase"
+                            return=""
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+~RefToBase();
+                </destructor>
+
+                <operator name="operator="
+                          return="RefToBase const&amp;"
+                          args="['RefToBase const&amp;']"
+                          vars="['rhs']"
+                          qual="">
+RefToBase const&amp; operator=(RefToBase const&amp; rhs);
+                </operator>
+
+                <operator name="operator*"
+                          return="value_type const&amp;"
+                          args="['void']"
+                          vars="['']"
+                          qual="const">
+value_type const&amp; operator*() const;
+                </operator>
+
+                <operator name="operator-&gt;"
+                          return="value_type const*"
+                          args="['void']"
+                          vars="['']"
+                          qual="const">
+value_type const* operator-&gt;() const;
+                </operator>
+
+                <method1 name="get"
+                         return="value_type const*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+value_type const* get() const;
+                </method1>
+
+                <method1 name="id"
+                         return="ProductID"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+ProductID id() const;
+                </method1>
+
+                <method1 name="key"
+                         return="size_t"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+size_t key() const;
+                </method1>
+
+                <method2 name="castTo"
+                         return="template&lt;class REF&gt; REF"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+template&lt;class REF&gt; REF castTo() const;
+                </method2>
+
+                <method1 name="isNull"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isNull() const;
+                </method1>
+
+                <method1 name="isNonnull"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isNonnull() const;
+                </method1>
+
+                <operator name="operator!"
+                          return="bool"
+                          args="['void']"
+                          vars="['']"
+                          qual="const">
+bool operator!() const;
+                </operator>
+
+                <operator name="operator=="
+                          return="bool"
+                          args="['RefToBase const&amp;']"
+                          vars="['rhs']"
+                          qual="const">
+bool operator==(RefToBase const&amp; rhs) const;
+                </operator>
+
+                <operator name="operator!="
+                          return="bool"
+                          args="['RefToBase const&amp;']"
+                          vars="['rhs']"
+                          qual="const">
+bool operator!=(RefToBase const&amp; rhs) const;
+                </operator>
+
+                <method1 name="swap"
+                         return="void"
+                         args="['RefToBase&amp;']"
+                         vars="['other']"
+                         qual="">
+void swap(RefToBase&amp; other);
+                </method1>
+
+                <method2 name="holder"
+                         return="std::auto_ptr&lt;reftobase::RefHolderBase&gt;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+std::auto_ptr&lt;reftobase::RefHolderBase&gt; holder() const;
+                </method2>
+
+                <method1 name="productGetter"
+                         return="EDProductGetter const*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+EDProductGetter const* productGetter() const;
+                </method1>
+
+                <method1 name="hasProductCache"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool hasProductCache() const;
+                </method1>
+
+                <method1 name="product"
+                         return="void const*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+void const* product() const;
+                </method1>
+
+                <method1 name="isAvailable"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isAvailable() const;
+                    <comment>
+        in the Event. No type checking is done.
+                    </comment>
+                </method1>
+
+            </section>
+
+            <typemap name="value_type"
+                     value="T"
+                     type="typedef"/>
+
+        </class>
+    </namespace>
+    <include name="&quot;DataFormats/Common/interface/RefToBaseProd.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/Handle.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/View.h&quot;"/>
+
+    <namespace name="edm">
+    </namespace>
+
+    <type name="EDProductGetter const*"/>
+    <type name="Handle&lt;View&lt;T&gt; &gt; const&amp;"/>
+    <type name="ProductID"/>
+    <type name="Ref&lt;C1, T1, F1&gt; const&amp;"/>
+    <type name="RefProd&lt;C&gt; const&amp;"/>
+    <type name="RefToBase const&amp;"/>
+    <type name="RefToBase&amp;"/>
+    <type name="RefToBase&lt;T1&gt; const&amp;"/>
+    <type name="RefToBaseProd&lt;T&gt; const&amp;"/>
+    <type name="bool"/>
+    <type name="boost::shared_ptr&lt;reftobase::RefHolderBase&gt;"/>
+    <type name="edm::RefToBase&lt;T&gt;"/>
+    <type name="size_t"/>
+    <type name="std::auto_ptr&lt;reftobase::RefHolderBase&gt;"/>
+    <type name="template&lt;class REF&gt; REF"/>
+    <type name="template&lt;typename C1, typename T1, typename F1&gt; explicit"/>
+    <type name="template&lt;typename C&gt; explicit"/>
+    <type name="template&lt;typename T1&gt; explicit"/>
+    <type name="value_type const&amp;"/>
+    <type name="value_type const*"/>
+    <type name="void"/>
+    <type name="void const*"/>
+</header>

@@ -1,0 +1,4 @@
+unsigned	index()
+bool	isSecondary()
+bool	locked()
+

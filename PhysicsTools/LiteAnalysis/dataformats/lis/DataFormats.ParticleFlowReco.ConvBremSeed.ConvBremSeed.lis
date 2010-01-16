@@ -1,0 +1,7 @@
+reco::ConvBremSeed|edm::Ref<std::vector<GsfPFRecTrack>>|GsfPFTrack|void
+reco::ConvBremSeed|ConvBremSeed*|clone|void
+TrajectorySeed|std::pair<recHitContainer::const_iterator, recHitContainer::const_iterator>|recHits|void
+TrajectorySeed|unsigned int|nHits|void
+TrajectorySeed|PropagationDirection|direction|void
+TrajectorySeed|PTrajectoryStateOnDet const&|startingState|void
+TrajectorySeed|TrajectorySeed*|clone|void

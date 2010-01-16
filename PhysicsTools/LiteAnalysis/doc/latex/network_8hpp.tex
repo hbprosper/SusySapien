@@ -1,0 +1,90 @@
+\hypertarget{network_8hpp}{
+\section{/home/harry/CMS/cmssw/CMSSW\_\-3\_\-2\_\-5/src/Physics\-Tools/Lite\-Analysis/interface/network.hpp File Reference}
+\label{network_8hpp}\index{/home/harry/CMS/cmssw/CMSSW_3_2_5/src/PhysicsTools/LiteAnalysis/interface/network.hpp@{/home/harry/CMS/cmssw/CMSSW\_\-3\_\-2\_\-5/src/PhysicsTools/LiteAnalysis/interface/network.hpp}}
+}
+
+
+{\tt \#include $<$string$>$}\par
+{\tt \#include $<$vector$>$}\par
+{\tt \#include $<$iostream$>$}\par
+{\tt \#include $<$iomanip$>$}\par
+{\tt \#include $<$sstream$>$}\par
+{\tt \#include $<$stdlib.h$>$}\par
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+std::string \hyperlink{network_8hpp_a0}{nameonly} (std::string pathname)
+\item 
+int \hyperlink{network_8hpp_a1}{nnload} (std::string filename, std::vector$<$ int $>$ \&nodes, std::vector$<$ double $>$ \&weight, std::vector$<$ std::string $>$ \&var, std::vector$<$ float $>$ \&mean, std::vector$<$ float $>$ \&sigma, int \&output\-Type)
+\item 
+int \hyperlink{network_8hpp_a2}{nncompute} (std::vector$<$ int $>$ \&nodes, std::vector$<$ double $>$ \&weight, std::vector$<$ float $>$ \&inp, std::vector$<$ float $>$ \&out, int output\-Type)
+\item 
+int \hyperlink{network_8hpp_a3}{nnsave\-CPP} (std::string title1, std::string title2, std::string sigmoid, std::string sigmoidout, std::string filename, std::vector$<$ int $>$ \&nodes, std::vector$<$ double $>$ \&weight, std::vector$<$ std::string $>$ \&var, std::vector$<$ float $>$ \&mean, std::vector$<$ float $>$ \&sigma, int output\-Type)
+\item 
+float \hyperlink{network_8hpp_a4}{nnpower} (std::vector$<$ int $>$ \&s, std::vector$<$ int $>$ \&b)
+\item 
+void \hyperlink{network_8hpp_a5}{nnefficiencies} (std::vector$<$ int $>$ \&v, std::vector$<$ float $>$ \&e)
+\item 
+float \hyperlink{network_8hpp_a6}{nnarea} (std::vector$<$ float $>$ \&ex, std::vector$<$ float $>$ \&ey)
+\item 
+float \hyperlink{network_8hpp_a7}{nndivergence} (std::vector$<$ int $>$ \&s, std::vector$<$ int $>$ \&b)
+\end{CompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{network_8hpp_a0}{
+\index{network.hpp@{network.hpp}!nameonly@{nameonly}}
+\index{nameonly@{nameonly}!network.hpp@{network.hpp}}
+\subsubsection[nameonly]{\setlength{\rightskip}{0pt plus 5cm}std::string nameonly (std::string {\em pathname})}}
+\label{network_8hpp_a0}
+
+
+\hypertarget{network_8hpp_a6}{
+\index{network.hpp@{network.hpp}!nnarea@{nnarea}}
+\index{nnarea@{nnarea}!network.hpp@{network.hpp}}
+\subsubsection[nnarea]{\setlength{\rightskip}{0pt plus 5cm}float nnarea (std::vector$<$ float $>$ \& {\em ex}, std::vector$<$ float $>$ \& {\em ey})}}
+\label{network_8hpp_a6}
+
+
+\hypertarget{network_8hpp_a2}{
+\index{network.hpp@{network.hpp}!nncompute@{nncompute}}
+\index{nncompute@{nncompute}!network.hpp@{network.hpp}}
+\subsubsection[nncompute]{\setlength{\rightskip}{0pt plus 5cm}int nncompute (std::vector$<$ int $>$ \& {\em nodes}, std::vector$<$ double $>$ \& {\em weight}, std::vector$<$ float $>$ \& {\em inp}, std::vector$<$ float $>$ \& {\em out}, int {\em output\-Type})}}
+\label{network_8hpp_a2}
+
+
+\hypertarget{network_8hpp_a7}{
+\index{network.hpp@{network.hpp}!nndivergence@{nndivergence}}
+\index{nndivergence@{nndivergence}!network.hpp@{network.hpp}}
+\subsubsection[nndivergence]{\setlength{\rightskip}{0pt plus 5cm}float nndivergence (std::vector$<$ int $>$ \& {\em s}, std::vector$<$ int $>$ \& {\em b})}}
+\label{network_8hpp_a7}
+
+
+\hypertarget{network_8hpp_a5}{
+\index{network.hpp@{network.hpp}!nnefficiencies@{nnefficiencies}}
+\index{nnefficiencies@{nnefficiencies}!network.hpp@{network.hpp}}
+\subsubsection[nnefficiencies]{\setlength{\rightskip}{0pt plus 5cm}void nnefficiencies (std::vector$<$ int $>$ \& {\em v}, std::vector$<$ float $>$ \& {\em e})}}
+\label{network_8hpp_a5}
+
+
+\hypertarget{network_8hpp_a1}{
+\index{network.hpp@{network.hpp}!nnload@{nnload}}
+\index{nnload@{nnload}!network.hpp@{network.hpp}}
+\subsubsection[nnload]{\setlength{\rightskip}{0pt plus 5cm}int nnload (std::string {\em filename}, std::vector$<$ int $>$ \& {\em nodes}, std::vector$<$ double $>$ \& {\em weight}, std::vector$<$ std::string $>$ \& {\em var}, std::vector$<$ float $>$ \& {\em mean}, std::vector$<$ float $>$ \& {\em sigma}, int \& {\em output\-Type})}}
+\label{network_8hpp_a1}
+
+
+\hypertarget{network_8hpp_a4}{
+\index{network.hpp@{network.hpp}!nnpower@{nnpower}}
+\index{nnpower@{nnpower}!network.hpp@{network.hpp}}
+\subsubsection[nnpower]{\setlength{\rightskip}{0pt plus 5cm}float nnpower (std::vector$<$ int $>$ \& {\em s}, std::vector$<$ int $>$ \& {\em b})}}
+\label{network_8hpp_a4}
+
+
+\hypertarget{network_8hpp_a3}{
+\index{network.hpp@{network.hpp}!nnsaveCPP@{nnsaveCPP}}
+\index{nnsaveCPP@{nnsaveCPP}!network.hpp@{network.hpp}}
+\subsubsection[nnsaveCPP]{\setlength{\rightskip}{0pt plus 5cm}int nnsave\-CPP (std::string {\em title1}, std::string {\em title2}, std::string {\em sigmoid}, std::string {\em sigmoidout}, std::string {\em filename}, std::vector$<$ int $>$ \& {\em nodes}, std::vector$<$ double $>$ \& {\em weight}, std::vector$<$ std::string $>$ \& {\em var}, std::vector$<$ float $>$ \& {\em mean}, std::vector$<$ float $>$ \& {\em sigma}, int {\em output\-Type})}}
+\label{network_8hpp_a3}
+
+

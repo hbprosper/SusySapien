@@ -1,0 +1,12 @@
+size_t	clustersSize()
+double	energy()
+double	eta()
+double	etaWidth()
+double	phi()
+double	phiWidth()
+double	preshowerEnergy()
+double	rawEnergy()
+double	x()
+double	y()
+double	z()
+

@@ -1,0 +1,44 @@
+Class:
+	reco::TauImpactParameterInfo
+
+Header:
+	DataFormats/BTauReco/interface/TauImpactParameterInfo.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:14:47 2010	lsclass.py $Revision:$
+
+Methods from reco::TauImpactParameterInfo
+
+	-o- clone
+		Return: TauImpactParameterInfo*
+		Arguments: void	
+
+	-o- discriminator
+		Return: float
+		Arguments: double	
+		           double	
+		           double	
+		           bool	
+		           bool	
+
+	-o- discriminator
+		Return: float
+		Arguments: void	
+
+	-o- getTrackData
+		Return: const TauImpactParameterTrackData*
+		Arguments: const reco::TrackRef&	
+
+	-o- storeTrackData
+		Return: void
+		Arguments: const reco::TrackRef&	
+		           const TauImpactParameterTrackData&	
+
+	-o- getIsolatedTauTag
+		Return: const edm::Ref<IsolatedTauTagInfoCollection>&
+		Arguments: void	
+
+	-o- setIsolatedTauTag
+		Return: void
+		Arguments: const IsolatedTauTagInfoRef&	
+

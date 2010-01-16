@@ -1,0 +1,8 @@
+reco::HLTTau|float|getEta|void
+reco::HLTTau|float|getPhi|void
+reco::HLTTau|float|getPt|void
+reco::HLTTau|float|getEMIsolationValue|void
+reco::HLTTau|int|getL25TrackIsolationResponse|void
+reco::HLTTau|float|getL25LeadTrackPtValue|void
+reco::HLTTau|int|getL3TrackIsolationResponse|void
+reco::HLTTau|float|getL3LeadTrackPtValue|void

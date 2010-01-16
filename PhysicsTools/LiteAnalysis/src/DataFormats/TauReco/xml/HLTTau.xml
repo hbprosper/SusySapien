@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: HLTTau.xml
+  Created:  Thu Jan 14 22:48:41 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/TauReco/interface/HLTTau.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/TauReco/interface/HLTTau.h">
+
+    <include name="&quot;DataFormats/TauReco/interface/HLTTauFwd.h&quot;"/>
+
+    <namespace name="reco">
+
+        <class name="HLTTau"
+               fullname="reco::HLTTau"
+               module="DataFormats.TauReco"
+               project=""
+               type="regular">
+
+            <section name="public">
+                <constructor name="HLTTau"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+HLTTau();
+                </constructor>
+
+                <constructor name="HLTTau"
+                             return=""
+                             args="['float','float','float','float','int','float','int','float']"
+                             vars="['eta','phi','pt','emIsolation','trackIsolationL25','leadTrackPtL25','trackIsolationL3','leadTrackPtL3']"
+                             qual="">
+HLTTau(float eta, float phi, float pt, float emIsolation, int trackIsolationL25, float leadTrackPtL25, int trackIsolationL3, float leadTrackPtL3);
+                </constructor>
+
+                <destructor name="~HLTTau"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~HLTTau();
+                </destructor>
+
+                <method1 name="getEta"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float getEta() const;
+                </method1>
+
+                <method1 name="getPhi"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float getPhi() const;
+                </method1>
+
+                <method1 name="getPt"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float getPt() const;
+                </method1>
+
+                <method1 name="getEMIsolationValue"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float getEMIsolationValue() const;
+                </method1>
+
+                <method1 name="getL25TrackIsolationResponse"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int getL25TrackIsolationResponse() const;
+                </method1>
+
+                <method1 name="getL25LeadTrackPtValue"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float getL25LeadTrackPtValue() const;
+                </method1>
+
+                <method1 name="getL3TrackIsolationResponse"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int getL3TrackIsolationResponse() const;
+                </method1>
+
+                <method1 name="getL3LeadTrackPtValue"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float getL3LeadTrackPtValue() const;
+                </method1>
+
+            </section>
+
+        </class>
+    </namespace>
+
+    <type name="float"/>
+    <type name="int"/>
+    <type name="reco::HLTTau"/>
+    <type name="void"/>
+</header>

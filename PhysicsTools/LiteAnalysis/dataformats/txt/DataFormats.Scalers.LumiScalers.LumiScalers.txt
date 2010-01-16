@@ -1,0 +1,151 @@
+Class:
+	LumiScalers
+
+Header:
+	DataFormats/Scalers/interface/LumiScalers.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:16:13 2010	lsclass.py $Revision:$
+
+Methods from LumiScalers
+
+	-o- name
+		Return: std::string
+		Arguments: void	
+
+	-o- empty
+		Return: bool
+		Arguments: void	
+
+	-o- trigType
+		Return: unsigned int
+		Arguments: void	
+
+	-o- eventID
+		Return: unsigned int
+		Arguments: void	
+
+	-o- sourceID
+		Return: unsigned int
+		Arguments: void	
+
+	-o- bunchNumber
+		Return: unsigned int
+		Arguments: void	
+
+	-o- version
+		Return: int
+		Arguments: void	
+
+	-o- collectionTime
+		Return: struct timespec
+		Arguments: void	
+
+	-o- normalization
+		Return: float
+		Arguments: void	
+
+	-o- deadTimeNormalization
+		Return: float
+		Arguments: void	
+
+	-o- lumiFill
+		Return: float
+		Arguments: void	
+
+	-o- lumiRun
+		Return: float
+		Arguments: void	
+
+	-o- liveLumiFill
+		Return: float
+		Arguments: void	
+
+	-o- liveLumiRun
+		Return: float
+		Arguments: void	
+
+	-o- instantLumi
+		Return: float
+		Arguments: void	
+
+	-o- instantLumiErr
+		Return: float
+		Arguments: void	
+
+	-o- instantLumiQlty
+		Return: unsigned char
+		Arguments: void	
+
+	-o- lumiETFill
+		Return: float
+		Arguments: void	
+
+	-o- lumiETRun
+		Return: float
+		Arguments: void	
+
+	-o- liveLumiETFill
+		Return: float
+		Arguments: void	
+
+	-o- liveLumiETRun
+		Return: float
+		Arguments: void	
+
+	-o- instantETLumi
+		Return: float
+		Arguments: void	
+
+	-o- instantETLumiErr
+		Return: float
+		Arguments: void	
+
+	-o- instantETLumiQlty
+		Return: unsigned char
+		Arguments: void	
+
+	-o- sectionNumber
+		Return: unsigned int
+		Arguments: void	
+
+	-o- startOrbit
+		Return: unsigned int
+		Arguments: void	
+
+	-o- numOrbits
+		Return: unsigned int
+		Arguments: void	
+
+	-o- lumiOccFill
+		Return: std::vector<float>
+		Arguments: void	
+
+	-o- lumiOccRun
+		Return: std::vector<float>
+		Arguments: void	
+
+	-o- liveLumiOccFill
+		Return: std::vector<float>
+		Arguments: void	
+
+	-o- liveLumiOccRun
+		Return: std::vector<float>
+		Arguments: void	
+
+	-o- instantOccLumi
+		Return: std::vector<float>
+		Arguments: void	
+
+	-o- instantOccLumiErr
+		Return: std::vector<float>
+		Arguments: void	
+
+	-o- instantOccLumiQlty
+		Return: std::vector<unsigned char>
+		Arguments: void	
+
+	-o- lumiNoise
+		Return: std::vector<float>
+		Arguments: void	
+

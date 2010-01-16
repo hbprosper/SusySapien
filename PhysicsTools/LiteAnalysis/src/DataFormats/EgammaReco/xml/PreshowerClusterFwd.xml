@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: PreshowerClusterFwd.xml
+  Created:  Thu Jan 14 22:47:05 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/EgammaReco/interface/PreshowerClusterFwd.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/EgammaReco/interface/PreshowerClusterFwd.h">
+
+    <include name="&lt;vector&gt;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
+    <include name="&quot;DataFormats/EcalRecHit/interface/EcalRecHitCollections.h&quot;"/>
+
+    <namespace name="reco">
+        <forward name="PreshowerCluster"/>
+        <typedef name="PreshowerClusterCollection"
+                 value="std::vector&lt;PreshowerCluster&gt;">
+typedef std::vector&lt;PreshowerCluster&gt; PreshowerClusterCollection;
+            <comment>
+      collection of PreshowerCluster objects
+            </comment>
+        </typedef>
+
+        <typedef name="PreshowerClusterRef"
+                 value="edm::Ref&lt;PreshowerClusterCollection&gt;">
+typedef edm::Ref&lt;PreshowerClusterCollection&gt; PreshowerClusterRef;
+            <comment>
+      persistent reference to PreshowerCluster objects
+            </comment>
+        </typedef>
+
+        <typedef name="PreshowerClusterRefProd"
+                 value="edm::RefProd&lt;PreshowerClusterCollection&gt;">
+typedef edm::RefProd&lt;PreshowerClusterCollection&gt; PreshowerClusterRefProd;
+            <comment>
+      reference to PreshowerCluster collection
+            </comment>
+        </typedef>
+
+        <typedef name="PreshowerClusterRefVector"
+                 value="edm::RefVector&lt;PreshowerClusterCollection&gt;">
+typedef edm::RefVector&lt;PreshowerClusterCollection&gt; PreshowerClusterRefVector;
+            <comment>
+      vector of references to PreshowerCluster objects all in the same collection
+            </comment>
+        </typedef>
+
+        <typedef name="PreshowerCluster_iterator"
+                 value="PreshowerClusterRefVector::iterator">
+typedef PreshowerClusterRefVector::iterator PreshowerCluster_iterator;
+            <comment>
+      iterator over a vector of references to PreshowerCluster objects
+            </comment>
+        </typedef>
+
+    </namespace>
+
+</header>

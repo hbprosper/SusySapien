@@ -1,0 +1,176 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: TauMassTagInfo.xml
+  Created:  Thu Jan 14 22:45:43 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/BTauReco/interface/TauMassTagInfo.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/BTauReco/interface/TauMassTagInfo.h">
+
+    <include name="&lt;vector&gt;"/>
+    <include name="&lt;map&gt;"/>
+    <include name="&quot;DataFormats/BTauReco/interface/RefMacros.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/AssociationMap.h&quot;"/>
+    <include name="&quot;DataFormats/EgammaReco/interface/BasicClusterFwd.h&quot;"/>
+    <include name="&quot;DataFormats/BTauReco/interface/JTATagInfo.h&quot;"/>
+    <include name="&quot;DataFormats/BTauReco/interface/IsolatedTauTagInfo.h&quot;"/>
+
+    <namespace name="reco">
+
+        <class name="TauMassTagInfo"
+               fullname="reco::TauMassTagInfo"
+               module="DataFormats.BTauReco"
+               project=""
+               type="regular">
+            <baseclass name="public JTATagInfo"/>
+
+            <section name="public">
+                <typedef name="ClusterTrackAssociationCollection"
+                         value="edm::AssociationMap&lt;edm::OneToValue&lt;BasicClusterCollection, 
+      float, unsigned short&gt; &gt;">
+typedef edm::AssociationMap&lt;edm::OneToValue&lt;BasicClusterCollection, 
+      float, unsigned short&gt; &gt; ClusterTrackAssociationCollection;
+                </typedef>
+
+                <typedef name="ClusterTrackAssociation"
+                         value="ClusterTrackAssociationCollection::value_type">
+typedef ClusterTrackAssociationCollection::value_type ClusterTrackAssociation;
+                </typedef>
+
+                <constructor name="TauMassTagInfo"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+TauMassTagInfo();
+                </constructor>
+
+                <destructor name="~TauMassTagInfo"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~TauMassTagInfo();
+                </destructor>
+
+                <method1 name="clone"
+                         return="virtual TauMassTagInfo*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual TauMassTagInfo* clone() const;
+                </method1>
+
+                <method1 name="discriminator"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float discriminator() const;
+                    <comment>
+      default discriminator: returns the discriminator of the jet tag
+                    </comment>
+                </method1>
+
+                <method1 name="discriminator"
+                         return="float"
+                         args="['double','double','double','double','double']"
+                         vars="['matching_cone','leading_trk_pt','signal_cone','cluster_track_cone','m_cut']"
+                         qual="const">
+float discriminator(double matching_cone, double leading_trk_pt, double signal_cone, double cluster_track_cone, double m_cut) const;
+                </method1>
+
+                <method1 name="setIsolatedTauTag"
+                         return="void"
+                         args="['const IsolatedTauTagInfoRef']"
+                         vars="['']"
+                         qual="">
+void setIsolatedTauTag(const IsolatedTauTagInfoRef);
+                </method1>
+
+                <method1 name="getIsolatedTauTag"
+                         return="const IsolatedTauTagInfoRef&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const IsolatedTauTagInfoRef&amp; getIsolatedTauTag() const;
+                </method1>
+
+                <method1 name="storeClusterTrackCollection"
+                         return="void"
+                         args="['reco::BasicClusterRef','float']"
+                         vars="['clusterRef','dr']"
+                         qual="">
+void storeClusterTrackCollection(reco::BasicClusterRef clusterRef, float dr);
+                </method1>
+
+                <method1 name="clusterTrackCollection"
+                         return="TauMassTagInfo::ClusterTrackAssociationCollection"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+TauMassTagInfo::ClusterTrackAssociationCollection clusterTrackCollection() const;
+                </method1>
+
+                <method1 name="getInvariantMassTrk"
+                         return="double"
+                         args="['double','double','double']"
+                         vars="['matching_cone','leading_trk_pt','signal_cone']"
+                         qual="const">
+double getInvariantMassTrk(double matching_cone, double leading_trk_pt, double signal_cone) const;
+                </method1>
+
+                <method1 name="getInvariantMass"
+                         return="double"
+                         args="['double','double','double','double']"
+                         vars="['matching_cone','leading_trk_pt','signal_cone','cluster_track_cone']"
+                         qual="const">
+double getInvariantMass(double matching_cone, double leading_trk_pt, double signal_cone, double cluster_track_cone) const;
+                </method1>
+
+            </section>
+
+            <typemap name="ClusterTrackAssociation"
+                     value="edm::AssociationMap&lt;edm::OneToValue&lt;BasicClusterCollection, 
+      float, unsigned short&gt; &gt;::value_type"
+                     type="typedef"/>
+            <typemap name="ClusterTrackAssociationCollection"
+                     value="edm::AssociationMap&lt;edm::OneToValue&lt;BasicClusterCollection, 
+      float, unsigned short&gt; &gt;"
+                     type="typedef"/>
+
+        </class>
+        <typedef name="TauMassTagInfoCollection"
+                 value="std::vector&lt;TauMassTagInfo &gt;">
+typedef std::vector&lt;TauMassTagInfo &gt; TauMassTagInfoCollection;
+        </typedef>
+
+        <typedef name="TauMassTagInfoRef"
+                 value="edm::Ref&lt;TauMassTagInfoCollection&gt;">
+typedef edm::Ref&lt;TauMassTagInfoCollection&gt; TauMassTagInfoRef;
+        </typedef>
+
+        <typedef name="TauMassTagInfoRefProd"
+                 value="edm::RefProd&lt;TauMassTagInfoCollection&gt;">
+typedef edm::RefProd&lt;TauMassTagInfoCollection&gt; TauMassTagInfoRefProd;
+        </typedef>
+
+        <typedef name="TauMassTagInfoRefVector"
+                 value="edm::RefVector&lt;TauMassTagInfoCollection&gt;">
+typedef edm::RefVector&lt;TauMassTagInfoCollection&gt; TauMassTagInfoRefVector;
+        </typedef>
+
+    </namespace>
+
+    <type name="JTATagInfo"/>
+    <type name="TauMassTagInfo*"/>
+    <type name="TauMassTagInfo::ClusterTrackAssociationCollection"/>
+    <type name="const IsolatedTauTagInfoRef"/>
+    <type name="const IsolatedTauTagInfoRef&amp;"/>
+    <type name="double"/>
+    <type name="float"/>
+    <type name="reco::BasicClusterRef"/>
+    <type name="reco::TauMassTagInfo"/>
+    <type name="void"/>
+</header>

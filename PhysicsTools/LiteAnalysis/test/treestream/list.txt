@@ -1,0 +1,478 @@
+Enabling FWLite AutoLibraryLoader... done!
+Tree Name          Events
+Number of entries  8327
+
+   1 EventAuxiliary / edm::EventAuxiliary
+   2 double_genEventScale__HLT. / edm::Wrapper<double>
+   3 double_genEventScale__HLT.present / Bool_t
+   4 double_genEventScale__HLT.obj / Double_t
+   5 double_genEventWeight__HLT. / edm::Wrapper<double>
+   6 double_genEventWeight__HLT.present / Bool_t
+   7 double_genEventWeight__HLT.obj / Double_t
+   8 edmTriggerResults_TriggerResults__HLT. / edm::Wrapper<edm::TriggerResults>
+   9 edmTriggerResults_TriggerResults__HLT.edm::EDProduct / edm::Wrapper<edm::TriggerResults>
+  10 edmTriggerResults_TriggerResults__HLT.present / Bool_t
+  11 edmTriggerResults_TriggerResults__HLT.obj / edm::Wrapper<edm::TriggerResults>
+  12 int_genEventProcID__HLT. / edm::Wrapper<int>
+  13 int_genEventProcID__HLT.present / Bool_t
+  14 int_genEventProcID__HLT.obj / Int_t
+  15 recoPdfInfo_genEventPdfInfo__HLT. / edm::Wrapper<reco::PdfInfo>
+  16 recoPdfInfo_genEventPdfInfo__HLT.present / Bool_t
+  17 recoPdfInfo_genEventPdfInfo__HLT.obj.id1 / Char_t
+  18 recoPdfInfo_genEventPdfInfo__HLT.obj.id2 / Char_t
+  19 recoPdfInfo_genEventPdfInfo__HLT.obj.x1 / Float_t
+  20 recoPdfInfo_genEventPdfInfo__HLT.obj.x2 / Float_t
+  21 recoPdfInfo_genEventPdfInfo__HLT.obj.scalePDF / Float_t
+  22 recoPdfInfo_genEventPdfInfo__HLT.obj.pdf1 / Float_t
+  23 recoPdfInfo_genEventPdfInfo__HLT.obj.pdf2 / Float_t
+  24 ints_genParticles__HLT. / edm::Wrapper<vector<int> >
+  25 ints_genParticles__HLT.present / Bool_t
+  26 ints_genParticles__HLT.obj / edm::Wrapper<vector<int> >
+  27 recoGenParticles_genParticles__HLT. / edm::Wrapper<vector<reco::GenParticle> >
+  28 recoGenParticles_genParticles__HLT.present / Bool_t
+  29 recoGenParticles_genParticles__HLT.obj_ / Int_t
+      30 (1152) recoGenParticles_genParticles__HLT.obj.qx3_ / Int_t
+      31 (1152) recoGenParticles_genParticles__HLT.obj.pt_ / Float_t
+      32 (1152) recoGenParticles_genParticles__HLT.obj.eta_ / Float_t
+      33 (1152) recoGenParticles_genParticles__HLT.obj.phi_ / Float_t
+      34 (1152) recoGenParticles_genParticles__HLT.obj.mass_ / Float_t
+      35 (1152) recoGenParticles_genParticles__HLT.obj.vertex_.fCoordinates.fX / Double32_t
+      36 (1152) recoGenParticles_genParticles__HLT.obj.vertex_.fCoordinates.fY / Double32_t
+      37 (1152) recoGenParticles_genParticles__HLT.obj.vertex_.fCoordinates.fZ / Double32_t
+      38 (1152) recoGenParticles_genParticles__HLT.obj.pdgId_ / Int_t
+      39 (1152) recoGenParticles_genParticles__HLT.obj.status_ / Int_t
+      40 (1152) recoGenParticles_genParticles__HLT.obj.cachePolarFixed_ / reco::Particle
+      41 (1152) recoGenParticles_genParticles__HLT.obj.cacheCartesianFixed_ / reco::Particle
+      42 (1152) recoGenParticles_genParticles__HLT.obj.dau.refVector_.product_ / edm::RefVectorBase<unsigned int>
+      43 (1152) recoGenParticles_genParticles__HLT.obj.dau.refVector_.items_ / edm::RefVectorBase<unsigned int>
+      44 (1152) recoGenParticles_genParticles__HLT.obj.mom.refVector_.product_ / edm::RefVectorBase<unsigned int>
+      45 (1152) recoGenParticles_genParticles__HLT.obj.mom.refVector_.items_ / edm::RefVectorBase<unsigned int>
+  46 triggerTriggerEvent_hltTriggerSummaryAOD__HLT. / edm::Wrapper<trigger::TriggerEvent>
+  47 triggerTriggerEvent_hltTriggerSummaryAOD__HLT.edm::EDProduct / edm::Wrapper<trigger::TriggerEvent>
+  48 triggerTriggerEvent_hltTriggerSummaryAOD__HLT.present / Bool_t
+  49 triggerTriggerEvent_hltTriggerSummaryAOD__HLT.obj / edm::Wrapper<trigger::TriggerEvent>
+  50 CaloTowersSorted_towerMaker__RECO. / edm::Wrapper<edm::SortedCollection<CaloTower,edm::StrictWeakOrdering<CaloTower> > >
+  51 CaloTowersSorted_towerMaker__RECO.present / Bool_t
+  52 CaloTowersSorted_towerMaker__RECO.obj.obj_ / Int_t
+      53 (632) CaloTowersSorted_towerMaker__RECO.obj.obj.qx3_ / Int_t
+      54 (632) CaloTowersSorted_towerMaker__RECO.obj.obj.pt_ / Float_t
+      55 (632) CaloTowersSorted_towerMaker__RECO.obj.obj.eta_ / Float_t
+      56 (632) CaloTowersSorted_towerMaker__RECO.obj.obj.phi_ / Float_t
+      57 (632) CaloTowersSorted_towerMaker__RECO.obj.obj.mass_ / Float_t
+      58 (632) CaloTowersSorted_towerMaker__RECO.obj.obj.vertex_.fCoordinates.fX / Double32_t
+      59 (632) CaloTowersSorted_towerMaker__RECO.obj.obj.vertex_.fCoordinates.fY / Double32_t
+      60 (632) CaloTowersSorted_towerMaker__RECO.obj.obj.vertex_.fCoordinates.fZ / Double32_t
+      61 (632) CaloTowersSorted_towerMaker__RECO.obj.obj.pdgId_ / Int_t
+      62 (632) CaloTowersSorted_towerMaker__RECO.obj.obj.status_ / Int_t
+      63 (632) CaloTowersSorted_towerMaker__RECO.obj.obj.cachePolarFixed_ / reco::Particle
+      64 (632) CaloTowersSorted_towerMaker__RECO.obj.obj.cacheCartesianFixed_ / reco::Particle
+      65 (632) CaloTowersSorted_towerMaker__RECO.obj.obj.id_.id_ / UInt_t
+      66 (632) CaloTowersSorted_towerMaker__RECO.obj.obj.emPosition_.theVector.theX / Float_t
+      67 (632) CaloTowersSorted_towerMaker__RECO.obj.obj.emPosition_.theVector.theY / Float_t
+      68 (632) CaloTowersSorted_towerMaker__RECO.obj.obj.emPosition_.theVector.theZ / Float_t
+      69 (632) CaloTowersSorted_towerMaker__RECO.obj.obj.hadPosition_.theVector.theX / Float_t
+      70 (632) CaloTowersSorted_towerMaker__RECO.obj.obj.hadPosition_.theVector.theY / Float_t
+      71 (632) CaloTowersSorted_towerMaker__RECO.obj.obj.hadPosition_.theVector.theZ / Float_t
+      72 (632) CaloTowersSorted_towerMaker__RECO.obj.obj.ecalTime_ / Int_t
+      73 (632) CaloTowersSorted_towerMaker__RECO.obj.obj.hcalTime_ / Int_t
+      74 (632) CaloTowersSorted_towerMaker__RECO.obj.obj.emE_ / Double_t
+      75 (632) CaloTowersSorted_towerMaker__RECO.obj.obj.hadE_ / Double_t
+      76 (632) CaloTowersSorted_towerMaker__RECO.obj.obj.outerE_ / Double_t
+      77 (632) CaloTowersSorted_towerMaker__RECO.obj.obj.emLvl1_ / Int_t
+      78 (632) CaloTowersSorted_towerMaker__RECO.obj.obj.hadLvl1_ / Int_t
+      79 (632) CaloTowersSorted_towerMaker__RECO.obj.obj.constituents_ / CaloTower
+  80 recoBeamSpot_offlineBeamSpot__RECO. / edm::Wrapper<reco::BeamSpot>
+  81 recoBeamSpot_offlineBeamSpot__RECO.present / Bool_t
+  82 recoBeamSpot_offlineBeamSpot__RECO.obj.position_.fCoordinates.fX / Double_t
+  83 recoBeamSpot_offlineBeamSpot__RECO.obj.position_.fCoordinates.fY / Double_t
+  84 recoBeamSpot_offlineBeamSpot__RECO.obj.position_.fCoordinates.fZ / Double_t
+  85 recoBeamSpot_offlineBeamSpot__RECO.obj.error_.fRep.fArray / Double_t[28]
+  86 recoBeamSpot_offlineBeamSpot__RECO.obj.sigmaZ_ / Double_t
+  87 recoBeamSpot_offlineBeamSpot__RECO.obj.BeamWidth_ / Double_t
+  88 recoBeamSpot_offlineBeamSpot__RECO.obj.dxdz_ / Double_t
+  89 recoBeamSpot_offlineBeamSpot__RECO.obj.dydz_ / Double_t
+  90 recoTracks_generalTracks__RECO. / edm::Wrapper<vector<reco::Track> >
+  91 recoTracks_generalTracks__RECO.present / Bool_t
+  92 recoTracks_generalTracks__RECO.obj_ / Int_t
+      93 (196) recoTracks_generalTracks__RECO.obj.chi2_ / Float_t
+      94 (196) recoTracks_generalTracks__RECO.obj.ndof_ / Float_t
+      95 (196) recoTracks_generalTracks__RECO.obj.vertex_.fCoordinates.fX / Double32_t
+      96 (196) recoTracks_generalTracks__RECO.obj.vertex_.fCoordinates.fY / Double32_t
+      97 (196) recoTracks_generalTracks__RECO.obj.vertex_.fCoordinates.fZ / Double32_t
+      98 (196) recoTracks_generalTracks__RECO.obj.momentum_.fCoordinates.fX / Double32_t
+      99 (196) recoTracks_generalTracks__RECO.obj.momentum_.fCoordinates.fY / Double32_t
+     100 (196) recoTracks_generalTracks__RECO.obj.momentum_.fCoordinates.fZ / Double32_t
+     101 (196) recoTracks_generalTracks__RECO.obj.charge_ / Char_t
+     102 (196) recoTracks_generalTracks__RECO.obj.covariance_ / Float_t
+     103 (196) recoTracks_generalTracks__RECO.obj.hitPattern_.hitPattern_ / UInt_t
+     104 (196) recoTracks_generalTracks__RECO.obj.algorithm_ / UChar_t
+     105 (196) recoTracks_generalTracks__RECO.obj.quality_ / UChar_t
+     106 (196) recoTracks_generalTracks__RECO.obj.extra_.ref_.product_ / edm::RefBase<unsigned int>
+     107 (196) recoTracks_generalTracks__RECO.obj.extra_.ref_.item_.index_ / UInt_t
+     108 (196) recoTracks_generalTracks__RECO.obj.extra_.ref_.item_.cache_ / edm::RefItem<unsigned int>
+ 109 recoVertexs_offlinePrimaryVertices__RECO. / edm::Wrapper<vector<reco::Vertex> >
+ 110 recoVertexs_offlinePrimaryVertices__RECO.present / Bool_t
+ 111 recoVertexs_offlinePrimaryVertices__RECO.obj_ / Int_t
+     112 (3) recoVertexs_offlinePrimaryVertices__RECO.obj.chi2_ / Double_t
+     113 (3) recoVertexs_offlinePrimaryVertices__RECO.obj.ndof_ / Double_t
+     114 (3) recoVertexs_offlinePrimaryVertices__RECO.obj.position_.fCoordinates.fX / Double_t
+     115 (3) recoVertexs_offlinePrimaryVertices__RECO.obj.position_.fCoordinates.fY / Double_t
+     116 (3) recoVertexs_offlinePrimaryVertices__RECO.obj.position_.fCoordinates.fZ / Double_t
+     117 (3) recoVertexs_offlinePrimaryVertices__RECO.obj.covariance_ / Double_t
+     118 (3) recoVertexs_offlinePrimaryVertices__RECO.obj.tracks_ / reco::Vertex
+     119 (3) recoVertexs_offlinePrimaryVertices__RECO.obj.refittedTracks_ / reco::Vertex
+     120 (3) recoVertexs_offlinePrimaryVertices__RECO.obj.weights_ / reco::Vertex
+     121 (3) recoVertexs_offlinePrimaryVertices__RECO.obj.validity_ / Bool_t
+ 122 int_genEventProcID__TEST. / edm::Wrapper<int>
+ 123 int_genEventProcID__TEST.present / Bool_t
+ 124 int_genEventProcID__TEST.obj / Int_t
+ 125 patHemispheres_selectedLayer1Hemispheres__TEST. / edm::Wrapper<vector<pat::Hemisphere> >
+ 126 patHemispheres_selectedLayer1Hemispheres__TEST.present / Bool_t
+ 127 patHemispheres_selectedLayer1Hemispheres__TEST.obj_ / Int_t
+     128 (2) patHemispheres_selectedLayer1Hemispheres__TEST.obj.qx3_ / Int_t
+     129 (2) patHemispheres_selectedLayer1Hemispheres__TEST.obj.pt_ / Float_t
+     130 (2) patHemispheres_selectedLayer1Hemispheres__TEST.obj.eta_ / Float_t
+     131 (2) patHemispheres_selectedLayer1Hemispheres__TEST.obj.phi_ / Float_t
+     132 (2) patHemispheres_selectedLayer1Hemispheres__TEST.obj.mass_ / Float_t
+     133 (2) patHemispheres_selectedLayer1Hemispheres__TEST.obj.vertex_.fCoordinates.fX / Double32_t
+     134 (2) patHemispheres_selectedLayer1Hemispheres__TEST.obj.vertex_.fCoordinates.fY / Double32_t
+     135 (2) patHemispheres_selectedLayer1Hemispheres__TEST.obj.vertex_.fCoordinates.fZ / Double32_t
+     136 (2) patHemispheres_selectedLayer1Hemispheres__TEST.obj.pdgId_ / Int_t
+     137 (2) patHemispheres_selectedLayer1Hemispheres__TEST.obj.status_ / Int_t
+     138 (2) patHemispheres_selectedLayer1Hemispheres__TEST.obj.cachePolarFixed_ / reco::Particle
+     139 (2) patHemispheres_selectedLayer1Hemispheres__TEST.obj.cacheCartesianFixed_ / reco::Particle
+     140 (2) patHemispheres_selectedLayer1Hemispheres__TEST.obj.dau / reco::CompositePtrCandidate
+ 141 patMETs_selectedLayer1METs__TEST. / edm::Wrapper<vector<pat::MET> >
+ 142 patMETs_selectedLayer1METs__TEST.present / Bool_t
+ 143 patMETs_selectedLayer1METs__TEST.obj_ / Int_t
+     144 (1) patMETs_selectedLayer1METs__TEST.obj.qx3_ / Int_t
+     145 (1) patMETs_selectedLayer1METs__TEST.obj.pt_ / Float_t
+     146 (1) patMETs_selectedLayer1METs__TEST.obj.eta_ / Float_t
+     147 (1) patMETs_selectedLayer1METs__TEST.obj.phi_ / Float_t
+     148 (1) patMETs_selectedLayer1METs__TEST.obj.mass_ / Float_t
+     149 (1) patMETs_selectedLayer1METs__TEST.obj.vertex_.fCoordinates.fX / Double32_t
+     150 (1) patMETs_selectedLayer1METs__TEST.obj.vertex_.fCoordinates.fY / Double32_t
+     151 (1) patMETs_selectedLayer1METs__TEST.obj.vertex_.fCoordinates.fZ / Double32_t
+     152 (1) patMETs_selectedLayer1METs__TEST.obj.pdgId_ / Int_t
+     153 (1) patMETs_selectedLayer1METs__TEST.obj.status_ / Int_t
+     154 (1) patMETs_selectedLayer1METs__TEST.obj.cachePolarFixed_ / reco::Particle
+     155 (1) patMETs_selectedLayer1METs__TEST.obj.cacheCartesianFixed_ / reco::Particle
+     156 (1) patMETs_selectedLayer1METs__TEST.obj.sumet / Double_t
+     157 (1) patMETs_selectedLayer1METs__TEST.obj.elongit / Double_t
+     158 (1) patMETs_selectedLayer1METs__TEST.obj.corr / reco::MET
+     159 (1) patMETs_selectedLayer1METs__TEST.obj.refToOrig_.core_ / edm::Ptr<reco::Candidate>
+     160 (1) patMETs_selectedLayer1METs__TEST.obj.refToOrig_.key_ / ULong_t
+     161 (1) patMETs_selectedLayer1METs__TEST.obj.triggerMatches_ / pat::PATObject<reco::MET>
+     162 (1) patMETs_selectedLayer1METs__TEST.obj.efficiencyValues_ / pat::PATObject<reco::MET>
+     163 (1) patMETs_selectedLayer1METs__TEST.obj.efficiencyNames_ / pat::PATObject<reco::MET>
+     164 (1) patMETs_selectedLayer1METs__TEST.obj.genParticleRef_ / pat::PATObject<reco::MET>
+     165 (1) patMETs_selectedLayer1METs__TEST.obj.genParticleEmbedded_ / pat::PATObject<reco::MET>
+     166 (1) patMETs_selectedLayer1METs__TEST.obj.userDataLabels_ / pat::PATObject<reco::MET>
+     167 (1) patMETs_selectedLayer1METs__TEST.obj.userDataObjects_.data_ / edm::OwnVector<pat::UserData,edm::ClonePolicy<pat::UserData> >
+     168 (1) patMETs_selectedLayer1METs__TEST.obj.userFloatLabels_ / pat::PATObject<reco::MET>
+     169 (1) patMETs_selectedLayer1METs__TEST.obj.userFloats_ / pat::PATObject<reco::MET>
+     170 (1) patMETs_selectedLayer1METs__TEST.obj.userIntLabels_ / pat::PATObject<reco::MET>
+     171 (1) patMETs_selectedLayer1METs__TEST.obj.userInts_ / pat::PATObject<reco::MET>
+     172 (1) patMETs_selectedLayer1METs__TEST.obj.genMET_ / pat::MET
+     173 (1) patMETs_selectedLayer1METs__TEST.obj.caloMET_ / pat::MET
+ 174 patPhotons_selectedLayer1Photons__TEST. / edm::Wrapper<vector<pat::Photon> >
+ 175 patPhotons_selectedLayer1Photons__TEST.present / Bool_t
+ 176 patPhotons_selectedLayer1Photons__TEST.obj_ / Int_t
+     177 (6) patPhotons_selectedLayer1Photons__TEST.obj.qx3_ / Int_t
+     178 (6) patPhotons_selectedLayer1Photons__TEST.obj.pt_ / Float_t
+     179 (6) patPhotons_selectedLayer1Photons__TEST.obj.eta_ / Float_t
+     180 (6) patPhotons_selectedLayer1Photons__TEST.obj.phi_ / Float_t
+     181 (6) patPhotons_selectedLayer1Photons__TEST.obj.mass_ / Float_t
+     182 (6) patPhotons_selectedLayer1Photons__TEST.obj.vertex_.fCoordinates.fX / Double32_t
+     183 (6) patPhotons_selectedLayer1Photons__TEST.obj.vertex_.fCoordinates.fY / Double32_t
+     184 (6) patPhotons_selectedLayer1Photons__TEST.obj.vertex_.fCoordinates.fZ / Double32_t
+     185 (6) patPhotons_selectedLayer1Photons__TEST.obj.pdgId_ / Int_t
+     186 (6) patPhotons_selectedLayer1Photons__TEST.obj.status_ / Int_t
+     187 (6) patPhotons_selectedLayer1Photons__TEST.obj.cachePolarFixed_ / reco::Particle
+     188 (6) patPhotons_selectedLayer1Photons__TEST.obj.cacheCartesianFixed_ / reco::Particle
+     189 (6) patPhotons_selectedLayer1Photons__TEST.obj.caloPosition_.fCoordinates.fX / Double_t
+     190 (6) patPhotons_selectedLayer1Photons__TEST.obj.caloPosition_.fCoordinates.fY / Double_t
+     191 (6) patPhotons_selectedLayer1Photons__TEST.obj.caloPosition_.fCoordinates.fZ / Double_t
+     192 (6) patPhotons_selectedLayer1Photons__TEST.obj.superCluster_.ref_.product_ / edm::RefBase<unsigned int>
+     193 (6) patPhotons_selectedLayer1Photons__TEST.obj.superCluster_.ref_.item_.index_ / UInt_t
+     194 (6) patPhotons_selectedLayer1Photons__TEST.obj.superCluster_.ref_.item_.cache_ / edm::RefItem<unsigned int>
+     195 (6) patPhotons_selectedLayer1Photons__TEST.obj.conversions_ / reco::Photon
+     196 (6) patPhotons_selectedLayer1Photons__TEST.obj.hadOverEm_ / Float_t
+     197 (6) patPhotons_selectedLayer1Photons__TEST.obj.pixelSeed_ / Bool_t
+     198 (6) patPhotons_selectedLayer1Photons__TEST.obj.refToOrig_.core_ / edm::Ptr<reco::Candidate>
+     199 (6) patPhotons_selectedLayer1Photons__TEST.obj.refToOrig_.key_ / ULong_t
+     200 (6) patPhotons_selectedLayer1Photons__TEST.obj.triggerMatches_ / pat::PATObject<reco::Photon>
+     201 (6) patPhotons_selectedLayer1Photons__TEST.obj.efficiencyValues_ / pat::PATObject<reco::Photon>
+     202 (6) patPhotons_selectedLayer1Photons__TEST.obj.efficiencyNames_ / pat::PATObject<reco::Photon>
+     203 (6) patPhotons_selectedLayer1Photons__TEST.obj.genParticleRef_ / pat::PATObject<reco::Photon>
+     204 (6) patPhotons_selectedLayer1Photons__TEST.obj.genParticleEmbedded_ / pat::PATObject<reco::Photon>
+     205 (6) patPhotons_selectedLayer1Photons__TEST.obj.userDataLabels_ / pat::PATObject<reco::Photon>
+     206 (6) patPhotons_selectedLayer1Photons__TEST.obj.userDataObjects_.data_ / edm::OwnVector<pat::UserData,edm::ClonePolicy<pat::UserData> >
+     207 (6) patPhotons_selectedLayer1Photons__TEST.obj.userFloatLabels_ / pat::PATObject<reco::Photon>
+     208 (6) patPhotons_selectedLayer1Photons__TEST.obj.userFloats_ / pat::PATObject<reco::Photon>
+     209 (6) patPhotons_selectedLayer1Photons__TEST.obj.userIntLabels_ / pat::PATObject<reco::Photon>
+     210 (6) patPhotons_selectedLayer1Photons__TEST.obj.userInts_ / pat::PATObject<reco::Photon>
+     211 (6) patPhotons_selectedLayer1Photons__TEST.obj.embeddedSuperCluster_ / Bool_t
+     212 (6) patPhotons_selectedLayer1Photons__TEST.obj.superCluster_ / pat::Photon
+     213 (6) patPhotons_selectedLayer1Photons__TEST.obj.photonID_ / pat::Photon
+     214 (6) patPhotons_selectedLayer1Photons__TEST.obj.isoDeposits_ / pat::Photon
+     215 (6) patPhotons_selectedLayer1Photons__TEST.obj.isolations_ / pat::Photon
+ 216 patTaus_selectedLayer1Taus__TEST. / edm::Wrapper<vector<pat::Tau> >
+ 217 patTaus_selectedLayer1Taus__TEST.present / Bool_t
+ 218 patTaus_selectedLayer1Taus__TEST.obj_ / Int_t
+     219 (4) patTaus_selectedLayer1Taus__TEST.obj.qx3_ / Int_t
+     220 (4) patTaus_selectedLayer1Taus__TEST.obj.pt_ / Float_t
+     221 (4) patTaus_selectedLayer1Taus__TEST.obj.eta_ / Float_t
+     222 (4) patTaus_selectedLayer1Taus__TEST.obj.phi_ / Float_t
+     223 (4) patTaus_selectedLayer1Taus__TEST.obj.mass_ / Float_t
+     224 (4) patTaus_selectedLayer1Taus__TEST.obj.vertex_.fCoordinates.fX / Double32_t
+     225 (4) patTaus_selectedLayer1Taus__TEST.obj.vertex_.fCoordinates.fY / Double32_t
+     226 (4) patTaus_selectedLayer1Taus__TEST.obj.vertex_.fCoordinates.fZ / Double32_t
+     227 (4) patTaus_selectedLayer1Taus__TEST.obj.pdgId_ / Int_t
+     228 (4) patTaus_selectedLayer1Taus__TEST.obj.status_ / Int_t
+     229 (4) patTaus_selectedLayer1Taus__TEST.obj.cachePolarFixed_ / reco::Particle
+     230 (4) patTaus_selectedLayer1Taus__TEST.obj.cacheCartesianFixed_ / reco::Particle
+     231 (4) patTaus_selectedLayer1Taus__TEST.obj.alternatLorentzVect_.fCoordinates.fX / Double_t
+     232 (4) patTaus_selectedLayer1Taus__TEST.obj.alternatLorentzVect_.fCoordinates.fY / Double_t
+     233 (4) patTaus_selectedLayer1Taus__TEST.obj.alternatLorentzVect_.fCoordinates.fZ / Double_t
+     234 (4) patTaus_selectedLayer1Taus__TEST.obj.alternatLorentzVect_.fCoordinates.fT / Double_t
+     235 (4) patTaus_selectedLayer1Taus__TEST.obj.leadTrack_.ref_.product_ / edm::RefBase<unsigned int>
+     236 (4) patTaus_selectedLayer1Taus__TEST.obj.leadTrack_.ref_.item_.index_ / UInt_t
+     237 (4) patTaus_selectedLayer1Taus__TEST.obj.leadTrack_.ref_.item_.cache_ / edm::RefItem<unsigned int>
+     238 (4) patTaus_selectedLayer1Taus__TEST.obj.signalTracks_.refVector_.product_ / edm::RefVectorBase<unsigned int>
+     239 (4) patTaus_selectedLayer1Taus__TEST.obj.signalTracks_.refVector_.items_ / edm::RefVectorBase<unsigned int>
+     240 (4) patTaus_selectedLayer1Taus__TEST.obj.isolationTracks_.refVector_.product_ / edm::RefVectorBase<unsigned int>
+     241 (4) patTaus_selectedLayer1Taus__TEST.obj.isolationTracks_.refVector_.items_ / edm::RefVectorBase<unsigned int>
+     242 (4) patTaus_selectedLayer1Taus__TEST.obj.refToOrig_.core_ / edm::Ptr<reco::Candidate>
+     243 (4) patTaus_selectedLayer1Taus__TEST.obj.refToOrig_.key_ / ULong_t
+     244 (4) patTaus_selectedLayer1Taus__TEST.obj.triggerMatches_ / pat::PATObject<reco::BaseTau>
+     245 (4) patTaus_selectedLayer1Taus__TEST.obj.efficiencyValues_ / pat::PATObject<reco::BaseTau>
+     246 (4) patTaus_selectedLayer1Taus__TEST.obj.efficiencyNames_ / pat::PATObject<reco::BaseTau>
+     247 (4) patTaus_selectedLayer1Taus__TEST.obj.genParticleRef_ / pat::PATObject<reco::BaseTau>
+     248 (4) patTaus_selectedLayer1Taus__TEST.obj.genParticleEmbedded_ / pat::PATObject<reco::BaseTau>
+     249 (4) patTaus_selectedLayer1Taus__TEST.obj.userDataLabels_ / pat::PATObject<reco::BaseTau>
+     250 (4) patTaus_selectedLayer1Taus__TEST.obj.userDataObjects_.data_ / edm::OwnVector<pat::UserData,edm::ClonePolicy<pat::UserData> >
+     251 (4) patTaus_selectedLayer1Taus__TEST.obj.userFloatLabels_ / pat::PATObject<reco::BaseTau>
+     252 (4) patTaus_selectedLayer1Taus__TEST.obj.userFloats_ / pat::PATObject<reco::BaseTau>
+     253 (4) patTaus_selectedLayer1Taus__TEST.obj.userIntLabels_ / pat::PATObject<reco::BaseTau>
+     254 (4) patTaus_selectedLayer1Taus__TEST.obj.userInts_ / pat::PATObject<reco::BaseTau>
+     255 (4) patTaus_selectedLayer1Taus__TEST.obj.isoDeposits_ / pat::Lepton<reco::BaseTau>
+     256 (4) patTaus_selectedLayer1Taus__TEST.obj.isolations_ / pat::Lepton<reco::BaseTau>
+     257 (4) patTaus_selectedLayer1Taus__TEST.obj.embeddedIsolationTracks_ / Bool_t
+     258 (4) patTaus_selectedLayer1Taus__TEST.obj.isolationTracks_ / pat::Tau
+     259 (4) patTaus_selectedLayer1Taus__TEST.obj.embeddedLeadTrack_ / Bool_t
+     260 (4) patTaus_selectedLayer1Taus__TEST.obj.leadTrack_ / pat::Tau
+     261 (4) patTaus_selectedLayer1Taus__TEST.obj.embeddedSignalTracks_ / Bool_t
+     262 (4) patTaus_selectedLayer1Taus__TEST.obj.signalTracks_ / pat::Tau
+     263 (4) patTaus_selectedLayer1Taus__TEST.obj.genJet_ / pat::Tau
+     264 (4) patTaus_selectedLayer1Taus__TEST.obj.tauIDs_ / pat::Tau
+     265 (4) patTaus_selectedLayer1Taus__TEST.obj.caloSpecific_ / pat::Tau
+     266 (4) patTaus_selectedLayer1Taus__TEST.obj.pfSpecific_ / pat::Tau
+ 267 patElectrons_selectedLayer1Electrons__JDHskimSUSY. / edm::Wrapper<vector<pat::Electron> >
+ 268 patElectrons_selectedLayer1Electrons__JDHskimSUSY.present / Bool_t
+ 269 patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj_ / Int_t
+     270 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.qx3_ / Int_t
+     271 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.pt_ / Float_t
+     272 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.eta_ / Float_t
+     273 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.phi_ / Float_t
+     274 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.mass_ / Float_t
+     275 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.vertex_.fCoordinates.fX / Double32_t
+     276 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.vertex_.fCoordinates.fY / Double32_t
+     277 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.vertex_.fCoordinates.fZ / Double32_t
+     278 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.pdgId_ / Int_t
+     279 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.status_ / Int_t
+     280 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.cachePolarFixed_ / reco::Particle
+     281 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.cacheCartesianFixed_ / reco::Particle
+     282 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.trackMomentumAtVtx_.fCoordinates.fX / Double_t
+     283 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.trackMomentumAtVtx_.fCoordinates.fY / Double_t
+     284 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.trackMomentumAtVtx_.fCoordinates.fZ / Double_t
+     285 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.trackPositionAtVtx_.fCoordinates.fX / Double_t
+     286 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.trackPositionAtVtx_.fCoordinates.fY / Double_t
+     287 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.trackPositionAtVtx_.fCoordinates.fZ / Double_t
+     288 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.trackMomentumAtCalo_.fCoordinates.fX / Double_t
+     289 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.trackMomentumAtCalo_.fCoordinates.fY / Double_t
+     290 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.trackMomentumAtCalo_.fCoordinates.fZ / Double_t
+     291 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.trackPositionAtCalo_.fCoordinates.fX / Double_t
+     292 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.trackPositionAtCalo_.fCoordinates.fY / Double_t
+     293 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.trackPositionAtCalo_.fCoordinates.fZ / Double_t
+     294 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.trackMomentumOut_.fCoordinates.fX / Double_t
+     295 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.trackMomentumOut_.fCoordinates.fY / Double_t
+     296 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.trackMomentumOut_.fCoordinates.fZ / Double_t
+     297 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.energyError_ / Float_t
+     298 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.trackMomentumError_ / Float_t
+     299 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.electronClass_ / Int_t
+     300 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.superClusterEnergy_ / Float_t
+     301 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.eSuperClusterOverP_ / Float_t
+     302 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.eSeedClusterOverPout_ / Float_t
+     303 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.deltaEtaSuperClusterAtVtx_ / Float_t
+     304 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.deltaEtaSeedClusterAtCalo_ / Float_t
+     305 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.deltaPhiSuperClusterAtVtx_ / Float_t
+     306 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.deltaPhiSeedClusterAtCalo_ / Float_t
+     307 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.hadOverEm_ / Float_t
+     308 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.superCluster_.ref_.product_ / edm::RefBase<unsigned int>
+     309 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.superCluster_.ref_.item_.index_ / UInt_t
+     310 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.superCluster_.ref_.item_.cache_ / edm::RefItem<unsigned int>
+     311 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.track_.ref_.product_ / edm::RefBase<unsigned int>
+     312 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.track_.ref_.item_.index_ / UInt_t
+     313 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.track_.ref_.item_.cache_ / edm::RefItem<unsigned int>
+     314 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.energyScaleCorrected_ / Bool_t
+     315 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.momentumFromEpCombination_ / Bool_t
+     316 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.refToOrig_.core_ / edm::Ptr<reco::Candidate>
+     317 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.refToOrig_.key_ / ULong_t
+     318 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.triggerMatches_ / pat::PATObject<reco::GsfElectron>
+     319 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.efficiencyValues_ / pat::PATObject<reco::GsfElectron>
+     320 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.efficiencyNames_ / pat::PATObject<reco::GsfElectron>
+     321 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.genParticleRef_ / pat::PATObject<reco::GsfElectron>
+     322 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.genParticleEmbedded_ / pat::PATObject<reco::GsfElectron>
+     323 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.userDataLabels_ / pat::PATObject<reco::GsfElectron>
+     324 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.userDataObjects_.data_ / edm::OwnVector<pat::UserData,edm::ClonePolicy<pat::UserData> >
+     325 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.userFloatLabels_ / pat::PATObject<reco::GsfElectron>
+     326 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.userFloats_ / pat::PATObject<reco::GsfElectron>
+     327 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.userIntLabels_ / pat::PATObject<reco::GsfElectron>
+     328 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.userInts_ / pat::PATObject<reco::GsfElectron>
+     329 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.isoDeposits_ / pat::Lepton<reco::GsfElectron>
+     330 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.isolations_ / pat::Lepton<reco::GsfElectron>
+     331 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.embeddedGsfTrack_ / Bool_t
+     332 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.gsfTrack_ / pat::Electron
+     333 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.embeddedSuperCluster_ / Bool_t
+     334 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.superCluster_ / pat::Electron
+     335 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.embeddedTrack_ / Bool_t
+     336 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.track_ / pat::Electron
+     337 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.electronIDs_ / pat::Electron
+     338 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.scSigmaEtaEta_ / Float_t
+     339 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.scSigmaIEtaIEta_ / Float_t
+     340 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.scE1x5_ / Float_t
+     341 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.scE2x5Max_ / Float_t
+     342 (4) patElectrons_selectedLayer1Electrons__JDHskimSUSY.obj.scE5x5_ / Float_t
+ 343 patJets_selectedLayer1Jets__JDHskimSUSY. / edm::Wrapper<vector<pat::Jet> >
+ 344 patJets_selectedLayer1Jets__JDHskimSUSY.present / Bool_t
+ 345 patJets_selectedLayer1Jets__JDHskimSUSY.obj_ / Int_t
+     346 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.qx3_ / Int_t
+     347 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.pt_ / Float_t
+     348 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.eta_ / Float_t
+     349 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.phi_ / Float_t
+     350 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.mass_ / Float_t
+     351 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.vertex_.fCoordinates.fX / Double32_t
+     352 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.vertex_.fCoordinates.fY / Double32_t
+     353 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.vertex_.fCoordinates.fZ / Double32_t
+     354 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.pdgId_ / Int_t
+     355 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.status_ / Int_t
+     356 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.cachePolarFixed_ / reco::Particle
+     357 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.cacheCartesianFixed_ / reco::Particle
+     358 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.dau / reco::CompositePtrCandidate
+     359 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.mJetArea / Float_t
+     360 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.mPileupEnergy / Float_t
+     361 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.mPassNumber / Int_t
+     362 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.refToOrig_.core_ / edm::Ptr<reco::Candidate>
+     363 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.refToOrig_.key_ / ULong_t
+     364 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.triggerMatches_ / pat::PATObject<reco::Jet>
+     365 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.efficiencyValues_ / pat::PATObject<reco::Jet>
+     366 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.efficiencyNames_ / pat::PATObject<reco::Jet>
+     367 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.genParticleRef_ / pat::PATObject<reco::Jet>
+     368 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.genParticleEmbedded_ / pat::PATObject<reco::Jet>
+     369 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.userDataLabels_ / pat::PATObject<reco::Jet>
+     370 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.userDataObjects_.data_ / edm::OwnVector<pat::UserData,edm::ClonePolicy<pat::UserData> >
+     371 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.userFloatLabels_ / pat::PATObject<reco::Jet>
+     372 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.userFloats_ / pat::PATObject<reco::Jet>
+     373 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.userIntLabels_ / pat::PATObject<reco::Jet>
+     374 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.userInts_ / pat::PATObject<reco::Jet>
+     375 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.embeddedCaloTowers_ / Bool_t
+     376 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.caloTowers_.obj / edm::SortedCollection<CaloTower,edm::StrictWeakOrdering<CaloTower> >
+     377 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.genJet_ / pat::Jet
+     378 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.partonFlavour_ / Int_t
+     379 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.jetEnergyCorrectionStep_ / Int_t
+     380 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.jetEnergyCorrections_ / pat::Jet
+     381 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.pairDiscriVector_ / pat::Jet
+     382 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.associatedTracks_.refVector_.product_ / edm::RefVectorBase<unsigned int>
+     383 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.associatedTracks_.refVector_.items_ / edm::RefVectorBase<unsigned int>
+     384 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.jetCharge_ / Float_t
+     385 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.tagInfoLabels_ / pat::Jet
+     386 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.tagInfos_.data_ / edm::OwnVector<reco::BaseTagInfo,edm::ClonePolicy<reco::BaseTagInfo> >
+     387 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.specificCalo_ / pat::Jet
+     388 (9) patJets_selectedLayer1Jets__JDHskimSUSY.obj.specificPF_ / pat::Jet
+ 389 patMuons_selectedLayer1Muons__JDHskimSUSY. / edm::Wrapper<vector<pat::Muon> >
+ 390 patMuons_selectedLayer1Muons__JDHskimSUSY.present / Bool_t
+ 391 patMuons_selectedLayer1Muons__JDHskimSUSY.obj_ / Int_t
+     392 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.qx3_ / Int_t
+     393 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.pt_ / Float_t
+     394 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.eta_ / Float_t
+     395 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.phi_ / Float_t
+     396 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.mass_ / Float_t
+     397 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.vertex_.fCoordinates.fX / Double32_t
+     398 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.vertex_.fCoordinates.fY / Double32_t
+     399 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.vertex_.fCoordinates.fZ / Double32_t
+     400 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.pdgId_ / Int_t
+     401 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.status_ / Int_t
+     402 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.cachePolarFixed_ / reco::Particle
+     403 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.cacheCartesianFixed_ / reco::Particle
+     404 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.track_.ref_.product_ / edm::RefBase<unsigned int>
+     405 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.track_.ref_.item_.index_ / UInt_t
+     406 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.track_.ref_.item_.cache_ / edm::RefItem<unsigned int>
+     407 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.standAloneMuon_.ref_.product_ / edm::RefBase<unsigned int>
+     408 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.standAloneMuon_.ref_.item_.index_ / UInt_t
+     409 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.standAloneMuon_.ref_.item_.cache_ / edm::RefItem<unsigned int>
+     410 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.combinedMuon_.ref_.product_ / edm::RefBase<unsigned int>
+     411 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.combinedMuon_.ref_.item_.index_ / UInt_t
+     412 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.combinedMuon_.ref_.item_.cache_ / edm::RefItem<unsigned int>
+     413 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.calEnergy_.tower / Float_t
+     414 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.calEnergy_.towerS9 / Float_t
+     415 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.calEnergy_.em / Float_t
+     416 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.calEnergy_.emS9 / Float_t
+     417 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.calEnergy_.had / Float_t
+     418 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.calEnergy_.hadS9 / Float_t
+     419 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.calEnergy_.ho / Float_t
+     420 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.calEnergy_.hoS9 / Float_t
+     421 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.muMatches_ / reco::Muon
+     422 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.time_.nStations / Int_t
+     423 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.time_.inverseBeta / Float_t
+     424 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.time_.inverseBetaErr / Float_t
+     425 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.time_.freeInverseBeta / Float_t
+     426 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.time_.freeInverseBetaErr / Float_t
+     427 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.time_.timeAtIpInOut / Float_t
+     428 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.time_.timeAtIpInOutErr / Float_t
+     429 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.time_.timeAtIpOutIn / Float_t
+     430 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.time_.timeAtIpOutInErr / Float_t
+     431 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.energyValid_ / Bool_t
+     432 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.timeValid_ / Bool_t
+     433 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.matchesValid_ / Bool_t
+     434 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.isolationValid_ / Bool_t
+     435 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.caloCompatibility_ / Float_t
+     436 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.isolationR03_.sumPt / Float_t
+     437 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.isolationR03_.emEt / Float_t
+     438 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.isolationR03_.hadEt / Float_t
+     439 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.isolationR03_.hoEt / Float_t
+     440 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.isolationR03_.nTracks / Int_t
+     441 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.isolationR03_.nJets / Int_t
+     442 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.isolationR05_.sumPt / Float_t
+     443 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.isolationR05_.emEt / Float_t
+     444 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.isolationR05_.hadEt / Float_t
+     445 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.isolationR05_.hoEt / Float_t
+     446 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.isolationR05_.nTracks / Int_t
+     447 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.isolationR05_.nJets / Int_t
+     448 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.type_ / UInt_t
+     449 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.refToOrig_.core_ / edm::Ptr<reco::Candidate>
+     450 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.refToOrig_.key_ / ULong_t
+     451 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.triggerMatches_ / pat::PATObject<reco::Muon>
+     452 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.efficiencyValues_ / pat::PATObject<reco::Muon>
+     453 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.efficiencyNames_ / pat::PATObject<reco::Muon>
+     454 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.genParticleRef_ / pat::PATObject<reco::Muon>
+     455 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.genParticleEmbedded_ / pat::PATObject<reco::Muon>
+     456 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.userDataLabels_ / pat::PATObject<reco::Muon>
+     457 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.userDataObjects_.data_ / edm::OwnVector<pat::UserData,edm::ClonePolicy<pat::UserData> >
+     458 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.userFloatLabels_ / pat::PATObject<reco::Muon>
+     459 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.userFloats_ / pat::PATObject<reco::Muon>
+     460 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.userIntLabels_ / pat::PATObject<reco::Muon>
+     461 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.userInts_ / pat::PATObject<reco::Muon>
+     462 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.isoDeposits_ / pat::Lepton<reco::Muon>
+     463 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.isolations_ / pat::Lepton<reco::Muon>
+     464 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.embeddedTrack_ / Bool_t
+     465 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.track_ / pat::Muon
+     466 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.embeddedStandAloneMuon_ / Bool_t
+     467 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.standAloneMuon_ / pat::Muon
+     468 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.embeddedCombinedMuon_ / Bool_t
+     469 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.combinedMuon_ / pat::Muon
+     470 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.embeddedPFCandidate_ / Bool_t
+     471 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.pfCandidate_ / pat::Muon
+     472 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.pfCandidateRef_.ref_.product_ / edm::RefBase<unsigned int>
+     473 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.pfCandidateRef_.ref_.item_.index_ / UInt_t
+     474 (4) patMuons_selectedLayer1Muons__JDHskimSUSY.obj.pfCandidateRef_.ref_.item_.cache_ / edm::RefItem<unsigned int>

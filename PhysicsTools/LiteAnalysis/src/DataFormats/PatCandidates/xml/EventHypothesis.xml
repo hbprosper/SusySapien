@@ -1,0 +1,522 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: EventHypothesis.xml
+  Created:  Thu Jan 14 22:48:09 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/PatCandidates/interface/EventHypothesis.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/PatCandidates/interface/EventHypothesis.h">
+
+    <include name="&quot;DataFormats/Candidate/interface/CandidateFwd.h&quot;"/>
+    <include name="&quot;DataFormats/Candidate/interface/Candidate.h&quot;"/>
+    <include name="&lt;boost/regex.hpp&gt;"/>
+    <include name="&lt;boost/shared_ptr.hpp&gt;"/>
+
+    <namespace name="pat">
+
+        <namespace name="eventhypothesis">
+            <comment>
+      forward declaration
+            </comment>
+        </namespace>
+
+        <namespace name="eventhypothesis">
+            <comment>
+      real declarations
+            </comment>
+            <typedef name="CandRefType"
+                     value="reco::CandidatePtr">
+typedef reco::CandidatePtr CandRefType;
+                <comment>
+           typedef for the Ref
+                </comment>
+            </typedef>
+
+
+            <class name="ParticleFilter"
+                   fullname="pat::eventhypothesis::ParticleFilter"
+                   module="DataFormats.PatCandidates"
+                   project=""
+                   type="abstract regular struct">
+                <comment>
+           filter
+                </comment>
+
+                <section>
+                    <destructor name="~ParticleFilter"
+                                return="virtual"
+                                args="['void']"
+                                vars="['']"
+                                qual="">
+virtual ~ParticleFilter();
+                    </destructor>
+
+                    <operator name="operator()"
+                              return="bool"
+                              args="['const std::pair&lt;std::string, CandRefType&gt;&amp;']"
+                              vars="['p']"
+                              qual="const">
+bool operatorPP(const std::pair&lt;std::string, CandRefType&gt;&amp; p) const;
+                    </operator>
+
+                    <operator name="operator()"
+                              return="virtual bool"
+                              args="['const CandRefType&amp;','const std::string&amp;']"
+                              vars="['cand','role']"
+                              qual="const = 0">
+virtual bool operatorPP(const CandRefType&amp; cand, const std::string&amp; role) const=0;
+                    </operator>
+
+                </section>
+
+            </class>
+            <typedef name="ParticleFilterPtr"
+                     value="boost::shared_ptr&lt;const ParticleFilter&gt;">
+typedef boost::shared_ptr&lt;const ParticleFilter&gt; ParticleFilterPtr;
+                <comment>
+           smart pointer to the filter
+                </comment>
+            </typedef>
+
+        </namespace>
+
+        <class name="EventHypothesis"
+               fullname="pat::EventHypothesis"
+               module="DataFormats.PatCandidates"
+               project=""
+               type="regular">
+            <comment>
+      the class
+            </comment>
+
+            <section name="public">
+                <typedef name="CandRefType"
+                         value="eventhypothesis::CandRefType">
+typedef eventhypothesis::CandRefType CandRefType;
+                </typedef>
+
+                <typedef name="value_type"
+                         value="std::pair&lt;std::string, CandRefType&gt;">
+typedef std::pair&lt;std::string, CandRefType&gt; value_type;
+                </typedef>
+
+                <typedef name="vector_type"
+                         value="std::vector&lt;value_type&gt;">
+typedef std::vector&lt;value_type&gt; vector_type;
+                </typedef>
+
+                <typedef name="const_iterator"
+                         value="vector_type::const_iterator">
+typedef vector_type::const_iterator const_iterator;
+                </typedef>
+
+                <typedef name="const_reverse_iterator"
+                         value="vector_type::const_reverse_iterator">
+typedef vector_type::const_reverse_iterator const_reverse_iterator;
+                </typedef>
+
+                <typedef name="CandLooper"
+                         value="eventhypothesis::Looper&lt;reco::Candidate&gt;">
+typedef eventhypothesis::Looper&lt;reco::Candidate&gt; CandLooper;
+                </typedef>
+
+                <method1 name="add"
+                         return="void"
+                         args="['const CandRefType&amp;','const std::string&amp;']"
+                         vars="['ref','role']"
+                         qual="">
+void add(const CandRefType&amp; ref, const std::string&amp; role);
+                </method1>
+
+                <method1 name="begin"
+                         return="const_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const_iterator begin() const;
+                </method1>
+
+                <method1 name="end"
+                         return="const_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const_iterator end() const;
+                </method1>
+
+                <method1 name="rbegin"
+                         return="const_reverse_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const_reverse_iterator rbegin() const;
+                </method1>
+
+                <method1 name="rend"
+                         return="const_reverse_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const_reverse_iterator rend() const;
+                </method1>
+
+
+                <class name="ByRole"
+                       fullname="pat::EventHypothesis::ByRole"
+                       module="DataFormats.PatCandidates"
+                       project=""
+                       type="regular">
+
+                    <section name="public">
+                        <constructor name="ByRole"
+                                     return=""
+                                     args="['const std::string&amp;']"
+                                     vars="['role']"
+                                     qual="">
+ByRole(const std::string&amp; role);
+                        </constructor>
+
+                        <operator name="operator()"
+                                  return="bool"
+                                  args="['const value_type&amp;']"
+                                  vars="['p']"
+                                  qual="const">
+bool operatorPP(const value_type&amp; p) const;
+                        </operator>
+
+                    </section>
+                    <section name="private">
+                        <constant name="role_"
+                                  type="const std::string&amp;amp;"
+                                  value=""/>
+                    </section>
+
+                    <typemap name="ByRole"
+                             value="pat::EventHypothesis::ByRole"
+                             type="class"/>
+
+                </class>
+                <typedef name="ParticleFilter"
+                         value="eventhypothesis::ParticleFilter">
+typedef eventhypothesis::ParticleFilter ParticleFilter;
+                </typedef>
+
+                <typedef name="ParticleFilterPtr"
+                         value="eventhypothesis::ParticleFilterPtr">
+typedef eventhypothesis::ParticleFilterPtr ParticleFilterPtr;
+                </typedef>
+
+                <method1 name="get"
+                         return="const CandRefType&amp;"
+                         args="['const std::string&amp;','int=0']"
+                         vars="['role','index']"
+                         qual="const">
+const CandRefType&amp; get(const std::string&amp; role, int index=0) const;
+                </method1>
+
+                <method1 name="get"
+                         return="const CandRefType&amp;"
+                         args="['const ParticleFilter&amp;','int=0']"
+                         vars="['filter','index']"
+                         qual="const">
+const CandRefType&amp; get(const ParticleFilter&amp; filter, int index=0) const;
+                </method1>
+
+                <method2 name="getAs"
+                         return="template&lt;typename T&gt; const T*"
+                         args="['const std::string&amp;','int=0']"
+                         vars="['role','index']"
+                         qual="const">
+template&lt;typename T&gt; const T* getAs(const std::string&amp; role, int index=0) const;
+                </method2>
+
+                <method2 name="getAs"
+                         return="template&lt;typename T&gt; const T*"
+                         args="['const ParticleFilter&amp;','int=0']"
+                         vars="['filter','index']"
+                         qual="const">
+template&lt;typename T&gt; const T* getAs(const ParticleFilter&amp; filter, int index=0) const;
+                </method2>
+
+                <operator name="operator[]"
+                          return="const CandRefType&amp;"
+                          args="['const std::string&amp;']"
+                          vars="['role']"
+                          qual="const">
+const CandRefType&amp; operator[](const std::string&amp; role) const;
+                </operator>
+
+                <operator name="operator[]"
+                          return="const CandRefType&amp;"
+                          args="['const ParticleFilter&amp;']"
+                          vars="['filter']"
+                          qual="const">
+const CandRefType&amp; operator[](const ParticleFilter&amp; filter) const;
+                </operator>
+
+                <method2 name="all"
+                         return="std::vector&lt;CandRefType&gt;"
+                         args="['const std::string&amp;']"
+                         vars="['roleRegexp']"
+                         qual="const">
+std::vector&lt;CandRefType&gt; all(const std::string&amp; roleRegexp) const;
+                    <comment>
+                Return EDM references to all particles which have certaint roles.
+                    </comment>
+                </method2>
+
+                <method2 name="all"
+                         return="std::vector&lt;CandRefType&gt;"
+                         args="['const ParticleFilter&amp;']"
+                         vars="['filter']"
+                         qual="const">
+std::vector&lt;CandRefType&gt; all(const ParticleFilter&amp; filter) const;
+                    <comment>
+                Return EDM references to all particles which satisfy some condition.
+                    </comment>
+                </method2>
+
+                <method1 name="count"
+                         return="size_t"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+size_t count() const;
+                </method1>
+
+                <method1 name="count"
+                         return="size_t"
+                         args="['const std::string&amp;']"
+                         vars="['roleRegexp']"
+                         qual="const">
+size_t count(const std::string&amp; roleRegexp) const;
+                    <comment>
+                Counts particles which have certaint roles.
+                    </comment>
+                </method1>
+
+                <method1 name="count"
+                         return="size_t"
+                         args="['const ParticleFilter&amp;']"
+                         vars="['role']"
+                         qual="const">
+size_t count(const ParticleFilter&amp; role) const;
+                    <comment>
+                Counts particles which satisfy some condition.
+                    </comment>
+                </method1>
+
+                <method1 name="loop"
+                         return="CandLooper"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+CandLooper loop() const;
+                    <comment>
+                Loops over all particles
+                    </comment>
+                </method1>
+
+                <method1 name="loop"
+                         return="CandLooper"
+                         args="['const std::string&amp;']"
+                         vars="['roleRegexp']"
+                         qual="const">
+CandLooper loop(const std::string&amp; roleRegexp) const;
+                    <comment>
+                Loops over particles which have certaint roles.
+                    </comment>
+                </method1>
+
+                <method1 name="loop"
+                         return="CandLooper"
+                         args="['const ParticleFilter&amp;']"
+                         vars="['filter']"
+                         qual="const">
+CandLooper loop(const ParticleFilter&amp; filter) const;
+                    <comment>
+                The caller code owns the filter, and must take care it is not deleted while the looper is still being used
+                    </comment>
+                </method1>
+
+                <method1 name="loop"
+                         return="CandLooper"
+                         args="['const ParticleFilter*']"
+                         vars="['filter']"
+                         qual="const">
+CandLooper loop(const ParticleFilter* filter) const;
+                    <comment>
+                That is, you can call eventHypothesis.loop(new WhateverFilterYouLike(...))
+                    </comment>
+                </method1>
+
+                <method1 name="loop"
+                         return="CandLooper"
+                         args="['const ParticleFilterPtr&amp;']"
+                         vars="['filter']"
+                         qual="const">
+CandLooper loop(const ParticleFilterPtr&amp; filter) const;
+                    <comment>
+                Loops over particles which satisfy some condition.
+                    </comment>
+                </method1>
+
+                <method2 name="loopAs"
+                         return="template&lt;typename T&gt; eventhypothesis::Looper&lt;T&gt;"
+                         args="['const std::string&amp;']"
+                         vars="['roleRegexp']"
+                         qual="const">
+template&lt;typename T&gt; eventhypothesis::Looper&lt;T&gt; loopAs(const std::string&amp; roleRegexp) const;
+                    <comment>
+                Loops over particles which have certaint roles.
+                    </comment>
+                </method2>
+
+                <method2 name="loopAs"
+                         return="template&lt;typename T&gt; eventhypothesis::Looper&lt;T&gt;"
+                         args="['const ParticleFilter&amp;']"
+                         vars="['filter']"
+                         qual="const">
+template&lt;typename T&gt; eventhypothesis::Looper&lt;T&gt; loopAs(const ParticleFilter&amp; filter) const;
+                    <comment>
+                The caller code owns the filter, and must take care it is not deleted while the looper is still being used
+                    </comment>
+                </method2>
+
+                <method2 name="loopAs"
+                         return="template&lt;typename T&gt; eventhypothesis::Looper&lt;T&gt;"
+                         args="['const ParticleFilter*']"
+                         vars="['filter']"
+                         qual="const">
+template&lt;typename T&gt; eventhypothesis::Looper&lt;T&gt; loopAs(const ParticleFilter* filter) const;
+                    <comment>
+                That is, you can call eventHypothesis.loopAs&lt;...&gt;(new WhateverFilterYouLike(...))
+                    </comment>
+                </method2>
+
+                <method2 name="loopAs"
+                         return="template&lt;typename T&gt; eventhypothesis::Looper&lt;T&gt;"
+                         args="['const ParticleFilterPtr&amp;']"
+                         vars="['filter']"
+                         qual="const">
+template&lt;typename T&gt; eventhypothesis::Looper&lt;T&gt; loopAs(const ParticleFilterPtr&amp; filter) const;
+                    <comment>
+                Loops over particles which satisfy some condition.
+                    </comment>
+                </method2>
+
+            </section>
+
+            <typemap name="CandLooper"
+                     value="eventhypothesis::Looper&lt;reco::Candidate&gt;"
+                     type="typedef"/>
+            <typemap name="CandRefType"
+                     value="eventhypothesis::CandRefType"
+                     type="typedef"/>
+            <typemap name="ParticleFilter"
+                     value="eventhypothesis::ParticleFilter"
+                     type="typedef"/>
+            <typemap name="ParticleFilterPtr"
+                     value="eventhypothesis::ParticleFilterPtr"
+                     type="typedef"/>
+            <typemap name="const_iterator"
+                     value="std::vector&lt;std::pair&lt;std::string, eventhypothesis::CandRefType&gt; &gt;::const_iterator"
+                     type="typedef"/>
+            <typemap name="const_reverse_iterator"
+                     value="std::vector&lt;std::pair&lt;std::string, eventhypothesis::CandRefType&gt; &gt;::const_reverse_iterator"
+                     type="typedef"/>
+            <typemap name="value_type"
+                     value="std::pair&lt;std::string, eventhypothesis::CandRefType&gt;"
+                     type="typedef"/>
+            <typemap name="vector_type"
+                     value="std::vector&lt;std::pair&lt;std::string, eventhypothesis::CandRefType&gt; &gt;"
+                     type="typedef"/>
+
+        </class>
+
+        <namespace name="eventhypothesis">
+
+            <class name="AcceptAllFilter"
+                   fullname="pat::eventhypothesis::AcceptAllFilter"
+                   module="DataFormats.PatCandidates"
+                   project=""
+                   type="regular struct">
+                <baseclass name="public ParticleFilter"/>
+
+                <section>
+                    <method1 name="get"
+                             return="static const AcceptAllFilter&amp;"
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+static const AcceptAllFilter&amp; get();
+                    </method1>
+
+                    <operator name="operator()"
+                              return="virtual bool"
+                              args="['const CandRefType&amp;','const std::string&amp;']"
+                              vars="['cand','role']"
+                              qual="const">
+virtual bool operatorPP(const CandRefType&amp; cand, const std::string&amp; role) const;
+                    </operator>
+
+                </section>
+
+            </class>
+
+            <class name="RoleRegexpFilter"
+                   fullname="pat::eventhypothesis::RoleRegexpFilter"
+                   module="DataFormats.PatCandidates"
+                   project=""
+                   type="regular">
+                <baseclass name="public ParticleFilter"/>
+
+                <section name="public">
+                    <constructor name="RoleRegexpFilter"
+                                 return="explicit"
+                                 args="['const std::string&amp;']"
+                                 vars="['roleRegexp']"
+                                 qual="">
+explicit RoleRegexpFilter(const std::string&amp; roleRegexp);
+                    </constructor>
+
+                    <operator name="operator()"
+                              return="virtual bool"
+                              args="['const CandRefType&amp;','const std::string&amp;']"
+                              vars="['cand','role']"
+                              qual="const">
+virtual bool operatorPP(const CandRefType&amp; cand, const std::string&amp; role) const;
+                    </operator>
+
+                </section>
+
+            </class>
+        </namespace>
+    </namespace>
+
+    <type name="CandLooper"/>
+    <type name="ParticleFilter"/>
+    <type name="bool"/>
+    <type name="const AcceptAllFilter&amp;"/>
+    <type name="const CandRefType&amp;"/>
+    <type name="const ParticleFilter&amp;"/>
+    <type name="const ParticleFilter*"/>
+    <type name="const ParticleFilterPtr&amp;"/>
+    <type name="const std::pair&lt;std::string, CandRefType&gt;&amp;"/>
+    <type name="const std::string&amp;"/>
+    <type name="const value_type&amp;"/>
+    <type name="const_iterator"/>
+    <type name="const_reverse_iterator"/>
+    <type name="int"/>
+    <type name="pat::EventHypothesis"/>
+    <type name="pat::EventHypothesis::ByRole"/>
+    <type name="pat::eventhypothesis::AcceptAllFilter"/>
+    <type name="pat::eventhypothesis::ParticleFilter"/>
+    <type name="pat::eventhypothesis::RoleRegexpFilter"/>
+    <type name="size_t"/>
+    <type name="std::vector&lt;CandRefType&gt;"/>
+    <type name="template&lt;typename T&gt; const T*"/>
+    <type name="template&lt;typename T&gt; eventhypothesis::Looper&lt;T&gt;"/>
+    <type name="void"/>
+</header>

@@ -1,0 +1,219 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: SuperCluster.xml
+  Created:  Thu Jan 14 22:47:07 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/EgammaReco/interface/SuperCluster.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/EgammaReco/interface/SuperCluster.h">
+
+    <include name="&quot;DataFormats/Math/interface/Point3D.h&quot;"/>
+    <include name="&quot;DataFormats/EgammaReco/interface/BasicClusterFwd.h&quot;"/>
+    <include name="&quot;DataFormats/EgammaReco/interface/SuperClusterFwd.h&quot;"/>
+    <include name="&quot;DataFormats/CaloRecHit/interface/CaloCluster.h&quot;"/>
+    <include name="&quot;DataFormats/DetId/interface/DetId.h&quot;"/>
+    <include name="&lt;Rtypes.h&gt;"/>
+
+    <namespace name="reco">
+
+        <class name="SuperCluster"
+               fullname="reco::SuperCluster"
+               module="DataFormats.EgammaReco"
+               project=""
+               type="regular">
+            <baseclass name="public CaloCluster"/>
+
+            <section name="public">
+                <typedef name="Point"
+                         value="math::XYZPoint">
+typedef math::XYZPoint Point;
+                </typedef>
+
+                <constructor name="SuperCluster"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+SuperCluster();
+                    <comment>
+        default constructor
+                    </comment>
+                </constructor>
+
+                <constructor name="SuperCluster"
+                             return=""
+                             args="['double','const Point&amp;']"
+                             vars="['energy','position']"
+                             qual="">
+SuperCluster(double energy, const Point&amp; position);
+                    <comment>
+        constructor defined by CaloCluster - will have to use setSeed and add() separately
+                    </comment>
+                </constructor>
+
+                <constructor name="SuperCluster"
+                             return=""
+                             args="['double','const Point&amp;','const BasicClusterRef&amp;','const BasicClusterRefVector&amp;','double=0.','double=0.','double=0.']"
+                             vars="['energy','position','seed','clusters','Epreshower','phiWidth','etaWidth']"
+                             qual="">
+SuperCluster(double energy, const Point&amp; position, const BasicClusterRef&amp; seed, const BasicClusterRefVector&amp; clusters, double Epreshower=0., double phiWidth=0., double etaWidth=0.);
+                </constructor>
+
+                <method1 name="rawEnergy"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double rawEnergy() const;
+                    <comment>
+        raw uncorrected energy (sum of energies of component BasicClusters)
+                    </comment>
+                </method1>
+
+                <method1 name="preshowerEnergy"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double preshowerEnergy() const;
+                    <comment>
+        energy deposited in preshower
+                    </comment>
+                </method1>
+
+                <method1 name="phiWidth"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double phiWidth() const;
+                    <comment>
+        obtain phi and eta width of the Super Cluster
+                    </comment>
+                </method1>
+
+                <method1 name="etaWidth"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double etaWidth() const;
+                </method1>
+
+                <method1 name="setPhiWidth"
+                         return="void"
+                         args="['double']"
+                         vars="['pw']"
+                         qual="">
+void setPhiWidth(double pw);
+                    <comment>
+      Assign new variables to supercluster
+                    </comment>
+                </method1>
+
+                <method1 name="setEtaWidth"
+                         return="void"
+                         args="['double']"
+                         vars="['ew']"
+                         qual="">
+void setEtaWidth(double ew);
+                </method1>
+
+                <method1 name="seed"
+                         return="const BasicClusterRef&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const BasicClusterRef&amp; seed() const;
+                    <comment>
+        seed BasicCluster
+                    </comment>
+                </method1>
+
+                <method1 name="clustersBegin"
+                         return="basicCluster_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+basicCluster_iterator clustersBegin() const;
+                    <comment>
+        fist iterator over BasicCluster constituents
+                    </comment>
+                </method1>
+
+                <method1 name="clustersEnd"
+                         return="basicCluster_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+basicCluster_iterator clustersEnd() const;
+                    <comment>
+        last iterator over BasicCluster constituents
+                    </comment>
+                </method1>
+
+                <method1 name="clustersSize"
+                         return="size_t"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+size_t clustersSize() const;
+                    <comment>
+        number of BasicCluster constituents
+                    </comment>
+                </method1>
+
+                <method2 name="getHitsByDetId"
+                         return="std::vector&lt;DetId&gt;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+std::vector&lt;DetId&gt; getHitsByDetId() const;
+                    <comment>
+        list of used xtals by DetId
+                    </comment>
+                </method2>
+
+                <method1 name="setSeed"
+                         return="void"
+                         args="['const BasicClusterRef&amp;']"
+                         vars="['r']"
+                         qual="">
+void setSeed(const BasicClusterRef&amp; r);
+                    <comment>
+        set reference to seed BasicCluster
+                    </comment>
+                </method1>
+
+                <method1 name="add"
+                         return="void"
+                         args="['const BasicClusterRef&amp;']"
+                         vars="['r']"
+                         qual="">
+void add(const BasicClusterRef&amp; r);
+                    <comment>
+        add reference to constituent BasicCluster
+                    </comment>
+                </method1>
+
+            </section>
+
+            <typemap name="Point"
+                     value="math::XYZPoint"
+                     type="typedef"/>
+
+        </class>
+    </namespace>
+
+    <type name="CaloCluster"/>
+    <type name="basicCluster_iterator"/>
+    <type name="const BasicClusterRef&amp;"/>
+    <type name="const BasicClusterRefVector&amp;"/>
+    <type name="const Point&amp;"/>
+    <type name="double"/>
+    <type name="reco::SuperCluster"/>
+    <type name="size_t"/>
+    <type name="std::vector&lt;DetId&gt;"/>
+    <type name="void"/>
+</header>

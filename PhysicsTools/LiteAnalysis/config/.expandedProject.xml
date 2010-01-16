@@ -1,0 +1,212 @@
+<?xml version="1.0"?>
+<!-- ====================================================================== -->
+<!-- Project file for Python module cmssw                                   -->
+<!-- Created December, 2009 Harrison B. Prosper                             -->
+<!-- ====================================================================== -->
+<project name="cmssw">
+
+  <globals basepath="$CMSSW_RELEASE_BASE/src"
+           version="CMSSW_3_3_6"/>
+
+  <options h2xmlflags="-I$CMSSW_RELEASE_BASE/src" 
+           xml2bflags="-I$CMSSW_RELEASE_BASE/src"/>
+
+  <component name="beamspot" module="DataFormats/BeamSpot">
+    <headers name="beamspot" version="CMSSW_3_3_6"
+             basepath="$CMSSW_RELEASE_BASE/src/DataFormats/BeamSpot/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="btaureco" module="DataFormats/BTauReco">
+    <headers name="btaureco" version="CMSSW_3_3_6"
+             basepath="$CMSSW_RELEASE_BASE/src/DataFormats/BTauReco/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="caltowers" module="DataFormats/CaloTowers">
+    <headers name="caltowers" version="CMSSW_3_3_6"
+             basepath="$CMSSW_RELEASE_BASE/src/DataFormats/CaloTowers/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="common" module="DataFormats/Common">
+    <headers name="common" version="CMSSW_3_3_6"
+             basepath="$CMSSW_RELEASE_BASE/src/DataFormats/Common/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="calorechit" module="DataFormats/CaloRecHit">
+    <headers name="calorechit" version="CMSSW_3_3_6"
+             basepath="$CMSSW_RELEASE_BASE/src/DataFormats/CaloRecHit/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="candidate" module="DataFormats/Candidate">
+    <headers name="candidate" version="CMSSW_3_3_6"
+             basepath="$CMSSW_RELEASE_BASE/src/DataFormats/Candidate/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="egammacandidates" module="DataFormats/EgammaCandidates">
+    <headers name="egammacandidates" version="CMSSW_3_3_6"
+             basepath="$CMSSW_RELEASE_BASE/src/DataFormats/EgammaCandidates/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="egammareco" module="DataFormats/EgammaReco">
+    <headers name="egammareco" version="CMSSW_3_3_6"
+             basepath="$CMSSW_RELEASE_BASE/src/DataFormats/EgammaReco/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="gsftrackreco" module="DataFormats/GsfTrackReco">
+    <headers name="gsftrackreco" version="CMSSW_3_3_6"
+             basepath="$CMSSW_RELEASE_BASE/src/DataFormats/GsfTrackReco/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="jetreco" module="DataFormats/JetReco">
+    <headers name="jetreco" version="CMSSW_3_3_6"
+             basepath="$CMSSW_RELEASE_BASE/src/DataFormats/JetReco/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="l1globalcalotrigger" module="DataFormats/L1GlobalCaloTrigger">
+    <headers name="l1globalcalotrigger" version="CMSSW_3_3_6"
+             basepath="$CMSSW_RELEASE_BASE/src/DataFormats/L1GlobalCaloTrigger/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="l1trigger" module="DataFormats/L1Trigger">
+    <headers name="l1trigger" version="CMSSW_3_3_6"
+             basepath="$CMSSW_RELEASE_BASE/src/DataFormats/L1Trigger/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="metreco" module="DataFormats/METReco">
+    <headers name="metreco" version="CMSSW_3_3_6"
+             basepath="$CMSSW_RELEASE_BASE/src/DataFormats/METReco/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="muonreco" module="DataFormats/MuonReco">
+    <headers name="muonreco" version="CMSSW_3_3_6"
+             basepath="$CMSSW_RELEASE_BASE/src/DataFormats/MuonReco/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="particleflowcandidate" module="DataFormats/ParticleFlowCandidate">
+    <headers name="particleflowcandidate" version="CMSSW_3_3_6"
+             basepath="$CMSSW_RELEASE_BASE/src/DataFormats/ParticleFlowCandidate/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="particleflowreco" module="DataFormats/ParticleFlowReco">
+    <headers name="particleflowreco" version="CMSSW_3_3_6"
+             basepath="$CMSSW_RELEASE_BASE/src/DataFormats/ParticleFlowReco/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="patcandidates" module="DataFormats/PatCandidates">
+    <headers name="patcandidates" version="CMSSW_3_3_6"
+             basepath="$CMSSW_RELEASE_BASE/src/DataFormats/PatCandidates/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="recocandidate" module="DataFormats/RecoCandidate">
+    <headers name="recocandidate" version="CMSSW_3_3_6"
+             basepath="$CMSSW_RELEASE_BASE/src/DataFormats/RecoCandidate/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="scalers" module="DataFormats/Scalers">
+    <headers name="scalers" version="CMSSW_3_3_6"
+             basepath="$CMSSW_RELEASE_BASE/src/DataFormats/Scalers/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="taureco" module="DataFormats/TauReco">
+    <headers name="taureco" version="CMSSW_3_3_6"
+             basepath="$CMSSW_RELEASE_BASE/src/DataFormats/TauReco/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="trackreco" module="DataFormats/TrackReco">
+    <headers name="trackreco" version="CMSSW_3_3_6"
+             basepath="$CMSSW_RELEASE_BASE/src/DataFormats/TrackReco/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="trajectoryseed" module="DataFormats/TrajectorySeed">
+    <headers name="trajectoryseed" version="CMSSW_3_3_6"
+             basepath="$CMSSW_RELEASE_BASE/src/DataFormats/TrajectorySeed/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="vertexreco" module="DataFormats/VertexReco">
+    <headers name="vertexreco" version="CMSSW_3_3_6"
+             basepath="$CMSSW_RELEASE_BASE/src/DataFormats/VertexReco/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="trackcandidate" module="DataFormats/TrackCandidate">
+    <headers name="trackcandidate" version="CMSSW_3_3_6"
+             basepath="$CMSSW_RELEASE_BASE/src/DataFormats/TrackCandidate/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+
+  <component name="hepmc" module="DataFormats/HepMCCandidate">
+    <headers name="hepmc" version="CMSSW_3_3_6"
+             basepath="$CMSSW_RELEASE_BASE/src/DataFormats/HepMCCandidate/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="hltreco" module="DataFormats/HLTReco">
+    <headers name="hltreco" version="CMSSW_3_3_6"
+             basepath="$CMSSW_RELEASE_BASE/src/DataFormats/HLTReco/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+
+  <component name="detid" module="DataFormats/DetId">
+    <headers name="detid" version="CMSSW_3_3_6"
+             basepath="$CMSSW_RELEASE_BASE/src/DataFormats/DetId/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+  <component name="math" module="DataFormats/Math">
+    <headers name="basics" version="CMSSW_3_3_6"
+             basepath="$CMSSW_RELEASE_BASE/src/DataFormats/Math/interface">
+      <header name=".*\.h"/>
+    </headers>
+  </component>
+
+</project>

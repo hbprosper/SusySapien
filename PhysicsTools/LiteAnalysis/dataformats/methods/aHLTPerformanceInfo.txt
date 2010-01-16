@@ -1,0 +1,9 @@
+double	longestModuleCPUTime()
+double	longestModuleTime()
+size_t	numberOfModules()
+size_t	numberOfPaths()
+double	totalCPUTime()
+double	totalPathCPUTime(const size_t x)
+double	totalPathTime(const size_t x)
+double	totalTime()
+

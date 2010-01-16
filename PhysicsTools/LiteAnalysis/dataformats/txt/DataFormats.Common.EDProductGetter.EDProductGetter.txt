@@ -1,0 +1,19 @@
+Class:
+	edm::EDProductGetter
+
+Header:
+	DataFormats/Common/interface/EDProductGetter.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:55 2010	lsclass.py $Revision:$
+
+Methods from edm::EDProductGetter
+
+	-o- getIt
+		Return: EDProduct const*
+		Arguments: ProductID const&	
+
+	-o- instance
+		Return: static EDProductGetter const*
+		Arguments: void	
+

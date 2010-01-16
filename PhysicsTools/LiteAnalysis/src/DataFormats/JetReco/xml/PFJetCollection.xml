@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: PFJetCollection.xml
+  Created:  Thu Jan 14 22:47:19 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/JetReco/interface/PFJetCollection.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/JetReco/interface/PFJetCollection.h">
+
+    <include name="&lt;vector&gt;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+    <include name="&quot;DataFormats/JetReco/interface/PFJet.h&quot;"/>
+
+    <namespace name="reco">
+        <forward name="PFJet"/>
+        <typedef name="PFJetCollection"
+                 value="std::vector&lt;PFJet&gt;">
+typedef std::vector&lt;PFJet&gt; PFJetCollection;
+            <comment>
+      collection of PFJet objects
+            </comment>
+        </typedef>
+
+        <typedef name="PFJetRef"
+                 value="edm::Ref&lt;PFJetCollection&gt;">
+typedef edm::Ref&lt;PFJetCollection&gt; PFJetRef;
+            <comment>
+      edm references
+            </comment>
+        </typedef>
+
+        <typedef name="PFJetRefVector"
+                 value="edm::RefVector&lt;PFJetCollection&gt;">
+typedef edm::RefVector&lt;PFJetCollection&gt; PFJetRefVector;
+        </typedef>
+
+        <typedef name="PFJetRefProd"
+                 value="edm::RefProd&lt;PFJetCollection&gt;">
+typedef edm::RefProd&lt;PFJetCollection&gt; PFJetRefProd;
+        </typedef>
+
+    </namespace>
+
+</header>

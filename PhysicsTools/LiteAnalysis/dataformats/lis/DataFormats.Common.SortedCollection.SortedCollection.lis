@@ -1,0 +1,11 @@
+edm::SortedCollection<T, SORT>|bool|empty|void
+edm::SortedCollection<T, SORT>|typename std::vector<T>::size_type|size|void
+edm::SortedCollection<T, SORT>|typename std::vector<T>::size_type|capacity|void
+edm::SortedCollection<T, SORT>|typename std::vector<T>::const_iterator|begin|void
+edm::SortedCollection<T, SORT>|typename std::vector<T>::const_iterator|end|void
+edm::SortedCollection<T, SORT>|typename std::vector<T>::iterator|begin|void
+edm::SortedCollection<T, SORT>|typename std::vector<T>::iterator|end|void
+edm::SortedCollection<T, SORT>|typename std::vector<T>::const_reference|front|void
+edm::SortedCollection<T, SORT>|typename std::vector<T>::reference|front|void
+edm::SortedCollection<T, SORT>|typename std::vector<T>::const_reference|back|void
+edm::SortedCollection<T, SORT>|typename std::vector<T>::reference|back|void

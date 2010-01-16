@@ -1,0 +1,15 @@
+Class:
+	edm::RefCoreStreamer
+
+Header:
+	DataFormats/Common/interface/RefCoreStreamer.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:45 2010	lsclass.py $Revision:$
+
+Methods from edm::RefCoreStreamer
+
+	-o- setProductGetter
+		Return: void
+		Arguments: EDProductGetter const*	ep
+

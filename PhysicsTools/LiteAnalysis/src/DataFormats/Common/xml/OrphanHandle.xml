@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: OrphanHandle.xml
+  Created:  Thu Jan 14 22:46:12 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Common/interface/OrphanHandle.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/OrphanHandle.h">
+
+    <include name="&quot;DataFormats/Provenance/interface/ProductID.h&quot;"/>
+    <include name="&quot;FWCore/Utilities/interface/EDMException.h&quot;"/>
+    <include name="&lt;cassert&gt;"/>
+
+    <namespace name="edm">
+        <forward name="EDProduct"/>
+
+        <class name="OrphanHandle"
+               fullname="edm::OrphanHandle&lt;T&gt;"
+               module="DataFormats.Common"
+               project=""
+               type="template"
+               template="template&lt;typename T&gt;">
+
+            <section name="public">
+                <typedef name="element_type"
+                         value="T">
+typedef T element_type;
+                </typedef>
+
+                <constructor name="OrphanHandle"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+OrphanHandle();
+                    <comment>
+       Default constructed handles are invalid.
+                    </comment>
+                </constructor>
+
+                <copyconstructor name="OrphanHandle"
+                                 return=""
+                                 args="['const OrphanHandle&lt;T&gt;&amp;']"
+                                 vars="['h']"
+                                 qual="">
+OrphanHandle(const OrphanHandle&lt;T&gt;&amp; h);
+                </copyconstructor>
+
+                <constructor name="OrphanHandle"
+                             return=""
+                             args="['T const*','ProductID const&amp;']"
+                             vars="['prod','id']"
+                             qual="">
+OrphanHandle(T const* prod, ProductID const&amp; id);
+                </constructor>
+
+                <destructor name="~OrphanHandle"
+                            return=""
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+~OrphanHandle();
+                </destructor>
+
+                <method2 name="swap"
+                         return="void"
+                         args="['OrphanHandle&lt;T&gt;&amp;']"
+                         vars="['other']"
+                         qual="">
+void swap(OrphanHandle&lt;T&gt;&amp; other);
+                </method2>
+
+                <operator name="operator="
+                          return="OrphanHandle&lt;T&gt;&amp;"
+                          args="['const OrphanHandle&lt;T&gt;&amp;']"
+                          vars="['rhs']"
+                          qual="">
+OrphanHandle&lt;T&gt;&amp; operator=(const OrphanHandle&lt;T&gt;&amp; rhs);
+                </operator>
+
+                <method1 name="isValid"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isValid() const;
+                </method1>
+
+                <method1 name="product"
+                         return="T const*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+T const* product() const;
+                </method1>
+
+                <operator name="operator-&gt;"
+                          return="T const*"
+                          args="['void']"
+                          vars="['']"
+                          qual="const">
+T const* operator-&gt;() const;
+                </operator>
+
+                <operator name="operator*"
+                          return="T const&amp;"
+                          args="['void']"
+                          vars="['']"
+                          qual="const">
+T const&amp; operator*() const;
+                </operator>
+
+                <method1 name="id"
+                         return="ProductID"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+ProductID id() const;
+                </method1>
+
+                <method1 name="clear"
+                         return="void"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+void clear();
+                </method1>
+
+            </section>
+
+            <typemap name="element_type"
+                     value="T"
+                     type="typedef"/>
+
+        </class>
+    </namespace>
+
+    <type name="OrphanHandle&lt;T&gt;&amp;"/>
+    <type name="ProductID"/>
+    <type name="ProductID const&amp;"/>
+    <type name="bool"/>
+    <type name="const OrphanHandle&lt;T&gt;&amp;"/>
+    <type name="edm::OrphanHandle&lt;T&gt;"/>
+    <type name="void"/>
+</header>

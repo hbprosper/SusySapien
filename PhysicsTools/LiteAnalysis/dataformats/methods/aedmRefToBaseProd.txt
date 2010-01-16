@@ -1,0 +1,4 @@
+bool	hasCache()
+bool	isNonnull()
+bool	isNull()
+

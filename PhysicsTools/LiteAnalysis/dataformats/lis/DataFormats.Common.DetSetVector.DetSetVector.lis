@@ -1,0 +1,6 @@
+edm::DetSetVector<T>|bool|empty|void
+edm::DetSetVector<T>|typename std::vector<detset>::size_type|size|void
+edm::DetSetVector<T>|typename std::vector<detset>::iterator|begin|void
+edm::DetSetVector<T>|typename collection_type::const_iterator|begin|void
+edm::DetSetVector<T>|typename std::vector<detset>::iterator|end|void
+edm::DetSetVector<T>|typename collection_type::const_iterator|end|void

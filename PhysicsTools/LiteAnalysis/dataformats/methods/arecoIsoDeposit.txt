@@ -1,0 +1,4 @@
+double	candEnergy()
+double	eta()
+double	phi()
+

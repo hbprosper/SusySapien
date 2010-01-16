@@ -1,0 +1,191 @@
+\hypertarget{build_8C-example}{
+\section{build.C}
+}
+In this example, we model the 3-D distribution of jet data $x = (p_t, \eta, \phi)$ using some of the data in the file jetdata.dat. After setting up Root, the creation of the \hyperlink{classKDE}{KDE} is done with the command 
+
+\footnotesize\begin{verbatim}        root -l build.C
+\end{verbatim}
+\normalsize
+If successful, this should: 
+
+\begin{enumerate}
+\item run Minuit to find better choices for the 3 bandwidths\item create the figures\begin{itemize}
+\item fig\_\-pt.gif\item fig\_\-eta.gif\item fig\_\-phi.gif\end{itemize}
+\item create the self-contained c++ source file\begin{itemize}
+\item jetdata.cpp\end{itemize}
+\end{enumerate}
+
+
+
+
+\footnotesize\begin{verbatim}//-----------------------------------------------------------------------------
+// File:        build.C
+// Description: Model a 3-D density
+// Created:     01-Nov-2009 Harrison B. Prosper, Panjab University, Chandigarh
+//-----------------------------------------------------------------------------
+void 
+build()
+{
+  gROOT->Reset();
+
+  cout  << "\n\n\t\t*** build KDE ***\n" << endl;
+ 
+  // Load utilities
+  gROOT->ProcessLine(".L util.C");
+
+  setStyle();
+
+  //------------------------------------
+  // Get data
+  //------------------------------------
+  int ndim = 3;
+  vector<double> pt;
+  vector<double> eta;
+  vector<double> phi;
+  loaddata("jetdata.dat", 20000, pt, eta, phi);
+
+  // Divide data into half: half to build KDE,
+  // half to test it
+  int Npoint = pt.size()/2;
+  
+  //------------------------------------
+  // Book histograms
+  // NB: The names of the histograms
+  // should match (exactly) the names
+  // of the variables passed to the
+  // KDE object. See below.
+  //------------------------------------
+  int NBIN=50;
+
+  TCanvas* cPt  = new TCanvas("fig_pt",  "Pt",    0,  10, 500, 500);
+  TH1F* hpt  = bkhist("pt", "p_{T}", "", NBIN, 0, 1, kBlack, 1, kBlue);
+
+  TCanvas* cEta = new TCanvas("fig_eta", "Eta", 400,  10, 500, 500);
+  TH1F* heta = bkhist("eta", "#eta", "", NBIN, 0, 1, kBlack, 1, kBlue);
+
+  TCanvas* cPhi = new TCanvas("fig_phi", "Phi", 800,  10, 500, 500);
+  TH1F* hphi = bkhist("phi", "#phi", "", NBIN, 0, 1, kBlack, 1, kBlue);
+
+  //------------------------------------
+  // Fill histograms
+  // Use the second half of the data
+  //------------------------------------
+  for(int i=Npoint; i < (int)pt.size(); i++)
+    {
+      hpt->Fill(pt[i]);
+      heta->Fill(eta[i]);
+      hphi->Fill(phi[i]);
+
+      if ( i % 100 == 0 )
+        {
+          cPt->cd();
+          hpt->Draw("EP");
+          cPt->Update();
+
+          cEta->cd();
+          heta->Draw("EP");
+          cEta->Update();
+
+          cPhi->cd();
+          hphi->Draw("EP");
+          cPhi->Update();
+        }
+    }
+
+  //------------------------------------
+  // Construct KDE using 1st half of
+  // data.
+  // NB: Note that the variables given
+  // to the KDE object matches the
+  // names of the corresponding 1-D
+  // histograms.
+  //------------------------------------
+  cout << endl << "Constructing KDE with " << Npoint << " points" << endl;
+
+  KDE kde("pt eta phi");
+
+  vector<double> point(ndim);
+
+  for (int i=0; i < Npoint; i++)
+    {
+      point[0] = pt[i];
+      point[1] = eta[i];
+      point[2] = phi[i];
+      kde.add(point);
+    }
+
+  //------------------------------------
+  // Try to improve bandwidths
+  // NB: Need to pass all three 
+  // histograms before call to optimize
+  // since the latter uses them in the
+  // optimization.
+  //------------------------------------
+  kde.add(hpt);
+  kde.add(heta);
+  kde.add(hphi);
+  kde.optimize();
+
+  //------------------------------------
+  // Write a self-contained c++ function 
+  // that encapsulates the KDE that has 
+  // just been created
+  //------------------------------------
+  kde.write("jetdata");
+
+  //------------------------------------
+  // Compute KDE at centers of bins, 
+  // then overlay on histograms
+  //------------------------------------
+  double xpt[1000],  dpt[1000];
+  double xeta[1000], deta[1000];
+  double xphi[1000], dphi[1000];
+
+  for(int j=0; j < NBIN; j++)
+    {
+      int bin=j+1;
+      double width;
+      double norm;
+      double x;
+
+      width   = hpt->GetBinWidth(bin);
+      norm    = hpt->Integral() * width;
+      xpt[j]  = hpt->GetBinLowEdge(bin) + 0.5*width;
+      dpt[j]  = norm * kde(xpt[j], "pt");
+
+
+      width   = heta->GetBinWidth(bin);
+      norm    = heta->Integral() * width;
+      xeta[j] = heta->GetBinLowEdge(bin) + 0.5*width;
+      deta[j] = norm * kde(xeta[j], "eta");
+
+      width   = hphi->GetBinWidth(bin);
+      norm    = hphi->Integral() * width;
+      xphi[j] = hphi->GetBinLowEdge(bin) + 0.5*width;
+      dphi[j] = norm * kde(xphi[j], "phi");
+    }
+
+  TGraph* gpt  = bkgraph(NBIN, xpt,  dpt,  "p_{T}", "", 0, 1, kRed);
+  cPt->cd();
+  hpt->Draw("EP");
+  gpt->Draw("L same");
+  cPt->Update();
+  cPt->SaveAs(".gif");
+
+  TGraph* geta = bkgraph(NBIN, xeta, deta, "#eta",  "", 0, 1, kRed);
+  cEta->cd();
+  heta->Draw("EP");
+  geta->Draw("L same");
+  cEta->Update();
+  cEta->SaveAs(".gif");
+
+  TGraph* gphi = bkgraph(NBIN, xphi, dphi, "#phi",  "", 0, 1, kRed);
+  cPhi->cd();
+  hphi->Draw("EP");
+  gphi->Draw("L same");
+  cPhi->Update();
+  cPhi->SaveAs(".gif");
+}
+\end{verbatim}
+\normalsize
+ 

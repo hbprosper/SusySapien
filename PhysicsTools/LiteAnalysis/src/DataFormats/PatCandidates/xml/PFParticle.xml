@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: PFParticle.xml
+  Created:  Thu Jan 14 22:48:17 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/PatCandidates/interface/PFParticle.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/PatCandidates/interface/PFParticle.h">
+
+    <include name="&quot;DataFormats/ParticleFlowCandidate/interface/PFCandidate.h&quot;"/>
+    <include name="&quot;DataFormats/PatCandidates/interface/PATObject.h&quot;"/>
+
+    <namespace name="pat">
+        <comment>
+   Define typedefs for convenience
+        </comment>
+        <forward name="PFParticle"/>
+        <typedef name="PFParticleCollection"
+                 value="std::vector&lt;PFParticle&gt;">
+typedef std::vector&lt;PFParticle&gt; PFParticleCollection;
+        </typedef>
+
+        <typedef name="PFParticleRef"
+                 value="edm::Ref&lt;PFParticleCollection&gt;">
+typedef edm::Ref&lt;PFParticleCollection&gt; PFParticleRef;
+        </typedef>
+
+        <typedef name="PFParticleRefVector"
+                 value="edm::RefVector&lt;PFParticleCollection&gt;">
+typedef edm::RefVector&lt;PFParticleCollection&gt; PFParticleRefVector;
+        </typedef>
+
+    </namespace>
+
+    <namespace name="pat">
+        <typedef name="PFParticleType"
+                 value="reco::PFCandidate">
+typedef reco::PFCandidate PFParticleType;
+        </typedef>
+
+
+        <class name="PFParticle"
+               fullname="pat::PFParticle"
+               module="DataFormats.PatCandidates"
+               project=""
+               type="regular">
+            <baseclass name="public PATObject&lt;PFParticleType&gt;"/>
+
+            <section name="public">
+                <constructor name="PFParticle"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+PFParticle();
+                </constructor>
+
+                <constructor name="PFParticle"
+                             return=""
+                             args="['const edm::RefToBase&lt;PFParticleType&gt;&amp;']"
+                             vars="['aPFParticle']"
+                             qual="">
+PFParticle(const edm::RefToBase&lt;PFParticleType&gt;&amp; aPFParticle);
+                </constructor>
+
+                <method1 name="clone"
+                         return="virtual PFParticle*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual PFParticle* clone() const;
+                </method1>
+
+            </section>
+
+        </class>
+    </namespace>
+
+    <type name="PATObject&lt;PFParticleType&gt;"/>
+    <type name="PFParticle*"/>
+    <type name="const edm::RefToBase&lt;PFParticleType&gt;&amp;"/>
+    <type name="pat::PFParticle"/>
+    <type name="void"/>
+</header>

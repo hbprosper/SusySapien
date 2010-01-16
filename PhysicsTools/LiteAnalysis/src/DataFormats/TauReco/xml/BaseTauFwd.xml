@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: BaseTauFwd.xml
+  Created:  Thu Jan 14 22:48:37 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/TauReco/interface/BaseTauFwd.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/TauReco/interface/BaseTauFwd.h">
+
+    <include name="&lt;vector&gt;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+
+    <namespace name="reco">
+        <forward name="BaseTau"/>
+        <typedef name="BaseTauCollection"
+                 value="std::vector&lt;BaseTau&gt;">
+typedef std::vector&lt;BaseTau&gt; BaseTauCollection;
+            <comment>
+      collection of BaseTau objects
+            </comment>
+        </typedef>
+
+        <typedef name="BaseTauRef"
+                 value="edm::Ref&lt;BaseTauCollection&gt;">
+typedef edm::Ref&lt;BaseTauCollection&gt; BaseTauRef;
+            <comment>
+      presistent reference to a BaseTau
+            </comment>
+        </typedef>
+
+        <typedef name="BaseTauRefProd"
+                 value="edm::RefProd&lt;BaseTauCollection&gt;">
+typedef edm::RefProd&lt;BaseTauCollection&gt; BaseTauRefProd;
+            <comment>
+      references to BaseTau collection
+            </comment>
+        </typedef>
+
+        <typedef name="BaseTauRefVector"
+                 value="edm::RefVector&lt;BaseTauCollection&gt;">
+typedef edm::RefVector&lt;BaseTauCollection&gt; BaseTauRefVector;
+            <comment>
+      vector of references to BaseTau objects all in the same collection
+            </comment>
+        </typedef>
+
+        <typedef name="basetau_iterator"
+                 value="BaseTauRefVector::iterator">
+typedef BaseTauRefVector::iterator basetau_iterator;
+            <comment>
+      iterator over a vector of references to BaseTau objects all in the same collection
+            </comment>
+        </typedef>
+
+    </namespace>
+
+</header>

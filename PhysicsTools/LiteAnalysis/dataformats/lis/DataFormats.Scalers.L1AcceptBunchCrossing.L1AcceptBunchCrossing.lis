@@ -1,0 +1,6 @@
+L1AcceptBunchCrossing|std::string|name|void
+L1AcceptBunchCrossing|bool|empty|void
+L1AcceptBunchCrossing|int|l1AcceptOffset|void
+L1AcceptBunchCrossing|unsigned int|orbitNumber|void
+L1AcceptBunchCrossing|unsigned int|bunchCrossing|void
+L1AcceptBunchCrossing|unsigned int|eventType|void

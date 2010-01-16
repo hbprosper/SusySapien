@@ -1,0 +1,517 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: CaloJet.xml
+  Created:  Thu Jan 14 22:47:11 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/JetReco/interface/CaloJet.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/JetReco/interface/CaloJet.h">
+
+    <include name="&quot;DataFormats/JetReco/interface/Jet.h&quot;"/>
+    <include name="&quot;DataFormats/CaloTowers/interface/CaloTowerCollection.h&quot;"/>
+
+    <namespace name="reco">
+
+        <class name="CaloJet"
+               fullname="reco::CaloJet"
+               module="DataFormats.JetReco"
+               project=""
+               type="regular">
+            <baseclass name="public Jet"/>
+
+            <section name="public">
+
+                <class name="Specific"
+                       fullname="reco::CaloJet::Specific"
+                       module="DataFormats.JetReco"
+                       project=""
+                       type="regular struct">
+
+                    <section>
+                        <constructor name="Specific"
+                                     return=""
+                                     args="['void']"
+                                     vars="['']"
+                                     qual="">
+Specific ();
+                        </constructor>
+
+                        <member>
+float mMaxEInEmTowers;
+                            <comment>
+        Maximum energy in EM towers
+                            </comment>
+                        </member>
+
+                        <member>
+float mMaxEInHadTowers;
+                            <comment>
+        Maximum energy in HCAL towers
+                            </comment>
+                        </member>
+
+                        <member>
+float mHadEnergyInHO;
+                            <comment>
+        Hadronic nergy fraction in HO
+                            </comment>
+                        </member>
+
+                        <member>
+float mHadEnergyInHB;
+                            <comment>
+        Hadronic energy in HB
+                            </comment>
+                        </member>
+
+                        <member>
+float mHadEnergyInHF;
+                            <comment>
+        Hadronic energy in HF
+                            </comment>
+                        </member>
+
+                        <member>
+float mHadEnergyInHE;
+                            <comment>
+        Hadronic energy in HE
+                            </comment>
+                        </member>
+
+                        <member>
+float mEmEnergyInEB;
+                            <comment>
+        Em energy in EB
+                            </comment>
+                        </member>
+
+                        <member>
+float mEmEnergyInEE;
+                            <comment>
+        Em energy in EE
+                            </comment>
+                        </member>
+
+                        <member>
+float mEmEnergyInHF;
+                            <comment>
+        Em energy in HF
+                            </comment>
+                        </member>
+
+                        <member>
+float mEnergyFractionHadronic;
+                            <comment>
+        Hadronic energy fraction
+                            </comment>
+                        </member>
+
+                        <member>
+float mEnergyFractionEm;
+                            <comment>
+        Em energy fraction
+                            </comment>
+                        </member>
+
+                        <member>
+float mTowersArea;
+                            <comment>
+        Area of contributing CaloTowers
+                            </comment>
+                        </member>
+
+                    </section>
+
+                    <typemap name="Specific"
+                             value="reco::CaloJet::Specific"
+                             type="class"/>
+                    <typemap name="mEmEnergyInEB"
+                             value="reco::CaloJet::Specific::mEmEnergyInEB"
+                             type="member"/>
+                    <typemap name="mEmEnergyInEE"
+                             value="reco::CaloJet::Specific::mEmEnergyInEE"
+                             type="member"/>
+                    <typemap name="mEmEnergyInHF"
+                             value="reco::CaloJet::Specific::mEmEnergyInHF"
+                             type="member"/>
+                    <typemap name="mEnergyFractionEm"
+                             value="reco::CaloJet::Specific::mEnergyFractionEm"
+                             type="member"/>
+                    <typemap name="mEnergyFractionHadronic"
+                             value="reco::CaloJet::Specific::mEnergyFractionHadronic"
+                             type="member"/>
+                    <typemap name="mHadEnergyInHB"
+                             value="reco::CaloJet::Specific::mHadEnergyInHB"
+                             type="member"/>
+                    <typemap name="mHadEnergyInHE"
+                             value="reco::CaloJet::Specific::mHadEnergyInHE"
+                             type="member"/>
+                    <typemap name="mHadEnergyInHF"
+                             value="reco::CaloJet::Specific::mHadEnergyInHF"
+                             type="member"/>
+                    <typemap name="mHadEnergyInHO"
+                             value="reco::CaloJet::Specific::mHadEnergyInHO"
+                             type="member"/>
+                    <typemap name="mMaxEInEmTowers"
+                             value="reco::CaloJet::Specific::mMaxEInEmTowers"
+                             type="member"/>
+                    <typemap name="mMaxEInHadTowers"
+                             value="reco::CaloJet::Specific::mMaxEInHadTowers"
+                             type="member"/>
+                    <typemap name="mTowersArea"
+                             value="reco::CaloJet::Specific::mTowersArea"
+                             type="member"/>
+
+                </class>
+                <constructor name="CaloJet"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+CaloJet();
+                    <comment>
+      Default constructor
+                    </comment>
+                </constructor>
+
+                <constructor name="CaloJet"
+                             return=""
+                             args="['const LorentzVector&amp;','const Point&amp;','const Specific&amp;','const Jet::Constituents&amp;']"
+                             vars="['fP4','fVertex','fSpecific','fConstituents']"
+                             qual="">
+CaloJet(const LorentzVector&amp; fP4, const Point&amp; fVertex, const Specific&amp; fSpecific, const Jet::Constituents&amp; fConstituents);
+                    <comment>
+      Constructor from values
+                    </comment>
+                </constructor>
+
+                <constructor name="CaloJet"
+                             return=""
+                             args="['const LorentzVector&amp;','const Point&amp;','const Specific&amp;']"
+                             vars="['fP4','fVertex','fSpecific']"
+                             qual="">
+CaloJet(const LorentzVector&amp; fP4, const Point&amp; fVertex, const Specific&amp; fSpecific);
+                    <comment>
+      Constructor from values
+                    </comment>
+                </constructor>
+
+                <constructor name="CaloJet"
+                             return=""
+                             args="['const LorentzVector&amp;','const Specific&amp;','const Jet::Constituents&amp;']"
+                             vars="['fP4','fSpecific','fConstituents']"
+                             qual="">
+CaloJet(const LorentzVector&amp; fP4, const Specific&amp; fSpecific, const Jet::Constituents&amp; fConstituents);
+                    <comment>
+      backward compatible, vertex=(0,0,0)
+                    </comment>
+                </constructor>
+
+                <destructor name="~CaloJet"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~CaloJet();
+                </destructor>
+
+                <method1 name="maxEInEmTowers"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float maxEInEmTowers() const;
+                    <comment>
+      Returns the maximum energy deposited in ECAL towers
+                    </comment>
+                </method1>
+
+                <method1 name="maxEInHadTowers"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float maxEInHadTowers() const;
+                    <comment>
+      Returns the maximum energy deposited in HCAL towers
+                    </comment>
+                </method1>
+
+                <method1 name="energyFractionHadronic"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float energyFractionHadronic () const;
+                    <comment>
+      Returns the jet hadronic energy fraction
+                    </comment>
+                </method1>
+
+                <method1 name="emEnergyFraction"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float emEnergyFraction() const;
+                    <comment>
+      Returns the jet electromagnetic energy fraction
+                    </comment>
+                </method1>
+
+                <method1 name="hadEnergyInHB"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float hadEnergyInHB() const;
+                    <comment>
+      Returns the jet hadronic energy in HB
+                    </comment>
+                </method1>
+
+                <method1 name="hadEnergyInHO"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float hadEnergyInHO() const;
+                    <comment>
+      Returns the jet hadronic energy in HO
+                    </comment>
+                </method1>
+
+                <method1 name="hadEnergyInHE"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float hadEnergyInHE() const;
+                    <comment>
+      Returns the jet hadronic energy in HE
+                    </comment>
+                </method1>
+
+                <method1 name="hadEnergyInHF"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float hadEnergyInHF() const;
+                    <comment>
+      Returns the jet hadronic energy in HF
+                    </comment>
+                </method1>
+
+                <method1 name="emEnergyInEB"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float emEnergyInEB() const;
+                    <comment>
+      Returns the jet electromagnetic energy in EB
+                    </comment>
+                </method1>
+
+                <method1 name="emEnergyInEE"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float emEnergyInEE() const;
+                    <comment>
+      Returns the jet electromagnetic energy in EE
+                    </comment>
+                </method1>
+
+                <method1 name="emEnergyInHF"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float emEnergyInHF() const;
+                    <comment>
+      Returns the jet electromagnetic energy extracted from HF
+                    </comment>
+                </method1>
+
+                <method1 name="towersArea"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float towersArea() const;
+                    <comment>
+      Returns area of contributing towers
+                    </comment>
+                </method1>
+
+                <method1 name="n90"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int n90() const;
+                    <comment>
+      Returns the number of constituents carrying a 90% of the total Jet energy
+                    </comment>
+                </method1>
+
+                <method1 name="n60"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int n60() const;
+                    <comment>
+      Returns the number of constituents carrying a 60% of the total Jet energy
+                    </comment>
+                </method1>
+
+                <method1 name="physicsEtaQuick"
+                         return="float"
+                         args="['float']"
+                         vars="['fZVertex']"
+                         qual="const">
+float physicsEtaQuick (float fZVertex) const;
+                    <comment>
+      Physics Eta (use jet Z and kinematics only)
+                    </comment>
+                </method1>
+
+                <method1 name="physicsEta"
+                         return="float"
+                         args="['float']"
+                         vars="['fZVertex']"
+                         qual="const">
+float physicsEta (float fZVertex) const;
+                    <comment>
+      Physics Eta (use jet Z and kinematics only)
+                    </comment>
+                </method1>
+
+                <method1 name="physicsP4"
+                         return="LorentzVector"
+                         args="['float']"
+                         vars="['fZVertex']"
+                         qual="const">
+LorentzVector physicsP4 (float fZVertex) const;
+                    <comment>
+      Physics p4 (use jet Z and kinematics only)
+                    </comment>
+                </method1>
+
+                <method1 name="physicsEtaDetailed"
+                         return="float"
+                         args="['float']"
+                         vars="['fZVertex']"
+                         qual="const">
+float physicsEtaDetailed (float fZVertex) const;
+                    <comment>
+      Physics Eta (loop over constituents)
+                    </comment>
+                </method1>
+
+                <method1 name="detectorEta"
+                         return="float"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+float detectorEta () const;
+                    <comment>
+      Detector Eta (default for CaloJets)
+                    </comment>
+                </method1>
+
+                <method1 name="getCaloConstituent"
+                         return="virtual CaloTowerPtr"
+                         args="['unsigned']"
+                         vars="['fIndex']"
+                         qual="const">
+virtual CaloTowerPtr getCaloConstituent (unsigned fIndex) const;
+                    <comment>
+      get specific constituent
+                    </comment>
+                </method1>
+
+                <method2 name="getCaloConstituents"
+                         return="virtual std::vector&lt;CaloTowerPtr&gt;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual std::vector&lt;CaloTowerPtr&gt; getCaloConstituents () const;
+                    <comment>
+      get all constituents
+                    </comment>
+                </method2>
+
+                <method1 name="getSpecific"
+                         return="const Specific&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const Specific&amp; getSpecific () const;
+                    <comment>
+     block accessors
+                    </comment>
+                </method1>
+
+                <method1 name="clone"
+                         return="virtual CaloJet*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual CaloJet* clone () const;
+                    <comment>
+      Polymorphic clone
+                    </comment>
+                </method1>
+
+                <method1 name="print"
+                         return="virtual std::string"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual std::string print () const;
+                    <comment>
+      Print object
+                    </comment>
+                </method1>
+
+                <method2 name="getTowerIndices"
+                         return="std::vector&lt;CaloTowerDetId&gt;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+std::vector&lt;CaloTowerDetId&gt; getTowerIndices() const;
+                    <comment>
+      CaloTowers indexes
+                    </comment>
+                </method2>
+
+            </section>
+
+        </class>
+    </namespace>
+    <include name="&quot;DataFormats/JetReco/interface/CaloJetCollection.h&quot;"/>
+
+    <type name="CaloJet*"/>
+    <type name="CaloTowerPtr"/>
+    <type name="Jet"/>
+    <type name="LorentzVector"/>
+    <type name="const Jet::Constituents&amp;"/>
+    <type name="const LorentzVector&amp;"/>
+    <type name="const Point&amp;"/>
+    <type name="const Specific&amp;"/>
+    <type name="float"/>
+    <type name="int"/>
+    <type name="reco::CaloJet"/>
+    <type name="reco::CaloJet::Specific"/>
+    <type name="std::string"/>
+    <type name="std::vector&lt;CaloTowerDetId&gt;"/>
+    <type name="std::vector&lt;CaloTowerPtr&gt;"/>
+    <type name="unsigned"/>
+    <type name="void"/>
+</header>

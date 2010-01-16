@@ -1,0 +1,31 @@
+Class:
+	reco::BaseTagInfo
+
+Header:
+	DataFormats/BTauReco/interface/BaseTagInfo.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:14:48 2010	lsclass.py $Revision:$
+
+Methods from reco::BaseTagInfo
+
+	-o- clone
+		Return: BaseTagInfo*
+		Arguments: void	
+
+	-o- tracks
+		Return: edm::RefVector<std::vector<Track>>
+		Arguments: void	
+
+	-o- hasTracks
+		Return: bool
+		Arguments: void	
+
+	-o- taggingVariables
+		Return: TaggingVariableList
+		Arguments: void	
+
+	-o- jet
+		Return: edm::RefToBase<Jet>
+		Arguments: void	
+

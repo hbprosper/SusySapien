@@ -1,0 +1,193 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: ParametrizationHelper.xml
+  Created:  Thu Jan 14 22:48:17 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/PatCandidates/interface/ParametrizationHelper.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/PatCandidates/interface/ParametrizationHelper.h">
+
+    <include name="&quot;DataFormats/PatCandidates/interface/CandKinResolution.h&quot;"/>
+    <include name="&lt;string&gt;"/>
+
+    <namespace name="pat">
+
+        <namespace name="helper">
+
+            <namespace name="ParametrizationHelper">
+                <function1 name="dimension"
+                           return="inline uint32_t"
+                           args="['pat::CandKinResolution::Parametrization']"
+                           vars="['parametrization']"
+                           qual="">
+inline uint32_t dimension(pat::CandKinResolution::Parametrization parametrization);
+                    <comment>
+        Returns the number of free parameters in a parametrization (3 or 4)
+                    </comment>
+                </function1>
+
+                <function1 name="name"
+                           return="const char*"
+                           args="['pat::CandKinResolution::Parametrization']"
+                           vars="['param']"
+                           qual="">
+const char* name(pat::CandKinResolution::Parametrization param);
+                    <comment>
+        Convert a number into a string
+                    </comment>
+                </function1>
+
+                <function1 name="polarP4fromParameters"
+                           return="math::PtEtaPhiMLorentzVector"
+                           args="['pat::CandKinResolution::Parametrization','const AlgebraicVector4&amp;','const math::PtEtaPhiMLorentzVector&amp;']"
+                           vars="['parametrization','parameters','initialP4']"
+                           qual="">
+math::PtEtaPhiMLorentzVector polarP4fromParameters(pat::CandKinResolution::Parametrization parametrization, const AlgebraicVector4&amp; parameters, const math::PtEtaPhiMLorentzVector&amp; initialP4);
+                    <comment>
+        In the future this method will throw an exception if you go in an unphysical point of the coordinate system (e.g. E^2 &lt; P^2)
+                    </comment>
+                </function1>
+
+                <function1 name="p4fromParameters"
+                           return="math::XYZTLorentzVector"
+                           args="['pat::CandKinResolution::Parametrization','const AlgebraicVector4&amp;','const math::XYZTLorentzVector&amp;']"
+                           vars="['parametrization','parameters','initialP4']"
+                           qual="">
+math::XYZTLorentzVector p4fromParameters(pat::CandKinResolution::Parametrization parametrization, const AlgebraicVector4&amp; parameters, const math::XYZTLorentzVector&amp; initialP4);
+                    <comment>
+        In the future this method will throw an exception if you go in an unphysical point of the coordinate system (e.g. E^2 &lt; P^2)
+                    </comment>
+                </function1>
+
+                <function1 name="parametersFromP4"
+                           return="AlgebraicVector4"
+                           args="['pat::CandKinResolution::Parametrization','const math::XYZTLorentzVector&amp;']"
+                           vars="['parametrization','p4']"
+                           qual="">
+AlgebraicVector4 parametersFromP4(pat::CandKinResolution::Parametrization parametrization, const math::XYZTLorentzVector&amp; p4);
+                    <comment>
+        Returns a vector of coordinates values given a coordinate frame and a 4-vector.
+                    </comment>
+                </function1>
+
+                <function1 name="parametersFromP4"
+                           return="AlgebraicVector4"
+                           args="['pat::CandKinResolution::Parametrization','const math::PtEtaPhiMLorentzVector&amp;']"
+                           vars="['parametrization','p4']"
+                           qual="">
+AlgebraicVector4 parametersFromP4(pat::CandKinResolution::Parametrization parametrization, const math::PtEtaPhiMLorentzVector&amp; p4);
+                    <comment>
+        Returns a vector of coordinates values given a coordinate frame and a 4-vector.
+                    </comment>
+                </function1>
+
+                <function1 name="setParametersFromP4"
+                           return="void"
+                           args="['pat::CandKinResolution::Parametrization','AlgebraicVector4&amp;','const math::XYZTLorentzVector&amp;']"
+                           vars="['parametrization','pars','p4']"
+                           qual="">
+void setParametersFromP4(pat::CandKinResolution::Parametrization parametrization, AlgebraicVector4&amp; pars, const math::XYZTLorentzVector&amp; p4);
+                    <comment>
+        Set the values of the parameters for a given 4-momentum
+                    </comment>
+                </function1>
+
+                <function1 name="setParametersFromP4"
+                           return="void"
+                           args="['pat::CandKinResolution::Parametrization','AlgebraicVector4&amp;','const math::PtEtaPhiMLorentzVector&amp;']"
+                           vars="['parametrization','pars','p4']"
+                           qual="">
+void setParametersFromP4(pat::CandKinResolution::Parametrization parametrization, AlgebraicVector4&amp; pars, const math::PtEtaPhiMLorentzVector&amp; p4);
+                    <comment>
+        Set the values of the parameters for a given 4-momentum
+                    </comment>
+                </function1>
+
+                <function1 name="diffToParameters"
+                           return="AlgebraicVector4"
+                           args="['pat::CandKinResolution::Parametrization','const math::XYZTLorentzVector&amp;','const math::XYZTLorentzVector&amp;']"
+                           vars="['parametrization','p4ini','p4fin']"
+                           qual="">
+AlgebraicVector4 diffToParameters(pat::CandKinResolution::Parametrization parametrization, const math::XYZTLorentzVector&amp; p4ini, const math::XYZTLorentzVector&amp; p4fin);
+                    <comment>
+    /// Expresses the difference between two 4-momentum vectors as a shift in coordinates in a given frame.
+    /** Basically, if you do:
+     *  &lt;code&gt;
+     *      pars = parametersFromP4(param, simp4);
+     *      diff = diffToParameters(param, simP4, recP4);
+     *  &lt;/code&gt;
+     *  then up to roundoff errors
+     *  &lt;code&gt;recP4  == p4fromParameters(param, pars+diff, simP4);&lt;/code&gt;
+     */
+                    </comment>
+                </function1>
+
+                <function1 name="diffToParameters"
+                           return="AlgebraicVector4"
+                           args="['pat::CandKinResolution::Parametrization','const math::PtEtaPhiMLorentzVector&amp;','const math::PtEtaPhiMLorentzVector&amp;']"
+                           vars="['parametrization','p4ini','p4fin']"
+                           qual="">
+AlgebraicVector4 diffToParameters(pat::CandKinResolution::Parametrization parametrization, const math::PtEtaPhiMLorentzVector&amp; p4ini, const math::PtEtaPhiMLorentzVector&amp; p4fin);
+                    <comment>
+    /// Expresses the difference between two 4-momentum vectors as a shift in coordinates in a given frame.
+    /** Basically, if you do:
+     *  &lt;code&gt;
+     *      pars = parametersFromP4(param, simp4);
+     *      diff = diffToParameters(param, simP4, recP4);
+     *  &lt;/code&gt;
+     *  then up to roundoff errors
+     *  &lt;code&gt;recP4  == p4fromParameters(param, pars+diff, simP4);&lt;/code&gt;
+     */
+                    </comment>
+                </function1>
+
+                <function1 name="isAlwaysMassless"
+                           return="bool"
+                           args="['pat::CandKinResolution::Parametrization']"
+                           vars="['parametrization']"
+                           qual="">
+bool isAlwaysMassless(pat::CandKinResolution::Parametrization parametrization);
+                    <comment>
+        Is this parametrization usable only with massless objects?
+                    </comment>
+                </function1>
+
+                <function1 name="isAlwaysMassive"
+                           return="bool"
+                           args="['pat::CandKinResolution::Parametrization']"
+                           vars="['parametrization']"
+                           qual="">
+bool isAlwaysMassive(pat::CandKinResolution::Parametrization parametrization);
+                    <comment>
+        Is this parametrization usable only with massive objects?
+                    </comment>
+                </function1>
+
+                <function1 name="isMassConstrained"
+                           return="bool"
+                           args="['pat::CandKinResolution::Parametrization']"
+                           vars="['parametrization']"
+                           qual="">
+bool isMassConstrained(pat::CandKinResolution::Parametrization parametrization);
+                    <comment>
+        If this parametrization has a mass constraint (including the 'isAlwaysMassless' case)
+                    </comment>
+                </function1>
+
+                <function1 name="isPhysical"
+                           return="bool"
+                           args="['pat::CandKinResolution::Parametrization','const AlgebraicVector4&amp;','const math::PtEtaPhiMLorentzVector&amp;']"
+                           vars="['parametrization','v4','initialP4']"
+                           qual="">
+bool isPhysical(pat::CandKinResolution::Parametrization parametrization, const AlgebraicVector4&amp; v4, const math::PtEtaPhiMLorentzVector&amp; initialP4);
+                    <comment>
+        This DOES NOT check that your parameters comply with your constraints (e.g. fixed mass constraint)
+                    </comment>
+                </function1>
+
+            </namespace>
+        </namespace>
+    </namespace>
+
+</header>

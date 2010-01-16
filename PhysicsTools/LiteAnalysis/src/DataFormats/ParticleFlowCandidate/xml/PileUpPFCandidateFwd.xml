@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: PileUpPFCandidateFwd.xml
+  Created:  Thu Jan 14 22:47:50 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/ParticleFlowCandidate/interface/PileUpPFCandidateFwd.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/ParticleFlowCandidate/interface/PileUpPFCandidateFwd.h">
+
+    <include name="&lt;vector&gt;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+
+    <namespace name="reco">
+        <forward name="PileUpPFCandidate"/>
+        <typedef name="PileUpPFCandidateCollection"
+                 value="std::vector&lt;reco::PileUpPFCandidate&gt;">
+typedef std::vector&lt;reco::PileUpPFCandidate&gt; PileUpPFCandidateCollection;
+            <comment>
+      collection of PileUpPFCandidates
+            </comment>
+        </typedef>
+
+        <typedef name="PileUpPFCandidateConstIterator"
+                 value="PileUpPFCandidateCollection::const_iterator">
+typedef PileUpPFCandidateCollection::const_iterator PileUpPFCandidateConstIterator;
+            <comment>
+      iterator
+            </comment>
+        </typedef>
+
+        <typedef name="PileUpPFCandidateIterator"
+                 value="PileUpPFCandidateCollection::iterator">
+typedef PileUpPFCandidateCollection::iterator PileUpPFCandidateIterator;
+            <comment>
+      iterator
+            </comment>
+        </typedef>
+
+        <typedef name="PileUpPFCandidateRef"
+                 value="edm::Ref&lt;PileUpPFCandidateCollection&gt;">
+typedef edm::Ref&lt;PileUpPFCandidateCollection&gt; PileUpPFCandidateRef;
+            <comment>
+      persistent reference to a PileUpPFCandidate
+            </comment>
+        </typedef>
+
+        <typedef name="PileUpPFCandidatePtr"
+                 value="edm::Ptr&lt;PileUpPFCandidate&gt;">
+typedef edm::Ptr&lt;PileUpPFCandidate&gt; PileUpPFCandidatePtr;
+            <comment>
+      persistent reference to a PileUpPFCandidate
+            </comment>
+        </typedef>
+
+        <typedef name="PileUpPFCandidateRefProd"
+                 value="edm::RefProd&lt;PileUpPFCandidateCollection&gt;">
+typedef edm::RefProd&lt;PileUpPFCandidateCollection&gt; PileUpPFCandidateRefProd;
+            <comment>
+      persistent reference to a PileUpPFCandidates collection
+            </comment>
+        </typedef>
+
+        <typedef name="PileUpPFCandidateRefVector"
+                 value="edm::RefVector&lt;PileUpPFCandidateCollection&gt;">
+typedef edm::RefVector&lt;PileUpPFCandidateCollection&gt; PileUpPFCandidateRefVector;
+            <comment>
+      vector of reference to GenParticleCandidate in the same collection
+            </comment>
+        </typedef>
+
+    </namespace>
+
+</header>

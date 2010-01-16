@@ -1,0 +1,10 @@
+int16_t	bx()
+unsigned	capBlock()
+unsigned	capIndex()
+bool	empty()
+unsigned	etaIndex()
+unsigned	etaSign()
+bool	isolated()
+unsigned	phiIndex()
+unsigned	rank()
+

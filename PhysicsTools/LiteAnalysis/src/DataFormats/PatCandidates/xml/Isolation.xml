@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: Isolation.xml
+  Created:  Thu Jan 14 22:48:12 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/PatCandidates/interface/Isolation.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/PatCandidates/interface/Isolation.h">
+
+    <include name="&quot;DataFormats/RecoCandidate/interface/IsoDeposit.h&quot;"/>
+
+    <namespace name="pat">
+        <typedef name="IsoDeposit"
+                 value="reco::IsoDeposit">
+typedef reco::IsoDeposit IsoDeposit;
+        </typedef>
+
+        <enum name="IsolationKeys">
+enum IsolationKeys {
+ TrackerIso=0, ECalIso=1, HCalIso=2, 
+    ParticleIso=3, ChargedParticleIso=4, NeutralParticleIso=5, GammaParticleIso=6, 
+ User1Iso=7, User2Iso=8, User3Iso=9, User4Iso=10, User5Iso=11, 
+        UserBaseIso=7, 
+        CaloIso=-1
+    };
+            <field name="TrackerIso" value="0"/>
+            <field name="ECalIso" value="1"/>
+            <field name="HCalIso" value="2"/>
+            <field name="ParticleIso" value="3"/>
+            <field name="ChargedParticleIso" value="4"/>
+            <field name="NeutralParticleIso" value="5"/>
+            <field name="GammaParticleIso" value="6"/>
+            <field name="User1Iso" value="7"/>
+            <field name="User2Iso" value="8"/>
+            <field name="User3Iso" value="9"/>
+            <field name="User4Iso" value="10"/>
+            <field name="User5Iso" value="11"/>
+            <field name="UserBaseIso" value="7"/>
+            <field name="CaloIso" value="-1"/>
+            <comment>
+        Enum defining isolation keys
+            </comment>
+        </enum>
+
+    </namespace>
+
+</header>

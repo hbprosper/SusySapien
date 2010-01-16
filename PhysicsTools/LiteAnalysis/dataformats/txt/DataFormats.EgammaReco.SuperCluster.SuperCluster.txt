@@ -1,0 +1,104 @@
+Class:
+	reco::SuperCluster
+
+Header:
+	DataFormats/EgammaReco/interface/SuperCluster.h
+
+BaseClasses:
+	reco::CaloCluster	DataFormats/CaloRecHit/interface/CaloCluster.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:16:20 2010	lsclass.py $Revision:$
+
+Methods from reco::SuperCluster
+
+	-o- rawEnergy
+		Return: double
+		Arguments: void	
+
+	-o- preshowerEnergy
+		Return: double
+		Arguments: void	
+
+	-o- phiWidth
+		Return: double
+		Arguments: void	
+
+	-o- etaWidth
+		Return: double
+		Arguments: void	
+
+	-o- setPhiWidth
+		Return: void
+		Arguments: double	pw
+
+	-o- setEtaWidth
+		Return: void
+		Arguments: double	ew
+
+	-o- seed
+		Return: const edm::Ref<std::vector<BasicCluster>>&
+		Arguments: void	
+
+	-o- clustersBegin
+		Return: BasicClusterRefVector::iterator
+		Arguments: void	
+
+	-o- clustersEnd
+		Return: BasicClusterRefVector::iterator
+		Arguments: void	
+
+	-o- clustersSize
+		Return: size_t
+		Arguments: void	
+
+	-o- setSeed
+		Return: void
+		Arguments: const BasicClusterRef&	r
+
+	-o- add
+		Return: void
+		Arguments: const BasicClusterRef&	r
+
+	-o- getHitsByDetId
+		Return: std::vector<DetId>
+		Arguments: void	
+
+Methods from reco::CaloCluster
+
+	-o- energy
+		Return: double
+		Arguments: void	
+
+	-o- position
+		Return: const math::ROOT::Math::PositionVector3D<ROOT::Math::Cartesian3D<double> >&
+		Arguments: void	
+
+	-o- x
+		Return: double
+		Arguments: void	
+
+	-o- y
+		Return: double
+		Arguments: void	
+
+	-o- z
+		Return: double
+		Arguments: void	
+
+	-o- eta
+		Return: double
+		Arguments: void	
+
+	-o- phi
+		Return: double
+		Arguments: void	
+
+	-o- caloID
+		Return: CaloID&
+		Arguments: void	
+
+	-o- caloID
+		Return: const CaloID&
+		Arguments: void	
+

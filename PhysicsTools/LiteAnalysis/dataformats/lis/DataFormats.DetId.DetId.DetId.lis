@@ -1,0 +1,4 @@
+DetId|Detector|det|void
+DetId|int|subdetId|void
+DetId|uint32_t|rawId|void
+DetId|bool|null|void

@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: Particle.xml
+  Created:  Thu Jan 14 22:48:18 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/PatCandidates/interface/Particle.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/PatCandidates/interface/Particle.h">
+
+    <include name="&quot;DataFormats/Candidate/interface/LeafCandidate.h&quot;"/>
+    <include name="&quot;DataFormats/PatCandidates/interface/PATObject.h&quot;"/>
+
+    <namespace name="pat">
+        <comment>
+   Define typedefs for convenience
+        </comment>
+        <forward name="Particle"/>
+        <typedef name="ParticleCollection"
+                 value="std::vector&lt;Particle&gt;">
+typedef std::vector&lt;Particle&gt; ParticleCollection;
+        </typedef>
+
+        <typedef name="ParticleRef"
+                 value="edm::Ref&lt;ParticleCollection&gt;">
+typedef edm::Ref&lt;ParticleCollection&gt; ParticleRef;
+        </typedef>
+
+        <typedef name="ParticleRefVector"
+                 value="edm::RefVector&lt;ParticleCollection&gt;">
+typedef edm::RefVector&lt;ParticleCollection&gt; ParticleRefVector;
+        </typedef>
+
+    </namespace>
+
+    <namespace name="pat">
+        <typedef name="ParticleType"
+                 value="reco::LeafCandidate">
+typedef reco::LeafCandidate ParticleType;
+        </typedef>
+
+
+        <class name="Particle"
+               fullname="pat::Particle"
+               module="DataFormats.PatCandidates"
+               project=""
+               type="regular">
+            <baseclass name="public PATObject&lt;ParticleType&gt;"/>
+
+            <section name="public">
+                <constructor name="Particle"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+Particle();
+                </constructor>
+
+                <constructor name="Particle"
+                             return=""
+                             args="['const ParticleType&amp;']"
+                             vars="['aParticle']"
+                             qual="">
+Particle(const ParticleType&amp; aParticle);
+                </constructor>
+
+                <destructor name="~Particle"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~Particle();
+                </destructor>
+
+                <method1 name="clone"
+                         return="virtual Particle*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual Particle* clone() const;
+                </method1>
+
+            </section>
+
+        </class>
+    </namespace>
+
+    <type name="PATObject&lt;ParticleType&gt;"/>
+    <type name="Particle*"/>
+    <type name="const ParticleType&amp;"/>
+    <type name="pat::Particle"/>
+    <type name="void"/>
+</header>

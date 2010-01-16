@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: CacheStreamers.xml
+  Created:  Thu Jan 14 22:45:52 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Common/interface/CacheStreamers.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/CacheStreamers.h">
+
+    <include name="&quot;TClassStreamer.h&quot;"/>
+    <include name="&quot;TClassRef.h&quot;"/>
+    <forward name="TBuffer"/>
+
+    <namespace name="edm">
+
+        <class name="ConstPtrCacheStreamer"
+               fullname="edm::ConstPtrCacheStreamer"
+               module="DataFormats.Common"
+               project=""
+               type="regular">
+            <baseclass name="public TClassStreamer"/>
+
+            <section name="public">
+                <constructor name="ConstPtrCacheStreamer"
+                             return="explicit"
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+explicit ConstPtrCacheStreamer();
+                </constructor>
+
+                <operator name="operator()"
+                          return="void"
+                          args="['TBuffer&amp;','void*']"
+                          vars="['R__b','objp']"
+                          qual="">
+void operatorPP (TBuffer&amp; R__b, void* objp);
+                </operator>
+
+            </section>
+
+        </class>
+
+        <class name="BoolCacheStreamer"
+               fullname="edm::BoolCacheStreamer"
+               module="DataFormats.Common"
+               project=""
+               type="regular">
+            <baseclass name="public TClassStreamer"/>
+
+            <section name="public">
+                <constructor name="BoolCacheStreamer"
+                             return="explicit"
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+explicit BoolCacheStreamer();
+                </constructor>
+
+                <operator name="operator()"
+                          return="void"
+                          args="['TBuffer&amp;','void*']"
+                          vars="['R__b','objp']"
+                          qual="">
+void operatorPP (TBuffer&amp; R__b, void* objp);
+                </operator>
+
+            </section>
+
+        </class>
+        <function1 name="setCacheStreamers"
+                   return="void"
+                   args="['void']"
+                   vars="['']"
+                   qual="">
+void setCacheStreamers();
+        </function1>
+
+    </namespace>
+
+    <type name="TBuffer&amp;"/>
+    <type name="TClassStreamer"/>
+    <type name="edm::BoolCacheStreamer"/>
+    <type name="edm::ConstPtrCacheStreamer"/>
+    <type name="void"/>
+    <type name="void*"/>
+</header>

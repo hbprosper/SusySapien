@@ -1,0 +1,449 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: DetSetVector.xml
+  Created:  Thu Jan 14 22:45:59 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Common/interface/DetSetVector.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/DetSetVector.h">
+
+    <include name="&lt;algorithm&gt;"/>
+    <include name="&lt;iterator&gt;"/>
+    <include name="&lt;vector&gt;"/>
+    <include name="&quot;boost/concept_check.hpp&quot;"/>
+    <include name="&quot;boost/lambda/bind.hpp&quot;"/>
+    <include name="&quot;boost/lambda/lambda.hpp&quot;"/>
+    <include name="&quot;boost/mpl/if.hpp&quot;"/>
+    <include name="&quot;boost/type_traits.hpp&quot;"/>
+    <include name="&quot;DataFormats/Provenance/interface/ProductID.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/DetSet.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/FillView.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefItem.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/traits.h&quot;"/>
+    <include name="&quot;FWCore/Utilities/interface/EDMException.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/BoolCache.h&quot;"/>
+
+    <namespace name="edm">
+        <forward name="template&lt;T&gt; DetSetVector"/>
+
+        <namespace name="detail">
+            <comment>
+     Helper function, to regularize throwing of exceptions.
+            </comment>
+            <function1 name="_throw_range"
+                       return="inline void"
+                       args="['det_id_type']"
+                       vars="['i']"
+                       qual="">
+inline     void _throw_range(det_id_type i);
+                <comment>
+       Throw an edm::Exception with an appropriate message
+                </comment>
+            </function1>
+
+        </namespace>
+
+        <class name="DetSetVector"
+               fullname="edm::DetSetVector&lt;T&gt;"
+               module="DataFormats.Common"
+               project=""
+               type="template"
+               template="template&lt;class T&gt;">
+            <baseclass name="public boost::mpl::if_c&lt;boost::is_base_of&lt;edm::DoNotSortUponInsertion, T&gt;::value, 
+       edm::DoNotSortUponInsertion, 
+       Other&gt;::type"/>
+            <comment>
+     If DetSetVector&lt;T&gt; is instantiated with a class T which inherits
+     from DoNotSortUponInsertion, the resulting class inherits from
+     DoNotSortUponInsertion. In the normal case, DetSetVector&lt;T&gt;
+     inherits from Other.  (This is necessary to assure that
+     DetSetVector&lt;T&gt; is not sorted upon insertion into the Event when
+     T is defined to inherit from DoNotSortUponInsertion).
+            </comment>
+
+            <section>
+                <constructor name="BOOST_CLASS_REQUIRE"
+                             return=""
+                             args="['T','boost','LessThanComparableConcept']"
+                             vars="['','','']"
+                             qual="">
+BOOST_CLASS_REQUIRE(T, boost, LessThanComparableConcept);
+                    <comment>
+        operator&lt;.
+                    </comment>
+                </constructor>
+
+            </section>
+            <section name="public">
+                <typedef name="detset"
+                         value="DetSet&lt;T&gt;">
+typedef DetSet&lt;T&gt; detset;
+                </typedef>
+
+                <typedef name="value_type"
+                         value="detset">
+typedef detset value_type;
+                </typedef>
+
+                <typedef name="collection_type"
+                         value="std::vector&lt;detset&gt;">
+typedef std::vector&lt;detset&gt; collection_type;
+                </typedef>
+
+                <typedef name="reference"
+                         value="detset&amp;">
+typedef detset&amp; reference;
+                </typedef>
+
+                <typedef name="const_reference"
+                         value="detset const&amp;">
+typedef detset const&amp; const_reference;
+                </typedef>
+
+                <typedef name="iterator"
+                         value="typename collection_type::iterator">
+typedef typename collection_type::iterator iterator;
+                </typedef>
+
+                <typedef name="const_iterator"
+                         value="typename collection_type::const_iterator">
+typedef typename collection_type::const_iterator const_iterator;
+                </typedef>
+
+                <typedef name="size_type"
+                         value="typename collection_type::size_type">
+typedef typename collection_type::size_type size_type;
+                </typedef>
+
+                <constructor name="DetSetVector"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+DetSetVector();
+                    <comment>
+        Create an empty DetSetVector
+                    </comment>
+                </constructor>
+
+                <constructor name="DetSetVector"
+                             return="explicit"
+                             args="['std::vector&lt;DetSet&lt;T&gt; &gt;&amp;','bool=false']"
+                             vars="['input','alreadySorted']"
+                             qual="">
+explicit DetSetVector(std::vector&lt;DetSet&lt;T&gt; &gt;&amp; input, bool alreadySorted=false);
+                    <comment>
+        to modify the DSV, but you should not count on them)
+                    </comment>
+                </constructor>
+
+                <method1 name="swap"
+                         return="void"
+                         args="['DetSetVector&amp;']"
+                         vars="['other']"
+                         qual="">
+void swap(DetSetVector&amp; other);
+                </method1>
+
+                <operator name="operator="
+                          return="DetSetVector&amp;"
+                          args="['DetSetVector const&amp;']"
+                          vars="['other']"
+                          qual="">
+DetSetVector&amp; operator=(DetSetVector const&amp; other);
+                </operator>
+
+                <method1 name="insert"
+                         return="void"
+                         args="['detset const&amp;']"
+                         vars="['s']"
+                         qual="">
+void insert(detset const&amp; s);
+                    <comment>
+       What should happen if there is already a DetSet with this
+       DetId? Right now, it is up to the user *not* to do this. If you
+       are unsure whether or not your DetId is already in the
+       DetSetVector, then use 'find_or_insert(id)' instead.
+                    </comment>
+                </method1>
+
+                <method1 name="find_or_insert"
+                         return="reference"
+                         args="['det_id_type']"
+                         vars="['id']"
+                         qual="">
+reference find_or_insert(det_id_type id);
+                    <comment>
+        an empty vector, and return a reference to the new one.
+                    </comment>
+                </method1>
+
+                <method1 name="empty"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool empty() const;
+                    <comment>
+        Return true if we contain no DetSets.
+                    </comment>
+                </method1>
+
+                <method1 name="size"
+                         return="size_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+size_type size() const;
+                    <comment>
+        Return the number of contained DetSets
+                    </comment>
+                </method1>
+
+                <method1 name="find"
+                         return="iterator"
+                         args="['det_id_type']"
+                         vars="['id']"
+                         qual="">
+iterator find(det_id_type id);
+                    <comment>
+        if there is no such DetSet.
+                    </comment>
+                </method1>
+
+                <method1 name="find"
+                         return="const_iterator"
+                         args="['det_id_type']"
+                         vars="['id']"
+                         qual="const">
+const_iterator find(det_id_type id) const;
+                </method1>
+
+                <operator name="operator[]"
+                          return="reference"
+                          args="['det_id_type']"
+                          vars="['i']"
+                          qual="">
+reference operator[](det_id_type i);
+                    <comment>
+        **DO NOT MODIFY THE id DATA MEMBER OF THE REFERENCED DetSet!**
+                    </comment>
+                </operator>
+
+                <operator name="operator[]"
+                          return="const_reference"
+                          args="['det_id_type']"
+                          vars="['i']"
+                          qual="const">
+const_reference operator[](det_id_type i) const;
+                </operator>
+
+                <method1 name="begin"
+                         return="iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+iterator begin();
+                    <comment>
+        Return an iterator to the first DetSet.
+                    </comment>
+                </method1>
+
+                <method1 name="begin"
+                         return="const_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const_iterator begin() const;
+                </method1>
+
+                <method1 name="end"
+                         return="iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+iterator end();
+                    <comment>
+        Return the off-the-end iterator.
+                    </comment>
+                </method1>
+
+                <method1 name="end"
+                         return="const_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const_iterator end() const;
+                </method1>
+
+                <method2 name="getIds"
+                         return="void"
+                         args="['std::vector&lt;det_id_type&gt;&amp;']"
+                         vars="['result']"
+                         qual="const">
+void getIds(std::vector&lt;det_id_type&gt;&amp; result) const;
+                    <comment>
+        into the given vector 'result'.
+                    </comment>
+                </method2>
+
+                <method1 name="post_insert"
+                         return="void"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+void post_insert();
+                    <comment>
+        DetSetVector has been inserted into the Event.
+                    </comment>
+                </method1>
+
+                <method2 name="fillView"
+                         return="void"
+                         args="['ProductID const&amp;','std::vector&lt;void const*&gt;&amp;','helper_vector&amp;']"
+                         vars="['id','pointers','helpers']"
+                         qual="const">
+void fillView(ProductID const&amp; id, std::vector&lt;void const*&gt;&amp; pointers, helper_vector&amp; helpers) const;
+                </method2>
+
+            </section>
+
+            <typemap name="collection_type"
+                     value="std::vector&lt;DetSet&lt;T&gt; &gt;"
+                     type="typedef"/>
+            <typemap name="const_iterator"
+                     value="typename std::vector&lt;DetSet&lt;T&gt; &gt;::const_iterator"
+                     type="typedef"/>
+            <typemap name="const_reference"
+                     value="DetSet&lt;T&gt; const&amp;"
+                     type="typedef"/>
+            <typemap name="detset"
+                     value="DetSet&lt;T&gt;"
+                     type="typedef"/>
+            <typemap name="iterator"
+                     value="typename std::vector&lt;DetSet&lt;T&gt; &gt;::iterator"
+                     type="typedef"/>
+            <typemap name="reference"
+                     value="DetSet&lt;T&gt;&amp;"
+                     type="typedef"/>
+            <typemap name="size_type"
+                     value="typename std::vector&lt;DetSet&lt;T&gt; &gt;::size_type"
+                     type="typedef"/>
+            <typemap name="value_type"
+                     value="DetSet&lt;T&gt;"
+                     type="typedef"/>
+
+        </class>
+
+        <class name="has_fillView&lt;edm::DetSetVector&lt;T&gt; &gt;"
+               fullname="edm::has_fillView&lt;edm::DetSetVector&lt;T&gt; &gt;"
+               module="DataFormats.Common"
+               project=""
+               type="specialized template"
+               template="template&lt;class T&gt;">
+
+            <section>
+                <member>
+static bool const value=true;
+                </member>
+
+            </section>
+
+            <typemap name="true"
+                     value="edm::has_fillView&lt;edm::DetSetVector&lt;T&gt; &gt;::true"
+                     type="member"/>
+
+        </class>
+    </namespace>
+
+    <namespace name="edm">
+        <comment>
+  specialize behavior of edm::Ref to get access to the 'Det'
+        </comment>
+
+        <namespace name="refhelper">
+
+            <class name="FindForDetSetVector"
+                   fullname="edm::refhelper::FindForDetSetVector&lt;T&gt;"
+                   module="DataFormats.Common"
+                   project=""
+                   type="template struct"
+                   template="template&lt;typename T&gt;">
+                <baseclass name="public std::binary_function&lt;const DetSetVector&lt;T&gt;&amp;, std::pair&lt;det_id_type, typename DetSet&lt;T&gt;::collection_type::size_type&gt;, const T*&gt;"/>
+
+                <section>
+                    <typedef name="self"
+                             value="FindForDetSetVector&lt;T&gt;">
+typedef FindForDetSetVector&lt;T&gt; self;
+                    </typedef>
+
+                    <operator name="operator()"
+                              return="typename self::result_type"
+                              args="['typename self::first_argument_type','typename self::second_argument_type']"
+                              vars="['iContainer','iIndex']"
+                              qual="">
+typename self::result_type operatorPP(typename self::first_argument_type iContainer, typename self::second_argument_type iIndex);
+                    </operator>
+
+                </section>
+
+                <typemap name="self"
+                         value="FindForDetSetVector&lt;T&gt;"
+                         type="typedef"/>
+
+            </class>
+
+            <class name="FindTrait&lt;DetSetVector&lt;T&gt;,T&gt;"
+                   fullname="edm::refhelper::FindTrait&lt;DetSetVector&lt;T&gt;,T&gt;"
+                   module="DataFormats.Common"
+                   project=""
+                   type="specialized template struct"
+                   template="template&lt;typename T&gt;">
+
+                <section>
+                    <typedef name="value"
+                             value="FindForDetSetVector&lt;T&gt;">
+typedef FindForDetSetVector&lt;T&gt; value;
+                    </typedef>
+
+                </section>
+
+                <typemap name="value"
+                         value="FindForDetSetVector&lt;T&gt;"
+                         type="typedef"/>
+
+            </class>
+        </namespace>
+    </namespace>
+
+    <type name="DetSetVector const&amp;"/>
+    <type name="DetSetVector&amp;"/>
+    <type name="LessThanComparableConcept"/>
+    <type name="ProductID const&amp;"/>
+    <type name="bool"/>
+    <type name="bool const value"/>
+    <type name="boost"/>
+    <type name="boost::mpl::if_c&lt;boost::is_base_of&lt;edm::DoNotSortUponInsertion, T&gt;::value, edm::DoNotSortUponInsertion, Other&gt;::type"/>
+    <type name="const_iterator"/>
+    <type name="const_reference"/>
+    <type name="det_id_type"/>
+    <type name="detset const&amp;"/>
+    <type name="edm::DetSetVector&lt;T&gt;"/>
+    <type name="edm::has_fillView&lt;edm::DetSetVector&lt;T&gt; &gt;"/>
+    <type name="edm::refhelper::FindForDetSetVector&lt;T&gt;"/>
+    <type name="edm::refhelper::FindTrait&lt;DetSetVector&lt;T&gt;, T&gt;"/>
+    <type name="helper_vector&amp;"/>
+    <type name="iterator"/>
+    <type name="reference"/>
+    <type name="size_type"/>
+    <type name="std::binary_function&lt;const DetSetVector&lt;T&gt;&amp;, std::pair&lt;det_id_type, typename DetSet&lt;T&gt;::collection_type::size_type&gt;, const T*&gt;"/>
+    <type name="std::vector&lt;DetSet&lt;T&gt; &gt;&amp;"/>
+    <type name="std::vector&lt;det_id_type&gt;&amp;"/>
+    <type name="std::vector&lt;void const*&gt;&amp;"/>
+    <type name="typename self::first_argument_type"/>
+    <type name="typename self::result_type"/>
+    <type name="typename self::second_argument_type"/>
+    <type name="void"/>
+</header>

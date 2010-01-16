@@ -1,0 +1,6 @@
+HLTPerformanceInfo::Path|std::string|name|void
+HLTPerformanceInfo::Path|edm::HLTPathStatus|status|void
+HLTPerformanceInfo::Path|std::vector<size_t>::const_iterator|begin|void
+HLTPerformanceInfo::Path|std::vector<size_t>::const_iterator|end|void
+HLTPerformanceInfo::Path|size_t|getModuleIndex|size_t
+HLTPerformanceInfo::Path|size_t|numberOfModules|void

@@ -1,0 +1,5 @@
+edm::AssociationVector<KeyRefProd, std::vector<float, KeyRef, SizeType, KeyReferenceHelper>|SizeType|size|void
+edm::AssociationVector<KeyRefProd, std::vector<float, KeyRef, SizeType, KeyReferenceHelper>|bool|empty|void
+edm::AssociationVector<KeyRefProd, std::vector<float, KeyRef, SizeType, KeyReferenceHelper>|const CaloTauRefProd&|keyProduct|void
+edm::AssociationVector<KeyRefProd, std::vector<float, KeyRef, SizeType, KeyReferenceHelper>|typename transient_vector_type::const_iterator|begin|void
+edm::AssociationVector<KeyRefProd, std::vector<float, KeyRef, SizeType, KeyReferenceHelper>|typename transient_vector_type::const_iterator|end|void

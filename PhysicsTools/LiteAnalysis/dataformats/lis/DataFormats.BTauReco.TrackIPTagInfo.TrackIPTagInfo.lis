@@ -1,0 +1,14 @@
+reco::TrackIPTagInfo|TrackIPTagInfo*|clone|void
+reco::TrackIPTagInfo|bool|hasProbabilities|void
+reco::TrackIPTagInfo|TaggingVariableList|taggingVariables|void
+reco::TrackIPTagInfo|const std::vector<TrackIPData>&|impactParameterData|void
+reco::TrackIPTagInfo|const edm::edm::RefVector<Container><std::vector<Track>>&|selectedTracks|void
+reco::TrackIPTagInfo|const std::vector<float>&|probabilities|int
+reco::TrackIPTagInfo|edm::edm::Ref<Container><std::vector<Vertex>>|primaryVertex|void
+reco::JTATagInfo|JTATagInfo*|clone|void
+reco::JTATagInfo|TrackRefVector|tracks|void
+reco::JTATagInfo|const JetTracksAssociation::edm::Ref<Container>&|jtaRef|void
+reco::JTATagInfo|bool|hasTracks|void
+reco::JTATagInfo|edm::RefToBase<Jet>|jet|void
+reco::BaseTagInfo|BaseTagInfo*|clone|void
+reco::BaseTagInfo|edm::RefVector<std::vector<Track>>|tracks|void

@@ -1,0 +1,107 @@
+Class:
+	reco::ClusterShape
+
+Header:
+	DataFormats/EgammaReco/interface/ClusterShape.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:16:17 2010	lsclass.py $Revision:$
+
+Methods from reco::ClusterShape
+
+	-o- eMax
+		Return: double
+		Arguments: void	
+
+	-o- e2nd
+		Return: double
+		Arguments: void	
+
+	-o- e2x2
+		Return: double
+		Arguments: void	
+
+	-o- e3x2
+		Return: double
+		Arguments: void	
+
+	-o- e3x3
+		Return: double
+		Arguments: void	
+
+	-o- e4x4
+		Return: double
+		Arguments: void	
+
+	-o- e5x5
+		Return: double
+		Arguments: void	
+
+	-o- e2x5Right
+		Return: double
+		Arguments: void	
+
+	-o- e2x5Left
+		Return: double
+		Arguments: void	
+
+	-o- e2x5Top
+		Return: double
+		Arguments: void	
+
+	-o- e2x5Bottom
+		Return: double
+		Arguments: void	
+
+	-o- e3x2Ratio
+		Return: double
+		Arguments: void	
+
+	-o- covEtaEta
+		Return: double
+		Arguments: void	
+
+	-o- covEtaPhi
+		Return: double
+		Arguments: void	
+
+	-o- covPhiPhi
+		Return: double
+		Arguments: void	
+
+	-o- lat
+		Return: double
+		Arguments: void	
+
+	-o- etaLat
+		Return: double
+		Arguments: void	
+
+	-o- phiLat
+		Return: double
+		Arguments: void	
+
+	-o- zernike20
+		Return: double
+		Arguments: void	
+
+	-o- zernike42
+		Return: double
+		Arguments: void	
+
+	-o- eMaxId
+		Return: DetId
+		Arguments: void	
+
+	-o- e2ndId
+		Return: DetId
+		Arguments: void	
+
+	-o- energyBasketFractionEta
+		Return: std::vector<double>
+		Arguments: void	
+
+	-o- energyBasketFractionPhi
+		Return: std::vector<double>
+		Arguments: void	
+

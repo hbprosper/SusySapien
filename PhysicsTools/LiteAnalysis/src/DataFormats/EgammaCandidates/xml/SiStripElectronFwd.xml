@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: SiStripElectronFwd.xml
+  Created:  Thu Jan 14 22:46:59 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/EgammaCandidates/interface/SiStripElectronFwd.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/EgammaCandidates/interface/SiStripElectronFwd.h">
+
+    <include name="&lt;vector&gt;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+
+    <namespace name="reco">
+        <forward name="SiStripElectron"/>
+        <typedef name="SiStripElectronCollection"
+                 value="std::vector&lt;SiStripElectron&gt;">
+typedef std::vector&lt;SiStripElectron&gt; SiStripElectronCollection;
+            <comment>
+      collectin of SiStripElectron objects
+            </comment>
+        </typedef>
+
+        <typedef name="SiStripElectronRef"
+                 value="edm::Ref&lt;SiStripElectronCollection&gt;">
+typedef edm::Ref&lt;SiStripElectronCollection&gt; SiStripElectronRef;
+            <comment>
+      reference to an object in a collection of SiStripElectron objects
+            </comment>
+        </typedef>
+
+        <typedef name="SiStripElectronRefProd"
+                 value="edm::RefProd&lt;SiStripElectronCollection&gt;">
+typedef edm::RefProd&lt;SiStripElectronCollection&gt; SiStripElectronRefProd;
+            <comment>
+      reference to a collection of SiStripElectron objects
+            </comment>
+        </typedef>
+
+        <typedef name="SiStripElectronRefVector"
+                 value="edm::RefVector&lt;SiStripElectronCollection&gt;">
+typedef edm::RefVector&lt;SiStripElectronCollection&gt; SiStripElectronRefVector;
+            <comment>
+      vector of objects in the same collection of SiStripElectron objects
+            </comment>
+        </typedef>
+
+        <typedef name="siStripElectron_iterator"
+                 value="SiStripElectronRefVector::iterator">
+typedef SiStripElectronRefVector::iterator siStripElectron_iterator;
+            <comment>
+      iterator over a vector of reference to SiStripElectron objects
+            </comment>
+        </typedef>
+
+    </namespace>
+
+</header>

@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: PFMETFwd.xml
+  Created:  Thu Jan 14 22:47:39 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/METReco/interface/PFMETFwd.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/METReco/interface/PFMETFwd.h">
+
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
+
+    <namespace name="reco">
+        <forward name="PFMET"/>
+        <typedef name="PFMETCollection"
+                 value="std::vector&lt;PFMET&gt;">
+typedef std::vector&lt;PFMET&gt; PFMETCollection;
+            <comment>
+      collection of PFMET objects
+            </comment>
+        </typedef>
+
+        <typedef name="PFMETRef"
+                 value="edm::Ref&lt;PFMETCollection&gt;">
+typedef edm::Ref&lt;PFMETCollection&gt; PFMETRef;
+            <comment>
+      edm references
+            </comment>
+        </typedef>
+
+        <typedef name="PFMETRefVector"
+                 value="edm::RefVector&lt;PFMETCollection&gt;">
+typedef edm::RefVector&lt;PFMETCollection&gt; PFMETRefVector;
+        </typedef>
+
+        <typedef name="PFMETRefProd"
+                 value="edm::RefProd&lt;PFMETCollection&gt;">
+typedef edm::RefProd&lt;PFMETCollection&gt; PFMETRefProd;
+        </typedef>
+
+    </namespace>
+
+</header>

@@ -1,0 +1,59 @@
+Class:
+	edm::LazyGetter<T>
+
+Header:
+	DataFormats/Common/interface/LazyGetter.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:46 2010	lsclass.py $Revision:$
+
+Methods from edm::LazyGetter<T>
+
+	-o- regions
+		Return: uint32_t
+		Arguments: void	
+
+	-o- find
+		Return: typename std::vector<T>::const_iterator
+		Arguments: uint32_t	index
+
+	-o- begin
+		Return: typename std::vector<T>::const_iterator
+		Arguments: void	
+
+	-o- end
+		Return: typename std::vector<T>::const_iterator
+		Arguments: void	
+
+	-o- begin_nounpack
+		Return: boost::transform_iterator<UpdateGetterAdapter<T>, typename std::vector<RegionIndex<T> >::typename std::vector<T>::const_iterator >
+		Arguments: void	
+
+	-o- end_nounpack
+		Return: boost::transform_iterator<UpdateGetterAdapter<T>, typename std::vector<RegionIndex<T> >::typename std::vector<T>::const_iterator >
+		Arguments: void	
+
+	-o- unpacked
+		Return: bool
+		Arguments: uint32_t	
+
+	-o- begin_record
+		Return: typename std::vector<T>::typename std::vector<T>::const_iterator
+		Arguments: void	
+
+	-o- end_record
+		Return: typename std::vector<T>::typename std::vector<T>::const_iterator
+		Arguments: void	
+
+	-o- size
+		Return: uint32_t
+		Arguments: void	
+
+	-o- empty
+		Return: bool
+		Arguments: void	
+
+	-o- swap
+		Return: void
+		Arguments: LazyGetter&	other
+

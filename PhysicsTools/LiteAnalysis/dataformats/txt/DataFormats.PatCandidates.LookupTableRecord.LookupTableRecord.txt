@@ -1,0 +1,23 @@
+Class:
+	pat::LookupTableRecord
+
+Header:
+	DataFormats/PatCandidates/interface/LookupTableRecord.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:14:03 2010	lsclass.py $Revision:$
+
+Methods from pat::LookupTableRecord
+
+	-o- value
+		Return: float
+		Arguments: void	
+
+	-o- error
+		Return: float
+		Arguments: void	
+
+	-o- bin
+		Return: uint16_t
+		Arguments: void	
+

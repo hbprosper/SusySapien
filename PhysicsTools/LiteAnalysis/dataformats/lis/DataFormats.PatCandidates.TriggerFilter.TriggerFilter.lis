@@ -1,0 +1,8 @@
+pat::TriggerFilter|bool|setStatus|int
+pat::TriggerFilter|std::string|label|void
+pat::TriggerFilter|std::string|type|void
+pat::TriggerFilter|int|status|void
+pat::TriggerFilter|bool|hasObjectKey|unsigned
+pat::TriggerFilter|bool|hasObjectId|unsigned
+pat::TriggerFilter|std::vector<unsigned >|objectKeys|void
+pat::TriggerFilter|std::vector<unsigned >|objectIds|void

@@ -1,0 +1,1 @@
+$CMSSW_RELEASE_BASE/src/DataFormats/MuonReco/interface/CaloMuon.h

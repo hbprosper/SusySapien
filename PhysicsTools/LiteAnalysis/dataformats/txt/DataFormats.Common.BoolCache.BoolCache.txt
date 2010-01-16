@@ -1,0 +1,9 @@
+Class:
+	edm::BoolCache
+
+Header:
+	DataFormats/Common/interface/BoolCache.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:57 2010	lsclass.py $Revision:$
+

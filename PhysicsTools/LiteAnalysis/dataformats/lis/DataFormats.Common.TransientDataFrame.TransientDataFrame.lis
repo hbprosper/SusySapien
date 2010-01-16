@@ -1,0 +1,2 @@
+edm::TransientDataFrame<SIZE>|int|size|void
+edm::TransientDataFrame<SIZE>|DataFrame::id_type|id|void

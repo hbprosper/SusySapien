@@ -1,0 +1,12 @@
+L1GctEmCand|L1CaloRegionDetId|regionId|void
+L1GctEmCand|std::string|name|void
+L1GctEmCand|bool|empty|void
+L1GctEmCand|uint16_t|raw|void
+L1GctEmCand|unsigned|rank|void
+L1GctEmCand|unsigned|etaIndex|void
+L1GctEmCand|unsigned|etaSign|void
+L1GctEmCand|unsigned|phiIndex|void
+L1GctEmCand|bool|isolated|void
+L1GctEmCand|unsigned|capBlock|void
+L1GctEmCand|unsigned|capIndex|void
+L1GctEmCand|int16_t|bx|void

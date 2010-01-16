@@ -1,0 +1,14 @@
+reco::PFIsolatedTauTagInfo|PFIsolatedTauTagInfo*|clone|void
+reco::PFIsolatedTauTagInfo|const edm::RefVector<std::vector<reco::PFCandidate>>&|PFCands|void
+reco::PFIsolatedTauTagInfo|const edm::RefVector<std::vector<reco::PFCandidate>>&|PFChargedHadrCands|void
+reco::PFIsolatedTauTagInfo|const edm::RefVector<std::vector<reco::PFCandidate>>&|PFNeutrHadrCands|void
+reco::PFIsolatedTauTagInfo|const edm::RefVector<std::vector<reco::PFCandidate>>&|PFGammaCands|void
+reco::PFIsolatedTauTagInfo|math::XYZTLorentzVector|alternatLorentzVect|void
+reco::PFIsolatedTauTagInfo|const edm::Ref<PFJetCollection>&|pfjetRef|void
+reco::PFIsolatedTauTagInfo|bool|passedtrackerisolation|void
+reco::PFIsolatedTauTagInfo|bool|passedECALisolation|void
+reco::BaseTagInfo|BaseTagInfo*|clone|void
+reco::BaseTagInfo|edm::RefVector<std::vector<Track>>|tracks|void
+reco::BaseTagInfo|bool|hasTracks|void
+reco::BaseTagInfo|TaggingVariableList|taggingVariables|void
+reco::BaseTagInfo|edm::RefToBase<Jet>|jet|void

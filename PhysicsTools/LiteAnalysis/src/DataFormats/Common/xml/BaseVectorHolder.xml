@@ -1,0 +1,559 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: BaseVectorHolder.xml
+  Created:  Thu Jan 14 22:45:51 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Common/interface/BaseVectorHolder.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/BaseVectorHolder.h">
+
+    <include name="&quot;FWCore/Utilities/interface/EDMException.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/BaseHolder.h&quot;"/>
+
+    <namespace name="edm">
+        <forward name="ProductID"/>
+        <forward name="template&lt;typename T&gt; RefToBase"/>
+
+        <namespace name="reftobase">
+
+            <class name="BaseVectorHolder"
+                   fullname="edm::reftobase::BaseVectorHolder&lt;T&gt;"
+                   module="DataFormats.Common"
+                   project=""
+                   type="abstract template"
+                   template="template&lt;typename T&gt;">
+
+                <section name="public">
+                    <typedef name="size_type"
+                             value="size_t">
+typedef size_t size_type;
+                    </typedef>
+
+                    <typedef name="element_type"
+                             value="T">
+typedef T element_type;
+                    </typedef>
+
+                    <typedef name="base_ref_type"
+                             value="RefToBase&lt;T&gt;">
+typedef RefToBase&lt;T&gt; base_ref_type;
+                    </typedef>
+
+                    <constructor name="BaseVectorHolder"
+                                 return=""
+                                 args="['void']"
+                                 vars="['']"
+                                 qual="">
+BaseVectorHolder();
+                    </constructor>
+
+                    <destructor name="~BaseVectorHolder"
+                                return="virtual"
+                                args="['void']"
+                                vars="['']"
+                                qual="">
+virtual ~BaseVectorHolder();
+                    </destructor>
+
+                    <method1 name="clone"
+                             return="virtual BaseVectorHolder*"
+                             args="['void']"
+                             vars="['']"
+                             qual="const = 0">
+virtual BaseVectorHolder* clone() const=0;
+                    </method1>
+
+                    <method1 name="cloneEmpty"
+                             return="virtual BaseVectorHolder*"
+                             args="['void']"
+                             vars="['']"
+                             qual="const = 0">
+virtual BaseVectorHolder* cloneEmpty() const=0;
+                    </method1>
+
+                    <method1 name="at"
+                             return="virtual base_ref_type const"
+                             args="['size_type']"
+                             vars="['idx']"
+                             qual="const = 0">
+virtual base_ref_type const at(size_type idx) const=0;
+                    </method1>
+
+                    <method1 name="empty"
+                             return="virtual bool"
+                             args="['void']"
+                             vars="['']"
+                             qual="const = 0">
+virtual bool empty() const=0;
+                    </method1>
+
+                    <method1 name="size"
+                             return="virtual size_type"
+                             args="['void']"
+                             vars="['']"
+                             qual="const = 0">
+virtual size_type size() const=0;
+                    </method1>
+
+                    <method1 name="clear"
+                             return="virtual void"
+                             args="['void']"
+                             vars="['']"
+                             qual="= 0">
+virtual void clear()=0;
+                        <comment>
+        virtual size_type capacity() const = 0;
+        virtual void reserve(size_type n) = 0;
+                        </comment>
+                    </method1>
+
+                    <method1 name="id"
+                             return="virtual ProductID"
+                             args="['void']"
+                             vars="['']"
+                             qual="const = 0">
+virtual ProductID id() const=0;
+                    </method1>
+
+                    <method1 name="productGetter"
+                             return="virtual EDProductGetter const*"
+                             args="['void']"
+                             vars="['']"
+                             qual="const = 0">
+virtual EDProductGetter const* productGetter() const=0;
+                    </method1>
+
+                    <method1 name="swap"
+                             return="void"
+                             args="['BaseVectorHolder&amp;']"
+                             vars="['other']"
+                             qual="">
+void swap(BaseVectorHolder&amp; other);
+                    </method1>
+
+
+                    <class name="const_iterator_imp"
+                           fullname="edm::reftobase::BaseVectorHolder&lt;T&gt;::const_iterator_imp"
+                           module="DataFormats.Common"
+                           project=""
+                           type="abstract regular struct">
+                        <comment>
+         the following structure is public
+         to allow reflex dictionary to compile
+            protected:
+                        </comment>
+
+                        <section>
+                            <typedef name="difference_type"
+                                     value="ptrdiff_t">
+typedef ptrdiff_t difference_type;
+                            </typedef>
+
+                            <constructor name="const_iterator_imp"
+                                         return=""
+                                         args="['void']"
+                                         vars="['']"
+                                         qual="">
+const_iterator_imp();
+                            </constructor>
+
+                            <destructor name="~const_iterator_imp"
+                                        return="virtual"
+                                        args="['void']"
+                                        vars="['']"
+                                        qual="">
+virtual ~const_iterator_imp();
+                            </destructor>
+
+                            <method1 name="clone"
+                                     return="virtual const_iterator_imp*"
+                                     args="['void']"
+                                     vars="['']"
+                                     qual="const = 0">
+virtual const_iterator_imp* clone() const=0;
+                            </method1>
+
+                            <method1 name="increase"
+                                     return="virtual void"
+                                     args="['void']"
+                                     vars="['']"
+                                     qual="= 0">
+virtual void increase()=0;
+                            </method1>
+
+                            <method1 name="decrease"
+                                     return="virtual void"
+                                     args="['void']"
+                                     vars="['']"
+                                     qual="= 0">
+virtual void decrease()=0;
+                            </method1>
+
+                            <method1 name="increase"
+                                     return="virtual void"
+                                     args="['difference_type']"
+                                     vars="['d']"
+                                     qual="= 0">
+virtual void increase(difference_type d)=0;
+                            </method1>
+
+                            <method1 name="decrease"
+                                     return="virtual void"
+                                     args="['difference_type']"
+                                     vars="['d']"
+                                     qual="= 0">
+virtual void decrease(difference_type d)=0;
+                            </method1>
+
+                            <method1 name="equal_to"
+                                     return="virtual bool"
+                                     args="['const const_iterator_imp*']"
+                                     vars="['']"
+                                     qual="const = 0">
+virtual bool equal_to(const const_iterator_imp*) const=0;
+                            </method1>
+
+                            <method1 name="less_than"
+                                     return="virtual bool"
+                                     args="['const const_iterator_imp*']"
+                                     vars="['']"
+                                     qual="const = 0">
+virtual bool less_than(const const_iterator_imp*) const=0;
+                            </method1>
+
+                            <method1 name="assign"
+                                     return="virtual void"
+                                     args="['const const_iterator_imp*']"
+                                     vars="['']"
+                                     qual="= 0">
+virtual void assign(const const_iterator_imp*)=0;
+                            </method1>
+
+                            <method1 name="deref"
+                                     return="virtual base_ref_type"
+                                     args="['void']"
+                                     vars="['']"
+                                     qual="const = 0">
+virtual base_ref_type deref() const=0;
+                            </method1>
+
+                            <method1 name="difference"
+                                     return="virtual difference_type"
+                                     args="['const const_iterator_imp*']"
+                                     vars="['']"
+                                     qual="const = 0">
+virtual difference_type difference(const const_iterator_imp*) const=0;
+                            </method1>
+
+                        </section>
+
+                        <typemap name="const_iterator_imp"
+                                 value="edm::reftobase::BaseVectorHolder&lt;T&gt;::const_iterator_imp"
+                                 type="class"/>
+                        <typemap name="difference_type"
+                                 value="ptrdiff_t"
+                                 type="typedef"/>
+
+                    </class>
+
+                    <class name="const_iterator"
+                           fullname="edm::reftobase::BaseVectorHolder&lt;T&gt;::const_iterator"
+                           module="DataFormats.Common"
+                           project=""
+                           type="regular struct">
+                        <baseclass name="public std::iterator&lt;std::random_access_iterator_tag, RefToBase&lt;T&gt; &gt;"/>
+
+                        <section>
+                            <typedef name="value_type"
+                                     value="base_ref_type">
+typedef base_ref_type value_type;
+                            </typedef>
+
+                            <typedef name="pointer"
+                                     value="std::auto_ptr&lt;value_type&gt;">
+typedef std::auto_ptr&lt;value_type&gt; pointer;
+                            </typedef>
+
+                            <typedef name="difference_type"
+                                     value="std::ptrdiff_t">
+typedef std::ptrdiff_t difference_type;
+                            </typedef>
+
+                            <constructor name="const_iterator"
+                                         return=""
+                                         args="['void']"
+                                         vars="['']"
+                                         qual="">
+const_iterator();
+                            </constructor>
+
+                            <constructor name="const_iterator"
+                                         return=""
+                                         args="['const_iterator_imp*']"
+                                         vars="['it']"
+                                         qual="">
+const_iterator(const_iterator_imp* it);
+                            </constructor>
+
+                            <copyconstructor name="const_iterator"
+                                             return=""
+                                             args="['const const_iterator&amp;']"
+                                             vars="['it']"
+                                             qual="">
+const_iterator(const const_iterator&amp; it);
+                            </copyconstructor>
+
+                            <destructor name="~const_iterator"
+                                        return=""
+                                        args="['void']"
+                                        vars="['']"
+                                        qual="">
+~const_iterator();
+                            </destructor>
+
+                            <operator name="operator="
+                                      return="const_iterator&amp;"
+                                      args="['const const_iterator&amp;']"
+                                      vars="['it']"
+                                      qual="">
+const_iterator&amp; operator=(const const_iterator&amp; it);
+                            </operator>
+
+                            <operator name="operator++"
+                                      return="const_iterator&amp;"
+                                      args="['void']"
+                                      vars="['']"
+                                      qual="">
+const_iterator&amp; operator++();
+                            </operator>
+
+                            <operator name="operator++"
+                                      return="const_iterator"
+                                      args="['int']"
+                                      vars="['']"
+                                      qual="">
+const_iterator operator++(int);
+                            </operator>
+
+                            <operator name="operator--"
+                                      return="const_iterator&amp;"
+                                      args="['void']"
+                                      vars="['']"
+                                      qual="">
+const_iterator&amp; operator--();
+                            </operator>
+
+                            <operator name="operator--"
+                                      return="const_iterator"
+                                      args="['int']"
+                                      vars="['']"
+                                      qual="">
+const_iterator operator--(int);
+                            </operator>
+
+                            <operator name="operator-"
+                                      return="difference_type"
+                                      args="['const const_iterator&amp;']"
+                                      vars="['o']"
+                                      qual="const">
+difference_type operator-(const const_iterator&amp; o) const;
+                            </operator>
+
+                            <operator name="operator+"
+                                      return="const_iterator"
+                                      args="['difference_type']"
+                                      vars="['n']"
+                                      qual="const">
+const_iterator operator+(difference_type n) const;
+                            </operator>
+
+                            <operator name="operator-"
+                                      return="const_iterator"
+                                      args="['difference_type']"
+                                      vars="['n']"
+                                      qual="const">
+const_iterator operator-(difference_type n) const;
+                            </operator>
+
+                            <operator name="operator&lt;"
+                                      return="bool"
+                                      args="['const const_iterator&amp;']"
+                                      vars="['o']"
+                                      qual="const">
+bool operator&lt;(const const_iterator&amp; o) const;
+                            </operator>
+
+                            <operator name="operator=="
+                                      return="bool"
+                                      args="['const const_iterator&amp;']"
+                                      vars="['ci']"
+                                      qual="const">
+bool operator==(const const_iterator&amp; ci) const;
+                            </operator>
+
+                            <operator name="operator!="
+                                      return="bool"
+                                      args="['const const_iterator&amp;']"
+                                      vars="['ci']"
+                                      qual="const">
+bool operator!=(const const_iterator&amp; ci) const;
+                            </operator>
+
+                            <operator name="operator*"
+                                      return="value_type"
+                                      args="['void']"
+                                      vars="['']"
+                                      qual="const">
+value_type operator*() const;
+                            </operator>
+
+                            <operator name="operator-&gt;"
+                                      return="pointer"
+                                      args="['void']"
+                                      vars="['']"
+                                      qual="const">
+pointer operator-&gt;() const;
+                            </operator>
+
+                            <operator name="operator+="
+                                      return="const_iterator&amp;"
+                                      args="['difference_type']"
+                                      vars="['d']"
+                                      qual="">
+const_iterator&amp; operator+=(difference_type d);
+                            </operator>
+
+                            <operator name="operator-="
+                                      return="const_iterator&amp;"
+                                      args="['difference_type']"
+                                      vars="['d']"
+                                      qual="">
+const_iterator&amp; operator-=(difference_type d);
+                            </operator>
+
+                            <method1 name="isValid"
+                                     return="bool"
+                                     args="['void']"
+                                     vars="['']"
+                                     qual="const">
+bool isValid() const;
+                            </method1>
+
+                            <method1 name="isInvalid"
+                                     return="bool"
+                                     args="['void']"
+                                     vars="['']"
+                                     qual="const">
+bool isInvalid() const;
+                            </method1>
+
+                        </section>
+
+                        <typemap name="const_iterator"
+                                 value="edm::reftobase::BaseVectorHolder&lt;T&gt;::const_iterator"
+                                 type="class"/>
+                        <typemap name="difference_type"
+                                 value="std::ptrdiff_t"
+                                 type="typedef"/>
+                        <typemap name="pointer"
+                                 value="std::auto_ptr&lt;base_ref_type&gt;"
+                                 type="typedef"/>
+                        <typemap name="value_type"
+                                 value="base_ref_type"
+                                 type="typedef"/>
+
+                    </class>
+                    <method1 name="begin"
+                             return="virtual const_iterator"
+                             args="['void']"
+                             vars="['']"
+                             qual="const = 0">
+virtual const_iterator begin() const=0;
+                    </method1>
+
+                    <method1 name="end"
+                             return="virtual const_iterator"
+                             args="['void']"
+                             vars="['']"
+                             qual="const = 0">
+virtual const_iterator end() const=0;
+                    </method1>
+
+                    <method2 name="push_back"
+                             return="virtual void"
+                             args="['const BaseHolder&lt;T&gt;*']"
+                             vars="['']"
+                             qual="= 0">
+virtual void push_back(const BaseHolder&lt;T&gt;*)=0;
+                    </method2>
+
+                    <method2 name="vectorHolder"
+                             return="virtual std::auto_ptr&lt;RefVectorHolderBase&gt;"
+                             args="['void']"
+                             vars="['']"
+                             qual="const = 0">
+virtual std::auto_ptr&lt;RefVectorHolderBase&gt; vectorHolder() const=0;
+                    </method2>
+
+                    <method1 name="product"
+                             return="virtual const void*"
+                             args="['void']"
+                             vars="['']"
+                             qual="const = 0">
+virtual const void* product() const=0;
+                    </method1>
+
+                    <method1 name="isAvailable"
+                             return="virtual bool"
+                             args="['void']"
+                             vars="['']"
+                             qual="const = 0">
+virtual bool isAvailable() const=0;
+                        <comment>
+          in the Event. No type checking is done.
+                        </comment>
+                    </method1>
+
+                </section>
+
+                <typemap name="base_ref_type"
+                         value="RefToBase&lt;T&gt;"
+                         type="typedef"/>
+                <typemap name="element_type"
+                         value="T"
+                         type="typedef"/>
+                <typemap name="size_type"
+                         value="size_t"
+                         type="typedef"/>
+
+            </class>
+        </namespace>
+    </namespace>
+
+    <type name="BaseVectorHolder&amp;"/>
+    <type name="BaseVectorHolder*"/>
+    <type name="EDProductGetter const*"/>
+    <type name="ProductID"/>
+    <type name="base_ref_type"/>
+    <type name="base_ref_type const"/>
+    <type name="bool"/>
+    <type name="const BaseHolder&lt;T&gt;*"/>
+    <type name="const const_iterator&amp;"/>
+    <type name="const const_iterator_imp*"/>
+    <type name="const void*"/>
+    <type name="const_iterator"/>
+    <type name="const_iterator&amp;"/>
+    <type name="const_iterator_imp*"/>
+    <type name="difference_type"/>
+    <type name="edm::reftobase::BaseVectorHolder&lt;T&gt;"/>
+    <type name="edm::reftobase::BaseVectorHolder&lt;T&gt;::const_iterator"/>
+    <type name="edm::reftobase::BaseVectorHolder&lt;T&gt;::const_iterator_imp"/>
+    <type name="int"/>
+    <type name="pointer"/>
+    <type name="size_type"/>
+    <type name="std::auto_ptr&lt;RefVectorHolderBase&gt;"/>
+    <type name="std::iterator&lt;std::random_access_iterator_tag, RefToBase&lt;T&gt; &gt;"/>
+    <type name="value_type"/>
+    <type name="void"/>
+</header>

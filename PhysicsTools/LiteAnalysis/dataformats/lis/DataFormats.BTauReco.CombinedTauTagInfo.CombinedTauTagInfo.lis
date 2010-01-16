@@ -1,0 +1,34 @@
+reco::CombinedTauTagInfo|const edm::Ref<IsolatedTauTagInfoCollection>&|isolatedtautaginfoRef|void
+reco::CombinedTauTagInfo|const edm::edm::RefVector<Container><TrackCollection>&|allTks|void
+reco::CombinedTauTagInfo|const edm::edm::RefVector<Container><TrackCollection>&|selectedTks|void
+reco::CombinedTauTagInfo|const edm::edm::RefVector<Container><TrackCollection>&|signalTks|void
+reco::CombinedTauTagInfo|int|signalTks_qsum|void
+reco::CombinedTauTagInfo|const edm::edm::RefVector<Container><TrackCollection>&|isolTks|void
+reco::CombinedTauTagInfo|CombinedTauTagInfo*|clone|void
+reco::CombinedTauTagInfo|bool|passed_trackerselection|void
+reco::CombinedTauTagInfo|bool|is_GoodTauCandidate|void
+reco::CombinedTauTagInfo|bool|infact_GoodElectronCandidate|void
+reco::CombinedTauTagInfo|bool|infact_GoodMuonCandidate|void
+reco::CombinedTauTagInfo|bool|needs_LikelihoodRatio_discrimination|void
+reco::CombinedTauTagInfo|double|leadTk_signedipt_significance|void
+reco::CombinedTauTagInfo|double|leadTk_signedip3D_significance|void
+reco::CombinedTauTagInfo|double|signedflightpath_significance|void
+reco::CombinedTauTagInfo|double|TksEt_o_JetEt|void
+reco::CombinedTauTagInfo|double|neutralE|void
+reco::CombinedTauTagInfo|double|isolneutralE|void
+reco::CombinedTauTagInfo|double|isolneutralEtsum|void
+reco::CombinedTauTagInfo|int|neutralECALClus_number|void
+reco::CombinedTauTagInfo|double|neutralECALClus_radius|void
+reco::CombinedTauTagInfo|double|neutralE_o_TksEneutralE|void
+reco::CombinedTauTagInfo|double|isolneutralE_o_TksEneutralE|void
+reco::CombinedTauTagInfo|double|neutralE_ratio|void
+reco::CombinedTauTagInfo|HepLorentzVector|alternatrecJet_HepLV|void
+reco::CombinedTauTagInfo|double|ECALEt_o_leadTkPt|void
+reco::CombinedTauTagInfo|double|HCALEt_o_leadTkPt|void
+reco::JTATagInfo|JTATagInfo*|clone|void
+reco::JTATagInfo|TrackRefVector|tracks|void
+reco::JTATagInfo|const JetTracksAssociation::edm::Ref<Container>&|jtaRef|void
+reco::JTATagInfo|bool|hasTracks|void
+reco::JTATagInfo|edm::RefToBase<Jet>|jet|void
+reco::BaseTagInfo|BaseTagInfo*|clone|void
+reco::BaseTagInfo|edm::RefVector<std::vector<Track>>|tracks|void

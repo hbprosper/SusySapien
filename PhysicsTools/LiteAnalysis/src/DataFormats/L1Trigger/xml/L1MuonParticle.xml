@@ -1,0 +1,201 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: L1MuonParticle.xml
+  Created:  Thu Jan 14 22:47:31 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/L1Trigger/interface/L1MuonParticle.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/L1Trigger/interface/L1MuonParticle.h">
+
+    <include name="&quot;DataFormats/Candidate/interface/LeafCandidate.h&quot;"/>
+    <include name="&quot;DataFormats/L1GlobalMuonTrigger/interface/L1MuGMTExtendedCand.h&quot;"/>
+
+    <namespace name="l1extra">
+        <comment>
+   forward declarations
+        </comment>
+
+        <class name="L1MuonParticle"
+               fullname="l1extra::L1MuonParticle"
+               module="DataFormats.L1Trigger"
+               project=""
+               type="regular">
+            <baseclass name="public reco::LeafCandidate"/>
+
+            <section name="public">
+                <constructor name="L1MuonParticle"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+L1MuonParticle();
+                </constructor>
+
+                <constructor name="L1MuonParticle"
+                             return=""
+                             args="['Charge','const LorentzVector&amp;','const L1MuGMTExtendedCand&amp;','int=0']"
+                             vars="['q','p4','aCand','bx']"
+                             qual="">
+L1MuonParticle(Charge q, const LorentzVector&amp; p4, const L1MuGMTExtendedCand&amp; aCand, int bx=0);
+                    <comment>
+	    Eventually, all L1MuGMTCands will be L1MuGMTExtendedCands,
+	    as soon as dictionaries for them exist in
+	    L1Trigger/GlobalMuonTrigger.
+                    </comment>
+                </constructor>
+
+                <constructor name="L1MuonParticle"
+                             return=""
+                             args="['Charge','const PolarLorentzVector&amp;','const L1MuGMTExtendedCand&amp;','int=0']"
+                             vars="['q','p4','aCand','bx']"
+                             qual="">
+L1MuonParticle(Charge q, const PolarLorentzVector&amp; p4, const L1MuGMTExtendedCand&amp; aCand, int bx=0);
+                </constructor>
+
+                <constructor name="L1MuonParticle"
+                             return=""
+                             args="['Charge','const LorentzVector&amp;','bool=false','bool=false','bool=false','bool=false','unsigned int=0','int=0']"
+                             vars="['q','p4','isolated','mip','forward','rpc','detector','bx']"
+                             qual="">
+L1MuonParticle(Charge q, const LorentzVector&amp; p4, bool isolated=false, bool mip=false, bool forward=false, bool rpc=false, unsigned int detector=0, int bx=0);
+                    <comment>
+            Creates null Ref.
+                    </comment>
+                </constructor>
+
+                <constructor name="L1MuonParticle"
+                             return=""
+                             args="['Charge','const PolarLorentzVector&amp;','bool=false','bool=false','bool=false','bool=false','unsigned int=0','int=0']"
+                             vars="['q','p4','isolated','mip','forward','rpc','detector','bx']"
+                             qual="">
+L1MuonParticle(Charge q, const PolarLorentzVector&amp; p4, bool isolated=false, bool mip=false, bool forward=false, bool rpc=false, unsigned int detector=0, int bx=0);
+                </constructor>
+
+                <destructor name="~L1MuonParticle"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~L1MuonParticle();
+                </destructor>
+
+                <method1 name="isIsolated"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isIsolated() const;
+                    <comment>
+	    ---------- const member functions ---------------------
+                    </comment>
+                </method1>
+
+                <method1 name="isMip"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isMip() const;
+                </method1>
+
+                <method1 name="isForward"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isForward() const;
+                </method1>
+
+                <method1 name="isRPC"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isRPC() const;
+                </method1>
+
+                <method1 name="gmtMuonCand"
+                         return="const L1MuGMTExtendedCand&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const L1MuGMTExtendedCand&amp; gmtMuonCand() const;
+                </method1>
+
+                <method1 name="clone"
+                         return="virtual L1MuonParticle*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual L1MuonParticle* clone() const;
+                </method1>
+
+                <method1 name="bx"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int bx() const;
+                </method1>
+
+                <method1 name="setIsolated"
+                         return="void"
+                         args="['bool']"
+                         vars="['isIso']"
+                         qual="">
+void setIsolated(bool isIso);
+                    <comment>
+	    ---------- member functions ---------------------------
+                    </comment>
+                </method1>
+
+                <method1 name="setMip"
+                         return="void"
+                         args="['bool']"
+                         vars="['isMip']"
+                         qual="">
+void setMip(bool isMip);
+                </method1>
+
+                <method1 name="setForward"
+                         return="void"
+                         args="['bool']"
+                         vars="['isForward']"
+                         qual="">
+void setForward(bool isForward);
+                </method1>
+
+                <method1 name="setRPC"
+                         return="void"
+                         args="['bool']"
+                         vars="['isRPC']"
+                         qual="">
+void setRPC(bool isRPC);
+                </method1>
+
+                <method1 name="setBx"
+                         return="void"
+                         args="['int']"
+                         vars="['bx']"
+                         qual="">
+void setBx(int bx);
+                </method1>
+
+            </section>
+
+        </class>
+    </namespace>
+
+    <type name="Charge"/>
+    <type name="L1MuonParticle*"/>
+    <type name="bool"/>
+    <type name="const L1MuGMTExtendedCand&amp;"/>
+    <type name="const LorentzVector&amp;"/>
+    <type name="const PolarLorentzVector&amp;"/>
+    <type name="int"/>
+    <type name="l1extra::L1MuonParticle"/>
+    <type name="reco::LeafCandidate"/>
+    <type name="unsigned int"/>
+    <type name="void"/>
+</header>

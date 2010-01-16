@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: L1GctCand.xml
+  Created:  Thu Jan 14 22:47:20 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/L1GlobalCaloTrigger/interface/L1GctCand.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/L1GlobalCaloTrigger/interface/L1GctCand.h">
+
+    <include name="&quot;DataFormats/L1CaloTrigger/interface/L1CaloRegionDetId.h&quot;"/>
+
+    <class name="L1GctCand"
+           fullname="L1GctCand"
+           module="DataFormats.L1GlobalCaloTrigger"
+           project=""
+           type="abstract regular">
+        <comment>
+    \date July 2006
+        </comment>
+
+        <section name="public">
+            <constructor name="L1GctCand"
+                         return=""
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+L1GctCand();
+            </constructor>
+
+            <destructor name="~L1GctCand"
+                        return="virtual"
+                        args="['void']"
+                        vars="['']"
+                        qual="">
+virtual ~L1GctCand();
+            </destructor>
+
+            <method1 name="regionId"
+                     return="virtual L1CaloRegionDetId"
+                     args="['void']"
+                     vars="['']"
+                     qual="const = 0">
+virtual L1CaloRegionDetId regionId() const=0;
+                <comment>
+      access origin of candidate
+                </comment>
+            </method1>
+
+            <method1 name="empty"
+                     return="virtual bool"
+                     args="['void']"
+                     vars="['']"
+                     qual="const = 0">
+virtual bool empty() const=0;
+                <comment>
+      empty candidate  - true if object not initialized
+                </comment>
+            </method1>
+
+            <method1 name="rank"
+                     return="virtual unsigned"
+                     args="['void']"
+                     vars="['']"
+                     qual="const = 0">
+virtual unsigned rank() const=0;
+                <comment>
+      (ie. the Et scale) may differ depending on the concrete type
+                </comment>
+            </method1>
+
+            <method1 name="etaIndex"
+                     return="virtual unsigned"
+                     args="['void']"
+                     vars="['']"
+                     qual="const = 0">
+virtual unsigned etaIndex() const=0;
+                <comment>
+      get eta index (bit 3 is sign, 1 for -ve Z, 0 for +ve Z)
+                </comment>
+            </method1>
+
+            <method1 name="etaSign"
+                     return="virtual unsigned"
+                     args="['void']"
+                     vars="['']"
+                     qual="const = 0">
+virtual unsigned etaSign() const=0;
+                <comment>
+      get eta sign bit (1 for -ve Z, 0 for +ve Z)
+                </comment>
+            </method1>
+
+            <method1 name="phiIndex"
+                     return="virtual unsigned"
+                     args="['void']"
+                     vars="['']"
+                     qual="const = 0">
+virtual unsigned phiIndex() const=0;
+                <comment>
+      get phi index (0-17)
+                </comment>
+            </method1>
+
+        </section>
+
+    </class>
+
+    <type name="L1CaloRegionDetId"/>
+    <type name="L1GctCand"/>
+    <type name="bool"/>
+    <type name="unsigned"/>
+    <type name="void"/>
+</header>

@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: PFRecTrackFwd.xml
+  Created:  Thu Jan 14 22:48:03 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/ParticleFlowReco/interface/PFRecTrackFwd.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/ParticleFlowReco/interface/PFRecTrackFwd.h">
+
+    <include name="&lt;vector&gt;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
+
+    <namespace name="reco">
+        <forward name="PFRecTrack"/>
+        <typedef name="PFRecTrackCollection"
+                 value="std::vector&lt;PFRecTrack&gt;">
+typedef std::vector&lt;PFRecTrack&gt; PFRecTrackCollection;
+            <comment>
+      collection of PFRecTrack objects
+            </comment>
+        </typedef>
+
+        <typedef name="PFRecTrackRef"
+                 value="edm::Ref&lt;PFRecTrackCollection&gt;">
+typedef edm::Ref&lt;PFRecTrackCollection&gt; PFRecTrackRef;
+            <comment>
+      persistent reference to PFRecTrack objects
+            </comment>
+        </typedef>
+
+        <typedef name="PFRecTrackRefProd"
+                 value="edm::RefProd&lt;PFRecTrackCollection&gt;">
+typedef edm::RefProd&lt;PFRecTrackCollection&gt; PFRecTrackRefProd;
+            <comment>
+      reference to PFRecTrack collection
+            </comment>
+        </typedef>
+
+        <typedef name="PFRecTrackRefVector"
+                 value="edm::RefVector&lt;PFRecTrackCollection&gt;">
+typedef edm::RefVector&lt;PFRecTrackCollection&gt; PFRecTrackRefVector;
+            <comment>
+      vector of references to PFRecTrack objects all in the same collection
+            </comment>
+        </typedef>
+
+        <typedef name="pfRecTrack_iterator"
+                 value="PFRecTrackRefVector::iterator">
+typedef PFRecTrackRefVector::iterator pfRecTrack_iterator;
+            <comment>
+      iterator over a vector of references to PFRecTrack objects
+            </comment>
+        </typedef>
+
+    </namespace>
+
+</header>

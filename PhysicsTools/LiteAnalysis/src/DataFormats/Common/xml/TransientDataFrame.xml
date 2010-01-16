@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: TransientDataFrame.xml
+  Created:  Thu Jan 14 22:46:28 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Common/interface/TransientDataFrame.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/TransientDataFrame.h">
+
+    <include name="&quot;DataFormats/Common/interface/DataFrame.h&quot;"/>
+    <include name="&lt;algorithm&gt;"/>
+
+    <namespace name="edm">
+
+        <class name="TransientDataFrame"
+               fullname="edm::TransientDataFrame&lt;SIZE&gt;"
+               module="DataFormats.Common"
+               project=""
+               type="template"
+               template="template&lt;unsigned int SIZE&gt;">
+            <comment>
+     a fixed size array of 16bit words belonging to
+     a &quot;channel&quot; identified by an 32bit id
+
+     FIXME interface to be finalized once use-cases fully identified
+            </comment>
+
+            <section name="public">
+                <typedef name="data_type"
+                         value="DataFrame::data_type">
+typedef DataFrame::data_type data_type;
+                </typedef>
+
+                <typedef name="id_type"
+                         value="DataFrame::id_type">
+typedef DataFrame::id_type id_type;
+                </typedef>
+
+                <constructor name="TransientDataFrame"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+TransientDataFrame();
+                </constructor>
+
+                <constructor name="TransientDataFrame"
+                             return=""
+                             args="['id_type']"
+                             vars="['i']"
+                             qual="">
+TransientDataFrame(id_type i);
+                </constructor>
+
+                <constructor name="TransientDataFrame"
+                             return=""
+                             args="['DataFrame const&amp;']"
+                             vars="['iframe']"
+                             qual="">
+TransientDataFrame(DataFrame const&amp; iframe);
+                </constructor>
+
+                <method1 name="size"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int size() const;
+                </method1>
+
+                <operator name="operator[]"
+                          return="data_type"
+                          args="['size_t']"
+                          vars="['i']"
+                          qual="const">
+data_type operator[](size_t i) const;
+                </operator>
+
+                <operator name="operator[]"
+                          return="data_type&amp;"
+                          args="['size_t']"
+                          vars="['i']"
+                          qual="">
+data_type&amp; operator[](size_t i);
+                </operator>
+
+                <method1 name="id"
+                         return="id_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+id_type id() const;
+                </method1>
+
+            </section>
+
+            <typemap name="data_type"
+                     value="DataFrame::data_type"
+                     type="typedef"/>
+            <typemap name="id_type"
+                     value="DataFrame::id_type"
+                     type="typedef"/>
+
+        </class>
+    </namespace>
+
+    <type name="DataFrame const&amp;"/>
+    <type name="data_type"/>
+    <type name="data_type&amp;"/>
+    <type name="edm::TransientDataFrame&lt;SIZE&gt;"/>
+    <type name="id_type"/>
+    <type name="int"/>
+    <type name="size_t"/>
+    <type name="void"/>
+</header>

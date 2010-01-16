@@ -1,0 +1,16 @@
+Class:
+	edm::helper::CandMasterKeyReference
+
+Header:
+	DataFormats/Candidate/interface/CandAssociation.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:14:57 2010	lsclass.py $Revision:$
+
+Methods from edm::helper::CandMasterKeyReference
+
+	-o- get
+		Return: template<typename CandRef> static const CandRef&
+		Arguments: const CandRef&	t
+		           edm::ProductID	id
+

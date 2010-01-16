@@ -1,0 +1,1 @@
+$CMSSW_RELEASE_BASE/src/DataFormats/VertexReco/interface/Vertex.h

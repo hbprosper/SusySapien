@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: ElectronIsolationAssociation.xml
+  Created:  Thu Jan 14 22:46:52 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/EgammaCandidates/interface/ElectronIsolationAssociation.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/EgammaCandidates/interface/ElectronIsolationAssociation.h">
+
+    <include name="&quot;DataFormats/Common/interface/AssociationMap.h&quot;"/>
+    <include name="&quot;DataFormats/EgammaCandidates/interface/ElectronFwd.h&quot;"/>
+    <include name="&lt;vector&gt;"/>
+
+    <namespace name="reco">
+        <typedef name="ElectronIsolationMap"
+                 value="edm::AssociationMap&lt;edm::OneToValue&lt;std::vector&lt;reco::Electron&gt;, float &gt; &gt;">
+typedef edm::AssociationMap&lt;edm::OneToValue&lt;std::vector&lt;reco::Electron&gt;, float &gt; &gt; ElectronIsolationMap;
+        </typedef>
+
+    </namespace>
+
+</header>

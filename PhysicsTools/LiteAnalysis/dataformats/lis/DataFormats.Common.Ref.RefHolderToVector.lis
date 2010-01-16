@@ -1,0 +1,2 @@
+edm::reftobase::RefHolderToVector<T, REF>|static std::auto_ptr<BaseVectorHolder<T> >|makeVectorHolder|void
+edm::reftobase::RefHolderToVector<T, REF>|static std::auto_ptr<RefVectorHolderBase>|makeVectorBaseHolder|void

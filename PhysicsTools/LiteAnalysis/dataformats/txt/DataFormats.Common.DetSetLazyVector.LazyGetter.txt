@@ -1,0 +1,15 @@
+Class:
+	edm::dslv::LazyGetter<T>
+
+Header:
+	DataFormats/Common/interface/DetSetLazyVector.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:16:06 2010	lsclass.py $Revision:$
+
+Methods from edm::dslv::LazyGetter<T>
+
+	-o- fill
+		Return: void
+		Arguments: DetSet<T>&	
+

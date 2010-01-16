@@ -1,0 +1,210 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: debugging_allocator.xml
+  Created:  Thu Jan 14 22:46:32 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Common/interface/debugging_allocator.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/debugging_allocator.h">
+
+    <include name="&lt;limits&gt;"/>
+    <include name="&lt;cstddef&gt;"/>
+
+    <namespace name="edm">
+
+        <class name="debugging_allocator"
+               fullname="edm::debugging_allocator&lt;T&gt;"
+               module="DataFormats.Common"
+               project=""
+               type="template"
+               template="template&lt;class T&gt;">
+
+            <section name="public">
+                <typedef name="size_type"
+                         value="size_t">
+typedef size_t size_type;
+                </typedef>
+
+                <typedef name="difference_type"
+                         value="ptrdiff_t">
+typedef ptrdiff_t difference_type;
+                </typedef>
+
+                <typedef name="pointer"
+                         value="T*">
+typedef T* pointer;
+                </typedef>
+
+                <typedef name="const_pointer"
+                         value="T const*">
+typedef T const* const_pointer;
+                </typedef>
+
+                <typedef name="reference"
+                         value="T&amp;">
+typedef T&amp; reference;
+                </typedef>
+
+                <typedef name="const_reference"
+                         value="T const&amp;">
+typedef T const&amp; const_reference;
+                </typedef>
+
+                <typedef name="value_type"
+                         value="T">
+typedef T value_type;
+                </typedef>
+
+
+                <class name="rebind"
+                       fullname="edm::debugging_allocator&lt;T&gt;::rebind&lt;U&gt;"
+                       module="DataFormats.Common"
+                       project=""
+                       type="template"
+                       template="template&lt;class U&gt;">
+
+                    <section>
+                        <typedef name="other"
+                                 value="debugging_allocator&lt;U&gt;">
+typedef debugging_allocator&lt;U&gt; other;
+                        </typedef>
+
+                    </section>
+
+                    <typemap name="other"
+                             value="debugging_allocator&lt;U&gt;"
+                             type="typedef"/>
+                    <typemap name="rebind"
+                             value="edm::debugging_allocator&lt;T&gt;::rebind&lt;U&gt;"
+                             type="class"/>
+
+                </class>
+                <constructor name="debugging_allocator"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="throw()">
+debugging_allocator() throw();
+                </constructor>
+
+                <copyconstructor name="debugging_allocator"
+                                 return=""
+                                 args="['debugging_allocator const&amp;']"
+                                 vars="['']"
+                                 qual="throw()">
+debugging_allocator(debugging_allocator const&amp;) throw();
+                </copyconstructor>
+
+                <method2 name="debugging_allocator"
+                         return="template&lt;class U&gt;"
+                         args="['debugging_allocator&lt;U&gt; const&amp;']"
+                         vars="['']"
+                         qual="throw()">
+template&lt;class U&gt; debugging_allocator(debugging_allocator&lt;U&gt; const&amp;) throw();
+                </method2>
+
+                <destructor name="~debugging_allocator"
+                            return=""
+                            args="['void']"
+                            vars="['']"
+                            qual="throw()">
+~debugging_allocator() throw();
+                </destructor>
+
+                <method1 name="address"
+                         return="pointer"
+                         args="['reference']"
+                         vars="['value']"
+                         qual="const">
+pointer address(reference value) const;
+                </method1>
+
+                <method1 name="address"
+                         return="const_pointer"
+                         args="['const_reference']"
+                         vars="['value']"
+                         qual="const">
+const_pointer address(const_reference value) const;
+                </method1>
+
+                <method1 name="max_size"
+                         return="size_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const throw()">
+size_type max_size() const throw();
+                </method1>
+
+                <method1 name="allocate"
+                         return="pointer"
+                         args="['size_type','void const*=0']"
+                         vars="['num','hint']"
+                         qual="">
+pointer allocate(size_type num, void const* hint=0);
+                </method1>
+
+                <method1 name="construct"
+                         return="void"
+                         args="['pointer','T const&amp;']"
+                         vars="['p','value']"
+                         qual="">
+void construct(pointer p, T const&amp; value);
+                </method1>
+
+                <method1 name="destroy"
+                         return="void"
+                         args="['pointer']"
+                         vars="['p']"
+                         qual="">
+void destroy(pointer p);
+                </method1>
+
+                <method1 name="deallocate"
+                         return="void"
+                         args="['pointer','size_type']"
+                         vars="['p','num']"
+                         qual="">
+void deallocate(pointer p, size_type num);
+                </method1>
+
+            </section>
+
+            <typemap name="const_pointer"
+                     value="T const*"
+                     type="typedef"/>
+            <typemap name="const_reference"
+                     value="T const&amp;"
+                     type="typedef"/>
+            <typemap name="difference_type"
+                     value="ptrdiff_t"
+                     type="typedef"/>
+            <typemap name="pointer"
+                     value="T*"
+                     type="typedef"/>
+            <typemap name="reference"
+                     value="T&amp;"
+                     type="typedef"/>
+            <typemap name="size_type"
+                     value="size_t"
+                     type="typedef"/>
+            <typemap name="value_type"
+                     value="T"
+                     type="typedef"/>
+
+        </class>
+    </namespace>
+
+    <type name="const_pointer"/>
+    <type name="const_reference"/>
+    <type name="debugging_allocator const&amp;"/>
+    <type name="debugging_allocator&lt;U&gt; const&amp;"/>
+    <type name="edm::debugging_allocator&lt;T&gt;"/>
+    <type name="edm::debugging_allocator&lt;T&gt;::rebind&lt;U&gt;"/>
+    <type name="pointer"/>
+    <type name="reference"/>
+    <type name="size_type"/>
+    <type name="template&lt;class U&gt;"/>
+    <type name="void"/>
+    <type name="void const*"/>
+</header>

@@ -1,0 +1,55 @@
+Class:
+	edm::DataFrame
+
+Header:
+	DataFormats/Common/interface/DataFrame.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:53 2010	lsclass.py $Revision:$
+
+Methods from edm::DataFrame
+
+	-o- DataFrame
+		Return: inline
+		Arguments: void	
+
+	-o- DataFrame
+		Return: inline
+		Arguments: id_type	i
+		           data_type const*	idata
+		           size_type	isize
+
+	-o- DataFrame
+		Return: inline
+		Arguments: DataFrameContainer const&	icont
+		           size_type	i
+
+	-o- set
+		Return: inline void
+		Arguments: DataFrameContainer const&	icont
+		           size_type	i
+
+	-o- begin
+		Return: inline unsigned short*
+		Arguments: void	
+
+	-o- end
+		Return: inline unsigned short*
+		Arguments: void	
+
+	-o- begin
+		Return: inline unsigned short const*
+		Arguments: void	
+
+	-o- end
+		Return: inline unsigned short const*
+		Arguments: void	
+
+	-o- id
+		Return: inline unsigned int
+		Arguments: void	
+
+	-o- size
+		Return: inline unsigned int
+		Arguments: void	
+

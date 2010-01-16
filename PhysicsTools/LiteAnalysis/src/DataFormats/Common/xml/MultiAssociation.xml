@@ -1,0 +1,587 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: MultiAssociation.xml
+  Created:  Thu Jan 14 22:46:08 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Common/interface/MultiAssociation.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/MultiAssociation.h">
+
+    <include name="&lt;vector&gt;"/>
+    <include name="&lt;map&gt;"/>
+    <include name="&lt;boost/shared_ptr.hpp&gt;"/>
+    <include name="&lt;boost/utility.hpp&gt;"/>
+    <include name="&lt;boost/range.hpp&gt;"/>
+    <include name="&quot;DataFormats/Provenance/interface/ProductID.h&quot;"/>
+
+    <namespace name="edm">
+
+        <namespace name="helper">
+
+            <class name="IndexRangeAssociation"
+                   fullname="edm::helper::IndexRangeAssociation"
+                   module="DataFormats.Common"
+                   project=""
+                   type="regular">
+                <comment>
+      /// To be used by MultiAssociation. Any other usage beyond MultiAssociation is not supported.
+      /** This class holds:
+           - ref_offsets_: A non decreasing list of offsets in the target collection, with one item for each key *plus one end item*.
+                           A range is given by a consecutive pair of offsets.
+                           While filling the map, some items can be '-1', but not the last one.
+           - id_offsets_ : A list of pairs, mapping a product id to its associated range in ref_offsets_
+          This class can be filled through a FastFiller, that requires to fill keys and offsets in strictly increasing order, and without gaps.
+          Only one FastFiller can exist at time, and each FastFiller fills only for a given key collection. */
+                </comment>
+
+                <section name="public">
+                    <typedef name="range"
+                             value="std::pair&lt;unsigned int, unsigned int&gt;">
+typedef std::pair&lt;unsigned int, unsigned int&gt; range;
+                    </typedef>
+
+                    <constructor name="IndexRangeAssociation"
+                                 return=""
+                                 args="['void']"
+                                 vars="['']"
+                                 qual="">
+IndexRangeAssociation();
+                    </constructor>
+
+                    <operator name="operator[]"
+                              return="template&lt;typename RefKey&gt; range"
+                              args="['const RefKey&amp;']"
+                              vars="['r']"
+                              qual="const">
+template&lt;typename RefKey&gt;               range operator[](const RefKey&amp; r) const;
+                        <comment>
+                  And end value of -1 means 'until the end of the other collection, AFAICT'
+                        </comment>
+                    </operator>
+
+                    <method1 name="get"
+                             return="range"
+                             args="['const edm::ProductID&amp;','unsigned int']"
+                             vars="['id','t']"
+                             qual="const">
+range get(const edm::ProductID&amp; id, unsigned int t) const;
+                        <comment>
+                  And end value of -1 means 'until the end of the other collection, AFAICT'
+                        </comment>
+                    </method1>
+
+                    <method1 name="contains"
+                             return="bool"
+                             args="['ProductID']"
+                             vars="['id']"
+                             qual="const">
+bool contains(ProductID id) const;
+                        <comment>
+                  True if this IndexRangeAssociation has info for this product id
+                        </comment>
+                    </method1>
+
+                    <method1 name="size"
+                             return="unsigned int"
+                             args="['void']"
+                             vars="['']"
+                             qual="const">
+unsigned int size() const;
+                        <comment>
+                  Size of this collection (number of keys)
+                        </comment>
+                    </method1>
+
+                    <method1 name="empty"
+                             return="bool"
+                             args="['void']"
+                             vars="['']"
+                             qual="const">
+bool empty() const;
+                        <comment>
+                  True if it's empty (no keys)
+                        </comment>
+                    </method1>
+
+
+                    <class name="FastFiller"
+                           fullname="edm::helper::IndexRangeAssociation::FastFiller"
+                           module="DataFormats.Common"
+                           project=""
+                           type="regular">
+                        <comment>
+                  You can't access the map for this collection while filling it
+                        </comment>
+
+                        <section name="public">
+                            <constructor name="FastFiller"
+                                         return=""
+                                         args="['IndexRangeAssociation&amp;','ProductID','unsigned int']"
+                                         vars="['assoc','id','size']"
+                                         qual="">
+FastFiller(IndexRangeAssociation&amp; assoc, ProductID id, unsigned int size);
+                                <comment>
+                          Make a filler for a collection with a given product id and size
+                                </comment>
+                            </constructor>
+
+                            <destructor name="~FastFiller"
+                                        return=""
+                                        args="['void']"
+                                        vars="['']"
+                                        qual="">
+~FastFiller();
+                                <comment>
+                          When the FastFiller goes out of scope, it unlocks the map so you can make a new one
+                                </comment>
+                            </destructor>
+
+                            <method2 name="insert"
+                                     return="template&lt;typename RefKey&gt; void"
+                                     args="['const RefKey&amp;','unsigned int','unsigned int']"
+                                     vars="['r','startingOffset','size']"
+                                     qual="">
+template&lt;typename RefKey&gt;                       void insert(const RefKey&amp; r, unsigned int startingOffset, unsigned int size);
+                                <comment>
+                          Sets the starting offset for this key.
+                                </comment>
+                            </method2>
+
+                            <method1 name="insert"
+                                     return="void"
+                                     args="['edm::ProductID','unsigned int','unsigned int','unsigned int']"
+                                     vars="['id','key','startingOffset','size']"
+                                     qual="">
+void insert(edm::ProductID id, unsigned int key, unsigned int startingOffset, unsigned int size);
+                                <comment>
+                          Sets the starting offset for this key (non-templated variant)
+                                </comment>
+                            </method1>
+
+                        </section>
+                        <section name="private">
+                            <constant name="id_"
+                                      type="const ProductID"
+                                      value=""/>
+                        </section>
+
+                        <typemap name="FastFiller"
+                                 value="edm::helper::IndexRangeAssociation::FastFiller"
+                                 type="class"/>
+
+                    </class>
+                    <friend>
+friend class FastFiller;
+                    </friend>
+
+                    <method1 name="swap"
+                             return="void"
+                             args="['IndexRangeAssociation&amp;']"
+                             vars="['other']"
+                             qual="">
+void swap(IndexRangeAssociation&amp; other);
+                    </method1>
+
+                    <method1 name="throwUnexpectedProductID"
+                             return="static void"
+                             args="['ProductID','ProductID','const char*']"
+                             vars="['found','expected','where']"
+                             qual="">
+static void throwUnexpectedProductID(ProductID found, ProductID expected, const char* where);
+                    </method1>
+
+                </section>
+                <section name="private">
+
+                    <class name="IDComparator"
+                           fullname="edm::helper::IndexRangeAssociation::IDComparator"
+                           module="DataFormats.Common"
+                           project=""
+                           type="regular struct">
+
+
+                        <typemap name="IDComparator"
+                                 value="edm::helper::IndexRangeAssociation::IDComparator"
+                                 type="class"/>
+
+                    </class>
+                </section>
+
+                <typemap name="range"
+                         value="std::pair&lt;unsigned int, unsigned int&gt;"
+                         type="typedef"/>
+
+            </class>
+            <function1 name="swap"
+                       return="inline void"
+                       args="['IndexRangeAssociation&amp;','IndexRangeAssociation&amp;']"
+                       vars="['lhs','rhs']"
+                       qual="">
+inline void swap(IndexRangeAssociation&amp; lhs, IndexRangeAssociation&amp; rhs);
+                <comment>
+       Free swap function
+                </comment>
+            </function1>
+
+        </namespace>
+
+        <class name="MultiAssociation"
+               fullname="edm::MultiAssociation&lt;C&gt;"
+               module="DataFormats.Common"
+               project=""
+               type="template"
+               template="template&lt;typename C&gt;">
+
+            <section name="public">
+                <typedef name="Collection"
+                         value="C">
+typedef C Collection;
+                </typedef>
+
+                <typedef name="const_range"
+                         value="boost::sub_range&lt;const Collection&gt;">
+typedef boost::sub_range&lt;const Collection&gt; const_range;
+                </typedef>
+
+                <typedef name="range"
+                         value="boost::sub_range&lt;Collection&gt;">
+typedef boost::sub_range&lt;Collection&gt; range;
+                </typedef>
+
+                <constructor name="MultiAssociation"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+MultiAssociation();
+                </constructor>
+
+                <operator name="operator[]"
+                          return="template&lt;typename RefKey&gt; const_range"
+                          args="['const RefKey&amp;']"
+                          vars="['r']"
+                          qual="const">
+template&lt;typename RefKey&gt;     const_range operator[](const RefKey&amp; r) const;
+                    <comment>
+        Get a range of values for this key (fast)
+                    </comment>
+                </operator>
+
+                <operator name="operator[]"
+                          return="template&lt;typename RefKey&gt; range"
+                          args="['const RefKey&amp;']"
+                          vars="['r']"
+                          qual="">
+template&lt;typename RefKey&gt;     range operator[](const RefKey&amp; r);
+                    <comment>
+        Get a range of values for this key (fast)
+                    </comment>
+                </operator>
+
+                <method2 name="getValues"
+                         return="template&lt;typename RefKey&gt; Collection"
+                         args="['const RefKey&amp;']"
+                         vars="['r']"
+                         qual="const">
+template&lt;typename RefKey&gt;     Collection getValues(const RefKey&amp; r) const;
+                    <comment>
+        Get a copy of the values for this key (slow!)
+                    </comment>
+                </method2>
+
+                <method1 name="contains"
+                         return="bool"
+                         args="['const edm::ProductID&amp;']"
+                         vars="['id']"
+                         qual="const">
+bool contains(const edm::ProductID&amp; id) const;
+                    <comment>
+        True if there are keys from this product id
+                    </comment>
+                </method1>
+
+                <method1 name="get"
+                         return="const_range"
+                         args="['const edm::ProductID&amp;','unsigned int']"
+                         vars="['id','t']"
+                         qual="const">
+const_range get(const edm::ProductID&amp; id, unsigned int t) const;
+                    <comment>
+        Get a range of values for this product id and index (fast)
+                    </comment>
+                </method1>
+
+                <method1 name="get"
+                         return="range"
+                         args="['const edm::ProductID&amp;','unsigned int']"
+                         vars="['id','t']"
+                         qual="">
+range get(const edm::ProductID&amp; id, unsigned int t);
+                    <comment>
+        Get a range of values for this product id and index (fast)
+                    </comment>
+                </method1>
+
+                <method1 name="getValues"
+                         return="Collection"
+                         args="['const edm::ProductID&amp;','unsigned int']"
+                         vars="['id','t']"
+                         qual="const">
+Collection getValues(const edm::ProductID&amp; id, unsigned int t) const;
+                    <comment>
+        Get a copy of the values for this product id and index (slow!)
+                    </comment>
+                </method1>
+
+                <method1 name="swap"
+                         return="void"
+                         args="['MultiAssociation&amp;']"
+                         vars="['other']"
+                         qual="">
+void swap(MultiAssociation&amp; other);
+                </method1>
+
+                <method1 name="dataSize"
+                         return="unsigned int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+unsigned int dataSize() const;
+                    <comment>
+        Returns the number of values
+                    </comment>
+                </method1>
+
+                <method1 name="size"
+                         return="unsigned int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+unsigned int size() const;
+                    <comment>
+        Returns the number of keys
+                    </comment>
+                </method1>
+
+                <method1 name="empty"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool empty() const;
+                    <comment>
+        Returns true if there are no keys
+                    </comment>
+                </method1>
+
+
+                <class name="FastFiller"
+                       fullname="edm::MultiAssociation&lt;C&gt;::FastFiller"
+                       module="DataFormats.Common"
+                       project=""
+                       type="regular">
+                    <comment>
+        You can't access the map for this collection while filling it
+                    </comment>
+
+                    <section name="public">
+                        <method2 name="FastFiller"
+                                 return="template&lt;typename HandleType&gt;"
+                                 args="['MultiAssociation&amp;','const HandleType&amp;']"
+                                 vars="['assoc','handle']"
+                                 qual="">
+template&lt;typename HandleType&gt;             FastFiller(MultiAssociation&amp; assoc, const HandleType&amp; handle);
+                        </method2>
+
+                        <constructor name="FastFiller"
+                                     return=""
+                                     args="['MultiAssociation&amp;','edm::ProductID','unsigned int']"
+                                     vars="['assoc','id','size']"
+                                     qual="">
+FastFiller(MultiAssociation&amp; assoc, edm::ProductID id, unsigned int size);
+                        </constructor>
+
+                        <destructor name="~FastFiller"
+                                    return=""
+                                    args="['void']"
+                                    vars="['']"
+                                    qual="">
+~FastFiller();
+                        </destructor>
+
+                        <method2 name="setValues"
+                                 return="template&lt;typename KeyRef&gt; void"
+                                 args="['const KeyRef&amp;','const Collection&amp;']"
+                                 vars="['k','refs']"
+                                 qual="">
+template&lt;typename KeyRef&gt;             void setValues(const KeyRef&amp; k, const Collection&amp; refs);
+                            <comment>
+                Sets the Collection values associated to this key, making copies of those in refs
+                            </comment>
+                        </method2>
+
+                        <method1 name="setValues"
+                                 return="void"
+                                 args="['const edm::ProductID&amp;','unsigned int','const Collection&amp;']"
+                                 vars="['id','key','refs']"
+                                 qual="">
+void setValues(const edm::ProductID&amp; id, unsigned int key, const Collection&amp; refs);
+                            <comment>
+                Sets the Collection values associated to this key, making copies of those in refs
+                            </comment>
+                        </method1>
+
+                    </section>
+
+                    <typemap name="FastFiller"
+                             value="edm::MultiAssociation&lt;C&gt;::FastFiller"
+                             type="class"/>
+
+                </class>
+                <friend>
+friend class FastFiller;
+                </friend>
+
+                <method2 name="fastFiller"
+                         return="template&lt;typename HandleType&gt; FastFiller"
+                         args="['const HandleType&amp;']"
+                         vars="['handle']"
+                         qual="">
+template&lt;typename HandleType&gt;     FastFiller fastFiller(const HandleType&amp; handle);
+                </method2>
+
+
+                <class name="LazyFiller"
+                       fullname="edm::MultiAssociation&lt;C&gt;::LazyFiller"
+                       module="DataFormats.Common"
+                       project=""
+                       type="regular">
+                    <comment>
+        If you set fillOnExit to 'true', it will fill the MultiAssociation automatically when going out of scope
+                    </comment>
+
+                    <section name="public">
+                        <method2 name="LazyFiller"
+                                 return="template&lt;typename HandleType&gt;"
+                                 args="['MultiAssociation&amp;','const HandleType&amp;','bool=false']"
+                                 vars="['assoc','handle','fillOnExit']"
+                                 qual="">
+template&lt;typename HandleType&gt;             LazyFiller(MultiAssociation&amp; assoc, const HandleType&amp; handle, bool fillOnExit=false);
+                        </method2>
+
+                        <destructor name="~LazyFiller"
+                                    return=""
+                                    args="['void']"
+                                    vars="['']"
+                                    qual="">
+~LazyFiller();
+                        </destructor>
+
+                        <method1 name="fill"
+                                 return="void"
+                                 args="['void']"
+                                 vars="['']"
+                                 qual="">
+void fill();
+                            <comment>
+                Implementation note: inside, it just makes a FastFiller and uses it.
+                            </comment>
+                        </method1>
+
+                        <method1 name="setFillOnExit"
+                                 return="void"
+                                 args="['bool']"
+                                 vars="['fillOnExit']"
+                                 qual="">
+void setFillOnExit(bool fillOnExit);
+                            <comment>
+                If set to true, the LazyFiller wil call 'fill()' when it goes out of scope
+                            </comment>
+                        </method1>
+
+                        <method2 name="setValues"
+                                 return="template&lt;typename KeyRef&gt; void"
+                                 args="['const KeyRef&amp;','const Collection&amp;']"
+                                 vars="['k','refs']"
+                                 qual="">
+template&lt;typename KeyRef&gt;             void setValues(const KeyRef&amp; k, const Collection&amp; refs);
+                            <comment>
+                Sets the Collection values associated to this key, making copies of those in refs
+                            </comment>
+                        </method2>
+
+                        <method2 name="swapValues"
+                                 return="template&lt;typename KeyRef&gt; void"
+                                 args="['const KeyRef&amp;','Collection&amp;']"
+                                 vars="['k','refs']"
+                                 qual="">
+template&lt;typename KeyRef&gt;             void swapValues(const KeyRef&amp; k, Collection&amp; refs);
+                            <comment>
+                This is expected to be faster than 'setValues'.
+                            </comment>
+                        </method2>
+
+                    </section>
+
+                    <typemap name="LazyFiller"
+                             value="edm::MultiAssociation&lt;C&gt;::LazyFiller"
+                             type="class"/>
+
+                </class>
+                <friend>
+friend class LazyFiller;
+                </friend>
+
+                <method2 name="lazyFiller"
+                         return="template&lt;typename HandleType&gt; LazyFiller"
+                         args="['const HandleType&amp;','bool=false']"
+                         vars="['h','fillOnExit']"
+                         qual="">
+template&lt;typename HandleType&gt;     LazyFiller lazyFiller(const HandleType&amp; h, bool fillOnExit=false);
+                </method2>
+
+            </section>
+
+            <typemap name="Collection"
+                     value="C"
+                     type="typedef"/>
+            <typemap name="const_range"
+                     value="boost::sub_range&lt;const C&gt;"
+                     type="typedef"/>
+            <typemap name="range"
+                     value="boost::sub_range&lt;C&gt;"
+                     type="typedef"/>
+
+        </class>
+    </namespace>
+
+    <type name="Collection"/>
+    <type name="Collection&amp;"/>
+    <type name="IndexRangeAssociation&amp;"/>
+    <type name="MultiAssociation&amp;"/>
+    <type name="ProductID"/>
+    <type name="bool"/>
+    <type name="const Collection&amp;"/>
+    <type name="const char*"/>
+    <type name="const edm::ProductID&amp;"/>
+    <type name="const_range"/>
+    <type name="edm::MultiAssociation&lt;C&gt;"/>
+    <type name="edm::MultiAssociation&lt;C&gt;::FastFiller"/>
+    <type name="edm::MultiAssociation&lt;C&gt;::LazyFiller"/>
+    <type name="edm::ProductID"/>
+    <type name="edm::helper::IndexRangeAssociation"/>
+    <type name="edm::helper::IndexRangeAssociation::FastFiller"/>
+    <type name="edm::helper::IndexRangeAssociation::IDComparator"/>
+    <type name="range"/>
+    <type name="template&lt;typename HandleType&gt;"/>
+    <type name="template&lt;typename HandleType&gt; FastFiller"/>
+    <type name="template&lt;typename HandleType&gt; LazyFiller"/>
+    <type name="template&lt;typename KeyRef&gt; void"/>
+    <type name="template&lt;typename RefKey&gt; Collection"/>
+    <type name="template&lt;typename RefKey&gt; const_range"/>
+    <type name="template&lt;typename RefKey&gt; range"/>
+    <type name="template&lt;typename RefKey&gt; void"/>
+    <type name="unsigned int"/>
+    <type name="void"/>
+</header>

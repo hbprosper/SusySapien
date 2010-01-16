@@ -1,0 +1,6 @@
+bool	empty()
+unsigned	etaIndex()
+unsigned	etaSign()
+unsigned	phiIndex()
+unsigned	rank()
+

@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: GsfPFRecTrack.xml
+  Created:  Thu Jan 14 22:47:52 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/ParticleFlowReco/interface/GsfPFRecTrack.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/ParticleFlowReco/interface/GsfPFRecTrack.h">
+
+    <include name="&quot;DataFormats/ParticleFlowReco/interface/PFRecTrack.h&quot;"/>
+    <include name="&quot;DataFormats/ParticleFlowReco/interface/PFRecTrackFwd.h&quot;"/>
+    <include name="&quot;DataFormats/GsfTrackReco/interface/GsfTrackFwd.h&quot;"/>
+    <include name="&quot;DataFormats/ParticleFlowReco/interface/PFBrem.h&quot;"/>
+    <include name="&lt;iostream&gt;"/>
+
+    <namespace name="reco">
+
+        <class name="GsfPFRecTrack"
+               fullname="reco::GsfPFRecTrack"
+               module="DataFormats.ParticleFlowReco"
+               project=""
+               type="regular">
+            <baseclass name="public PFRecTrack"/>
+            <comment>
+     \class PFRecTrack
+     \brief reconstructed track used as an input to particle flow
+
+     Additional information w/r to PFTrack:
+     - algorithm used to reconstruct the track
+     - track ID, soon to be replaced by a RefToBase to the corresponding Track
+
+     \author Renaud Bruneliere, Michele Pioppi
+     \date   July 2006
+            </comment>
+
+            <section name="public">
+                <constructor name="GsfPFRecTrack"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+GsfPFRecTrack();
+                </constructor>
+
+                <constructor name="GsfPFRecTrack"
+                             return=""
+                             args="['double','AlgoType_t','int','const reco::GsfTrackRef&amp;','const edm::Ref&lt;std::vector&lt;PFRecTrack&gt; &gt;&amp;']"
+                             vars="['charge','algoType','trackId','gtrackref','kfpfrectrackref']"
+                             qual="">
+GsfPFRecTrack(double charge, AlgoType_t algoType, int trackId, const reco::GsfTrackRef&amp; gtrackref, const edm::Ref&lt;std::vector&lt;PFRecTrack&gt; &gt;&amp; kfpfrectrackref);
+                </constructor>
+
+                <method1 name="gsfTrackRef"
+                         return="const reco::GsfTrackRef&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const reco::GsfTrackRef&amp;       gsfTrackRef() const;
+                    <comment>
+        \return reference to corresponding gsftrack
+                    </comment>
+                </method1>
+
+                <method2 name="kfPFRecTrackRef"
+                         return="const edm::Ref&lt;std::vector&lt;PFRecTrack&gt; &gt;&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const edm::Ref&lt;std::vector&lt;PFRecTrack&gt; &gt;&amp;       kfPFRecTrackRef() const;
+                    <comment>
+        \return reference to corresponding KF PFRecTrack  (only for GSF PFRecTrack)
+                    </comment>
+                </method2>
+
+                <method1 name="addBrem"
+                         return="void"
+                         args="['const reco::PFBrem&amp;']"
+                         vars="['brem']"
+                         qual="">
+void addBrem(const reco::PFBrem&amp; brem);
+                    <comment>
+        add a Bremsstrahlung photon
+                    </comment>
+                </method1>
+
+                <method2 name="PFRecBrem"
+                         return="const std::vector&lt;reco::PFBrem&gt;&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const std::vector&lt;reco::PFBrem&gt;&amp; PFRecBrem() const;
+                    <comment>
+        \return the vector of PFBrem
+                    </comment>
+                </method2>
+
+                <method1 name="trackId"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int trackId() const;
+                    <comment>
+        \return id
+                    </comment>
+                </method1>
+
+            </section>
+
+        </class>
+    </namespace>
+
+    <type name="AlgoType_t"/>
+    <type name="PFRecTrack"/>
+    <type name="const edm::Ref&lt;std::vector&lt;PFRecTrack&gt; &gt;&amp;"/>
+    <type name="const reco::GsfTrackRef&amp;"/>
+    <type name="const reco::PFBrem&amp;"/>
+    <type name="const std::vector&lt;reco::PFBrem&gt;&amp;"/>
+    <type name="double"/>
+    <type name="int"/>
+    <type name="reco::GsfPFRecTrack"/>
+    <type name="void"/>
+</header>

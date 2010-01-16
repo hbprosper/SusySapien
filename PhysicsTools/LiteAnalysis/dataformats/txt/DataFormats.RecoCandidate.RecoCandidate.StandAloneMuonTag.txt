@@ -1,0 +1,9 @@
+Class:
+	reco::StandAloneMuonTag
+
+Header:
+	DataFormats/RecoCandidate/interface/RecoCandidate.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:13:57 2010	lsclass.py $Revision:$
+

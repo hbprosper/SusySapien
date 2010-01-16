@@ -1,0 +1,242 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: ClusterShape.xml
+  Created:  Thu Jan 14 22:47:01 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/EgammaReco/interface/ClusterShape.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/EgammaReco/interface/ClusterShape.h">
+
+    <include name="&lt;Rtypes.h&gt;"/>
+    <include name="&quot;DataFormats/EgammaReco/interface/ClusterShapeFwd.h&quot;"/>
+    <include name="&quot;DataFormats/DetId/interface/DetId.h&quot;"/>
+
+    <namespace name="reco">
+
+        <class name="ClusterShape"
+               fullname="reco::ClusterShape"
+               module="DataFormats.EgammaReco"
+               project=""
+               type="regular">
+
+            <section name="public">
+                <constructor name="ClusterShape"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+ClusterShape();
+                </constructor>
+
+                <constructor name="ClusterShape"
+                             return=""
+                             args="['double','double','double','double','DetId','double','DetId','double','double','double','double','double','double','double','double','double','double','double','double','double','double','double','std::vector&lt;double&gt;','std::vector&lt;double&gt;']"
+                             vars="['cEE','cEP','cPP','eMax','eMaxId','e2nd','e2ndId','e2x2','e3x2','e3x3','e4x4','e5x5','E10_Right_','E10_Left_','E10_Top_','E10_Bottom_','e3x2Ratio','LAT','etaLAT','phiLAT','A20','A42','energyBasketFractionEta_','energyBasketFractionPhi_']"
+                             qual="">
+ClusterShape(double cEE, double cEP, double cPP, double eMax, DetId eMaxId, double e2nd, DetId e2ndId, double e2x2, double e3x2, double e3x3, double e4x4, double e5x5, double E10_Right_, double E10_Left_, double E10_Top_, double E10_Bottom_, double e3x2Ratio, double LAT, double etaLAT, double phiLAT, double A20, double A42, std::vector&lt;double&gt; energyBasketFractionEta_, std::vector&lt;double&gt; energyBasketFractionPhi_);
+                </constructor>
+
+                <method1 name="eMax"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double eMax() const;
+                </method1>
+
+                <method1 name="e2nd"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double e2nd() const;
+                </method1>
+
+                <method1 name="e2x2"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double e2x2() const;
+                </method1>
+
+                <method1 name="e3x2"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double e3x2() const;
+                </method1>
+
+                <method1 name="e3x3"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double e3x3() const;
+                </method1>
+
+                <method1 name="e4x4"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double e4x4() const;
+                </method1>
+
+                <method1 name="e5x5"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double e5x5() const;
+                </method1>
+
+                <method1 name="e2x5Right"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double e2x5Right() const;
+                </method1>
+
+                <method1 name="e2x5Left"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double e2x5Left() const;
+                </method1>
+
+                <method1 name="e2x5Top"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double e2x5Top() const;
+                </method1>
+
+                <method1 name="e2x5Bottom"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double e2x5Bottom() const;
+                </method1>
+
+                <method1 name="e3x2Ratio"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double e3x2Ratio() const;
+                </method1>
+
+                <method1 name="covEtaEta"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double covEtaEta() const;
+                </method1>
+
+                <method1 name="covEtaPhi"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double covEtaPhi() const;
+                </method1>
+
+                <method1 name="covPhiPhi"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double covPhiPhi() const;
+                </method1>
+
+                <method1 name="lat"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double lat() const;
+                </method1>
+
+                <method1 name="etaLat"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double etaLat() const;
+                </method1>
+
+                <method1 name="phiLat"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double phiLat() const;
+                </method1>
+
+                <method1 name="zernike20"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double zernike20() const;
+                </method1>
+
+                <method1 name="zernike42"
+                         return="double"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+double zernike42() const;
+                </method1>
+
+                <method2 name="energyBasketFractionEta"
+                         return="std::vector&lt;double&gt;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+std::vector&lt;double&gt; energyBasketFractionEta() const;
+                </method2>
+
+                <method2 name="energyBasketFractionPhi"
+                         return="std::vector&lt;double&gt;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+std::vector&lt;double&gt; energyBasketFractionPhi() const;
+                </method2>
+
+                <method1 name="eMaxId"
+                         return="DetId"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+DetId eMaxId() const;
+                </method1>
+
+                <method1 name="e2ndId"
+                         return="DetId"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+DetId e2ndId() const;
+                </method1>
+
+            </section>
+
+        </class>
+    </namespace>
+
+    <type name="DetId"/>
+    <type name="double"/>
+    <type name="reco::ClusterShape"/>
+    <type name="std::vector&lt;double&gt;"/>
+    <type name="void"/>
+</header>

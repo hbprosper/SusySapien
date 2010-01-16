@@ -1,0 +1,15 @@
+Class:
+	edm::reftobase::RefProdKey
+
+Header:
+	DataFormats/Common/interface/RefKeyTrait.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:16:06 2010	lsclass.py $Revision:$
+
+Methods from edm::reftobase::RefProdKey
+
+	-o- key
+		Return: template<typename REF> static size_t
+		Arguments: const REF&	r
+

@@ -1,0 +1,70 @@
+Class:
+	L1GctJetCand
+
+Header:
+	DataFormats/L1GlobalCaloTrigger/interface/L1GctJetCand.h
+
+BaseClasses:
+	L1GctCand	DataFormats/L1GlobalCaloTrigger/interface/L1GctCand.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:14:55 2010	lsclass.py $Revision:$
+
+Methods from L1GctJetCand
+
+	-o- regionId
+		Return: L1CaloRegionDetId
+		Arguments: void	
+
+	-o- name
+		Return: std::string
+		Arguments: void	
+
+	-o- empty
+		Return: bool
+		Arguments: void	
+
+	-o- raw
+		Return: uint16_t
+		Arguments: void	
+
+	-o- rank
+		Return: unsigned
+		Arguments: void	
+
+	-o- etaIndex
+		Return: unsigned
+		Arguments: void	
+
+	-o- etaSign
+		Return: unsigned
+		Arguments: void	
+
+	-o- phiIndex
+		Return: unsigned
+		Arguments: void	
+
+	-o- isCentral
+		Return: bool
+		Arguments: void	
+
+	-o- isTau
+		Return: bool
+		Arguments: void	
+
+	-o- isForward
+		Return: bool
+		Arguments: void	
+
+	-o- capBlock
+		Return: unsigned
+		Arguments: void	
+
+	-o- capIndex
+		Return: unsigned
+		Arguments: void	
+
+	-o- bx
+		Return: int16_t
+		Arguments: void	
+

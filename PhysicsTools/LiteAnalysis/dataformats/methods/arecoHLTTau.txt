@@ -1,0 +1,9 @@
+float	getEMIsolationValue()
+float	getEta()
+float	getL25LeadTrackPtValue()
+int	getL25TrackIsolationResponse()
+float	getL3LeadTrackPtValue()
+int	getL3TrackIsolationResponse()
+float	getPhi()
+float	getPt()
+

@@ -1,0 +1,258 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: Association.xml
+  Created:  Thu Jan 14 22:45:48 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Common/interface/Association.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/Association.h">
+
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/ValueMap.h&quot;"/>
+
+    <namespace name="edm">
+
+        <class name="Association"
+               fullname="edm::Association&lt;C&gt;"
+               module="DataFormats.Common"
+               project=""
+               type="template"
+               template="template&lt;typename C&gt;">
+            <baseclass name="private ValueMap&lt;int&gt;"/>
+
+            <section name="public">
+                <typedef name="index"
+                         value="int">
+typedef int index;
+                </typedef>
+
+                <typedef name="base"
+                         value="ValueMap&lt;index&gt;">
+typedef ValueMap&lt;index&gt; base;
+                </typedef>
+
+                <typedef name="offset"
+                         value="typename base::offset">
+typedef typename base::offset offset;
+                </typedef>
+
+                <typedef name="refprod_type"
+                         value="edm::RefProd&lt;C&gt;">
+typedef edm::RefProd&lt;C&gt; refprod_type;
+                </typedef>
+
+                <typedef name="reference_type"
+                         value="Ref&lt;typename refprod_type::product_type&gt;">
+typedef Ref&lt;typename refprod_type::product_type&gt; reference_type;
+                </typedef>
+
+                <constructor name="Association"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+Association();
+                </constructor>
+
+                <method2 name="Association"
+                         return="template&lt;typename H&gt; explicit"
+                         args="['const H&amp;']"
+                         vars="['h']"
+                         qual="">
+template&lt;typename H&gt;     explicit Association(const H&amp; h);
+                </method2>
+
+                <operator name="operator[]"
+                          return="template&lt;typename RefKey&gt; reference_type"
+                          args="['const RefKey&amp;']"
+                          vars="['r']"
+                          qual="const">
+template&lt;typename RefKey&gt;       reference_type operator[](const RefKey&amp; r) const;
+                </operator>
+
+                <method1 name="get"
+                         return="reference_type"
+                         args="['size_t']"
+                         vars="['rawIdx']"
+                         qual="const">
+reference_type get(size_t rawIdx) const;
+                    <comment>
+        meant to be used internally or in AssociativeIterator, not by the ordinary user
+                    </comment>
+                </method1>
+
+                <method1 name="get"
+                         return="reference_type"
+                         args="['ProductID','size_t']"
+                         vars="['id','idx']"
+                         qual="const">
+reference_type get(ProductID id, size_t idx) const;
+                </method1>
+
+                <operator name="operator+="
+                          return="Association&lt;C&gt;&amp;"
+                          args="['const Association&lt;C&gt;&amp;']"
+                          vars="['o']"
+                          qual="">
+Association&lt;C&gt;&amp; operator+=(const Association&lt;C&gt;&amp; o);
+                </operator>
+
+                <method1 name="setRef"
+                         return="void"
+                         args="['const refprod_type&amp;']"
+                         vars="['ref']"
+                         qual="">
+void setRef(const refprod_type&amp; ref);
+                </method1>
+
+                <method1 name="contains"
+                         return="bool"
+                         args="['ProductID']"
+                         vars="['id']"
+                         qual="const">
+bool contains(ProductID id) const;
+                </method1>
+
+                <method1 name="size"
+                         return="size_t"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+size_t size() const;
+                </method1>
+
+                <method1 name="empty"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool empty() const;
+                </method1>
+
+                <method1 name="clear"
+                         return="void"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+void clear();
+                </method1>
+
+                <method1 name="ref"
+                         return="refprod_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+refprod_type ref() const;
+                </method1>
+
+                <method1 name="swap"
+                         return="void"
+                         args="['Association&amp;']"
+                         vars="['other']"
+                         qual="">
+void swap(Association&amp; other);
+                </method1>
+
+                <operator name="operator="
+                          return="Association&amp;"
+                          args="['Association const&amp;']"
+                          vars="['rhs']"
+                          qual="">
+Association&amp; operator=(Association const&amp; rhs);
+                </operator>
+
+
+                <class name="Filler"
+                       fullname="edm::Association&lt;C&gt;::Filler"
+                       module="DataFormats.Common"
+                       project=""
+                       type="regular">
+                    <baseclass name="public helper::Filler&lt;Association&lt;C&gt; &gt;"/>
+
+                    <section>
+                        <typedef name="base"
+                                 value="helper::Filler&lt;Association&lt;C&gt; &gt;">
+typedef helper::Filler&lt;Association&lt;C&gt; &gt; base;
+                        </typedef>
+
+                    </section>
+                    <section name="public">
+                        <constructor name="Filler"
+                                     return="explicit"
+                                     args="['Association&lt;C&gt;&amp;']"
+                                     vars="['association']"
+                                     qual="">
+explicit Filler(Association&lt;C&gt;&amp; association);
+                        </constructor>
+
+                        <method2 name="add"
+                                 return="void"
+                                 args="['const Association&lt;C&gt;&amp;']"
+                                 vars="['association']"
+                                 qual="">
+void add(const Association&lt;C&gt;&amp; association);
+                        </method2>
+
+                    </section>
+
+                    <typemap name="Filler"
+                             value="edm::Association&lt;C&gt;::Filler"
+                             type="class"/>
+                    <typemap name="base"
+                             value="helper::Filler&lt;Association&lt;C&gt; &gt;"
+                             type="typedef"/>
+
+                </class>
+                <method1 name="ids"
+                         return="const id_offset_vector&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const id_offset_vector&amp; ids() const;
+                    <comment>
+        meant to be used in AssociativeIterator, not by the ordinary user
+                    </comment>
+                </method1>
+
+            </section>
+
+            <typemap name="base"
+                     value="ValueMap&lt;int&gt;"
+                     type="typedef"/>
+            <typemap name="index"
+                     value="int"
+                     type="typedef"/>
+            <typemap name="offset"
+                     value="typename ValueMap&lt;int&gt;::offset"
+                     type="typedef"/>
+            <typemap name="reference_type"
+                     value="Ref&lt;typename edm::RefProd&lt;C&gt;::product_type&gt;"
+                     type="typedef"/>
+            <typemap name="refprod_type"
+                     value="edm::RefProd&lt;C&gt;"
+                     type="typedef"/>
+
+        </class>
+    </namespace>
+
+    <type name="Association const&amp;"/>
+    <type name="Association&amp;"/>
+    <type name="Association&lt;C&gt;&amp;"/>
+    <type name="ProductID"/>
+    <type name="ValueMap&lt;int&gt;"/>
+    <type name="bool"/>
+    <type name="const Association&lt;C&gt;&amp;"/>
+    <type name="const id_offset_vector&amp;"/>
+    <type name="const refprod_type&amp;"/>
+    <type name="edm::Association&lt;C&gt;"/>
+    <type name="edm::Association&lt;C&gt;::Filler"/>
+    <type name="helper::Filler&lt;Association&lt;C&gt; &gt;"/>
+    <type name="reference_type"/>
+    <type name="refprod_type"/>
+    <type name="size_t"/>
+    <type name="template&lt;typename H&gt; explicit"/>
+    <type name="template&lt;typename RefKey&gt; reference_type"/>
+    <type name="void"/>
+</header>

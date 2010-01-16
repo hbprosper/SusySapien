@@ -1,0 +1,218 @@
+\hypertarget{classPoissonGammaFit}{
+\section{Poisson\-Gamma\-Fit Class Reference}
+\label{classPoissonGammaFit}\index{PoissonGammaFit@{PoissonGammaFit}}
+}
+{\tt \#include $<$Poisson\-Gamma\-Fit.hpp$>$}
+
+
+
+\subsection{Detailed Description}
+Fit Poisson/Gamma model to data. 
+
+\subsection*{Public Types}
+\begin{CompactItemize}
+\item 
+enum \hyperlink{classPoissonGammaFit_w7}{Status} \{ \par
+\hyperlink{classPoissonGammaFit_w7w0}{k\-SUCCESS} =  0, 
+\hyperlink{classPoissonGammaFit_w7w1}{k\-NMISMATCH} = -1, 
+\hyperlink{classPoissonGammaFit_w7w2}{k\-MMISMATCH} = -2, 
+\hyperlink{classPoissonGammaFit_w7w3}{k\-ZEROBINS} = -3, 
+\par
+\hyperlink{classPoissonGammaFit_w7w4}{k\-ZEROSRCS} = -4, 
+\hyperlink{classPoissonGammaFit_w7w5}{k\-TOOMANYSRCS} = -5, 
+\hyperlink{classPoissonGammaFit_w7w6}{k\-NOTCONVERGED} = -6
+ \}
+\begin{CompactList}\small\item\em Status codes for fit. \item\end{CompactList}\end{CompactItemize}
+\subsection*{Public Member Functions}
+\begin{CompactItemize}
+\item 
+\hyperlink{classPoissonGammaFit_a0}{Poisson\-Gamma\-Fit} (\hyperlink{PoissonGammaFit_8hpp_a1}{vvdouble} \&A, \hyperlink{PoissonGammaFit_8hpp_a0}{vdouble} \&D, bool scale=true, int verbosity=0)
+\item 
+virtual \hyperlink{classPoissonGammaFit_a1}{$\sim$Poisson\-Gamma\-Fit} ()
+\item 
+bool \hyperlink{classPoissonGammaFit_a2}{good} ()
+\begin{CompactList}\small\item\em True if all is well. \item\end{CompactList}\item 
+bool \hyperlink{classPoissonGammaFit_a3}{fit} (std::vector$<$ double $>$ \&guess)
+\item 
+\hyperlink{classPoissonGammaFit_w7}{Status} \hyperlink{classPoissonGammaFit_a4}{status} ()
+\begin{CompactList}\small\item\em Return status code. \item\end{CompactList}\item 
+\hyperlink{PoissonGammaFit_8hpp_a0}{vdouble} \& \hyperlink{classPoissonGammaFit_a5}{mode} ()
+\begin{CompactList}\small\item\em Return mode of posterior density. \item\end{CompactList}\item 
+\hyperlink{PoissonGammaFit_8hpp_a0}{vdouble} \& \hyperlink{classPoissonGammaFit_a6}{mean} ()
+\begin{CompactList}\small\item\em Return mean of posterior density. \item\end{CompactList}\item 
+\hyperlink{PoissonGammaFit_8hpp_a0}{vdouble} \& \hyperlink{classPoissonGammaFit_a7}{width} ()
+\begin{CompactList}\small\item\em Return width of posterior density. \item\end{CompactList}\item 
+\hyperlink{PoissonGammaFit_8hpp_a1}{vvdouble} \& \hyperlink{classPoissonGammaFit_a8}{error\-Matrix} ()
+\begin{CompactList}\small\item\em Return error matrix of parameters. \item\end{CompactList}\item 
+double \hyperlink{classPoissonGammaFit_a9}{log\-Evidence} ()
+\begin{CompactList}\small\item\em Return logarithm of evidence. \item\end{CompactList}\item 
+double \hyperlink{classPoissonGammaFit_a10}{log\-Likelihood\-Max} ()
+\begin{CompactList}\small\item\em Return logarithm of likelihood at its mode. \item\end{CompactList}\item 
+double \hyperlink{classPoissonGammaFit_a11}{log\-Likelihood} (\hyperlink{PoissonGammaFit_8hpp_a0}{vdouble} \&x)
+\item 
+double \hyperlink{classPoissonGammaFit_a12}{log\-Likelihood} (double $\ast$x)
+\end{CompactItemize}
+
+
+\subsection{Member Enumeration Documentation}
+\hypertarget{classPoissonGammaFit_w7}{
+\index{PoissonGammaFit@{Poisson\-Gamma\-Fit}!Status@{Status}}
+\index{Status@{Status}!PoissonGammaFit@{Poisson\-Gamma\-Fit}}
+\subsubsection[Status]{\setlength{\rightskip}{0pt plus 5cm}enum \hyperlink{classPoissonGammaFit_w7}{Poisson\-Gamma\-Fit::Status}}}
+\label{classPoissonGammaFit_w7}
+
+
+Status codes for fit. 
+
+\begin{Desc}
+\item[Enumeration values: ]\par
+\begin{description}
+\index{kSUCCESS@{kSUCCESS}!PoissonGammaFit@{PoissonGammaFit}}\index{PoissonGammaFit@{PoissonGammaFit}!kSUCCESS@{kSUCCESS}}\item[{\em 
+\hypertarget{classPoissonGammaFit_w7w0}{
+k\-SUCCESS}
+\label{classPoissonGammaFit_w7w0}
+}]\index{kNMISMATCH@{kNMISMATCH}!PoissonGammaFit@{PoissonGammaFit}}\index{PoissonGammaFit@{PoissonGammaFit}!kNMISMATCH@{kNMISMATCH}}\item[{\em 
+\hypertarget{classPoissonGammaFit_w7w1}{
+k\-NMISMATCH}
+\label{classPoissonGammaFit_w7w1}
+}]\index{kMMISMATCH@{kMMISMATCH}!PoissonGammaFit@{PoissonGammaFit}}\index{PoissonGammaFit@{PoissonGammaFit}!kMMISMATCH@{kMMISMATCH}}\item[{\em 
+\hypertarget{classPoissonGammaFit_w7w2}{
+k\-MMISMATCH}
+\label{classPoissonGammaFit_w7w2}
+}]\index{kZEROBINS@{kZEROBINS}!PoissonGammaFit@{PoissonGammaFit}}\index{PoissonGammaFit@{PoissonGammaFit}!kZEROBINS@{kZEROBINS}}\item[{\em 
+\hypertarget{classPoissonGammaFit_w7w3}{
+k\-ZEROBINS}
+\label{classPoissonGammaFit_w7w3}
+}]\index{kZEROSRCS@{kZEROSRCS}!PoissonGammaFit@{PoissonGammaFit}}\index{PoissonGammaFit@{PoissonGammaFit}!kZEROSRCS@{kZEROSRCS}}\item[{\em 
+\hypertarget{classPoissonGammaFit_w7w4}{
+k\-ZEROSRCS}
+\label{classPoissonGammaFit_w7w4}
+}]\index{kTOOMANYSRCS@{kTOOMANYSRCS}!PoissonGammaFit@{PoissonGammaFit}}\index{PoissonGammaFit@{PoissonGammaFit}!kTOOMANYSRCS@{kTOOMANYSRCS}}\item[{\em 
+\hypertarget{classPoissonGammaFit_w7w5}{
+k\-TOOMANYSRCS}
+\label{classPoissonGammaFit_w7w5}
+}]\index{kNOTCONVERGED@{kNOTCONVERGED}!PoissonGammaFit@{PoissonGammaFit}}\index{PoissonGammaFit@{PoissonGammaFit}!kNOTCONVERGED@{kNOTCONVERGED}}\item[{\em 
+\hypertarget{classPoissonGammaFit_w7w6}{
+k\-NOTCONVERGED}
+\label{classPoissonGammaFit_w7w6}
+}]\end{description}
+\end{Desc}
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classPoissonGammaFit_a0}{
+\index{PoissonGammaFit@{Poisson\-Gamma\-Fit}!PoissonGammaFit@{PoissonGammaFit}}
+\index{PoissonGammaFit@{PoissonGammaFit}!PoissonGammaFit@{Poisson\-Gamma\-Fit}}
+\subsubsection[PoissonGammaFit]{\setlength{\rightskip}{0pt plus 5cm}Poisson\-Gamma\-Fit::Poisson\-Gamma\-Fit (\hyperlink{PoissonGammaFit_8hpp_a1}{vvdouble} \& {\em A}, \hyperlink{PoissonGammaFit_8hpp_a0}{vdouble} \& {\em D}, bool {\em scale} = {\tt true}, int {\em verbosity} = {\tt 0})}}
+\label{classPoissonGammaFit_a0}
+
+
+\hypertarget{classPoissonGammaFit_a1}{
+\index{PoissonGammaFit@{Poisson\-Gamma\-Fit}!~PoissonGammaFit@{$\sim$PoissonGammaFit}}
+\index{~PoissonGammaFit@{$\sim$PoissonGammaFit}!PoissonGammaFit@{Poisson\-Gamma\-Fit}}
+\subsubsection[$\sim$PoissonGammaFit]{\setlength{\rightskip}{0pt plus 5cm}virtual Poisson\-Gamma\-Fit::$\sim$\hyperlink{classPoissonGammaFit}{Poisson\-Gamma\-Fit} ()\hspace{0.3cm}{\tt  \mbox{[}virtual\mbox{]}}}}
+\label{classPoissonGammaFit_a1}
+
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classPoissonGammaFit_a8}{
+\index{PoissonGammaFit@{Poisson\-Gamma\-Fit}!errorMatrix@{errorMatrix}}
+\index{errorMatrix@{errorMatrix}!PoissonGammaFit@{Poisson\-Gamma\-Fit}}
+\subsubsection[errorMatrix]{\setlength{\rightskip}{0pt plus 5cm}\hyperlink{PoissonGammaFit_8hpp_a1}{vvdouble}\& Poisson\-Gamma\-Fit::error\-Matrix ()}}
+\label{classPoissonGammaFit_a8}
+
+
+Return error matrix of parameters. 
+
+\hypertarget{classPoissonGammaFit_a3}{
+\index{PoissonGammaFit@{Poisson\-Gamma\-Fit}!fit@{fit}}
+\index{fit@{fit}!PoissonGammaFit@{Poisson\-Gamma\-Fit}}
+\subsubsection[fit]{\setlength{\rightskip}{0pt plus 5cm}bool Poisson\-Gamma\-Fit::fit (std::vector$<$ double $>$ \& {\em guess})}}
+\label{classPoissonGammaFit_a3}
+
+
+\hypertarget{classPoissonGammaFit_a2}{
+\index{PoissonGammaFit@{Poisson\-Gamma\-Fit}!good@{good}}
+\index{good@{good}!PoissonGammaFit@{Poisson\-Gamma\-Fit}}
+\subsubsection[good]{\setlength{\rightskip}{0pt plus 5cm}bool Poisson\-Gamma\-Fit::good ()}}
+\label{classPoissonGammaFit_a2}
+
+
+True if all is well. 
+
+\hypertarget{classPoissonGammaFit_a9}{
+\index{PoissonGammaFit@{Poisson\-Gamma\-Fit}!logEvidence@{logEvidence}}
+\index{logEvidence@{logEvidence}!PoissonGammaFit@{Poisson\-Gamma\-Fit}}
+\subsubsection[logEvidence]{\setlength{\rightskip}{0pt plus 5cm}double Poisson\-Gamma\-Fit::log\-Evidence ()}}
+\label{classPoissonGammaFit_a9}
+
+
+Return logarithm of evidence. 
+
+\hypertarget{classPoissonGammaFit_a12}{
+\index{PoissonGammaFit@{Poisson\-Gamma\-Fit}!logLikelihood@{logLikelihood}}
+\index{logLikelihood@{logLikelihood}!PoissonGammaFit@{Poisson\-Gamma\-Fit}}
+\subsubsection[logLikelihood]{\setlength{\rightskip}{0pt plus 5cm}double Poisson\-Gamma\-Fit::log\-Likelihood (double $\ast$ {\em x})}}
+\label{classPoissonGammaFit_a12}
+
+
+\hypertarget{classPoissonGammaFit_a11}{
+\index{PoissonGammaFit@{Poisson\-Gamma\-Fit}!logLikelihood@{logLikelihood}}
+\index{logLikelihood@{logLikelihood}!PoissonGammaFit@{Poisson\-Gamma\-Fit}}
+\subsubsection[logLikelihood]{\setlength{\rightskip}{0pt plus 5cm}double Poisson\-Gamma\-Fit::log\-Likelihood (\hyperlink{PoissonGammaFit_8hpp_a0}{vdouble} \& {\em x})}}
+\label{classPoissonGammaFit_a11}
+
+
+\hypertarget{classPoissonGammaFit_a10}{
+\index{PoissonGammaFit@{Poisson\-Gamma\-Fit}!logLikelihoodMax@{logLikelihoodMax}}
+\index{logLikelihoodMax@{logLikelihoodMax}!PoissonGammaFit@{Poisson\-Gamma\-Fit}}
+\subsubsection[logLikelihoodMax]{\setlength{\rightskip}{0pt plus 5cm}double Poisson\-Gamma\-Fit::log\-Likelihood\-Max ()}}
+\label{classPoissonGammaFit_a10}
+
+
+Return logarithm of likelihood at its mode. 
+
+\hypertarget{classPoissonGammaFit_a6}{
+\index{PoissonGammaFit@{Poisson\-Gamma\-Fit}!mean@{mean}}
+\index{mean@{mean}!PoissonGammaFit@{Poisson\-Gamma\-Fit}}
+\subsubsection[mean]{\setlength{\rightskip}{0pt plus 5cm}\hyperlink{PoissonGammaFit_8hpp_a0}{vdouble}\& Poisson\-Gamma\-Fit::mean ()}}
+\label{classPoissonGammaFit_a6}
+
+
+Return mean of posterior density. 
+
+\hypertarget{classPoissonGammaFit_a5}{
+\index{PoissonGammaFit@{Poisson\-Gamma\-Fit}!mode@{mode}}
+\index{mode@{mode}!PoissonGammaFit@{Poisson\-Gamma\-Fit}}
+\subsubsection[mode]{\setlength{\rightskip}{0pt plus 5cm}\hyperlink{PoissonGammaFit_8hpp_a0}{vdouble}\& Poisson\-Gamma\-Fit::mode ()}}
+\label{classPoissonGammaFit_a5}
+
+
+Return mode of posterior density. 
+
+\hypertarget{classPoissonGammaFit_a4}{
+\index{PoissonGammaFit@{Poisson\-Gamma\-Fit}!status@{status}}
+\index{status@{status}!PoissonGammaFit@{Poisson\-Gamma\-Fit}}
+\subsubsection[status]{\setlength{\rightskip}{0pt plus 5cm}\hyperlink{classPoissonGammaFit_w7}{Status} Poisson\-Gamma\-Fit::status ()}}
+\label{classPoissonGammaFit_a4}
+
+
+Return status code. 
+
+\hypertarget{classPoissonGammaFit_a7}{
+\index{PoissonGammaFit@{Poisson\-Gamma\-Fit}!width@{width}}
+\index{width@{width}!PoissonGammaFit@{Poisson\-Gamma\-Fit}}
+\subsubsection[width]{\setlength{\rightskip}{0pt plus 5cm}\hyperlink{PoissonGammaFit_8hpp_a0}{vdouble}\& Poisson\-Gamma\-Fit::width ()}}
+\label{classPoissonGammaFit_a7}
+
+
+Return width of posterior density. 
+
+
+
+The documentation for this class was generated from the following file:\begin{CompactItemize}
+\item 
+/home/harry/CMS/cmssw/CMSSW\_\-3\_\-2\_\-5/src/Physics\-Tools/Lite\-Analysis/interface/\hyperlink{PoissonGammaFit_8hpp}{Poisson\-Gamma\-Fit.hpp}\end{CompactItemize}

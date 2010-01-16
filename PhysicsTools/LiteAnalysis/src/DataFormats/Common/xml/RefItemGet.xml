@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: RefItemGet.xml
+  Created:  Thu Jan 14 22:46:21 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Common/interface/RefItemGet.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/RefItemGet.h">
+
+    <include name="&quot;DataFormats/Common/interface/RefCore.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefItem.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefCoreGet.h&quot;"/>
+
+    <namespace name="edm">
+
+        <namespace name="refitem">
+
+            <class name="GetPtrImpl"
+                   fullname="edm::refitem::GetPtrImpl&lt;C, T, F, KEY&gt;"
+                   module="DataFormats.Common"
+                   project=""
+                   type="template struct"
+                   template="template&lt;typename C, typename T, typename F, typename KEY&gt;">
+
+                <section>
+                    <method2 name="getPtr_"
+                             return="static T const*"
+                             args="['RefCore const&amp;','RefItem&lt;KEY&gt; const&amp;']"
+                             vars="['product','item']"
+                             qual="">
+static T const* getPtr_(RefCore const&amp; product, RefItem&lt;KEY&gt; const&amp; item);
+                    </method2>
+
+                </section>
+
+            </class>
+        </namespace>
+    </namespace>
+
+    <type name="RefCore const&amp;"/>
+    <type name="RefItem&lt;KEY&gt; const&amp;"/>
+    <type name="edm::refitem::GetPtrImpl&lt;C, T, F, KEY&gt;"/>
+</header>

@@ -1,0 +1,3 @@
+edm::Trie<T>|const T&|find|std::string const&
+edm::Trie<T>|const TrieNode<T>*|node|std::string const&
+edm::Trie<T>|const TrieNode<T>*|initialNode|void

@@ -1,0 +1,217 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: TriggerObjectStandAlone.xml
+  Created:  Thu Jan 14 22:48:23 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/PatCandidates/interface/TriggerObjectStandAlone.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/PatCandidates/interface/TriggerObjectStandAlone.h">
+
+    <include name="&quot;DataFormats/PatCandidates/interface/TriggerObject.h&quot;"/>
+    <include name="&lt;map&gt;"/>
+    <include name="&lt;string&gt;"/>
+    <include name="&lt;vector&gt;"/>
+    <include name="&quot;DataFormats/HLTReco/interface/TriggerObject.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/Association.h&quot;"/>
+
+    <namespace name="pat">
+
+        <class name="TriggerObjectStandAlone"
+               fullname="pat::TriggerObjectStandAlone"
+               module="DataFormats.PatCandidates"
+               project=""
+               type="regular">
+            <baseclass name="public TriggerObject"/>
+
+            <section>
+                <member>
+std::vector&lt;std::string &gt; filterLabels_;
+                    <comment>
+          data members
+                    </comment>
+                </member>
+
+                <member>
+std::vector&lt;std::string &gt; pathNames_;
+                </member>
+
+            </section>
+            <section name="public">
+                <constructor name="TriggerObjectStandAlone"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+TriggerObjectStandAlone();
+                    <comment>
+          constructors and desctructor
+                    </comment>
+                </constructor>
+
+                <constructor name="TriggerObjectStandAlone"
+                             return=""
+                             args="['const TriggerObject&amp;']"
+                             vars="['trigObj']"
+                             qual="">
+TriggerObjectStandAlone(const TriggerObject&amp; trigObj);
+                </constructor>
+
+                <constructor name="TriggerObjectStandAlone"
+                             return=""
+                             args="['const reco::Particle::LorentzVector&amp;','int=0']"
+                             vars="['vec','id']"
+                             qual="">
+TriggerObjectStandAlone(const reco::Particle::LorentzVector&amp; vec, int id=0);
+                </constructor>
+
+                <constructor name="TriggerObjectStandAlone"
+                             return=""
+                             args="['const reco::Particle::PolarLorentzVector&amp;','int=0']"
+                             vars="['vec','id']"
+                             qual="">
+TriggerObjectStandAlone(const reco::Particle::PolarLorentzVector&amp; vec, int id=0);
+                </constructor>
+
+                <constructor name="TriggerObjectStandAlone"
+                             return=""
+                             args="['const trigger::TriggerObject&amp;']"
+                             vars="['trigObj']"
+                             qual="">
+TriggerObjectStandAlone(const trigger::TriggerObject&amp; trigObj);
+                </constructor>
+
+                <destructor name="~TriggerObjectStandAlone"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~TriggerObjectStandAlone();
+                </destructor>
+
+                <method1 name="addFilterLabel"
+                         return="void"
+                         args="['const std::string&amp;']"
+                         vars="['filterLabel']"
+                         qual="">
+void addFilterLabel(const std::string&amp; filterLabel);
+                    <comment>
+          methods
+                    </comment>
+                </method1>
+
+                <method1 name="addPathName"
+                         return="void"
+                         args="['const std::string&amp;']"
+                         vars="['pathName']"
+                         qual="">
+void addPathName(const std::string&amp; pathName);
+                </method1>
+
+                <method2 name="filterLabels"
+                         return="std::vector&lt;std::string &gt;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+std::vector&lt;std::string &gt; filterLabels() const;
+                </method2>
+
+                <method2 name="pathNames"
+                         return="std::vector&lt;std::string &gt;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+std::vector&lt;std::string &gt; pathNames() const;
+                </method2>
+
+                <method1 name="hasFilterLabel"
+                         return="bool"
+                         args="['const std::string&amp;']"
+                         vars="['filterLabel']"
+                         qual="const">
+bool hasFilterLabel(const std::string&amp; filterLabel) const;
+                </method1>
+
+                <method1 name="hasPathName"
+                         return="bool"
+                         args="['const std::string&amp;']"
+                         vars="['pathName']"
+                         qual="const">
+bool hasPathName(const std::string&amp; pathName) const;
+                </method1>
+
+                <method1 name="triggerObject"
+                         return="TriggerObject"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+TriggerObject triggerObject();
+                </method1>
+
+            </section>
+
+            <typemap name="filterLabels_"
+                     value="pat::TriggerObjectStandAlone::filterLabels_"
+                     type="member"/>
+            <typemap name="pathNames_"
+                     value="pat::TriggerObjectStandAlone::pathNames_"
+                     type="member"/>
+
+        </class>
+        <typedef name="TriggerObjectStandAloneCollection"
+                 value="std::vector&lt;TriggerObjectStandAlone &gt;">
+typedef std::vector&lt;TriggerObjectStandAlone &gt; TriggerObjectStandAloneCollection;
+            <comment>
+      collection of TriggerObjectStandAlone
+            </comment>
+        </typedef>
+
+        <typedef name="TriggerObjectStandAloneRef"
+                 value="edm::Ref&lt;TriggerObjectStandAloneCollection &gt;">
+typedef edm::Ref&lt;TriggerObjectStandAloneCollection &gt; TriggerObjectStandAloneRef;
+            <comment>
+      persistent reference to an item in a TriggerObjectStandAloneCollection
+            </comment>
+        </typedef>
+
+        <typedef name="TriggerObjectStandAloneRefProd"
+                 value="edm::RefProd&lt;TriggerObjectStandAloneCollection &gt;">
+typedef edm::RefProd&lt;TriggerObjectStandAloneCollection &gt; TriggerObjectStandAloneRefProd;
+            <comment>
+      persistent reference to a TriggerObjectStandAloneCollection product
+            </comment>
+        </typedef>
+
+        <typedef name="TriggerObjectStandAloneRefVector"
+                 value="edm::RefVector&lt;TriggerObjectStandAloneCollection &gt;">
+typedef edm::RefVector&lt;TriggerObjectStandAloneCollection &gt; TriggerObjectStandAloneRefVector;
+            <comment>
+      vector of persistent references to items in the same TriggerObjectStandAloneCollection
+            </comment>
+        </typedef>
+
+        <typedef name="TriggerObjectStandAloneMatch"
+                 value="edm::Association&lt;TriggerObjectStandAloneCollection &gt;">
+typedef edm::Association&lt;TriggerObjectStandAloneCollection &gt; TriggerObjectStandAloneMatch;
+            <comment>
+      association of TriggerObjectStandAlones to store matches to Candidates
+            </comment>
+        </typedef>
+
+    </namespace>
+
+    <type name="TriggerObject"/>
+    <type name="bool"/>
+    <type name="const TriggerObject&amp;"/>
+    <type name="const reco::Particle::LorentzVector&amp;"/>
+    <type name="const reco::Particle::PolarLorentzVector&amp;"/>
+    <type name="const std::string&amp;"/>
+    <type name="const trigger::TriggerObject&amp;"/>
+    <type name="int"/>
+    <type name="pat::TriggerObjectStandAlone"/>
+    <type name="std::vector&lt;std::string &gt;"/>
+    <type name="void"/>
+</header>

@@ -1,0 +1,7 @@
+double	cputime()
+double	time()
+bool status_accept()
+bool status_error()
+unsigned int status_index()
+bool status_wasrun()
+

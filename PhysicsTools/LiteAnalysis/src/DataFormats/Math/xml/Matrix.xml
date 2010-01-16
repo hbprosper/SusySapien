@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: Matrix.xml
+  Created:  Thu Jan 14 22:49:09 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Math/interface/Matrix.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Math/interface/Matrix.h">
+
+    <include name="&quot;Math/SMatrix.h&quot;"/>
+    <include name="&quot;Math/SVector.h&quot;"/>
+
+    <namespace name="math">
+
+        <class name="Matrix"
+               fullname="math::Matrix&lt;N, M&gt;"
+               module="DataFormats.Math"
+               project=""
+               type="template struct"
+               template="template&lt;unsigned int N, unsigned int M&gt;">
+
+            <section>
+                <typedef name="type"
+                         value="ROOT::Math::SMatrix&lt;double, N, M&gt;">
+typedef ROOT::Math::SMatrix&lt;double, N, M&gt; type;
+                </typedef>
+
+            </section>
+
+            <typemap name="type"
+                     value="ROOT::Math::SMatrix&lt;double, N, M&gt;"
+                     type="typedef"/>
+
+        </class>
+    </namespace>
+
+    <type name="math::Matrix&lt;N, M&gt;"/>
+</header>

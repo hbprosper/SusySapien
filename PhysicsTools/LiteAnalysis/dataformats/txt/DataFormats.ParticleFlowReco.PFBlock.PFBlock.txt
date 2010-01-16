@@ -1,0 +1,68 @@
+Class:
+	reco::PFBlock
+
+Header:
+	DataFormats/ParticleFlowReco/interface/PFBlock.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:14:23 2010	lsclass.py $Revision:$
+
+Methods from reco::PFBlock
+
+	-o- addElement
+		Return: void
+		Arguments: reco::PFBlockElement*	element
+
+	-o- bookLinkData
+		Return: void
+		Arguments: void	
+
+	-o- matrix2vector
+		Return: bool
+		Arguments: unsigned	i
+		           unsigned	j
+		           unsigned&	index
+
+	-o- setLink
+		Return: void
+		Arguments: unsigned	i1
+		           unsigned	i2
+		           double	chi2
+		           double	dist
+		           LinkData&	linkData
+		           LinkTest=LINKTEST_CHI2	test
+
+	-o- chi2
+		Return: double
+		Arguments: unsigned	ie1
+		           unsigned	ie2
+		           const LinkData&	linkData
+		           LinkTest=LINKTEST_CHI2	test
+
+	-o- dist
+		Return: double
+		Arguments: unsigned	ie1
+		           unsigned	ie2
+		           const LinkData&	linkData
+		           LinkTest=LINKTEST_CHI2	test
+
+	-o- linkData
+		Return: const std::vector<std::vector<std::pair<float, float> > >&
+		Arguments: void	
+
+	-o- linkData
+		Return: std::vector<std::vector<std::pair<float, float> > >&
+		Arguments: void	
+
+	-o- associatedElements
+		Return: void
+		Arguments: unsigned	i
+		           const LinkData&	linkData
+		           std::multimap<double, unsigned>&	sortedAssociates
+		           reco::PFBlockElement::Type=PFBlockElement::NONE	type
+		           LinkTest=LINKTEST_CHI2	test
+
+	-o- elements
+		Return: const edm::OwnVector<reco::PFBlockElement >&
+		Arguments: void	
+

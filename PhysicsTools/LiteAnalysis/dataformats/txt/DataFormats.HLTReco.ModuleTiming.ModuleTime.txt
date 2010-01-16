@@ -1,0 +1,19 @@
+Class:
+	edm::ModuleTime
+
+Header:
+	DataFormats/HLTReco/interface/ModuleTiming.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:16:11 2010	lsclass.py $Revision:$
+
+Methods from edm::ModuleTime
+
+	-o- name
+		Return: std::string
+		Arguments: void	
+
+	-o- time
+		Return: double
+		Arguments: void	
+

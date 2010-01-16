@@ -1,0 +1,7 @@
+L1GctEtMiss|std::string|name|void
+L1GctEtMiss|bool|empty|void
+L1GctEtMiss|uint32_t|raw|void
+L1GctEtMiss|unsigned|et|void
+L1GctEtMiss|bool|overFlow|void
+L1GctEtMiss|unsigned|phi|void
+L1GctEtMiss|int16_t|bx|void

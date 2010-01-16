@@ -1,0 +1,277 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: PFTrajectoryPoint.xml
+  Created:  Thu Jan 14 22:48:05 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/ParticleFlowReco/interface/PFTrajectoryPoint.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/ParticleFlowReco/interface/PFTrajectoryPoint.h">
+
+    <include name="&lt;vector&gt;"/>
+    <include name="&lt;map&gt;"/>
+    <include name="&lt;iostream&gt;"/>
+    <include name="&quot;DataFormats/Math/interface/Point3D.h&quot;"/>
+    <include name="&quot;Rtypes.h&quot;"/>
+    <include name="&quot;DataFormats/Math/interface/LorentzVector.h&quot;"/>
+    <include name="&quot;Math/GenVector/PositionVector3D.h&quot;"/>
+
+    <namespace name="reco">
+
+        <class name="PFTrajectoryPoint"
+               fullname="reco::PFTrajectoryPoint"
+               module="DataFormats.ParticleFlowReco"
+               project=""
+               type="regular printable">
+            <comment>
+     \class PFTrajectoryPoint
+     \brief A PFTrack holds several trajectory points, which basically
+     contain the position and momentum of a track at a given position.
+
+     \todo   detId_, layer_, isTrackerLayer_ seem to be redundant
+     \todo   deal with origin and end vertices of PFSimParticles
+     \todo   remove HCAL exit
+     \author Renaud Bruneliere
+     \date   July 2006
+            </comment>
+
+            <section name="public">
+                <typedef name="REPPoint"
+                         value="ROOT::Math::PositionVector3D&lt;ROOT::Math::CylindricalEta3D&lt;Double32_t&gt; &gt;">
+typedef ROOT::Math::PositionVector3D&lt;ROOT::Math::CylindricalEta3D&lt;Double32_t&gt; &gt; REPPoint;
+                </typedef>
+
+                <enum name="LayerType">
+enum LayerType {
+
+
+      ClosestApproach=0, 
+      BeamPipeOrEndVertex=1, 
+
+      PS1=2, 
+
+      PS2=3, 
+
+      ECALEntrance=4, 
+
+
+      ECALShowerMax=5, 
+
+      HCALEntrance=6, 
+
+      HCALExit=7, 
+      NLayers=8
+    };
+                    <field name="ClosestApproach" value="0"/>
+                    <field name="BeamPipeOrEndVertex" value="1"/>
+                    <field name="PS1" value="2"/>
+                    <field name="PS2" value="3"/>
+                    <field name="ECALEntrance" value="4"/>
+                    <field name="ECALShowerMax" value="5"/>
+                    <field name="HCALEntrance" value="6"/>
+                    <field name="HCALExit" value="7"/>
+                    <field name="NLayers" value="8"/>
+                    <comment>
+        Define the different layers where the track can be propagated
+                    </comment>
+                </enum>
+
+                <constructor name="PFTrajectoryPoint"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+PFTrajectoryPoint();
+                    <comment>
+        default constructor. Set variables at default dummy values
+                    </comment>
+                </constructor>
+
+                <constructor name="PFTrajectoryPoint"
+                             return=""
+                             args="['int','int','const math::XYZPoint&amp;','const math::XYZTLorentzVector&amp;']"
+                             vars="['detId','layer','posxyz','momentum']"
+                             qual="">
+PFTrajectoryPoint(int detId, int layer, const math::XYZPoint&amp; posxyz, const math::XYZTLorentzVector&amp; momentum);
+                    <comment>
+        set detId to -1 if this point is not from a tracker layer
+                    </comment>
+                </constructor>
+
+                <copyconstructor name="PFTrajectoryPoint"
+                                 return=""
+                                 args="['const PFTrajectoryPoint&amp;']"
+                                 vars="['other']"
+                                 qual="">
+PFTrajectoryPoint(const PFTrajectoryPoint&amp; other);
+                    <comment>
+        copy
+                    </comment>
+                </copyconstructor>
+
+                <destructor name="~PFTrajectoryPoint"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~PFTrajectoryPoint();
+                    <comment>
+        destructor
+                    </comment>
+                </destructor>
+
+                <method1 name="detId"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int detId() const;
+                    <comment>
+        measurement detId
+                    </comment>
+                </method1>
+
+                <method1 name="layer"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int layer() const;
+                    <comment>
+        trajectory point layer
+                    </comment>
+                </method1>
+
+                <method1 name="isValid"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isValid() const;
+                    <comment>
+        is this point valid ?
+                    </comment>
+                </method1>
+
+                <method1 name="isTrackerLayer"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool isTrackerLayer() const;
+                    <comment>
+        is this point corresponding to an intersection with a tracker layer ?
+                    </comment>
+                </method1>
+
+                <method1 name="position"
+                         return="const math::XYZPoint&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const math::XYZPoint&amp; position() const;
+                    <comment>
+        cartesian position (x, y, z)
+                    </comment>
+                </method1>
+
+                <method1 name="positionREP"
+                         return="const REPPoint&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const REPPoint&amp; positionREP() const;
+                    <comment>
+        trajectory position in (rho, eta, phi) base
+                    </comment>
+                </method1>
+
+                <method1 name="calculatePositionREP"
+                         return="void"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+void calculatePositionREP();
+                    <comment>
+        calculate posrep_ once and for all
+                    </comment>
+                </method1>
+
+                <method1 name="momentum"
+                         return="const math::XYZTLorentzVector&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const math::XYZTLorentzVector&amp; momentum() const;
+                    <comment>
+        4-momenta quadrivector
+                    </comment>
+                </method1>
+
+                <operator name="operator=="
+                          return="bool"
+                          args="['const reco::PFTrajectoryPoint&amp;']"
+                          vars="['other']"
+                          qual="const">
+bool operator==(const reco::PFTrajectoryPoint&amp; other) const;
+                </operator>
+
+                <operator name="operator&lt;&lt;"
+                          return="friend std::ostream&amp;"
+                          args="['std::ostream&amp;','const reco::PFTrajectoryPoint&amp;']"
+                          vars="['out','trajPoint']"
+                          qual="">
+friend std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, const reco::PFTrajectoryPoint&amp; trajPoint);
+                </operator>
+
+            </section>
+
+            <typemap name="BeamPipeOrEndVertex "
+                     value="reco::PFTrajectoryPoint::BeamPipeOrEndVertex "
+                     type="enum"/>
+            <typemap name="ClosestApproach "
+                     value="reco::PFTrajectoryPoint::ClosestApproach "
+                     type="enum"/>
+            <typemap name="ECALEntrance "
+                     value="reco::PFTrajectoryPoint::ECALEntrance "
+                     type="enum"/>
+            <typemap name="ECALShowerMax "
+                     value="reco::PFTrajectoryPoint::ECALShowerMax "
+                     type="enum"/>
+            <typemap name="HCALEntrance "
+                     value="reco::PFTrajectoryPoint::HCALEntrance "
+                     type="enum"/>
+            <typemap name="HCALExit "
+                     value="reco::PFTrajectoryPoint::HCALExit "
+                     type="enum"/>
+            <typemap name="LayerType"
+                     value="reco::PFTrajectoryPoint::LayerType"
+                     type="enum"/>
+            <typemap name="NLayers "
+                     value="reco::PFTrajectoryPoint::NLayers "
+                     type="enum"/>
+            <typemap name="PS1 "
+                     value="reco::PFTrajectoryPoint::PS1 "
+                     type="enum"/>
+            <typemap name="PS2 "
+                     value="reco::PFTrajectoryPoint::PS2 "
+                     type="enum"/>
+            <typemap name="REPPoint"
+                     value="ROOT::Math::PositionVector3D&lt;ROOT::Math::CylindricalEta3D&lt;Double32_t&gt; &gt;"
+                     type="typedef"/>
+
+        </class>
+    </namespace>
+
+    <type name="bool"/>
+    <type name="const PFTrajectoryPoint&amp;"/>
+    <type name="const REPPoint&amp;"/>
+    <type name="const math::XYZPoint&amp;"/>
+    <type name="const math::XYZTLorentzVector&amp;"/>
+    <type name="const reco::PFTrajectoryPoint&amp;"/>
+    <type name="enum LayerType"/>
+    <type name="int"/>
+    <type name="reco::PFTrajectoryPoint"/>
+    <type name="std::ostream&amp;"/>
+    <type name="void"/>
+</header>

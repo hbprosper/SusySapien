@@ -1,0 +1,16 @@
+Class:
+	edm::helper::AssociationIdenticalKeyReference
+
+Header:
+	DataFormats/Common/interface/AssociationVector.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:16:03 2010	lsclass.py $Revision:$
+
+Methods from edm::helper::AssociationIdenticalKeyReference
+
+	-o- get
+		Return: template<typename T> static const T&
+		Arguments: const T&	t
+		           edm::ProductID	
+

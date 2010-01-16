@@ -1,0 +1,7 @@
+bool	empty()
+bool	hasProductCache()
+bool	isAvailable()
+bool	isNonnull()
+bool	isNull()
+bool	isTransient()
+

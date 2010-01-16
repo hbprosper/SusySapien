@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: RecoStandAloneMuonCandidateFwd.xml
+  Created:  Thu Jan 14 22:48:32 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/RecoCandidate/interface/RecoStandAloneMuonCandidateFwd.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/RecoCandidate/interface/RecoStandAloneMuonCandidateFwd.h">
+
+    <include name="&lt;vector&gt;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+
+    <namespace name="reco">
+        <forward name="RecoStandAloneMuonCandidate"/>
+        <typedef name="RecoStandAloneMuonCandidateCollection"
+                 value="std::vector&lt;RecoStandAloneMuonCandidate&gt;">
+typedef std::vector&lt;RecoStandAloneMuonCandidate&gt; RecoStandAloneMuonCandidateCollection;
+            <comment>
+      collectin of RecoStandAloneMuonCandidate objects
+            </comment>
+        </typedef>
+
+        <typedef name="RecoStandAloneMuonCandidateRef"
+                 value="edm::Ref&lt;RecoStandAloneMuonCandidateCollection&gt;">
+typedef edm::Ref&lt;RecoStandAloneMuonCandidateCollection&gt; RecoStandAloneMuonCandidateRef;
+            <comment>
+      reference to an object in a collection of RecoStandAloneMuonCandidate objects
+            </comment>
+        </typedef>
+
+        <typedef name="RecoStandAloneMuonCandidateRefProd"
+                 value="edm::RefProd&lt;RecoStandAloneMuonCandidateCollection&gt;">
+typedef edm::RefProd&lt;RecoStandAloneMuonCandidateCollection&gt; RecoStandAloneMuonCandidateRefProd;
+            <comment>
+      reference to a collection of RecoStandAloneMuonCandidate objects
+            </comment>
+        </typedef>
+
+        <typedef name="RecoStandAloneMuonCandidateRefVector"
+                 value="edm::RefVector&lt;RecoStandAloneMuonCandidateCollection&gt;">
+typedef edm::RefVector&lt;RecoStandAloneMuonCandidateCollection&gt; RecoStandAloneMuonCandidateRefVector;
+            <comment>
+      vector of objects in the same collection of RecoStandAloneMuonCandidate objects
+            </comment>
+        </typedef>
+
+        <typedef name="recoStandAloneMuonCandidate_iterator"
+                 value="RecoStandAloneMuonCandidateRefVector::iterator">
+typedef RecoStandAloneMuonCandidateRefVector::iterator recoStandAloneMuonCandidate_iterator;
+            <comment>
+      iterator over a vector of reference to RecoStandAloneMuonCandidate objects
+            </comment>
+        </typedef>
+
+    </namespace>
+
+</header>

@@ -1,0 +1,7 @@
+reco::PFBlockElementGsfTrack|PFBlockElement*|clone|void
+reco::PFBlockElementGsfTrack|edm::Ref<std::vector<GsfPFRecTrack>>|GsftrackRefPF|void
+reco::PFBlockElementGsfTrack|reco::GsfTrackRef|GsftrackRef|void
+reco::PFBlockElementGsfTrack|const math::ROOT::Math::PositionVector3D<ROOT::Math::Cartesian3D<float> >&|positionAtECALEntrance|void
+reco::PFBlockElementGsfTrack|const GsfPFRecTrack&|GsftrackPF|void
+reco::PFBlockElementGsfTrack|const math::XYZTLorentzVectorD&|Pin|void
+reco::PFBlockElementGsfTrack|const math::XYZTLorentzVectorD&|Pout|void

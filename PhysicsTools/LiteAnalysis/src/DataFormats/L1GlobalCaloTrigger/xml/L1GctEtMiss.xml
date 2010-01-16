@@ -1,0 +1,258 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: L1GctEtMiss.xml
+  Created:  Thu Jan 14 22:47:21 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/L1GlobalCaloTrigger/interface/L1GctEtMiss.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/L1GlobalCaloTrigger/interface/L1GctEtMiss.h">
+
+    <include name="&lt;ostream&gt;"/>
+
+    <class name="L1GctEtMiss"
+           fullname="L1GctEtMiss"
+           module="DataFormats.L1GlobalCaloTrigger"
+           project=""
+           type="regular">
+        <comment>
+    \brief Persistable copy of missing Et measured at Level-1
+        </comment>
+
+        <section name="public">
+            <enum name="numberOfBits">
+enum numberOfBits {
+
+    kEtMissNBits=12, 
+    kEtMissOFlowBit=1&lt;&lt;kEtMissNBits, 
+    kEtMissMaxValue=kEtMissOFlowBit-1, 
+    kEtMissPhiShift=16, 
+    kEtMissPhiNBits=7, 
+    kETMissPhiMask=(1&lt;&lt;kEtMissPhiNBits)-1, 
+    kEtMissPhiNBins=72, 
+    kRawCtorMask=(kETMissPhiMask&lt;&lt;kEtMissPhiShift) | kEtMissOFlowBit | kEtMissMaxValue
+  };
+                <field name="kEtMissNBits" value="12"/>
+                <field name="kEtMissOFlowBit"
+                       value="1&amp;lt;&amp;lt;kEtMissNBits"/>
+                <field name="kEtMissMaxValue" value="kEtMissOFlowBit-1"/>
+                <field name="kEtMissPhiShift" value="16"/>
+                <field name="kEtMissPhiNBits" value="7"/>
+                <field name="kETMissPhiMask"
+                       value="(1&amp;lt;&amp;lt;kEtMissPhiNBits)-1"/>
+                <field name="kEtMissPhiNBins" value="72"/>
+                <field name="kRawCtorMask"
+                       value="(kETMissPhiMask&amp;lt;&amp;lt;kEtMissPhiShift) | kEtMissOFlowBit | kEtMissMaxValue"/>
+                <comment>
+      To match the RAW format, EtMiss is on bits 11:0, Overflow flag on bit 12,
+      and Phi is on bits 22:16.  All other bits will be be zero.
+                </comment>
+            </enum>
+
+            <constructor name="L1GctEtMiss"
+                         return=""
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+L1GctEtMiss();
+            </constructor>
+
+            <constructor name="L1GctEtMiss"
+                         return=""
+                         args="['uint32_t']"
+                         vars="['rawData']"
+                         qual="">
+L1GctEtMiss(uint32_t rawData);
+                <comment>
+      For use with raw data from the unpacker.
+                </comment>
+            </constructor>
+
+            <constructor name="L1GctEtMiss"
+                         return=""
+                         args="['uint32_t','int16_t']"
+                         vars="['rawData','bx']"
+                         qual="">
+L1GctEtMiss(uint32_t rawData, int16_t bx);
+                <comment>
+      For use with raw data from the unpacker.
+                </comment>
+            </constructor>
+
+            <constructor name="L1GctEtMiss"
+                         return=""
+                         args="['unsigned','unsigned','bool']"
+                         vars="['et','phi','oflow']"
+                         qual="">
+L1GctEtMiss(unsigned et, unsigned phi, bool oflow);
+            </constructor>
+
+            <constructor name="L1GctEtMiss"
+                         return=""
+                         args="['unsigned','unsigned','bool','int16_t']"
+                         vars="['et','phi','oflow','bx']"
+                         qual="">
+L1GctEtMiss(unsigned et, unsigned phi, bool oflow, int16_t bx);
+            </constructor>
+
+            <destructor name="~L1GctEtMiss"
+                        return="virtual"
+                        args="['void']"
+                        vars="['']"
+                        qual="">
+virtual ~L1GctEtMiss();
+            </destructor>
+
+            <method1 name="name"
+                     return="std::string"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+std::string name() const;
+                <comment>
+      name method
+                </comment>
+            </method1>
+
+            <method1 name="empty"
+                     return="bool"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+bool empty() const;
+                <comment>
+      empty method (= false; missing Et is always calculated)
+                </comment>
+            </method1>
+
+            <method1 name="raw"
+                     return="uint32_t"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+uint32_t raw() const;
+                <comment>
+      get the data
+                </comment>
+            </method1>
+
+            <method1 name="et"
+                     return="unsigned"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned et() const;
+                <comment>
+      get the magnitude
+                </comment>
+            </method1>
+
+            <method1 name="overFlow"
+                     return="bool"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+bool overFlow() const;
+                <comment>
+      get the overflow
+                </comment>
+            </method1>
+
+            <method1 name="phi"
+                     return="unsigned"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+unsigned phi() const;
+                <comment>
+      get the Et
+                </comment>
+            </method1>
+
+            <method1 name="bx"
+                     return="int16_t"
+                     args="['void']"
+                     vars="['']"
+                     qual="const">
+int16_t bx() const;
+                <comment>
+      get bunch-crossing index
+                </comment>
+            </method1>
+
+            <operator name="operator=="
+                      return="int"
+                      args="['const L1GctEtMiss&amp;']"
+                      vars="['e']"
+                      qual="const">
+int operator==(const L1GctEtMiss&amp; e) const;
+                <comment>
+      equality operator
+                </comment>
+            </operator>
+
+            <operator name="operator!="
+                      return="int"
+                      args="['const L1GctEtMiss&amp;']"
+                      vars="['e']"
+                      qual="const">
+int operator!=(const L1GctEtMiss&amp; e) const;
+                <comment>
+      inequality operator
+                </comment>
+            </operator>
+
+        </section>
+
+        <typemap name="kETMissPhiMask "
+                 value="L1GctEtMiss::kETMissPhiMask "
+                 type="enum"/>
+        <typemap name="kEtMissMaxValue "
+                 value="L1GctEtMiss::kEtMissMaxValue "
+                 type="enum"/>
+        <typemap name="kEtMissNBits "
+                 value="L1GctEtMiss::kEtMissNBits "
+                 type="enum"/>
+        <typemap name="kEtMissOFlowBit "
+                 value="L1GctEtMiss::kEtMissOFlowBit "
+                 type="enum"/>
+        <typemap name="kEtMissPhiNBins "
+                 value="L1GctEtMiss::kEtMissPhiNBins "
+                 type="enum"/>
+        <typemap name="kEtMissPhiNBits "
+                 value="L1GctEtMiss::kEtMissPhiNBits "
+                 type="enum"/>
+        <typemap name="kEtMissPhiShift "
+                 value="L1GctEtMiss::kEtMissPhiShift "
+                 type="enum"/>
+        <typemap name="kRawCtorMask "
+                 value="L1GctEtMiss::kRawCtorMask "
+                 type="enum"/>
+        <typemap name="numberOfBits"
+                 value="L1GctEtMiss::numberOfBits"
+                 type="enum"/>
+
+    </class>
+    <operator name="operator&lt;&lt;"
+              return="std::ostream&amp;"
+              args="['std::ostream&amp;','const L1GctEtMiss&amp;']"
+              vars="['s','c']"
+              qual="">
+std::ostream&amp; operator&lt;&lt;(std::ostream&amp; s, const L1GctEtMiss&amp; c);
+        <comment>
+    Pretty-print operator for L1GctEtMiss
+        </comment>
+    </operator>
+
+
+    <type name="L1GctEtMiss"/>
+    <type name="bool"/>
+    <type name="const L1GctEtMiss&amp;"/>
+    <type name="enum numberOfBits"/>
+    <type name="int"/>
+    <type name="int16_t"/>
+    <type name="std::string"/>
+    <type name="uint32_t"/>
+    <type name="unsigned"/>
+    <type name="void"/>
+</header>

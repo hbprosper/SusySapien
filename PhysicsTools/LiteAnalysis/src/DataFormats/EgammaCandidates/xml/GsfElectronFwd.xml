@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: GsfElectronFwd.xml
+  Created:  Thu Jan 14 22:46:53 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/EgammaCandidates/interface/GsfElectronFwd.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/EgammaCandidates/interface/GsfElectronFwd.h">
+
+    <include name="&lt;vector&gt;"/>
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+    <include name="&quot;DataFormats/EgammaCandidates/interface/GsfElectron.h&quot;"/>
+
+    <namespace name="reco">
+        <forward name="GsfElectron"/>
+        <typedef name="GsfElectronCollection"
+                 value="std::vector&lt;GsfElectron&gt;">
+typedef std::vector&lt;GsfElectron&gt; GsfElectronCollection;
+            <comment>
+      collection of GsfElectron objects
+            </comment>
+        </typedef>
+
+        <typedef name="PixelMatchGsfElectronCollection"
+                 value="GsfElectronCollection">
+typedef GsfElectronCollection PixelMatchGsfElectronCollection;
+        </typedef>
+
+        <typedef name="GsfElectronRef"
+                 value="edm::Ref&lt;GsfElectronCollection&gt;">
+typedef edm::Ref&lt;GsfElectronCollection&gt; GsfElectronRef;
+            <comment>
+      reference to an object in a collection of GsfElectron objects
+            </comment>
+        </typedef>
+
+        <typedef name="PixelMatchGsfElectronRef"
+                 value="GsfElectronRef">
+typedef GsfElectronRef PixelMatchGsfElectronRef;
+        </typedef>
+
+        <typedef name="GsfElectronRefProd"
+                 value="edm::RefProd&lt;GsfElectronCollection&gt;">
+typedef edm::RefProd&lt;GsfElectronCollection&gt; GsfElectronRefProd;
+            <comment>
+      reference to a collection of GsfElectron objects
+            </comment>
+        </typedef>
+
+        <typedef name="PixelMatchGsfElectronRefProd"
+                 value="GsfElectronRefProd">
+typedef GsfElectronRefProd PixelMatchGsfElectronRefProd;
+        </typedef>
+
+        <typedef name="GsfElectronRefVector"
+                 value="edm::RefVector&lt;GsfElectronCollection&gt;">
+typedef edm::RefVector&lt;GsfElectronCollection&gt; GsfElectronRefVector;
+            <comment>
+      vector of objects in the same collection of GsfElectron objects
+            </comment>
+        </typedef>
+
+        <typedef name="PixelMatchGsfElectronRefVector"
+                 value="GsfElectronRefVector">
+typedef GsfElectronRefVector PixelMatchGsfElectronRefVector;
+        </typedef>
+
+        <typedef name="GsfElectron_iterator"
+                 value="GsfElectronRefVector::iterator">
+typedef GsfElectronRefVector::iterator GsfElectron_iterator;
+            <comment>
+      iterator over a vector of reference to GsfElectron objects
+            </comment>
+        </typedef>
+
+        <typedef name="PixelMatchGsfElectron_iterator"
+                 value="GsfElectron_iterator">
+typedef GsfElectron_iterator PixelMatchGsfElectron_iterator;
+        </typedef>
+
+    </namespace>
+
+</header>

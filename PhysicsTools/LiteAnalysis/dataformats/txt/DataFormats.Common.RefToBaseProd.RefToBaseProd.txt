@@ -1,0 +1,59 @@
+Class:
+	edm::RefToBaseProd<T>
+
+Header:
+	DataFormats/Common/interface/RefToBaseProd.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:42 2010	lsclass.py $Revision:$
+
+Methods from edm::RefToBaseProd<T>
+
+	-o- get
+		Return: View<T> const*
+		Arguments: void	
+
+	-o- product
+		Return: View<T> const*
+		Arguments: void	
+
+	-o- refCore
+		Return: RefCore const&
+		Arguments: void	
+
+	-o- isNull
+		Return: bool
+		Arguments: void	
+
+	-o- isNonnull
+		Return: bool
+		Arguments: void	
+
+	-o- id
+		Return: ProductID
+		Arguments: void	
+
+	-o- productGetter
+		Return: EDProductGetter const*
+		Arguments: void	
+
+	-o- hasCache
+		Return: bool
+		Arguments: void	
+
+	-o- RefToBaseProd
+		Return: template<class HandleC> explicit
+		Arguments: HandleC const&	handle
+
+	-o- RefToBaseProd
+		Return: template<typename C, typename F> explicit
+		Arguments: Ref<C, T, F> const&	ref
+
+	-o- RefToBaseProd
+		Return: template<typename C>
+		Arguments: const RefProd<C>&	
+
+	-o- swap
+		Return: void
+		Arguments: RefToBaseProd<T>&	
+

@@ -1,0 +1,4 @@
+bool	hasIsProductEqual()
+bool	isMergeable()
+bool	isPresent()
+

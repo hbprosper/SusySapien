@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: GenMETFwd.xml
+  Created:  Thu Jan 14 22:47:36 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/METReco/interface/GenMETFwd.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/METReco/interface/GenMETFwd.h">
+
+    <include name="&quot;DataFormats/Common/interface/Ref.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVector.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefProd.h&quot;"/>
+
+    <namespace name="reco">
+        <forward name="GenMET"/>
+        <typedef name="GenMETCollection"
+                 value="std::vector&lt;GenMET&gt;">
+typedef std::vector&lt;GenMET&gt; GenMETCollection;
+            <comment>
+      collection of GenMET objects
+            </comment>
+        </typedef>
+
+        <typedef name="GenMETRef"
+                 value="edm::Ref&lt;GenMETCollection&gt;">
+typedef edm::Ref&lt;GenMETCollection&gt; GenMETRef;
+            <comment>
+      edm references
+            </comment>
+        </typedef>
+
+        <typedef name="GenMETRefVector"
+                 value="edm::RefVector&lt;GenMETCollection&gt;">
+typedef edm::RefVector&lt;GenMETCollection&gt; GenMETRefVector;
+        </typedef>
+
+        <typedef name="GenMETRefProd"
+                 value="edm::RefProd&lt;GenMETCollection&gt;">
+typedef edm::RefProd&lt;GenMETCollection&gt; GenMETRefProd;
+        </typedef>
+
+    </namespace>
+
+</header>

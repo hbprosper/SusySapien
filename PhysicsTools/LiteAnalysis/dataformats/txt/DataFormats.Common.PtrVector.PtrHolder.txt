@@ -1,0 +1,9 @@
+Class:
+	edm::PtrHolder<T>
+
+Header:
+	DataFormats/Common/interface/PtrVector.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:54 2010	lsclass.py $Revision:$
+

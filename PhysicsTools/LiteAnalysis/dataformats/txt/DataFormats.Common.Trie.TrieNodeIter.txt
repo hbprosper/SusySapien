@@ -1,0 +1,15 @@
+Class:
+	edm::TrieNodeIter<T>
+
+Header:
+	DataFormats/Common/interface/Trie.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:16:04 2010	lsclass.py $Revision:$
+
+Methods from edm::TrieNodeIter<T>
+
+	-o- label
+		Return: unsigned char
+		Arguments: void	
+

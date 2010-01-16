@@ -1,0 +1,9 @@
+Class:
+	reco::hlt::wordConstants<numberOfBits, word>
+
+Header:
+	DataFormats/HLTReco/interface/HLTResult.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:16:09 2010	lsclass.py $Revision:$
+

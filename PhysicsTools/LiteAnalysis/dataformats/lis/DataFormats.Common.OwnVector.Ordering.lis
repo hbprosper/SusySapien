@@ -1,0 +1,12 @@
+edm::OwnVector<T, P>|iterator|begin|void
+edm::OwnVector<T, P>|iterator|end|void
+edm::OwnVector<T, P>|const_iterator|begin|void
+edm::OwnVector<T, P>|const_iterator|end|void
+edm::OwnVector<T, P>|typename base::size_type|size|void
+edm::OwnVector<T, P>|bool|empty|void
+edm::OwnVector<T, P>|bool|is_back_safe|void
+edm::OwnVector<T, P>|T&|back|void
+edm::OwnVector<T, P>|T const&|back|void
+edm::OwnVector<T, P>|T&|front|void
+edm::OwnVector<T, P>|T const&|front|void
+edm::OwnVector<T, P>|base const&|data|void

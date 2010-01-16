@@ -1,0 +1,23 @@
+Class:
+	reco::FitQuality
+
+Header:
+	DataFormats/RecoCandidate/interface/FitQuality.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:14:01 2010	lsclass.py $Revision:$
+
+Methods from reco::FitQuality
+
+	-o- chi2
+		Return: double
+		Arguments: void	
+
+	-o- ndof
+		Return: double
+		Arguments: void	
+
+	-o- normalizedChi2
+		Return: double
+		Arguments: void	
+

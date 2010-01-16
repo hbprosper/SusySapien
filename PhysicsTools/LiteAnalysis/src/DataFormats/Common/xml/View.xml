@@ -1,0 +1,399 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: View.xml
+  Created:  Thu Jan 14 22:46:31 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/Common/interface/View.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/Common/interface/View.h">
+
+    <include name="&lt;vector&gt;"/>
+    <include name="&quot;boost/iterator/indirect_iterator.hpp&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefToBaseVector.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/PtrVector.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/Ptr.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/EDProduct.h&quot;"/>
+    <include name="&quot;DataFormats/Common/interface/RefVectorHolderBase.h&quot;"/>
+
+    <namespace name="edm">
+
+        <class name="ViewBase"
+               fullname="edm::ViewBase"
+               module="DataFormats.Common"
+               project=""
+               type="abstract regular protecteddefctor protectedcopyctor">
+            <comment>
+     Class ViewBase
+
+     ViewBase is an abstract base class. It exists only so that we
+     make invoke View&lt;T&gt; destructors polymorphically, and copy them
+     using clone().
+            </comment>
+
+            <section name="public">
+                <destructor name="~ViewBase"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~ViewBase();
+                </destructor>
+
+                <method1 name="clone"
+                         return="ViewBase*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+ViewBase* clone() const;
+                </method1>
+
+            </section>
+
+        </class>
+
+        <class name="View"
+               fullname="edm::View&lt;T&gt;"
+               module="DataFormats.Common"
+               project=""
+               type="template"
+               template="template&lt;typename T&gt;">
+            <baseclass name="public ViewBase"/>
+            <comment>
+      as a public base.
+            </comment>
+
+            <section>
+                <typedef name="seq_t"
+                         value="std::vector&lt;T const*&gt;">
+typedef std::vector&lt;T const*&gt; seq_t;
+                </typedef>
+
+            </section>
+            <section name="public">
+                <typedef name="pointer"
+                         value="T const*">
+typedef T const* pointer;
+                </typedef>
+
+                <typedef name="const_pointer"
+                         value="T const*">
+typedef T const* const_pointer;
+                </typedef>
+
+                <typedef name="reference"
+                         value="T const&amp;">
+typedef T const&amp; reference;
+                </typedef>
+
+                <typedef name="const_reference"
+                         value="T const&amp;">
+typedef T const&amp; const_reference;
+                </typedef>
+
+                <typedef name="value_type"
+                         value="T">
+typedef T value_type;
+                </typedef>
+
+                <typedef name="const_iterator"
+                         value="boost::indirect_iterator&lt;typename seq_t::const_iterator&gt;">
+typedef boost::indirect_iterator&lt;typename seq_t::const_iterator&gt; const_iterator;
+                </typedef>
+
+                <typedef name="size_type"
+                         value="typename seq_t::size_type">
+typedef typename seq_t::size_type size_type;
+                </typedef>
+
+                <typedef name="difference_type"
+                         value="typename seq_t::difference_type">
+typedef typename seq_t::difference_type difference_type;
+                </typedef>
+
+                <typedef name="const_reverse_iterator"
+                         value="boost::indirect_iterator&lt;typename seq_t::const_reverse_iterator&gt;">
+typedef boost::indirect_iterator&lt;typename seq_t::const_reverse_iterator&gt; const_reverse_iterator;
+                </typedef>
+
+                <constructor name="View"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+View();
+                    <comment>
+       Compiler-generated copy, and assignment each does the right
+       thing.
+                    </comment>
+                </constructor>
+
+                <constructor name="View"
+                             return=""
+                             args="['std::vector&lt;void const*&gt; const&amp;','helper_vector_ptr const&amp;']"
+                             vars="['pointers','helpers']"
+                             qual="">
+View(std::vector&lt;void const*&gt; const&amp; pointers, helper_vector_ptr const&amp; helpers);
+                    <comment>
+       This function is dangerous, and should only be called from the
+       infrastructure code.
+                    </comment>
+                </constructor>
+
+                <destructor name="~View"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~View();
+                </destructor>
+
+                <method1 name="swap"
+                         return="void"
+                         args="['View&amp;']"
+                         vars="['other']"
+                         qual="">
+void swap(View&amp; other);
+                </method1>
+
+                <operator name="operator="
+                          return="View&amp;"
+                          args="['View const&amp;']"
+                          vars="['rhs']"
+                          qual="">
+View&amp; operator=(View const&amp; rhs);
+                </operator>
+
+                <method1 name="capacity"
+                         return="size_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+size_type capacity() const;
+                </method1>
+
+                <method1 name="begin"
+                         return="const_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const_iterator begin() const;
+                    <comment>
+       Most non-const member functions not present.
+       No access to non-const contents provided.
+                    </comment>
+                </method1>
+
+                <method1 name="end"
+                         return="const_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const_iterator end() const;
+                </method1>
+
+                <method1 name="rbegin"
+                         return="const_reverse_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const_reverse_iterator rbegin() const;
+                </method1>
+
+                <method1 name="rend"
+                         return="const_reverse_iterator"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const_reverse_iterator rend() const;
+                </method1>
+
+                <method1 name="size"
+                         return="size_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+size_type size() const;
+                </method1>
+
+                <method1 name="max_size"
+                         return="size_type"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+size_type max_size() const;
+                </method1>
+
+                <method1 name="empty"
+                         return="bool"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+bool empty() const;
+                </method1>
+
+                <method1 name="at"
+                         return="const_reference"
+                         args="['size_type']"
+                         vars="['pos']"
+                         qual="const">
+const_reference at(size_type pos) const;
+                </method1>
+
+                <operator name="operator[]"
+                          return="const_reference"
+                          args="['size_type']"
+                          vars="['pos']"
+                          qual="const">
+const_reference operator[](size_type pos) const;
+                </operator>
+
+                <method2 name="refAt"
+                         return="RefToBase&lt;value_type&gt;"
+                         args="['size_type']"
+                         vars="['i']"
+                         qual="const">
+RefToBase&lt;value_type&gt; refAt(size_type i) const;
+                </method2>
+
+                <method2 name="ptrAt"
+                         return="Ptr&lt;value_type&gt;"
+                         args="['size_type']"
+                         vars="['i']"
+                         qual="const">
+Ptr&lt;value_type&gt; ptrAt(size_type i) const;
+                </method2>
+
+                <method2 name="refVector"
+                         return="const RefToBaseVector&lt;T&gt;&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const RefToBaseVector&lt;T&gt;&amp; refVector() const;
+                </method2>
+
+                <method2 name="ptrVector"
+                         return="const PtrVector&lt;T&gt;&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const PtrVector&lt;T&gt;&amp; ptrVector() const;
+                </method2>
+
+                <method1 name="front"
+                         return="const_reference"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const_reference front() const;
+                </method1>
+
+                <method1 name="back"
+                         return="const_reference"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const_reference back() const;
+                </method1>
+
+                <method1 name="pop_back"
+                         return="void"
+                         args="['void']"
+                         vars="['']"
+                         qual="">
+void pop_back();
+                </method1>
+
+                <method1 name="id"
+                         return="ProductID"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+ProductID id() const;
+                </method1>
+
+                <method1 name="productGetter"
+                         return="EDProductGetter const*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+EDProductGetter const* productGetter() const;
+                </method1>
+
+                <method1 name="fill_from_range"
+                         return="static void"
+                         args="['T*','T*','View&amp;']"
+                         vars="['first','last','output']"
+                         qual="">
+static void fill_from_range(T* first, T* last, View&amp; output);
+                    <comment>
+       The following is for testing only.
+                    </comment>
+                </method1>
+
+                <method1 name="product"
+                         return="const void*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const void* product() const;
+                </method1>
+
+            </section>
+
+            <typemap name="const_iterator"
+                     value="typename boost::indirect_iterator&lt;typename std::vector&lt;T const*&gt;::const_iterator&gt;"
+                     type="typedef"/>
+            <typemap name="const_pointer"
+                     value="T const*"
+                     type="typedef"/>
+            <typemap name="const_reference"
+                     value="T const&amp;"
+                     type="typedef"/>
+            <typemap name="const_reverse_iterator"
+                     value="boost::indirect_iterator&lt;typename std::vector&lt;T const*&gt;::const_reverse_iterator&gt;"
+                     type="typedef"/>
+            <typemap name="difference_type"
+                     value="typename std::vector&lt;T const*&gt;::difference_type"
+                     type="typedef"/>
+            <typemap name="pointer"
+                     value="T const*"
+                     type="typedef"/>
+            <typemap name="reference"
+                     value="T const&amp;"
+                     type="typedef"/>
+            <typemap name="seq_t"
+                     value="std::vector&lt;T const*&gt;"
+                     type="typedef"/>
+            <typemap name="size_type"
+                     value="typename std::vector&lt;T const*&gt;::size_type"
+                     type="typedef"/>
+            <typemap name="value_type"
+                     value="T"
+                     type="typedef"/>
+
+        </class>
+    </namespace>
+
+    <type name="EDProductGetter const*"/>
+    <type name="ProductID"/>
+    <type name="Ptr&lt;value_type&gt;"/>
+    <type name="RefToBase&lt;value_type&gt;"/>
+    <type name="View const&amp;"/>
+    <type name="View&amp;"/>
+    <type name="ViewBase"/>
+    <type name="ViewBase*"/>
+    <type name="bool"/>
+    <type name="const PtrVector&lt;T&gt;&amp;"/>
+    <type name="const RefToBaseVector&lt;T&gt;&amp;"/>
+    <type name="const void*"/>
+    <type name="const_iterator"/>
+    <type name="const_reference"/>
+    <type name="const_reverse_iterator"/>
+    <type name="edm::View&lt;T&gt;"/>
+    <type name="edm::ViewBase"/>
+    <type name="helper_vector_ptr const&amp;"/>
+    <type name="size_type"/>
+    <type name="std::vector&lt;void const*&gt; const&amp;"/>
+    <type name="void"/>
+</header>

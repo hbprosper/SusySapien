@@ -1,0 +1,475 @@
+Class:
+	pat::Particle
+
+Header:
+	DataFormats/PatCandidates/interface/Particle.h
+
+BaseClasses:
+	pat::PATObject<reco::LeafCandidate>	DataFormats/PatCandidates/interface/PATObject.h
+	reco::LeafCandidate	DataFormats/Candidate/interface/LeafCandidate.h
+	reco::Candidate	DataFormats/Candidate/interface/Candidate.h
+	reco::Particle	DataFormats/Candidate/interface/Particle.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:14:16 2010	lsclass.py $Revision:$
+
+Methods from pat::Particle
+
+	-o- clone
+		Return: Particle*
+		Arguments: void	
+
+Methods from pat::PATObject<reco::LeafCandidate>
+
+	-o- originalObject
+		Return: const reco::Candidate*
+		Arguments: void	
+
+	-o- addTriggerMatch
+		Return: void
+		Arguments: const pat::TriggerPrimitive&	aTrigPrim
+
+	-o- triggerObjectMatches
+		Return: const std::vector<TriggerObjectStandAlone >&
+		Arguments: void	
+
+	-o- triggerObjectMatchesByFilterID
+		Return: const std::vector<TriggerObjectStandAlone >
+		Arguments: const unsigned	id
+
+	-o- triggerObjectMatchesByCollection
+		Return: const std::vector<TriggerObjectStandAlone >
+		Arguments: const std::string&	coll
+
+	-o- triggerObjectMatchesByFilter
+		Return: const std::vector<TriggerObjectStandAlone >
+		Arguments: const std::string&	labelFilter
+
+	-o- triggerObjectMatchesByPath
+		Return: const std::vector<TriggerObjectStandAlone >
+		Arguments: const std::string&	namePath
+
+	-o- addTriggerObjectMatch
+		Return: void
+		Arguments: const TriggerObjectStandAlone&	trigObj
+
+	-o- efficiency
+		Return: const pat::LookupTableRecord&
+		Arguments: const std::string&	name
+
+	-o- setEfficiency
+		Return: void
+		Arguments: const std::string&	name
+		           const pat::LookupTableRecord&	value
+
+	-o- genParticleRef
+		Return: reco::GenParticleRef
+		Arguments: size_t=0	idx
+
+	-o- genParticleById
+		Return: reco::GenParticleRef
+		Arguments: int	pdgId
+		           int	status
+
+	-o- genParticle
+		Return: const reco::GenParticle*
+		Arguments: size_t=0	idx
+
+	-o- genParticlesSize
+		Return: size_t
+		Arguments: void	
+
+	-o- setGenParticleRef
+		Return: void
+		Arguments: const reco::GenParticleRef&	ref
+		           bool=false	embed
+
+	-o- addGenParticleRef
+		Return: void
+		Arguments: const reco::GenParticleRef&	ref
+
+	-o- setGenParticle
+		Return: void
+		Arguments: const reco::GenParticle&	particle
+
+	-o- embedGenParticle
+		Return: void
+		Arguments: void	
+
+	-o- hasOverlaps
+		Return: bool
+		Arguments: const std::string&	label
+
+	-o- overlaps
+		Return: const reco::edm::PtrVector<Candidate>&
+		Arguments: const std::string&	label
+
+	-o- setOverlaps
+		Return: void
+		Arguments: const std::string&	label
+		           const reco::CandidatePtrVector&	overlaps
+
+	-o- hasUserData
+		Return: bool
+		Arguments: const std::string&	key
+
+	-o- userDataObjectType
+		Return: const std::string&
+		Arguments: const std::string&	key
+
+	-o- userDataBare
+		Return: const void*
+		Arguments: const std::string&	key
+
+	-o- userFloat
+		Return: float
+		Arguments: const std::string&	key
+
+	-o- addUserFloat
+		Return: void
+		Arguments: const std::string&	label
+		           float	data
+
+	-o- hasUserFloat
+		Return: bool
+		Arguments: const std::string&	key
+
+	-o- userInt
+		Return: int32_t
+		Arguments: const std::string&	key
+
+	-o- addUserInt
+		Return: void
+		Arguments: const std::string&	label
+		           int32_t	data
+
+	-o- hasUserInt
+		Return: bool
+		Arguments: const std::string&	key
+
+	-o- getKinResolution
+		Return: const pat::CandKinResolution&
+		Arguments: const std::string&=""	label
+
+	-o- hasKinResolution
+		Return: bool
+		Arguments: const std::string&=""	label
+
+	-o- setKinResolution
+		Return: void
+		Arguments: const pat::CandKinResolution&	resol
+		           const std::string&=""	label
+
+	-o- resolEta
+		Return: double
+		Arguments: const std::string&=""	label
+
+	-o- resolTheta
+		Return: double
+		Arguments: const std::string&=""	label
+
+	-o- resolPhi
+		Return: double
+		Arguments: const std::string&=""	label
+
+	-o- resolE
+		Return: double
+		Arguments: const std::string&=""	label
+
+	-o- resolEt
+		Return: double
+		Arguments: const std::string&=""	label
+
+	-o- resolP
+		Return: double
+		Arguments: const std::string&=""	label
+
+	-o- resolPt
+		Return: double
+		Arguments: const std::string&=""	label
+
+	-o- resolPInv
+		Return: double
+		Arguments: const std::string&=""	label
+
+	-o- resolPx
+		Return: double
+		Arguments: const std::string&=""	label
+
+	-o- resolPy
+		Return: double
+		Arguments: const std::string&=""	label
+
+	-o- resolPz
+		Return: double
+		Arguments: const std::string&=""	label
+
+	-o- resolM
+		Return: double
+		Arguments: const std::string&=""	label
+
+	-o- originalObjectRef
+		Return: const edm::Ptr<reco::Candidate>&
+		Arguments: void	
+
+	-o- triggerMatches
+		Return: const std::vector<TriggerPrimitive>&
+		Arguments: void	
+
+	-o- triggerMatchesByFilter
+		Return: const std::vector<TriggerPrimitive>
+		Arguments: const std::string&	aFilt
+
+	-o- efficiencies
+		Return: std::vector<std::pair<std::string, pat::LookupTableRecord> >
+		Arguments: void	
+
+	-o- efficiencyNames
+		Return: const std::vector<std::string>&
+		Arguments: void	
+
+	-o- efficiencyValues
+		Return: const std::vector<pat::LookupTableRecord>&
+		Arguments: void	
+
+	-o- genParticleRefs
+		Return: std::vector<reco::GenParticleRef>
+		Arguments: void	
+
+	-o- overlapLabels
+		Return: const std::vector<std::string>&
+		Arguments: void	
+
+	-o- userData
+		Return: template<typename T> const T*
+		Arguments: const std::string&	key
+
+	-o- userDataNames
+		Return: const std::vector<std::string>&
+		Arguments: void	
+
+	-o- addUserData
+		Return: template<typename T> void
+		Arguments: const std::string&	label
+		           const T&	data
+		           bool=false	transientOnly
+
+	-o- addUserDataFromPtr
+		Return: void
+		Arguments: const std::string&	label
+		           const edm::Ptr<pat::UserData>&	data
+
+	-o- userFloatNames
+		Return: const std::vector<std::string>&
+		Arguments: void	
+
+	-o- userIntNames
+		Return: const std::vector<std::string>&
+		Arguments: void	
+
+Methods from reco::LeafCandidate
+
+	-o- clone
+		Return: LeafCandidate*
+		Arguments: void	
+
+	-o- begin
+		Return: candidate::const_iterator
+		Arguments: void	
+
+	-o- end
+		Return: candidate::const_iterator
+		Arguments: void	
+
+	-o- begin
+		Return: candidate::iterator
+		Arguments: void	
+
+	-o- end
+		Return: candidate::iterator
+		Arguments: void	
+
+	-o- numberOfDaughters
+		Return: size_t
+		Arguments: void	
+
+	-o- daughter
+		Return: const Candidate*
+		Arguments: size_type	
+
+	-o- numberOfMothers
+		Return: size_t
+		Arguments: void	
+
+	-o- mother
+		Return: const Candidate*
+		Arguments: size_type	
+
+	-o- daughter
+		Return: Candidate*
+		Arguments: size_type	
+
+Methods from reco::Candidate
+
+	-o- clone
+		Return: Candidate*
+		Arguments: void	
+
+Methods from reco::Particle
+
+	-o- charge
+		Return: int
+		Arguments: void	
+
+	-o- setCharge
+		Return: void
+		Arguments: Charge	q
+
+	-o- threeCharge
+		Return: int
+		Arguments: void	
+
+	-o- setThreeCharge
+		Return: void
+		Arguments: Charge	qx3
+
+	-o- p4
+		Return: const math::XYZTLorentzVectorD&
+		Arguments: void	
+
+	-o- polarP4
+		Return: const math::ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> >&
+		Arguments: void	
+
+	-o- momentum
+		Return: math::XYZVector
+		Arguments: void	
+
+	-o- boostToCM
+		Return: math::XYZVector
+		Arguments: void	
+
+	-o- p
+		Return: double
+		Arguments: void	
+
+	-o- energy
+		Return: double
+		Arguments: void	
+
+	-o- et
+		Return: double
+		Arguments: void	
+
+	-o- mass
+		Return: double
+		Arguments: void	
+
+	-o- massSqr
+		Return: double
+		Arguments: void	
+
+	-o- mt
+		Return: double
+		Arguments: void	
+
+	-o- mtSqr
+		Return: double
+		Arguments: void	
+
+	-o- px
+		Return: double
+		Arguments: void	
+
+	-o- py
+		Return: double
+		Arguments: void	
+
+	-o- pz
+		Return: double
+		Arguments: void	
+
+	-o- pt
+		Return: double
+		Arguments: void	
+
+	-o- phi
+		Return: double
+		Arguments: void	
+
+	-o- theta
+		Return: double
+		Arguments: void	
+
+	-o- eta
+		Return: double
+		Arguments: void	
+
+	-o- rapidity
+		Return: double
+		Arguments: void	
+
+	-o- y
+		Return: double
+		Arguments: void	
+
+	-o- setP4
+		Return: void
+		Arguments: const LorentzVector&	p4
+
+	-o- setP4
+		Return: void
+		Arguments: const PolarLorentzVector&	p4
+
+	-o- setMass
+		Return: void
+		Arguments: double	m
+
+	-o- setPz
+		Return: void
+		Arguments: double	pz
+
+	-o- vertex
+		Return: const math::XYZPoint&
+		Arguments: void	
+
+	-o- vx
+		Return: double
+		Arguments: void	
+
+	-o- vy
+		Return: double
+		Arguments: void	
+
+	-o- vz
+		Return: double
+		Arguments: void	
+
+	-o- setVertex
+		Return: void
+		Arguments: const Point&	vertex
+
+	-o- pdgId
+		Return: int
+		Arguments: void	
+
+	-o- setPdgId
+		Return: void
+		Arguments: int	pdgId
+
+	-o- status
+		Return: int
+		Arguments: void	
+
+	-o- setStatus
+		Return: void
+		Arguments: int	status
+
+	-o- setLongLived
+		Return: void
+		Arguments: void	
+
+	-o- longLived
+		Return: bool
+		Arguments: void	
+

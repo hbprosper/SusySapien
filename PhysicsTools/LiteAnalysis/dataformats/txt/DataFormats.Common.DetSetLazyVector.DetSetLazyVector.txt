@@ -1,0 +1,35 @@
+Class:
+	edm::DetSetLazyVector<T>
+
+Header:
+	DataFormats/Common/interface/DetSetLazyVector.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:16:06 2010	lsclass.py $Revision:$
+
+Methods from edm::DetSetLazyVector<T>
+
+	-o- swap
+		Return: void
+		Arguments: DetSetLazyVector&	other
+
+	-o- empty
+		Return: bool
+		Arguments: void	
+
+	-o- size
+		Return: typename std::vector<detset>::size_type
+		Arguments: void	
+
+	-o- find
+		Return: boost::transform_iterator<dslv::LazyAdapter<T>, typename collection_type::const_iterator >
+		Arguments: det_id_type	id
+
+	-o- begin
+		Return: boost::transform_iterator<dslv::LazyAdapter<T>, typename collection_type::const_iterator >
+		Arguments: void	
+
+	-o- end
+		Return: boost::transform_iterator<dslv::LazyAdapter<T>, typename collection_type::const_iterator >
+		Arguments: void	
+

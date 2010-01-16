@@ -1,0 +1,153 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: PFSimParticle.xml
+  Created:  Thu Jan 14 22:48:04 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/ParticleFlowReco/interface/PFSimParticle.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/ParticleFlowReco/interface/PFSimParticle.h">
+
+    <include name="&quot;DataFormats/ParticleFlowReco/interface/PFTrack.h&quot;"/>
+    <include name="&lt;iostream&gt;"/>
+
+    <namespace name="reco">
+
+        <class name="PFSimParticle"
+               fullname="reco::PFSimParticle"
+               module="DataFormats.ParticleFlowReco"
+               project=""
+               type="regular printable">
+            <baseclass name="public PFTrack"/>
+            <comment>
+     \class PFSimParticle
+     \brief true particle for particle flow
+
+     Additional information w/r to PFTrack:
+     - pdg code
+     - information about mother and daughters
+     \author Renaud Bruneliere
+     \date   July 2006
+            </comment>
+
+            <section name="public">
+                <constructor name="PFSimParticle"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+PFSimParticle();
+                </constructor>
+
+                <constructor name="PFSimParticle"
+                             return=""
+                             args="['double','int','unsigned','int','const std::vector&lt;int&gt;&amp;','unsigned','std::vector&lt;unsigned&gt;','std::vector&lt;double&gt;']"
+                             vars="['charge','pdgCode','id','motherId','daughterIds','rectrackId','recHitContrib','recHitContribFrac']"
+                             qual="">
+PFSimParticle(double charge, int pdgCode, unsigned id, int motherId, const std::vector&lt;int&gt;&amp; daughterIds, unsigned rectrackId, std::vector&lt;unsigned&gt; recHitContrib, std::vector&lt;double&gt; recHitContribFrac);
+                </constructor>
+
+                <copyconstructor name="PFSimParticle"
+                                 return=""
+                                 args="['const PFSimParticle&amp;']"
+                                 vars="['other']"
+                                 qual="">
+PFSimParticle(const PFSimParticle&amp; other);
+                </copyconstructor>
+
+                <method1 name="pdgCode"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int pdgCode() const;
+                    <comment>
+        \return pdg code
+                    </comment>
+                </method1>
+
+                <method1 name="id"
+                         return="unsigned"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+unsigned id() const;
+                    <comment>
+        \return id
+                    </comment>
+                </method1>
+
+                <method1 name="motherId"
+                         return="int"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+int motherId() const;
+                    <comment>
+        \return mother id
+                    </comment>
+                </method1>
+
+                <method2 name="daughterIds"
+                         return="const std::vector&lt;int&gt;&amp;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+const std::vector&lt;int&gt;&amp; daughterIds() const;
+                    <comment>
+        \return vector of daughter ids
+                    </comment>
+                </method2>
+
+                <method1 name="rectrackId"
+                         return="unsigned"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+unsigned rectrackId() const;
+                    <comment>
+     accessing MCTruth Matching Info
+                    </comment>
+                </method1>
+
+                <method2 name="recHitContrib"
+                         return="std::vector&lt;unsigned&gt;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+std::vector&lt;unsigned&gt; recHitContrib() const;
+                </method2>
+
+                <method2 name="recHitContribFrac"
+                         return="std::vector&lt;double&gt;"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+std::vector&lt;double&gt; recHitContribFrac() const;
+                </method2>
+
+                <operator name="operator&lt;&lt;"
+                          return="friend std::ostream&amp;"
+                          args="['std::ostream&amp;','const PFSimParticle&amp;']"
+                          vars="['out','track']"
+                          qual="">
+friend std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, const PFSimParticle&amp; track);
+                </operator>
+
+            </section>
+
+        </class>
+    </namespace>
+
+    <type name="PFTrack"/>
+    <type name="const PFSimParticle&amp;"/>
+    <type name="const std::vector&lt;int&gt;&amp;"/>
+    <type name="double"/>
+    <type name="int"/>
+    <type name="reco::PFSimParticle"/>
+    <type name="std::ostream&amp;"/>
+    <type name="std::vector&lt;double&gt;"/>
+    <type name="std::vector&lt;unsigned&gt;"/>
+    <type name="unsigned"/>
+    <type name="void"/>
+</header>

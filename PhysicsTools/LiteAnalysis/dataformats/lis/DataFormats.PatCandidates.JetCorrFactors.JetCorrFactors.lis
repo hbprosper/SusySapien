@@ -1,0 +1,2 @@
+pat::JetCorrFactors|float|scaleDefault|void
+pat::JetCorrFactors|std::string|getLabel|void

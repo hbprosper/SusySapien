@@ -1,0 +1,48 @@
+Class:
+	edm::RefGetter<T>
+
+Header:
+	DataFormats/Common/interface/RefGetter.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:51 2010	lsclass.py $Revision:$
+
+Methods from edm::RefGetter<T>
+
+	-o- reserve
+		Return: void
+		Arguments: uint32_t	
+
+	-o- swap
+		Return: void
+		Arguments: RefGetter&	other
+
+	-o- empty
+		Return: bool
+		Arguments: void	
+
+	-o- size
+		Return: uint32_t
+		Arguments: void	
+
+	-o- begin
+		Return: boost::indirect_iterator<typename std::vector<region_ref>::const_iterator>
+		Arguments: void	
+
+	-o- end
+		Return: boost::indirect_iterator<typename std::vector<region_ref>::const_iterator>
+		Arguments: void	
+
+	-o- find
+		Return: bool
+		Arguments: uint32_t	
+
+	-o- push_back
+		Return: void
+		Arguments: const edm::Handle<LazyGetter<T> >&	
+		           const uint32_t&	
+
+	-o- back
+		Return: const RegionIndex<T>&
+		Arguments: void	
+

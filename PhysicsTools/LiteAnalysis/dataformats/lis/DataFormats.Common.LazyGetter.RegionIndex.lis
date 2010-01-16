@@ -1,0 +1,6 @@
+edm::RegionIndex<T>|uint32_t|region|void
+edm::RegionIndex<T>|uint32_t|start|void
+edm::RegionIndex<T>|uint32_t|finish|void
+edm::RegionIndex<T>|bool|unpacked|void
+edm::RegionIndex<T>|typename std::vector<T>::const_iterator|begin|void
+edm::RegionIndex<T>|typename std::vector<T>::const_iterator|end|void

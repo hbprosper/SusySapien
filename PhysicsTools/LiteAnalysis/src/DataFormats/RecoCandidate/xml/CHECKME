@@ -1,0 +1,3 @@
+NOCLASS:	DataFormats/RecoCandidate/interface/RecoStandAloneMuonCandidateFwd.h
+NOCLASS:	DataFormats/RecoCandidate/interface/TrackAssociation.h
+NOCLASS:	DataFormats/RecoCandidate/interface/TrackCandidateAssociation.h

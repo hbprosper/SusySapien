@@ -1,0 +1,9 @@
+Class:
+	edm::helper::IndexRangeAssociation::IDComparator
+
+Header:
+	DataFormats/Common/interface/MultiAssociation.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:15:43 2010	lsclass.py $Revision:$
+

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: DetIdCollection.xml
+  Created:  Thu Jan 14 22:49:07 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/DetId/interface/DetIdCollection.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/DetId/interface/DetIdCollection.h">
+
+    <include name="&quot;DataFormats/Common/interface/EDCollection.h&quot;"/>
+    <include name="&quot;DataFormats/DetId/interface/DetId.h&quot;"/>
+    <typedef name="DetIdCollection"
+             value="edm::EDCollection&lt;DetId&gt;">
+typedef edm::EDCollection&lt;DetId&gt; DetIdCollection;
+    </typedef>
+
+
+</header>

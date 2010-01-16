@@ -1,0 +1,7 @@
+L1GctHFBitCounts|static unsigned|nCounts|void
+L1GctHFBitCounts|uint16_t|capBlock|void
+L1GctHFBitCounts|uint16_t|capIndex|void
+L1GctHFBitCounts|int16_t|bx|void
+L1GctHFBitCounts|bool|empty|void
+L1GctHFBitCounts|uint16_t|raw|void
+L1GctHFBitCounts|uint16_t|bitCount|unsigned const

@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<!--
+==============================================================================
+  XML File: BasicJet.xml
+  Created:  Thu Jan 14 22:47:10 2010 with header2xml.py 1.13
+==============================================================================
+-->
+<header name="DataFormats/JetReco/interface/BasicJet.h"
+        file="/home/harry/Desktop/cmssw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_2_13/src/DataFormats/JetReco/interface/BasicJet.h">
+
+    <include name="&quot;DataFormats/JetReco/interface/Jet.h&quot;"/>
+
+    <namespace name="reco">
+
+        <class name="BasicJet"
+               fullname="reco::BasicJet"
+               module="DataFormats.JetReco"
+               project=""
+               type="regular">
+            <baseclass name="public Jet"/>
+
+            <section name="public">
+                <constructor name="BasicJet"
+                             return=""
+                             args="['void']"
+                             vars="['']"
+                             qual="">
+BasicJet();
+                    <comment>
+      Default constructor
+                    </comment>
+                </constructor>
+
+                <constructor name="BasicJet"
+                             return=""
+                             args="['const LorentzVector&amp;','const Point&amp;']"
+                             vars="['fP4','fVertex']"
+                             qual="">
+BasicJet(const LorentzVector&amp; fP4, const Point&amp; fVertex);
+                    <comment>
+      Constructor from values
+                    </comment>
+                </constructor>
+
+                <constructor name="BasicJet"
+                             return=""
+                             args="['const LorentzVector&amp;','const Point&amp;','const Jet::Constituents&amp;']"
+                             vars="['fP4','fVertex','fConstituents']"
+                             qual="">
+BasicJet(const LorentzVector&amp; fP4, const Point&amp; fVertex, const Jet::Constituents&amp; fConstituents);
+                </constructor>
+
+                <destructor name="~BasicJet"
+                            return="virtual"
+                            args="['void']"
+                            vars="['']"
+                            qual="">
+virtual ~BasicJet();
+                </destructor>
+
+                <method1 name="clone"
+                         return="virtual BasicJet*"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual BasicJet* clone () const;
+                    <comment>
+      Polymorphic clone
+                    </comment>
+                </method1>
+
+                <method1 name="print"
+                         return="virtual std::string"
+                         args="['void']"
+                         vars="['']"
+                         qual="const">
+virtual std::string print () const;
+                    <comment>
+      Print object
+                    </comment>
+                </method1>
+
+            </section>
+
+        </class>
+    </namespace>
+    <include name="&quot;DataFormats/JetReco/interface/BasicJetCollection.h&quot;"/>
+
+    <type name="BasicJet*"/>
+    <type name="Jet"/>
+    <type name="const Jet::Constituents&amp;"/>
+    <type name="const LorentzVector&amp;"/>
+    <type name="const Point&amp;"/>
+    <type name="reco::BasicJet"/>
+    <type name="std::string"/>
+    <type name="void"/>
+</header>

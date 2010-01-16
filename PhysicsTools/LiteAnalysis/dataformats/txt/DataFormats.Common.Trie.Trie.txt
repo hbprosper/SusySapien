@@ -1,0 +1,63 @@
+Class:
+	edm::Trie<T>
+
+Header:
+	DataFormats/Common/interface/Trie.h
+
+Version:     CMSSW_2_2_13
+Created:     Thu Jan 14 23:16:03 2010	lsclass.py $Revision:$
+
+Methods from edm::Trie<T>
+
+	-o- insert
+		Return: void
+		Arguments: std::string const&	str
+		           const T&	value
+
+	-o- insert
+		Return: void
+		Arguments: const char*	str
+		           unsigned	strLen
+		           const T&	value
+
+	-o- setEntry
+		Return: void
+		Arguments: std::string const&	str
+		           const T&	value
+
+	-o- setEntry
+		Return: void
+		Arguments: const char*	str
+		           unsigned	strLen
+		           const T&	value
+
+	-o- find
+		Return: const T&
+		Arguments: std::string const&	str
+
+	-o- find
+		Return: const T&
+		Arguments: const char*	str
+		           unsigned	strLen
+
+	-o- display
+		Return: void
+		Arguments: std::ostream&	os
+
+	-o- clear
+		Return: void
+		Arguments: void	
+
+	-o- node
+		Return: const TrieNode<T>*
+		Arguments: std::string const&	str
+
+	-o- node
+		Return: const TrieNode<T>*
+		Arguments: const char*	str
+		           unsigned	strLen
+
+	-o- initialNode
+		Return: const TrieNode<T>*
+		Arguments: void	
+
