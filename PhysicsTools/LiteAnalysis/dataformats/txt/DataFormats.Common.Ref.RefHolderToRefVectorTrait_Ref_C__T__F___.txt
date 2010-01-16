@@ -1,9 +1,0 @@
-Class:
-	edm::reftobase::RefHolderToRefVectorTrait<Ref<C, T, F> >
-
-Header:
-	DataFormats/Common/interface/Ref.h
-
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:43 2010	lsclass.py $Revision:$
-

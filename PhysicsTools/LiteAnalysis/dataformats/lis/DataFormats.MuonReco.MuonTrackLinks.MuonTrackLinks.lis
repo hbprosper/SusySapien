@@ -1,3 +1,0 @@
-reco::MuonTrackLinks|inline reco::edm::Ref<std::vector<Track>>|trackerTrack|void
-reco::MuonTrackLinks|inline reco::edm::Ref<std::vector<Track>>|standAloneTrack|void
-reco::MuonTrackLinks|inline reco::edm::Ref<std::vector<Track>>|globalTrack|void

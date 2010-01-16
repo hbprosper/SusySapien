@@ -1,9 +1,0 @@
-Class:
-	edm::has_fillView<edm::DetSetVector<T> >
-
-Header:
-	DataFormats/Common/interface/DetSetVector.h
-
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:50 2010	lsclass.py $Revision:$
-

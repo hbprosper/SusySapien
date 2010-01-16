@@ -1,9 +1,0 @@
-Class:
-	edm::refhelper::FindTrait<DetSetLazyVector<T>,T>
-
-Header:
-	DataFormats/Common/interface/DetSetLazyVector.h
-
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:16:06 2010	lsclass.py $Revision:$
-

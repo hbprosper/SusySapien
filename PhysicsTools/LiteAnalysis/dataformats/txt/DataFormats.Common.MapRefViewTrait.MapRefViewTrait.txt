@@ -1,9 +1,0 @@
-Class:
-	edm::helper::MapRefViewTrait<C>
-
-Header:
-	DataFormats/Common/interface/MapRefViewTrait.h
-
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:16:01 2010	lsclass.py $Revision:$
-

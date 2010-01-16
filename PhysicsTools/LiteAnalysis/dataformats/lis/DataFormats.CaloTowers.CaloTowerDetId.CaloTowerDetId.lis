@@ -1,9 +1,0 @@
-CaloTowerDetId|int|zside|void
-CaloTowerDetId|int|ietaAbs|void
-CaloTowerDetId|int|ieta|void
-CaloTowerDetId|int|iphi|void
-CaloTowerDetId|uint32_t|denseIndex|void
-DetId|Detector|det|void
-DetId|int|subdetId|void
-DetId|uint32_t|rawId|void
-DetId|bool|null|void

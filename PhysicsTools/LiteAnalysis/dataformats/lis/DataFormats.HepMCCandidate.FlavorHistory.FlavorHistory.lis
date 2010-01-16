@@ -1,7 +1,0 @@
-reco::FlavorHistory|FLAVOR_T|flavorSource|void
-reco::FlavorHistory|bool|hasParton|void
-reco::FlavorHistory|bool|hasSister|void
-reco::FlavorHistory|bool|hasProgenitor|void
-reco::FlavorHistory|const reco::edm::Ptr<Candidate>&|parton|void
-reco::FlavorHistory|const reco::edm::Ptr<Candidate>&|sister|void
-reco::FlavorHistory|const reco::edm::Ptr<Candidate>&|progenitor|void

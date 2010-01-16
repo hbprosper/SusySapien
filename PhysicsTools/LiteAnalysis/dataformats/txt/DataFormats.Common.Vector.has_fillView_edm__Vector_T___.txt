@@ -1,9 +1,0 @@
-Class:
-	edm::has_fillView<edm::Vector<T> >
-
-Header:
-	DataFormats/Common/interface/Vector.h
-
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:51 2010	lsclass.py $Revision:$
-

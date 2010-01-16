@@ -1,5 +1,0 @@
-reco::PreshowerCluster|int|nhits|void
-reco::PreshowerCluster|int|plane|void
-reco::PreshowerCluster|double|et|void
-reco::PreshowerCluster|edm::Ref<std::vector<BasicCluster>>|basicCluster|void
-reco::PreshowerCluster|std::vector<DetId>|getHitsByDetId|void

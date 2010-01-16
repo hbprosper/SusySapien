@@ -1,2 +1,0 @@
-reco::PFRecHitFraction|const edm::Ref<std::vector<PFRecHit>>&|recHitRef|void
-reco::PFRecHitFraction|double|fraction|void

@@ -1,2 +1,0 @@
-pat::Flags::Selection|static Bits|get|int8_t
-pat::Flags::Selection|static Bits|get|const std::string&

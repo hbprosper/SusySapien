@@ -1,9 +1,0 @@
-Class:
-	reco::TaggingVariableCompare
-
-Header:
-	DataFormats/BTauReco/interface/TaggingVariable.h
-
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:14:43 2010	lsclass.py $Revision:$
-

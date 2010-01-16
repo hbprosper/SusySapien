@@ -1,5 +1,0 @@
-reco::CaloTauTagInfo|CaloTauTagInfo*|clone|void
-reco::CaloTauTagInfo|const edm::Ref<CaloJetCollection>&|calojetRef|void
-reco::CaloTauTagInfo|const std::vector<std::pair<math::ROOT::Math::PositionVector3D<ROOT::Math::Cartesian3D<double> >, float> >|positionAndEnergyECALRecHits|void
-reco::CaloTauTagInfo|const std::vector<edm::Ref<std::vector<BasicCluster>>>|neutralECALBasicClusters|void
-reco::BaseTauTagInfo|const reco::edm::RefVector<std::vector<Track>>&|Tracks|void

@@ -1,4 +1,0 @@
-pat::HardEventHypothesis|inline void|setQuality|float
-pat::HardEventHypothesis|inline float|getQuality|void
-pat::HardEventHypothesis|const char*|getCandidateRole|int=0
-pat::HardEventHypothesis|bool|getIsVector|int=0

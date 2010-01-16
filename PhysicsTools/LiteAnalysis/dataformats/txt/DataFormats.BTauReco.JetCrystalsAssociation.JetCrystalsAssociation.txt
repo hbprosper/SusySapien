@@ -1,9 +1,0 @@
-Class:
-	reco::JetCrystalsAssociation
-
-Header:
-	DataFormats/BTauReco/interface/JetCrystalsAssociation.h
-
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:14:49 2010	lsclass.py $Revision:$
-

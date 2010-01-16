@@ -1,3 +1,0 @@
-CaloRecHit|float|energy|void
-CaloRecHit|float|time|void
-CaloRecHit|const DetId&|detid|void

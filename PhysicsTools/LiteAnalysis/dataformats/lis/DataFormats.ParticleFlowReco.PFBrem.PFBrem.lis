@@ -1,3 +1,0 @@
-reco::PFBrem|double|DeltaP|void
-reco::PFBrem|double|SigmaDeltaP|void
-reco::PFBrem|unsigned int|indTrajPoint|void

@@ -1,7 +1,0 @@
-edm::ValueMap<T>|size_t|size|void
-edm::ValueMap<T>|size_t|idSize|void
-edm::ValueMap<T>|bool|empty|void
-edm::ValueMap<T>|const_iterator|begin|void
-edm::ValueMap<T>|const_iterator|end|void
-edm::ValueMap<T>|const std::vector<std::pair<ProductID, unsigned int> >&|ids|void
-edm::ValueMap<T>|typename std::vector<T>::const_reference|get|size_t

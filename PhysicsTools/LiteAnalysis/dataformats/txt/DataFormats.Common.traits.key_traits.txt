@@ -1,9 +1,0 @@
-Class:
-	edm::key_traits<K>
-
-Header:
-	DataFormats/Common/interface/traits.h
-
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:36 2010	lsclass.py $Revision:$
-

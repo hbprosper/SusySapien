@@ -1,3 +1,0 @@
-edm::TestHandle<T>|bool|isValid|void
-edm::TestHandle<T>|T const*|product|void
-edm::TestHandle<T>|ProductID|id|void

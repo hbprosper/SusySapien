@@ -1,9 +1,0 @@
-Class:
-	edm::StrictWeakOrdering<T>
-
-Header:
-	DataFormats/Common/interface/SortedCollection.h
-
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:40 2010	lsclass.py $Revision:$
-

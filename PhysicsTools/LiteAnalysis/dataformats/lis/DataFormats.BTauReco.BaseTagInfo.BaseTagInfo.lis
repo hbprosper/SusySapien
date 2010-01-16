@@ -1,5 +1,0 @@
-reco::BaseTagInfo|BaseTagInfo*|clone|void
-reco::BaseTagInfo|edm::RefVector<std::vector<Track>>|tracks|void
-reco::BaseTagInfo|bool|hasTracks|void
-reco::BaseTagInfo|TaggingVariableList|taggingVariables|void
-reco::BaseTagInfo|edm::RefToBase<Jet>|jet|void

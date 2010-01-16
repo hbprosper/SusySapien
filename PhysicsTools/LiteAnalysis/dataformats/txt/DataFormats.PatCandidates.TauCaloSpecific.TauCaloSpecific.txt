@@ -1,9 +1,0 @@
-Class:
-	pat::tau::TauCaloSpecific
-
-Header:
-	DataFormats/PatCandidates/interface/TauCaloSpecific.h
-
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:14:06 2010	lsclass.py $Revision:$
-

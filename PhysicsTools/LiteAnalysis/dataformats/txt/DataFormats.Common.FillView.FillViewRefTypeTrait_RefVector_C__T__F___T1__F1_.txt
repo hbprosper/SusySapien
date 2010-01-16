@@ -1,9 +1,0 @@
-Class:
-	edm::detail::FillViewRefTypeTrait<C, T, F>
-
-Header:
-	DataFormats/Common/interface/FillView.h
-
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:50 2010	lsclass.py $Revision:$
-

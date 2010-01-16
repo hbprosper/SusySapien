@@ -1,2 +1,0 @@
-reco::PFConversion|const reco::edm::Ref<ConversionCollection>&|originalConversion|void
-reco::PFConversion|std::vector<reco::edm::Ref<std::vector<PFRecTrack>>>|pfTracks|void

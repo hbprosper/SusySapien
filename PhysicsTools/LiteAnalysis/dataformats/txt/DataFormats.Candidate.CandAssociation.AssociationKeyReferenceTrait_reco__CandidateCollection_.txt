@@ -1,9 +1,0 @@
-Class:
-	edm::helper::AssociationKeyReferenceTrait<reco::CandidateCollection>
-
-Header:
-	DataFormats/Candidate/interface/CandAssociation.h
-
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:14:57 2010	lsclass.py $Revision:$
-

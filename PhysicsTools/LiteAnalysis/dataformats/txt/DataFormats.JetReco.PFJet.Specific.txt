@@ -1,9 +1,0 @@
-Class:
-	reco::PFJet::Specific
-
-Header:
-	DataFormats/JetReco/interface/PFJet.h
-
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:14:32 2010	lsclass.py $Revision:$
-

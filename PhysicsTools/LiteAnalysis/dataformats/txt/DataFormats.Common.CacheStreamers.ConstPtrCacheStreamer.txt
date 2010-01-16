@@ -1,9 +1,0 @@
-Class:
-	edm::ConstPtrCacheStreamer
-
-Header:
-	DataFormats/Common/interface/CacheStreamers.h
-
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:55 2010	lsclass.py $Revision:$
-

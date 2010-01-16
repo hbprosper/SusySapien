@@ -1,9 +1,0 @@
-Class:
-	edmNew::dstvdetails::ToRM<B>
-
-Header:
-	DataFormats/Common/interface/DetSet2RangeMap.h
-
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:16:07 2010	lsclass.py $Revision:$
-

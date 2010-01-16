@@ -1,9 +1,0 @@
-Class:
-	reco::PdfInfo
-
-Header:
-	DataFormats/HepMCCandidate/interface/PdfInfo.h
-
-Version:     CMSSW_2_2_13
-Created:     Thu Jan 14 23:15:23 2010	lsclass.py $Revision:$
-
