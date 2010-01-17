@@ -31,6 +31,7 @@ main(int argc, char** argv)
 
   cout << endl << "test otreestream" << endl;
   otreestream oustream(filename, "Analysis", "Analysis");
+  //oustream.autosave(50);
 
   // Define output buffers
 
