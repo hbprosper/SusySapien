@@ -1,15 +1,16 @@
 //
 // Package:    Mkntuple
-// 
+//             plugins.cc
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
-// $Revision: 1.3 $
-// $Id: plugins.cc,v 1.3 2010/01/16 04:02:01 prosper Exp $
+//         Updated:  Sat Jan 16 HBP add error handling in fill method
+//
+// $Id: plugins.cc,v 1.2.2.1 2010/01/17 04:33:49 prosper Exp $
 //
 //
-// If using Python, include its header first to avoid 
-// annoying compiler complaints.
+// If using Python, include its header first to avoid annoying compiler
+// complaints.
 #include <Python.h>
 #include <boost/python/type_id.hpp>
 #include <iostream>
@@ -18,9 +19,9 @@
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "PhysicsTools/Mkntuple/interface/pluginfactory.h"
-#include "CommonTools/Utils/src/ExpressionPtr.h"
-#include "CommonTools/Utils/src/ExpressionBase.h"
-#include "CommonTools/Utils/interface/expressionParser.h"
+#include "PhysicsTools/Utilities/src/ExpressionPtr.h"
+#include "PhysicsTools/Utilities/src/ExpressionBase.h"
+#include "PhysicsTools/Utilities/interface/expressionParser.h"
 
 using namespace std;
 
@@ -46,8 +47,9 @@ struct SimpleFunction
 {
   SimpleFunction() {}
   
-  SimpleFunction(const std::string& expr) 
-    : type_(ROOT::Reflex::Type::ByTypeInfo(typeid(T))) 
+  SimpleFunction(const std::string& expr)
+    : expression_(expr),
+      type_(ROOT::Reflex::Type::ByTypeInfo(typeid(T))) 
   {
     if(!reco::parser::expressionParser<T>(expr, expr_)) 
       {
@@ -58,6 +60,12 @@ struct SimpleFunction
       }
   }
   
+  std::string name() const
+  {
+    return std::string(boost::python::type_id<T>().name()) 
+      + "::" + expression_;
+  }
+
   double operator()(const T & t) const 
   {
     using namespace ROOT::Reflex;
@@ -66,6 +74,7 @@ struct SimpleFunction
   }
   
 private:
+  std::string expression_;
   reco::parser::ExpressionPtr expr_;
   ROOT::Reflex::Type type_;
 };
@@ -107,7 +116,7 @@ struct Variable
 //
 // typenames:
 //   X = class of object to be extracted using getByLabel
-//   Y = template vale of objects of class Variable<Y>. Y can be the same
+//   Y = template value of objects of class Variable<Y>. Y can be the same
 //   as X.
 
 template <typename X, typename Y>
@@ -122,7 +131,7 @@ struct Buffer  : public BufferThing
       var_(std::vector<VariableDescriptor>()),
       maxcount_(0),
       singleton_(false)
-   {
+  {
     std::cout << "Buffer created for objects of type: " 
               << GREEN  
               << boost::python::type_id<X>().name() << BLACK 
@@ -136,7 +145,8 @@ struct Buffer  : public BufferThing
        std::string label, 
        std::string prefix,
        std::vector<VariableDescriptor>& var,
-       int maxcount)
+       int maxcount,
+       int debug=0)
   {
     out_    = &out;
     label_  = label;
@@ -151,6 +161,7 @@ struct Buffer  : public BufferThing
     var_    = var;
     maxcount_ = maxcount;
     singleton_ = maxcount == 1;
+    debug_ = debug;
 
     // Define variables destined for the output tree
 
@@ -194,6 +205,11 @@ struct Buffer  : public BufferThing
   // -----------------------------------------------------
   void fill(const edm::Event& event)
   {
+    if ( debug_ > 0 ) std::cout << RED + "Begin Buffer::fill " + BLACK + 
+                        "objects of type: " 
+                                << RED 
+                                << boost::python::type_id<X>().name() << BLACK 
+                                << std::endl;
     if ( singleton_ )
       {
         edm::Handle<X> handle;
@@ -215,7 +231,20 @@ struct Buffer  : public BufferThing
         for(unsigned i=0; i < variable_.size(); i++)
           {
             const Y object((*handle));
-            variable_[i].value[0] = variable_[i].function(object);
+            try
+              {
+                variable_[i].value[0] = variable_[i].function(object);
+              }
+            catch (cms::Exception& e)
+              {
+                throw cms::Exception("\nBufferFillFailure",
+                                     "failed on call to \"" + 
+                                     RED + 
+                                     variable_[i].function.name() + "\"\n" +
+                                     GREEN +
+                                     "thou lump of foul deformity..." 
+                                     + BLACK, e);
+              }
           }
       }
     else
@@ -231,7 +260,7 @@ struct Buffer  : public BufferThing
                                "\nBuffer - "
                                "getByLabel failed on label \"" + 
                                label_ + "\"\n" + RED +
-                               "thou art a waste of space...\n" + BLACK);
+                               "thou art a waste of space..." + BLACK);
         
         // update data count. Use the smaller of count and maxcount.
         count_ = (int)handle->size() < maxcount_ ? handle->size() : maxcount_;
@@ -242,10 +271,33 @@ struct Buffer  : public BufferThing
             for(int j=0; j < count_; j++)
               {
                 const Y object((*handle)[j]);
-                variable_[i].value[j] = variable_[i].function(object);
+                if ( debug_ > 0 ) 
+                  cout << RED +"\t" << j << "\tcall: " + BLACK
+                       << variable_[i].function.name() << endl;
+                try
+                  {
+                    variable_[i].value[j] = variable_[i].function(object);
+                  }
+                catch (cms::Exception& e)
+                  {
+                    throw cms::Exception("BufferFillFailure",
+                                         "failed on call to \"" + 
+                                         RED + 
+                                         variable_[i].function.name()+"\"\n" +
+                                         GREEN +
+                                         "thou lump of foul deformity..." 
+                                         + BLACK, e);
+                  }
               } 
           }
       }
+
+    if ( debug_ > 0 ) std::cout << RED + "End Buffer::fill" + BLACK + 
+                        "objects of type: " 
+                                << RED  
+                                << boost::python::type_id<X>().name() 
+                                << BLACK 
+                                << std::endl;
   }
   
 private:
@@ -257,6 +309,7 @@ private:
   std::vector<VariableDescriptor> var_;
   int maxcount_;
   bool singleton_;
+  int debug_;
   int count_;
   std::vector<Variable<Y> > variable_;
 };
