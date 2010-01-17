@@ -51,7 +51,7 @@
 //
 // Original Author:  Sezen SEKMEN & Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
-// $Id$
+// $Id: Mkntuple.cc,v 1.1 2010/01/16 02:10:45 prosper Exp $
 //
 //
 // ---------------------------------------------------------------------------
@@ -110,7 +110,6 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
     DEBUG(iConfig.getUntrackedParameter<int>("debugLevel")),
     event_(0)
 {
-  //DB
   if ( DEBUG > 0 ) 
     cout << "BEGIN(Mkntuple)" << endl;
 
@@ -140,8 +139,7 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
     {
       string record = bufferrecords[i];
 
-      //DB
-      if ( DEBUG > 0 ) 
+      if ( DEBUG > 1 ) 
         cout << "record(" << record  << ")" << endl; 
       
       if ( startOfBlock )
@@ -200,7 +198,6 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
           // mechanism assumes (not unreasonably) that it is in charge of 
           // plugins and so is responsible for cleaning up allocated space.
 
-          //DB
           if ( DEBUG > 0 )
             cout 
               << "\tcreate buffer: " << buffer << endl;
@@ -215,7 +212,8 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
                                  "\n\tthat lurks in the mud hatch out\n"
                                  + BLACK);
           // ... and initialize it
-          (buffers.back())->init(output, label, prefix, var, maxcount);
+          (buffers.back())->init(output, label, prefix, var, maxcount,
+                                 DEBUG);
           continue;
         }
 
@@ -241,8 +239,7 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
                              "I can't get method name from " + record);
       string method = kit::strip(matchmethod[0]);
       
-      //DB
-      if ( DEBUG > 0 ) 
+      if ( DEBUG > 1 ) 
         cout << "    " << "\tmethod<" << method << ">" << endl;
       
 //       // Get return type
@@ -262,13 +259,11 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
         varname = kit::strip(matchalias[0]);
       var.push_back(VariableDescriptor(method, varname));
 
-      //DB
-      if ( DEBUG > 0 )
+      if ( DEBUG > 1 )
         cout << "      " << "\tvarname(" << varname << ")"
              << endl;
     }
   
-  //DB
   if ( DEBUG > 0 ) 
     cout << "END(Mkntuple)" << endl;
 }
@@ -276,7 +271,6 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
 
 Mkntuple::~Mkntuple()
 {
-  //DB
   if ( DEBUG > 0 ) 
     cout << "CLEANUP(Mkntuple)" << endl;
 }

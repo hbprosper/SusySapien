@@ -3,17 +3,25 @@
 # File:        mkntuplecfi.py
 # Description: Gui to create cfi fragment for Mkntuple
 # Created:     06-Jan-2010 Harrison B. Prosper
+# Updated:     16-Jan-2010 HBP - simplify command line
 #-----------------------------------------------------------------------------
-#$Revision: $
+#$Revision: 1.1$
 #-----------------------------------------------------------------------------
-import sys, os, re
+import sys, os, re, platform
 from ROOT import *
-from PhysicsTools.LiteAnalysis import *
-from string import *
-from time import *
-from glob import glob
-from array import array
 #-----------------------------------------------------------------------------
+def usage():
+	print """
+Usage:
+      mkntuplecfi.py [root-file-dir]
+   
+      root-file-dir     directory containing root files. If omitted,
+		                  the default is the current directory
+		"""
+	sys.exit(0)
+ARGV = sys.argv[1:]
+if len(ARGV) > 0 and ARGV[0] == "?": usage()
+
 # Make sure CMSSW is set up
 if not os.environ.has_key("CMSSW_BASE"):
 	print "\t*** please set up CMSSW first\n"
@@ -22,17 +30,36 @@ if not os.environ.has_key("CMSSW_BASE"):
 BASE           = os.environ["CMSSW_BASE"]
 VERSION        = \
 """
-mkntuplecfi.py v1.0.0 January 2010
-Python 2.4
-Root   5.22
-"""
+mkntuplecfi.py v1.0.1 January 2010
+Python %s
+Root   %s
+""" % (platform.python_version(),
+	   gROOT.GetVersion())
 ICONDIR        = "%s/icons" % os.environ["ROOTSYS"]
+METHODDIR      = "%s/src/PhysicsTools/LiteAnalysis/dataformats/methods" % \
+				 BASE
+
+if not os.path.exists(METHODDIR):
+	print "\t** cannot find methods directory:\n%s" % METHODDIR
+	sys.exit(0)
+
+print VERSION
+#-----------------------------------------------------------------------------
+from string import *
+from time import *
+from glob import glob
+from array import array
+from PhysicsTools.LiteAnalysis import *
+#-----------------------------------------------------------------------------
+
 WIDTH          = 750            # Width of GUI in pixels
 HEIGHT         = 500            # Height of GUI in pixels
 # StatusBar components
 STATUS_PARTS   = array('i')     # Status bar division in percentage
 STATUS_PARTS.append(23)
 STATUS_PARTS.append(77)
+
+
 
 # We need a few simple regular expressions to extract sub-strings
 
@@ -211,12 +238,12 @@ P_COLOR = (LIGHTYELLOW, LIGHTGREEN)
 
 class Gui:
 	"""
-	gui = Gui(title, methodDir, iniDir)
+	gui = Gui(title, iniDir)
 	"""
 
-	def __init__(self, name, methoddir, inidir):
+	def __init__(self, name, inidir):
 
-		self.methodDir  = methoddir
+		self.methodDir  = METHODDIR
 		self.iniDir     = inidir            # Initial directory for file dialog
 		self.iconDir    = ICONDIR				 
 		self.connection = []                # List of Signal/Slot connections
@@ -880,30 +907,12 @@ class Gui:
 #---- Main program ------------------------------------------------------------
 #------------------------------------------------------------------------------
 def main():
-	argv = sys.argv[1:]
-	argc = len(argv)
-	if argc < 1:
-		print """
-Usage:
-   mkntuplecfi.py <methods-dir> [root-file-dir]
-   
-		methods-dir       directory containing methods files
-        root-file-dir     directory containing root files. If omitted,
-		                  the default is the current directory
-		"""
-		sys.exit(0)
-		
-	methoddir = argv[0]
-	if not os.path.exists(methoddir):
-		print "** methods directory %s not found" % methoddir
-		sys.exit(0)
-		
-	if argc > 1:
-		inidir = argv[1]
+	if len(ARGV) > 0:
+		inidir = ARGV[0]
 	else:
 		inidir = "."
-	
-	gui = Gui("mkntuplecfi", methoddir, inidir)
+
+	gui = Gui("mkntuplecfi", inidir)
 	gui.Run()
 #------------------------------------------------------------------------------
 main()
