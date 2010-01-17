@@ -5,7 +5,7 @@
 # Created:     06-Jan-2010 Harrison B. Prosper
 # Updated:     16-Jan-2010 HBP - simplify command line
 #-----------------------------------------------------------------------------
-#$Revision: 1.1$
+#$Revision: 1.2.4.1 $
 #-----------------------------------------------------------------------------
 import sys, os, re, platform
 from ROOT import *
@@ -58,13 +58,12 @@ HEIGHT         = 500            # Height of GUI in pixels
 STATUS_PARTS   = array('i')     # Status bar division in percentage
 STATUS_PARTS.append(23)
 STATUS_PARTS.append(77)
-
-
-
+#-----------------------------------------------------------------------------
 # We need a few simple regular expressions to extract sub-strings
+#-----------------------------------------------------------------------------
 
 # Extract branches ending in
-getbranch    = re.compile(r'(?<=\_).+\. / .+$',re.M)
+getbranch = re.compile(r'(?<=\_).+\. / .+$',re.M)
 
 # Extract class name from branch name
 getclass  = re.compile(r'(?<=Wrapper\<).+(?=\>)')
@@ -72,14 +71,81 @@ getclass  = re.compile(r'(?<=Wrapper\<).+(?=\>)')
 # Extract getByLabel string from branch name
 getlabel  = re.compile(r'.+(?=\_\_)|.+(?=\_)')
 
+getmethod = re.compile(r'[a-zA-Z][^\s]*[(].*[)]')
+
+stmethods = re.compile(r'energy|et|pt|eta|phi'\
+					   '|px|py|pz|p\('\
+					   '|charge')
+
+isomethods = re.compile(r'.+Iso')
+
+ismethods = re.compile(r'is.+')
+
 # Strip away namespace, vector< etc.
 stripname = re.compile(r'::|vector\<|\>| ')
 
 def isVector(name):
 	return find(name, "vector<") > -1
 
-# GUI widget Layouts
+def sortMethods(methods):
+	meths = []
+	for x in methods:
+		if x == "": continue
+		m = getmethod.findall(x)[0]
+		n = split(m, '(')[0]
+		cmd = '.+(?=\s%s)' % n
+		getrtype = re.compile(cmd)
+		r = getrtype.findall(x)[0]
+		meths.append((m, r))
+	meths.sort()
 
+	# Standard methods
+	methods = []	
+	for m, r in meths:
+		if stmethods.match(m) == None: continue
+		t = max(8, len(r))
+		if t > 8:
+			record = "%s  %s" % (r, m)
+		else:
+			record = "%8s  %s" % (r, m)
+		methods.append(record)
+
+	# Iso methods
+	for m, r in meths:
+		if isomethods.match(m) == None: continue
+		t = max(8, len(r))
+		if t > 8:
+			record = "%s  %s" % (r, m)
+		else:
+			record = "%8s  %s" % (r, m)
+		methods.append(record)
+
+	# is methods
+	for m, r in meths:
+		if ismethods.match(m) == None: continue
+		t = max(8, len(r))
+		if t > 8:
+			record = "%s  %s" % (r, m)
+		else:
+			record = "%8s  %s" % (r, m)
+		methods.append(record)
+
+	# the rest
+	for m, r in meths:
+		if stmethods.match(m)  != None: continue
+		if isomethods.match(m) != None: continue
+		if ismethods.match(m)  != None: continue
+		
+		t = max(8, len(r))
+		if t > 8:
+			record = "%s  %s" % (r, m)
+		else:
+			record = "%8s  %s" % (r, m)
+		methods.append(record)
+	return methods
+#-----------------------------------------------------------------------------
+# GUI widget Layouts
+#-----------------------------------------------------------------------------
 TOP          = TGLayoutHints(kLHintsTop)
 LEFT         = TGLayoutHints(kLHintsLeft)
 RIGHT        = TGLayoutHints(kLHintsRight)
@@ -525,20 +591,21 @@ class Gui:
 			cname = getclass.findall(record)[0]
 			fname = "%s/a%s.txt" % (self.methodDir, stripname.sub("", cname))
 			if not os.path.exists(fname): continue
-
+			
 			# methods file found, so read methods
 			
 			if not self.cmap.has_key(cname):
-				methods = filter(lambda x: x != "",
-								 map(strip, open(fname).readlines()))
-				methods = map(lambda x: replace(x,"\t","   "), methods)
-				methods.sort()
+				methods = sortMethods(filter(lambda x: x != "",
+											 map(strip,
+												 open(fname).readlines())))
+				#open("test.log","w").writelines(joinfields(methods,'\n'))
+				
 				mmap = {}
-				for method in methods:
-					mmap[method] = False
+				for method in methods: mmap[method] = False
 				self.cmap[cname] = {'selected': False,
 									'labels': {},
-									'methods': mmap}
+									'methods': mmap,
+									'sortedmethods': methods}
 
 			self.statusBar.SetText(fname, 1)
 			self.cmap[cname]['labels'][label] = False
@@ -642,8 +709,8 @@ class Gui:
 			# List selected methods
 		
 			methods = self.cmap[cname]['methods']
-			names = methods.keys()
-			names.sort()
+			names   = self.cmap[cname]['sortedmethods']
+
 			self.methodBox[P_SELECTED].RemoveAll()
 			for ind, name in enumerate(names):
 				if not methods[name]: continue
@@ -691,8 +758,8 @@ class Gui:
 		# List methods
 		
 		methods = self.cmap[cname]['methods']
-		names = methods.keys()
-		names.sort()
+		names   = self.cmap[cname]['sortedmethods']
+
 		self.methodBox[pageNumber].RemoveAll()
 		for index, name in enumerate(names):
 			if SelectedPage:
@@ -844,7 +911,6 @@ class Gui:
 			for name in selected.keys():
 				if not selected[name]: continue
 				methods.append(name)
-			methods.sort()
 
 			# Get selected labels
 			

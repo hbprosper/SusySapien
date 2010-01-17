@@ -9,11 +9,12 @@
 */
 //
 // Original Author:  HBP
-// $Id: pluginfactory.h,v 1.1 2010/01/16 02:10:42 prosper Exp $
+// $Id: pluginfactory.h,v 1.1.2.1 2010/01/17 04:33:49 prosper Exp $
 //
 //
 
 #include <vector>
+#include <string>
 #include "FWCore/PluginManager/interface/PluginFactory.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "PhysicsTools/LiteAnalysis/interface/treestream.hpp"
@@ -50,7 +51,9 @@ struct BufferThing
                     int debug=0)=0;
   
   /// Call requested methods of selected objects and fill buffer.
-  virtual void fill(const edm::Event& event)=0;
+  virtual bool fill(const edm::Event& event)=0;
+
+  virtual std::string& message()=0;
 };
 
 
