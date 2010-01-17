@@ -51,7 +51,7 @@
 //
 // Original Author:  Sezen SEKMEN & Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
-// $Id: Mkntuple.cc,v 1.1 2010/01/16 02:10:45 prosper Exp $
+// $Id: Mkntuple.cc,v 1.1.2.1 2010/01/17 04:33:50 prosper Exp $
 //
 //
 // ---------------------------------------------------------------------------
@@ -230,7 +230,7 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
 
       // Get method
       
-      boost::regex getmethod("(?<= )[a-zA-Z]+.+[)]");
+      boost::regex getmethod("[a-zA-Z][^ ]*[(].*[)]");
       boost::smatch matchmethod;
       if ( ! boost::regex_search(record, matchmethod, getmethod) ) 
         // Yet another tantrum!
@@ -242,13 +242,6 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
       if ( DEBUG > 1 ) 
         cout << "    " << "\tmethod<" << method << ">" << endl;
       
-//       // Get return type
-
-//       string rtype("");
-//       boost::regex getrtype(".+(?= " + method + "\()");
-//       boost::smatch matchrtype;
-//       if ( boost::regex_search(record, matchrtype, getrtype) ) 
-//         rtype = kit::strip(matchrtype[0]);
 
       // Get optional alias name
       
@@ -257,6 +250,15 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
       boost::smatch matchalias;
       if ( boost::regex_search(record, matchalias, getalias) ) 
         varname = kit::strip(matchalias[0]);
+
+//       // Get return type
+
+//       string rtype("");
+//       boost::regex getrtype(".+(?= " + method + ")");
+//       boost::smatch matchrtype;
+//       if ( boost::regex_search(record, matchrtype, getrtype) ) 
+//         rtype = kit::strip(matchrtype[0]);
+
       var.push_back(VariableDescriptor(method, varname));
 
       if ( DEBUG > 1 )

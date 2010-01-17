@@ -5,8 +5,9 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sat Jan 16 HBP add error handling in fill method
+//                   Sun Jan 17 HBP add even more error handling in fill
 //
-// $Id: plugins.cc,v 1.2 2010/01/16 02:31:17 prosper Exp $
+// $Id: plugins.cc,v 1.4.4.2 2010/01/17 06:41:07 prosper Exp $
 //
 //
 // If using Python, include its header first to avoid annoying compiler
@@ -155,7 +156,8 @@ struct Buffer  : public BufferThing
     if ( i > 0 )
       {
         label1_ = label.substr(0,i);
-        label2_= label.substr(i+1, label.size()-i-1);
+        label2_ = label.substr(i+1, label.size()-i-1);
+        label_  = label1_ + ", " + label2_;
       }
     prefix_ = prefix;
     var_    = var;
@@ -210,13 +212,33 @@ struct Buffer  : public BufferThing
                                 << RED 
                                 << boost::python::type_id<X>().name() << BLACK 
                                 << std::endl;
+
+    count_ = 0; // reset count, just in case we have to bail out
+
     if ( singleton_ )
       {
         edm::Handle<X> handle;
-        if ( label2_ == "" )
-          event.getByLabel(label1_, handle);
-        else
-          event.getByLabel(label1_, label2_, handle);
+        try
+          {
+            if ( label2_ == "" )
+              event.getByLabel(label1_, handle);
+            else
+              event.getByLabel(label1_, label2_, handle);
+          }
+        catch (cms::Exception& e)
+          {
+            cout << RED 
+                 << "getByLabel failed on " 
+                 << BLACK 
+                 << boost::python::type_id<X>().name()
+                 << "\n\twith label: " << GREEN << label_ << BLACK
+                 << endl  
+                 << RED 
+                 << e.explainSelf() 
+                 << BLACK 
+                 << endl;
+            return;
+          }
 
         if ( !handle.isValid() )
           throw edm::Exception(edm::errors::Configuration,
@@ -227,6 +249,7 @@ struct Buffer  : public BufferThing
                                "\tmay I humbly suggest you "
                                "go boil your head!\n"
                                + BLACK);
+
         // extract datum for each variable
         for(unsigned i=0; i < variable_.size(); i++)
           {
@@ -250,18 +273,38 @@ struct Buffer  : public BufferThing
     else
       {
         edm::Handle< edm::View<X> > handle;
-        if ( label2_ == "" ) 
-          event.getByLabel(label1_, handle);
-        else
-          event.getByLabel(label1_, label2_, handle);
+        try 
+          {
+            if ( label2_ == "" )
+              event.getByLabel(label1_, handle);
+            else
+              event.getByLabel(label1_, label2_, handle);
+          }
+        catch (cms::Exception& e)
+          {
+            cout << RED 
+                 << "getByLabel failed on " 
+                 << BLACK 
+                 << boost::python::type_id<X>().name()
+                 << "\n\twith label: " << GREEN << label_ << BLACK
+                 << endl  
+                 << RED 
+                 << e.explainSelf() 
+                 << BLACK 
+                 << endl;
+            return;
+          }
 
         if ( !handle.isValid() )
           throw edm::Exception(edm::errors::Configuration,
-                               "\nBuffer - "
+                               "\nBuffer - " + 
+                               RED +
                                "getByLabel failed on label \"" + 
+                               BLACK +
                                label_ + "\"\n" + RED +
-                               "thou art a waste of space..." + BLACK);
-        
+                               "you're a waste of space..." + 
+                               BLACK);
+
         // update data count. Use the smaller of count and maxcount.
         count_ = (int)handle->size() < maxcount_ ? handle->size() : maxcount_;
 
@@ -292,7 +335,7 @@ struct Buffer  : public BufferThing
           }
       }
 
-    if ( debug_ > 0 ) std::cout << RED + "End Buffer::fill" + BLACK + 
+    if ( debug_ > 0 ) std::cout << RED + "End Buffer::fill " + BLACK + 
                         "objects of type: " 
                                 << RED  
                                 << boost::python::type_id<X>().name() 
