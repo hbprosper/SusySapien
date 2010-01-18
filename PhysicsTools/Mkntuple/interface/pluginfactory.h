@@ -14,6 +14,7 @@
 //
 
 #include <vector>
+#include <string>
 #include "FWCore/PluginManager/interface/PluginFactory.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "PhysicsTools/LiteAnalysis/interface/treestream.hpp"
@@ -50,7 +51,9 @@ struct BufferThing
                     int debug=0)=0;
   
   /// Call requested methods of selected objects and fill buffer.
-  virtual void fill(const edm::Event& event)=0;
+  virtual bool fill(const edm::Event& event)=0;
+
+  virtual std::string& message()=0;
 };
 
 

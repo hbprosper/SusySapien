@@ -4,8 +4,6 @@
 import FWCore.ParameterSet.Config as cms
 demo =\
 cms.EDAnalyzer("Mkntuple",
-               debugLevel = cms.untracked.int32(0),
-
                ntupleName = cms.untracked.string("ntuple.root"),
                variables  =
                cms.untracked.

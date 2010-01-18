@@ -38,7 +38,7 @@
 //          30-Nov-2005 HBP fix counter loading bug
 //          31-Oct-2009 HBP allow use of regexes in branch names
 //                      fix looping bug so operator[] works for Python
-//$Revision: 1.2 $
+//$Revision: 1.1.2.1 $
 //----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python/errors.hpp>
@@ -1469,16 +1469,17 @@ otreestream::otreestream()
 {}
 
 otreestream::otreestream(std::string filename, 
-			 std::string treename, 
-			 std::string title,
-			 int complevel,
-			 int bufsize)
+                         std::string treename, 
+                         std::string title,
+                         int complevel,
+                         int bufsize)
   : _file(0),
     _tree(0),
     _statuscode(kSUCCESS),
     _entries(0),
     _idatabuf(0),
-    _databuf(vector<double>(bufsize))
+    _databuf(vector<double>(bufsize)),
+    _autosavecount(1000)
 {
   DBUG("create file "+filename,1);
 
@@ -1511,7 +1512,8 @@ otreestream::otreestream(TFile* file,
     _statuscode(kSUCCESS),
     _entries(0),
     _idatabuf(0),
-    _databuf(vector<double>(bufsize))
+    _databuf(vector<double>(bufsize)),
+    _autosavecount(1000)
 {
   if ( ! _file )
     {
@@ -1558,7 +1560,7 @@ otreestream::close(bool closefile)
 
   if ( closefile )
     {
-      _file->Write();
+      _file->Write("", TObject::kOverwrite);
       _file->Close();
 
       delete _file;
@@ -1801,7 +1803,17 @@ otreestream::commit()
   _file->cd();
   _tree->Fill();
   _entries++;
+
+  // Save header every _autosavecount events
+  if ( _entries % _autosavecount == 0 )
+    {
+      cout << _entries << "\totreestream::commit is saving header" << endl;
+      _tree->AutoSave("SaveSelf");
+    }
 }
+
+void
+otreestream::autosave(int count) { _autosavecount = count; }
 
 int 
 otreestream::entries() { return _entries; }

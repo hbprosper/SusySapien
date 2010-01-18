@@ -5,9 +5,12 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sat Jan 16 HBP add error handling in fill method
-//                   Sun Jan 17 HBP add even more errot handling in fill
+//                   Sun Jan 17 HBP add even more error handling in fill
 //
-// $Id: plugins.cc,v 1.4.4.1 2010/01/17 04:38:33 prosper Exp $
+//         This code used to look simple, but with all the error handling a
+//         silk purse has been turned into a sow's ear!
+//
+// $Id: plugins.cc,v 1.2.2.2 2010/01/17 06:47:00 prosper Exp $
 //
 //
 // If using Python, include its header first to avoid annoying compiler
@@ -15,6 +18,7 @@
 #include <Python.h>
 #include <boost/python/type_id.hpp>
 #include <iostream>
+#include <sstream>
 #include <cassert>
 
 #include "FWCore/Framework/interface/Frameworkfwd.h"
@@ -205,7 +209,7 @@ struct Buffer  : public BufferThing
   // -----------------------------------------------------
   // fill output tree
   // -----------------------------------------------------
-  void fill(const edm::Event& event)
+  bool fill(const edm::Event& event)
   {
     if ( debug_ > 0 ) std::cout << RED + "Begin Buffer::fill " + BLACK + 
                         "objects of type: " 
@@ -214,6 +218,7 @@ struct Buffer  : public BufferThing
                                 << std::endl;
 
     count_ = 0; // reset count, just in case we have to bail out
+    message_ = "";
 
     if ( singleton_ )
       {
@@ -227,17 +232,13 @@ struct Buffer  : public BufferThing
           }
         catch (cms::Exception& e)
           {
-            cout << RED 
-                 << "getByLabel failed on " 
-                 << BLACK 
-                 << boost::python::type_id<X>().name()
-                 << "\n\twith label: " << GREEN << label_ << BLACK
-                 << endl  
-                 << RED 
-                 << e.explainSelf() 
-                 << BLACK 
-                 << endl;
-            return;
+            ostringstream out;
+            out << "getByLabel with label \"" << label_ << "\" failed on " 
+                << boost::python::type_id<X>().name() << endl  
+                << e.explainSelf(); 
+            cout << out.str() << endl;
+            message_ += out.str();
+            return false;
           }
 
         if ( !handle.isValid() )
@@ -282,17 +283,13 @@ struct Buffer  : public BufferThing
           }
         catch (cms::Exception& e)
           {
-            cout << RED 
-                 << "getByLabel failed on " 
-                 << BLACK 
-                 << boost::python::type_id<X>().name()
-                 << "\n\twith label: " << GREEN << label_ << BLACK
-                 << endl  
-                 << RED 
-                 << e.explainSelf() 
-                 << BLACK 
-                 << endl;
-            return;
+            ostringstream out;
+            out << "getByLabel with label \"" << label_ << "\" failed on " 
+                << boost::python::type_id<X>().name() << endl  
+                << e.explainSelf(); 
+            cout << out.str() << endl;
+            message_ += out.str();
+            return false;
           }
 
         if ( !handle.isValid() )
@@ -341,8 +338,15 @@ struct Buffer  : public BufferThing
                                 << boost::python::type_id<X>().name() 
                                 << BLACK 
                                 << std::endl;
+
+    return true;
   }
   
+  std::string& message()
+  {
+    return message_;
+  }
+
 private:
   otreestream* out_;  
   std::string label_;
@@ -354,6 +358,7 @@ private:
   bool singleton_;
   int debug_;
   int count_;
+  std::string message_;
   std::vector<Variable<Y> > variable_;
 };
 

@@ -51,15 +51,18 @@
 //
 // Original Author:  Sezen SEKMEN & Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
-// $Id: Mkntuple.cc,v 1.2.4.1 2010/01/17 04:38:33 prosper Exp $
+//         Updated:  Sun Jan 17 HBP - add log file
+// $Id: Mkntuple.cc,v 1.1.2.2 2010/01/17 06:47:00 prosper Exp $
 //
 //
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
 #include <iostream>
+#include <fstream>
 #include <cassert>
-
+#include <time.h>
+ 
 #include "PhysicsTools/LiteAnalysis/interface/treestream.hpp"
 #include "PhysicsTools/LiteAnalysis/interface/kit.h"
 #include "PhysicsTools/Mkntuple/interface/pluginfactory.h"
@@ -100,6 +103,8 @@ private:
 
   int DEBUG;
   int event_;
+  std::string logfilename_;
+  std::ofstream* log_;
 };
 
 
@@ -107,11 +112,27 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   : output(otreestream(iConfig.getUntrackedParameter<string>("ntupleName"), 
                        "Events", 
                        "The time has come the walrus said")),
-    DEBUG(iConfig.getUntrackedParameter<int>("debugLevel")),
-    event_(0)
+    event_(0),
+    logfilename_("Mkntuple.log"),
+    log_(new std::ofstream(logfilename_.c_str()))
 {
+  try
+    {
+      DEBUG = iConfig.getUntrackedParameter<int>("debugLevel");
+    }
+  catch (...)
+    {
+      DEBUG = 0;
+    }
+
   if ( DEBUG > 0 ) 
     cout << "BEGIN(Mkntuple)" << endl;
+
+  // Write to log file
+
+  time_t tt = time(0);
+  string ct(ctime(&tt));
+  *log_ << "Mkntuple log started: " << ct << endl;
 
   // Allocate buffers.
   //
@@ -181,6 +202,11 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
       // Check for end of block      
       else if ( record == "/" )
         {
+          // Write some info to log file
+          *log_ << "  create buffer: " << buffer << endl;
+          for(unsigned ii=0; ii < var.size(); ii++)
+            *log_ << "    method: " << var[ii].first << endl;
+          
           // Got to end of block. Remember to rest startOfBlock...
 
           startOfBlock = true;
@@ -200,7 +226,7 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
 
           if ( DEBUG > 0 )
             cout 
-              << "\tcreate buffer: " << buffer << endl;
+              << "  created buffer: " << buffer << endl << endl;
           
           buffers.push_back( BufferFactory::get()->create(buffer) );
           if (buffers.back() == 0)
@@ -235,12 +261,12 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
       if ( ! boost::regex_search(record, matchmethod, getmethod) ) 
         // Yet another tantrum!
         throw edm::Exception(edm::errors::Configuration,
-                             RED + "regex error: " + BLACK +
+                             "regex error: "
                              "I can't get method name from " + record);
       string method = kit::strip(matchmethod[0]);
       
       if ( DEBUG > 1 ) 
-        cout << "    " << "\tmethod<" << method << ">" << endl;
+        cout << "    method: " << method << endl;
       
       // Get optional alias name
       
@@ -261,10 +287,12 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
       var.push_back(VariableDescriptor(method, varname));
 
       if ( DEBUG > 1 )
-        cout << "      " << "\tvarname(" << varname << ")"
+        cout << "\t  varname(" << varname << ")"
              << endl;
     }
-  
+
+  log_->close();
+
   if ( DEBUG > 0 ) 
     cout << "END(Mkntuple)" << endl;
 }
@@ -284,12 +312,27 @@ Mkntuple::~Mkntuple()
 // ------------ method called to for each event  ------------
 void
 Mkntuple::analyze(const edm::Event& iEvent, 
-                         const edm::EventSetup& iSetup)
+                  const edm::EventSetup& iSetup)
 {
   event_++;
   cout << "\t\t\t\t" << GREEN << event_ << BLACK << endl;
 
-  for(unsigned i=0; i < buffers.size(); i++) buffers[i]->fill(iEvent);
+  string message("");
+  for(unsigned i=0; i < buffers.size(); i++)
+    if ( !buffers[i]->fill(iEvent) ) message += buffers[i]->message();
+
+  if ( message != "" )
+    {
+      time_t tt = time(0);
+      string ct(ctime(&tt));
+      
+      log_->open(logfilename_.c_str(), ios::app);
+      *log_ << endl
+            << "REPORT " << event_ << "\t" << ct << endl 
+            << message << endl
+            << "ENDREPORT" << endl;
+      log_->close();
+    }
   output.commit();
 }
 

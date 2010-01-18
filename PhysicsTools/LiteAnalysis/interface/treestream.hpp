@@ -40,7 +40,7 @@
 //          14-Jul-2005 Allow for arrays
 //          13-Aug-2005 Tidy up
 //          11-Aug-2007 Add ls() method as a proxy for print
-//$Revision: 1.2 $
+//$Revision: 1.1.2.1 $
 //----------------------------------------------------------------------------
 #include <vector>
 #include <string>
@@ -345,18 +345,18 @@ class otreestream
   
   /// Create an output stream of trees.
   otreestream(std::string filename, 
-	      std::string treename, 
-	      std::string treetitle,
-	      int complevel=2,
-	      int bufsize=1000);
-
+              std::string treename, 
+              std::string treetitle,
+              int complevel=2,
+              int bufsize=1000);
+  
   /// Create an output stream of trees.
   otreestream(TFile* file,
-	      std::string treename, 
-	      std::string treetitle,
-	      int complevel=2,
-	      int bufsize=1000);
-
+              std::string treename, 
+              std::string treetitle,
+              int complevel=2,
+              int bufsize=1000);
+  
   virtual ~otreestream();
 
   ///
@@ -433,6 +433,9 @@ class otreestream
   void   commit();
 
   ///
+  void   autosave(int nevents=1000);
+
+  ///
   void   close(bool closefile=true);
 
   ///
@@ -470,6 +473,7 @@ class otreestream
   int    _entry;
   int    _idatabuf;
   std::vector<double> _databuf;
+  int    _autosavecount;
 
   SelectedData selecteddata;
 

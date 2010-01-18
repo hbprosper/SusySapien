@@ -1,0 +1,2 @@
+export PYTHON_PROJECTS=$CMSSW_BASE/src/PhysicsTools/LiteAnalysis
+export PYTHONPATH=$PYTHON_PROJECTS/python:$PYTHONPATH
