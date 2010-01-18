@@ -40,7 +40,7 @@
 //          14-Jul-2005 Allow for arrays
 //          13-Aug-2005 Tidy up
 //          11-Aug-2007 Add ls() method as a proxy for print
-//$Revision: 1.1 $
+//$Revision: 1.1.2.1 $
 //----------------------------------------------------------------------------
 #include <vector>
 #include <string>
@@ -472,8 +472,8 @@ class otreestream
   int    _entries;
   int    _entry;
   int    _idatabuf;
-  int    _autosavecount;
   std::vector<double> _databuf;
+  int    _autosavecount;
 
   SelectedData selecteddata;
 

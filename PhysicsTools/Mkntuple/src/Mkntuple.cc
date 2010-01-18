@@ -52,7 +52,7 @@
 // Original Author:  Sezen SEKMEN & Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Jan 17 HBP - add log file
-// $Id: Mkntuple.cc,v 1.1.2.2 2010/01/17 06:47:00 prosper Exp $
+// $Id: Mkntuple.cc,v 1.1.2.3 2010/01/17 23:23:20 prosper Exp $
 //
 //
 // ---------------------------------------------------------------------------
@@ -112,11 +112,19 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   : output(otreestream(iConfig.getUntrackedParameter<string>("ntupleName"), 
                        "Events", 
                        "The time has come the walrus said")),
-    DEBUG(iConfig.getUntrackedParameter<int>("debugLevel")),
     event_(0),
     logfilename_("Mkntuple.log"),
     log_(new std::ofstream(logfilename_.c_str()))
 {
+  try
+    {
+      DEBUG = iConfig.getUntrackedParameter<int>("debugLevel");
+    }
+  catch (...)
+    {
+      DEBUG = 0;
+    }
+
   if ( DEBUG > 0 ) 
     cout << "BEGIN(Mkntuple)" << endl;
 

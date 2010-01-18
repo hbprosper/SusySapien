@@ -172,7 +172,8 @@ M_FILE_OPEN        = 1;  M_CALLBACK[M_FILE_OPEN]  = "self.open()"
 M_FILE_SAVE        = 2;  M_CALLBACK[M_FILE_SAVE]  = "self.save()"
 M_FILE_EXIT        = 6;  M_CALLBACK[M_FILE_EXIT]  = "self.exit()"
 M_EDIT_CLEAR       = 21; M_CALLBACK[M_EDIT_CLEAR] = "self.clear()"
-M_EDIT_UNDO        = 22; M_CALLBACK[M_EDIT_UNDO]  = "self.undo()"
+M_EDIT_SELECT      = 22; M_CALLBACK[M_EDIT_SELECT]= "self.select()"
+M_EDIT_UNDO        = 23; M_CALLBACK[M_EDIT_UNDO]  = "self.undo()"
 M_HELP_ABOUT       = 51; M_CALLBACK[M_HELP_ABOUT] = "self.about()"
 M_HELP_USAGE       = 52; M_CALLBACK[M_HELP_USAGE] = "self.usage()"
 
@@ -192,6 +193,7 @@ K_LISTBOX_HEIGHT   = 450
 
 K_PROG_MAX         = 20.0
 K_MAX_COUNT        = 500
+K_MAX_LINES        = 255
 
 # Help
 
@@ -361,6 +363,8 @@ class Gui:
 
 		self.menuEdit = TGPopupMenu(self.window)
 		self.menuBar.AddPopup("&Edit", self.menuEdit, TOP_LEFT_PADDED)
+		self.menuEdit.AddEntry("&Select All", M_EDIT_SELECT)
+		self.menuEdit.AddSeparator()
 		self.menuEdit.AddEntry("Clear", M_EDIT_CLEAR)
 		self.connection.append(Connection(self.menuEdit, "Activated(Int_t)",
 										  self,          "menu"))
@@ -792,9 +796,6 @@ class Gui:
 			self.methodBox[pageNumber].Select(id, kFALSE)
 			return
 		
-		###D
-		#print " methodBox pageNumber(%d)" % pageNumber
-		
 		# This is the Methods page, so flag method as selected	
 			
 		cid   = self.classBox[pageNumber].GetSelected()
@@ -802,15 +803,8 @@ class Gui:
 		name  = self.methodBox[pageNumber].GetEntry(id).GetText().Data()
 		on    = self.cmap[cname]['methods'][name]
 		self.cmap[cname]['methods'][name] = not on
-
-		###D
-		#print "    class( %s ) method( %s ) %s" % \
-		#	  (cname, name, self.cmap[cname]['methods'][name])
-
 #---------------------------------------------------------------------------
 	def labelListBox(self, id):
-		
-		#print "labelBox %d" % id
 
 		pageNumber = self.noteBook.GetCurrent()
 
@@ -820,14 +814,6 @@ class Gui:
 			self.labelBox[pageNumber].Select(id, kFALSE)
 			return
 
-		# Check that at least one method has been selected
-
-		if self.methodBox[pageNumber].GetSelected() < 0:
-			self.labelBox[pageNumber].Select(id, kFALSE)
-			THelpDialog(self.window,"Warning!",
-						"Either:\n  go boil your head...or\n  "\
-						"select at least one method!", 220, 80)
-			return
 		# This is the Methods page, so flag label as selected
 		
 		cid   = self.classBox[pageNumber].GetSelected()
@@ -836,10 +822,27 @@ class Gui:
 		status= self.cmap[cname]['labels'][name]
 		self.cmap[cname]['labels'][name] = not status
 
-## 		###D
-## 		print "    class( %s ) label( %s ) %s" % \
-## 			  (cname, name, self.cmap[cname]['labels'][name]) 
+#---------------------------------------------------------------------------
+	def select(self):
 
+		# If this is the selected methods page, do nothing
+		
+		pageNumber = self.noteBook.GetCurrent()
+		if pageNumber == P_SELECTED: return
+
+		cid   = self.classBox[pageNumber].GetSelected()
+		if cid < 0: return
+		
+		# Select all methods
+
+		cname = self.classBox[pageNumber].GetEntry(cid).GetText().Data()
+		nentries = len(self.cmap[cname]['methods'])
+
+		for id in xrange(nentries):
+			name = self.methodBox[pageNumber].GetEntry(id).GetText().Data()
+			self.cmap[cname]['methods'][name] = True
+			self.methodBox[pageNumber].Select(id)
+		self.methodBox[pageNumber].Layout()
 #---------------------------------------------------------------------------
 	def open(self):
 		fdialog = TFileDialog(self.window,
@@ -850,11 +853,9 @@ class Gui:
 		filename = fdialog.Filename()
 		self.iniDir  = fdialog.IniDir()
 		self.loadData(filename)
-
 #---------------------------------------------------------------------------
 	def undo(self):
 		self.notdone()
-
 #---------------------------------------------------------------------------
 	def save(self):
 
@@ -874,8 +875,8 @@ class Gui:
 		out.write("import FWCore.ParameterSet.Config as cms\n")
 		out.write("demo =\\\n")
 		out.write('cms.EDAnalyzer("Mkntuple",\n')
-		out.write('%sdebugLevel = cms.untracked.int32(0),\n' % tab)
-		out.write('\n')
+		#out.write('%sdebugLevel = cms.untracked.int32(0),\n' % tab)
+		#out.write('\n')
 		out.write('%sntupleName = cms.untracked.string("ntuple.root"),\n' % \
 				  tab)
 		out.write('%svariables  =\n' % tab)
@@ -884,6 +885,10 @@ class Gui:
 
 		tab = 4*' '
 
+		
+		nlines = 0
+		nmethods = 0
+		
 		###D
 		#print "get selected classes"
 		
@@ -908,7 +913,8 @@ class Gui:
 			buffer = stripname.sub("", cname)
 			methods = []
 			selected = self.cmap[cname]['methods']
-			for name in selected.keys():
+			sortedmethods = self.cmap[cname]['sortedmethods']
+			for name in sortedmethods:
 				if not selected[name]: continue
 				methods.append(name)
 
@@ -932,17 +938,28 @@ class Gui:
 						 (prefix, tab, buffer, label, maxcount)
 				###D
 				#print record
-				out.write(record)
+				out.write(record); nlines += 1
 				out.write('%s#--------------------------------'\
 						  '-------------------------------------\n' % tab)
 
 				# get selected methods
-		
-				for index, method in enumerate(methods):
-					record = '%s"%s",\n' % (tab, method)
-					out.write(record)
-				out.write('%s"/"' % tab)
+				if nlines < K_MAX_LINES-2:
+					for index, method in enumerate(methods):
+						record = '%s"%s",\n' % (tab, method)
+						out.write(record); nlines += 1
+						nmethods += 1
+						
+						if nlines > K_MAX_LINES-2:
+							break
+				out.write('%s"/"' % tab); nlines += 1
 				prefix = ",\n"
+				
+				if nlines > K_MAX_LINES-1:
+					THelpDialog(self.window,
+								"Warning!",
+								"maximum variable count %d reached" % nmethods,
+								320, 40)
+					break
 				
 		out.write("\n%s)\n" % tab)
 		tab = 15*' '
