@@ -9,7 +9,7 @@
 */
 //
 // Original Author:  HBP
-// $Id: pluginfactory.h,v 1.1.2.1 2010/01/17 04:33:49 prosper Exp $
+// $Id: pluginfactory.h,v 1.2.4.2 2010/01/18 02:36:17 prosper Exp $
 //
 //
 
@@ -54,9 +54,25 @@ struct BufferThing
   virtual bool fill(const edm::Event& event)=0;
 
   virtual std::string& message()=0;
+
+  virtual std::string name()=0;
 };
 
 
 // Give this ugly thing a simpler name!
 typedef edmplugin::PluginFactory<BufferThing*(void)> BufferFactory;
+
+typedef std::map<std::string, BufferThing*> BufferMap;
+
+// Base class
+struct MkntuplePlugin
+{
+  virtual ~MkntuplePlugin();
+  virtual void init(otreestream& out)=0;
+  virtual bool fill(otreestream& out, BufferMap& buffermap)=0;
+  virtual void end(otreestream& out)=0;
+};
+
+typedef edmplugin::PluginFactory<MkntuplePlugin*(void)> MkntuplePluginFactory;
+
 #endif

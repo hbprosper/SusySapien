@@ -52,7 +52,7 @@
 // Original Author:  Sezen SEKMEN & Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Jan 17 HBP - add log file
-// $Id: Mkntuple.cc,v 1.1.2.2 2010/01/17 06:47:00 prosper Exp $
+// $Id: Mkntuple.cc,v 1.2.4.3 2010/01/18 02:36:17 prosper Exp $
 //
 //
 // ---------------------------------------------------------------------------
@@ -105,6 +105,7 @@ private:
   int event_;
   std::string logfilename_;
   std::ofstream* log_;
+  MkntuplePlugin* userplugin_;
 };
 
 
@@ -127,6 +128,7 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
 
   if ( DEBUG > 0 ) 
     cout << "BEGIN(Mkntuple)" << endl;
+
 
   // Write to log file
 
@@ -238,8 +240,7 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
                                  "\n\tthat lurks in the mud hatch out\n"
                                  + BLACK);
           // ... and initialize it
-          (buffers.back())->init(output, label, prefix, var, maxcount,
-                                 DEBUG);
+          buffers.back()->init(output, label, prefix, var, maxcount, DEBUG);
           continue;
         }
 
@@ -293,6 +294,35 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
 
   log_->close();
 
+  // --------------------------------------------------------------------------
+  // Create optional user plugin
+  // --------------------------------------------------------------------------
+  string userplugin("");
+  userplugin_ = 0;
+
+  try
+    {
+      userplugin = iConfig.getUntrackedParameter<string>("userPlugin");
+    }
+  catch (...)
+    {}
+
+  if ( userplugin != "" )
+    {
+      try
+        {
+          userplugin_ = MkntuplePluginFactory::get()->create(userplugin);
+          userplugin_->init(output);
+        }
+      catch (...)
+        {
+          throw edm::Exception(edm::errors::Configuration,
+                               "plugin error: "
+                               "unable to load plugin " + 
+                               RED + userplugin + BLACK);
+        }
+    }
+
   if ( DEBUG > 0 ) 
     cout << "END(Mkntuple)" << endl;
 }
@@ -315,11 +345,24 @@ Mkntuple::analyze(const edm::Event& iEvent,
                   const edm::EventSetup& iSetup)
 {
   event_++;
-  cout << "\t\t\t\t" << GREEN << event_ << BLACK << endl;
 
-  string message("");
+  // Call optional user plugin
+  
+  if ( userplugin_ )
+    { 
+      BufferMap buffermap;
+      for(unsigned i=0; i < buffers.size(); i++) 
+        buffermap[buffers[i]->name()] = buffers[i];
+      if ( !userplugin_->fill(output, buffermap) ) return;
+    }
+
+  // Loop over allocated buffers and for each call its fill method
+  
+  string message("");  
   for(unsigned i=0; i < buffers.size(); i++)
     if ( !buffers[i]->fill(iEvent) ) message += buffers[i]->message();
+
+  // Check for error report from buffers
 
   if ( message != "" )
     {
@@ -330,9 +373,10 @@ Mkntuple::analyze(const edm::Event& iEvent,
       *log_ << endl
             << "REPORT " << event_ << "\t" << ct << endl 
             << message << endl
-            << "ENDREPORT" << endl;
+            << "END" << endl;
       log_->close();
     }
+
   output.commit();
 }
 
@@ -347,6 +391,11 @@ Mkntuple::beginJob(const edm::EventSetup&)
 void 
 Mkntuple::endJob() 
 {
+  if ( userplugin_ )
+    { 
+      userplugin_->end(output);
+    }
+
   output.close();
 }
 

@@ -6,11 +6,12 @@
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sat Jan 16 HBP add error handling in fill method
 //                   Sun Jan 17 HBP add even more error handling in fill
+//                   Mon Jan 18 HBP add method to return vector<const X*>
 //
 //         This code used to look simple, but with all the error handling a
 //         silk purse has been turned into a sow's ear!
 //
-// $Id: plugins.cc,v 1.2.2.2 2010/01/17 06:47:00 prosper Exp $
+// $Id: plugins.cc,v 1.4.4.3 2010/01/18 02:36:16 prosper Exp $
 //
 //
 // If using Python, include its header first to avoid annoying compiler
@@ -71,10 +72,10 @@ struct SimpleFunction
       + "::" + expression_;
   }
 
-  double operator()(const T & t) const 
+  double operator()(const T& t) const 
   {
     using namespace ROOT::Reflex;
-    Object o(type_, const_cast<T *>(& t));
+    Object o(type_, const_cast<T*>(&t));
     return expr_->value(o);
   }
   
@@ -169,6 +170,16 @@ struct Buffer  : public BufferThing
     singleton_ = maxcount == 1;
     debug_ = debug;
 
+    if ( var_.size() == 0 ) 
+      {
+        cout << "** Warning! Buffer::init - no variables defined for class " 
+             << boost::python::type_id<X>().name()
+             << endl
+             << "** and getByLabel \"" << label_ << "\""
+             << endl;
+        return;
+      }
+
     // Define variables destined for the output tree
 
     cout << "   n-tuple variables:" << endl;
@@ -252,9 +263,15 @@ struct Buffer  : public BufferThing
                                + BLACK);
 
         // extract datum for each variable
+        
+        objects_.clear();
+
+        const Y object(*handle);
+        
+        objects_.push_back( &(*handle) );
+
         for(unsigned i=0; i < variable_.size(); i++)
           {
-            const Y object((*handle));
             try
               {
                 variable_[i].value[0] = variable_[i].function(object);
@@ -306,11 +323,17 @@ struct Buffer  : public BufferThing
         count_ = (int)handle->size() < maxcount_ ? handle->size() : maxcount_;
 
         // extract datum for each variable
-        for(unsigned i=0; i < variable_.size(); i++)
+
+        objects_.clear();
+
+        for(int j=0; j < count_; j++)
           {
-            for(int j=0; j < count_; j++)
+            const Y object((*handle)[j]);
+
+            objects_.push_back( &((*handle)[j]) );
+
+            for(unsigned i=0; i < variable_.size(); i++)
               {
-                const Y object((*handle)[j]);
                 if ( debug_ > 0 ) 
                   cout << RED +"\t" << j << "\tcall: " + BLACK
                        << variable_[i].function.name() << endl;
@@ -347,6 +370,10 @@ struct Buffer  : public BufferThing
     return message_;
   }
 
+  std::string name() { return boost::python::type_id<X>().name(); }
+
+  std::vector<const X*>& objects() const {return objects_;}
+
 private:
   otreestream* out_;  
   std::string label_;
@@ -360,10 +387,9 @@ private:
   int count_;
   std::string message_;
   std::vector<Variable<Y> > variable_;
+  std::vector<const X*> objects_;
 };
-
 
 // Define all plugins
 
 #include "PhysicsTools/Mkntuple/plugins/plugins.icc"
-
