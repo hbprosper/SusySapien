@@ -52,7 +52,7 @@
 // Original Author:  Sezen SEKMEN & Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Jan 17 HBP - add log file
-// $Id: Mkntuple.cc,v 1.1.2.3 2010/01/17 23:23:20 prosper Exp $
+// $Id: Mkntuple.cc,v 1.2.4.3.2.1 2010/01/19 01:56:05 prosper Exp $
 //
 //
 // ---------------------------------------------------------------------------
@@ -93,8 +93,6 @@ private:
   virtual void analyze(const edm::Event&, const edm::EventSetup&);
   virtual void endJob() ;
 
-  edm::Service<TFileService> fs;
-
   // Object that models the output n-tuple.
   otreestream output;
 
@@ -116,6 +114,8 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
     logfilename_("Mkntuple.log"),
     log_(new std::ofstream(logfilename_.c_str()))
 {
+  cout << GREEN << "BEGIN Mkntuple" << BLACK << endl;
+
   try
     {
       DEBUG = iConfig.getUntrackedParameter<int>("debugLevel");
@@ -125,8 +125,6 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
       DEBUG = 0;
     }
 
-  if ( DEBUG > 0 ) 
-    cout << "BEGIN(Mkntuple)" << endl;
 
   // Write to log file
 
@@ -238,8 +236,7 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
                                  "\n\tthat lurks in the mud hatch out\n"
                                  + BLACK);
           // ... and initialize it
-          (buffers.back())->init(output, label, prefix, var, maxcount,
-                                 DEBUG);
+          buffers.back()->init(output, label, prefix, var, maxcount, DEBUG);
           continue;
         }
 
@@ -293,15 +290,13 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
 
   log_->close();
 
-  if ( DEBUG > 0 ) 
-    cout << "END(Mkntuple)" << endl;
+  cout << "END Mkntuple" << endl;
 }
 
 
 Mkntuple::~Mkntuple()
 {
-  if ( DEBUG > 0 ) 
-    cout << "CLEANUP(Mkntuple)" << endl;
+  if ( DEBUG > 0 ) cout << "CLEANUP(Mkntuple)" << endl;
 }
 
 
@@ -315,11 +310,14 @@ Mkntuple::analyze(const edm::Event& iEvent,
                   const edm::EventSetup& iSetup)
 {
   event_++;
-  cout << "\t\t\t\t" << GREEN << event_ << BLACK << endl;
 
-  string message("");
+  // Loop over allocated buffers and for each call its fill method
+  
+  string message("");  
   for(unsigned i=0; i < buffers.size(); i++)
     if ( !buffers[i]->fill(iEvent) ) message += buffers[i]->message();
+
+  // Check for error report from buffers
 
   if ( message != "" )
     {
@@ -330,9 +328,10 @@ Mkntuple::analyze(const edm::Event& iEvent,
       *log_ << endl
             << "REPORT " << event_ << "\t" << ct << endl 
             << message << endl
-            << "ENDREPORT" << endl;
+            << "END" << endl;
       log_->close();
     }
+
   output.commit();
 }
 

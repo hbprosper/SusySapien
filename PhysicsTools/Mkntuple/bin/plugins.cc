@@ -1,366 +1,248 @@
+// ----------------------------------------------------------------------------
+// Created: Tue Jan 19 21:44:13 2010 by mkplugins.py
+// $Revision: 1.1$
 //
-// Package:    Mkntuple
-//             plugins.cc
-//
-// Original Author:  Harrison B. Prosper
-//         Created:  Tue Dec  8 15:40:26 CET 2009
-//         Updated:  Sat Jan 16 HBP add error handling in fill method
-//                   Sun Jan 17 HBP add even more error handling in fill
-//
-// $Id: plugins.cc,v 1.2.2.2 2010/01/17 06:47:00 prosper Exp $
-//
-//
-// If using Python, include its header first to avoid annoying compiler
-// complaints.
-#include <Python.h>
-#include <boost/python/type_id.hpp>
-#include <iostream>
-#include <sstream>
-#include <cassert>
+// Define all Buffer plugins. Need to use typedefs otherwise the
+// DEFINE macro gets confused by classes with multiple template
+// arguments.
+// ----------------------------------------------------------------------------
+#include "PhysicsTools/Mkntuple/interface/Buffer.h"
 
-#include "FWCore/Framework/interface/Frameworkfwd.h"
-#include "FWCore/Framework/interface/Event.h"
-#include "PhysicsTools/Mkntuple/interface/pluginfactory.h"
-#include "PhysicsTools/Utilities/src/ExpressionPtr.h"
-#include "PhysicsTools/Utilities/src/ExpressionBase.h"
-#include "PhysicsTools/Utilities/interface/expressionParser.h"
+#include "DataFormats/L1GlobalCaloTrigger/interface/L1GctEmCand.h"
+typedef Buffer<L1GctEmCand, L1GctEmCand> L1GctEmCand_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GctEmCand_t, "L1GctEmCand");
 
-using namespace std;
+#include "DataFormats/L1GlobalCaloTrigger/interface/L1GctEtHad.h"
+typedef Buffer<L1GctEtHad, L1GctEtHad> L1GctEtHad_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GctEtHad_t, "L1GctEtHad");
 
-const string BLACK("\x1b[0;30;48m"); // Ctrl[attribute;foreground;backgroundm
-const string RED  ("\x1b[0;31;48m"); // Ctrl[attribute;foreground;backgroundm
-const string GREEN("\x1b[0;32;48m"); // \x1b 0,1,...   30+color   40+color
+#include "DataFormats/L1GlobalCaloTrigger/interface/L1GctEtMiss.h"
+typedef Buffer<L1GctEtMiss, L1GctEtMiss> L1GctEtMiss_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GctEtMiss_t, "L1GctEtMiss");
 
-// ---------------------------------------------------------------------
-// We need a few templates to make the code generic.
-// ---------------------------------------------------------------------
+#include "DataFormats/L1GlobalCaloTrigger/interface/L1GctEtTotal.h"
+typedef Buffer<L1GctEtTotal, L1GctEtTotal> L1GctEtTotal_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GctEtTotal_t, "L1GctEtTotal");
 
-// Model a function that can be instantiated.
-// This class is basically a copy of StringObjectFunction by Luca Lista. 
-// It models functions of the form
-//
-//  <simple-return-type> function(<simple-type>)
-//
-// where <simple-return-type> is a simple type like float and <simple-type> 
-// is typically void.
+#include "DataFormats/L1GlobalCaloTrigger/interface/L1GctFibreWord.h"
+typedef Buffer<L1GctFibreWord, L1GctFibreWord> L1GctFibreWord_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GctFibreWord_t, "L1GctFibreWord");
 
-template <typename T>
-struct SimpleFunction 
-{
-  SimpleFunction() {}
-  
-  SimpleFunction(const std::string& expr)
-    : expression_(expr),
-      type_(ROOT::Reflex::Type::ByTypeInfo(typeid(T))) 
-  {
-    if(!reco::parser::expressionParser<T>(expr, expr_)) 
-      {
-        throw edm::Exception(edm::errors::Configuration,
-                             "Since I'm a cyber ignoramous, "
-                             "I'm too stupid to understand \"" 
-                             + RED + expr + BLACK + "\"\n");
-      }
-  }
-  
-  std::string name() const
-  {
-    return std::string(boost::python::type_id<T>().name()) 
-      + "::" + expression_;
-  }
+#include "DataFormats/L1GlobalCaloTrigger/interface/L1GctHFBitCounts.h"
+typedef Buffer<L1GctHFBitCounts, L1GctHFBitCounts> L1GctHFBitCounts_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GctHFBitCounts_t, "L1GctHFBitCounts");
 
-  double operator()(const T & t) const 
-  {
-    using namespace ROOT::Reflex;
-    Object o(type_, const_cast<T *>(& t));
-    return expr_->value(o);
-  }
-  
-private:
-  std::string expression_;
-  reco::parser::ExpressionPtr expr_;
-  ROOT::Reflex::Type type_;
-};
+#include "DataFormats/L1GlobalCaloTrigger/interface/L1GctHFRingEtSums.h"
+typedef Buffer<L1GctHFRingEtSums, L1GctHFRingEtSums> L1GctHFRingEtSums_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GctHFRingEtSums_t, "L1GctHFRingEtSums");
 
-// Model a variable as a thing with
-// 1. a name
-// 2. a value (a vector of doubles)
-// 3. a function to access data from the associated RECO or PAT object
+#include "DataFormats/L1GlobalCaloTrigger/interface/L1GctInternEmCand.h"
+typedef Buffer<L1GctInternEmCand, L1GctInternEmCand> L1GctInternEmCand_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GctInternEmCand_t, "L1GctInternEmCand");
 
-template <typename X>
-struct Variable 
-{
-  Variable(std::string namen, int count, std::string f) 
-    : name(namen),
-      value(std::vector<double>(count,0)),
-      function(SimpleFunction<X>(f))
-  {}
+#include "DataFormats/L1GlobalCaloTrigger/interface/L1GctInternEtSum.h"
+typedef Buffer<L1GctInternEtSum, L1GctInternEtSum> L1GctInternEtSum_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GctInternEtSum_t, "L1GctInternEtSum");
 
-  std::string name;
-  std::vector<double> value;
-  SimpleFunction<X>   function;
-};
+#include "DataFormats/L1GlobalCaloTrigger/interface/L1GctJetCand.h"
+typedef Buffer<L1GctJetCand, L1GctJetCand> L1GctJetCand_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GctJetCand_t, "L1GctJetCand");
 
-// Model a buffer as a thing with
-// 1. a maximum count
-// 2. a count of the number of values per variable
-// 3. a vector of variables, each with the same maxcount and count
-//
-// The name of the ith n-tuple variable is constructed as follows:
-// name = prefix + "_" + var[i].second
-//
-// where var[i] is a pair of strings with
-// var[i].first the name of the (simple) method to be called
-// var[i].second is the name of the n-tuple variable
-//
-// We use a base class (BufferThing) to permit polymorphic behavior, that is,
-// to allow generic calls to the buffer methods init(...) and fill(...) that
-// operate on objects of differing type.
-//
-// typenames:
-//   X = class of object to be extracted using getByLabel
-//   Y = template value of objects of class Variable<Y>. Y can be the same
-//   as X.
+#include "DataFormats/L1GlobalCaloTrigger/interface/L1GctJetCounts.h"
+typedef Buffer<L1GctJetCounts, L1GctJetCounts> L1GctJetCounts_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GctJetCounts_t, "L1GctJetCounts");
 
-template <typename X, typename Y>
-struct Buffer  : public BufferThing
-{
-  Buffer() 
-    : out_(0),
-      label_(""),
-      label1_(""),
-      label2_(""),
-      prefix_(""),
-      var_(std::vector<VariableDescriptor>()),
-      maxcount_(0),
-      singleton_(false)
-  {
-    std::cout << "Buffer created for objects of type: " 
-              << GREEN  
-              << boost::python::type_id<X>().name() << BLACK 
-              << std::endl;
-  }
+#include "DataFormats/TrajectorySeed/interface/TrajectorySeed.h"
+typedef Buffer<TrajectorySeed, TrajectorySeed> TrajectorySeed_t;
+DEFINE_EDM_PLUGIN(BufferFactory, TrajectorySeed_t, "TrajectorySeed");
 
-  virtual ~Buffer() {}
+#include "DataFormats/Common/interface/TriggerResults.h"
+typedef Buffer<edm::TriggerResults, edm::TriggerResults> edmTriggerResults_t;
+DEFINE_EDM_PLUGIN(BufferFactory, edmTriggerResults_t, "edmTriggerResults");
 
-  void
-  init(otreestream& out,
-       std::string label, 
-       std::string prefix,
-       std::vector<VariableDescriptor>& var,
-       int maxcount,
-       int debug=0)
-  {
-    out_    = &out;
-    label_  = label;
-    label1_ = label;
-    int i = label.find("_");
-    if ( i > 0 )
-      {
-        label1_ = label.substr(0,i);
-        label2_ = label.substr(i+1, label.size()-i-1);
-        label_  = label1_ + ", " + label2_;
-      }
-    prefix_ = prefix;
-    var_    = var;
-    maxcount_ = maxcount;
-    singleton_ = maxcount == 1;
-    debug_ = debug;
+#include "DataFormats/L1Trigger/interface/L1EmParticle.h"
+#include "PhysicsTools/LiteAnalysis/dataformats/adapters/al1extraL1EmParticle.h"
+typedef Buffer<l1extra::L1EmParticle, al1extraL1EmParticle> l1extraL1EmParticle_t;
+DEFINE_EDM_PLUGIN(BufferFactory, l1extraL1EmParticle_t, "l1extraL1EmParticle");
 
-    // Define variables destined for the output tree
+#include "DataFormats/L1Trigger/interface/L1EtMissParticle.h"
+#include "PhysicsTools/LiteAnalysis/dataformats/adapters/al1extraL1EtMissParticle.h"
+typedef Buffer<l1extra::L1EtMissParticle, al1extraL1EtMissParticle> l1extraL1EtMissParticle_t;
+DEFINE_EDM_PLUGIN(BufferFactory, l1extraL1EtMissParticle_t, "l1extraL1EtMissParticle");
 
-    cout << "   n-tuple variables:" << endl;
+#include "DataFormats/L1Trigger/interface/L1JetParticle.h"
+#include "PhysicsTools/LiteAnalysis/dataformats/adapters/al1extraL1JetParticle.h"
+typedef Buffer<l1extra::L1JetParticle, al1extraL1JetParticle> l1extraL1JetParticle_t;
+DEFINE_EDM_PLUGIN(BufferFactory, l1extraL1JetParticle_t, "l1extraL1JetParticle");
 
-    std::string counter("");
-    if ( !singleton_ )
-      {
-        // Add leaf counter to tree
-        counter = "n" + prefix_;        
-        out_->add(counter, count_);
-        cout << "      counter: " << counter << endl;
-      }
+#include "DataFormats/L1Trigger/interface/L1MuonParticle.h"
+typedef Buffer<l1extra::L1MuonParticle, l1extra::L1MuonParticle> l1extraL1MuonParticle_t;
+DEFINE_EDM_PLUGIN(BufferFactory, l1extraL1MuonParticle_t, "l1extraL1MuonParticle");
 
-    for(unsigned i=0; i < var_.size(); i++)
-      {    
-        string method = var_[i].first;
-        string varname= var_[i].second;
-        std::string name = prefix_ + "." + varname;
-        
-        if ( !singleton_ ) name += "[" + counter + "]";
-        
-        variable_.push_back(Variable<Y>(name, 
-                                        maxcount_,
-                                        method));
-        cout << "   " << i << ":\t" << name 
-             << endl
-             << "\t\t" << GREEN << method << BLACK << endl;
-      }
- 
-    // Add variables to output tree. This must be done after all
-    // variables have been defined, because it is only then that their
-    // addresses are guaranteed to be stable.
+#include "DataFormats/PatCandidates/interface/Electron.h"
+#include "PhysicsTools/LiteAnalysis/dataformats/adapters/apatElectron.h"
+typedef Buffer<pat::Electron, apatElectron> patElectron_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patElectron_t, "patElectron");
 
-    for(unsigned i=0; i < var_.size(); i++)
-      out_->add(variable_[i].name, variable_[i].value);
-  }
-  
-  // -----------------------------------------------------
-  // fill output tree
-  // -----------------------------------------------------
-  bool fill(const edm::Event& event)
-  {
-    if ( debug_ > 0 ) std::cout << RED + "Begin Buffer::fill " + BLACK + 
-                        "objects of type: " 
-                                << RED 
-                                << boost::python::type_id<X>().name() << BLACK 
-                                << std::endl;
+#include "DataFormats/PatCandidates/interface/Jet.h"
+#include "PhysicsTools/LiteAnalysis/dataformats/adapters/apatJet.h"
+typedef Buffer<pat::Jet, apatJet> patJet_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patJet_t, "patJet");
 
-    count_ = 0; // reset count, just in case we have to bail out
-    message_ = "";
+#include "DataFormats/PatCandidates/interface/MET.h"
+#include "PhysicsTools/LiteAnalysis/dataformats/adapters/apatMET.h"
+typedef Buffer<pat::MET, apatMET> patMET_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patMET_t, "patMET");
 
-    if ( singleton_ )
-      {
-        edm::Handle<X> handle;
-        try
-          {
-            if ( label2_ == "" )
-              event.getByLabel(label1_, handle);
-            else
-              event.getByLabel(label1_, label2_, handle);
-          }
-        catch (cms::Exception& e)
-          {
-            ostringstream out;
-            out << "getByLabel with label \"" << label_ << "\" failed on " 
-                << boost::python::type_id<X>().name() << endl  
-                << e.explainSelf(); 
-            cout << out.str() << endl;
-            message_ += out.str();
-            return false;
-          }
+#include "DataFormats/PatCandidates/interface/Muon.h"
+#include "PhysicsTools/LiteAnalysis/dataformats/adapters/apatMuon.h"
+typedef Buffer<pat::Muon, apatMuon> patMuon_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patMuon_t, "patMuon");
 
-        if ( !handle.isValid() )
-          throw edm::Exception(edm::errors::Configuration,
-                               "\n" + RED + "singleton " + BLACK + 
-                               "Buffer - "
-                               "getByLabel failed on label \"" + 
-                               label_ + "\"\n" + RED +
-                               "\tmay I humbly suggest you "
-                               "go boil your head!\n"
-                               + BLACK);
+#include "DataFormats/PatCandidates/interface/Photon.h"
+#include "PhysicsTools/LiteAnalysis/dataformats/adapters/apatPhoton.h"
+typedef Buffer<pat::Photon, apatPhoton> patPhoton_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patPhoton_t, "patPhoton");
 
-        // extract datum for each variable
-        for(unsigned i=0; i < variable_.size(); i++)
-          {
-            const Y object((*handle));
-            try
-              {
-                variable_[i].value[0] = variable_[i].function(object);
-              }
-            catch (cms::Exception& e)
-              {
-                throw cms::Exception("\nBufferFillFailure",
-                                     "failed on call to \"" + 
-                                     RED + 
-                                     variable_[i].function.name() + "\"\n" +
-                                     GREEN +
-                                     "thou lump of foul deformity..." 
-                                     + BLACK, e);
-              }
-          }
-      }
-    else
-      {
-        edm::Handle< edm::View<X> > handle;
-        try 
-          {
-            if ( label2_ == "" )
-              event.getByLabel(label1_, handle);
-            else
-              event.getByLabel(label1_, label2_, handle);
-          }
-        catch (cms::Exception& e)
-          {
-            ostringstream out;
-            out << "getByLabel with label \"" << label_ << "\" failed on " 
-                << boost::python::type_id<X>().name() << endl  
-                << e.explainSelf(); 
-            cout << out.str() << endl;
-            message_ += out.str();
-            return false;
-          }
+#include "DataFormats/PatCandidates/interface/Tau.h"
+#include "PhysicsTools/LiteAnalysis/dataformats/adapters/apatTau.h"
+typedef Buffer<pat::Tau, apatTau> patTau_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patTau_t, "patTau");
 
-        if ( !handle.isValid() )
-          throw edm::Exception(edm::errors::Configuration,
-                               "\nBuffer - " + 
-                               RED +
-                               "getByLabel failed on label \"" + 
-                               BLACK +
-                               label_ + "\"\n" + RED +
-                               "you're a waste of space..." + 
-                               BLACK);
+#include "DataFormats/EgammaReco/interface/BasicCluster.h"
+typedef Buffer<reco::BasicCluster, reco::BasicCluster> recoBasicCluster_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoBasicCluster_t, "recoBasicCluster");
 
-        // update data count. Use the smaller of count and maxcount.
-        count_ = (int)handle->size() < maxcount_ ? handle->size() : maxcount_;
+#include "DataFormats/BeamSpot/interface/BeamSpot.h"
+typedef Buffer<reco::BeamSpot, reco::BeamSpot> recoBeamSpot_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoBeamSpot_t, "recoBeamSpot");
 
-        // extract datum for each variable
-        for(unsigned i=0; i < variable_.size(); i++)
-          {
-            for(int j=0; j < count_; j++)
-              {
-                const Y object((*handle)[j]);
-                if ( debug_ > 0 ) 
-                  cout << RED +"\t" << j << "\tcall: " + BLACK
-                       << variable_[i].function.name() << endl;
-                try
-                  {
-                    variable_[i].value[j] = variable_[i].function(object);
-                  }
-                catch (cms::Exception& e)
-                  {
-                    throw cms::Exception("BufferFillFailure",
-                                         "failed on call to \"" + 
-                                         RED + 
-                                         variable_[i].function.name()+"\"\n" +
-                                         GREEN +
-                                         "thou lump of foul deformity..." 
-                                         + BLACK, e);
-                  }
-              } 
-          }
-      }
+#include "DataFormats/JetReco/interface/CaloJet.h"
+typedef Buffer<reco::CaloJet, reco::CaloJet> recoCaloJet_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCaloJet_t, "recoCaloJet");
 
-    if ( debug_ > 0 ) std::cout << RED + "End Buffer::fill " + BLACK + 
-                        "objects of type: " 
-                                << RED  
-                                << boost::python::type_id<X>().name() 
-                                << BLACK 
-                                << std::endl;
+#include "DataFormats/METReco/interface/CaloMET.h"
+typedef Buffer<reco::CaloMET, reco::CaloMET> recoCaloMET_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCaloMET_t, "recoCaloMET");
 
-    return true;
-  }
-  
-  std::string& message()
-  {
-    return message_;
-  }
+#include "DataFormats/MuonReco/interface/CaloMuon.h"
+typedef Buffer<reco::CaloMuon, reco::CaloMuon> recoCaloMuon_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCaloMuon_t, "recoCaloMuon");
 
-private:
-  otreestream* out_;  
-  std::string label_;
-  std::string label1_;
-  std::string label2_;
-  std::string prefix_;
-  std::vector<VariableDescriptor> var_;
-  int maxcount_;
-  bool singleton_;
-  int debug_;
-  int count_;
-  std::string message_;
-  std::vector<Variable<Y> > variable_;
-};
+#include "DataFormats/TauReco/interface/CaloTau.h"
+typedef Buffer<reco::CaloTau, reco::CaloTau> recoCaloTau_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCaloTau_t, "recoCaloTau");
 
+#include "DataFormats/TauReco/interface/CaloTauTagInfo.h"
+typedef Buffer<reco::CaloTauTagInfo, reco::CaloTauTagInfo> recoCaloTauTagInfo_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCaloTauTagInfo_t, "recoCaloTauTagInfo");
 
-// Define all plugins
+#include "DataFormats/EgammaCandidates/interface/Conversion.h"
+#include "PhysicsTools/LiteAnalysis/dataformats/adapters/arecoConversion.h"
+typedef Buffer<reco::Conversion, arecoConversion> recoConversion_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoConversion_t, "recoConversion");
 
-#include "PhysicsTools/Mkntuple/plugins/plugins.icc"
+#include "DataFormats/EgammaCandidates/interface/Electron.h"
+typedef Buffer<reco::Electron, reco::Electron> recoElectron_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoElectron_t, "recoElectron");
 
+#include "DataFormats/EgammaReco/interface/ElectronPixelSeed.h"
+typedef Buffer<reco::ElectronPixelSeed, reco::ElectronPixelSeed> recoElectronPixelSeed_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoElectronPixelSeed_t, "recoElectronPixelSeed");
+
+#include "DataFormats/JetReco/interface/GenJet.h"
+typedef Buffer<reco::GenJet, reco::GenJet> recoGenJet_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoGenJet_t, "recoGenJet");
+
+#include "DataFormats/METReco/interface/GenMET.h"
+typedef Buffer<reco::GenMET, reco::GenMET> recoGenMET_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoGenMET_t, "recoGenMET");
+
+#include "DataFormats/HepMCCandidate/interface/GenParticle.h"
+typedef Buffer<reco::GenParticle, reco::GenParticle> recoGenParticle_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoGenParticle_t, "recoGenParticle");
+
+#include "DataFormats/EgammaCandidates/interface/GsfElectron.h"
+typedef Buffer<reco::GsfElectron, reco::GsfElectron> recoGsfElectron_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoGsfElectron_t, "recoGsfElectron");
+
+#include "DataFormats/GsfTrackReco/interface/GsfTrack.h"
+typedef Buffer<reco::GsfTrack, reco::GsfTrack> recoGsfTrack_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoGsfTrack_t, "recoGsfTrack");
+
+#include "DataFormats/METReco/interface/MET.h"
+typedef Buffer<reco::MET, reco::MET> recoMET_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoMET_t, "recoMET");
+
+#include "DataFormats/MuonReco/interface/Muon.h"
+typedef Buffer<reco::Muon, reco::Muon> recoMuon_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoMuon_t, "recoMuon");
+
+#include "DataFormats/ParticleFlowReco/interface/PFBlock.h"
+typedef Buffer<reco::PFBlock, reco::PFBlock> recoPFBlock_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFBlock_t, "recoPFBlock");
+
+#include "DataFormats/ParticleFlowCandidate/interface/PFCandidate.h"
+typedef Buffer<reco::PFCandidate, reco::PFCandidate> recoPFCandidate_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFCandidate_t, "recoPFCandidate");
+
+#include "DataFormats/ParticleFlowReco/interface/PFCluster.h"
+typedef Buffer<reco::PFCluster, reco::PFCluster> recoPFCluster_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFCluster_t, "recoPFCluster");
+
+#include "DataFormats/JetReco/interface/PFJet.h"
+typedef Buffer<reco::PFJet, reco::PFJet> recoPFJet_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFJet_t, "recoPFJet");
+
+#include "DataFormats/METReco/interface/PFMET.h"
+typedef Buffer<reco::PFMET, reco::PFMET> recoPFMET_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFMET_t, "recoPFMET");
+
+#include "DataFormats/TauReco/interface/PFTau.h"
+typedef Buffer<reco::PFTau, reco::PFTau> recoPFTau_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFTau_t, "recoPFTau");
+
+#include "DataFormats/TauReco/interface/PFTauTagInfo.h"
+typedef Buffer<reco::PFTauTagInfo, reco::PFTauTagInfo> recoPFTauTagInfo_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFTauTagInfo_t, "recoPFTauTagInfo");
+
+#include "DataFormats/EgammaCandidates/interface/Photon.h"
+#include "PhysicsTools/LiteAnalysis/dataformats/adapters/arecoPhoton.h"
+typedef Buffer<reco::Photon, arecoPhoton> recoPhoton_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPhoton_t, "recoPhoton");
+
+#include "DataFormats/EgammaCandidates/interface/PhotonID.h"
+typedef Buffer<reco::PhotonID, reco::PhotonID> recoPhotonID_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPhotonID_t, "recoPhotonID");
+
+#include "DataFormats/EgammaReco/interface/PreshowerCluster.h"
+typedef Buffer<reco::PreshowerCluster, reco::PreshowerCluster> recoPreshowerCluster_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPreshowerCluster_t, "recoPreshowerCluster");
+
+#include "DataFormats/EgammaReco/interface/PreshowerClusterShape.h"
+typedef Buffer<reco::PreshowerClusterShape, reco::PreshowerClusterShape> recoPreshowerClusterShape_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPreshowerClusterShape_t, "recoPreshowerClusterShape");
+
+#include "DataFormats/BTauReco/interface/SecondaryVertexTagInfo.h"
+typedef Buffer<reco::SecondaryVertexTagInfo, reco::SecondaryVertexTagInfo> recoSecondaryVertexTagInfo_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoSecondaryVertexTagInfo_t, "recoSecondaryVertexTagInfo");
+
+#include "DataFormats/BTauReco/interface/SoftLeptonTagInfo.h"
+typedef Buffer<reco::SoftLeptonTagInfo, reco::SoftLeptonTagInfo> recoSoftLeptonTagInfo_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoSoftLeptonTagInfo_t, "recoSoftLeptonTagInfo");
+
+#include "DataFormats/EgammaReco/interface/SuperCluster.h"
+typedef Buffer<reco::SuperCluster, reco::SuperCluster> recoSuperCluster_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoSuperCluster_t, "recoSuperCluster");
+
+#include "DataFormats/TrackReco/interface/Track.h"
+typedef Buffer<reco::Track, reco::Track> recoTrack_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoTrack_t, "recoTrack");
+
+#include "DataFormats/BTauReco/interface/TrackIPTagInfo.h"
+typedef Buffer<reco::TrackIPTagInfo, reco::TrackIPTagInfo> recoTrackIPTagInfo_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoTrackIPTagInfo_t, "recoTrackIPTagInfo");
+
+#include "DataFormats/VertexReco/interface/Vertex.h"
+typedef Buffer<reco::Vertex, reco::Vertex> recoVertex_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoVertex_t, "recoVertex");

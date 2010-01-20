@@ -1,0 +1,18 @@
+HBP
+
+Do
+
+	1.source $CMSSW_BASE/src/PhysicsTools/LiteAnalysis/setup.sh
+
+	2. cd bin
+
+	3. mkclasslist.py <root-file1> [root-file2] ...
+
+				to create 	adapters.txt, 
+							headers.txt and 
+							objects.txt
+
+	4. mkplugins.py
+
+				to create 	buffers.txt and 
+							plugins.cc

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #------------------------------------------------------------------------------
-# create plugins.icc
+# create plugins.cc
 # Created: 05-Jan-2010 Harrison B. Prosper
 #------------------------------------------------------------------------------
 import os, sys, re
@@ -34,8 +34,8 @@ def exclass(x):
 #------------------------------------------------------------------------------
 # Make sure we are in the plugins directory
 localdir = split(os.environ["PWD"],"/").pop()
-if localdir != "plugins":
-	print "\t** mkplugins.icc.py should be run from the plugins directory!"
+if localdir != "bin":
+	print "\t** mkplugins.py should be run from the bin directory!"
 	sys.exit(0)
 	
 if not os.path.exists("adapters.txt") or \
@@ -72,15 +72,16 @@ headers  = open("headers.txt").read()
 
 names = {'time': ctime(time())}
 
-out  = open("plugins.icc","w")
-record = '''// --------------------------------------------------------------------------
-// Created: %(time)s by mkplugins.icc.py
-// $Revision: $
+out  = open("plugins.cc","w")
+record = '''// ----------------------------------------------------------------------------
+// Created: %(time)s by mkplugins.py
+// $Revision: 1.1$
 //
 // Define all Buffer plugins. Need to use typedefs otherwise the
 // DEFINE macro gets confused by classes with multiple template
 // arguments.
-// --------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+#include "PhysicsTools/Mkntuple/interface/Buffer.h"
 '''
 out.write(record % names)
 
