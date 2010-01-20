@@ -1,3 +1,4 @@
+#$Revision:$
 import FWCore.ParameterSet.Config as cms
 
 process = cms.Process("Demo")
@@ -8,7 +9,7 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 
 process.source = cms.Source("PoolSource",
 							fileNames =
-							cms.untracked.vstring("file:pat.root"
+							cms.untracked.vstring("file:minbiasdata.root"
 												  )
 							)
 process.load("PhysicsTools.Mkntuple.mkntuple_cfi")

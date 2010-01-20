@@ -8,7 +8,7 @@
 //              class:   reco::Photon
 //              header:  DataFormats/EgammaCandidates/interface/Photon.h
 //              
-// Created:     Thu Jan 14 23:47:55 2010 by mkadapter.py  HBP
+// Created:     Fri Jan 15 21:58:01 2010 by mkadapter.py  HBP
 //-----------------------------------------------------------------------------
 #include "DataFormats/EgammaCandidates/interface/Photon.h"
 //-----------------------------------------------------------------------------
@@ -28,6 +28,7 @@ class arecoPhoton : public reco::Photon
   double superCluster_phiWidth() const 	{return superCluster().isNonnull() ? superCluster()->phiWidth() : -999999;}
   double superCluster_preshowerEnergy() const 	{return superCluster().isNonnull() ? superCluster()->preshowerEnergy() : -999999;}
   double superCluster_rawEnergy() const 	{return superCluster().isNonnull() ? superCluster()->rawEnergy() : -999999;}
+  size_t superCluster_size() const 	{return superCluster().isNonnull() ? superCluster()->size() : 999999;}
   double superCluster_x() const 	{return superCluster().isNonnull() ? superCluster()->x() : -999999;}
   double superCluster_y() const 	{return superCluster().isNonnull() ? superCluster()->y() : -999999;}
   double superCluster_z() const 	{return superCluster().isNonnull() ? superCluster()->z() : -999999;}

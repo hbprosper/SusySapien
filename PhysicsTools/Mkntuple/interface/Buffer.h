@@ -12,7 +12,7 @@
 //         This code used to look simple, but with all the error handling a
 //         silk purse has been turned into a sow's ear!
 //
-// $Id: Buffer.h,v 1.1.2.1 2010/01/20 03:11:50 prosper Exp $
+// $Id: Buffer.h,v 1.2 2010/01/20 04:57:22 prosper Exp $
 //
 //
 // If using Python, include its header first to avoid annoying compiler
@@ -28,9 +28,9 @@
 #include "FWCore/Framework/interface/Event.h"
 #include "PhysicsTools/Mkntuple/interface/pluginfactory.h"
 #include "PhysicsTools/LiteAnalysis/interface/treestream.hpp"
-#include "PhysicsTools/Utilities/src/ExpressionPtr.h"
-#include "PhysicsTools/Utilities/src/ExpressionBase.h"
-#include "PhysicsTools/Utilities/interface/expressionParser.h"
+#include "CommonTools/Utils/src/ExpressionPtr.h"
+#include "CommonTools/Utils/src/ExpressionBase.h"
+#include "CommonTools/Utils/interface/expressionParser.h"
 
 // Ctrl[attribute;foreground;backgroundm
 // \x1b 0,1,...   30+color   40+color

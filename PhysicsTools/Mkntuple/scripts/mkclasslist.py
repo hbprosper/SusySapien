@@ -2,13 +2,14 @@
 #------------------------------------------------------------------------------
 # create classes.txt, adapters.txt, headers.txt
 # Created: 05-Jan-2010 Harrison B. Prosper
+#$Revision:$
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
 #------------------------------------------------------------------------------
 cwd = os.path.basename(os.environ['PWD'])
-if cwd != "plugins":
-	print "\t** must be run from plugins directory"
+if cwd != "bin":
+	print "\t** must be run from bin directory"
 	sys.exit(0)
 	
 # Extract branches ending in

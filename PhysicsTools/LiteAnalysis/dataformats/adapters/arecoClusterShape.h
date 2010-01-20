@@ -8,7 +8,7 @@
 //              class:   reco::ClusterShape
 //              header:  DataFormats/EgammaReco/interface/ClusterShape.h
 //              
-// Created:     Thu Jan 14 23:47:56 2010 by mkadapter.py  HBP
+// Created:     Fri Jan 15 21:58:01 2010 by mkadapter.py  HBP
 //-----------------------------------------------------------------------------
 #include "DataFormats/EgammaReco/interface/ClusterShape.h"
 //-----------------------------------------------------------------------------

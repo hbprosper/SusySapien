@@ -8,7 +8,7 @@
 //              class:   reco::Conversion
 //              header:  DataFormats/EgammaCandidates/interface/Conversion.h
 //              
-// Created:     Thu Jan 14 23:47:54 2010 by mkadapter.py  HBP
+// Created:     Fri Jan 15 21:57:57 2010 by mkadapter.py  HBP
 //-----------------------------------------------------------------------------
 #include "DataFormats/EgammaCandidates/interface/Conversion.h"
 //-----------------------------------------------------------------------------

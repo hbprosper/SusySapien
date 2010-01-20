@@ -1,30 +1,51 @@
-   0 L1GlobalTriggerObjectMapRecord
+   0 FEDRawDataCollection
+	source
+
+   1 HcalNoiseSummary
+	hcalnoise
+
+   2 L1GlobalTriggerObjectMapRecord
 	hltL1GtObjectMap
 
-   1 L1GlobalTriggerReadoutRecord
+   3 L1GlobalTriggerReadoutRecord
 	gtDigis
 	hltGtDigis
 
-   2 L1MuGMTReadoutCollection
+   4 L1MuGMTReadoutCollection
 	gtDigis
 	hltGtDigis
 
-   3 MuonDigiCollection<DTLayerId,DTDigiSimLink> 
+   5 MuonDigiCollection<DTLayerId,DTDigiSimLink> 
 	simMuonDTDigis
 
-   4 double
+   6 double
 	genEventScale
 	genEventWeight
 
-   5 edm::AssociationMap<edm::OneToOne<vector<reco::Photon>,vector<reco::PhotonID>,unsigned int> > 
+   7 edm::AssociationMap<edm::OneToOne<vector<Trajectory>,vector<reco::Track>,unsigned short> > 
+	ctfPixelLess
+
+   8 edm::AssociationMap<edm::OneToOne<vector<reco::CaloCluster>,vector<reco::ClusterShape>,unsigned int> > 
+	hybridSuperClusters_hybridShapeAssoc
+	multi5x5BasicClusters_multi5x5BarrelShapeAssoc
+	multi5x5BasicClusters_multi5x5EndcapShapeAssoc
+
+   9 edm::AssociationMap<edm::OneToOne<vector<reco::Photon>,vector<reco::PhotonID>,unsigned int> > 
 	PhotonIDProd_PhotonAssociatedID
 
-   6 edm::AssociationMap<edm::OneToOne<vector<reco::Track>,vector<reco::Track>,unsigned int> > 
+  10 edm::AssociationMap<edm::OneToOne<vector<reco::SuperCluster>,vector<reco::HFEMClusterShape>,unsigned int> > 
+	hfEMClusters
+
+  11 edm::AssociationMap<edm::OneToOne<vector<reco::Track>,vector<reco::Track>,unsigned int> > 
 	tevMuons_default
 	tevMuons_firstHit
 	tevMuons_picky
 
-   7 edm::AssociationVector<edm::RefToBaseProd<reco::Jet>,vector<edm::RefVector<vector<reco::Track>,reco::Track,edm::refhelper::FindUsingAdvance<vector<reco::Track>,reco::Track> > >,edm::RefToBase<reco::Jet>,unsigned int,edm::helper::AssociationIdenticalKeyReference> 
+  12 edm::AssociationVector<edm::RefToBaseProd<reco::Jet>,vector<edm::RefVector<vector<reco::Track>,reco::Track,edm::refhelper::FindUsingAdvance<vector<reco::Track>,reco::Track> > >,edm::RefToBase<reco::Jet>,unsigned int,edm::helper::AssociationIdenticalKeyReference> 
+	ak5JetTracksAssociatorAtCaloFace
+	ak5JetTracksAssociatorAtVertex
+	ak7JetTracksAssociatorAtCaloFace
+	ak7JetTracksAssociatorAtVertex
 	ic5JetTracksAssociatorAtVertex
 	ic5PFJetTracksAssociatorAtVertex
 	iterativeCone5JetTracksAssociatorAtCaloFace
@@ -34,7 +55,7 @@
 	sisCone5JetTracksAssociatorAtCaloFace
 	sisCone5JetTracksAssociatorAtVertex
 
-   8 edm::AssociationVector<edm::RefToBaseProd<reco::Jet>,vector<float>,edm::RefToBase<reco::Jet>,unsigned int,edm::helper::AssociationIdenticalKeyReference> 
+  13 edm::AssociationVector<edm::RefToBaseProd<reco::Jet>,vector<float>,edm::RefToBase<reco::Jet>,unsigned int,edm::helper::AssociationIdenticalKeyReference> 
 	combinedSecondaryVertexBJetTags
 	combinedSecondaryVertexMVABJetTags
 	impactParameterMVABJetTags
@@ -42,33 +63,44 @@
 	jetProbabilityBJetTags
 	simpleSecondaryVertexBJetTags
 	softElectronBJetTags
+	softElectronByIP3dBJetTags
+	softElectronByPtBJetTags
 	softMuonBJetTags
+	softMuonByIP3dBJetTags
+	softMuonByPtBJetTags
 	softMuonNoIPBJetTags
 	trackCountingHighEffBJetTags
 	trackCountingHighPurBJetTags
 
-   9 edm::AssociationVector<edm::RefToBaseProd<reco::Jet>,vector<reco::JetExtendedAssociation::JetExtendedData>,edm::RefToBase<reco::Jet>,unsigned int,edm::helper::AssociationIdenticalKeyReference> 
+  14 edm::AssociationVector<edm::RefToBaseProd<reco::Jet>,vector<reco::JetExtendedAssociation::JetExtendedData>,edm::RefToBase<reco::Jet>,unsigned int,edm::helper::AssociationIdenticalKeyReference> 
+	ak5JetExtender
+	ak7JetExtender
 	iterativeCone5JetExtender
 	kt4JetExtender
 	sisCone5JetExtender
 
-  10 edm::DetSetVector<RPCDigiSimLink> 
+  15 edm::DetSetVector<RPCDigiSimLink> 
 	simMuonRPCDigis_RPCDigiSimLink
 
-  11 edm::DetSetVector<StripDigiSimLink> 
+  16 edm::DetSetVector<StripDigiSimLink> 
 	simMuonCSCDigis_MuonCSCStripDigiSimLinks
 	simMuonCSCDigis_MuonCSCWireDigiSimLinks
 
-  12 edm::EDCollection<DetId> 
+  17 edm::EDCollection<DetId> 
 	caloRecoTauTagInfoProducer
+	siStripDigis
 
-  13 edm::HepMCProduct
+  18 edm::HepMCProduct
 	source
 
-  14 edm::OwnVector<TrackingRecHit,edm::ClonePolicy<TrackingRecHit> > 
+  19 edm::OwnVector<TrackingRecHit,edm::ClonePolicy<TrackingRecHit> > 
 	ckfInOutTracksFromConversions
 	ckfOutInTracksFromConversions
+	cosmicMuons
+	ctfPixelLess
+	electronGsfTracks
 	generalTracks
+	globalCosmicMuons
 	globalMuons
 	gsfPFtracks
 	pixelMatchGsfFit
@@ -78,45 +110,70 @@
 	tevMuons_firstHit
 	tevMuons_picky
 
-  15 edm::RangeMap<CSCDetId,edm::OwnVector<CSCRecHit2D,edm::ClonePolicy<CSCRecHit2D> >,edm::ClonePolicy<CSCRecHit2D> > 
+  20 edm::RangeMap<CSCDetId,edm::OwnVector<CSCRecHit2D,edm::ClonePolicy<CSCRecHit2D> >,edm::ClonePolicy<CSCRecHit2D> > 
 	csc2DRecHits
 
-  16 edm::RangeMap<CSCDetId,edm::OwnVector<CSCSegment,edm::ClonePolicy<CSCSegment> >,edm::ClonePolicy<CSCSegment> > 
+  21 edm::RangeMap<CSCDetId,edm::OwnVector<CSCSegment,edm::ClonePolicy<CSCSegment> >,edm::ClonePolicy<CSCSegment> > 
 	cscSegments
 
-  17 edm::RangeMap<DTChamberId,edm::OwnVector<DTRecSegment4D,edm::ClonePolicy<DTRecSegment4D> >,edm::ClonePolicy<DTRecSegment4D> > 
+  22 edm::RangeMap<DTChamberId,edm::OwnVector<DTRecSegment4D,edm::ClonePolicy<DTRecSegment4D> >,edm::ClonePolicy<DTRecSegment4D> > 
 	dt4DSegments
 
-  18 edm::RangeMap<DTLayerId,edm::OwnVector<DTRecHit1DPair,edm::ClonePolicy<DTRecHit1DPair> >,edm::ClonePolicy<DTRecHit1DPair> > 
+  23 edm::RangeMap<DTLayerId,edm::OwnVector<DTRecHit1DPair,edm::ClonePolicy<DTRecHit1DPair> >,edm::ClonePolicy<DTRecHit1DPair> > 
 	dt1DRecHits
 
-  19 edm::RangeMap<RPCDetId,edm::OwnVector<RPCRecHit,edm::ClonePolicy<RPCRecHit> >,edm::ClonePolicy<RPCRecHit> > 
+  24 edm::RangeMap<RPCDetId,edm::OwnVector<RPCRecHit,edm::ClonePolicy<RPCRecHit> >,edm::ClonePolicy<RPCRecHit> > 
 	rpcRecHits
 
-  20 edm::SortedCollection<CaloTower,edm::StrictWeakOrdering<CaloTower> > 
+  25 edm::SortedCollection<CaloTower,edm::StrictWeakOrdering<CaloTower> > 
 	towerMaker
 
-  21 edm::SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit> > 
+  26 edm::SortedCollection<EBSrFlag,edm::StrictWeakOrdering<EBSrFlag> > 
+	ecalDigis
+
+  27 edm::SortedCollection<EESrFlag,edm::StrictWeakOrdering<EESrFlag> > 
+	ecalDigis
+
+  28 edm::SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit> > 
 	ecalPreshowerRecHit_EcalRecHitsES
 	ecalRecHit_EcalRecHitsEB
 	ecalRecHit_EcalRecHitsEE
 	reducedEcalRecHitsEB
 	reducedEcalRecHitsEE
 
-  22 edm::SortedCollection<HBHERecHit,edm::StrictWeakOrdering<HBHERecHit> > 
+  29 edm::SortedCollection<HBHERecHit,edm::StrictWeakOrdering<HBHERecHit> > 
 	hbhereco
 
-  23 edm::SortedCollection<HFRecHit,edm::StrictWeakOrdering<HFRecHit> > 
+  30 edm::SortedCollection<HFRecHit,edm::StrictWeakOrdering<HFRecHit> > 
 	hfreco
 
-  24 edm::SortedCollection<HORecHit,edm::StrictWeakOrdering<HORecHit> > 
+  31 edm::SortedCollection<HORecHit,edm::StrictWeakOrdering<HORecHit> > 
 	horeco
 
-  25 edm::TriggerResults
+  32 edm::TriggerResults
+	TriggerResults
 	TriggerResults
 	TriggerResults
 
-  26 edm::ValueMap<double> 
+  33 edm::ValueMap<bool> 
+	PhotonIDProd_PhotonCutBasedIDLoose
+	PhotonIDProd_PhotonCutBasedIDTight
+	muidAllArbitrated
+	muidGMStaChiCompatibility
+	muidGMTkChiCompatibility
+	muidGMTkKinkTight
+	muidGlobalMuonPromptTight
+	muidTM2DCompatibilityLoose
+	muidTM2DCompatibilityTight
+	muidTMLastStationLoose
+	muidTMLastStationOptimizedLowPtLoose
+	muidTMLastStationOptimizedLowPtTight
+	muidTMLastStationTight
+	muidTMOneStationLoose
+	muidTMOneStationTight
+	muidTrackerMuonArbitrated
+
+  34 edm::ValueMap<double> 
 	eleIsoFromDepsEcalFromHits
 	eleIsoFromDepsHcalFromHits
 	eleIsoFromDepsTk
@@ -124,13 +181,23 @@
 	gamIsoFromDepsHcalFromHits
 	gamIsoFromDepsTk
 
-  27 edm::ValueMap<float> 
+  35 edm::ValueMap<edm::Ref<vector<reco::SuperCluster>,reco::SuperCluster,edm::refhelper::FindUsingAdvance<vector<reco::SuperCluster>,reco::SuperCluster> > > 
+	pfElectronTranslator_pf
+
+  36 edm::ValueMap<float> 
 	eidLoose
+	eidRobustHighEnergy
 	eidRobustLoose
 	eidRobustTight
 	eidTight
+	pfElectronTranslator_pf
 
-  28 edm::ValueMap<reco::IsoDeposit> 
+  37 edm::ValueMap<reco::DeDxData> 
+	dedxHarmonic2
+	dedxMedian
+	dedxTruncated40
+
+  38 edm::ValueMap<reco::IsoDeposit> 
 	eleIsoDepositEcalFromHits
 	eleIsoDepositHcalFromHits
 	eleIsoDepositTk
@@ -143,25 +210,65 @@
 	muIsoDepositJets
 	muIsoDepositTk
 
-  29 edmNew::DetSetVector<SiPixelCluster> 
+  39 edm::ValueMap<reco::JetID> 
+	ak5JetID
+	ak7JetID
+	ic5JetID
+	kt4JetID
+	kt6JetID
+	sc5JetID
+	sc7JetID
+
+  40 edm::ValueMap<reco::MuonMETCorrectionData> 
+	muonMETValueMapProducer_muCorrData
+	muonTCMETValueMapProducer_muCorrData
+
+  41 edm::ValueMap<reco::MuonTimeExtra> 
+	muons_combined
+	muons_csc
+	muons_dt
+
+  42 edmNew::DetSetVector<SiPixelCluster> 
 	siPixelClusters
 
-  30 edmNew::DetSetVector<SiStripCluster> 
+  43 edmNew::DetSetVector<SiStripCluster> 
 	siStripClusters
 
-  31 int
+  44 int
 	genEventProcID
 
-  32 reco::BeamSpot
+  45 reco::BeamSpot
 	offlineBeamSpot
 
-  33 reco::CaloTauDiscriminator
+  46 reco::CaloTauDiscriminator
 	caloRecoTauDiscriminationAgainstElectron
 	caloRecoTauDiscriminationByIsolation
 	caloRecoTauDiscriminationByLeadingTrackFinding
 	caloRecoTauDiscriminationByLeadingTrackPtCut
 
-  34 reco::PFTauDiscriminator
+  47 reco::PFTauDiscriminator
+	fixedConeHighEffPFTauDiscriminationAgainstElectron
+	fixedConeHighEffPFTauDiscriminationAgainstMuon
+	fixedConeHighEffPFTauDiscriminationByECALIsolationUsingLeadingPion
+	fixedConeHighEffPFTauDiscriminationByECALIsolation
+	fixedConeHighEffPFTauDiscriminationByIsolationUsingLeadingPion
+	fixedConeHighEffPFTauDiscriminationByIsolation
+	fixedConeHighEffPFTauDiscriminationByLeadingPionPtCut
+	fixedConeHighEffPFTauDiscriminationByLeadingTrackFinding
+	fixedConeHighEffPFTauDiscriminationByLeadingTrackPtCut
+	fixedConeHighEffPFTauDiscriminationByTrackIsolationUsingLeadingPion
+	fixedConeHighEffPFTauDiscriminationByTrackIsolation
+	fixedConePFTauDiscriminationAgainstElectron
+	fixedConePFTauDiscriminationAgainstMuon
+	fixedConePFTauDiscriminationByECALIsolationUsingLeadingPion
+	fixedConePFTauDiscriminationByECALIsolation
+	fixedConePFTauDiscriminationByIsolationUsingLeadingPion
+	fixedConePFTauDiscriminationByIsolation
+	fixedConePFTauDiscriminationByLeadingPionPtCut
+	fixedConePFTauDiscriminationByLeadingTrackFinding
+	fixedConePFTauDiscriminationByLeadingTrackPtCut
+	fixedConePFTauDiscriminationByTrackIsolationUsingLeadingPion
+	fixedConePFTauDiscriminationByTrackIsolation
 	pfRecoTauDiscriminationAgainstElectronHighEfficiency
 	pfRecoTauDiscriminationAgainstElectron
 	pfRecoTauDiscriminationAgainstMuonHighEfficiency
@@ -184,63 +291,103 @@
 	pfRecoTauDiscriminationByTrackIsolationUsingLeadingPionHighEfficiency
 	pfRecoTauDiscriminationByTrackIsolationUsingLeadingPion
 	pfRecoTauDiscriminationByTrackIsolation
+	shrinkingConePFTauDecayModeIndexProducer
+	shrinkingConePFTauDiscriminationAgainstElectron
+	shrinkingConePFTauDiscriminationAgainstMuon
+	shrinkingConePFTauDiscriminationByECALIsolationUsingLeadingPion
+	shrinkingConePFTauDiscriminationByECALIsolation
+	shrinkingConePFTauDiscriminationByIsolationUsingLeadingPion
+	shrinkingConePFTauDiscriminationByIsolation
+	shrinkingConePFTauDiscriminationByLeadingPionPtCut
+	shrinkingConePFTauDiscriminationByLeadingTrackFinding
+	shrinkingConePFTauDiscriminationByLeadingTrackPtCut
+	shrinkingConePFTauDiscriminationByTaNC
+	shrinkingConePFTauDiscriminationByTaNCfrHalfPercent
+	shrinkingConePFTauDiscriminationByTaNCfrOnePercent
+	shrinkingConePFTauDiscriminationByTaNCfrQuarterPercent
+	shrinkingConePFTauDiscriminationByTaNCfrTenthPercent
+	shrinkingConePFTauDiscriminationByTrackIsolationUsingLeadingPion
+	shrinkingConePFTauDiscriminationByTrackIsolation
 
-  35 reco::PdfInfo
+  48 reco::PdfInfo
 	genEventPdfInfo
 
-  36 trigger::TriggerEvent
+  49 trigger::TriggerEvent
 	hltTriggerSummaryAOD
 
-  37 vector<L1CaloEmCand> 
+  50 vector<BeamSpotOnline> 
+	scalersRawToDigi
+
+  51 vector<DcsStatus> 
+	scalersRawToDigi
+
+  52 vector<L1AcceptBunchCrossing> 
+	scalersRawToDigi
+
+  53 vector<L1CaloEmCand> 
 	hltGctDigis
 
-  38 vector<L1CaloRegion> 
+  54 vector<L1CaloRegion> 
 	hltGctDigis
 
-  39 vector<L1GctEmCand> 
+  55 vector<L1GctEmCand> 
+	gctDigis_isoEm
+	gctDigis_nonIsoEm
 	hltGctDigis_isoEm
 	hltGctDigis_nonIsoEm
 
-  40 vector<L1GctEtHad> 
+  56 vector<L1GctEtHad> 
+	gctDigis
 	hltGctDigis
 
-  41 vector<L1GctEtMiss> 
+  57 vector<L1GctEtMiss> 
+	gctDigis
 	hltGctDigis
 
-  42 vector<L1GctEtTotal> 
+  58 vector<L1GctEtTotal> 
+	gctDigis
 	hltGctDigis
 
-  43 vector<L1GctFibreWord> 
+  59 vector<L1GctFibreWord> 
 	hltGctDigis
 
-  44 vector<L1GctHFBitCounts> 
+  60 vector<L1GctHFBitCounts> 
+	gctDigis
 	hltGctDigis
 
-  45 vector<L1GctHFRingEtSums> 
+  61 vector<L1GctHFRingEtSums> 
+	gctDigis
 	hltGctDigis
 
-  46 vector<L1GctInternEmCand> 
+  62 vector<L1GctHtMiss> 
+	gctDigis
+
+  63 vector<L1GctInternEmCand> 
 	hltGctDigis
 
-  47 vector<L1GctInternEtSum> 
+  64 vector<L1GctInternEtSum> 
 	hltGctDigis
 
-  48 vector<L1GctInternJetData> 
+  65 vector<L1GctInternJetData> 
 	hltGctDigis
 
-  49 vector<L1GctJetCand> 
+  66 vector<L1GctJetCand> 
+	gctDigis_cenJets
+	gctDigis_forJets
+	gctDigis_tauJets
 	hltGctDigis_cenJets
 	hltGctDigis_forJets
 	hltGctDigis_tauJets
 
-  50 vector<L1GctJetCounts> 
+  67 vector<L1GctJetCounts> 
+	gctDigis
 	hltGctDigis
 
-  51 vector<L1MuGMTCand> 
+  68 vector<L1MuGMTCand> 
 	gtDigis
 	hltGtDigis
 
-  52 vector<L1MuRegionalCand> 
+  69 vector<L1MuRegionalCand> 
 	gtDigis_CSC
 	gtDigis_DT
 	gtDigis_RPCb
@@ -250,66 +397,102 @@
 	hltGtDigis_RPCb
 	hltGtDigis_RPCf
 
-  53 vector<SimTrack> 
+  70 vector<L1TriggerScalers> 
+	scalersRawToDigi
+
+  71 vector<Level1TriggerScalers> 
+	scalersRawToDigi
+
+  72 vector<LumiScalers> 
+	scalersRawToDigi
+
+  73 vector<SimTrack> 
 	g4SimHits
 
-  54 vector<SimVertex> 
+  74 vector<SimVertex> 
 	g4SimHits
 
-  55 vector<TrajectorySeed> 
+  75 vector<TrajectorySeed> 
+	CosmicMuonSeed
 	MuonSeed
+	SETMuonSeed
+	ancientMuonSeed
 
-  56 vector<int> 
+  76 vector<edm::ErrorSummaryEntry> 
+	logErrorHarvester
+
+  77 vector<int> 
 	genParticles
 
-  57 vector<l1extra::L1EmParticle> 
+  78 vector<l1extra::L1EmParticle> 
 	hltL1extraParticles_Isolated
 	hltL1extraParticles_NonIsolated
+	l1extraParticles_Isolated
+	l1extraParticles_NonIsolated
 
-  58 vector<l1extra::L1EtMissParticle> 
+  79 vector<l1extra::L1EtMissParticle> 
 	hltL1extraParticles
+	l1extraParticles_MET
+	l1extraParticles_MHT
 
-  59 vector<l1extra::L1JetParticle> 
+  80 vector<l1extra::L1HFRings> 
+	l1extraParticles
+
+  81 vector<l1extra::L1JetParticle> 
 	hltL1extraParticles_Central
 	hltL1extraParticles_Forward
 	hltL1extraParticles_Tau
+	l1extraParticles_Central
+	l1extraParticles_Forward
+	l1extraParticles_Tau
 
-  60 vector<l1extra::L1MuonParticle> 
+  82 vector<l1extra::L1MuonParticle> 
 	hltL1extraParticles
+	l1extraParticles
 
-  61 vector<pat::Electron> 
+  83 vector<pat::Electron> 
 	cleanLayer1Electrons
 
-  62 vector<pat::Hemisphere> 
+  84 vector<pat::Hemisphere> 
 	cleanLayer1Hemispheres
 
-  63 vector<pat::Jet> 
+  85 vector<pat::Jet> 
 	cleanLayer1Jets
 
-  64 vector<pat::MET> 
+  86 vector<pat::MET> 
 	layer1METs
 
-  65 vector<pat::Muon> 
+  87 vector<pat::Muon> 
 	cleanLayer1Muons
 
-  66 vector<pat::Photon> 
+  88 vector<pat::Photon> 
 	cleanLayer1Photons
 
-  67 vector<pat::Tau> 
+  89 vector<pat::Tau> 
 	cleanLayer1Taus
 
-  68 vector<reco::BasicCluster> 
+  90 vector<reco::BasicCluster> 
 	hybridSuperClusters_hybridBarrelBasicClusters
 	multi5x5BasicClusters_multi5x5EndcapBasicClusters
 
-  69 vector<reco::CaloJet> 
+  91 vector<reco::CaloCluster> 
+	hfEMClusters
+	hybridSuperClusters_hybridBarrelBasicClusters
+	multi5x5BasicClusters_multi5x5BarrelBasicClusters
+	multi5x5BasicClusters_multi5x5EndcapBasicClusters
+	pfElectronTranslator_pf
+
+  92 vector<reco::CaloJet> 
+	ak5CaloJets
+	ak7CaloJets
 	iterativeCone5CaloJets
 	kt4CaloJets
 	kt6CaloJets
 	sisCone5CaloJets
 	sisCone7CaloJets
 
-  70 vector<reco::CaloMET> 
+  93 vector<reco::CaloMET> 
+	corMetGlobalMuons
 	metHO
 	metNoHFHO
 	metNoHF
@@ -319,145 +502,198 @@
 	metOpt
 	met
 
-  71 vector<reco::CaloMuon> 
+  94 vector<reco::CaloMuon> 
 	calomuons
 
-  72 vector<reco::CaloTau> 
+  95 vector<reco::CaloTau> 
 	caloRecoTauProducer
 
-  73 vector<reco::CaloTauTagInfo> 
+  96 vector<reco::CaloTauTagInfo> 
 	caloRecoTauTagInfoProducer
 
-  74 vector<reco::Conversion> 
+  97 vector<reco::Conversion> 
 	conversions
+	trackerOnlyConversions
 
-  75 vector<reco::Electron> 
+  98 vector<reco::Electron> 
 	btagSoftElectrons
 
-  76 vector<reco::ElectronPixelSeed> 
+  99 vector<reco::ElectronPixelSeed> 
 	electronPixelSeeds
 
-  77 vector<reco::GenJet> 
+ 100 vector<reco::ElectronSeed> 
+	electronMergedSeeds
+
+ 101 vector<reco::GenJet> 
 	iterativeCone5GenJets
 	kt4GenJets
 	kt6GenJets
 	sisCone5GenJets
 	sisCone7GenJets
 
-  78 vector<reco::GenMET> 
+ 102 vector<reco::GenMET> 
 	genMetNoNuBSM
 	genMet
 
-  79 vector<reco::GenParticle> 
+ 103 vector<reco::GenParticle> 
 	genParticles
 
-  80 vector<reco::GsfElectron> 
+ 104 vector<reco::GsfElectron> 
+	gsfElectrons
 	pixelMatchGsfElectrons
+	softPFElectrons
 
-  81 vector<reco::GsfTrack> 
+ 105 vector<reco::GsfElectronCore> 
+	gsfElectronCores
+
+ 106 vector<reco::GsfTrack> 
+	electronGsfTracks
 	gsfPFtracks
 	pixelMatchGsfFit
 
-  82 vector<reco::GsfTrackExtra> 
+ 107 vector<reco::GsfTrackExtra> 
+	electronGsfTracks
 	gsfPFtracks
 	pixelMatchGsfFit
 
-  83 vector<reco::MET> 
+ 108 vector<reco::HFEMClusterShape> 
+	hfEMClusters
+
+ 109 vector<reco::HcalNoiseRBX> 
+	hcalnoise
+
+ 110 vector<reco::MET> 
 	htMetIC5
 	htMetKT4
 	htMetKT6
 	htMetSC5
 	htMetSC7
+	tcMet
 
-  84 vector<reco::Muon> 
+ 111 vector<reco::Muon> 
+	muonsFromCosmics
 	muons
 
-  85 vector<reco::PFBlock> 
+ 112 vector<reco::PFBlock> 
 	particleFlowBlock
 
-  86 vector<reco::PFCandidate> 
+ 113 vector<reco::PFCandidate> 
 	particleFlow
+	particleFlow_electrons
 
-  87 vector<reco::PFCluster> 
+ 114 vector<reco::PFCluster> 
 	particleFlowClusterECAL
 	particleFlowClusterHCAL
+	particleFlowClusterHFEM
+	particleFlowClusterHFHAD
 	particleFlowClusterPS
 
-  88 vector<reco::PFJet> 
+ 115 vector<reco::PFJet> 
+	ak5PFJets
+	ak7PFJets
 	iterativeCone5PFJets
 	kt4PFJets
 	kt6PFJets
 	sisCone5PFJets
 	sisCone7PFJets
 
-  89 vector<reco::PFMET> 
+ 116 vector<reco::PFMET> 
 	pfMet
 
-  90 vector<reco::PFTau> 
+ 117 vector<reco::PFTau> 
+	fixedConeHighEffPFTauProducer
+	fixedConePFTauProducer
 	pfRecoTauProducerHighEfficiency
 	pfRecoTauProducer
+	shrinkingConePFTauProducer
 
-  91 vector<reco::PFTauTagInfo> 
+ 118 vector<reco::PFTauTagInfo> 
 	pfRecoTauTagInfoProducer
 
-  92 vector<reco::Photon> 
+ 119 vector<reco::Photon> 
 	photons
 
-  93 vector<reco::PhotonID> 
+ 120 vector<reco::PhotonCore> 
+	photonCore
+
+ 121 vector<reco::PhotonID> 
 	PhotonIDProd_PhotonIDCutBasedProducer
 
-  94 vector<reco::PreshowerCluster> 
+ 122 vector<reco::PreshowerCluster> 
 	multi5x5SuperClustersWithPreshower_preshowerXClusters
 	multi5x5SuperClustersWithPreshower_preshowerYClusters
+	pfElectronTranslator_pf
 
-  95 vector<reco::PreshowerClusterShape> 
+ 123 vector<reco::PreshowerClusterShape> 
 	multi5x5PreshowerClusterShape_multi5x5PreshowerXClustersShape
 	multi5x5PreshowerClusterShape_multi5x5PreshowerYClustersShape
 
-  96 vector<reco::SecondaryVertexTagInfo> 
+ 124 vector<reco::RecoEcalCandidate> 
+	hfRecoEcalCandidate
+
+ 125 vector<reco::SecondaryVertexTagInfo> 
 	secondaryVertexTagInfos
 
-  97 vector<reco::SoftLeptonTagInfo> 
+ 126 vector<reco::SoftLeptonTagInfo> 
 	softElectronTagInfos
 	softMuonTagInfos
 
-  98 vector<reco::SuperCluster> 
+ 127 vector<reco::SuperCluster> 
 	correctedHybridSuperClusters
 	correctedMulti5x5SuperClustersWithPreshower
+	hfEMClusters
 	hybridSuperClusters
 	multi5x5SuperClustersWithPreshower
 	multi5x5SuperClusters_multi5x5EndcapSuperClusters
+	pfElectronTranslator_pf
 
-  99 vector<reco::Track> 
+ 128 vector<reco::Track> 
 	ckfInOutTracksFromConversions
 	ckfOutInTracksFromConversions
+	cosmicMuons
+	ctfPixelLess
 	generalTracks
+	globalCosmicMuons
 	globalMuons
+	globalSETMuons
+	impactParameterTagInfos_ghostTracks
 	pixelTracks
 	standAloneMuons_UpdatedAtVtx
 	standAloneMuons
+	standAloneSETMuons_UpdatedAtVtx
+	standAloneSETMuons
 	tevMuons_default
 	tevMuons_firstHit
 	tevMuons_picky
 
- 100 vector<reco::TrackExtra> 
+ 129 vector<reco::TrackExtra> 
 	ckfInOutTracksFromConversions
 	ckfOutInTracksFromConversions
+	cosmicMuons
+	ctfPixelLess
+	electronGsfTracks
 	generalTracks
+	globalCosmicMuons
 	globalMuons
+	globalSETMuons
 	gsfPFtracks
 	pixelMatchGsfFit
 	pixelTracks
 	standAloneMuons
+	standAloneSETMuons
 	tevMuons_default
 	tevMuons_firstHit
 	tevMuons_picky
 
- 101 vector<reco::TrackIPTagInfo> 
+ 130 vector<reco::TrackIPTagInfo> 
 	impactParameterTagInfos
 
- 102 vector<reco::Vertex> 
+ 131 vector<reco::Vertex> 
 	offlinePrimaryVerticesWithBS
 	offlinePrimaryVertices
 	pixelVertices
+
+ 132 vector<reco::VertexCompositeCandidate> 
+	generalV0Candidates_Kshort
+	generalV0Candidates_Lambda
 

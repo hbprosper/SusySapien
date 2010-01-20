@@ -1,12 +1,28 @@
 // ----------------------------------------------------------------------------
-// Created: Tue Jan 19 21:44:13 2010 by mkplugins.py
-// $Revision: 1.2.2.3.2.1 $
+// Created: Wed Jan 20 00:15:09 2010 by mkplugins.py
+// $Revision: 1.2 $
 //
 // Define all Buffer plugins. Need to use typedefs otherwise the
 // DEFINE macro gets confused by classes with multiple template
 // arguments.
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/Buffer.h"
+
+#include "DataFormats/Scalers/interface/BeamSpotOnline.h"
+typedef Buffer<BeamSpotOnline, BeamSpotOnline> BeamSpotOnline_t;
+DEFINE_EDM_PLUGIN(BufferFactory, BeamSpotOnline_t, "BeamSpotOnline");
+
+#include "DataFormats/Scalers/interface/DcsStatus.h"
+typedef Buffer<DcsStatus, DcsStatus> DcsStatus_t;
+DEFINE_EDM_PLUGIN(BufferFactory, DcsStatus_t, "DcsStatus");
+
+#include "DataFormats/METReco/interface/HcalNoiseSummary.h"
+typedef Buffer<HcalNoiseSummary, HcalNoiseSummary> HcalNoiseSummary_t;
+DEFINE_EDM_PLUGIN(BufferFactory, HcalNoiseSummary_t, "HcalNoiseSummary");
+
+#include "DataFormats/Scalers/interface/L1AcceptBunchCrossing.h"
+typedef Buffer<L1AcceptBunchCrossing, L1AcceptBunchCrossing> L1AcceptBunchCrossing_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1AcceptBunchCrossing_t, "L1AcceptBunchCrossing");
 
 #include "DataFormats/L1GlobalCaloTrigger/interface/L1GctEmCand.h"
 typedef Buffer<L1GctEmCand, L1GctEmCand> L1GctEmCand_t;
@@ -36,6 +52,10 @@ DEFINE_EDM_PLUGIN(BufferFactory, L1GctHFBitCounts_t, "L1GctHFBitCounts");
 typedef Buffer<L1GctHFRingEtSums, L1GctHFRingEtSums> L1GctHFRingEtSums_t;
 DEFINE_EDM_PLUGIN(BufferFactory, L1GctHFRingEtSums_t, "L1GctHFRingEtSums");
 
+#include "DataFormats/L1GlobalCaloTrigger/interface/L1GctHtMiss.h"
+typedef Buffer<L1GctHtMiss, L1GctHtMiss> L1GctHtMiss_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GctHtMiss_t, "L1GctHtMiss");
+
 #include "DataFormats/L1GlobalCaloTrigger/interface/L1GctInternEmCand.h"
 typedef Buffer<L1GctInternEmCand, L1GctInternEmCand> L1GctInternEmCand_t;
 DEFINE_EDM_PLUGIN(BufferFactory, L1GctInternEmCand_t, "L1GctInternEmCand");
@@ -52,6 +72,18 @@ DEFINE_EDM_PLUGIN(BufferFactory, L1GctJetCand_t, "L1GctJetCand");
 typedef Buffer<L1GctJetCounts, L1GctJetCounts> L1GctJetCounts_t;
 DEFINE_EDM_PLUGIN(BufferFactory, L1GctJetCounts_t, "L1GctJetCounts");
 
+#include "DataFormats/Scalers/interface/L1TriggerScalers.h"
+typedef Buffer<L1TriggerScalers, L1TriggerScalers> L1TriggerScalers_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1TriggerScalers_t, "L1TriggerScalers");
+
+#include "DataFormats/Scalers/interface/Level1TriggerScalers.h"
+typedef Buffer<Level1TriggerScalers, Level1TriggerScalers> Level1TriggerScalers_t;
+DEFINE_EDM_PLUGIN(BufferFactory, Level1TriggerScalers_t, "Level1TriggerScalers");
+
+#include "DataFormats/Scalers/interface/LumiScalers.h"
+typedef Buffer<LumiScalers, LumiScalers> LumiScalers_t;
+DEFINE_EDM_PLUGIN(BufferFactory, LumiScalers_t, "LumiScalers");
+
 #include "DataFormats/TrajectorySeed/interface/TrajectorySeed.h"
 typedef Buffer<TrajectorySeed, TrajectorySeed> TrajectorySeed_t;
 DEFINE_EDM_PLUGIN(BufferFactory, TrajectorySeed_t, "TrajectorySeed");
@@ -61,18 +93,19 @@ typedef Buffer<edm::TriggerResults, edm::TriggerResults> edmTriggerResults_t;
 DEFINE_EDM_PLUGIN(BufferFactory, edmTriggerResults_t, "edmTriggerResults");
 
 #include "DataFormats/L1Trigger/interface/L1EmParticle.h"
-#include "PhysicsTools/LiteAnalysis/dataformats/adapters/al1extraL1EmParticle.h"
-typedef Buffer<l1extra::L1EmParticle, al1extraL1EmParticle> l1extraL1EmParticle_t;
+typedef Buffer<l1extra::L1EmParticle, l1extra::L1EmParticle> l1extraL1EmParticle_t;
 DEFINE_EDM_PLUGIN(BufferFactory, l1extraL1EmParticle_t, "l1extraL1EmParticle");
 
 #include "DataFormats/L1Trigger/interface/L1EtMissParticle.h"
-#include "PhysicsTools/LiteAnalysis/dataformats/adapters/al1extraL1EtMissParticle.h"
-typedef Buffer<l1extra::L1EtMissParticle, al1extraL1EtMissParticle> l1extraL1EtMissParticle_t;
+typedef Buffer<l1extra::L1EtMissParticle, l1extra::L1EtMissParticle> l1extraL1EtMissParticle_t;
 DEFINE_EDM_PLUGIN(BufferFactory, l1extraL1EtMissParticle_t, "l1extraL1EtMissParticle");
 
+#include "DataFormats/L1Trigger/interface/L1HFRings.h"
+typedef Buffer<l1extra::L1HFRings, l1extra::L1HFRings> l1extraL1HFRings_t;
+DEFINE_EDM_PLUGIN(BufferFactory, l1extraL1HFRings_t, "l1extraL1HFRings");
+
 #include "DataFormats/L1Trigger/interface/L1JetParticle.h"
-#include "PhysicsTools/LiteAnalysis/dataformats/adapters/al1extraL1JetParticle.h"
-typedef Buffer<l1extra::L1JetParticle, al1extraL1JetParticle> l1extraL1JetParticle_t;
+typedef Buffer<l1extra::L1JetParticle, l1extra::L1JetParticle> l1extraL1JetParticle_t;
 DEFINE_EDM_PLUGIN(BufferFactory, l1extraL1JetParticle_t, "l1extraL1JetParticle");
 
 #include "DataFormats/L1Trigger/interface/L1MuonParticle.h"
@@ -109,13 +142,14 @@ DEFINE_EDM_PLUGIN(BufferFactory, patPhoton_t, "patPhoton");
 typedef Buffer<pat::Tau, apatTau> patTau_t;
 DEFINE_EDM_PLUGIN(BufferFactory, patTau_t, "patTau");
 
-#include "DataFormats/EgammaReco/interface/BasicCluster.h"
-typedef Buffer<reco::BasicCluster, reco::BasicCluster> recoBasicCluster_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoBasicCluster_t, "recoBasicCluster");
-
 #include "DataFormats/BeamSpot/interface/BeamSpot.h"
 typedef Buffer<reco::BeamSpot, reco::BeamSpot> recoBeamSpot_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoBeamSpot_t, "recoBeamSpot");
+
+#include "DataFormats/CaloRecHit/interface/CaloCluster.h"
+#include "PhysicsTools/LiteAnalysis/dataformats/adapters/arecoCaloCluster.h"
+typedef Buffer<reco::CaloCluster, arecoCaloCluster> recoCaloCluster_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCaloCluster_t, "recoCaloCluster");
 
 #include "DataFormats/JetReco/interface/CaloJet.h"
 typedef Buffer<reco::CaloJet, reco::CaloJet> recoCaloJet_t;
@@ -146,9 +180,9 @@ DEFINE_EDM_PLUGIN(BufferFactory, recoConversion_t, "recoConversion");
 typedef Buffer<reco::Electron, reco::Electron> recoElectron_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoElectron_t, "recoElectron");
 
-#include "DataFormats/EgammaReco/interface/ElectronPixelSeed.h"
-typedef Buffer<reco::ElectronPixelSeed, reco::ElectronPixelSeed> recoElectronPixelSeed_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoElectronPixelSeed_t, "recoElectronPixelSeed");
+#include "DataFormats/EgammaReco/interface/ElectronSeed.h"
+typedef Buffer<reco::ElectronSeed, reco::ElectronSeed> recoElectronSeed_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoElectronSeed_t, "recoElectronSeed");
 
 #include "DataFormats/JetReco/interface/GenJet.h"
 typedef Buffer<reco::GenJet, reco::GenJet> recoGenJet_t;
@@ -166,9 +200,22 @@ DEFINE_EDM_PLUGIN(BufferFactory, recoGenParticle_t, "recoGenParticle");
 typedef Buffer<reco::GsfElectron, reco::GsfElectron> recoGsfElectron_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoGsfElectron_t, "recoGsfElectron");
 
+#include "DataFormats/EgammaCandidates/interface/GsfElectronCore.h"
+typedef Buffer<reco::GsfElectronCore, reco::GsfElectronCore> recoGsfElectronCore_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoGsfElectronCore_t, "recoGsfElectronCore");
+
 #include "DataFormats/GsfTrackReco/interface/GsfTrack.h"
 typedef Buffer<reco::GsfTrack, reco::GsfTrack> recoGsfTrack_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoGsfTrack_t, "recoGsfTrack");
+
+#include "DataFormats/EgammaReco/interface/HFEMClusterShape.h"
+#include "PhysicsTools/LiteAnalysis/dataformats/adapters/arecoHFEMClusterShape.h"
+typedef Buffer<reco::HFEMClusterShape, arecoHFEMClusterShape> recoHFEMClusterShape_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoHFEMClusterShape_t, "recoHFEMClusterShape");
+
+#include "DataFormats/METReco/interface/HcalNoiseRBX.h"
+typedef Buffer<reco::HcalNoiseRBX, reco::HcalNoiseRBX> recoHcalNoiseRBX_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoHcalNoiseRBX_t, "recoHcalNoiseRBX");
 
 #include "DataFormats/METReco/interface/MET.h"
 typedef Buffer<reco::MET, reco::MET> recoMET_t;
@@ -211,9 +258,10 @@ DEFINE_EDM_PLUGIN(BufferFactory, recoPFTauTagInfo_t, "recoPFTauTagInfo");
 typedef Buffer<reco::Photon, arecoPhoton> recoPhoton_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoPhoton_t, "recoPhoton");
 
-#include "DataFormats/EgammaCandidates/interface/PhotonID.h"
-typedef Buffer<reco::PhotonID, reco::PhotonID> recoPhotonID_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPhotonID_t, "recoPhotonID");
+#include "DataFormats/EgammaCandidates/interface/PhotonCore.h"
+#include "PhysicsTools/LiteAnalysis/dataformats/adapters/arecoPhotonCore.h"
+typedef Buffer<reco::PhotonCore, arecoPhotonCore> recoPhotonCore_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPhotonCore_t, "recoPhotonCore");
 
 #include "DataFormats/EgammaReco/interface/PreshowerCluster.h"
 typedef Buffer<reco::PreshowerCluster, reco::PreshowerCluster> recoPreshowerCluster_t;
@@ -222,6 +270,10 @@ DEFINE_EDM_PLUGIN(BufferFactory, recoPreshowerCluster_t, "recoPreshowerCluster")
 #include "DataFormats/EgammaReco/interface/PreshowerClusterShape.h"
 typedef Buffer<reco::PreshowerClusterShape, reco::PreshowerClusterShape> recoPreshowerClusterShape_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoPreshowerClusterShape_t, "recoPreshowerClusterShape");
+
+#include "DataFormats/RecoCandidate/interface/RecoEcalCandidate.h"
+typedef Buffer<reco::RecoEcalCandidate, reco::RecoEcalCandidate> recoRecoEcalCandidate_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoRecoEcalCandidate_t, "recoRecoEcalCandidate");
 
 #include "DataFormats/BTauReco/interface/SecondaryVertexTagInfo.h"
 typedef Buffer<reco::SecondaryVertexTagInfo, reco::SecondaryVertexTagInfo> recoSecondaryVertexTagInfo_t;
@@ -246,3 +298,7 @@ DEFINE_EDM_PLUGIN(BufferFactory, recoTrackIPTagInfo_t, "recoTrackIPTagInfo");
 #include "DataFormats/VertexReco/interface/Vertex.h"
 typedef Buffer<reco::Vertex, reco::Vertex> recoVertex_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoVertex_t, "recoVertex");
+
+#include "DataFormats/Candidate/interface/VertexCompositeCandidate.h"
+typedef Buffer<reco::VertexCompositeCandidate, reco::VertexCompositeCandidate> recoVertexCompositeCandidate_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoVertexCompositeCandidate_t, "recoVertexCompositeCandidate");

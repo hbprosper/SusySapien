@@ -13,13 +13,15 @@
 <use name=DataFormats/HepMCCandidate>
 <use name=DataFormats/Math>
 <use name=PhysicsTools/LiteAnalysis>
-<use name=PhysicsTools/Utilities>
+<use name=CommonTools/Utils>
 
 <use name=boost_regex>
 
 <flags EDM_PLUGIN=1>
+
 <use name=PhysicsTools/UtilAlgos>
-<lib name=BufferFactory>
+
+<lib name=BufferFactory>	
 
 <export>
    <lib name=Mkntuple>

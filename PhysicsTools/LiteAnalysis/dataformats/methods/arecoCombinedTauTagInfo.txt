@@ -1,7 +1,6 @@
 double	ECALEt_o_leadTkPt()
 double	HCALEt_o_leadTkPt()
 double	TksEt_o_JetEt()
-bool	hasTracks()
 bool	infact_GoodElectronCandidate()
 bool	infact_GoodMuonCandidate()
 bool	is_GoodTauCandidate()

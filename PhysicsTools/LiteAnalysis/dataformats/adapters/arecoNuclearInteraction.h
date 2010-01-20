@@ -8,7 +8,7 @@
 //              class:   reco::NuclearInteraction
 //              header:  DataFormats/VertexReco/interface/NuclearInteraction.h
 //              
-// Created:     Thu Jan 14 23:48:37 2010 by mkadapter.py  HBP
+// Created:     Fri Jan 15 21:58:35 2010 by mkadapter.py  HBP
 //-----------------------------------------------------------------------------
 #include "DataFormats/VertexReco/interface/NuclearInteraction.h"
 //-----------------------------------------------------------------------------

@@ -35,7 +35,6 @@
    <class name="Bclass"/>
 
 
-   <class name="arecoFlavorHistory"/>
    <class name="arecoPFTrack"/>
    <class name="apatJet"/>
    <class name="arecoPFSimParticle"/>
@@ -55,7 +54,6 @@
    <class name="arecoRecoCaloTowerCandidate"/>
    <class name="apatParticle"/>
    <class name="al1extraL1EmParticle"/>
-   <class name="arecoCaloCluster"/>
    <class name="arecoPFRecTrack"/>
    <class name="aHLTPerformanceInfoModule"/>
    <class name="al1extraL1EtMissParticle"/>
@@ -64,7 +62,6 @@
    <class name="aL1DataEmulDigi"/>
    <class name="apatVertexAssociation"/>
    <class name="aHLTPerformanceInfoPath"/>
-   <class name="al1extraL1HFRings"/>
    <class name="apatGenericParticle"/>
    <class name="arecoHFEMClusterShape"/>
 </lcgdict>

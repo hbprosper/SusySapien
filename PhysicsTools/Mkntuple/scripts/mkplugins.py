@@ -2,6 +2,7 @@
 #------------------------------------------------------------------------------
 # create plugins.cc
 # Created: 05-Jan-2010 Harrison B. Prosper
+#$Revision:$
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -32,7 +33,7 @@ def exclass(x):
 # If adapters.txt, objects.txt and headers.txt do not exist, run
 # mkobjectlist.py first.
 #------------------------------------------------------------------------------
-# Make sure we are in the plugins directory
+# Make sure we are in the bin directory
 localdir = split(os.environ["PWD"],"/").pop()
 if localdir != "bin":
 	print "\t** mkplugins.py should be run from the bin directory!"
@@ -75,7 +76,7 @@ names = {'time': ctime(time())}
 out  = open("plugins.cc","w")
 record = '''// ----------------------------------------------------------------------------
 // Created: %(time)s by mkplugins.py
-// $Revision: 1.1.2.1 $
+// $Revision: 1.2 $
 //
 // Define all Buffer plugins. Need to use typedefs otherwise the
 // DEFINE macro gets confused by classes with multiple template

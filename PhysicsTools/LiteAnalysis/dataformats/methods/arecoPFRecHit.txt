@@ -2,4 +2,5 @@ unsigned	detId()
 double	energy()
 bool	isNeighbour4(unsigned x)
 bool	isNeighbour8(unsigned x)
+double	pt2()
 

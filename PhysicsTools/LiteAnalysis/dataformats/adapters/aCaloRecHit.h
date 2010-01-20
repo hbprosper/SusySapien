@@ -8,7 +8,7 @@
 //              class:   CaloRecHit
 //              header:  DataFormats/CaloRecHit/interface/CaloRecHit.h
 //              
-// Created:     Thu Jan 14 23:47:24 2010 by mkadapter.py  HBP
+// Created:     Fri Jan 15 21:57:33 2010 by mkadapter.py  HBP
 //-----------------------------------------------------------------------------
 #include "DataFormats/CaloRecHit/interface/CaloRecHit.h"
 //-----------------------------------------------------------------------------
