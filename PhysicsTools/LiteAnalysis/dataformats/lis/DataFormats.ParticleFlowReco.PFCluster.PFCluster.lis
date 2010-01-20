@@ -1,5 +1,0 @@
-reco::PFCluster|PFLayer::Layer|layer|void
-reco::PFCluster|double|energy|void
-reco::PFCluster|const ROOT::Math::PositionVector3D<ROOT::Math::CylindricalEta3D<Double32_t> >&|positionREP|void
-reco::PFCluster|int|color|void
-reco::PFCluster|const std::vector<reco::PFRecHitFraction >&|recHitFractions|void

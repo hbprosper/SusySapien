@@ -1,5 +1,0 @@
-reco::SoftLeptonTagInfo|SoftLeptonTagInfo*|clone|void
-reco::SoftLeptonTagInfo|unsigned int|leptons|void
-reco::SoftLeptonTagInfo|const SoftLeptonProperties&|properties|size_t
-reco::SoftLeptonTagInfo|TaggingVariableList|taggingVariables|void
-reco::SoftLeptonTagInfo|const edm::RefToBase<reco::Track>&|lepton|size_t

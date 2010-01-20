@@ -1,8 +1,0 @@
-unsigned	index()
-int	indexModule(const std::string x)
-unsigned	lastActiveFilterSlot()
-unsigned	prescale()
-bool	wasAccept()
-bool	wasError()
-bool	wasRun()
-

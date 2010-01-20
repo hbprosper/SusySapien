@@ -1,7 +1,0 @@
-float	dPhi2()
-float	dRz2()
-bool	isEcalDriven()
-bool	isTrackerDriven()
-unsigned int	nHits()
-int	subDet2()
-

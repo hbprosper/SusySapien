@@ -1,3 +1,0 @@
-reco::FitQuality|double|chi2|void
-reco::FitQuality|double|ndof|void
-reco::FitQuality|double|normalizedChi2|void

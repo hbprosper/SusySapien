@@ -1,7 +1,0 @@
-int	ieta()
-int	ietaAbs()
-int	iphi()
-bool	null()
-int	subdetId()
-int	zside()
-

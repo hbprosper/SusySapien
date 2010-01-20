@@ -1,7 +1,0 @@
-edm::OutputHandle|bool|isValid|void
-edm::OutputHandle|bool|failedToGet|void
-edm::OutputHandle|EDProduct const*|wrapper|void
-edm::OutputHandle|ProductProvenance const*|productProvenance|void
-edm::OutputHandle|ConstBranchDescription const*|desc|void
-edm::OutputHandle|boost::shared_ptr<cms::Exception>|whyFailed|void
-edm::OutputHandle|boost::shared_ptr<ProductProvenance>|productProvenanceSharedPtr|void

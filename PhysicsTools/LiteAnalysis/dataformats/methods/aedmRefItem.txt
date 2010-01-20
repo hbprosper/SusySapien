@@ -1,4 +1,0 @@
-bool	isNonnull()
-bool	isNull()
-bool	isValid()
-

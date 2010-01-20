@@ -1,3 +1,0 @@
-bool	failedToGet()
-bool	isValid()
-

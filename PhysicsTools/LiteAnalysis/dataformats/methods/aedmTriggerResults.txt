@@ -1,6 +1,0 @@
-bool	accept()
-bool	error()
-unsigned int	find(const std::string x)
-unsigned int	size()
-bool	wasrun()
-

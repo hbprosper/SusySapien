@@ -1,5 +1,0 @@
-int	detector()
-float	dist()
-float	distErr()
-int	station()
-

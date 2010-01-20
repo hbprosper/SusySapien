@@ -1,9 +1,0 @@
-Class:
-	reco::MuonIsolation
-
-Header:
-	DataFormats/MuonReco/interface/MuonIsolation.h
-
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:56:05 2010	lsclass.py $Revision:$
-
