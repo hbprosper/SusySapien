@@ -1,9 +1,0 @@
-Class:
-	edm::DataFrameContainer::IterHelp
-
-Header:
-	DataFormats/Common/interface/DataFrameContainer.h
-
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:56:21 2010	lsclass.py $Revision:$
-

@@ -1,8 +1,0 @@
-edm::AssociationMap<Tag>|typename typename Tag::map_type::size_type|size|void
-edm::AssociationMap<Tag>|bool|empty|void
-edm::AssociationMap<Tag>|iterator|begin|void
-edm::AssociationMap<Tag>|iterator|end|void
-edm::AssociationMap<Tag>|const typename Tag::ref_type&|refProd|void
-edm::AssociationMap<Tag>|typename Tag::std::map<const typename CKey::helpers::KeyVal<key_type, typename Tag::val_type>*, Val>|map|void
-edm::AssociationMap<Tag>|typename Tag::std::vector<const typename CKey::value_type*>|keys|void
-edm::AssociationMap<Tag>|typename Tag::std::vector<Val>|values|void

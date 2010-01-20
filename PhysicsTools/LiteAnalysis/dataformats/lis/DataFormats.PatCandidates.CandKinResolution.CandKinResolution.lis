@@ -1,4 +1,0 @@
-pat::CandKinResolution|Parametrization|parametrization|void
-pat::CandKinResolution|uint32_t|dimension|void
-pat::CandKinResolution|const AlgebraicSymMatrix44&|covariance|void
-pat::CandKinResolution|const std::vector<float>&|constraints|void

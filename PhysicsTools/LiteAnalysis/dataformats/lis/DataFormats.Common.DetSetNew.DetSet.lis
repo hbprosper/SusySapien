@@ -1,3 +1,0 @@
-edmNew::DetSet<T>|inline|DetSet|void
-edmNew::DetSet<T>|inline data_type*|begin|void
-edmNew::DetSet<T>|inline data_type*|end|void

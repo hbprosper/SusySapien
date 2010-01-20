@@ -1,3 +1,0 @@
-reco::TauImpactParameterInfo|TauImpactParameterInfo*|clone|void
-reco::TauImpactParameterInfo|float|discriminator|void
-reco::TauImpactParameterInfo|const edm::Ref<IsolatedTauTagInfoCollection>&|getIsolatedTauTag|void

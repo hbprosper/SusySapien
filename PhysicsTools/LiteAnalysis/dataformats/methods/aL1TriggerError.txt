@@ -1,4 +1,0 @@
-unsigned	code()
-unsigned	prodErr()
-unsigned	prodID()
-

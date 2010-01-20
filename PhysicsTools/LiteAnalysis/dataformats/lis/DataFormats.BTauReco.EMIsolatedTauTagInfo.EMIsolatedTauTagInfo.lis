@@ -1,5 +1,0 @@
-reco::EMIsolatedTauTagInfo|EMIsolatedTauTagInfo*|clone|void
-reco::EMIsolatedTauTagInfo|math::PtEtaPhiELorentzVectorRefVector|lorentzVectorRecHits|void
-reco::EMIsolatedTauTagInfo|const JetCrystalsAssociationRef&|jcaRef|void
-reco::EMIsolatedTauTagInfo|float|discriminator|void
-reco::EMIsolatedTauTagInfo|edm::RefToBase<Jet>|jet|void

@@ -1,7 +1,0 @@
-reco::PFBlockElementGsfTrack|PFBlockElement*|clone|void
-reco::PFBlockElementGsfTrack|GsfPFRecTrackRef|GsftrackRefPF|void
-reco::PFBlockElementGsfTrack|reco::GsfTrackRef|GsftrackRef|void
-reco::PFBlockElementGsfTrack|const math::XYZPointF&|positionAtECALEntrance|void
-reco::PFBlockElementGsfTrack|const GsfPFRecTrack&|GsftrackPF|void
-reco::PFBlockElementGsfTrack|const math::XYZTLorentzVector&|Pin|void
-reco::PFBlockElementGsfTrack|const math::XYZTLorentzVector&|Pout|void

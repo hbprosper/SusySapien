@@ -1,5 +1,0 @@
-edm::MapOfVectors<K, T>|boost::iterator_range<data_iterator>|emptyRange|void
-edm::MapOfVectors<K, T>|unsigned int|size|void
-edm::MapOfVectors<K, T>|bool|empty|void
-edm::MapOfVectors<K, T>|Iter|begin|void
-edm::MapOfVectors<K, T>|Iter|end|void
