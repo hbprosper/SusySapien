@@ -1,6 +1,0 @@
-unsigned int	bunchCrossing()
-bool	empty()
-unsigned int	eventType()
-int	l1AcceptOffset()
-unsigned int	orbitNumber()
-

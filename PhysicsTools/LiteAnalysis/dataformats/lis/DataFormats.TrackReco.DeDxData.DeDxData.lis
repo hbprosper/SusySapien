@@ -1,3 +1,0 @@
-reco::DeDxData|float|dEdx|void
-reco::DeDxData|float|dEdxError|void
-reco::DeDxData|unsigned int|numberOfMeasurements|void

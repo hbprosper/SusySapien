@@ -1,7 +1,0 @@
-float	charge()
-float	distance()
-int	layer()
-float	pathLength()
-int	subDet()
-int	subDetSide()
-

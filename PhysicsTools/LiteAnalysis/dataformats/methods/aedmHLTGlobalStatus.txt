@@ -1,5 +1,0 @@
-bool	accept()
-bool	error()
-unsigned int	size()
-bool	wasrun()
-

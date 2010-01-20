@@ -1,9 +1,0 @@
-Class:
-	StringMap::MatchByNumber
-
-Header:
-	DataFormats/PatCandidates/interface/StringMap.h
-
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:25 2010	lsclass.py $Revision:$
-

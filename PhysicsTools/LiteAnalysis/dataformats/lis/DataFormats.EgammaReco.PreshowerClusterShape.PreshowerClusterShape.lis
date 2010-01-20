@@ -1,3 +1,0 @@
-reco::PreshowerClusterShape|int|plane|void
-reco::PreshowerClusterShape|SuperClusterRef|superCluster|void
-reco::PreshowerClusterShape|std::vector<float>|getStripEnergies|void

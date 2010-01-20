@@ -1,5 +1,0 @@
-edm::RefGetter<T>|bool|empty|void
-edm::RefGetter<T>|uint32_t|size|void
-edm::RefGetter<T>|boost::indirect_iterator<typename std::vector<region_ref>::const_iterator>|begin|void
-edm::RefGetter<T>|boost::indirect_iterator<typename std::vector<region_ref>::const_iterator>|end|void
-edm::RefGetter<T>|const RegionIndex<T>&|back|void

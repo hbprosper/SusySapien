@@ -1,6 +1,0 @@
-L1DataEmulRecord|bool|get_status|void
-L1DataEmulRecord|bool|get_status|int
-L1DataEmulRecord|std::vector<L1DataEmulDigi>|getColl|void
-L1DataEmulRecord|GltDEDigi|getGlt|void
-L1DataEmulRecord|bool|get_isComp|int
-L1DataEmulRecord|bool|empty|void
