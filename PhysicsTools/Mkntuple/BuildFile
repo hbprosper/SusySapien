@@ -13,7 +13,7 @@
 <use name=DataFormats/HepMCCandidate>
 <use name=DataFormats/Math>
 <use name=PhysicsTools/LiteAnalysis>
-<use name=CommonTools/Utils>
+<use name=PhysicsTools/Utilities>
 
 <use name=boost_regex>
 

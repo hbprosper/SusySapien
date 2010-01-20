@@ -8,7 +8,7 @@
 //              class:   pat::GenericParticle
 //              header:  DataFormats/PatCandidates/interface/GenericParticle.h
 //              
-// Created:     Fri Jan 15 21:58:19 2010 by mkadapter.py  HBP
+// Created:     Thu Jan 14 23:48:19 2010 by mkadapter.py  HBP
 //-----------------------------------------------------------------------------
 #include "DataFormats/PatCandidates/interface/GenericParticle.h"
 //-----------------------------------------------------------------------------
@@ -20,6 +20,50 @@ class apatGenericParticle : public pat::GenericParticle
     : pat::GenericParticle(o) {}
   ~apatGenericParticle() {}
 
+  int caloTower_charge() const 	{return caloTower().isNonnull() ? caloTower()->charge() : -999999;}
+  size_t caloTower_constituentsSize() const 	{return caloTower().isNonnull() ? caloTower()->constituentsSize() : 999999;}
+  float caloTower_ecalTime() const 	{return caloTower().isNonnull() ? caloTower()->ecalTime() : -999999;}
+  double caloTower_emEnergy() const 	{return caloTower().isNonnull() ? caloTower()->emEnergy() : -999999;}
+  double caloTower_emEt() const 	{return caloTower().isNonnull() ? caloTower()->emEt() : -999999;}
+  int caloTower_emLvl1() const 	{return caloTower().isNonnull() ? caloTower()->emLvl1() : -999999;}
+  double caloTower_energy() const 	{return caloTower().isNonnull() ? caloTower()->energy() : -999999;}
+  double caloTower_et() const 	{return caloTower().isNonnull() ? caloTower()->et() : -999999;}
+  double caloTower_eta() const 	{return caloTower().isNonnull() ? caloTower()->eta() : -999999;}
+  double caloTower_hadEnergy() const 	{return caloTower().isNonnull() ? caloTower()->hadEnergy() : -999999;}
+  double caloTower_hadEnergyHeInnerLayer() const 	{return caloTower().isNonnull() ? caloTower()->hadEnergyHeInnerLayer() : -999999;}
+  double caloTower_hadEnergyHeOuterLayer() const 	{return caloTower().isNonnull() ? caloTower()->hadEnergyHeOuterLayer() : -999999;}
+  double caloTower_hadEt() const 	{return caloTower().isNonnull() ? caloTower()->hadEt() : -999999;}
+  int caloTower_hadLv11() const 	{return caloTower().isNonnull() ? caloTower()->hadLv11() : -999999;}
+  float caloTower_hcalTime() const 	{return caloTower().isNonnull() ? caloTower()->hcalTime() : -999999;}
+  int caloTower_ieta() const 	{return caloTower().isNonnull() ? caloTower()->ieta() : -999999;}
+  int caloTower_ietaAbs() const 	{return caloTower().isNonnull() ? caloTower()->ietaAbs() : -999999;}
+  int caloTower_iphi() const 	{return caloTower().isNonnull() ? caloTower()->iphi() : -999999;}
+  bool caloTower_longLived() const 	{return caloTower().isNonnull() ? caloTower()->longLived() : false;}
+  double caloTower_mass() const 	{return caloTower().isNonnull() ? caloTower()->mass() : -999999;}
+  double caloTower_massSqr() const 	{return caloTower().isNonnull() ? caloTower()->massSqr() : -999999;}
+  double caloTower_mt() const 	{return caloTower().isNonnull() ? caloTower()->mt() : -999999;}
+  double caloTower_mtSqr() const 	{return caloTower().isNonnull() ? caloTower()->mtSqr() : -999999;}
+  int caloTower_numCrystals() const 	{return caloTower().isNonnull() ? caloTower()->numCrystals() : -999999;}
+  size_t caloTower_numberOfDaughters() const 	{return caloTower().isNonnull() ? caloTower()->numberOfDaughters() : 999999;}
+  size_t caloTower_numberOfMothers() const 	{return caloTower().isNonnull() ? caloTower()->numberOfMothers() : 999999;}
+  double caloTower_outerEnergy() const 	{return caloTower().isNonnull() ? caloTower()->outerEnergy() : -999999;}
+  double caloTower_outerEt() const 	{return caloTower().isNonnull() ? caloTower()->outerEt() : -999999;}
+  double caloTower_p() const 	{return caloTower().isNonnull() ? caloTower()->p() : -999999;}
+  int caloTower_pdgId() const 	{return caloTower().isNonnull() ? caloTower()->pdgId() : -999999;}
+  double caloTower_phi() const 	{return caloTower().isNonnull() ? caloTower()->phi() : -999999;}
+  double caloTower_pt() const 	{return caloTower().isNonnull() ? caloTower()->pt() : -999999;}
+  double caloTower_px() const 	{return caloTower().isNonnull() ? caloTower()->px() : -999999;}
+  double caloTower_py() const 	{return caloTower().isNonnull() ? caloTower()->py() : -999999;}
+  double caloTower_pz() const 	{return caloTower().isNonnull() ? caloTower()->pz() : -999999;}
+  double caloTower_rapidity() const 	{return caloTower().isNonnull() ? caloTower()->rapidity() : -999999;}
+  int caloTower_status() const 	{return caloTower().isNonnull() ? caloTower()->status() : -999999;}
+  double caloTower_theta() const 	{return caloTower().isNonnull() ? caloTower()->theta() : -999999;}
+  int caloTower_threeCharge() const 	{return caloTower().isNonnull() ? caloTower()->threeCharge() : -999999;}
+  double caloTower_vx() const 	{return caloTower().isNonnull() ? caloTower()->vx() : -999999;}
+  double caloTower_vy() const 	{return caloTower().isNonnull() ? caloTower()->vy() : -999999;}
+  double caloTower_vz() const 	{return caloTower().isNonnull() ? caloTower()->vz() : -999999;}
+  double caloTower_y() const 	{return caloTower().isNonnull() ? caloTower()->y() : -999999;}
+  int caloTower_zside() const 	{return caloTower().isNonnull() ? caloTower()->zside() : -999999;}
   int combinedMuon_charge() const 	{return combinedMuon().isNonnull() ? combinedMuon()->charge() : -999999;}
   double combinedMuon_chi2() const 	{return combinedMuon().isNonnull() ? combinedMuon()->chi2() : -999999;}
   double combinedMuon_d0() const 	{return combinedMuon().isNonnull() ? combinedMuon()->d0() : -999999;}
@@ -73,19 +117,22 @@ class apatGenericParticle : public pat::GenericParticle
   double combinedMuon_vx() const 	{return combinedMuon().isNonnull() ? combinedMuon()->vx() : -999999;}
   double combinedMuon_vy() const 	{return combinedMuon().isNonnull() ? combinedMuon()->vy() : -999999;}
   double combinedMuon_vz() const 	{return combinedMuon().isNonnull() ? combinedMuon()->vz() : -999999;}
+  double ecalIsoDeposit_candEnergy() const 	{return ecalIsoDeposit() ? ecalIsoDeposit()->candEnergy() : -999999;}
+  double ecalIsoDeposit_eta() const 	{return ecalIsoDeposit() ? ecalIsoDeposit()->eta() : -999999;}
+  double ecalIsoDeposit_phi() const 	{return ecalIsoDeposit() ? ecalIsoDeposit()->phi() : -999999;}
   float efficiency_error(const std::string x) const 	{return efficiency(x).error();}
   float efficiency_value(const std::string x) const 	{return efficiency(x).value();}
   int genParticle_charge(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->charge() : -999999;}
-  int genParticle_collisionId(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->collisionId() : -999999;}
   double genParticle_energy(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->energy() : -999999;}
   double genParticle_et(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->et() : -999999;}
   double genParticle_eta(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->eta() : -999999;}
   bool genParticle_longLived(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->longLived() : false;}
   double genParticle_mass(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->mass() : -999999;}
-  bool genParticle_massConstraint(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->massConstraint() : false;}
   double genParticle_massSqr(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->massSqr() : -999999;}
   double genParticle_mt(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->mt() : -999999;}
   double genParticle_mtSqr(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->mtSqr() : -999999;}
+  size_t genParticle_numberOfDaughters(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->numberOfDaughters() : 999999;}
+  size_t genParticle_numberOfMothers(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->numberOfMothers() : 999999;}
   double genParticle_p(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->p() : -999999;}
   int genParticle_pdgId(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->pdgId() : -999999;}
   double genParticle_phi(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->phi() : -999999;}
@@ -102,16 +149,16 @@ class apatGenericParticle : public pat::GenericParticle
   double genParticle_vz(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->vz() : -999999;}
   double genParticle_y(size_t x=0) const 	{return genParticle(x) ? genParticle(x)->y() : -999999;}
   int genParticleRef_charge(size_t x=0) const 	{return genParticleRef(x).isNonnull() ? genParticleRef(x)->charge() : -999999;}
-  int genParticleRef_collisionId(size_t x=0) const 	{return genParticleRef(x).isNonnull() ? genParticleRef(x)->collisionId() : -999999;}
   double genParticleRef_energy(size_t x=0) const 	{return genParticleRef(x).isNonnull() ? genParticleRef(x)->energy() : -999999;}
   double genParticleRef_et(size_t x=0) const 	{return genParticleRef(x).isNonnull() ? genParticleRef(x)->et() : -999999;}
   double genParticleRef_eta(size_t x=0) const 	{return genParticleRef(x).isNonnull() ? genParticleRef(x)->eta() : -999999;}
   bool genParticleRef_longLived(size_t x=0) const 	{return genParticleRef(x).isNonnull() ? genParticleRef(x)->longLived() : false;}
   double genParticleRef_mass(size_t x=0) const 	{return genParticleRef(x).isNonnull() ? genParticleRef(x)->mass() : -999999;}
-  bool genParticleRef_massConstraint(size_t x=0) const 	{return genParticleRef(x).isNonnull() ? genParticleRef(x)->massConstraint() : false;}
   double genParticleRef_massSqr(size_t x=0) const 	{return genParticleRef(x).isNonnull() ? genParticleRef(x)->massSqr() : -999999;}
   double genParticleRef_mt(size_t x=0) const 	{return genParticleRef(x).isNonnull() ? genParticleRef(x)->mt() : -999999;}
   double genParticleRef_mtSqr(size_t x=0) const 	{return genParticleRef(x).isNonnull() ? genParticleRef(x)->mtSqr() : -999999;}
+  size_t genParticleRef_numberOfDaughters(size_t x=0) const 	{return genParticleRef(x).isNonnull() ? genParticleRef(x)->numberOfDaughters() : 999999;}
+  size_t genParticleRef_numberOfMothers(size_t x=0) const 	{return genParticleRef(x).isNonnull() ? genParticleRef(x)->numberOfMothers() : 999999;}
   double genParticleRef_p(size_t x=0) const 	{return genParticleRef(x).isNonnull() ? genParticleRef(x)->p() : -999999;}
   int genParticleRef_pdgId(size_t x=0) const 	{return genParticleRef(x).isNonnull() ? genParticleRef(x)->pdgId() : -999999;}
   double genParticleRef_phi(size_t x=0) const 	{return genParticleRef(x).isNonnull() ? genParticleRef(x)->phi() : -999999;}
@@ -127,86 +174,32 @@ class apatGenericParticle : public pat::GenericParticle
   double genParticleRef_vy(size_t x=0) const 	{return genParticleRef(x).isNonnull() ? genParticleRef(x)->vy() : -999999;}
   double genParticleRef_vz(size_t x=0) const 	{return genParticleRef(x).isNonnull() ? genParticleRef(x)->vz() : -999999;}
   double genParticleRef_y(size_t x=0) const 	{return genParticleRef(x).isNonnull() ? genParticleRef(x)->y() : -999999;}
-  int gsfTrack_charge() const 	{return gsfTrack().isNonnull() ? gsfTrack()->charge() : -999999;}
-  int gsfTrack_chargeMode() const 	{return gsfTrack().isNonnull() ? gsfTrack()->chargeMode() : -999999;}
-  double gsfTrack_chi2() const 	{return gsfTrack().isNonnull() ? gsfTrack()->chi2() : -999999;}
-  double gsfTrack_d0() const 	{return gsfTrack().isNonnull() ? gsfTrack()->d0() : -999999;}
-  double gsfTrack_d0Error() const 	{return gsfTrack().isNonnull() ? gsfTrack()->d0Error() : -999999;}
-  double gsfTrack_dsz() const 	{return gsfTrack().isNonnull() ? gsfTrack()->dsz() : -999999;}
-  double gsfTrack_dszError() const 	{return gsfTrack().isNonnull() ? gsfTrack()->dszError() : -999999;}
-  double gsfTrack_dxy() const 	{return gsfTrack().isNonnull() ? gsfTrack()->dxy() : -999999;}
-  double gsfTrack_dxyError() const 	{return gsfTrack().isNonnull() ? gsfTrack()->dxyError() : -999999;}
-  double gsfTrack_dz() const 	{return gsfTrack().isNonnull() ? gsfTrack()->dz() : -999999;}
-  double gsfTrack_dzError() const 	{return gsfTrack().isNonnull() ? gsfTrack()->dzError() : -999999;}
-  double gsfTrack_eta() const 	{return gsfTrack().isNonnull() ? gsfTrack()->eta() : -999999;}
-  double gsfTrack_etaError() const 	{return gsfTrack().isNonnull() ? gsfTrack()->etaError() : -999999;}
-  double gsfTrack_etaMode() const 	{return gsfTrack().isNonnull() ? gsfTrack()->etaMode() : -999999;}
-  double gsfTrack_etaModeError() const 	{return gsfTrack().isNonnull() ? gsfTrack()->etaModeError() : -999999;}
-  unsigned short gsfTrack_found() const 	{return gsfTrack().isNonnull() ? gsfTrack()->found() : 9999;}
-  unsigned int gsfTrack_innerDetId() const 	{return gsfTrack().isNonnull() ? gsfTrack()->innerDetId() : 999999;}
-  bool gsfTrack_innerOk() const 	{return gsfTrack().isNonnull() ? gsfTrack()->innerOk() : false;}
-  double gsfTrack_lambda() const 	{return gsfTrack().isNonnull() ? gsfTrack()->lambda() : -999999;}
-  double gsfTrack_lambdaError() const 	{return gsfTrack().isNonnull() ? gsfTrack()->lambdaError() : -999999;}
-  double gsfTrack_lambdaMode() const 	{return gsfTrack().isNonnull() ? gsfTrack()->lambdaMode() : -999999;}
-  double gsfTrack_lambdaModeError() const 	{return gsfTrack().isNonnull() ? gsfTrack()->lambdaModeError() : -999999;}
-  unsigned short gsfTrack_lost() const 	{return gsfTrack().isNonnull() ? gsfTrack()->lost() : 9999;}
-  double gsfTrack_ndof() const 	{return gsfTrack().isNonnull() ? gsfTrack()->ndof() : -999999;}
-  double gsfTrack_normalizedChi2() const 	{return gsfTrack().isNonnull() ? gsfTrack()->normalizedChi2() : -999999;}
-  unsigned short gsfTrack_numberOfLostHits() const 	{return gsfTrack().isNonnull() ? gsfTrack()->numberOfLostHits() : 9999;}
-  unsigned short gsfTrack_numberOfValidHits() const 	{return gsfTrack().isNonnull() ? gsfTrack()->numberOfValidHits() : 9999;}
-  unsigned int gsfTrack_outerDetId() const 	{return gsfTrack().isNonnull() ? gsfTrack()->outerDetId() : 999999;}
-  double gsfTrack_outerEta() const 	{return gsfTrack().isNonnull() ? gsfTrack()->outerEta() : -999999;}
-  bool gsfTrack_outerOk() const 	{return gsfTrack().isNonnull() ? gsfTrack()->outerOk() : false;}
-  double gsfTrack_outerP() const 	{return gsfTrack().isNonnull() ? gsfTrack()->outerP() : -999999;}
-  double gsfTrack_outerPhi() const 	{return gsfTrack().isNonnull() ? gsfTrack()->outerPhi() : -999999;}
-  double gsfTrack_outerPt() const 	{return gsfTrack().isNonnull() ? gsfTrack()->outerPt() : -999999;}
-  double gsfTrack_outerPx() const 	{return gsfTrack().isNonnull() ? gsfTrack()->outerPx() : -999999;}
-  double gsfTrack_outerPy() const 	{return gsfTrack().isNonnull() ? gsfTrack()->outerPy() : -999999;}
-  double gsfTrack_outerPz() const 	{return gsfTrack().isNonnull() ? gsfTrack()->outerPz() : -999999;}
-  double gsfTrack_outerRadius() const 	{return gsfTrack().isNonnull() ? gsfTrack()->outerRadius() : -999999;}
-  double gsfTrack_outerTheta() const 	{return gsfTrack().isNonnull() ? gsfTrack()->outerTheta() : -999999;}
-  double gsfTrack_outerX() const 	{return gsfTrack().isNonnull() ? gsfTrack()->outerX() : -999999;}
-  double gsfTrack_outerY() const 	{return gsfTrack().isNonnull() ? gsfTrack()->outerY() : -999999;}
-  double gsfTrack_outerZ() const 	{return gsfTrack().isNonnull() ? gsfTrack()->outerZ() : -999999;}
-  double gsfTrack_p() const 	{return gsfTrack().isNonnull() ? gsfTrack()->p() : -999999;}
-  double gsfTrack_pMode() const 	{return gsfTrack().isNonnull() ? gsfTrack()->pMode() : -999999;}
-  double gsfTrack_phi() const 	{return gsfTrack().isNonnull() ? gsfTrack()->phi() : -999999;}
-  double gsfTrack_phiError() const 	{return gsfTrack().isNonnull() ? gsfTrack()->phiError() : -999999;}
-  double gsfTrack_phiMode() const 	{return gsfTrack().isNonnull() ? gsfTrack()->phiMode() : -999999;}
-  double gsfTrack_phiModeError() const 	{return gsfTrack().isNonnull() ? gsfTrack()->phiModeError() : -999999;}
-  double gsfTrack_pt() const 	{return gsfTrack().isNonnull() ? gsfTrack()->pt() : -999999;}
-  double gsfTrack_ptError() const 	{return gsfTrack().isNonnull() ? gsfTrack()->ptError() : -999999;}
-  double gsfTrack_ptMode() const 	{return gsfTrack().isNonnull() ? gsfTrack()->ptMode() : -999999;}
-  double gsfTrack_ptModeError() const 	{return gsfTrack().isNonnull() ? gsfTrack()->ptModeError() : -999999;}
-  double gsfTrack_px() const 	{return gsfTrack().isNonnull() ? gsfTrack()->px() : -999999;}
-  double gsfTrack_pxMode() const 	{return gsfTrack().isNonnull() ? gsfTrack()->pxMode() : -999999;}
-  double gsfTrack_py() const 	{return gsfTrack().isNonnull() ? gsfTrack()->py() : -999999;}
-  double gsfTrack_pyMode() const 	{return gsfTrack().isNonnull() ? gsfTrack()->pyMode() : -999999;}
-  double gsfTrack_pz() const 	{return gsfTrack().isNonnull() ? gsfTrack()->pz() : -999999;}
-  double gsfTrack_pzMode() const 	{return gsfTrack().isNonnull() ? gsfTrack()->pzMode() : -999999;}
-  double gsfTrack_qoverp() const 	{return gsfTrack().isNonnull() ? gsfTrack()->qoverp() : -999999;}
-  double gsfTrack_qoverpError() const 	{return gsfTrack().isNonnull() ? gsfTrack()->qoverpError() : -999999;}
-  double gsfTrack_qoverpMode() const 	{return gsfTrack().isNonnull() ? gsfTrack()->qoverpMode() : -999999;}
-  double gsfTrack_qoverpModeError() const 	{return gsfTrack().isNonnull() ? gsfTrack()->qoverpModeError() : -999999;}
-  int gsfTrack_qualityMask() const 	{return gsfTrack().isNonnull() ? gsfTrack()->qualityMask() : -999999;}
-  size_t gsfTrack_recHitsSize() const 	{return gsfTrack().isNonnull() ? gsfTrack()->recHitsSize() : 999999;}
-  double gsfTrack_theta() const 	{return gsfTrack().isNonnull() ? gsfTrack()->theta() : -999999;}
-  double gsfTrack_thetaError() const 	{return gsfTrack().isNonnull() ? gsfTrack()->thetaError() : -999999;}
-  double gsfTrack_thetaMode() const 	{return gsfTrack().isNonnull() ? gsfTrack()->thetaMode() : -999999;}
-  double gsfTrack_thetaModeError() const 	{return gsfTrack().isNonnull() ? gsfTrack()->thetaModeError() : -999999;}
-  double gsfTrack_vx() const 	{return gsfTrack().isNonnull() ? gsfTrack()->vx() : -999999;}
-  double gsfTrack_vy() const 	{return gsfTrack().isNonnull() ? gsfTrack()->vy() : -999999;}
-  double gsfTrack_vz() const 	{return gsfTrack().isNonnull() ? gsfTrack()->vz() : -999999;}
+  double hcalIsoDeposit_candEnergy() const 	{return hcalIsoDeposit() ? hcalIsoDeposit()->candEnergy() : -999999;}
+  double hcalIsoDeposit_eta() const 	{return hcalIsoDeposit() ? hcalIsoDeposit()->eta() : -999999;}
+  double hcalIsoDeposit_phi() const 	{return hcalIsoDeposit() ? hcalIsoDeposit()->phi() : -999999;}
   int originalObject_charge() const 	{return originalObject() ? originalObject()->charge() : -999999;}
   double originalObject_energy() const 	{return originalObject() ? originalObject()->energy() : -999999;}
   double originalObject_et() const 	{return originalObject() ? originalObject()->et() : -999999;}
   double originalObject_eta() const 	{return originalObject() ? originalObject()->eta() : -999999;}
+  bool originalObject_hasMasterClone() const 	{return originalObject() ? originalObject()->hasMasterClone() : false;}
+  bool originalObject_hasMasterClonePtr() const 	{return originalObject() ? originalObject()->hasMasterClonePtr() : false;}
+  bool originalObject_isCaloMuon() const 	{return originalObject() ? originalObject()->isCaloMuon() : false;}
+  bool originalObject_isConvertedPhoton() const 	{return originalObject() ? originalObject()->isConvertedPhoton() : false;}
+  bool originalObject_isElectron() const 	{return originalObject() ? originalObject()->isElectron() : false;}
+  bool originalObject_isGlobalMuon() const 	{return originalObject() ? originalObject()->isGlobalMuon() : false;}
+  bool originalObject_isJet() const 	{return originalObject() ? originalObject()->isJet() : false;}
+  bool originalObject_isMuon() const 	{return originalObject() ? originalObject()->isMuon() : false;}
+  bool originalObject_isPhoton() const 	{return originalObject() ? originalObject()->isPhoton() : false;}
+  bool originalObject_isStandAloneMuon() const 	{return originalObject() ? originalObject()->isStandAloneMuon() : false;}
+  bool originalObject_isTrackerMuon() const 	{return originalObject() ? originalObject()->isTrackerMuon() : false;}
   bool originalObject_longLived() const 	{return originalObject() ? originalObject()->longLived() : false;}
   double originalObject_mass() const 	{return originalObject() ? originalObject()->mass() : -999999;}
-  bool originalObject_massConstraint() const 	{return originalObject() ? originalObject()->massConstraint() : false;}
   double originalObject_massSqr() const 	{return originalObject() ? originalObject()->massSqr() : -999999;}
   double originalObject_mt() const 	{return originalObject() ? originalObject()->mt() : -999999;}
   double originalObject_mtSqr() const 	{return originalObject() ? originalObject()->mtSqr() : -999999;}
+  size_t originalObject_numberOfDaughters() const 	{return originalObject() ? originalObject()->numberOfDaughters() : 999999;}
+  size_t originalObject_numberOfMothers() const 	{return originalObject() ? originalObject()->numberOfMothers() : 999999;}
+  size_t originalObject_numberOfSourceCandidatePtrs() const 	{return originalObject() ? originalObject()->numberOfSourceCandidatePtrs() : 999999;}
   double originalObject_p() const 	{return originalObject() ? originalObject()->p() : -999999;}
   int originalObject_pdgId() const 	{return originalObject() ? originalObject()->pdgId() : -999999;}
   double originalObject_phi() const 	{return originalObject() ? originalObject()->phi() : -999999;}
@@ -218,6 +211,9 @@ class apatGenericParticle : public pat::GenericParticle
   int originalObject_status() const 	{return originalObject() ? originalObject()->status() : -999999;}
   double originalObject_theta() const 	{return originalObject() ? originalObject()->theta() : -999999;}
   int originalObject_threeCharge() const 	{return originalObject() ? originalObject()->threeCharge() : -999999;}
+  double originalObject_vertexChi2() const 	{return originalObject() ? originalObject()->vertexChi2() : -999999;}
+  double originalObject_vertexNdof() const 	{return originalObject() ? originalObject()->vertexNdof() : -999999;}
+  double originalObject_vertexNormalizedChi2() const 	{return originalObject() ? originalObject()->vertexNormalizedChi2() : -999999;}
   double originalObject_vx() const 	{return originalObject() ? originalObject()->vx() : -999999;}
   double originalObject_vy() const 	{return originalObject() ? originalObject()->vy() : -999999;}
   double originalObject_vz() const 	{return originalObject() ? originalObject()->vz() : -999999;}
@@ -275,18 +271,6 @@ class apatGenericParticle : public pat::GenericParticle
   double standAloneMuon_vx() const 	{return standAloneMuon().isNonnull() ? standAloneMuon()->vx() : -999999;}
   double standAloneMuon_vy() const 	{return standAloneMuon().isNonnull() ? standAloneMuon()->vy() : -999999;}
   double standAloneMuon_vz() const 	{return standAloneMuon().isNonnull() ? standAloneMuon()->vz() : -999999;}
-  size_t superCluster_clustersSize() const 	{return superCluster().isNonnull() ? superCluster()->clustersSize() : 999999;}
-  double superCluster_energy() const 	{return superCluster().isNonnull() ? superCluster()->energy() : -999999;}
-  double superCluster_eta() const 	{return superCluster().isNonnull() ? superCluster()->eta() : -999999;}
-  double superCluster_etaWidth() const 	{return superCluster().isNonnull() ? superCluster()->etaWidth() : -999999;}
-  double superCluster_phi() const 	{return superCluster().isNonnull() ? superCluster()->phi() : -999999;}
-  double superCluster_phiWidth() const 	{return superCluster().isNonnull() ? superCluster()->phiWidth() : -999999;}
-  double superCluster_preshowerEnergy() const 	{return superCluster().isNonnull() ? superCluster()->preshowerEnergy() : -999999;}
-  double superCluster_rawEnergy() const 	{return superCluster().isNonnull() ? superCluster()->rawEnergy() : -999999;}
-  size_t superCluster_size() const 	{return superCluster().isNonnull() ? superCluster()->size() : 999999;}
-  double superCluster_x() const 	{return superCluster().isNonnull() ? superCluster()->x() : -999999;}
-  double superCluster_y() const 	{return superCluster().isNonnull() ? superCluster()->y() : -999999;}
-  double superCluster_z() const 	{return superCluster().isNonnull() ? superCluster()->z() : -999999;}
   int track_charge() const 	{return track().isNonnull() ? track()->charge() : -999999;}
   int track_charge(size_t x) const 	{return track(x).isNonnull() ? track(x)->charge() : -999999;}
   double track_chi2() const 	{return track().isNonnull() ? track()->chi2() : -999999;}
@@ -393,6 +377,9 @@ class apatGenericParticle : public pat::GenericParticle
   double track_vy(size_t x) const 	{return track(x).isNonnull() ? track(x)->vy() : -999999;}
   double track_vz() const 	{return track().isNonnull() ? track()->vz() : -999999;}
   double track_vz(size_t x) const 	{return track(x).isNonnull() ? track(x)->vz() : -999999;}
+  double trackerIsoDeposit_candEnergy() const 	{return trackerIsoDeposit() ? trackerIsoDeposit()->candEnergy() : -999999;}
+  double trackerIsoDeposit_eta() const 	{return trackerIsoDeposit() ? trackerIsoDeposit()->eta() : -999999;}
+  double trackerIsoDeposit_phi() const 	{return trackerIsoDeposit() ? trackerIsoDeposit()->phi() : -999999;}
   bool vertexAssociation_hasErrors(size_t x=0) const 	{return vertexAssociation(x) ? vertexAssociation(x)->hasErrors() : false;}
   bool vertexAssociation_hasTrack(size_t x=0) const 	{return vertexAssociation(x) ? vertexAssociation(x)->hasTrack() : false;}
   bool vertexAssociation_hasTransverseIP(size_t x=0) const 	{return vertexAssociation(x) ? vertexAssociation(x)->hasTransverseIP() : false;}

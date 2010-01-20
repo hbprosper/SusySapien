@@ -10,9 +10,9 @@
 #include <fstream>
 
 #include "FWCore/FWLite/interface/AutoLibraryLoader.h"
-#include "CommonTools/Utils/src/ExpressionPtr.h"
-#include "CommonTools/Utils/src/ExpressionBase.h"
-#include "CommonTools/Utils/interface/expressionParser.h"
+#include "PhysicsTools/Utilities/src/ExpressionPtr.h"
+#include "PhysicsTools/Utilities/src/ExpressionBase.h"
+#include "PhysicsTools/Utilities/interface/expressionParser.h"
 #include "PhysicsTools/LiteAnalysis/interface/ATest.h"
 //-----------------------------------------------------------------------------
 using namespace std;

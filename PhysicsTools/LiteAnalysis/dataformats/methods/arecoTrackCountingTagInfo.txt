@@ -1,2 +1,3 @@
+bool	hasTracks()
 int	selectedTracks(int x)
 

@@ -1,8 +1,4 @@
 double	EoverP()
-double	dEtaTracksAtEcal()
-double	dPhiTracksAtEcal()
-double	dPhiTracksAtVtx()
-double	distOfMinimumApproach()
 bool	isConverted()
 unsigned int	nTracks()
 double	pairCotThetaSeparation()

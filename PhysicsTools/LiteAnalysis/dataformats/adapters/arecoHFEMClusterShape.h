@@ -8,7 +8,7 @@
 //              class:   reco::HFEMClusterShape
 //              header:  DataFormats/EgammaReco/interface/HFEMClusterShape.h
 //              
-// Created:     Fri Jan 15 21:58:02 2010 by mkadapter.py  HBP
+// Created:     Thu Jan 14 23:47:57 2010 by mkadapter.py  HBP
 //-----------------------------------------------------------------------------
 #include "DataFormats/EgammaReco/interface/HFEMClusterShape.h"
 //-----------------------------------------------------------------------------

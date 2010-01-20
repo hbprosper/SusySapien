@@ -1,3 +1,4 @@
 int	factorial(int x)
+bool	hasTracks()
 int	selectedTracks(int x)
 

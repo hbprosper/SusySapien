@@ -8,7 +8,7 @@
 //              class:   L1DataEmulDigi
 //              header:  DataFormats/L1Trigger/interface/L1DataEmulDigi.h
 //              
-// Created:     Fri Jan 15 21:58:08 2010 by mkadapter.py  HBP
+// Created:     Thu Jan 14 23:48:04 2010 by mkadapter.py  HBP
 //-----------------------------------------------------------------------------
 #include "DataFormats/L1Trigger/interface/L1DataEmulDigi.h"
 //-----------------------------------------------------------------------------

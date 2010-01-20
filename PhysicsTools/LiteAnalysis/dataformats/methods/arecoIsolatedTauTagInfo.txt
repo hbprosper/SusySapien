@@ -1,2 +1,3 @@
 float	discriminator()
+bool	hasTracks()
 

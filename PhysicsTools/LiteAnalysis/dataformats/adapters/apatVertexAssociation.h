@@ -8,7 +8,7 @@
 //              class:   pat::VertexAssociation
 //              header:  DataFormats/PatCandidates/interface/Vertexing.h
 //              
-// Created:     Fri Jan 15 21:58:27 2010 by mkadapter.py  HBP
+// Created:     Thu Jan 14 23:48:28 2010 by mkadapter.py  HBP
 //-----------------------------------------------------------------------------
 #include "DataFormats/PatCandidates/interface/Vertexing.h"
 //-----------------------------------------------------------------------------

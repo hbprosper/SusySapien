@@ -1,5 +1,9 @@
 bool	accept()
+bool	accept(const unsigned int x)
 bool	error()
+bool	error(const unsigned int x)
+unsigned int	index(const unsigned int x)
 unsigned int	size()
 bool	wasrun()
+bool	wasrun(const unsigned int x)
 

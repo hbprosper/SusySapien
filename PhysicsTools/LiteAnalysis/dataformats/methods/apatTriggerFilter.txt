@@ -1,4 +1,4 @@
-bool	hasObjectId(int x)
+bool	hasObjectId(unsigned x)
 bool	hasObjectKey(unsigned x)
 bool	setStatus(int x)
 int	status()

@@ -1,3 +1,4 @@
+bool	hasTracks()
 bool	passedECALisolation()
 bool	passedtrackerisolation()
 

@@ -1,10 +1,7 @@
 double	energy()
 double	eta()
 double	phi()
-size_t	size()
 double	x()
 double	y()
 double	z()
-bool seed_null()
-int seed_subdetId()
 

@@ -51,15 +51,18 @@
 //
 // Original Author:  Sezen SEKMEN & Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
-// $Id$
+//         Updated:  Sun Jan 17 HBP - add log file
+// $Id: Mkntuple.cc,v 1.1.2.4.2.1 2010/01/20 03:11:51 prosper Exp $
 //
 //
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
 #include <iostream>
+#include <fstream>
 #include <cassert>
-
+#include <time.h>
+ 
 #include "PhysicsTools/LiteAnalysis/interface/treestream.hpp"
 #include "PhysicsTools/LiteAnalysis/interface/kit.h"
 #include "PhysicsTools/Mkntuple/interface/pluginfactory.h"
@@ -90,8 +93,6 @@ private:
   virtual void analyze(const edm::Event&, const edm::EventSetup&);
   virtual void endJob() ;
 
-  edm::Service<TFileService> fs;
-
   // Object that models the output n-tuple.
   otreestream output;
 
@@ -100,6 +101,8 @@ private:
 
   int DEBUG;
   int event_;
+  std::string logfilename_;
+  std::ofstream* log_;
 };
 
 
@@ -107,12 +110,27 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   : output(otreestream(iConfig.getUntrackedParameter<string>("ntupleName"), 
                        "Events", 
                        "The time has come the walrus said")),
-    DEBUG(iConfig.getUntrackedParameter<int>("debugLevel")),
-    event_(0)
+    event_(0),
+    logfilename_("Mkntuple.log"),
+    log_(new std::ofstream(logfilename_.c_str()))
 {
-  //DB
-  if ( DEBUG > 0 ) 
-    cout << "BEGIN(Mkntuple)" << endl;
+  cout << GREEN << "BEGIN Mkntuple" << BLACK << endl;
+
+  try
+    {
+      DEBUG = iConfig.getUntrackedParameter<int>("debugLevel");
+    }
+  catch (...)
+    {
+      DEBUG = 0;
+    }
+
+
+  // Write to log file
+
+  time_t tt = time(0);
+  string ct(ctime(&tt));
+  *log_ << "Mkntuple log started: " << ct << endl;
 
   // Allocate buffers.
   //
@@ -140,8 +158,7 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
     {
       string record = bufferrecords[i];
 
-      //DB
-      if ( DEBUG > 0 ) 
+      if ( DEBUG > 1 ) 
         cout << "record(" << record  << ")" << endl; 
       
       if ( startOfBlock )
@@ -183,6 +200,11 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
       // Check for end of block      
       else if ( record == "/" )
         {
+          // Write some info to log file
+          *log_ << "  create buffer: " << buffer << endl;
+          for(unsigned ii=0; ii < var.size(); ii++)
+            *log_ << "    method: " << var[ii].first << endl;
+          
           // Got to end of block. Remember to rest startOfBlock...
 
           startOfBlock = true;
@@ -200,10 +222,9 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
           // mechanism assumes (not unreasonably) that it is in charge of 
           // plugins and so is responsible for cleaning up allocated space.
 
-          //DB
           if ( DEBUG > 0 )
             cout 
-              << "\tcreate buffer: " << buffer << endl;
+              << "  created buffer: " << buffer << endl << endl;
           
           buffers.push_back( BufferFactory::get()->create(buffer) );
           if (buffers.back() == 0)
@@ -215,7 +236,7 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
                                  "\n\tthat lurks in the mud hatch out\n"
                                  + BLACK);
           // ... and initialize it
-          (buffers.back())->init(output, label, prefix, var, maxcount);
+          buffers.back()->init(output, label, prefix, var, maxcount, DEBUG);
           continue;
         }
 
@@ -232,7 +253,7 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
 
       // Get method
       
-      boost::regex getmethod("(?<= )[a-zA-Z]+.+[)]");
+      boost::regex getmethod("[a-zA-Z][^ ]*[(].*[)]");
       boost::smatch matchmethod;
       if ( ! boost::regex_search(record, matchmethod, getmethod) ) 
         // Yet another tantrum!
@@ -241,18 +262,9 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
                              "I can't get method name from " + record);
       string method = kit::strip(matchmethod[0]);
       
-      //DB
-      if ( DEBUG > 0 ) 
-        cout << "    " << "\tmethod<" << method << ">" << endl;
+      if ( DEBUG > 1 ) 
+        cout << "    method: " << method << endl;
       
-//       // Get return type
-
-//       string rtype("");
-//       boost::regex getrtype(".+(?= " + method + "\()");
-//       boost::smatch matchrtype;
-//       if ( boost::regex_search(record, matchrtype, getrtype) ) 
-//         rtype = kit::strip(matchrtype[0]);
-
       // Get optional alias name
       
       string varname = kit::truncate(method,"(");
@@ -260,25 +272,31 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
       boost::smatch matchalias;
       if ( boost::regex_search(record, matchalias, getalias) ) 
         varname = kit::strip(matchalias[0]);
+
+//       // Get return type
+
+//       string rtype("");
+//       boost::regex getrtype(".+(?= " + method + ")");
+//       boost::smatch matchrtype;
+//       if ( boost::regex_search(record, matchrtype, getrtype) ) 
+//         rtype = kit::strip(matchrtype[0]);
+
       var.push_back(VariableDescriptor(method, varname));
 
-      //DB
-      if ( DEBUG > 0 )
-        cout << "      " << "\tvarname(" << varname << ")"
+      if ( DEBUG > 1 )
+        cout << "\t  varname(" << varname << ")"
              << endl;
     }
-  
-  //DB
-  if ( DEBUG > 0 ) 
-    cout << "END(Mkntuple)" << endl;
+
+  log_->close();
+
+  cout << "END Mkntuple" << endl;
 }
 
 
 Mkntuple::~Mkntuple()
 {
-  //DB
-  if ( DEBUG > 0 ) 
-    cout << "CLEANUP(Mkntuple)" << endl;
+  if ( DEBUG > 0 ) cout << "CLEANUP(Mkntuple)" << endl;
 }
 
 
@@ -289,12 +307,31 @@ Mkntuple::~Mkntuple()
 // ------------ method called to for each event  ------------
 void
 Mkntuple::analyze(const edm::Event& iEvent, 
-                         const edm::EventSetup& iSetup)
+                  const edm::EventSetup& iSetup)
 {
   event_++;
-  cout << "\t\t\t\t" << GREEN << event_ << BLACK << endl;
 
-  for(unsigned i=0; i < buffers.size(); i++) buffers[i]->fill(iEvent);
+  // Loop over allocated buffers and for each call its fill method
+  
+  string message("");  
+  for(unsigned i=0; i < buffers.size(); i++)
+    if ( !buffers[i]->fill(iEvent) ) message += buffers[i]->message();
+
+  // Check for error report from buffers
+
+  if ( message != "" )
+    {
+      time_t tt = time(0);
+      string ct(ctime(&tt));
+      
+      log_->open(logfilename_.c_str(), ios::app);
+      *log_ << endl
+            << "REPORT " << event_ << "\t" << ct << endl 
+            << message << endl
+            << "END" << endl;
+      log_->close();
+    }
+
   output.commit();
 }
 

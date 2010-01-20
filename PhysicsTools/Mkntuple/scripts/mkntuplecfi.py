@@ -3,17 +3,25 @@
 # File:        mkntuplecfi.py
 # Description: Gui to create cfi fragment for Mkntuple
 # Created:     06-Jan-2010 Harrison B. Prosper
+# Updated:     16-Jan-2010 HBP - simplify command line
 #-----------------------------------------------------------------------------
-#$Revision: $
+#$Revision: 1.1.2.3 $
 #-----------------------------------------------------------------------------
-import sys, os, re
+import sys, os, re, platform
 from ROOT import *
-from PhysicsTools.LiteAnalysis import *
-from string import *
-from time import *
-from glob import glob
-from array import array
 #-----------------------------------------------------------------------------
+def usage():
+	print """
+Usage:
+      mkntuplecfi.py [root-file-dir]
+   
+      root-file-dir     directory containing root files. If omitted,
+		                  the default is the current directory
+		"""
+	sys.exit(0)
+ARGV = sys.argv[1:]
+if len(ARGV) > 0 and ARGV[0] == "?": usage()
+
 # Make sure CMSSW is set up
 if not os.environ.has_key("CMSSW_BASE"):
 	print "\t*** please set up CMSSW first\n"
@@ -22,22 +30,40 @@ if not os.environ.has_key("CMSSW_BASE"):
 BASE           = os.environ["CMSSW_BASE"]
 VERSION        = \
 """
-mkntuplecfi.py v1.0.0 January 2010
-Python 2.4
-Root   5.22
-"""
+mkntuplecfi.py v1.0.1 January 2010
+Python %s
+Root   %s
+""" % (platform.python_version(),
+	   gROOT.GetVersion())
 ICONDIR        = "%s/icons" % os.environ["ROOTSYS"]
+METHODDIR      = "%s/src/PhysicsTools/LiteAnalysis/dataformats/methods" % \
+				 BASE
+
+if not os.path.exists(METHODDIR):
+	print "\t** cannot find methods directory:\n%s" % METHODDIR
+	sys.exit(0)
+
+print VERSION
+#-----------------------------------------------------------------------------
+from string import *
+from time import *
+from glob import glob
+from array import array
+from PhysicsTools.LiteAnalysis import *
+#-----------------------------------------------------------------------------
+
 WIDTH          = 750            # Width of GUI in pixels
 HEIGHT         = 500            # Height of GUI in pixels
 # StatusBar components
 STATUS_PARTS   = array('i')     # Status bar division in percentage
 STATUS_PARTS.append(23)
 STATUS_PARTS.append(77)
-
+#-----------------------------------------------------------------------------
 # We need a few simple regular expressions to extract sub-strings
+#-----------------------------------------------------------------------------
 
 # Extract branches ending in
-getbranch    = re.compile(r'(?<=\_).+\. / .+$',re.M)
+getbranch = re.compile(r'(?<=\_).+\. / .+$',re.M)
 
 # Extract class name from branch name
 getclass  = re.compile(r'(?<=Wrapper\<).+(?=\>)')
@@ -45,14 +71,81 @@ getclass  = re.compile(r'(?<=Wrapper\<).+(?=\>)')
 # Extract getByLabel string from branch name
 getlabel  = re.compile(r'.+(?=\_\_)|.+(?=\_)')
 
+getmethod = re.compile(r'[a-zA-Z][^\s]*[(].*[)]')
+
+stmethods = re.compile(r'energy|et|pt|eta|phi'\
+					   '|px|py|pz|p\('\
+					   '|charge')
+
+isomethods = re.compile(r'.+Iso')
+
+ismethods = re.compile(r'is.+')
+
 # Strip away namespace, vector< etc.
 stripname = re.compile(r'::|vector\<|\>| ')
 
 def isVector(name):
 	return find(name, "vector<") > -1
 
-# GUI widget Layouts
+def sortMethods(methods):
+	meths = []
+	for x in methods:
+		if x == "": continue
+		m = getmethod.findall(x)[0]
+		n = split(m, '(')[0]
+		cmd = '.+(?=\s%s)' % n
+		getrtype = re.compile(cmd)
+		r = getrtype.findall(x)[0]
+		meths.append((m, r))
+	meths.sort()
 
+	# Standard methods
+	methods = []	
+	for m, r in meths:
+		if stmethods.match(m) == None: continue
+		t = max(8, len(r))
+		if t > 8:
+			record = "%s  %s" % (r, m)
+		else:
+			record = "%8s  %s" % (r, m)
+		methods.append(record)
+
+	# Iso methods
+	for m, r in meths:
+		if isomethods.match(m) == None: continue
+		t = max(8, len(r))
+		if t > 8:
+			record = "%s  %s" % (r, m)
+		else:
+			record = "%8s  %s" % (r, m)
+		methods.append(record)
+
+	# is methods
+	for m, r in meths:
+		if ismethods.match(m) == None: continue
+		t = max(8, len(r))
+		if t > 8:
+			record = "%s  %s" % (r, m)
+		else:
+			record = "%8s  %s" % (r, m)
+		methods.append(record)
+
+	# the rest
+	for m, r in meths:
+		if stmethods.match(m)  != None: continue
+		if isomethods.match(m) != None: continue
+		if ismethods.match(m)  != None: continue
+		
+		t = max(8, len(r))
+		if t > 8:
+			record = "%s  %s" % (r, m)
+		else:
+			record = "%8s  %s" % (r, m)
+		methods.append(record)
+	return methods
+#-----------------------------------------------------------------------------
+# GUI widget Layouts
+#-----------------------------------------------------------------------------
 TOP          = TGLayoutHints(kLHintsTop)
 LEFT         = TGLayoutHints(kLHintsLeft)
 RIGHT        = TGLayoutHints(kLHintsRight)
@@ -79,7 +172,8 @@ M_FILE_OPEN        = 1;  M_CALLBACK[M_FILE_OPEN]  = "self.open()"
 M_FILE_SAVE        = 2;  M_CALLBACK[M_FILE_SAVE]  = "self.save()"
 M_FILE_EXIT        = 6;  M_CALLBACK[M_FILE_EXIT]  = "self.exit()"
 M_EDIT_CLEAR       = 21; M_CALLBACK[M_EDIT_CLEAR] = "self.clear()"
-M_EDIT_UNDO        = 22; M_CALLBACK[M_EDIT_UNDO]  = "self.undo()"
+M_EDIT_SELECT      = 22; M_CALLBACK[M_EDIT_SELECT]= "self.select()"
+M_EDIT_UNDO        = 23; M_CALLBACK[M_EDIT_UNDO]  = "self.undo()"
 M_HELP_ABOUT       = 51; M_CALLBACK[M_HELP_ABOUT] = "self.about()"
 M_HELP_USAGE       = 52; M_CALLBACK[M_HELP_USAGE] = "self.usage()"
 
@@ -99,6 +193,7 @@ K_LISTBOX_HEIGHT   = 450
 
 K_PROG_MAX         = 20.0
 K_MAX_COUNT        = 500
+K_MAX_LINES        = 255
 
 # Help
 
@@ -211,12 +306,12 @@ P_COLOR = (LIGHTYELLOW, LIGHTGREEN)
 
 class Gui:
 	"""
-	gui = Gui(title, methodDir, iniDir)
+	gui = Gui(title, iniDir)
 	"""
 
-	def __init__(self, name, methoddir, inidir):
+	def __init__(self, name, inidir):
 
-		self.methodDir  = methoddir
+		self.methodDir  = METHODDIR
 		self.iniDir     = inidir            # Initial directory for file dialog
 		self.iconDir    = ICONDIR				 
 		self.connection = []                # List of Signal/Slot connections
@@ -268,6 +363,8 @@ class Gui:
 
 		self.menuEdit = TGPopupMenu(self.window)
 		self.menuBar.AddPopup("&Edit", self.menuEdit, TOP_LEFT_PADDED)
+		self.menuEdit.AddEntry("&Select All", M_EDIT_SELECT)
+		self.menuEdit.AddSeparator()
 		self.menuEdit.AddEntry("Clear", M_EDIT_CLEAR)
 		self.connection.append(Connection(self.menuEdit, "Activated(Int_t)",
 										  self,          "menu"))
@@ -498,20 +595,21 @@ class Gui:
 			cname = getclass.findall(record)[0]
 			fname = "%s/a%s.txt" % (self.methodDir, stripname.sub("", cname))
 			if not os.path.exists(fname): continue
-
+			
 			# methods file found, so read methods
 			
 			if not self.cmap.has_key(cname):
-				methods = filter(lambda x: x != "",
-								 map(strip, open(fname).readlines()))
-				methods = map(lambda x: replace(x,"\t","   "), methods)
-				methods.sort()
+				methods = sortMethods(filter(lambda x: x != "",
+											 map(strip,
+												 open(fname).readlines())))
+				#open("test.log","w").writelines(joinfields(methods,'\n'))
+				
 				mmap = {}
-				for method in methods:
-					mmap[method] = False
+				for method in methods: mmap[method] = False
 				self.cmap[cname] = {'selected': False,
 									'labels': {},
-									'methods': mmap}
+									'methods': mmap,
+									'sortedmethods': methods}
 
 			self.statusBar.SetText(fname, 1)
 			self.cmap[cname]['labels'][label] = False
@@ -615,8 +713,8 @@ class Gui:
 			# List selected methods
 		
 			methods = self.cmap[cname]['methods']
-			names = methods.keys()
-			names.sort()
+			names   = self.cmap[cname]['sortedmethods']
+
 			self.methodBox[P_SELECTED].RemoveAll()
 			for ind, name in enumerate(names):
 				if not methods[name]: continue
@@ -664,8 +762,8 @@ class Gui:
 		# List methods
 		
 		methods = self.cmap[cname]['methods']
-		names = methods.keys()
-		names.sort()
+		names   = self.cmap[cname]['sortedmethods']
+
 		self.methodBox[pageNumber].RemoveAll()
 		for index, name in enumerate(names):
 			if SelectedPage:
@@ -698,9 +796,6 @@ class Gui:
 			self.methodBox[pageNumber].Select(id, kFALSE)
 			return
 		
-		###D
-		#print " methodBox pageNumber(%d)" % pageNumber
-		
 		# This is the Methods page, so flag method as selected	
 			
 		cid   = self.classBox[pageNumber].GetSelected()
@@ -708,15 +803,8 @@ class Gui:
 		name  = self.methodBox[pageNumber].GetEntry(id).GetText().Data()
 		on    = self.cmap[cname]['methods'][name]
 		self.cmap[cname]['methods'][name] = not on
-
-		###D
-		#print "    class( %s ) method( %s ) %s" % \
-		#	  (cname, name, self.cmap[cname]['methods'][name])
-
 #---------------------------------------------------------------------------
 	def labelListBox(self, id):
-		
-		#print "labelBox %d" % id
 
 		pageNumber = self.noteBook.GetCurrent()
 
@@ -726,14 +814,6 @@ class Gui:
 			self.labelBox[pageNumber].Select(id, kFALSE)
 			return
 
-		# Check that at least one method has been selected
-
-		if self.methodBox[pageNumber].GetSelected() < 0:
-			self.labelBox[pageNumber].Select(id, kFALSE)
-			THelpDialog(self.window,"Warning!",
-						"Either:\n  go boil your head...or\n  "\
-						"select at least one method!", 220, 80)
-			return
 		# This is the Methods page, so flag label as selected
 		
 		cid   = self.classBox[pageNumber].GetSelected()
@@ -742,10 +822,27 @@ class Gui:
 		status= self.cmap[cname]['labels'][name]
 		self.cmap[cname]['labels'][name] = not status
 
-## 		###D
-## 		print "    class( %s ) label( %s ) %s" % \
-## 			  (cname, name, self.cmap[cname]['labels'][name]) 
+#---------------------------------------------------------------------------
+	def select(self):
 
+		# If this is the selected methods page, do nothing
+		
+		pageNumber = self.noteBook.GetCurrent()
+		if pageNumber == P_SELECTED: return
+
+		cid   = self.classBox[pageNumber].GetSelected()
+		if cid < 0: return
+		
+		# Select all methods
+
+		cname = self.classBox[pageNumber].GetEntry(cid).GetText().Data()
+		nentries = len(self.cmap[cname]['methods'])
+
+		for id in xrange(nentries):
+			name = self.methodBox[pageNumber].GetEntry(id).GetText().Data()
+			self.cmap[cname]['methods'][name] = True
+			self.methodBox[pageNumber].Select(id)
+		self.methodBox[pageNumber].Layout()
 #---------------------------------------------------------------------------
 	def open(self):
 		fdialog = TFileDialog(self.window,
@@ -756,11 +853,9 @@ class Gui:
 		filename = fdialog.Filename()
 		self.iniDir  = fdialog.IniDir()
 		self.loadData(filename)
-
 #---------------------------------------------------------------------------
 	def undo(self):
 		self.notdone()
-
 #---------------------------------------------------------------------------
 	def save(self):
 
@@ -780,8 +875,8 @@ class Gui:
 		out.write("import FWCore.ParameterSet.Config as cms\n")
 		out.write("demo =\\\n")
 		out.write('cms.EDAnalyzer("Mkntuple",\n')
-		out.write('%sdebugLevel = cms.untracked.int32(0),\n' % tab)
-		out.write('\n')
+		#out.write('%sdebugLevel = cms.untracked.int32(0),\n' % tab)
+		#out.write('\n')
 		out.write('%sntupleName = cms.untracked.string("ntuple.root"),\n' % \
 				  tab)
 		out.write('%svariables  =\n' % tab)
@@ -790,6 +885,10 @@ class Gui:
 
 		tab = 4*' '
 
+		
+		nlines = 0
+		nmethods = 0
+		
 		###D
 		#print "get selected classes"
 		
@@ -814,10 +913,10 @@ class Gui:
 			buffer = stripname.sub("", cname)
 			methods = []
 			selected = self.cmap[cname]['methods']
-			for name in selected.keys():
+			sortedmethods = self.cmap[cname]['sortedmethods']
+			for name in sortedmethods:
 				if not selected[name]: continue
 				methods.append(name)
-			methods.sort()
 
 			# Get selected labels
 			
@@ -839,17 +938,28 @@ class Gui:
 						 (prefix, tab, buffer, label, maxcount)
 				###D
 				#print record
-				out.write(record)
+				out.write(record); nlines += 1
 				out.write('%s#--------------------------------'\
 						  '-------------------------------------\n' % tab)
 
 				# get selected methods
-		
-				for index, method in enumerate(methods):
-					record = '%s"%s",\n' % (tab, method)
-					out.write(record)
-				out.write('%s"/"' % tab)
+				if nlines < K_MAX_LINES-2:
+					for index, method in enumerate(methods):
+						record = '%s"%s",\n' % (tab, method)
+						out.write(record); nlines += 1
+						nmethods += 1
+						
+						if nlines > K_MAX_LINES-2:
+							break
+				out.write('%s"/"' % tab); nlines += 1
 				prefix = ",\n"
+				
+				if nlines > K_MAX_LINES-1:
+					THelpDialog(self.window,
+								"Warning!",
+								"maximum variable count %d reached" % nmethods,
+								320, 40)
+					break
 				
 		out.write("\n%s)\n" % tab)
 		tab = 15*' '
@@ -880,30 +990,12 @@ class Gui:
 #---- Main program ------------------------------------------------------------
 #------------------------------------------------------------------------------
 def main():
-	argv = sys.argv[1:]
-	argc = len(argv)
-	if argc < 1:
-		print """
-Usage:
-   mkntuplecfi.py <methods-dir> [root-file-dir]
-   
-		methods-dir       directory containing methods files
-        root-file-dir     directory containing root files. If omitted,
-		                  the default is the current directory
-		"""
-		sys.exit(0)
-		
-	methoddir = argv[0]
-	if not os.path.exists(methoddir):
-		print "** methods directory %s not found" % methoddir
-		sys.exit(0)
-		
-	if argc > 1:
-		inidir = argv[1]
+	if len(ARGV) > 0:
+		inidir = ARGV[0]
 	else:
 		inidir = "."
-	
-	gui = Gui("mkntuplecfi", methoddir, inidir)
+
+	gui = Gui("mkntuplecfi", inidir)
 	gui.Run()
 #------------------------------------------------------------------------------
 main()
