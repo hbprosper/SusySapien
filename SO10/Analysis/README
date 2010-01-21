@@ -1,5 +1,5 @@
 Harrison B. Prosper		Wed Jan 20, 2010
-$Revision: 1.1.2.1 $
+$Revision: 1.2 $
 
 
 A. INTRODUCTION
@@ -24,7 +24,7 @@ and
 
 The automatic mechanism cannot handle variables derived from methods with 
 non-simple arguments, nor variables that require calculation, as in this
-example. But we can handle such variable, if we are prepared to do a bit of 
+example. But we can handle such variables, if we are prepared to do a bit of 
 coding!
 
 
@@ -39,7 +39,7 @@ contains two user-coded methods:
 	double relIso() const
 	{ return (ecalIso() + hcalIso() + trackIso())/pt(); }
 
-We can name the class as we please, so long as it the name is unique. The 
+We can name the class as we please, so long as the name is unique. The 
 patMuonExtra class is defined in 
 
 	interface/myplugins.h
