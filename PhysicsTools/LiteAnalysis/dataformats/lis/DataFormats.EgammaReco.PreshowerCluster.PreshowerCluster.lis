@@ -1,4 +1,0 @@
-reco::PreshowerCluster|int|nhits|void
-reco::PreshowerCluster|int|plane|void
-reco::PreshowerCluster|double|et|void
-reco::PreshowerCluster|CaloClusterPtr|basicCluster|void

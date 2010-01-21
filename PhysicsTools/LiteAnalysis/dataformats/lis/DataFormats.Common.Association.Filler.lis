@@ -1,5 +1,0 @@
-edm::Association<C>|Ref<typename refprod_type::product_type>|get|size_t
-edm::Association<C>|size_t|size|void
-edm::Association<C>|bool|empty|void
-edm::Association<C>|edm::RefProd<C>|ref|void
-edm::Association<C>|const std::vector<std::pair<ProductID, typename base::offset> >&|ids|void

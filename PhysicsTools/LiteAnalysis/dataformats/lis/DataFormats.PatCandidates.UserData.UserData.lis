@@ -1,5 +1,0 @@
-pat::UserData|UserData*|clone|void
-pat::UserData|const std::type_info&|typeId|void
-pat::UserData|const std::string&|typeName|void
-pat::UserData|const void*|bareData|void
-pat::UserData|template<typename T> const T*|get|void

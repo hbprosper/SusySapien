@@ -1,5 +1,0 @@
-reco::CaloTauTagInfo|CaloTauTagInfo*|clone|void
-reco::CaloTauTagInfo|const CaloJetRef&|calojetRef|void
-reco::CaloTauTagInfo|const std::vector<std::pair<math::XYZPoint, float> >|positionAndEnergyECALRecHits|void
-reco::CaloTauTagInfo|const std::vector<edm::Ref<std::vector<BasicCluster>>>|neutralECALBasicClusters|void
-reco::BaseTauTagInfo|const reco::TrackRefVector&|Tracks|void

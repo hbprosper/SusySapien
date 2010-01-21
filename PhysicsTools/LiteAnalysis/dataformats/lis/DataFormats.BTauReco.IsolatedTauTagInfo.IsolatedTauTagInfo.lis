@@ -1,5 +1,0 @@
-reco::IsolatedTauTagInfo|const TrackRefVector|allTracks|void
-reco::IsolatedTauTagInfo|const TrackRefVector|selectedTracks|void
-reco::IsolatedTauTagInfo|IsolatedTauTagInfo*|clone|void
-reco::IsolatedTauTagInfo|float|discriminator|void
-reco::IsolatedTauTagInfo|const TrackRef|leadingSignalTrack|void

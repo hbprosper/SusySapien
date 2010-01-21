@@ -1,0 +1,13 @@
+offlineBeamSpot__RECO. / edm::Wrapper<reco::BeamSpot>
+pixelMatchGsfFit__RECO. / edm::Wrapper<vector<reco::GsfTrackExtra> >
+generalTracks__RECO. / edm::Wrapper<vector<reco::Track> >
+generalTracks__RECO. / edm::Wrapper<vector<reco::TrackExtra> >
+pixelMatchGsfFit__RECO. / edm::Wrapper<vector<reco::TrackExtra> >
+offlinePrimaryVertices__RECO. / edm::Wrapper<vector<reco::Vertex> >
+cleanLayer1Electrons__PAT. / edm::Wrapper<vector<pat::Electron> >
+cleanLayer1Hemispheres__PAT. / edm::Wrapper<vector<pat::Hemisphere> >
+cleanLayer1Jets__PAT. / edm::Wrapper<vector<pat::Jet> >
+layer1METs__PAT. / edm::Wrapper<vector<pat::MET> >
+cleanLayer1Muons__PAT. / edm::Wrapper<vector<pat::Muon> >
+cleanLayer1Photons__PAT. / edm::Wrapper<vector<pat::Photon> >
+cleanLayer1Taus__PAT. / edm::Wrapper<vector<pat::Tau> >

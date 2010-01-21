@@ -1,9 +1,0 @@
-reco::TrackIPTagInfo|TrackIPTagInfo*|clone|void
-reco::TrackIPTagInfo|bool|hasProbabilities|void
-reco::TrackIPTagInfo|TaggingVariableList|taggingVariables|void
-reco::TrackIPTagInfo|const GlobalVector&|axis|void
-reco::TrackIPTagInfo|const TrackRef&|ghostTrack|void
-reco::TrackIPTagInfo|const std::vector<TrackIPData>&|impactParameterData|void
-reco::TrackIPTagInfo|const edm::RefVector<TrackCollection>&|selectedTracks|void
-reco::TrackIPTagInfo|const std::vector<float>&|probabilities|int
-reco::TrackIPTagInfo|const edm::Ref<VertexCollection>&|primaryVertex|void

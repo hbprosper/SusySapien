@@ -1,4 +1,0 @@
-edm::TrieNode<T>|const T&|value|void
-edm::TrieNode<T>|unsigned char|brotherLabel|void
-edm::TrieNode<T>|unsigned char|subNodeLabel|void
-edm::TrieNode<T>|const TrieNode<T>*|brother|void

@@ -1,2 +1,0 @@
-reco::PFRecHitFraction|const PFRecHitRef&|recHitRef|void
-reco::PFRecHitFraction|double|fraction|void

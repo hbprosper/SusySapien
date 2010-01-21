@@ -1,3 +1,0 @@
-reco::EgammaTrigger|unsigned char|l1word|void
-reco::EgammaTrigger|template<unsigned char 0> bool|match|void
-reco::EgammaTrigger|template<unsigned char 0> void|set|void

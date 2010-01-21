@@ -1,5 +1,0 @@
-reco::JTATagInfo|JTATagInfo*|clone|void
-reco::JTATagInfo|TrackRefVector|tracks|void
-reco::JTATagInfo|const JetTracksAssociationRef&|jtaRef|void
-reco::JTATagInfo|bool|hasTracks|void
-reco::JTATagInfo|edm::RefToBase<Jet>|jet|void

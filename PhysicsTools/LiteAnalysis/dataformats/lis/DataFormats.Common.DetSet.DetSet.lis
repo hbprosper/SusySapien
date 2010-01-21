@@ -1,2 +1,0 @@
-edm::DetSet<T>|typename std::vector<T>::iterator|begin|void
-edm::DetSet<T>|typename std::vector<T>::iterator|end|void

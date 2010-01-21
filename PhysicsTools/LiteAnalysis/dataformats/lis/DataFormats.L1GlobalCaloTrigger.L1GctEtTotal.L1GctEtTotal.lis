@@ -1,6 +1,0 @@
-L1GctEtTotal|std::string|name|void
-L1GctEtTotal|bool|empty|void
-L1GctEtTotal|uint16_t|raw|void
-L1GctEtTotal|unsigned|et|void
-L1GctEtTotal|bool|overFlow|void
-L1GctEtTotal|int16_t|bx|void

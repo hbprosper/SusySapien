@@ -1,5 +1,0 @@
-l1extra::L1HFRings|const L1GctHFRingEtSums*|gctHFEtSums|void
-l1extra::L1HFRings|const L1GctHFBitCounts*|gctHFBitCounts|void
-l1extra::L1HFRings|int|bx|void
-l1extra::L1HFRings|const edm::Ref<L1GctHFRingEtSumsCollection >&|gctHFEtSumsRef|void
-l1extra::L1HFRings|const edm::Ref<L1GctHFBitCountsCollection >&|gctHFBitCountsRef|void
