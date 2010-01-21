@@ -7,6 +7,7 @@
 // Description: Simple plugin for
 //              class:   pat::Muon
 // Created:     Tue Jan 19 HBP
+//$Revision:$
 //-----------------------------------------------------------------------------
 #include "DataFormats/PatCandidates/interface/Muon.h"
 //-----------------------------------------------------------------------------
