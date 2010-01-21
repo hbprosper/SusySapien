@@ -1,3 +1,0 @@
-reco::MuonSegmentMatch|bool|isMask|unsigned int=Arbitrated
-reco::MuonSegmentMatch|bool|hasZed|void
-reco::MuonSegmentMatch|bool|hasPhi|void

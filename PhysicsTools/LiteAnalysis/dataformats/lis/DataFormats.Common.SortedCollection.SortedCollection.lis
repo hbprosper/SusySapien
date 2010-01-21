@@ -1,3 +1,0 @@
-edm::SortedCollection<T, SORT>|bool|empty|void
-edm::SortedCollection<T, SORT>|typename std::vector<T>::size_type|size|void
-edm::SortedCollection<T, SORT>|typename std::vector<T>::size_type|capacity|void

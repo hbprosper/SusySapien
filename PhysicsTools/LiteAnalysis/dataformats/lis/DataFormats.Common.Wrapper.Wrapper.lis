@@ -1,6 +1,0 @@
-edm::Wrapper<T>|T const*|product|void
-edm::Wrapper<T>|static std::type_info const&|productTypeInfo|void
-edm::Wrapper<T>|static std::type_info const&|typeInfo|void
-edm::EDProduct|bool|isPresent|void
-edm::EDProduct|bool|isMergeable|void
-edm::EDProduct|bool|hasIsProductEqual|void

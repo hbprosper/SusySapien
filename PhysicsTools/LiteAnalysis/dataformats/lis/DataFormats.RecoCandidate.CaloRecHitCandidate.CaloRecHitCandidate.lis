@@ -1,2 +1,0 @@
-reco::CaloRecHitCandidate|CaloRecHitCandidate*|clone|void
-reco::CaloRecHitCandidate|edm::RefToBase<CaloRecHit>|caloRecHit|void

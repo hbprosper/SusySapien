@@ -1,4 +1,0 @@
-reco::PhotonCore|PhotonCore*|clone|void
-reco::PhotonCore|reco::SuperClusterRef|superCluster|void
-reco::PhotonCore|reco::ConversionRefVector|conversions|void
-reco::PhotonCore|reco::ElectronSeedRefVector|electronPixelSeeds|void
