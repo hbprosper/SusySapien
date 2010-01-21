@@ -1,3 +1,4 @@
 <lcgdict>
  <class name="patMuonExtra"/>
+ <class name="recoMuonIsol"/>
 </lcgdict>

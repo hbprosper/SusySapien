@@ -7,22 +7,17 @@
 // Description: Simple plugin for
 //              class:   pat::Muon
 // Created:     Tue Jan 19 HBP
-//$Revision:$
+//$Revision: 1.2 $
 //-----------------------------------------------------------------------------
+#include "DataFormats/MuonReco/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
 //-----------------------------------------------------------------------------
 class patMuonExtra : public pat::Muon
 {
 public:
   patMuonExtra() {}
-  patMuonExtra(const pat::Muon& o)
-    : pat::Muon(o) {}
+  patMuonExtra(const pat::Muon& o) : pat::Muon(o) {}
   ~patMuonExtra() {}
-
-  bool isGlobalMuonPromptTight() const 
-  {
-    return isGood(reco::Muon::GlobalMuonPromptTight);
-  }
 
   double relIso() const
   {
@@ -32,5 +27,20 @@ public:
       return -1;
   }
 };
+
+class recoMuonIsol : public reco::Muon
+{
+public:
+  recoMuonIsol() {}
+  recoMuonIsol(const reco::Muon& o) : reco::Muon(o) {}
+  ~recoMuonIsol() {}
+
+  float sumPt() const { return isolationR03().sumPt; }
+  float emEt()  const { return isolationR03().emEt; }
+  float hadEt() const { return isolationR03().hadEt; }
+  int nTracks() const { return isolationR03().nTracks; }
+
+};
+
 #endif
 
