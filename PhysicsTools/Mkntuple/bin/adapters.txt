@@ -4,6 +4,9 @@ aCaloTower.h
 aHLTPerformanceInfoModule.h
 aHLTPerformanceInfoPath.h
 aL1DataEmulDigi.h
+al1extraL1EmParticle.h
+al1extraL1EtMissParticle.h
+al1extraL1JetParticle.h
 apatCompositeCandidate.h
 apatElectron.h
 apatGenericParticle.h
@@ -29,3 +32,4 @@ arecoPFSimParticle.h
 arecoPFTrack.h
 arecoPhoton.h
 arecoPhotonCore.h
+arecoRecoCaloTowerCandidate.h

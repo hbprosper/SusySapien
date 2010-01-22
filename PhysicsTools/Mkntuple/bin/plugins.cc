@@ -1,6 +1,6 @@
 // ----------------------------------------------------------------------------
-// Created: Wed Jan 20 00:15:09 2010 by mkplugins.py
-// $Revision: 1.2 $
+// Created: Thu Jan 21 21:56:24 2010 by mkplugins.py
+// $Revision: 1.3 $
 //
 // Define all Buffer plugins. Need to use typedefs otherwise the
 // DEFINE macro gets confused by classes with multiple template
@@ -40,10 +40,6 @@ DEFINE_EDM_PLUGIN(BufferFactory, L1GctEtMiss_t, "L1GctEtMiss");
 typedef Buffer<L1GctEtTotal, L1GctEtTotal> L1GctEtTotal_t;
 DEFINE_EDM_PLUGIN(BufferFactory, L1GctEtTotal_t, "L1GctEtTotal");
 
-#include "DataFormats/L1GlobalCaloTrigger/interface/L1GctFibreWord.h"
-typedef Buffer<L1GctFibreWord, L1GctFibreWord> L1GctFibreWord_t;
-DEFINE_EDM_PLUGIN(BufferFactory, L1GctFibreWord_t, "L1GctFibreWord");
-
 #include "DataFormats/L1GlobalCaloTrigger/interface/L1GctHFBitCounts.h"
 typedef Buffer<L1GctHFBitCounts, L1GctHFBitCounts> L1GctHFBitCounts_t;
 DEFINE_EDM_PLUGIN(BufferFactory, L1GctHFBitCounts_t, "L1GctHFBitCounts");
@@ -55,14 +51,6 @@ DEFINE_EDM_PLUGIN(BufferFactory, L1GctHFRingEtSums_t, "L1GctHFRingEtSums");
 #include "DataFormats/L1GlobalCaloTrigger/interface/L1GctHtMiss.h"
 typedef Buffer<L1GctHtMiss, L1GctHtMiss> L1GctHtMiss_t;
 DEFINE_EDM_PLUGIN(BufferFactory, L1GctHtMiss_t, "L1GctHtMiss");
-
-#include "DataFormats/L1GlobalCaloTrigger/interface/L1GctInternEmCand.h"
-typedef Buffer<L1GctInternEmCand, L1GctInternEmCand> L1GctInternEmCand_t;
-DEFINE_EDM_PLUGIN(BufferFactory, L1GctInternEmCand_t, "L1GctInternEmCand");
-
-#include "DataFormats/L1GlobalCaloTrigger/interface/L1GctInternEtSum.h"
-typedef Buffer<L1GctInternEtSum, L1GctInternEtSum> L1GctInternEtSum_t;
-DEFINE_EDM_PLUGIN(BufferFactory, L1GctInternEtSum_t, "L1GctInternEtSum");
 
 #include "DataFormats/L1GlobalCaloTrigger/interface/L1GctJetCand.h"
 typedef Buffer<L1GctJetCand, L1GctJetCand> L1GctJetCand_t;
@@ -93,11 +81,13 @@ typedef Buffer<edm::TriggerResults, edm::TriggerResults> edmTriggerResults_t;
 DEFINE_EDM_PLUGIN(BufferFactory, edmTriggerResults_t, "edmTriggerResults");
 
 #include "DataFormats/L1Trigger/interface/L1EmParticle.h"
-typedef Buffer<l1extra::L1EmParticle, l1extra::L1EmParticle> l1extraL1EmParticle_t;
+#include "PhysicsTools/LiteAnalysis/dataformats/adapters/al1extraL1EmParticle.h"
+typedef Buffer<l1extra::L1EmParticle, al1extraL1EmParticle> l1extraL1EmParticle_t;
 DEFINE_EDM_PLUGIN(BufferFactory, l1extraL1EmParticle_t, "l1extraL1EmParticle");
 
 #include "DataFormats/L1Trigger/interface/L1EtMissParticle.h"
-typedef Buffer<l1extra::L1EtMissParticle, l1extra::L1EtMissParticle> l1extraL1EtMissParticle_t;
+#include "PhysicsTools/LiteAnalysis/dataformats/adapters/al1extraL1EtMissParticle.h"
+typedef Buffer<l1extra::L1EtMissParticle, al1extraL1EtMissParticle> l1extraL1EtMissParticle_t;
 DEFINE_EDM_PLUGIN(BufferFactory, l1extraL1EtMissParticle_t, "l1extraL1EtMissParticle");
 
 #include "DataFormats/L1Trigger/interface/L1HFRings.h"
@@ -105,7 +95,8 @@ typedef Buffer<l1extra::L1HFRings, l1extra::L1HFRings> l1extraL1HFRings_t;
 DEFINE_EDM_PLUGIN(BufferFactory, l1extraL1HFRings_t, "l1extraL1HFRings");
 
 #include "DataFormats/L1Trigger/interface/L1JetParticle.h"
-typedef Buffer<l1extra::L1JetParticle, l1extra::L1JetParticle> l1extraL1JetParticle_t;
+#include "PhysicsTools/LiteAnalysis/dataformats/adapters/al1extraL1JetParticle.h"
+typedef Buffer<l1extra::L1JetParticle, al1extraL1JetParticle> l1extraL1JetParticle_t;
 DEFINE_EDM_PLUGIN(BufferFactory, l1extraL1JetParticle_t, "l1extraL1JetParticle");
 
 #include "DataFormats/L1Trigger/interface/L1MuonParticle.h"
@@ -126,6 +117,10 @@ DEFINE_EDM_PLUGIN(BufferFactory, patJet_t, "patJet");
 #include "PhysicsTools/LiteAnalysis/dataformats/adapters/apatMET.h"
 typedef Buffer<pat::MET, apatMET> patMET_t;
 DEFINE_EDM_PLUGIN(BufferFactory, patMET_t, "patMET");
+
+#include "DataFormats/PatCandidates/interface/MHT.h"
+typedef Buffer<pat::MHT, pat::MHT> patMHT_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patMHT_t, "patMHT");
 
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "PhysicsTools/LiteAnalysis/dataformats/adapters/apatMuon.h"
@@ -175,10 +170,6 @@ DEFINE_EDM_PLUGIN(BufferFactory, recoCaloTauTagInfo_t, "recoCaloTauTagInfo");
 #include "PhysicsTools/LiteAnalysis/dataformats/adapters/arecoConversion.h"
 typedef Buffer<reco::Conversion, arecoConversion> recoConversion_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoConversion_t, "recoConversion");
-
-#include "DataFormats/EgammaCandidates/interface/Electron.h"
-typedef Buffer<reco::Electron, reco::Electron> recoElectron_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoElectron_t, "recoElectron");
 
 #include "DataFormats/EgammaReco/interface/ElectronSeed.h"
 typedef Buffer<reco::ElectronSeed, reco::ElectronSeed> recoElectronSeed_t;
