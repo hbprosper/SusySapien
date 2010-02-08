@@ -1,4 +1,5 @@
 <use name=PhysicsTools/LiteAnalysis>
+<use name=PhysicsTools/Mkntuple>
 <use name=PhysicsTools/UtilAlgos>
 <use name=PhysicsTools/Utilities>
 
@@ -24,17 +25,7 @@
 <use name=rootmath>
 <use name=f77compiler>
 
-<bin name=testbufplugins file=plugins_t.cc>
-<lib name=BufferFactory>
-</bin>
-
-<library file=pluginfactory.cc name=BufferFactory>
-</library>
-
-<library file=plugins.cc name=Buffers>
-<lib name=BufferFactory>
-<flags EDM_PLUGIN=1>
-</library>
+<bin name=testbufplugins file=plugins_t.cc></bin>
 
 
 

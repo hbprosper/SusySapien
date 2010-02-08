@@ -2,14 +2,14 @@
 #------------------------------------------------------------------------------
 # create classes.txt, adapters.txt, headers.txt
 # Created: 05-Jan-2010 Harrison B. Prosper
-#$Revision:$
+#$Revision: 1.2 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
 #------------------------------------------------------------------------------
 cwd = os.path.basename(os.environ['PWD'])
-if cwd != "bin":
-	print "\t** must be run from bin directory"
+if cwd != "plugins":
+	print "\t** must be run from plugins directory"
 	sys.exit(0)
 	
 # Extract branches ending in
@@ -77,22 +77,5 @@ for index, key in enumerate(keys):
 		out.write(record)
 	out.write("\n")
 out.close()
-
-# Create headers.txt
-
-envar = "CMSSW_RELEASE_BASE"
-if os.environ.has_key(envar):
-	print "writing headers.txt ..."
-	cmd = 'find %s/src/DataFormats -name "*.h"' % os.environ[envar]
-	records = os.popen(cmd).readlines()
-	open("headers.txt", "w").writelines(records)
-
-envar = "CMSSW_BASE"
-if os.environ.has_key(envar):
-	print "writing adapters.txt.."
-	cmd = 'ls -1 %s/src/PhysicsTools/LiteAnalysis/dataformats/adapters' % \
-		  os.environ[envar]
-	records = os.popen(cmd).readlines()
-	open("adapters.txt","w").writelines(records)
 
 

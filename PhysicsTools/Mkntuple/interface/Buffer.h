@@ -12,13 +12,14 @@
 //         This code used to look simple, but with all the error handling a
 //         silk purse has been turned into a sow's ear!
 //
-// $Id: Buffer.h,v 1.2 2010/01/20 04:57:22 prosper Exp $
+// $Id: Buffer.h,v 1.3 2010/01/20 06:11:34 prosper Exp $
 //
 //
 // If using Python, include its header first to avoid annoying compiler
 // complaints.
 #include <Python.h>
 #include <boost/python/type_id.hpp>
+#include <boost/regex.hpp>
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -28,65 +29,12 @@
 #include "FWCore/Framework/interface/Event.h"
 #include "PhysicsTools/Mkntuple/interface/pluginfactory.h"
 #include "PhysicsTools/LiteAnalysis/interface/treestream.hpp"
-#include "CommonTools/Utils/src/ExpressionPtr.h"
-#include "CommonTools/Utils/src/ExpressionBase.h"
-#include "CommonTools/Utils/interface/expressionParser.h"
-
-// Ctrl[attribute;foreground;backgroundm
-// \x1b 0,1,...   30+color   40+color
-const std::string BLACK("\x1b[0;30;48m"); 
-const std::string RED  ("\x1b[0;31;48m");
-const std::string GREEN("\x1b[0;32;48m");
+#include "PhysicsTools/LiteAnalysis/interface/kit.h"
+#include "PhysicsTools/LiteAnalysis/interface/Method.h"
 
 // ---------------------------------------------------------------------
 // We need a few templates to make the code generic.
 // ---------------------------------------------------------------------
-
-// Model a function that can be instantiated.
-// This class is basically a copy of StringObjectFunction by Luca Lista. 
-// It models functions of the form
-//
-//  <simple-return-type> function(<simple-type>)
-//
-// where <simple-return-type> is a simple type like float and <simple-type> 
-// is typically void.
-
-template <typename T>
-struct SimpleFunction 
-{
-  SimpleFunction() {}
-  
-  SimpleFunction(const std::string& expr)
-    : expression_(expr),
-      type_(ROOT::Reflex::Type::ByTypeInfo(typeid(T))) 
-  {
-    if(!reco::parser::expressionParser<T>(expr, expr_)) 
-      {
-        throw edm::Exception(edm::errors::Configuration,
-                             "Since I'm a cyber ignoramous, "
-                             "I'm too stupid to understand \"" 
-                             + RED + expr + BLACK + "\"\n");
-      }
-  }
-  
-  std::string name() const
-  {
-    return std::string(boost::python::type_id<T>().name()) 
-      + "::" + expression_;
-  }
-
-  double operator()(const T& t) const 
-  {
-    using namespace ROOT::Reflex;
-    Object o(type_, const_cast<T*>(&t));
-    return expr_->value(o);
-  }
-  
-private:
-  std::string expression_;
-  reco::parser::ExpressionPtr expr_;
-  ROOT::Reflex::Type type_;
-};
 
 // Model a variable as a thing with
 // 1. a name
@@ -98,13 +46,15 @@ struct Variable
 {
   Variable(std::string namen, int count, std::string f) 
     : name(namen),
+      fname(f),
       value(std::vector<double>(count,0)),
-      function(SimpleFunction<X>(f))
+      function(Method<X>(f))
   {}
 
-  std::string name;
+  std::string         name;
+  std::string         fname;
   std::vector<double> value;
-  SimpleFunction<X>   function;
+  Method<X>           function;
 };
 
 // Model a buffer as a thing with
@@ -125,10 +75,8 @@ struct Variable
 //
 // typenames:
 //   X = class of object to be extracted using getByLabel
-//   Y = template value of objects of class Variable<Y>. Y can be the same
-//   as X.
 
-template <typename X, typename Y>
+template <typename X>
 struct Buffer  : public BufferThing
 {
   Buffer() 
@@ -151,12 +99,16 @@ struct Buffer  : public BufferThing
 
   void
   init(otreestream& out,
-       std::string label, 
-       std::string prefix,
+       std::string  label, 
+       std::string  prefix,
        std::vector<VariableDescriptor>& var,
        int maxcount,
        int debug=0)
   {
+
+    boost::regex stripargs("[(].*[)]");
+    boost::regex stripptr("-[>]");
+
     // Store variables needed for later
 
     out_    = &out;
@@ -203,13 +155,16 @@ struct Buffer  : public BufferThing
 
     for(unsigned i=0; i < var_.size(); i++)
       {    
-        std::string method = var_[i].first;
-        std::string varname= var_[i].second;
+        std::string method  = var_[i].first;
+        std::string varname = var_[i].second;
+        varname = boost::regex_replace(varname, stripargs, "");
+        varname = boost::regex_replace(varname, stripptr,  ".");
+                             
         std::string name = prefix_ + "." + varname;
         
         if ( !singleton_ ) name += "[" + counter + "]";
         
-        variable_.push_back(Variable<Y>(name, 
+        variable_.push_back(Variable<X>(name, 
                                         maxcount_,
                                         method));
         std::cout << "   " << i << ":\t" << name 
@@ -272,7 +227,7 @@ struct Buffer  : public BufferThing
 
         // extract datum for each variable
         
-        const Y object(*handle);
+        const X& object = *handle;
 
         for(unsigned i=0; i < variable_.size(); i++)
           {
@@ -285,7 +240,7 @@ struct Buffer  : public BufferThing
                 throw cms::Exception("\nBufferFillFailure",
                                      "failed on call to \"" + 
                                      RED + 
-                                     variable_[i].function.name() + "\"\n" +
+                                     variable_[i].fname + "\"\n" +
                                      GREEN +
                                      "thou lump of foul deformity..." 
                                      + BLACK, e);
@@ -330,23 +285,24 @@ struct Buffer  : public BufferThing
 
         for(int j=0; j < count_; j++)
           {
-            const Y object((*handle)[j]);
+            const X& object = (*handle)[j];
 
             for(unsigned i=0; i < variable_.size(); i++)
               {
                 if ( debug_ > 0 ) 
                   std::cout << RED +"\t" << j << "\tcall: " + BLACK
-                            << variable_[i].function.name() << std::endl;
+                            << variable_[i].fname << std::endl;
                 try
                   {
-                    variable_[i].value[j] = variable_[i].function(object);
+                    variable_[i].value[j] 
+                      = variable_[i].function(object);
                   }
                 catch (cms::Exception& e)
                   {
                     throw cms::Exception("BufferFillFailure",
                                          "failed on call to \"" + 
                                          RED + 
-                                         variable_[i].function.name()+"\"\n" +
+                                         variable_[i].fname+"\"\n" +
                                          GREEN +
                                          "thou lump of foul deformity..." 
                                          + BLACK, e);
@@ -384,7 +340,7 @@ private:
   int debug_;
   int count_;
   std::string message_;
-  std::vector<Variable<Y> > variable_;
+  std::vector<Variable<X> > variable_;
 };
 
 #endif

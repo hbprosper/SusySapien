@@ -5,7 +5,7 @@
 # Created:     06-Jan-2010 Harrison B. Prosper
 # Updated:     16-Jan-2010 HBP - simplify command line
 #-----------------------------------------------------------------------------
-#$Revision: 1.1.2.3 $
+#$Revision: 1.3 $
 #-----------------------------------------------------------------------------
 import sys, os, re, platform
 from ROOT import *
@@ -27,21 +27,21 @@ if not os.environ.has_key("CMSSW_BASE"):
 	print "\t*** please set up CMSSW first\n"
 	sys.exit(0)
 
-BASE           = os.environ["CMSSW_BASE"]
+BASE           = "%s/src/PhysicsTools/LiteAnalysis" % os.environ["CMSSW_BASE"]
 VERSION        = \
 """
-mkntuplecfi.py v1.0.1 January 2010
+mkntuplecfi.py v1.0.2 February 2010
 Python %s
 Root   %s
 """ % (platform.python_version(),
 	   gROOT.GetVersion())
 ICONDIR        = "%s/icons" % os.environ["ROOTSYS"]
-METHODDIR      = "%s/src/PhysicsTools/LiteAnalysis/dataformats/methods" % \
-				 BASE
+METHODDIR      = "methods"
 
 if not os.path.exists(METHODDIR):
-	print "\t** cannot find methods directory:\n%s" % METHODDIR
-	sys.exit(0)
+	cmd = "mkmethodlist.py %s/dataformats/txt/*.txt" % BASE
+	print cmd
+	os.system(cmd)
 
 print VERSION
 #-----------------------------------------------------------------------------
@@ -593,7 +593,7 @@ class Gui:
 		for record in records:
 			label = getlabel.findall(record)[0]
 			cname = getclass.findall(record)[0]
-			fname = "%s/a%s.txt" % (self.methodDir, stripname.sub("", cname))
+			fname = "%s/%s.txt" % (self.methodDir, stripname.sub("", cname))
 			if not os.path.exists(fname): continue
 			
 			# methods file found, so read methods
@@ -877,31 +877,35 @@ class Gui:
 		out.write('cms.EDAnalyzer("Mkntuple",\n')
 		#out.write('%sdebugLevel = cms.untracked.int32(0),\n' % tab)
 		#out.write('\n')
-		out.write('%sntupleName = cms.untracked.string("ntuple.root"),\n' % \
+		out.write('%sntupleName = cms.untracked.string("ntuple.root"),\n\n' % \
 				  tab)
-		out.write('%svariables  =\n' % tab)
+		out.write('%sbuffers =\n' % tab)
 		out.write('%scms.untracked.\n' % tab)
 		out.write("%svstring(\n" % tab)
+		tab1 = tab
 
-		tab = 4*' '
-
-		
-		nlines = 0
 		nmethods = 0
 		
 		###D
 		#print "get selected classes"
 		
 		# Get selected classes
-		
+
+		tab = 4*' '
 		names = self.cmap.keys()
 		names.sort()
 		cnames = []
+		delim = tab
 		for index, name in enumerate(names):
 			if not self.cmap[name]['selected']: continue
+			buffer = stripname.sub("", name)
 			cnames.append(name)
+			out.write('%s"%s"' % (delim, buffer))
+			delim = ",\n%s" % tab
+		out.write('\n%s),\n' % tab)
+			
 
-		prefix = ''
+		prefix = tab1
 		for index, cname in enumerate(cnames):
 			if isVector(cname):
 				maxcount = K_MAX_COUNT
@@ -929,13 +933,21 @@ class Gui:
 
 			###D
 			#print "  class( %s )" % cname
+
+			out.write('%s%s =\n' % (prefix, buffer))
+			out.write('%scms.untracked.\n' % tab1)
+			out.write("%svstring(\n" % tab1)
+			
+			prefix = ",\n%s" % tab1
 			
 			# loop over class/label pairs
 
+			nlines = 0
+			
 			for index, label in enumerate(labels):
 
-				record = '%s%s"%-31s %-31s %3d",\n' % \
-						 (prefix, tab, buffer, label, maxcount)
+				record = '%s"%-31s %-31s %3d",\n' % \
+						 (tab, buffer, label, maxcount)
 				###D
 				#print record
 				out.write(record); nlines += 1
@@ -943,16 +955,17 @@ class Gui:
 						  '-------------------------------------\n' % tab)
 
 				# get selected methods
+				delim = tab
 				if nlines < K_MAX_LINES-2:
 					for index, method in enumerate(methods):
-						record = '%s"%s",\n' % (tab, method)
+						record = '%s"%s"' % (delim, method)
+						delim  = ",\n%s"  % tab
 						out.write(record); nlines += 1
 						nmethods += 1
 						
 						if nlines > K_MAX_LINES-2:
 							break
-				out.write('%s"/"' % tab); nlines += 1
-				prefix = ",\n"
+				out.write('\n%s)' % tab); nlines += 1
 				
 				if nlines > K_MAX_LINES-1:
 					THelpDialog(self.window,
@@ -961,9 +974,7 @@ class Gui:
 								320, 40)
 					break
 				
-		out.write("\n%s)\n" % tab)
-		tab = 15*' '
-		out.write("%s)\n" % tab)
+		out.write("\n%s)\n" % tab1)
 		out.close()
 
 		self.statusBar.SetText("Done!", 0)
