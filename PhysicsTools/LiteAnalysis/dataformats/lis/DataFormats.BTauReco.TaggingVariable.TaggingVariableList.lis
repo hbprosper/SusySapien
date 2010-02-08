@@ -1,3 +1,0 @@
-reco::TaggingVariableList|size_t|size|void
-reco::TaggingVariableList|std::vector<TaggingVariable >::const_iterator|begin|void
-reco::TaggingVariableList|std::vector<TaggingVariable >::const_iterator|end|void

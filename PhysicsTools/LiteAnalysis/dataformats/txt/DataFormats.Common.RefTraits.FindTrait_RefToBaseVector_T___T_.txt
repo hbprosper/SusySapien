@@ -1,9 +1,0 @@
-Class:
-	edm::refhelper::FindTrait<C, T>
-
-Header:
-	DataFormats/Common/interface/RefTraits.h
-
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:56:20 2010	lsclass.py $Revision:$
-

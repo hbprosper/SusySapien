@@ -1,1 +1,0 @@
-$CMSSW_RELEASE_BASE/src/DataFormats/EgammaReco/interface/PreshowerClusterShapeFwd.h

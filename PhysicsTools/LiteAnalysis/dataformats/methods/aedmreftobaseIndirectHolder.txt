@@ -1,4 +1,0 @@
-bool	hasProductCache()
-bool	isAvailable()
-size_t	key()
-

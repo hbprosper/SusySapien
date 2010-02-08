@@ -1,6 +1,0 @@
-unsigned int	nSelectedTracks()
-unsigned int	nVertexCandidates()
-unsigned int	nVertexTracks()
-unsigned int	nVertexTracks(unsigned int x)
-unsigned int	nVertices()
-

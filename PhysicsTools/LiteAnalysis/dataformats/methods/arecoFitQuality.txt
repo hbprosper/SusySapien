@@ -1,4 +1,0 @@
-double	chi2()
-double	ndof()
-double	normalizedChi2()
-

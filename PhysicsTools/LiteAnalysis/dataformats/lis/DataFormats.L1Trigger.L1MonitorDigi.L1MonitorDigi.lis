@@ -1,9 +1,0 @@
-L1MonitorDigi|unsigned|sid|void
-L1MonitorDigi|unsigned|cid|void
-L1MonitorDigi|unsigned|x1|void
-L1MonitorDigi|unsigned|x2|void
-L1MonitorDigi|unsigned|x3|void
-L1MonitorDigi|unsigned|raw|void
-L1MonitorDigi|unsigned|value|void
-L1MonitorDigi|unsigned|reset|void
-L1MonitorDigi|bool|empty|void
