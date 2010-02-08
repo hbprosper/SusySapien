@@ -3,3 +3,6 @@ Mkntuple													Harrison B. Prosper
 
 (A) INTRODUCTION
 
+	Mkntuple is executed using the command
+
+	cmsRun config.py
