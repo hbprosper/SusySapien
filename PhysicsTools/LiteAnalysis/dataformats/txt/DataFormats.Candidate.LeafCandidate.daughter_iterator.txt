@@ -1,8 +1,0 @@
-Class:       reco::LeafCandidate::daughter_iterator
-
-Header:      DataFormats/Candidate/interface/LeafCandidate.h
-
-Version:     CMSSW_3_4_1
-Created:     Sun Feb  7 17:09:35 2010	mkdocs.py
-
-AccessMethods - reco::LeafCandidate::daughter_iterator
