@@ -1,3 +1,0 @@
-bool	passedECALisolation()
-bool	passedtrackerisolation()
-

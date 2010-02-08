@@ -1,9 +1,0 @@
-reco::PFIsolatedTauTagInfo|PFIsolatedTauTagInfo*|clone|void
-reco::PFIsolatedTauTagInfo|const PFCandidateRefVector&|PFCands|void
-reco::PFIsolatedTauTagInfo|const PFCandidateRefVector&|PFChargedHadrCands|void
-reco::PFIsolatedTauTagInfo|const PFCandidateRefVector&|PFNeutrHadrCands|void
-reco::PFIsolatedTauTagInfo|const PFCandidateRefVector&|PFGammaCands|void
-reco::PFIsolatedTauTagInfo|math::XYZTLorentzVector|alternatLorentzVect|void
-reco::PFIsolatedTauTagInfo|const PFJetRef&|pfjetRef|void
-reco::PFIsolatedTauTagInfo|bool|passedtrackerisolation|void
-reco::PFIsolatedTauTagInfo|bool|passedECALisolation|void

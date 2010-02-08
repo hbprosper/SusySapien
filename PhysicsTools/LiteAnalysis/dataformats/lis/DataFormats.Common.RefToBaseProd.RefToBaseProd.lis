@@ -1,8 +1,0 @@
-edm::RefToBaseProd<T>|View<T> const*|get|void
-edm::RefToBaseProd<T>|View<T> const*|product|void
-edm::RefToBaseProd<T>|RefCore const&|refCore|void
-edm::RefToBaseProd<T>|bool|isNull|void
-edm::RefToBaseProd<T>|bool|isNonnull|void
-edm::RefToBaseProd<T>|ProductID|id|void
-edm::RefToBaseProd<T>|EDProductGetter const*|productGetter|void
-edm::RefToBaseProd<T>|bool|hasCache|void

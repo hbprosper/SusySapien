@@ -1,1 +1,0 @@
-$CMSSW_RELEASE_BASE/src/DataFormats/L1Trigger/interface/L1JetParticleFwd.h

@@ -1,3 +1,0 @@
-int	factorial(int x)
-int	selectedTracks(int x)
-

@@ -1,5 +1,0 @@
-int	detId()
-bool	isTrackerLayer()
-bool	isValid()
-int	layer()
-

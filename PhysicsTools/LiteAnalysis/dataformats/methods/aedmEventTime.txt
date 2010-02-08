@@ -1,4 +1,0 @@
-unsigned	size()
-double	time(unsigned x)
-double	tot_time()
-

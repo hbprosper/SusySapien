@@ -1,4 +1,0 @@
-HLTPerformanceInfo::Module|std::string|name|void
-HLTPerformanceInfo::Module|double|time|void
-HLTPerformanceInfo::Module|double|cputime|void
-HLTPerformanceInfo::Module|edm::HLTPathStatus|status|void
