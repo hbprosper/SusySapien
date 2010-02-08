@@ -1,4 +1,4 @@
-#$Revision: 1.2 $
+#$Revision: 1.3 $
 import FWCore.ParameterSet.Config as cms
 
 process = cms.Process("Demo")
@@ -12,6 +12,6 @@ process.source = cms.Source("PoolSource",
 							cms.untracked.vstring("file:pat.root"
 												  )
 							)
-process.load("PhysicsTools.Mkntuple.so10pat")
+process.load("PhysicsTools.Mkntuple.pat_cfi")
 
 process.p = cms.Path(process.demo)
