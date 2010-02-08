@@ -24,7 +24,7 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Wed Jun 20 19:53:47 EDT 2007
-// $Id: EventStream.h,v 1.2 2008/10/31 02:02:53 harry Exp $
+// $Id: EventStream.h,v 1.2 2010/01/16 04:08:18 prosper Exp $
 //
 //
 //-----------------------------------------------------------------------------
@@ -59,14 +59,14 @@ namespace
 	if ( stream ) vstr.push_back(s);
       }
   }
- 
-  struct Branch
-  {
-    TBranch*    branch;
-    void*       address;
-    std::string otype;
-  };
 }
+struct Branch
+{
+  TBranch*    branch;
+  void*       address;
+  std::string otype;
+};
+
 typedef std::vector<std::string> vstring;
 typedef std::map<std::string, Branch> BranchMap;
 typedef std::map<std::string, Branch>::iterator BranchMapIter;

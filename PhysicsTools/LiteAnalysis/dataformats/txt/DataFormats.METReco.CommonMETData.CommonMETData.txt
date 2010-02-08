@@ -1,0 +1,8 @@
+Class:       CommonMETData
+
+Header:      DataFormats/METReco/interface/CommonMETData.h
+
+Version:     CMSSW_3_4_1
+Created:     Sun Feb  7 17:09:44 2010	mkdocs.py
+
+AccessMethods - CommonMETData

@@ -25,8 +25,11 @@ Slot::Slot() {}
 
 Slot::Slot(UInt_t object, const char *method)  	   
   : _object(object),
-    _method(method)
-{}
+    _mstr(method),
+    _method(std::vector<char>(_mstr.size()+1,0))
+{
+  copy(_mstr.begin(), _mstr.end(), _method.begin());
+}
 
 Slot::~Slot() 
 {}
@@ -36,9 +39,10 @@ Slot::~Slot()
 
 void Slot::handleSignal(Int_t id)
 {
+  char ip[4] = {"(i)"};
   PyObject *result = PyObject_CallMethod((PyObject*)_object,
-					 (char*)(_method.c_str()),
-					 "(i)", id);
+					 &_method[0],
+					 ip, id);
   if ( PyErr_Occurred() ) PyErr_Clear();
 
   // Decrement reference count. Use XDECREF to ignore NULL references
@@ -49,7 +53,7 @@ void Slot::handleSignal(Int_t id)
 void Slot::handleSignal()
 {
   PyObject *result = PyObject_CallMethod((PyObject*)_object,
-					 (char*)(_method.c_str()), NULL);
+					 &_method[0], NULL);
   if ( PyErr_Occurred() ) PyErr_Clear();
 
   // Decrement reference count. Use XDECREF to ignore NULL references

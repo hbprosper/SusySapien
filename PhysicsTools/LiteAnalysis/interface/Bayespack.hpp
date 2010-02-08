@@ -35,8 +35,8 @@ class Bayespack
 {
 public:
   ///
-  Bayespack(char* title="BayesPack",       
-            char* filename=".Bayespack.out");
+  Bayespack(std::string title="BayesPack",       
+            std::string filename=".Bayespack.out");
   ///
   ~Bayespack();
 
@@ -47,7 +47,7 @@ public:
   void setMaxpoints(int   maxvls) {_maxvls = maxvls;}// Max. func. evaluations
 
   ///
-  void setTitle (char*    problem){_problem=std::string(problem);}
+  void setTitle (std::string problem){_problem=problem;}
 
   ///
   void setTransform(int   numtrn) {_numtrn = numtrn;} // Transformation type
@@ -62,7 +62,7 @@ public:
   int    maxpoints(){return _maxvls;}
 
   ///
-  const char*  title ()   {return _problem.c_str();}
+  std::string  title ()   {return _problem;}
 
   ///
   int    transform(){return _numtrn;}

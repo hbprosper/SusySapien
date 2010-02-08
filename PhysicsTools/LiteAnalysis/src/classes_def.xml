@@ -3,15 +3,12 @@
    <class name="std::vector<TLorentzVector>"/>
    <class name="std::vector<std::vector<double> >"/>
    <class name="std::vector<TH1F*>"/>
-   <class name="std::vector<MatchedPair>"/>
-   <class name="std::vector<PtThing>"/>
+   <class name="std::vector<kit::MatchedPair>"/>
+   <class name="std::vector<kit::PtThing>"/>
    <class name="std::map<std::string, std::vector<float>* >"/>
    <class name="std::map<std::string, std::vector<float> >"/>
    <class name="std::map<std::string, std::vector<double> >"/>
 
-   <class name="EventStream"/>
-   <class name="MatchedPair"/>
-   <class name="PtThing"/>
    <class name="CanvasScribe"/>
    <class name="HistogramCache"/>
    <class name="AdBayes"/>
@@ -29,40 +26,11 @@
    <class name="THelpDialog"/>
    <class name="itreestream"/>
    <class name="otreestream"/>
+   <class name="kit::MatchedPair"/>
+   <class name="kit::PtThing"/>
 
    <class name="ATest"/>
    <class name="Aclass"/>
    <class name="Bclass"/>
 
-
-   <class name="arecoFlavorHistory"/>
-   <class name="arecoPFTrack"/>
-   <class name="arecoPFBlockElement"/>
-   <class name="apatJet"/>
-   <class name="arecoPFSimParticle"/>
-   <class name="apatPhoton"/>
-   <class name="arecoConversion"/>
-   <class name="apatCompositeCandidate"/>
-   <class name="arecoGsfPFRecTrack"/>
-   <class name="aCaloRecHit"/>
-   <class name="apatPFParticle"/>
-   <class name="arecoNuclearInteraction"/>
-   <class name="arecoPhoton"/>
-   <class name="apatTau"/>
-   <class name="arecoPhotonCore"/>
-   <class name="aCaloTower"/>
-   <class name="apatElectron"/>
-   <class name="apatMuon"/>
-   <class name="apatParticle"/>
-   <class name="arecoCaloCluster"/>
-   <class name="arecoPFRecTrack"/>
-   <class name="aHLTPerformanceInfoModule"/>
-   <class name="apatMET"/>
-   <class name="arecoClusterShape"/>
-   <class name="arecoPFBlockElementTrack"/>
-   <class name="aL1DataEmulDigi"/>
-   <class name="apatVertexAssociation"/>
-   <class name="aHLTPerformanceInfoPath"/>
-   <class name="apatGenericParticle"/>
-   <class name="arecoHFEMClusterShape"/>
 </lcgdict>

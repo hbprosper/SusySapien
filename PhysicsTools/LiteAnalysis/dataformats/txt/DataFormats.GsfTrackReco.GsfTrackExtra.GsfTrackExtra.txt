@@ -1,0 +1,16 @@
+Class:       reco::GsfTrackExtra
+
+Header:      DataFormats/GsfTrackReco/interface/GsfTrackExtra.h
+
+Version:     CMSSW_3_4_1
+Created:     Sun Feb  7 17:09:38 2010	mkdocs.py
+
+AccessMethods - reco::GsfTrackExtra
+                            double  outerStateLocalPzSign()
+               std::vector<double>  outerStateWeights()
+  std::vector<ROOT::Math::SVector<double,5> >  outerStateLocalParameters()
+  std::vector<ROOT::Math::SMatrix<double,5,5,ROOT::Math::MatRepSym<double,5> > >  outerStateCovariances()
+                            double  innerStateLocalPzSign()
+               std::vector<double>  innerStateWeights()
+  std::vector<ROOT::Math::SVector<double,5> >  innerStateLocalParameters()
+  std::vector<ROOT::Math::SMatrix<double,5,5,ROOT::Math::MatRepSym<double,5> > >  innerStateCovariances()

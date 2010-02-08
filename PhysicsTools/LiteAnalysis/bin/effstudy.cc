@@ -7,6 +7,7 @@
 //
 // Created: 24-Jun-2007 Harrison B. Prosper
 // Updated: 01-Nov-2007 HBP
+// $Revision:$
 //-----------------------------------------------------------------------------
 #include "PhysicsTools/LiteAnalysis/interface/EventStream.h"
 #include "PhysicsTools/LiteAnalysis/interface/kit.h"
@@ -90,7 +91,7 @@ mapRecoElectrons(vector<reco::GsfElectron>& p,
 void 
 fillPt(TH1F* h1, TH1F* h2, 
        vector<TLorentzVector>& p, 
-       vector<MatchedPair>& matches)
+       vector<kit::MatchedPair>& matches)
 {
   for (unsigned i=0; i < p.size(); i++) 
     {
@@ -195,7 +196,7 @@ main(int argc, char** argv)
 
       // Match between truth and reco
 
-      vector<MatchedPair> matches = kit::deltaR(l, L);
+      vector<kit::MatchedPair> matches = kit::deltaR(l, L);
 
       float LLmass=-1;
       if (L.size() > 1)

@@ -1,0 +1,11 @@
+Class:       reco::DeDxData
+
+Header:      DataFormats/TrackReco/interface/DeDxData.h
+
+Version:     CMSSW_3_4_1
+Created:     Sun Feb  7 17:09:59 2010	mkdocs.py
+
+AccessMethods - reco::DeDxData
+                             float  dEdx()
+                             float  dEdxError()
+                      unsigned int  numberOfMeasurements()

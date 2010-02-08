@@ -7,26 +7,85 @@
 class Aclass
 {
 public:
-  Aclass() {}
+  Aclass() : val(0) {}
   ~Aclass() {}
   void say() { std::cout << "I'm an Aclass thing" << std::endl; } 
+  double value(){return val++;}
+private:
+  double val;
 };
 
 class Bclass
 {
 public:
-  Bclass() {}
+  Bclass() : val(24) {}
   ~Bclass() {}
-  void say() { std::cout << "I'm an Bclass thing" << std::endl; } 
+  void say() { std::cout << "I'm a Bclass thing" << std::endl; } 
+  double value(int x){val += x; return val;}
+
+private:
+  double val;
 };
 
 
-class ATest
+class ATestBase
+{
+public:
+  ATestBase() : val(0) {}
+  virtual ~ATestBase() {}
+  virtual Aclass* ptrToA() const
+  {
+    return (Aclass*)0;
+  }
+
+  virtual double value() {return val += 3;}
+private:
+  double val;
+  
+};
+
+class ATest : public ATestBase
 {
 public:
   ATest(std::string message)
-  : message_(message) {}
+    : ATestBase(),
+      message_(message) {}
+
+  ATest(Aclass& a, Bclass& b)
+    : ATestBase(),
+      a_(&a),
+      b_(b),
+      count_(0)
+  {}
+
   ~ATest() {}
+
+
+  Aclass* ptrToA() const { return a_; }
+
+  Bclass& getB() 
+  {
+    b_.say();
+    return b_; 
+  }
+
+  const Bclass  getB(std::string s) const 
+  { 
+    std::cout << "getB: \"" << s << "\"" << std::endl;
+    return b_; 
+  }
+
+  double value(int i, std::string s, double d) 
+  {
+//     std::cout << "BEGIN(value)" << std::endl;
+//     std::cout << "  index  <" << i << ">" << std::endl;
+//     std::cout << "  string <" << s << ">" << std::endl;
+//     std::cout << "  double <" << d << ">" << std::endl;
+//     std::cout << "END(value)" << std::endl;
+    count_++;
+    std::cout << "\tcount: " << count_ << std::endl;
+    return count_; 
+  }
 
   double method1() const
   {
@@ -38,6 +97,7 @@ public:
     std::cout << "method2: " << message_ << ": " << message << std::endl;
     return 2;
   }
+
 
   double method() const
   {
@@ -64,7 +124,9 @@ public:
 
 private:
   std::string message_;
-
+  Aclass* a_;
+  Bclass  b_;
+  int count_;
 };
 
 

@@ -1,7 +1,6 @@
 //-----------------------------------------------------------------------------
 #include "PhysicsTools/LiteAnalysis/interface/Connection.hpp"
 #include "PhysicsTools/LiteAnalysis/interface/Slot.hpp"
-#include "PhysicsTools/LiteAnalysis/interface/EventStream.h"
 #include "PhysicsTools/LiteAnalysis/interface/kit.h"
 #include "PhysicsTools/LiteAnalysis/interface/root.h"
 #include "PhysicsTools/LiteAnalysis/interface/treestream.hpp"
@@ -16,8 +15,6 @@
 #include "PhysicsTools/LiteAnalysis/interface/Bayespack.hpp"
 #include "PhysicsTools/LiteAnalysis/interface/Slurper.hpp"
 #include "PhysicsTools/LiteAnalysis/interface/ATest.h"
-//-----------------------------------------------------------------------------
-#include "PhysicsTools/LiteAnalysis/interface/adapters.h"
 //-----------------------------------------------------------------------------
 #include "DataFormats/CaloTowers/interface/CaloTower.h"
 #include "DataFormats/EgammaReco/interface/BasicCluster.h"
@@ -59,10 +56,10 @@ namespace {
   namespace {
     std::vector<TVector3>       c1;
     std::vector<TLorentzVector> c2;
-    std::vector<MatchedPair>    c3;
+    std::vector<kit::MatchedPair>    c3;
     std::vector<std::vector<double> > c4;
     std::vector<TH1F*> c5;
-    std::vector<PtThing>    c6;
+    std::vector<kit::PtThing>    c6;
     std::map<std::string, std::vector<float>* > c7;
     std::map<std::string, std::vector<float> >  c8;
     std::map<std::string, std::vector<double> > c9;
@@ -113,7 +110,7 @@ bool kit::hasKey(std::map<std::string, std::vector<float> >&, std::string);
 template
 bool kit::hasKey(std::map<std::string, std::vector<double> >&, std::string);
 //-------------------------------------------------------------------------
-
+/*
 template 
 bool EventStream::select(double&, std::string);
 
@@ -213,3 +210,4 @@ bool EventStream::select(std::vector<pat::Hemisphere>&, std::string="");
 template 
 bool EventStream::select(std::vector<pat::MET>&, std::string="");
 
+*/

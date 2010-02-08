@@ -1,0 +1,8 @@
+Class:       reco::TrackIPData
+
+Header:      DataFormats/BTauReco/interface/TrackIPData.h
+
+Version:     CMSSW_3_4_1
+Created:     Sun Feb  7 17:09:32 2010	mkdocs.py
+
+AccessMethods - reco::TrackIPData

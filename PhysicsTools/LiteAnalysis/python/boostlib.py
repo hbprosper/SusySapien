@@ -3,11 +3,10 @@
 # Description: A collection of boostutil utilities. Most have been culled
 #              from either xml2boost.py or header2xml.
 # Created: 19-May-2006 Harrison B. Prosper
-#$Revision: 1.7 $
+#$Revision: 1.2 $
 #---------------------------------------------------------------------------
 import os, sys, re, posixpath, shelve
 from string import *
-from sets   import Set
 from elementtree.ElementTree import ElementTree
 from xml.parsers.expat import ExpatError
 #---------------------------------------------------------------------------
@@ -374,7 +373,58 @@ def decodeCallback(record):
         record = scrunch.sub("", record)
         return decodeMethodName(record)
     return None
+#---------------------------------------------------------------------------
+getmethodname = re.compile(r"[a-zA-Z][\w\_]*(?=\()")
+getmethodargs = re.compile(r"(?<=\().*(?=\))")
+def readMethods(txtfilename):
+	records = map(strip, open(txtfilename).readlines())
 
+	methods = []
+	basenames = []
+	classname = header = None
+	isMethod = False 
+	isBase   = False
+	
+	for rec in records:
+		t = split(rec)
+		if len(t) > 0:
+			token = t[0]
+		else:
+			token = None
+			
+		if   token == "Class:":
+			classname = t[1]
+
+		elif token == "Header:":
+			header = t[1]
+
+		elif token == "BaseClasses:":
+			isBase = True
+			basename = t[1]
+			basenames.append(basename)
+
+		elif token == "AccessMethods":
+			isMethod = True
+			continue
+		
+		elif isBase:
+			if rec != "":
+				basenames.append(rec)
+			else:
+				isBase = False
+			
+		elif isMethod:
+			if rec != "":
+				name  = strip(getmethodname.findall(rec)[0])
+				getmethodrtype = re.compile(r'.*(?=%s\()' % name)
+				rtype = strip(getmethodrtype.findall(rec)[0])
+				atype = strip(getmethodargs.findall(rec)[0])
+				if atype == "": atype = 'void'
+				methods.append((rtype, name, atype, rec))
+			else:
+				isMethod = False
+
+	return (header, classname, basenames, methods)
 #---------------------------------------------------------------------------
 def stripBlanklines(record):
     """

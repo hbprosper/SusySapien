@@ -15,12 +15,13 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Wed Jun 20 19:53:47 EDT 2007
 //         Updated:  Sat Oct 25 2008 - make matchInDeltaR saner
-// $Id: kit.cc,v 1.3 2008/10/31 02:02:53 harry Exp $
+// $Id: kit.cc,v 1.2 2010/01/16 04:08:19 prosper Exp $
 //
 //
 //-----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python.hpp>
+#include <boost/regex.hpp>
 #include <sstream>
 #include <cassert>
 #include <string>
@@ -32,13 +33,15 @@
 //-----------------------------------------------------------------------------
 #include "TROOT.h"
 #include "TSystem.h"
-#include "Reflex/Reflex.h"
+#include "TString.h"
+#include "TInterpreter.h"
 #include "CLHEP/Random/RandGamma.h"
 #include "HepMC/SimpleVector.h"
 #include "HepMC/GenVertex.h"
 #include "HepPID/ParticleName.hh"
 #include "PhysicsTools/LiteAnalysis/interface/kit.h"
 #include "FWCore/FWLite/interface/AutoLibraryLoader.h"
+#include "FWCore/Utilities/interface/Exception.h"
 //-----------------------------------------------------------------------------
 using namespace std;
 using namespace reco;
@@ -51,6 +54,9 @@ extern "C"
 //----------------------------------------------------------------------------
 
 const int MAXDEPTH=10;
+
+void 
+kit::set(double y, double* x) {*x=y;}
 
 float
 kit::deltaPhi(float phi1, float phi2)
@@ -68,14 +74,14 @@ kit::deltaR(float eta1, float phi1, float eta2, float phi2)
   return sqrt(deltaeta*deltaeta + deltaphi*deltaphi);
 }
 
-std::vector<MatchedPair>
+std::vector<kit::MatchedPair>
 kit::deltaR(std::vector<TLorentzVector>& v1,
             std::vector<TLorentzVector>& v2)
 {
-  if ( v1.size() == 0 || v2.size() == 0 ) return vector<MatchedPair>();
+  if ( v1.size() == 0 || v2.size() == 0 ) return vector<kit::MatchedPair>();
 
-  vector<MatchedPair> mp(v1.size(), MatchedPair());
-  vector<MatchedPair> vp(v2.size(), MatchedPair());
+  vector<kit::MatchedPair> mp(v1.size(), kit::MatchedPair());
+  vector<kit::MatchedPair> vp(v2.size(), kit::MatchedPair());
 
   for(unsigned i=0; i < v1.size(); i++)
     {
@@ -93,7 +99,7 @@ kit::deltaR(std::vector<TLorentzVector>& v1,
   return mp;
 }
 
-std::vector<MatchedPair>
+std::vector<kit::MatchedPair>
 kit::deltaR(std::vector<math::XYZVector>& p1,
             std::vector<math::XYZVector>& p2)
 {
@@ -104,14 +110,14 @@ kit::deltaR(std::vector<math::XYZVector>& p1,
   return kit::deltaR(v1, v2);
 }
 
-std::vector<MatchedPair>
+std::vector<kit::MatchedPair>
 kit::deltaR(std::vector<PtThing>& v1,
             std::vector<PtThing>& v2)
 {
-  if ( v1.size() == 0 || v2.size() == 0 ) return vector<MatchedPair>();
+  if ( v1.size() == 0 || v2.size() == 0 ) return vector<kit::MatchedPair>();
 
-  vector<MatchedPair> mp(v1.size(), MatchedPair());
-  vector<MatchedPair> vp(v2.size(), MatchedPair());
+  vector<kit::MatchedPair> mp(v1.size(), kit::MatchedPair());
+  vector<kit::MatchedPair> vp(v2.size(), kit::MatchedPair());
 
   for(unsigned i=0; i < v1.size(); i++)
     {
@@ -217,6 +223,12 @@ kit::split(string str, vector<string>& vstr)
     }
 }
 
+string
+kit::replace(string& str, string oldstr, string newstr)
+{
+  return string(TString(str).ReplaceAll(oldstr, newstr).Data());
+}
+
 string 
 kit::shell(string cmd)
 {
@@ -230,62 +242,850 @@ kit::shell(string cmd)
 }
 
 
-// Some simple reflex stuff
-void
-kit::classMethods(string classname,
-                  vector<string>& methods,
-                  map<string, int>& methmap, 
-                  int depth)
+vector<string>
+kit::regex_findall(string& str, string expr)
 {
-  if ( depth == 0)
-    methmap.clear();
-  else if ( depth > 10 ) 
+  vector<string> v;
+  // Get all matches
+  boost::regex regexp(expr);
+  int start = 0;
+  int end = (int)str.size();
+  for (;;)
     {
-      cout << "kit::classMethods - yikes, lost in the trees!" << endl;
-      exit(0);
-    }
-
-  cout << depth << "\tclass: " << classname << endl;
-
-  Type thing;
-  string cname = kit::strip(kit::truncate(classname, "<"));
-  if ( cname != classname )
-    cout << "\t\ttemplate: " << cname << endl;
-
-  Type c = thing.ByName(cname);
-  int n = c.FunctionMemberSize();
-
-  for(int i=0; i < n; i++)
-    {
-      Member m = c.FunctionMemberAt(i);
-      if ( !m.IsPublic() ) continue;
-      if ( !m.IsFunctionMember() ) continue;
-      //      if ( m.IsConstructor() ) continue;
-      //if ( m.IsDestructor() ) continue;
-
-      string key = m.Name() + "\\" + m.TypeOf().Name();
-      if ( methmap.find(key) == methmap.end() ) 
+      boost::smatch matches;
+      if ( boost::regex_search(str.substr(start, end), 
+                               matches, regexp,
+                               boost::match_partial) )
         {
-          methmap[key] = m.FunctionParameterSize();
-          string name = key + "\\" + classname;
-          methods.push_back(name);
-          cout << "\t\t" << name << endl;
+          cout << matches[0] << endl;
+          v.push_back(matches[0]);
+          int index=0;
+          start 
+            += (int)(matches.position(index)) 
+            +  (int)(matches[0].length()) + 1; 
+          if ( start >= end ) break;
+        }
+      else
+        break;
+    }
+  return v;
+} 
+
+string
+kit::regex_search(string& str, string expr) 
+{
+  boost::regex regexp(expr);
+  boost::smatch match;
+  if ( boost::regex_search(str, match, regexp) )
+    return match[0];
+  else
+    return "";
+}
+
+string
+kit::regex_sub(string& str, string expr, string rstr) 
+{
+  boost::regex regexp(expr);
+  boost::smatch match;
+  if ( boost::regex_search(str, match, regexp) )
+    return kit::replace(str, match[0], rstr);
+  else
+    return str;
+}
+
+// Needed for classGetterInfo
+
+string subbasicstr(string& str)
+{
+  return kit::replace(str, "std::basic_string<char>", "std::string");
+}
+
+bool skipmethod(string& str)
+{
+  string expr("TClass|TBuffer|TMember|operator|^__");
+  vector<string> v = kit::regex_findall(str, expr);
+  return v.size() > 0;
+}
+
+
+string vsqueeze(string& str)
+{
+  string s = kit::replace(str, " >", ">");
+  return kit::replace(s, ">>", "> >");
+}
+
+// ---------------------------------------------------------------------------
+// Reflex stuff
+// ---------------------------------------------------------------------------
+
+void 
+kit::getScopes(std::string classname, 
+               std::vector<std::string>& names, 
+               int depth)
+{
+  depth++;
+  if ( depth > 20 )
+    {
+      throw cms::Exception("LostInTrees")
+        << "\tgetBasemames: yikes! lost in trees" << std::endl;
+    }
+  names.push_back(classname);
+
+  Type c = Type::ByName(classname);
+  for (unsigned i=0; i < c.BaseSize(); i++)
+    {
+      string basename = c.BaseAt(i).ToType().Name(SCOPED);
+      kit::getScopes(basename, names, depth);
+    }
+}
+
+Reflex::Member
+kit::getMethod(std::string classname,
+               std::string methodname,
+               std::string args)
+{
+  using namespace Reflex;
+  vector<string> names;
+  kit::getScopes(classname, names);
+
+  boost::regex expr(args);
+  boost::smatch what;
+
+//   //DB
+//   cout << "getMethod - \n"
+//        << "  classname<" << classname << ">\n"
+//        << "    method<" << methodname << ">\n" 
+//        << "      args<" << args << ">" 
+//        << endl;
+
+  for(unsigned i=0; i < names.size(); i++)
+    {
+      //DB
+      //cout << i << "\t" << names[i] << endl;
+
+      Type t = Type::ByName(names[i]); 
+
+      for(unsigned j=0; j < t.FunctionMemberSize(); j++)
+        {
+          Member m = t.FunctionMemberAt(j);
+          if ( !m.IsPublic() ) continue;
+          if ( !m.IsFunctionMember() ) continue;
+          if ( m.IsConstructor() ) continue;
+          if ( m.IsDestructor() ) continue;
+ 
+          // Check method name
+          string name = m.Name();
+
+          //DB
+          //cout << "\t\t" << name << endl;
+          if ( methodname != name ) continue;
+
+          // Now check signature
+          string signature = m.TypeOf().Name(SCOPED);
+          //cout << "\t\t\t" << signature << endl;
+          //cout << "\t\t\t" << args << endl;
+
+          // May need to make this a bit more sophisticated
+
+          if ( boost::regex_search(signature, what, expr) ) 
+            {
+              //cout << "\t\t\t\t** matched **" << endl;
+              // We have a match
+              return m;
+            }
         }
     }
-  
-  // Loop over base classes, if present
+  return Member();
+}
 
-  int nbase = c.BaseSize();
-  if ( nbase > 0 )
-    {
-      for(int i=0; i < nbase; i++)
+bool
+kit::methodValid(Member& method)
+{
+  return method.DeclaringType().Name() != "";
+}
+
+
+void
+kit::decodeArguments(std::string  args,
+                     std::string& argsregex,
+                     std::vector<kit::ValueThing*>& vars)
+{
+  //DB
+  //cout << "decodeArguments - args(" << args << ")" << endl;
+
+  // Split string into argument fields
+
+  bool isString = false;
+  vector<string> arglist;
+  string str("");
+  for(unsigned i=1; i < args.size(); i++)
+    { 
+      if ( isString )
         {
-          Type b = c.BaseAt(i).ToType();
-          string basename = b.Name();
-          kit::classMethods(basename, methods, methmap, depth+1);
+          str += args[i];
+          if ( args[i] == '"' ) isString = false;
+        }
+      else if ( args[i] == '"' )
+        {
+          str += args[i];
+          isString = true;
+        }
+      else if ( args[i] == ',' )
+        {
+          arglist.push_back(str);
+          str = "";
+        }
+      else if ( args[i] == ')' )
+        {
+          arglist.push_back(str);
+          str = "";
+        }
+      else
+        {
+          str += args[i];
+        }
+    }
+
+  // Create regex for arguments and note the type
+
+  // Regex for strings
+  vector<string> atype;
+  vector<boost::regex> expr;
+  expr.push_back(boost::regex("\".*\"")); 
+  atype.push_back("std::string");
+
+  // Regex for reals
+  expr.push_back(boost::regex("[-+]?[0-9]*[.][0-9]*([eE][-+]?[0-9]+)?"));
+  atype.push_back("(double|float)");
+
+  // Regex for integers
+  expr.push_back(boost::regex("[-+]?[0-9]+"));
+  atype.push_back("((unsigned )?(short|int|long))");
+
+  // Regex for bools
+  expr.push_back(boost::regex("\b(false|true)\b"));
+  atype.push_back("(bool)");
+
+  // Regex for voids
+  expr.push_back(boost::regex("\bvoid\b"));
+  atype.push_back("(void)");
+
+  boost::smatch what;
+
+  vector<int> vartype(5,-1);
+                      
+  argsregex = string("");
+  string delim("[(]");
+  for(unsigned i=0; i < arglist.size(); i++)
+    {
+      string str = kit::strip(arglist[i]);
+      //DB
+      //cout << "\targ(" << str << ")" << endl;
+
+      if ( str == "" ) // Check for void
+        {
+          vartype[i] = 4;
+          argsregex += delim + atype[4];
+        }
+      else
+        {
+          for(unsigned j=0; j < expr.size(); j++)
+            {
+              if ( boost::regex_search(str, what, expr[j]) )
+                {
+                  vartype[i] = j;
+                  argsregex += delim + atype[j];
+                  break;
+                }
+            }
+        }
+          // Make sure we had a match
+      if ( vartype[i] < 0 )
+        {
+          throw cms::Exception("ArgDecodeFailure")
+            << "kit::decodeArguments - failed on: " << args << endl;
+        }
+       delim = ", ";
+
+       //DB
+       //cout << "\ttype: " << vartype[i] << endl;
+
+       string s;
+       double d;
+       long l;
+       bool b;
+       istringstream inp(str);
+
+       switch (vartype[i])
+         {
+         case 0:
+           vars.push_back(new kit::Value<string>(str));
+           break;
+
+         case 1:
+           inp >> d;
+           vars.push_back(new kit::Value<double>(d));
+           break;
+
+         case 2:
+           inp >> l;
+           vars.push_back(new kit::Value<long>(l));
+           break;
+
+         case 3:
+           inp >> b;
+           vars.push_back(new kit::Value<bool>(b));
+           break;
+
+         case 4:
+           break;
+         };
+    }
+  if ( argsregex != "" ) argsregex += "[)]";
+}
+
+void*
+kit::invokeMethod(Member& method, void* address, vector<void*>& args)
+{
+  void* raddr=0;
+  Type dtype = method.DeclaringType();
+  if ( dtype.Name() == "" )
+    { 
+      //cout << "** invokeMethod - declaring type not found! " << endl;
+      return raddr;
+    }
+
+  if ( address == 0 )
+    { 
+      //cout << "** invokeMethod - object address is zero " << endl;
+      return raddr;
+    }
+
+  Type   rtype = method.TypeOf().ReturnType().FinalType();
+
+  Object object(dtype, address);
+  Object* tmp = new Object();
+  Object* ret = new Object(rtype, tmp);
+
+//   cout << "** invokeMethod - method  (" << method.Name() << ")" 
+//        << endl;
+//   cout << "                   rtype  (" << rtype.Name() << ")" << endl;
+//   cout << "                  address (" << address << ")" << endl;
+
+  method.Invoke(object, ret, args);
+  raddr = ret->Address();
+  delete tmp;
+  delete ret;
+
+  if ( rtype.IsPointer() )
+    {
+      raddr = *static_cast<void**>(raddr);
+      //DB
+     cout << "** invokeMethod - POINTER ** " << raddr << endl;
+    }
+  else if ( rtype.IsReference() )
+    {
+      //DB
+      cout << "** invokeMethod - REFERENCE ** " << raddr << endl;
+    }
+
+  //DB
+  cout << "** invokeMethod - " << method.Name() << " = " 
+       << RED << *static_cast<double*>(raddr) << BLACK << endl;
+  return raddr;
+}
+
+std::string
+kit::getReturnClass(Member& method)
+{
+  Type retype = method.TypeOf().ReturnType().FinalType();
+  if ( retype.IsPointer() )
+    return retype.ToType().Name(SCOPED);
+  else
+    return retype.Name(SCOPED);
+}
+
+bool
+kit::returnsPointer(Member& method)
+{
+  Type retype = method.TypeOf().ReturnType().FinalType();
+  return retype.IsPointer();
+}
+
+Member
+kit::getisNull(Member& method)
+{
+  string rname = kit::getReturnClass(method);
+  return kit::getMethod(rname, "isNull");
+}
+
+
+Member
+kit::decodeMethod(std::string classname,
+                  std::string methodrecord,
+                  std::vector<ValueThing*>& values,
+                  std::vector<void*>& args)
+{
+  //DB
+  //cout << "decodeMethod - classname( " << classname << " )" << endl;
+
+  // Regex to extract name of method
+  boost::regex exprName("[a-zA-Z][a-zA-Z0-9]*(-[>])? *(?=[(])");
+
+  // Regex to extract arguments
+  boost::regex exprArgs("(?<=[a-zA-Z0-9>]) *[(].*[)]");
+  
+  boost::smatch what;
+
+  // Extract name of method
+  if ( !boost::regex_search(methodrecord, what, exprName) )
+    {
+      throw cms::Exception("RegexFailure")
+        << "Method - "
+        << "unable to get name from: " << RED << methodrecord << BLACK << endl;
+    }
+  string methodname = what[0];
+  
+  //DB
+  //cout << "decodeMethod - name( " << methodname << " )" << endl;
+  
+  // Extract arguments of method
+  if ( !boost::regex_search(methodrecord, what, exprArgs) )
+    {
+      throw cms::Exception("RegexFailure")
+        << "Method - "
+        << "unable to get arguments from: " 
+        << RED << methodrecord << BLACK << endl;
+    }
+  string methodargs = what[0];
+  //DB
+  //cout << "decodeMethod - args( " << methodargs << " )" << endl;
+  
+  // Now get argument regex
+  string argsregex("");
+  kit::decodeArguments(methodargs, 
+                       argsregex,
+                       values);
+  if ( argsregex == "" )
+    {
+      throw cms::Exception("DecodeFailure")
+        << "Method - "
+        << "unable to decode arguments: " 
+        << RED << methodargs << BLACK << endl;
+    }
+  //DB
+  //cout << "decodeMethod - argsregex( " << argsregex << ") " << endl;
+  
+  // Search for method that matches both name and signature
+  Member method = kit::getMethod(classname, methodname, argsregex);
+  if ( !kit::methodValid(method) ) return method;
+
+  // We have a method, so get address of arguments and associated
+  // values
+  for(unsigned i=0; i < values.size(); i++)
+    {
+      void* addr = values[i]->address();
+      //DB
+      //cout << "decodeMethod arg[" << i << "]: " 
+      //     << addr << ": "
+      //     << values[i]->str() << endl;
+      args.push_back( addr );
+    }
+  return method;
+}
+
+kit::Method::Method()
+  : classname1_(""),
+    methodrecord_(""),
+    debug_(0),
+    method1_(Member()),
+    classname2_(""),
+    method2_(Member()),
+    simple_(true),
+    useCINT_(false)
+{}
+
+// Model an instantiable method using the Reflex tools
+
+kit::Method::Method(std::string classname, 
+                    std::string methodrecord,
+                    int debug)
+  : classname1_(classname),
+    methodrecord_(methodrecord),
+    debug_(debug),
+    method1_(Member()),
+    classname2_(""),
+    method2_(Member()),
+    simple_(true),
+    useCINT_(false)
+{
+  if ( debug_ > 0 )
+    cout << "Method - classname<" << classname << ">\n" 
+         << "         method   <" << methodrecord << ">" << endl;
+
+  if ( classname == "" ) 
+    throw cms::Exception("InvalidClassname")
+      << "null classname " << endl;
+
+  // method could be of the form
+  // y = method1(...)->method2(...) or
+  // y = method1(...).method2(...)
+  boost::regex expr("(?<=[)]) *([-][>]|[.]) *(?=[a-zA-Z])");
+  boost::smatch what;
+  simple_ = !boost::regex_search(methodrecord, what, expr);
+
+  // If method is compound, split it into its components
+  methodrecord1_ = methodrecord;
+  methodrecord2_ = "";
+  if ( !simple_ )
+    {
+      string delim(what[0]);
+      if ( debug_ > 0 )
+        cout << "Method - delim<" << delim << ">" << endl;
+
+      kit::bisplit(methodrecord, methodrecord1_, methodrecord2_, delim);
+    }
+
+  if ( debug_ > 0 )
+    cout << "Method - method1<" << methodrecord1_ << ">\n" 
+         << "         method2<" << methodrecord2_ << ">" << endl;
+  
+  //----------------------------------------------
+  // method 1
+  //----------------------------------------------
+  method1_ = kit::decodeMethod(classname1_, methodrecord1_, values1_, args1_);
+
+  // If this is a simple method, we're done
+  if ( simple_ ) return;
+  
+  //----------------------------------------------
+  // method 2 - 2nd part of a compound method
+  //----------------------------------------------
+  classname2_ = kit::getReturnClass(method1_);
+
+  if ( debug_ > 0 )
+    cout << "Method - return class<" << classname2_ << ">" << endl;
+  if ( classname2_ == "" )
+    {
+      throw cms::Exception("getReturnClassFailure")
+        << " can't get return class for method " << method1_.Name() << endl;
+    }
+
+  // Object returned could be:
+  // 1. a simple pointer
+  // 2. an object that has an isNull() method
+  // 3. neither of the above
+
+  // If this class contains isNull then
+  // set up commands to invoke method using CINT
+
+  Reflex::Member isNull = kit::getisNull(method1_);
+  if ( methodValid( isNull ) )
+    {
+      useCINT_ = true;
+
+      char cmd[512];
+      sprintf(cmd, "%s* o = (%s*)0x%s", 
+              classname1_.c_str(), classname1_.c_str(), "%x");
+      declareobject_ = string(cmd);
+
+      sprintf(cmd, "o->%s.get()", methodrecord1_.c_str());
+      invokeget_ = string(cmd);
+
+      if ( debug_ > 0 )
+        {
+          cout << "Method " 
+               << GREEN
+               << endl << "\t" << declareobject_  
+               << endl << "\t" << invokeget_
+               << BLACK
+               << endl;
+        }
+    }
+  method2_ = kit::decodeMethod(classname2_, methodrecord2_, values2_, args2_);
+  // If we did not find the method
+  if ( !methodValid(method2_) )
+    {
+      if ( debug_ > 0 )
+        cout << "** warning ** Method - failed to find method: " 
+             << methodrecord2_ << endl;
+
+      // We did not find the requested method in this class, so check
+      // for operator->. It may return the appropriate class
+
+      vector<ValueThing*> vals;
+      vector<void*> args;
+      Reflex::Member pointer = kit::decodeMethod(classname2_, 
+                                                 "operator->()", 
+                                                 vals, args);
+
+      if ( methodValid(pointer) )
+        {
+          //D
+          if ( debug_ > 0 )
+            cout << "              Method - search for operator-> " << endl;
+
+          // get type of returned object
+          string classname = kit::getReturnClass(pointer);
+          if ( classname == "" )
+            {
+              throw cms::Exception("ReturnTypeNotFound")
+                << "unable to get return type of operator-> of class "
+                << endl << "\t" << classname2_ << endl;
+            }
+          classname2_ = classname;
+
+          if ( debug_ > 0 )
+            cout << "              Method - operator-> returns: " 
+                 << classname2_ << endl;
+
+          // okay, now try again to find the desired method
+          method2_ = kit::decodeMethod(classname2_, methodrecord2_, 
+                                       values2_, args2_);
+
+          // If we still can't find method, bail out
+          if ( !methodValid(method2_) )
+            {
+              throw cms::Exception("MethodNotFound")
+                << "failed to find method " << methodrecord2_ << endl
+                << "\t in class " << classname2_ << endl;
+            }
         }
     }
 }
+
+kit::Method::~Method() 
+{ 
+  for(unsigned i=0; i < values1_.size(); i++) delete values1_[i];
+  for(unsigned i=0; i < values2_.size(); i++) delete values2_[i];
+}
+
+void*
+kit::Method::raddress(void* address)
+{
+  debug_ = 1;
+  if ( debug_ > 0 ) cout << endl;
+
+  void* raddr=0;
+
+  // If the returned object has an isNull() method, then
+  // use the CINT interpreter to return the object it points to
+  if ( useCINT_ )
+    {
+       if ( debug_ > 0 )
+        cout << "Method::raddress - " 
+             << RED   << " use CINT" << endl
+             << GREEN 
+             << declareobject_ << endl
+             << invokeget_ << endl
+             << BLACK << endl;
+
+      gROOT->ProcessLine(Form(declareobject_.c_str(), address));
+      raddr = (void*)gROOT->ProcessLineFast(invokeget_.c_str());
+
+      if ( debug_ > 0 )
+        cout << "Method::raddress - get() returns " 
+             << RED << raddr << BLACK << endl;
+  
+      if ( raddr == 0 ) return raddr;
+    }
+  else
+    {
+      // Call method 1
+      raddr = kit::invokeMethod(method1_, address, args1_);
+    }
+
+  if ( simple_ )
+    {
+      if ( debug_ > 0 )
+        //DB
+        cout << "Method() - simple method: " << methodrecord_ << endl;
+
+      // simple method with a (presumed) simple return type, so 
+      // address cannot be zero
+      if ( raddr == 0 )
+        {
+          // shouldn't happen!
+          throw cms::Exception("nullReturn") 
+            << RED << " for method " << methodrecord_ << BLACK << endl;
+        }
+    }
+  else
+    {
+      // This is a compound method, address could be zero if the
+      // return type is a pointer or smart pointer
+      if ( debug_ > 0 )
+        //DB
+        cout << "Method() - compound method: " << methodrecord_ << endl;
+
+      if ( raddr == 0 ) return raddr;
+
+      if ( debug_ > 0 )
+        //DB
+        cout << "Method() - invoke method: " 
+             << GREEN << classname2_ << BLACK << "::" 
+             << BLUE  << method2_.Name() << BLACK << endl;
+      
+      // invoke second part of compound method
+      raddr = invokeMethod(method2_, raddr, args2_);
+
+      // Must be simple return type, so address cannot be zero
+      if ( raddr == 0 )
+        {
+          // shouldn't happen!
+          throw cms::Exception("nullReturn") 
+            << RED << " for " 
+            << classname2_ << "::" << method2_.Name() << BLACK << endl;
+        }
+    }
+  return raddr;
+}
+
+double
+kit::Method::operator()(void* addr)
+{ 
+  void* raddr = raddress(addr);
+  if ( raddr == 0 ) 
+    return -999999;
+  else
+    return *static_cast<double*>(raddr); 
+}
+
+std::string
+kit::Method::str()
+{
+  ostringstream os;
+  os << "DeclaringType1 : " << method1_.DeclaringType().Name() << endl;
+  os << "   MethodName1 : " << method1_.Name() << endl;
+  os << "     Signature1: " << method1_.TypeOf().Name(SCOPED) << endl;
+  if ( values1_.size() > (unsigned)0 )
+    {
+      os << "     ArgValues: " << endl;
+      for(unsigned i=0; i < values1_.size(); i++)
+        {
+          os << "         " 
+             << i << " " << args1_[i]
+             << ": " << values1_[i]->str()  << endl;
+        }
+    }
+  if ( !methodValid(method2_) ) return os.str();
+
+  os << "DeclaringType2 : " << method2_.DeclaringType().Name() << endl;
+  os << "   MethodName2 : " << method2_.Name() << endl;
+  os << "     Signature2: " << method2_.TypeOf().Name(SCOPED) << endl;
+  if ( values2_.size() > (unsigned)0 )
+    {
+      os << "     ArgValues: " << endl;
+      for(unsigned i=0; i < values2_.size(); i++)
+        {
+          os << "         " 
+             << i << " " << args2_[i]
+             << ": " << values2_[i]->str()  << endl;
+        }
+    }
+  return os.str();
+}
+
+
+// std::ostream&
+// kit::Method::operator<<(std::ostream& os, kit::Method& o)
+// {
+//   os << str() << endl;
+//   return os;
+// }
+
+// void
+// kit::classGetterInfo(string classname,
+//                      vector<string>& baseclasses,
+//                      map<string, vector<string> >& methmap, 
+//                      map<string, int>& db,
+//                      int depth)
+// {
+//   using namespace Reflex;
+
+//   if ( depth == 0)
+//     methmap.clear();
+//   else if ( depth > 10 ) 
+//     {
+//       cout << "kit::classMethods - yikes, lost in the trees!" << endl;
+//       exit(0);
+//     }
+
+//   char cstr[80];
+//   string tab = " "
+//   cout << depth << "\tclass: " << classname << endl;
+
+//   Type thing;
+//   Type c = thing.ByName(cname);
+//   for(int i=0; i < c.FunctionMemberSize(); i++)
+//     {
+//       Member m = c.FunctionMemberAt(i);
+//       if ( !m.IsPublic() ) continue;
+//       if ( !m.IsFunctionMember() ) continue;
+//       if ( m.IsConstructor() ) continue;
+//       if ( m.IsDestructor() ) continue;
+
+//       string name = m.Name();
+//       string mtype  = m.TypeOf().Name(SCOPED);
+//       string rtype, args;
+//       kit::bisplit(mtype, rtype, args);
+//       sprintf(cstr, "(%s", args.c_str());
+
+//       args = kit::replace(args, "(void)", "()");
+//       string signature = name + args;
+//       if ( db.find(signature) != db.end() ) continue;
+//       db[signature] = 0;
+
+//       // Skip setters
+//       rtype = kit::strip(rtype);
+//       if ( rtype == "void" )  continue;
+//       if ( rtype == "void*" ) continue;
+
+//       // Replace basic_str replaced with std::string
+//       rtype = kit::strip( subbasicstr(rtype) );
+//       signature kit::strip( subbasicstr(signature) );
+
+//       // skip Root serialization methods
+//       string method = rtype + "   " + signature;
+//       if ( skipmethod(method) ) continue;
+
+//       // simplify Ref<...> types
+      
+//       vector<string> reftype;
+//       kit::regex_findall("(?<=edm::Ref\<std::vector\<)(.+?)(?=\>,)", 
+//                          method, reftype);
+//       for(int i=0; i < (int)reftype.size(); i++)
+//         {
+//           string cname = reftype[i] + "Ref";
+//           string cmd("edm::Ref\<.+?,") + cname + "\> \>";
+//           vector<string> v;
+//           kit::regex_findall(cmd, method, v);
+//           for(int k=0; k < (int)v.size(); k++)
+//             method = kit::replace(method, 
+//         }
+//       string key = m.Name() + "\\" + m.TypeOf().Name();
+//       if ( methmap.find(key) == methmap.end() ) 
+//         {
+//           methmap[key] = m.FunctionParameterSize();
+//           string name = key + "\\" + classname;
+//           methods.push_back(name);
+//           cout << "\t\t" << name << endl;
+//         }
+//     }
+  
+//   // Loop over base classes, if present
+
+//   int nbase = c.BaseSize();
+//   if ( nbase > 0 )
+//     {
+//       for(int i=0; i < nbase; i++)
+//         {
+//           Type b = c.BaseAt(i).ToType();
+//           string basename = b.Name();
+//           kit::classMethods(basename, methods, methmap, depth+1);
+//         }
+//     }
+// }
 
 TLorentzVector 
 kit::lorentzVector(reco::GenParticle& p)

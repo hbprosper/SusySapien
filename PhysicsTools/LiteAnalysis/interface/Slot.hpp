@@ -9,6 +9,7 @@
 //$Revision: 1.2 $
 
 #include <string>
+#include <vector>
 #include <TQObject.h>
 
 /**
@@ -18,7 +19,8 @@ class Slot : public TQObject
 private:
 
   UInt_t      _object;
-  std::string _method;
+  std::string _mstr;
+  std::vector<char> _method;
 
 public:
 
@@ -47,7 +49,7 @@ public:
   void handleSignal();
 
   UInt_t      receiver() const {return _object;}
-  const char* method()   const {return _method.c_str();}
+  const char* method()   const {return _mstr.c_str();}
 
  // Make this class known to Root
 

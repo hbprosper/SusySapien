@@ -10,18 +10,18 @@ from time   import *
 from string import *
 from getopt import getopt, GetoptError
 from pprint import PrettyPrinter
-from boostlib import nameonly, populateDB
+from boostlib import nameonly, readMethods
+from classmap import ClassToHeaderMap
 #-----------------------------------------------------------------------------
-if not os.environ.has_key('PYTHON_PROJECTS'):
-	print 'PYTHON_PROJECTS not defined!\n'
+if not os.environ.has_key('CMSSW_BASE'):
+	print 'CMSSW_BASE not defined!\n'
 	exit(0)
-BASE = os.environ['PYTHON_PROJECTS']
+BASE = "%s/src/PhysicsTools/LiteAnalysis" % os.environ['CMSSW_BASE']
 PP = PrettyPrinter()
 def usage():
 	print '''
 Usage:
-    mkadapter.py [options] <LIS-file1> [LIS-file2 ...]
-				 -e=<editsfile> add methdods contained in edits file
+    mkadapter.py <TXT-file1> [TXT-file2 ...]
 				 '''
 	sys.exit(0)
 
@@ -37,7 +37,7 @@ TEMPLATE='''#ifndef %(ADAPTERCLASSNAME)s_H
 //              class:   %(classname)s
 //              header:  %(header)s
 //              
-// Created:     %(time)s by mkadapter.py  HBP
+// Created:     %(time)s by mkadapter.py
 //-----------------------------------------------------------------------------
 #include "%(header)s"
 //-----------------------------------------------------------------------------
@@ -53,6 +53,10 @@ class %(adapterclassname)s : public %(classname)s
 };
 #endif
 '''
+
+BLACK = "\x1b[0;30;48m" # Ctrl[attribute;foreground;backgroundm
+RED   = "\x1b[0;31;48m" # \x1b 0,1,...   30+color   40+color
+
 retype = re.compile(r'float|double|int|unsigned|bool|\bsize_t\b')
 stripnamespace = re.compile(r'\w+::')
 stripcolon = re.compile(r':')
@@ -62,23 +66,21 @@ striparg   = re.compile(r'\bconst |\w+::|\&')
 stripptr   = re.compile(r'\*$')
 methodname = re.compile(r"^.*\(.*\)(?= const)")
 retype = re.compile(r'float|double|int|unsigned|bool|\bsize_t\b')
-simpletype =re.compile(r'void|float|double|int|unsigned|bool|\bsize_t\b|string')
+simpletype=re.compile(r'void|float|double|int|unsigned|bool|\bsize_t\b|string')
 striprtype = re.compile(r'\W+::|\bconst |\*$|&$|Ref$')
 striprtypeless = re.compile(r'\bconst |\*$|&$|Ref$')
 stripname = re.compile(r'[ ,\<\>:*&]')
+skipmethod= re.compile(r'clone')
 
 DEBUG3 = 0
 #----------------------------------------------------------------------------
 def expandMethod(filename, methlist):
-	records = map(strip,open(filename).readlines())
+
+	header, classname, basenames, methodlist = readMethods(filename)
 
 	# Ok now, get simple methods
 
-	for record in records:
-		record = split(record, '|')
-		if len(record) != 4: continue
-		
-		ctype, rtype, name, atype = record
+	for rtype, name, atype, record in methodlist:
 
 		if DEBUG3 > 1: print "\t\texpandMethod RTYPE( %s, %s )" % (rtype, name)
 		
@@ -103,7 +105,6 @@ def extraMethods(filename):
 #----------------------------------------------------------------------------
 def fixreturnAndarg(rtype, atype):
 	# Fix default return values
-
 	if rtype == "bool":
 		val = "false"
 	elif find(rtype, "size_t" ) > -1:
@@ -122,21 +123,22 @@ def fixreturnAndarg(rtype, atype):
 		var = ""
 	else:
 		# strip away "&"
-		if atype[-1] == "&": atype = atype[:-1]
 
-		# check for default value
-		t = split(atype,"=")
-		if len(t) == 2:
-			arg = "%s x=%s" % tuple(t)
-		else:
-			arg = "%s x" % atype
-		var = "x"
+		if atype[-1] == "&": atype = atype[:-1]
+		
+		t = split(atype,",")
+		arg = '%s x0' % t[0]
+		var = 'x0'
+		for i in xrange(1,len(t)):
+			arg += ", %s x%d" % (t[i], i)
+			var += ", x%d" % i
 	return (val, arg, var)
 #----------------------------------------------------------------------------
-def makeAdapter(filename, db, editsfile):
+
+def makeAdapter(filename, editsfile):
 	
 	if find(filename,'_') > -1: return
-
+	
 	# Evaluate edits file, if specified
 	
 	edits = extraMethods(editsfile)
@@ -144,13 +146,7 @@ def makeAdapter(filename, db, editsfile):
 	names = {}
 	tab = "//              "
 
-	records = map(strip,open(filename).readlines())
-
-	# Extract header and classname
-	header = split(filename,'/')[-1]
-	t = split(header, '.')
-	header    = "%s/%s/interface/%s.h" % tuple(t[:3])
-	classname = split(records[0],'|')[0]
+	header, classname, basenames, methodlist = readMethods(filename)
 	if DEBUG3 > 0:
 		print "\theader: %s\t\n\t\tclassname: %s" % (header, classname)
 
@@ -164,38 +160,37 @@ def makeAdapter(filename, db, editsfile):
 	
 	adapterclassname = "a%s" % stripcolon.sub("",classname)
 	headerfilename   = striptemplatepars.sub("",adapterclassname)
-
+	
 	if find(headerfilename,'>') > -1: return
 	if find(headerfilename,'<') > -1: return
 
 	print "processing: %s" % filename
 	
-	records = map(lambda x: split(x,'|'), records)
-
-	# Ok now, create methods
+	# Ok now, process methods
 
 	expanded = False
 
 	index = 0
 	meths = []
 	methods = []
-	for record in records:
-		if len(record) != 4: continue
+	for rtype, name, atype, record in methodlist:
 
 		# Take are not to overwrite these variables
-		
-		ctype, rtype, name, atype = record
 
-		# Keep only simple methods
+		if DEBUG3 > 0: print "\n\tRTYPE( %s ) METHOD( %s ) ARG( %s )" % \
+		   (rtype, name, atype)
+
+		# Skip some methods
 		
-		if name  == "clone": continue
+		if skipmethod.match(name) != None: continue
+		
 		if rtype == "void": continue
 		arg = striparg.sub("", atype)
 
 		if simpletype.match(arg) == None: continue
 
-		if DEBUG3 > 0: print "\tRTYPE( %s ) METHOD( %s ) ARG( %s )" % \
-		   (rtype, name, atype)
+		if DEBUG3 > 0:
+			print "\t\tKEEP"
 
 		if retype.match(rtype) != None:
 			
@@ -217,32 +212,32 @@ def makeAdapter(filename, db, editsfile):
 			cname = striprtypeless.sub("", rtype)
 			if DEBUG3 > 0: print "\t\tCOMPLEX RTYPE( %s )" % cname
 
-			if not db['class'].has_key(cname):
+			# Get header for this class from ClassToHeaderMap
+
+			if not ClassToHeaderMap.has_key(cname):
 				if DEBUG3 > 0:
-					print "\t\t*** class %s NOT found in db" % cname
+					print "\t\t** header for class %s NOT found" % cname
 				continue
+			
+			headerfile = ClassToHeaderMap[cname]
+			filestem = replace(headerfile, 'interface/', '')
+			filestem = split(filestem, '.h')[0]
+			filestem = replace(filestem, '/', '.')
+			cname  = split(cname,'::').pop()
+			txtfilename = "txt/%s.%s.txt" % (filestem, cname)
 
-			# Get class info
-
-			include, cl = db['class'][cname]
-			lisfile = replace(include,'.h','')
-			lisfile = replace(lisfile,'/','.')
-			lisfile = replace(lisfile,'interface.','')
-			lisfile = "lis/%s.%s.lis" % \
-					  (lisfile, stripname.sub("_", cl.attrib['name']))
-
-			if not os.path.exists(lisfile):
+			if not os.path.exists(txtfilename):
 				if DEBUG3 > 0:
-					print "\t\t*** lisfile %s NOT found" % lisfile
+					print "\t\t*** file %s NOT found" % txtfilename
 				continue
 
 			if DEBUG3 > 0:
-				print "\t\t\tLISFILE( %s )" % lisfile
+				print "\t\t\tTXTFILE( %s )" % txtfilename
 				print "\t\t\t\tRETURN TYPE( %s )" % cname
 				
-			# lis file exists, so proceed 
+			# txt file exists, so proceed 
 			methlist = []
-			expandMethod(lisfile, methlist)
+			expandMethod(txtfilename, methlist)
 			if len(methlist) == 0: continue
 
 			methlist.sort()
@@ -316,7 +311,7 @@ def makeAdapter(filename, db, editsfile):
 
 	if expanded:
 
-		print "\t\t\t** expanded methods"
+		print RED+"\t\t\t** adapter created" + BLACK
 
 		names['bases'] = "//"		
 		names['time'] = ctime(time())
@@ -366,14 +361,8 @@ def main():
 			editsfile = value
 			
 	if len(infiles) == 0: usage()
-
 	
 	for filename in infiles:
-		t = split(split(filename, '/')[-1],'.')
-		include = "%s/%s/interface/%s.h" % tuple(t[:3])
-
-		db = {}
-		populateDB(BASE, include, db)
-		makeAdapter(filename, db, editsfile)
+		makeAdapter(filename, editsfile)
 #----------------------------------------------------------------------------
 main()

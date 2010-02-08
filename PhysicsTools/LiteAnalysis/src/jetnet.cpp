@@ -671,6 +671,7 @@ void NN::_init(string vars, int hidden, Output outType)
   // MSTJN
   a.type  = 0;
   a.set   = false;
+  a.value = 0;
   a.index = 0; _id["numberLayers"]      = a;
   a.index = 1; _id["patternsPerUpdate"] = a;
   //a.index = 2; _id["sigmoidFunction"]   = a;

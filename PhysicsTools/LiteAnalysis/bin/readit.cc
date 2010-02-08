@@ -3,6 +3,7 @@
 // Created: 03-Nov-2009 Harrison B. Prosper
 //-----------------------------------------------------------------------------
 #include <stdio.h>
+#include <stdlib.h>
 #include <string>
 #include <vector>
 #include <iostream>

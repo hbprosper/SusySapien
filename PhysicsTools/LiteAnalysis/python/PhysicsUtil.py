@@ -1,5 +1,5 @@
 #-----------------------------------------------------------------------------
-#$Revision:$
+#$Revision: 1.2 $
 import sys
 from ROOT import *
 #-----------------------------------------------------------------------------
@@ -8,11 +8,9 @@ def fatal(message):
 	sys.exit(0)
 #-----------------------------------------------------------------------------
 def enableAutoLoader():
-	#print "Enabling FWLite AutoLibraryLoader...",
 	if not (gSystem.Load( "libFWCoreFWLite" ) == 0):
 		fatal("unable to load FWCoreFWLite")        
 	AutoLibraryLoader.enable()
-	#print "done!"
 #-----------------------------------------------------------------------------
 enableAutoLoader()
 
@@ -22,7 +20,8 @@ vstring      = vector("string")
 vvdouble     = vector("vector<double>")
 
 vGenParticle = vector("reco::GenParticle")
-vMatchedPair = vector("MatchedPair")
+vMatchedPair = vector("kit::MatchedPair")
+vPtThing     = vector("kit::PtThing")
 vTVector3    = vector("TVector3")
 vTLorentzVector = vector("TLorentzVector")
 

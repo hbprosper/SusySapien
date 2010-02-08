@@ -26,7 +26,7 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Wed Jun 20 2007
 //         Updated:  Wed Oct 08 2008 - Handle PAT formats
-// $Id: EventStream.cc,v 1.2 2008/10/31 02:02:53 harry Exp $
+// $Id: EventStream.cc,v 1.2 2010/01/16 04:08:19 prosper Exp $
 //
 //
 //-----------------------------------------------------------------------------
@@ -177,10 +177,12 @@ EventStream::identifiers(std::string classname)
 
   for(unsigned i=0; i < _branchnames.size(); i++)
     if ( boost::regex_search(_branchnames[i], what, re) )
-      if ( boost::regex_search(_branchnames[i], w, r) ) 
-	att.push_back(w[0]);
-      else
-	att.push_back(_branchnames[i]);
+      {
+	if ( boost::regex_search(_branchnames[i], w, r) ) 
+	  att.push_back(w[0]);
+	else
+	  att.push_back(_branchnames[i]);
+      }
   return att; 
 } 
 
@@ -281,7 +283,7 @@ EventStream::_open()
   TDirectory* dir = (TDirectory*)file;
   TKey* key=0;
   TIter nextkey(dir->GetListOfKeys());
-  while ( key = (TKey*)nextkey() )
+  while ( (key = (TKey*)nextkey()) )
     {
       dir->cd();
       TObject* o = key->ReadObj();

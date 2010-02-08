@@ -40,7 +40,7 @@
 //          14-Jul-2005 Allow for arrays
 //          13-Aug-2005 Tidy up
 //          11-Aug-2007 Add ls() method as a proxy for print
-//$Revision: 1.1.2.2 $
+//$Revision: 1.3 $
 //----------------------------------------------------------------------------
 #include <vector>
 #include <string>
@@ -60,52 +60,48 @@
 /** \example readit.py
  */
 
-/** 
- */
-namespace
+/// Model a name/value pair.
+struct Field
 {
-  /// Model a name/value pair.
-  struct Field
-  {
-    Field() : srctype(' '),
-              iotype(' '),
-              isvector(false),
-              iscounter(false),
-              maxsize(0),
-              branch(0),
-              leaf(0),
-              address(0),
-              branchname(""),
-              leafname("") {}
+  Field() : srctype(' '),
+	    iotype(' '),
+	    isvector(false),
+	    iscounter(false),
+	    maxsize(0),
+	    branch(0),
+	    leaf(0),
+	    address(0),
+	    branchname(""),
+	    leafname("") {}
+  
+  virtual ~Field() {}
+  
+  char   srctype;         /// Source type (type of user name/value pair)
+  char   iotype;          /// Input/Output type
+  bool   isvector;        /// True if vector type
+  bool   iscounter;       /// true if this is a leaf counter
+  int    maxsize;         /// Maximum number of elements in source variable
+  
+  TBranch* branch;        /// Branch pertaining to source
+  TLeaf*   leaf;          /// Leaf pertaining to source
+  void*    address;       /// Source address
+  
+  std::string branchname; /// Name of branch
+  std::string leafname;   /// Name of T-leaf!
+};
 
-    virtual ~Field() {}
+template <class T>
+struct FieldBuffer : public Field
+{
+  FieldBuffer() : Field(), value(std::vector<T>()) {}
+  virtual ~FieldBuffer() {}
+  
+  std::vector<T> value;
+};
 
-    char   srctype;         /// Source type (type of user name/value pair)
-    char   iotype;          /// Input/Output type
-    bool   isvector;        /// True if vector type
-    bool   iscounter;       /// true if this is a leaf counter
-    int    maxsize;         /// Maximum number of elements in source variable
+typedef std::map<std::string, Field>  Data;
+typedef std::map<std::string, Field*> SelectedData;
 
-    TBranch* branch;        /// Branch pertaining to source
-    TLeaf*   leaf;          /// Leaf pertaining to source
-    void*    address;       /// Source address
-
-    std::string branchname; /// Name of branch
-    std::string leafname;   /// Name of T-leaf!
-  };
-
-  template <class T>
-  struct FieldBuffer : public Field
-  {
-    FieldBuffer() : Field(), value(std::vector<T>()) {}
-    virtual ~FieldBuffer() {}
-
-    std::vector<T> value;
-  };
-
-  typedef std::map<std::string, Field>  Data;
-  typedef std::map<std::string, Field*> SelectedData;
-}
 
 /** Model an input stream of Root trees.
               The classes itreestream and otreestream provide a convenient 

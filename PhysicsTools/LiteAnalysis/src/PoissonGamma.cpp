@@ -23,6 +23,7 @@
 // Updated:     14-May-2008 Use RandGamma from CLHEP
 //-----------------------------------------------------------------------------
 #include <cmath>
+#include <stdlib.h>
 #include "PhysicsTools/LiteAnalysis/interface/PoissonGamma.hpp"
 #include "CLHEP/Random/RandGamma.h"
 #include "CLHEP/Random/MTwistEngine.h"

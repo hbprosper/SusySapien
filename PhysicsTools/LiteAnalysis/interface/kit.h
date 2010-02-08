@@ -19,9 +19,9 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Fri Apr 04 2008
-// $Id: kit.h,v 1.4 2008/10/31 02:02:53 harry Exp $
+// $Id: kit.h,v 1.2 2010/01/16 04:08:18 prosper Exp $
 //
-//$Revision:$
+//$Revision: 1.2 $
 //-----------------------------------------------------------------------------
 #include <iostream>
 #include <fstream>
@@ -35,6 +35,9 @@
 #include "DataFormats/EgammaReco/interface/BasicCluster.h"
 #include "DataFormats/EgammaReco/interface/SuperCluster.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
+// #include "CommonTools/Utils/src/ExpressionPtr.h"
+// #include "CommonTools/Utils/src/ExpressionBase.h"
+// #include "CommonTools/Utils/interface/expressionParser.h"
 #include "HepMC/GenEvent.h"
 #include "HepMC/GenParticle.h"
 #include "TLorentzVector.h"
@@ -45,150 +48,293 @@
 #include "TStyle.h"
 #include "TGraph.h"
 #include "TMath.h"
+#include "Reflex/Object.h"
+#include "Reflex/Base.h"
+#include "Reflex/Type.h"
 //-----------------------------------------------------------------------------
-
 
 typedef std::vector<double>  vdouble;
 typedef std::vector<std::vector<double> > vvdouble;
 
-struct MatchedPair
-{
-  int first;
-  int second;
-  double distance;
-  bool operator<(const MatchedPair& o) const 
-  { return this->distance < o.distance; }
-};
-
-// Simple struct to collect together standard attributes
-
-// Note: Unlike a class, all attributes of a struct are public
-
-struct PtThing
-{
-  PtThing() {}
-
-  ~PtThing() {}
-
-  // Copy constructor
-  PtThing(const PtThing& rhs)
-  {
-    *this = rhs; // this will call assignment operator
-  }
-
-  // Assignment 
-  PtThing& operator=(const PtThing& rhs)
-  {
-    index  = rhs.index;
-    id     = rhs.id;
-    type   = rhs.type;
-    pt  = rhs.pt;
-    eta = rhs.eta;
-    phi = rhs.phi;
-    et  = rhs.et;
-    charge = rhs.charge;
-    var = rhs.var;
-    return *this;
-  }
-
-  float deltaR(PtThing& thing)
-  {
-    float deta = eta - thing.eta;
-    float dphi = phi - thing.phi;
-    
-    // Make sure acute
-    if ( fabs(dphi) > TMath::Pi() ) dphi = TMath::TwoPi() - fabs(dphi);
-    return sqrt(deta*deta+dphi*dphi);
-  }
-
-  // Compare direction of this PtThing with another using deltaR
-
-  bool matches(PtThing& thing, float drcut=0.4)
-  {
-    return deltaR(thing) < drcut;
-  }
-
-  int index;
-  int id;
-  std::string type;
-  float pt;
-  float eta;
-  float phi;
-  float et;
-  float charge;
-
-  // Map for additional variables
-  std::map<std::string, float> var;
-
-  // To sort in descending pt
-  bool operator<(const PtThing& o) const { return o.pt < this->pt; }
-};
-
-
-
-
-
-
-//--------------------------------------------------------------------------
-// A simple class to model a count. Each time the (function) object is 
-// called, the count is incremented for the given string. The object is
-// self-initializing; that is, their is no need for an explicit zeroing of
-// the count.
-//
-// Usage:
-// 
-// Count count;
-//
-// increment count
-// count("Selected Muon");
-//
-// To display the counts at the end, do
-//
-// count.ls();
-//
-//--------------------------------------------------------------------------
-class Count
-{
-public:
-  Count() : _var(std::map<std::string, int>()) {}
-  ~Count(){}
-
-  int operator()(std::string var) 
-  {
-    if ( _var.find(var) == _var.end() ) _var[var] = 0;
-    _var[var]++;
-    return _var[var];
-  }
-
-  // List counts. Default = list to screen
-
-  void ls(std::ostream& os = std::cout)
-  {
-    int index = 0;
-    for(std::map<std::string, int>::iterator 
-          it = _var.begin(); it != _var.end(); it++)
-      {
-        index++;
-        std::string var = it->first + 
-          "   .......................................................";
-        int count  = it->second;
-        var = var.substr(0,40);
-        char record[80];
-        sprintf(record,"%5d %-40s %10d", index, var.c_str(), count);
-        os << record << std::endl;
-      }
-  }
-
-private:
-  std::map<std::string, int> _var;
-};
-
 namespace {
   std::map<std::string, int> MAPSTRINT;
+  std::vector<void*> DEFARGS;
+
+  // Ctrl[attribute;foreground;backgroundm
+  // \x1b 0,1,...   30+color   40+color
+  const std::string BLACK("\x1b[0;30;48m");
+  const std::string RED("\x1b[0;31;48m");
+  const std::string GREEN("\x1b[0;32;48m");
+  const std::string YELLOW("\x1b[0;33;48m");
+  const std::string BLUE("\x1b[0;34;48m");
+  const std::string MAGENTA("\x1b[0;35;48m");
+  const std::string CYAN("\x1b[0;36;48m");
+  const std::string WHITE("\x1b[0;37;48m");
 }
 
 struct kit
 {
+
+  static
+  ///
+  void set(double y, double* x);
+  
+  struct MatchedPair
+  {
+    int first;
+    int second;
+    double distance;
+    bool operator<(const MatchedPair& o) const 
+    { return this->distance < o.distance; }
+  };
+
+  // Simple struct to collect together standard attributes
+
+  // Note: Unlike a class, all attributes of a struct are public
+  
+  struct PtThing
+  {
+    PtThing() {}
+    ~PtThing() {}
+
+    // Copy constructor
+    PtThing(const PtThing& rhs)
+    {
+      *this = rhs; // this will call assignment operator
+    }
+
+    // Assignment 
+    PtThing& operator=(const PtThing& rhs)
+    {
+      index  = rhs.index;
+      id     = rhs.id;
+      type   = rhs.type;
+      pt  = rhs.pt;
+      eta = rhs.eta;
+      phi = rhs.phi;
+      et  = rhs.et;
+      charge = rhs.charge;
+      var = rhs.var;
+      return *this;
+    }
+
+    float deltaR(PtThing& thing)
+    {
+      float deta = eta - thing.eta;
+      float dphi = phi - thing.phi;
+    
+      // Make sure acute
+      if ( fabs(dphi) > TMath::Pi() ) dphi = TMath::TwoPi() - fabs(dphi);
+      return sqrt(deta*deta+dphi*dphi);
+    }
+
+    // Compare direction of this PtThing with another using deltaR
+
+    bool matches(PtThing& thing, float drcut=0.4)
+    {
+      return deltaR(thing) < drcut;
+    }
+
+    int index;
+    int id;
+    std::string type;
+    float pt;
+    float eta;
+    float phi;
+    float et;
+    float charge;
+    
+    // Map for additional variables
+    std::map<std::string, float> var;
+    
+    // To sort in descending pt
+    bool operator<(const PtThing& o) const { return o.pt < this->pt; }
+  };
+  
+  //--------------------------------------------------------------------------
+  // A simple class to model a count. Each time the (function) object is 
+  // called, the count is incremented for the given string. The object is
+  // self-initializing; that is, their is no need for an explicit zeroing of
+  // the count.
+  //
+  // Usage:
+  // 
+  // Count count;
+  //
+  // increment count
+  // count("Selected Muon");
+  //
+  // To display the counts at the end, do
+  //
+  // count.ls();
+  //
+  //--------------------------------------------------------------------------
+  class Count
+  {
+  public:
+    Count() : _var(std::map<std::string, int>()) {}
+    ~Count(){}
+
+    int operator()(std::string var) 
+    {
+      if ( _var.find(var) == _var.end() ) _var[var] = 0;
+      _var[var]++;
+      return _var[var];
+    }
+    
+    // List counts. Default = list to screen
+    
+    void ls(std::ostream& os = std::cout)
+    {
+      int index = 0;
+      for(std::map<std::string, int>::iterator 
+            it = _var.begin(); it != _var.end(); it++)
+        {
+          index++;
+          std::string var = it->first + 
+            "   .......................................................";
+          int count  = it->second;
+          var = var.substr(0,40);
+          char record[80];
+          sprintf(record,"%5d %-40s %10d", index, var.c_str(), count);
+          os << record << std::endl;
+        }
+    }
+    
+  private:
+    std::map<std::string, int> _var;
+  };
+ 
+
+  // ------------------------------------------------------------------------
+  
+  struct ValueThing
+  {
+    virtual ~ValueThing() {}
+    virtual std::string str()=0;
+    virtual void*       address()=0;
+  };
+
+  template <typename X>
+  struct Value : public ValueThing
+  {
+    Value(X& x) : x_(x) {}
+    ~Value() {}
+
+    std::string str() 
+    {
+      std::ostringstream os;
+      os << x_;
+      return os.str();
+    }
+    void* address() { return static_cast<void*>( &x_ ); }
+
+    X x_;
+  };
+
+  ///
+  static
+  void           getScopes(std::string classname, 
+                           std::vector<std::string>& names, 
+                           int depth=0);
+  ///
+  static
+  Reflex::Member getMethod(std::string classname,
+                           std::string methodname,
+                           std::string args=std::string("(void)"));
+  ///
+  static
+  bool           methodValid(Reflex::Member& method);
+
+  ///
+  static
+  bool           returnsPointer(Reflex::Member& method);
+
+  ///
+  static
+  Reflex::Member getisNull(Reflex::Member& method);
+
+  ///
+  static
+  void           decodeArguments(std::string  args,
+                                 std::string& argsregex,
+                                 std::vector<kit::ValueThing*>& values);
+
+  ///
+  static
+  Reflex::Member decodeMethod(std::string classname,
+                              std::string methodrecord,
+                              std::vector<kit::ValueThing*>& values,
+                              std::vector<void*>& args);
+
+  ///
+  static
+  void*          invokeMethod(Reflex::Member& method, 
+                              void* address, 
+                              std::vector<void*>& args = DEFARGS);
+  ///
+  static
+  std::string    getReturnClass(Reflex::Member& method);
+
+  ///
+  class Method
+  {
+  public:
+    ///
+    Method();
+    
+    ///
+    Method(std::string classname, std::string methodrecord,
+           int debug=0);
+
+    ~Method();
+
+    ///
+    void*  raddress(void* address);
+
+    ///
+    double operator()(void* address);
+
+    ///
+    Reflex::Member& method(int code)
+    { return code == 1 ? method1_ : method2_; }
+
+    ///
+    std::vector<kit::ValueThing*>& arguments(int code)
+    { return code == 1 ? values1_ : values2_; }
+
+    ///
+    std::string  str();
+
+    ///
+    //std::ostream& operator<<(std::ostream& os, kit::Method& o);
+
+  private:
+    std::string classname1_;
+    std::string methodrecord_;
+    int debug_;
+
+    std::string methodrecord1_;
+    Reflex::Member method1_;
+    std::vector<kit::ValueThing*> values1_;
+    std::vector<void*> args1_;
+
+    std::string classname2_;
+    std::string methodrecord2_;
+    Reflex::Member method2_;
+    std::vector<kit::ValueThing*> values2_;
+    std::vector<void*> args2_;
+
+    bool simple_;
+    bool useCINT_;
+
+    std::string declareobject_;
+    std::string invokeget_;
+
+  };
+
+  // ------------------------------------------------------------------------
+
   enum PDGID
   {
     BOTTOM  = 5,
@@ -359,6 +505,7 @@ struct kit
                                int direction=1);
 
   ///
+  static
   void                bisplit(std::string  s, 
                               std::string& left, 
                               std::string& right, 
@@ -371,14 +518,38 @@ struct kit
 
   ///
   static
+  std::string         replace(std::string& str, 
+                              std::string  oldstr, 
+                              std::string  newstr);
+  ///
+  static
   std::string         shell(std::string cmd);
 
   ///
   static
-  void                classMethods(std::string classname,
-                                   std::vector<std::string>& methods,
-                                   std::map<std::string, int>& m=MAPSTRINT,
-                                   int depth=0);
+  std::vector<std::string>   regex_findall(std::string& str, 
+                                           std::string  regex);
+
+  ///
+  static
+  std::string                regex_search(std::string& str, 
+                                          std::string  regex);
+
+  ///
+  static
+  std::string                regex_sub(std::string& str, 
+                                       std::string  regex,
+                                       std::string  rstr);
+
+ //  ///
+//   static
+//   void                classGetterInfo(std::string classname,
+//                                       std::vector<std::string>& baseclasses,
+//                                       std::map<std::string, 
+//                                       std::vector<std::string> >& methodmap,
+//                                       std::map<std::string, int>& =
+//                                       std::map<std::string, int>()
+//                                       int depth=0);
 
   // -------------------
   // HISTOGRAM UTILITIES
