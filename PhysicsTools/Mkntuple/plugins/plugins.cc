@@ -1,6 +1,6 @@
 // ----------------------------------------------------------------------------
 // Created: Sun Feb  7 20:09:59 2010 by mkplugins.py
-// $Revision: 1.3 $
+// $Revision: 1.1 $
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/Buffer.h"
 
@@ -227,3 +227,4 @@ DEFINE_EDM_PLUGIN(BufferFactory, Buffer<reco::VertexCompositeCandidate>,
 #include "DataFormats/HLTReco/interface/TriggerEvent.h"
 DEFINE_EDM_PLUGIN(BufferFactory, Buffer<trigger::TriggerEvent>,
                   "triggerTriggerEvent");
+
