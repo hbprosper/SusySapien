@@ -1,27 +1,8 @@
-Class:
-	pat::Flags::Selection
+Class:       pat::Flags::Selection
 
-Header:
-	DataFormats/PatCandidates/interface/Flags.h
+Header:      DataFormats/PatCandidates/interface/Flags.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:16 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:31:48 2010	mkdocs.py
 
-Methods from pat::Flags::Selection
-
-	-o- bitToString
-		Return: static const std::string&
-		Arguments: Bits	bit
-
-	-o- get
-		Return: static Bits
-		Arguments: int8_t	bit
-
-	-o- get
-		Return: static Bits
-		Arguments: const std::string&	str
-
-	-o- get
-		Return: static uint32_t
-		Arguments: const std::vector<std::string>&	str
-
+AccessMethods - pat::Flags::Selection

@@ -1,62 +1,27 @@
-Class:
-	reco::TauMassTagInfo
+Class:       reco::TauMassTagInfo
 
-Header:
-	DataFormats/BTauReco/interface/TauMassTagInfo.h
+Header:      DataFormats/BTauReco/interface/TauMassTagInfo.h
 
-BaseClasses:
-	reco::JTATagInfo	DataFormats/BTauReco/interface/JTATagInfo.h
-	reco::BaseTagInfo	DataFormats/BTauReco/interface/BaseTagInfo.h
+BaseClasses: reco::JTATagInfo
+             reco::BaseTagInfo
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:45 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:28:35 2010	mkdocs.py
 
-Methods from reco::TauMassTagInfo
+AccessMethods - reco::TauMassTagInfo
+             reco::TauMassTagInfo*  clone()
+                             float  discriminator()
+                             float  discriminator(double, double, double, double, double)
+       reco::IsolatedTauTagInfoRef  getIsolatedTauTag()
+  edm::AssociationMap<edm::OneToValue<std::vector<reco::CaloCluster>,float,unsigned short> >  clusterTrackCollection()
+                            double  getInvariantMassTrk(double, double, double)
+                            double  getInvariantMass(double, double, double, double)
 
-	-o- clone
-		Return: TauMassTagInfo*
-		Arguments: void	
+AccessMethods - reco::JTATagInfo
+         edm::RefToBase<reco::Jet>  jet()
+              reco::TrackRefVector  tracks()
+     reco::JetTracksAssociationRef  jtaRef()
+                              bool  hasTracks()
 
-	-o- discriminator
-		Return: float
-		Arguments: void	
-
-	-o- discriminator
-		Return: float
-		Arguments: double	matching_cone
-		           double	leading_trk_pt
-		           double	signal_cone
-		           double	cluster_track_cone
-		           double	m_cut
-
-	-o- setIsolatedTauTag
-		Return: void
-		Arguments: const IsolatedTauTagInfoRef	
-
-	-o- getIsolatedTauTag
-		Return: const edm::Ref<IsolatedTauTagInfoCollection>&
-		Arguments: void	
-
-	-o- storeClusterTrackCollection
-		Return: void
-		Arguments: reco::BasicClusterRef	clusterRef
-		           float	dr
-
-	-o- clusterTrackCollection
-		Return: TauMassTagInfo::edm::AssociationMap<edm::OneToValue<BasicClusterCollection, 
-      float, unsigned short> >
-		Arguments: void	
-
-	-o- getInvariantMassTrk
-		Return: double
-		Arguments: double	matching_cone
-		           double	leading_trk_pt
-		           double	signal_cone
-
-	-o- getInvariantMass
-		Return: double
-		Arguments: double	matching_cone
-		           double	leading_trk_pt
-		           double	signal_cone
-		           double	cluster_track_cone
-
+AccessMethods - reco::BaseTagInfo
+         reco::TaggingVariableList  taggingVariables()

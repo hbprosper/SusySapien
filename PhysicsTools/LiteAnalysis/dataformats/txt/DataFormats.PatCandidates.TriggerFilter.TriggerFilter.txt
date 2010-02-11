@@ -1,59 +1,16 @@
-Class:
-	pat::TriggerFilter
+Class:       pat::TriggerFilter
 
-Header:
-	DataFormats/PatCandidates/interface/TriggerFilter.h
+Header:      DataFormats/PatCandidates/interface/TriggerFilter.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:22 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:32:23 2010	mkdocs.py
 
-Methods from pat::TriggerFilter
-
-	-o- setLabel
-		Return: void
-		Arguments: const std::string&	label
-
-	-o- setType
-		Return: void
-		Arguments: const std::string&	type
-
-	-o- addObjectKey
-		Return: void
-		Arguments: unsigned	objectKey
-
-	-o- addObjectId
-		Return: void
-		Arguments: int	objectId
-
-	-o- setStatus
-		Return: bool
-		Arguments: int	status
-
-	-o- label
-		Return: std::string
-		Arguments: void	
-
-	-o- type
-		Return: std::string
-		Arguments: void	
-
-	-o- status
-		Return: int
-		Arguments: void	
-
-	-o- hasObjectKey
-		Return: bool
-		Arguments: unsigned	objectKey
-
-	-o- hasObjectId
-		Return: bool
-		Arguments: int	objectId
-
-	-o- objectKeys
-		Return: std::vector<unsigned >
-		Arguments: void	
-
-	-o- objectIds
-		Return: std::vector<int >
-		Arguments: void	
-
+AccessMethods - pat::TriggerFilter
+                              bool  setStatus(int)
+                       std::string  label()
+                       std::string  type()
+         std::vector<unsigned int>  objectKeys()
+                  std::vector<int>  objectIds()
+                               int  status()
+                              bool  hasObjectKey(unsigned int)
+                              bool  hasObjectId(int)

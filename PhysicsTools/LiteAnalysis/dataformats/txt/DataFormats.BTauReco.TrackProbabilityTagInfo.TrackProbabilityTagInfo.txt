@@ -1,52 +1,28 @@
-Class:
-	reco::TrackProbabilityTagInfo
+Class:       reco::TrackProbabilityTagInfo
 
-Header:
-	DataFormats/BTauReco/interface/TrackProbabilityTagInfo.h
+Header:      DataFormats/BTauReco/interface/TrackProbabilityTagInfo.h
 
-BaseClasses:
-	reco::JTATagInfo	DataFormats/BTauReco/interface/JTATagInfo.h
-	reco::BaseTagInfo	DataFormats/BTauReco/interface/BaseTagInfo.h
+BaseClasses: reco::JTATagInfo
+             reco::BaseTagInfo
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:40 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:28:41 2010	mkdocs.py
 
-Methods from reco::TrackProbabilityTagInfo
+AccessMethods - reco::TrackProbabilityTagInfo
+                               int  factorial(int)
+                             float  probability(size_t, int)
+                             float  jetProbability(int, float)
+                             float  discriminator(int, float)
+                               int  selectedTracks(int)
+                               int  trackIndex(size_t, int)
+                       reco::Track  track(size_t, int)
+    reco::TrackProbabilityTagInfo*  clone()
 
-	-o- factorial
-		Return: int
-		Arguments: int	n
+AccessMethods - reco::JTATagInfo
+         edm::RefToBase<reco::Jet>  jet()
+              reco::TrackRefVector  tracks()
+     reco::JetTracksAssociationRef  jtaRef()
+                              bool  hasTracks()
 
-	-o- probability
-		Return: float
-		Arguments: size_t	n
-		           int	ip
-
-	-o- jetProbability
-		Return: float
-		Arguments: int	ip
-		           float	minTrackProb
-
-	-o- discriminator
-		Return: float
-		Arguments: int	ipType
-		           float	minProb
-
-	-o- selectedTracks
-		Return: int
-		Arguments: int	ipType
-
-	-o- trackIndex
-		Return: int
-		Arguments: size_t	n
-		           int	ip
-
-	-o- track
-		Return: const Track&
-		Arguments: size_t	n
-		           int	ipType
-
-	-o- clone
-		Return: TrackProbabilityTagInfo*
-		Arguments: void	
-
+AccessMethods - reco::BaseTagInfo
+         reco::TaggingVariableList  taggingVariables()

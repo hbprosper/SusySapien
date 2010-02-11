@@ -1,62 +1,22 @@
-Class:
-	L1GctEmCand
+Class:       L1GctEmCand
 
-Header:
-	DataFormats/L1GlobalCaloTrigger/interface/L1GctEmCand.h
+Header:      DataFormats/L1GlobalCaloTrigger/interface/L1GctEmCand.h
 
-BaseClasses:
-	L1GctCand	DataFormats/L1GlobalCaloTrigger/interface/L1GctCand.h
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:30:11 2010	mkdocs.py
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:48 2010	lsclass.py $Revision:$
+AccessMethods - L1GctEmCand
+                 L1CaloRegionDetId  regionId()
+                       std::string  name()
+                              bool  empty()
+                          uint16_t  raw()
+                      unsigned int  rank()
+                      unsigned int  etaIndex()
+                      unsigned int  etaSign()
+                      unsigned int  phiIndex()
+                              bool  isolated()
+                      unsigned int  capBlock()
+                      unsigned int  capIndex()
+                           int16_t  bx()
 
-Methods from L1GctEmCand
-
-	-o- regionId
-		Return: L1CaloRegionDetId
-		Arguments: void	
-
-	-o- name
-		Return: std::string
-		Arguments: void	
-
-	-o- empty
-		Return: bool
-		Arguments: void	
-
-	-o- raw
-		Return: uint16_t
-		Arguments: void	
-
-	-o- rank
-		Return: unsigned
-		Arguments: void	
-
-	-o- etaIndex
-		Return: unsigned
-		Arguments: void	
-
-	-o- etaSign
-		Return: unsigned
-		Arguments: void	
-
-	-o- phiIndex
-		Return: unsigned
-		Arguments: void	
-
-	-o- isolated
-		Return: bool
-		Arguments: void	
-
-	-o- capBlock
-		Return: unsigned
-		Arguments: void	
-
-	-o- capIndex
-		Return: unsigned
-		Arguments: void	
-
-	-o- bx
-		Return: int16_t
-		Arguments: void	
-
+AccessMethods - L1GctCand

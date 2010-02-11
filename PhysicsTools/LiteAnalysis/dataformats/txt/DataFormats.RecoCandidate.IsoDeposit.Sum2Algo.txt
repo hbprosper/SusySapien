@@ -1,15 +1,8 @@
-Class:
-	reco::IsoDeposit::Sum2Algo
+Class:       reco::IsoDeposit::Sum2Algo
 
-Header:
-	DataFormats/RecoCandidate/interface/IsoDeposit.h
+Header:      DataFormats/RecoCandidate/interface/IsoDeposit.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:12 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:32:33 2010	mkdocs.py
 
-Methods from reco::IsoDeposit::Sum2Algo
-
-	-o- result
-		Return: double
-		Arguments: void	
-
+AccessMethods - reco::IsoDeposit::Sum2Algo

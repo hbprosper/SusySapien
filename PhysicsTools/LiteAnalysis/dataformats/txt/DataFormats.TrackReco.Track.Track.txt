@@ -1,450 +1,103 @@
-Class:
-	reco::Track
-
-Header:
-	DataFormats/TrackReco/interface/Track.h
-
-BaseClasses:
-	reco::TrackBase	DataFormats/TrackReco/interface/TrackBase.h
-
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:57:01 2010	lsclass.py $Revision:$
-
-Methods from reco::Track
-
-	-o- outerOk
-		Return: bool
-		Arguments: void	
-
-	-o- innerOk
-		Return: bool
-		Arguments: void	
-
-	-o- innerPosition
-		Return: const math::XYZPoint&
-		Arguments: void	
-
-	-o- innerMomentum
-		Return: const math::XYZVector&
-		Arguments: void	
-
-	-o- outerPosition
-		Return: const math::XYZPoint&
-		Arguments: void	
-
-	-o- outerMomentum
-		Return: const math::XYZVector&
-		Arguments: void	
-
-	-o- outerStateCovariance
-		Return: math::Error<dimension>::type
-		Arguments: void	
-
-	-o- innerStateCovariance
-		Return: math::Error<dimension>::type
-		Arguments: void	
-
-	-o- fillOuter
-		Return: math::Error<dimension>::type&
-		Arguments: CovarianceMatrix&	v
-
-	-o- fillInner
-		Return: math::Error<dimension>::type&
-		Arguments: CovarianceMatrix&	v
-
-	-o- outerDetId
-		Return: unsigned int
-		Arguments: void	
-
-	-o- innerDetId
-		Return: unsigned int
-		Arguments: void	
-
-	-o- recHitsBegin
-		Return: trackingRecHit_iterator
-		Arguments: void	
-
-	-o- recHitsEnd
-		Return: trackingRecHit_iterator
-		Arguments: void	
-
-	-o- recHit
-		Return: TrackingRecHitRef
-		Arguments: size_t	i
-
-	-o- recHitsSize
-		Return: size_t
-		Arguments: void	
-
-	-o- outerPx
-		Return: double
-		Arguments: void	
-
-	-o- outerPy
-		Return: double
-		Arguments: void	
-
-	-o- outerPz
-		Return: double
-		Arguments: void	
-
-	-o- outerX
-		Return: double
-		Arguments: void	
-
-	-o- outerY
-		Return: double
-		Arguments: void	
-
-	-o- outerZ
-		Return: double
-		Arguments: void	
-
-	-o- outerP
-		Return: double
-		Arguments: void	
-
-	-o- outerPt
-		Return: double
-		Arguments: void	
-
-	-o- outerPhi
-		Return: double
-		Arguments: void	
-
-	-o- outerEta
-		Return: double
-		Arguments: void	
-
-	-o- outerTheta
-		Return: double
-		Arguments: void	
-
-	-o- outerRadius
-		Return: double
-		Arguments: void	
-
-	-o- setExtra
-		Return: void
-		Arguments: const TrackExtraRef&	ref
-
-	-o- extra
-		Return: const TrackExtraRef&
-		Arguments: void	
-
-	-o- found
-		Return: unsigned short
-		Arguments: void	
-
-	-o- lost
-		Return: unsigned short
-		Arguments: void	
-
-	-o- seedDirection
-		Return: PropagationDirection
-		Arguments: void	
-
-	-o- residuals
-		Return: const TrackResiduals&
-		Arguments: void	
-
-	-o- residualX
-		Return: double
-		Arguments: int	position
-
-	-o- residualY
-		Return: double
-		Arguments: int	position
-
-	-o- seedRef
-		Return: edm::RefToBase<TrajectorySeed>
-		Arguments: void	
-
-Methods from reco::TrackBase
-
-	-o- chi2
-		Return: double
-		Arguments: void	
-
-	-o- ndof
-		Return: double
-		Arguments: void	
-
-	-o- normalizedChi2
-		Return: double
-		Arguments: void	
-
-	-o- charge
-		Return: int
-		Arguments: void	
-
-	-o- qoverp
-		Return: double
-		Arguments: void	
-
-	-o- theta
-		Return: double
-		Arguments: void	
-
-	-o- lambda
-		Return: double
-		Arguments: void	
-
-	-o- dxy
-		Return: double
-		Arguments: void	
-
-	-o- d0
-		Return: double
-		Arguments: void	
-
-	-o- dsz
-		Return: double
-		Arguments: void	
-
-	-o- dz
-		Return: double
-		Arguments: void	
-
-	-o- p
-		Return: double
-		Arguments: void	
-
-	-o- pt
-		Return: double
-		Arguments: void	
-
-	-o- px
-		Return: double
-		Arguments: void	
-
-	-o- py
-		Return: double
-		Arguments: void	
-
-	-o- pz
-		Return: double
-		Arguments: void	
-
-	-o- phi
-		Return: double
-		Arguments: void	
-
-	-o- eta
-		Return: double
-		Arguments: void	
-
-	-o- vx
-		Return: double
-		Arguments: void	
-
-	-o- vy
-		Return: double
-		Arguments: void	
-
-	-o- vz
-		Return: double
-		Arguments: void	
-
-	-o- momentum
-		Return: const math::XYZVector&
-		Arguments: void	
-
-	-o- referencePoint
-		Return: const math::XYZPoint&
-		Arguments: void	
-
-	-o- vertex
-		Return: const math::XYZPoint&
-		Arguments: void	
-
-	-o- dxy
-		Return: double
-		Arguments: const Point&	myBeamSpot
-
-	-o- dsz
-		Return: double
-		Arguments: const Point&	myBeamSpot
-
-	-o- dz
-		Return: double
-		Arguments: const Point&	myBeamSpot
-
-	-o- parameters
-		Return: math::math::XYZVector<dimension>::ROOT::Math::SVector<double, N>
-		Arguments: void	
-
-	-o- covariance
-		Return: math::Error<dimension>::ROOT::Math::SVector<double, N>
-		Arguments: void	
-
-	-o- parameter
-		Return: double
-		Arguments: int	i
-
-	-o- covariance
-		Return: double
-		Arguments: int	i
-		           int	j
-
-	-o- error
-		Return: double
-		Arguments: int	i
-
-	-o- qoverpError
-		Return: double
-		Arguments: void	
-
-	-o- ptError
-		Return: double
-		Arguments: void	
-
-	-o- thetaError
-		Return: double
-		Arguments: void	
-
-	-o- lambdaError
-		Return: double
-		Arguments: void	
-
-	-o- etaError
-		Return: double
-		Arguments: void	
-
-	-o- phiError
-		Return: double
-		Arguments: void	
-
-	-o- dxyError
-		Return: double
-		Arguments: void	
-
-	-o- d0Error
-		Return: double
-		Arguments: void	
-
-	-o- dszError
-		Return: double
-		Arguments: void	
-
-	-o- dzError
-		Return: double
-		Arguments: void	
-
-	-o- fill
-		Return: math::Error<dimension>::ROOT::Math::SVector<double, N>&
-		Arguments: CovarianceMatrix&	v
-
-	-o- covIndex
-		Return: static unsigned int
-		Arguments: index	i
-		           index	j
-
-	-o- hitPattern
-		Return: const HitPattern&
-		Arguments: void	
-
-	-o- trackerExpectedHitsInner
-		Return: const HitPattern&
-		Arguments: void	
-
-	-o- trackerExpectedHitsOuter
-		Return: const HitPattern&
-		Arguments: void	
-
-	-o- numberOfValidHits
-		Return: unsigned short
-		Arguments: void	
-
-	-o- numberOfLostHits
-		Return: unsigned short
-		Arguments: void	
-
-	-o- setHitPattern
-		Return: void
-		Arguments: const TrackingRecHit&	hit
-		           size_t	i
-
-	-o- setTrackerExpectedHitsInner
-		Return: void
-		Arguments: const TrackingRecHit&	hit
-		           size_t	i
-
-	-o- setTrackerExpectedHitsOuter
-		Return: void
-		Arguments: const TrackingRecHit&	hit
-		           size_t	i
-
-	-o- setAlgorithm
-		Return: void
-		Arguments: const TrackAlgorithm	a
-		           bool=true	set
-
-	-o- algo
-		Return: TrackAlgorithm
-		Arguments: void	
-
-	-o- algoName
-		Return: std::string
-		Arguments: void	
-
-	-o- algoName
-		Return: static std::string
-		Arguments: TrackAlgorithm	
-
-	-o- algoByName
-		Return: static TrackAlgorithm
-		Arguments: const std::string&	name
-
-	-o- quality
-		Return: bool
-		Arguments: const TrackQuality	
-
-	-o- setQuality
-		Return: void
-		Arguments: const TrackQuality	
-		           bool=true	set
-
-	-o- qualityName
-		Return: static std::string
-		Arguments: TrackQuality	
-
-	-o- qualityByName
-		Return: static TrackQuality
-		Arguments: const std::string&	name
-
-	-o- qualityMask
-		Return: int
-		Arguments: void	
-
-	-o- setQualityMask
-		Return: void
-		Arguments: int	qualMask
-
-	-o- setHitPattern
-		Return: template<typename C> void
-		Arguments: const C&	c
-
-	-o- setTrackerExpectedHitsInner
-		Return: template<typename C> void
-		Arguments: const C&	c
-
-	-o- setTrackerExpectedHitsOuter
-		Return: template<typename C> void
-		Arguments: const C&	c
-
-	-o- setHitPattern
-		Return: template<typename I> void
-		Arguments: const I&	begin
-		           const I&	end
-
-	-o- setTrackerExpectedHitsInner
-		Return: template<typename I> void
-		Arguments: const I&	begin
-		           const I&	end
-
-	-o- setTrackerExpectedHitsOuter
-		Return: template<typename I> void
-		Arguments: const I&	begin
-		           const I&	end
-
+Class:       reco::Track
+
+Header:      DataFormats/TrackReco/interface/Track.h
+
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:33:21 2010	mkdocs.py
+
+AccessMethods - reco::Track
+                              bool  outerOk()
+                              bool  innerOk()
+                    math::XYZPoint  innerPosition()
+                   math::XYZVector  innerMomentum()
+                    math::XYZPoint  outerPosition()
+                   math::XYZVector  outerMomentum()
+  ROOT::Math::SMatrix<double,5,5,ROOT::Math::MatRepSym<double,5> >  outerStateCovariance()
+  ROOT::Math::SMatrix<double,5,5,ROOT::Math::MatRepSym<double,5> >  innerStateCovariance()
+  ROOT::Math::SMatrix<double,5,5,ROOT::Math::MatRepSym<double,5> >  fillOuter(ROOT::Math::SMatrix<double,5,5,ROOT::Math::MatRepSym<double,5> >)
+  ROOT::Math::SMatrix<double,5,5,ROOT::Math::MatRepSym<double,5> >  fillInner(ROOT::Math::SMatrix<double,5,5,ROOT::Math::MatRepSym<double,5> >)
+                      unsigned int  outerDetId()
+                      unsigned int  innerDetId()
+           trackingRecHit_iterator  recHitsBegin()
+           trackingRecHit_iterator  recHitsEnd()
+                 TrackingRecHitRef  recHit(size_t)
+                            size_t  recHitsSize()
+                            double  outerPx()
+                            double  outerPy()
+                            double  outerPz()
+                            double  outerX()
+                            double  outerY()
+                            double  outerZ()
+                            double  outerP()
+                            double  outerPt()
+                            double  outerPhi()
+                            double  outerEta()
+                            double  outerTheta()
+                            double  outerRadius()
+               reco::TrackExtraRef  extra()
+                    unsigned short  found()
+                    unsigned short  lost()
+              PropagationDirection  seedDirection()
+    edm::RefToBase<TrajectorySeed>  seedRef()
+              reco::TrackResiduals  residuals()
+                            double  residualX(int)
+                            double  residualY(int)
+
+AccessMethods - reco::TrackBase
+                            double  chi2()
+                            double  ndof()
+                            double  normalizedChi2()
+                               int  charge()
+                            double  qoverp()
+                            double  theta()
+                            double  lambda()
+                            double  dxy()
+                            double  d0()
+                            double  dsz()
+                            double  dz()
+                            double  p()
+                            double  pt()
+                            double  px()
+                            double  py()
+                            double  pz()
+                            double  phi()
+                            double  eta()
+                            double  vx()
+                            double  vy()
+                            double  vz()
+                   math::XYZVector  momentum()
+                    math::XYZPoint  referencePoint()
+                    math::XYZPoint  vertex()
+                            double  dxy(math::XYZPoint)
+                            double  dsz(math::XYZPoint)
+                            double  dz(math::XYZPoint)
+     ROOT::Math::SVector<double,5>  parameters()
+  ROOT::Math::SMatrix<double,5,5,ROOT::Math::MatRepSym<double,5> >  covariance()
+                            double  parameter(int)
+                            double  covariance(int, int)
+                            double  error(int)
+                            double  qoverpError()
+                            double  ptError()
+                            double  thetaError()
+                            double  lambdaError()
+                            double  etaError()
+                            double  phiError()
+                            double  dxyError()
+                            double  d0Error()
+                            double  dszError()
+                            double  dzError()
+  ROOT::Math::SMatrix<double,5,5,ROOT::Math::MatRepSym<double,5> >  fill(ROOT::Math::SMatrix<double,5,5,ROOT::Math::MatRepSym<double,5> >)
+                      unsigned int  covIndex(unsigned int, unsigned int)
+                  reco::HitPattern  hitPattern()
+                  reco::HitPattern  trackerExpectedHitsInner()
+                  reco::HitPattern  trackerExpectedHitsOuter()
+                    unsigned short  numberOfValidHits()
+                    unsigned short  numberOfLostHits()
+   reco::TrackBase::TrackAlgorithm  algo()
+                       std::string  algoName()
+                       std::string  algoName(reco::TrackBase::TrackAlgorithm)
+   reco::TrackBase::TrackAlgorithm  algoByName(std::string)
+                              bool  quality(reco::TrackBase::TrackQuality)
+                       std::string  qualityName(reco::TrackBase::TrackQuality)
+     reco::TrackBase::TrackQuality  qualityByName(std::string)
+                               int  qualityMask()

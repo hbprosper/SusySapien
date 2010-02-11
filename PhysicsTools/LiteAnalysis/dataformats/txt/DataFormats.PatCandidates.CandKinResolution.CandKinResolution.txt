@@ -1,75 +1,24 @@
-Class:
-	pat::CandKinResolution
+Class:       pat::CandKinResolution
 
-Header:
-	DataFormats/PatCandidates/interface/CandKinResolution.h
+Header:      DataFormats/PatCandidates/interface/CandKinResolution.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:19 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:31:39 2010	mkdocs.py
 
-Methods from pat::CandKinResolution
-
-	-o- parametrization
-		Return: Parametrization
-		Arguments: void	
-
-	-o- dimension
-		Return: uint32_t
-		Arguments: void	
-
-	-o- covariance
-		Return: const AlgebraicSymMatrix44&
-		Arguments: void	
-
-	-o- resolEta
-		Return: double
-		Arguments: const LorentzVector&	p4
-
-	-o- resolTheta
-		Return: double
-		Arguments: const LorentzVector&	p4
-
-	-o- resolPhi
-		Return: double
-		Arguments: const LorentzVector&	p4
-
-	-o- resolE
-		Return: double
-		Arguments: const LorentzVector&	p4
-
-	-o- resolEt
-		Return: double
-		Arguments: const LorentzVector&	p4
-
-	-o- resolM
-		Return: double
-		Arguments: const LorentzVector&	p4
-
-	-o- resolP
-		Return: double
-		Arguments: const LorentzVector&	p4
-
-	-o- resolPt
-		Return: double
-		Arguments: const LorentzVector&	p4
-
-	-o- resolPInv
-		Return: double
-		Arguments: const LorentzVector&	p4
-
-	-o- resolPx
-		Return: double
-		Arguments: const LorentzVector&	p4
-
-	-o- resolPy
-		Return: double
-		Arguments: const LorentzVector&	p4
-
-	-o- resolPz
-		Return: double
-		Arguments: const LorentzVector&	p4
-
-	-o- constraints
-		Return: const std::vector<float>&
-		Arguments: void	
-
+AccessMethods - pat::CandKinResolution
+  pat::CandKinResolution::Parametrization  parametrization()
+                          uint32_t  dimension()
+              AlgebraicSymMatrix44  covariance()
+                std::vector<float>  constraints()
+                            double  resolEta(math::XYZTLorentzVector)
+                            double  resolTheta(math::XYZTLorentzVector)
+                            double  resolPhi(math::XYZTLorentzVector)
+                            double  resolE(math::XYZTLorentzVector)
+                            double  resolEt(math::XYZTLorentzVector)
+                            double  resolM(math::XYZTLorentzVector)
+                            double  resolP(math::XYZTLorentzVector)
+                            double  resolPt(math::XYZTLorentzVector)
+                            double  resolPInv(math::XYZTLorentzVector)
+                            double  resolPx(math::XYZTLorentzVector)
+                            double  resolPy(math::XYZTLorentzVector)
+                            double  resolPz(math::XYZTLorentzVector)

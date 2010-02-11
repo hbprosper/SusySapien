@@ -1,83 +1,26 @@
-Class:
-	L1GctJetCounts
+Class:       L1GctJetCounts
 
-Header:
-	DataFormats/L1GlobalCaloTrigger/interface/L1GctJetCounts.h
+Header:      DataFormats/L1GlobalCaloTrigger/interface/L1GctJetCounts.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:50 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:30:26 2010	mkdocs.py
 
-Methods from L1GctJetCounts
-
-	-o- name
-		Return: std::string
-		Arguments: void	
-
-	-o- empty
-		Return: bool
-		Arguments: void	
-
-	-o- raw0
-		Return: uint32_t
-		Arguments: void	
-
-	-o- raw1
-		Return: uint32_t
-		Arguments: void	
-
-	-o- count
-		Return: unsigned
-		Arguments: unsigned	i
-
-	-o- count00
-		Return: unsigned
-		Arguments: void	
-
-	-o- count01
-		Return: unsigned
-		Arguments: void	
-
-	-o- count02
-		Return: unsigned
-		Arguments: void	
-
-	-o- count03
-		Return: unsigned
-		Arguments: void	
-
-	-o- count04
-		Return: unsigned
-		Arguments: void	
-
-	-o- count05
-		Return: unsigned
-		Arguments: void	
-
-	-o- count06
-		Return: unsigned
-		Arguments: void	
-
-	-o- count07
-		Return: unsigned
-		Arguments: void	
-
-	-o- count08
-		Return: unsigned
-		Arguments: void	
-
-	-o- count09
-		Return: unsigned
-		Arguments: void	
-
-	-o- count10
-		Return: unsigned
-		Arguments: void	
-
-	-o- count11
-		Return: unsigned
-		Arguments: void	
-
-	-o- bx
-		Return: int16_t
-		Arguments: void	
-
+AccessMethods - L1GctJetCounts
+                       std::string  name()
+                              bool  empty()
+                          uint32_t  raw0()
+                          uint32_t  raw1()
+                      unsigned int  count(unsigned int)
+                      unsigned int  count00()
+                      unsigned int  count01()
+                      unsigned int  count02()
+                      unsigned int  count03()
+                      unsigned int  count04()
+                      unsigned int  count05()
+                      unsigned int  count06()
+                      unsigned int  count07()
+                      unsigned int  count08()
+                      unsigned int  count09()
+                      unsigned int  count10()
+                      unsigned int  count11()
+                           int16_t  bx()

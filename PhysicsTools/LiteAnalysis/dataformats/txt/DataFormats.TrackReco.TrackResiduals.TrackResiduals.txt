@@ -1,54 +1,12 @@
-Class:
-	reco::TrackResiduals
+Class:       reco::TrackResiduals
 
-Header:
-	DataFormats/TrackReco/interface/TrackResiduals.h
+Header:      DataFormats/TrackReco/interface/TrackResiduals.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:57:00 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:33:26 2010	mkdocs.py
 
-Methods from reco::TrackResiduals
-
-	-o- setResidualXY
-		Return: void
-		Arguments: int	idx
-		           double	residualX
-		           double	residualY
-
-	-o- setPullXY
-		Return: void
-		Arguments: int	idx
-		           double	pullX
-		           double	pullY
-
-	-o- setResidualType
-		Return: void
-		Arguments: enum	ResidualType
-
-	-o- print
-		Return: void
-		Arguments: std::ostream&=std::cout	stream
-
-	-o- print
-		Return: void
-		Arguments: const HitPattern&	
-		           std::ostream&=std::cout	stream
-
-	-o- residualX
-		Return: double
-		Arguments: int	i
-		           const HitPattern&	
-
-	-o- residualY
-		Return: double
-		Arguments: int	i
-		           const HitPattern&	
-
-	-o- residualX
-		Return: double
-		Arguments: int	i
-
-	-o- residualY
-		Return: double
-		Arguments: int	i
-
+AccessMethods - reco::TrackResiduals
+                            double  residualX(int, reco::HitPattern)
+                            double  residualY(int, reco::HitPattern)
+                            double  residualX(int)
+                            double  residualY(int)

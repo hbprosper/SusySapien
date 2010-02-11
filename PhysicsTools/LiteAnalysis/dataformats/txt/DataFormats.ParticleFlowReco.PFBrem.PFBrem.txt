@@ -1,23 +1,28 @@
-Class:
-	reco::PFBrem
+Class:       reco::PFBrem
 
-Header:
-	DataFormats/ParticleFlowReco/interface/PFBrem.h
+Header:      DataFormats/ParticleFlowReco/interface/PFBrem.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:29 2010	lsclass.py $Revision:$
+BaseClasses: reco::PFRecTrack
+             reco::PFTrack
 
-Methods from reco::PFBrem
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:31:27 2010	mkdocs.py
 
-	-o- DeltaP
-		Return: double
-		Arguments: void	
+AccessMethods - reco::PFBrem
+                            double  DeltaP()
+                            double  SigmaDeltaP()
+                      unsigned int  indTrajPoint()
 
-	-o- SigmaDeltaP
-		Return: double
-		Arguments: void	
+AccessMethods - reco::PFRecTrack
+                      unsigned int  algoType()
+                               int  trackId()
+                    reco::TrackRef  trackRef()
 
-	-o- indTrajPoint
-		Return: unsigned int
-		Arguments: void	
-
+AccessMethods - reco::PFTrack
+                            double  charge()
+                      unsigned int  nTrajectoryPoints()
+                      unsigned int  nTrajectoryMeasurements()
+  std::vector<reco::PFTrajectoryPoint>  trajectoryPoints()
+           reco::PFTrajectoryPoint  trajectoryPoint(unsigned int)
+           reco::PFTrajectoryPoint  extrapolatedPoint(unsigned int)
+                               int  color()

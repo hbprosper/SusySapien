@@ -1,86 +1,20 @@
-Class:
-	pat::VertexAssociation
+Class:       pat::VertexAssociation
 
-Header:
-	DataFormats/PatCandidates/interface/Vertexing.h
+Header:      DataFormats/PatCandidates/interface/Vertexing.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:17 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:32:29 2010	mkdocs.py
 
-Methods from pat::VertexAssociation
-
-	-o- isNull
-		Return: bool
-		Arguments: void	
-
-	-o- isNonnull
-		Return: bool
-		Arguments: void	
-
-	-o- isAvailable
-		Return: bool
-		Arguments: void	
-
-	-o- vertexRef
-		Return: const reco::VertexRef&
-		Arguments: void	
-
-	-o- vertex
-		Return: const reco::Vertex*
-		Arguments: void	
-
-	-o- hasTrack
-		Return: bool
-		Arguments: void	
-
-	-o- trackRef
-		Return: const reco::TrackBaseRef&
-		Arguments: void	
-
-	-o- track
-		Return: const reco::Track*
-		Arguments: void	
-
-	-o- dz
-		Return: const Measurement1DFloat&
-		Arguments: void	
-
-	-o- dr
-		Return: const Measurement1DFloat&
-		Arguments: void	
-
-	-o- hasTransverseIP
-		Return: bool
-		Arguments: void	
-
-	-o- hasErrors
-		Return: bool
-		Arguments: void	
-
-	-o- setDz
-		Return: void
-		Arguments: const Measurement1DFloat&	dz
-
-	-o- setDr
-		Return: void
-		Arguments: const Measurement1DFloat&	dr
-
-	-o- setDz
-		Return: void
-		Arguments: const Measurement1D&	dz
-
-	-o- setDr
-		Return: void
-		Arguments: const Measurement1D&	dr
-
-	-o- setDistances
-		Return: void
-		Arguments: const AlgebraicVector3&	dist
-		           const AlgebraicSymMatrix33&	err
-
-	-o- setDistances
-		Return: template<typename T1, typename T2> void
-		Arguments: const T1&	p1
-		           const T2&	p2
-		           const AlgebraicSymMatrix33&	err
-
+AccessMethods - pat::VertexAssociation
+                              bool  isNull()
+                              bool  isNonnull()
+                              bool  isAvailable()
+                   reco::VertexRef  vertexRef()
+                     reco::Vertex*  vertex()
+                              bool  hasTrack()
+                reco::TrackBaseRef  trackRef()
+                      reco::Track*  track()
+                Measurement1DFloat  dz()
+                Measurement1DFloat  dr()
+                              bool  hasTransverseIP()
+                              bool  hasErrors()

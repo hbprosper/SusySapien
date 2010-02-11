@@ -1,297 +1,108 @@
-Class:
-	reco::GenJet
-
-Header:
-	DataFormats/JetReco/interface/GenJet.h
-
-BaseClasses:
-	reco::Jet	DataFormats/JetReco/interface/Jet.h
-	reco::CompositePtrCandidate	DataFormats/Candidate/interface/CompositePtrCandidate.h
-	reco::LeafCandidate	DataFormats/Candidate/interface/LeafCandidate.h
-	reco::Candidate	DataFormats/Candidate/interface/Candidate.h
-
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:37 2010	lsclass.py $Revision:$
-
-Methods from reco::GenJet
-
-	-o- emEnergy
-		Return: float
-		Arguments: void	
-
-	-o- hadEnergy
-		Return: float
-		Arguments: void	
-
-	-o- invisibleEnergy
-		Return: float
-		Arguments: void	
-
-	-o- auxiliaryEnergy
-		Return: float
-		Arguments: void	
-
-	-o- detectorEta
-		Return: float
-		Arguments: float	fZVertex
-
-	-o- genParticle
-		Return: static const GenParticle*
-		Arguments: const reco::Candidate*	fConstituent
-
-	-o- getGenConstituent
-		Return: const GenParticle*
-		Arguments: unsigned	fIndex
-
-	-o- getSpecific
-		Return: const Specific&
-		Arguments: void	
-
-	-o- clone
-		Return: GenJet*
-		Arguments: void	
-
-	-o- print
-		Return: std::string
-		Arguments: void	
-
-	-o- getGenConstituents
-		Return: std::vector<const GenParticle*>
-		Arguments: void	
-
-Methods from reco::Jet
-
-	-o- etaPhiStatistics
-		Return: EtaPhiMoments
-		Arguments: void	
-
-	-o- etaetaMoment
-		Return: float
-		Arguments: void	
-
-	-o- phiphiMoment
-		Return: float
-		Arguments: void	
-
-	-o- etaphiMoment
-		Return: float
-		Arguments: void	
-
-	-o- etInAnnulus
-		Return: float
-		Arguments: float	fRmin
-		           float	fRmax
-
-	-o- nCarrying
-		Return: int
-		Arguments: float	fFraction
-
-	-o- maxDistance
-		Return: float
-		Arguments: void	
-
-	-o- nConstituents
-		Return: int
-		Arguments: void	
-
-	-o- physicsEta
-		Return: static float
-		Arguments: float	fZVertex
-		           float	fDetectorEta
-
-	-o- detectorEta
-		Return: static float
-		Arguments: float	fZVertex
-		           float	fPhysicsEta
-
-	-o- physicsP4
-		Return: static Candidate::LorentzVector
-		Arguments: const Candidate::Point&	newVertex
-		           const Candidate&	inParticle
-		           const Candidate::Point&=Candidate::Point(0, 0, 0)	oldVertex
-
-	-o- detectorP4
-		Return: static Candidate::LorentzVector
-		Arguments: const Candidate::Point&	vertex
-		           const Candidate&	inParticle
-
-	-o- getJetConstituents
-		Return: std::vector<Constituent>
-		Arguments: void	
-
-Methods from reco::LeafCandidate
-
-	-o- begin
-		Return: candidate::const_iterator
-		Arguments: void	
-
-	-o- end
-		Return: candidate::const_iterator
-		Arguments: void	
-
-Methods from reco::Candidate
-
-	-o- charge
-		Return: int
-		Arguments: void	
-
-	-o- setCharge
-		Return: void
-		Arguments: Charge	q
-
-	-o- threeCharge
-		Return: int
-		Arguments: void	
-
-	-o- setThreeCharge
-		Return: void
-		Arguments: Charge	qx3
-
-	-o- p4
-		Return: const math::XYZTLorentzVector&
-		Arguments: void	
-
-	-o- polarP4
-		Return: const math::PtEtaPhiMLorentzVector&
-		Arguments: void	
-
-	-o- momentum
-		Return: math::XYZVector
-		Arguments: void	
-
-	-o- boostToCM
-		Return: math::XYZVector
-		Arguments: void	
-
-	-o- p
-		Return: double
-		Arguments: void	
-
-	-o- energy
-		Return: double
-		Arguments: void	
-
-	-o- et
-		Return: double
-		Arguments: void	
-
-	-o- mass
-		Return: double
-		Arguments: void	
-
-	-o- massSqr
-		Return: double
-		Arguments: void	
-
-	-o- mt
-		Return: double
-		Arguments: void	
-
-	-o- mtSqr
-		Return: double
-		Arguments: void	
-
-	-o- px
-		Return: double
-		Arguments: void	
-
-	-o- py
-		Return: double
-		Arguments: void	
-
-	-o- pz
-		Return: double
-		Arguments: void	
-
-	-o- pt
-		Return: double
-		Arguments: void	
-
-	-o- phi
-		Return: double
-		Arguments: void	
-
-	-o- theta
-		Return: double
-		Arguments: void	
-
-	-o- eta
-		Return: double
-		Arguments: void	
-
-	-o- rapidity
-		Return: double
-		Arguments: void	
-
-	-o- y
-		Return: double
-		Arguments: void	
-
-	-o- setP4
-		Return: void
-		Arguments: const LorentzVector&	p4
-
-	-o- setP4
-		Return: void
-		Arguments: const PolarLorentzVector&	p4
-
-	-o- setMass
-		Return: void
-		Arguments: double	m
-
-	-o- setPz
-		Return: void
-		Arguments: double	pz
-
-	-o- vertex
-		Return: const math::XYZPoint&
-		Arguments: void	
-
-	-o- vx
-		Return: double
-		Arguments: void	
-
-	-o- vy
-		Return: double
-		Arguments: void	
-
-	-o- vz
-		Return: double
-		Arguments: void	
-
-	-o- setVertex
-		Return: void
-		Arguments: const Point&	vertex
-
-	-o- pdgId
-		Return: int
-		Arguments: void	
-
-	-o- setPdgId
-		Return: void
-		Arguments: int	pdgId
-
-	-o- status
-		Return: int
-		Arguments: void	
-
-	-o- setStatus
-		Return: void
-		Arguments: int	status
-
-	-o- setLongLived
-		Return: void
-		Arguments: void	
-
-	-o- longLived
-		Return: bool
-		Arguments: void	
-
-	-o- setMassConstraint
-		Return: void
-		Arguments: void	
-
-	-o- massConstraint
-		Return: bool
-		Arguments: void	
-
+Class:       reco::GenJet
+
+Header:      DataFormats/JetReco/interface/GenJet.h
+
+BaseClasses: reco::Jet
+             reco::CompositePtrCandidate
+             reco::LeafCandidate
+             reco::Candidate
+
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:30:01 2010	mkdocs.py
+
+AccessMethods - reco::GenJet
+                             float  emEnergy()
+                             float  hadEnergy()
+                             float  invisibleEnergy()
+                             float  auxiliaryEnergy()
+                             float  detectorEta(float)
+                reco::GenParticle*  genParticle(reco::Candidate*)
+                reco::GenParticle*  getGenConstituent(unsigned int)
+  std::vector<const reco::GenParticle*>  getGenConstituents()
+            reco::GenJet::Specific  getSpecific()
+                     reco::GenJet*  clone()
+                       std::string  print()
+
+AccessMethods - reco::Jet
+          reco::Jet::EtaPhiMoments  etaPhiStatistics()
+                             float  etaetaMoment()
+                             float  phiphiMoment()
+                             float  etaphiMoment()
+                             float  etInAnnulus(float, float)
+                               int  nCarrying(float)
+                             float  maxDistance()
+                               int  nConstituents()
+                             float  physicsEta(float, float)
+           math::XYZTLorentzVector  physicsP4(math::XYZPoint, reco::Candidate, math::XYZPoint)
+           math::XYZTLorentzVector  detectorP4(math::XYZPoint, reco::Candidate)
+  std::vector<edm::Ptr<reco::Candidate> >  getJetConstituents()
+  std::vector<const reco::Candidate*>  getJetConstituentsQuick()
+                             float  jetArea()
+                             float  pileup()
+                               int  nPasses()
+                              bool  isJet()
+
+AccessMethods - reco::CompositePtrCandidate
+   reco::candidate::const_iterator  begin()
+   reco::candidate::const_iterator  end()
+         reco::candidate::iterator  begin()
+         reco::candidate::iterator  end()
+                            size_t  numberOfDaughters()
+                            size_t  numberOfMothers()
+                  reco::Candidate*  daughter(size_t)
+                reco::CandidatePtr  daughterPtr(size_t)
+  std::vector<edm::Ptr<reco::Candidate> >  daughterPtrVector()
+                  reco::Candidate*  mother(size_t)
+                            size_t  numberOfSourceCandidatePtrs()
+                reco::CandidatePtr  sourceCandidatePtr(size_t)
+
+AccessMethods - reco::LeafCandidate
+                               int  charge()
+                               int  threeCharge()
+           math::XYZTLorentzVector  p4()
+      math::PtEtaPhiMLorentzVector  polarP4()
+                   math::XYZVector  momentum()
+                   math::XYZVector  boostToCM()
+                            double  p()
+                            double  energy()
+                            double  et()
+                            double  mass()
+                            double  massSqr()
+                            double  mt()
+                            double  mtSqr()
+                            double  px()
+                            double  py()
+                            double  pz()
+                            double  pt()
+                            double  phi()
+                            double  theta()
+                            double  eta()
+                            double  rapidity()
+                            double  y()
+                    math::XYZPoint  vertex()
+                            double  vx()
+                            double  vy()
+                            double  vz()
+                               int  pdgId()
+                               int  status()
+                              bool  longLived()
+                              bool  massConstraint()
+                            double  vertexChi2()
+                            double  vertexNdof()
+                            double  vertexNormalizedChi2()
+                            double  vertexCovariance(int, int)
+  ROOT::Math::SMatrix<double,3,3,ROOT::Math::MatRepSym<double,3> >  vertexCovariance()
+                              bool  hasMasterClone()
+            reco::CandidateBaseRef  masterClone()
+                              bool  hasMasterClonePtr()
+                reco::CandidatePtr  masterClonePtr()
+                              bool  isElectron()
+                              bool  isMuon()
+                              bool  isStandAloneMuon()
+                              bool  isGlobalMuon()
+                              bool  isTrackerMuon()
+                              bool  isCaloMuon()
+                              bool  isPhoton()
+                              bool  isConvertedPhoton()
+
+AccessMethods - reco::Candidate

@@ -1,650 +1,188 @@
-Class:
-	reco::GsfElectron
-
-Header:
-	DataFormats/EgammaCandidates/interface/GsfElectron.h
-
-BaseClasses:
-	reco::RecoCandidate	DataFormats/RecoCandidate/interface/RecoCandidate.h
-	reco::LeafCandidate	DataFormats/Candidate/interface/LeafCandidate.h
-	reco::Candidate	DataFormats/Candidate/interface/Candidate.h
-
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:56:16 2010	lsclass.py $Revision:$
-
-Methods from reco::GsfElectron
-
-	-o- clone
-		Return: GsfElectron*
-		Arguments: void	
-
-	-o- clone
-		Return: GsfElectron*
-		Arguments: const GsfElectronCoreRef&	core
-		           const CaloClusterPtr&	electronCluster
-		           const TrackRef&	closestCtfTrack
-		           const GsfTrackRefVector&	ambiguousTracks
-
-	-o- scPixCharge
-		Return: int
-		Arguments: void	
-
-	-o- isGsfCtfScPixChargeConsistent
-		Return: bool
-		Arguments: void	
-
-	-o- isGsfScPixChargeConsistent
-		Return: bool
-		Arguments: void	
-
-	-o- isGsfCtfChargeConsistent
-		Return: bool
-		Arguments: void	
-
-	-o- chargeInfo
-		Return: const ChargeInfo&
-		Arguments: void	
-
-	-o- isElectron
-		Return: bool
-		Arguments: void	
-
-	-o- overlap
-		Return: bool
-		Arguments: const Candidate&	
-
-	-o- core
-		Return: GsfElectronCoreRef
-		Arguments: void	
-
-	-o- superCluster
-		Return: SuperClusterRef
-		Arguments: void	
-
-	-o- gsfTrack
-		Return: GsfTrackRef
-		Arguments: void	
-
-	-o- isEcalDriven
-		Return: bool
-		Arguments: void	
-
-	-o- isTrackerDriven
-		Return: bool
-		Arguments: void	
-
-	-o- pflowSuperCluster
-		Return: SuperClusterRef
-		Arguments: void	
-
-	-o- electronCluster
-		Return: CaloClusterPtr
-		Arguments: void	
-
-	-o- eSuperClusterOverP
-		Return: float
-		Arguments: void	
-
-	-o- eSeedClusterOverP
-		Return: float
-		Arguments: void	
-
-	-o- eSeedClusterOverPout
-		Return: float
-		Arguments: void	
-
-	-o- eEleClusterOverPout
-		Return: float
-		Arguments: void	
-
-	-o- deltaEtaSuperClusterTrackAtVtx
-		Return: float
-		Arguments: void	
-
-	-o- deltaEtaSeedClusterTrackAtCalo
-		Return: float
-		Arguments: void	
-
-	-o- deltaEtaEleClusterTrackAtCalo
-		Return: float
-		Arguments: void	
-
-	-o- deltaPhiSuperClusterTrackAtVtx
-		Return: float
-		Arguments: void	
-
-	-o- deltaPhiSeedClusterTrackAtCalo
-		Return: float
-		Arguments: void	
-
-	-o- deltaPhiEleClusterTrackAtCalo
-		Return: float
-		Arguments: void	
-
-	-o- trackClusterMatching
-		Return: const TrackClusterMatching&
-		Arguments: void	
-
-	-o- setDeltaEtaSuperClusterAtVtx
-		Return: void
-		Arguments: float	de
-
-	-o- setDeltaPhiSuperClusterAtVtx
-		Return: void
-		Arguments: float	dphi
-
-	-o- trackPositionAtVtx
-		Return: math::XYZPoint
-		Arguments: void	
-
-	-o- trackPositionAtCalo
-		Return: math::XYZPoint
-		Arguments: void	
-
-	-o- trackMomentumAtVtx
-		Return: math::XYZVector
-		Arguments: void	
-
-	-o- trackMomentumAtCalo
-		Return: math::XYZVector
-		Arguments: void	
-
-	-o- trackMomentumOut
-		Return: math::XYZVector
-		Arguments: void	
-
-	-o- trackMomentumAtEleClus
-		Return: math::XYZVector
-		Arguments: void	
-
-	-o- trackMomentumAtVtxWithConstraint
-		Return: math::XYZVector
-		Arguments: void	
-
-	-o- trackExtrapolations
-		Return: const TrackExtrapolations&
-		Arguments: void	
-
-	-o- TrackPositionAtVtx
-		Return: math::XYZPoint
-		Arguments: void	
-
-	-o- TrackPositionAtCalo
-		Return: math::XYZPoint
-		Arguments: void	
-
-	-o- superClusterPosition
-		Return: math::XYZPoint
-		Arguments: void	
-
-	-o- basicClustersSize
-		Return: int
-		Arguments: void	
-
-	-o- basicClustersBegin
-		Return: CaloCluster_iterator
-		Arguments: void	
-
-	-o- basicClustersEnd
-		Return: CaloCluster_iterator
-		Arguments: void	
-
-	-o- caloPosition
-		Return: math::XYZPoint
-		Arguments: void	
-
-	-o- closestCtfTrackRef
-		Return: TrackRef
-		Arguments: void	
-
-	-o- shFracInnerHits
-		Return: float
-		Arguments: void	
-
-	-o- closestCtfTrack
-		Return: const ClosestCtfTrack&
-		Arguments: void	
-
-	-o- ambiguousGsfTracksSize
-		Return: GsfTrackRefVector::size_type
-		Arguments: void	
-
-	-o- ambiguousGsfTracksBegin
-		Return: GsfTrackRefVector::const_iterator
-		Arguments: void	
-
-	-o- ambiguousGsfTracksEnd
-		Return: GsfTrackRefVector::const_iterator
-		Arguments: void	
-
-	-o- addAmbiguousGsfTrack
-		Return: void
-		Arguments: const reco::GsfTrackRef&	t
-
-	-o- isEB
-		Return: bool
-		Arguments: void	
-
-	-o- isEE
-		Return: bool
-		Arguments: void	
-
-	-o- isGap
-		Return: bool
-		Arguments: void	
-
-	-o- isEBEEGap
-		Return: bool
-		Arguments: void	
-
-	-o- isEBGap
-		Return: bool
-		Arguments: void	
-
-	-o- isEBEtaGap
-		Return: bool
-		Arguments: void	
-
-	-o- isEBPhiGap
-		Return: bool
-		Arguments: void	
-
-	-o- isEEGap
-		Return: bool
-		Arguments: void	
-
-	-o- isEEDeeGap
-		Return: bool
-		Arguments: void	
-
-	-o- isEERingGap
-		Return: bool
-		Arguments: void	
-
-	-o- fiducialFlags
-		Return: const FiducialFlags&
-		Arguments: void	
-
-	-o- sigmaEtaEta
-		Return: float
-		Arguments: void	
-
-	-o- sigmaIetaIeta
-		Return: float
-		Arguments: void	
-
-	-o- e1x5
-		Return: float
-		Arguments: void	
-
-	-o- e2x5Max
-		Return: float
-		Arguments: void	
-
-	-o- e5x5
-		Return: float
-		Arguments: void	
-
-	-o- hcalDepth1OverEcal
-		Return: float
-		Arguments: void	
-
-	-o- hcalDepth2OverEcal
-		Return: float
-		Arguments: void	
-
-	-o- hcalOverEcal
-		Return: float
-		Arguments: void	
-
-	-o- showerShape
-		Return: const ShowerShape&
-		Arguments: void	
-
-	-o- scSigmaEtaEta
-		Return: float
-		Arguments: void	
-
-	-o- scSigmaIEtaIEta
-		Return: float
-		Arguments: void	
-
-	-o- scE1x5
-		Return: float
-		Arguments: void	
-
-	-o- scE2x5Max
-		Return: float
-		Arguments: void	
-
-	-o- scE5x5
-		Return: float
-		Arguments: void	
-
-	-o- hadronicOverEm
-		Return: float
-		Arguments: void	
-
-	-o- hadronicOverEm1
-		Return: float
-		Arguments: void	
-
-	-o- hadronicOverEm2
-		Return: float
-		Arguments: void	
-
-	-o- dr03TkSumPt
-		Return: float
-		Arguments: void	
-
-	-o- dr03EcalRecHitSumEt
-		Return: float
-		Arguments: void	
-
-	-o- dr03HcalDepth1TowerSumEt
-		Return: float
-		Arguments: void	
-
-	-o- dr03HcalDepth2TowerSumEt
-		Return: float
-		Arguments: void	
-
-	-o- dr03HcalTowerSumEt
-		Return: float
-		Arguments: void	
-
-	-o- dr03IsolationVariables
-		Return: const IsolationVariables&
-		Arguments: void	
-
-	-o- dr04TkSumPt
-		Return: float
-		Arguments: void	
-
-	-o- dr04EcalRecHitSumEt
-		Return: float
-		Arguments: void	
-
-	-o- dr04HcalDepth1TowerSumEt
-		Return: float
-		Arguments: void	
-
-	-o- dr04HcalDepth2TowerSumEt
-		Return: float
-		Arguments: void	
-
-	-o- dr04HcalTowerSumEt
-		Return: float
-		Arguments: void	
-
-	-o- dr04IsolationVariables
-		Return: const IsolationVariables&
-		Arguments: void	
-
-	-o- setDr03Isolation
-		Return: void
-		Arguments: const IsolationVariables&	dr03
-
-	-o- setDr04Isolation
-		Return: void
-		Arguments: const IsolationVariables&	dr04
-
-	-o- setIsolation03
-		Return: void
-		Arguments: const IsolationVariables&	dr03
-
-	-o- setIsolation04
-		Return: void
-		Arguments: const IsolationVariables&	dr04
-
-	-o- isolationVariables03
-		Return: const IsolationVariables&
-		Arguments: void	
-
-	-o- isolationVariables04
-		Return: const IsolationVariables&
-		Arguments: void	
-
-	-o- mva
-		Return: float
-		Arguments: void	
-
-	-o- fbrem
-		Return: float
-		Arguments: void	
-
-	-o- numberOfBrems
-		Return: int
-		Arguments: void	
-
-	-o- classification
-		Return: Classification
-		Arguments: void	
-
-	-o- classifyElectron
-		Return: void
-		Arguments: Classification	myclass
-
-	-o- correctEcalEnergy
-		Return: void
-		Arguments: float	newEnergy
-		           float	newEnergyError
-
-	-o- correctMomentum
-		Return: void
-		Arguments: const LorentzVector&	momentum
-		           float	trackMomentumError
-		           float	electronMomentumError
-
-	-o- isEcalEnergyCorrected
-		Return: bool
-		Arguments: void	
-
-	-o- ecalEnergy
-		Return: float
-		Arguments: void	
-
-	-o- ecalEnergyError
-		Return: float
-		Arguments: void	
-
-	-o- isMomentumCorrected
-		Return: bool
-		Arguments: void	
-
-	-o- trackMomentumError
-		Return: float
-		Arguments: void	
-
-	-o- electronMomentumError
-		Return: float
-		Arguments: void	
-
-	-o- corrections
-		Return: const Corrections&
-		Arguments: void	
-
-	-o- caloEnergy
-		Return: float
-		Arguments: void	
-
-	-o- isEnergyScaleCorrected
-		Return: bool
-		Arguments: void	
-
-Methods from reco::LeafCandidate
-
-	-o- begin
-		Return: candidate::const_iterator
-		Arguments: void	
-
-	-o- end
-		Return: candidate::const_iterator
-		Arguments: void	
-
-Methods from reco::Candidate
-
-	-o- charge
-		Return: int
-		Arguments: void	
-
-	-o- setCharge
-		Return: void
-		Arguments: Charge	q
-
-	-o- threeCharge
-		Return: int
-		Arguments: void	
-
-	-o- setThreeCharge
-		Return: void
-		Arguments: Charge	qx3
-
-	-o- p4
-		Return: const math::XYZTLorentzVector&
-		Arguments: void	
-
-	-o- polarP4
-		Return: const math::PtEtaPhiMLorentzVector&
-		Arguments: void	
-
-	-o- momentum
-		Return: math::XYZVector
-		Arguments: void	
-
-	-o- boostToCM
-		Return: math::XYZVector
-		Arguments: void	
-
-	-o- p
-		Return: double
-		Arguments: void	
-
-	-o- energy
-		Return: double
-		Arguments: void	
-
-	-o- et
-		Return: double
-		Arguments: void	
-
-	-o- mass
-		Return: double
-		Arguments: void	
-
-	-o- massSqr
-		Return: double
-		Arguments: void	
-
-	-o- mt
-		Return: double
-		Arguments: void	
-
-	-o- mtSqr
-		Return: double
-		Arguments: void	
-
-	-o- px
-		Return: double
-		Arguments: void	
-
-	-o- py
-		Return: double
-		Arguments: void	
-
-	-o- pz
-		Return: double
-		Arguments: void	
-
-	-o- pt
-		Return: double
-		Arguments: void	
-
-	-o- phi
-		Return: double
-		Arguments: void	
-
-	-o- theta
-		Return: double
-		Arguments: void	
-
-	-o- eta
-		Return: double
-		Arguments: void	
-
-	-o- rapidity
-		Return: double
-		Arguments: void	
-
-	-o- y
-		Return: double
-		Arguments: void	
-
-	-o- setP4
-		Return: void
-		Arguments: const LorentzVector&	p4
-
-	-o- setP4
-		Return: void
-		Arguments: const PolarLorentzVector&	p4
-
-	-o- setMass
-		Return: void
-		Arguments: double	m
-
-	-o- setPz
-		Return: void
-		Arguments: double	pz
-
-	-o- vertex
-		Return: const math::XYZPoint&
-		Arguments: void	
-
-	-o- vx
-		Return: double
-		Arguments: void	
-
-	-o- vy
-		Return: double
-		Arguments: void	
-
-	-o- vz
-		Return: double
-		Arguments: void	
-
-	-o- setVertex
-		Return: void
-		Arguments: const Point&	vertex
-
-	-o- pdgId
-		Return: int
-		Arguments: void	
-
-	-o- setPdgId
-		Return: void
-		Arguments: int	pdgId
-
-	-o- status
-		Return: int
-		Arguments: void	
-
-	-o- setStatus
-		Return: void
-		Arguments: int	status
-
-	-o- setLongLived
-		Return: void
-		Arguments: void	
-
-	-o- longLived
-		Return: bool
-		Arguments: void	
-
-	-o- setMassConstraint
-		Return: void
-		Arguments: void	
-
-	-o- massConstraint
-		Return: bool
-		Arguments: void	
-
+Class:       reco::GsfElectron
+
+Header:      DataFormats/EgammaCandidates/interface/GsfElectron.h
+
+BaseClasses: reco::RecoCandidate
+             reco::LeafCandidate
+             reco::Candidate
+
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:29:21 2010	mkdocs.py
+
+AccessMethods - reco::GsfElectron
+                reco::GsfElectron*  clone()
+                reco::GsfElectron*  clone(reco::GsfElectronCoreRef, reco::CaloClusterPtr, reco::TrackRef, reco::GsfTrackRefVector)
+                               int  scPixCharge()
+                              bool  isGsfCtfScPixChargeConsistent()
+                              bool  isGsfScPixChargeConsistent()
+                              bool  isGsfCtfChargeConsistent()
+     reco::GsfElectron::ChargeInfo  chargeInfo()
+                              bool  isElectron()
+                              bool  overlap(reco::Candidate)
+          reco::GsfElectronCoreRef  core()
+             reco::SuperClusterRef  superCluster()
+                 reco::GsfTrackRef  gsfTrack()
+                              bool  ecalDrivenSeed()
+                              bool  trackerDrivenSeed()
+             reco::SuperClusterRef  pflowSuperCluster()
+              reco::CaloClusterPtr  electronCluster()
+                             float  eSuperClusterOverP()
+                             float  eSeedClusterOverP()
+                             float  eSeedClusterOverPout()
+                             float  eEleClusterOverPout()
+                             float  deltaEtaSuperClusterTrackAtVtx()
+                             float  deltaEtaSeedClusterTrackAtCalo()
+                             float  deltaEtaEleClusterTrackAtCalo()
+                             float  deltaPhiSuperClusterTrackAtVtx()
+                             float  deltaPhiSeedClusterTrackAtCalo()
+                             float  deltaPhiEleClusterTrackAtCalo()
+  reco::GsfElectron::TrackClusterMatching  trackClusterMatching()
+                    math::XYZPoint  trackPositionAtVtx()
+                    math::XYZPoint  trackPositionAtCalo()
+                   math::XYZVector  trackMomentumAtVtx()
+                   math::XYZVector  trackMomentumAtCalo()
+                   math::XYZVector  trackMomentumOut()
+                   math::XYZVector  trackMomentumAtEleClus()
+                   math::XYZVector  trackMomentumAtVtxWithConstraint()
+  reco::GsfElectron::TrackExtrapolations  trackExtrapolations()
+                    math::XYZPoint  TrackPositionAtVtx()
+                    math::XYZPoint  TrackPositionAtCalo()
+                    math::XYZPoint  superClusterPosition()
+                               int  basicClustersSize()
+        reco::CaloCluster_iterator  basicClustersBegin()
+        reco::CaloCluster_iterator  basicClustersEnd()
+                    math::XYZPoint  caloPosition()
+                    reco::TrackRef  closestCtfTrackRef()
+                             float  shFracInnerHits()
+  reco::GsfElectron::ClosestCtfTrack  closestCtfTrack()
+                            size_t  ambiguousGsfTracksSize()
+  edm::RefVectorIterator<std::vector<reco::GsfTrack>,reco::GsfTrack,edm::refhelper::FindUsingAdvance<std::vector<reco::GsfTrack>,reco::GsfTrack> >  ambiguousGsfTracksBegin()
+  edm::RefVectorIterator<std::vector<reco::GsfTrack>,reco::GsfTrack,edm::refhelper::FindUsingAdvance<std::vector<reco::GsfTrack>,reco::GsfTrack> >  ambiguousGsfTracksEnd()
+                              bool  isEB()
+                              bool  isEE()
+                              bool  isGap()
+                              bool  isEBEEGap()
+                              bool  isEBGap()
+                              bool  isEBEtaGap()
+                              bool  isEBPhiGap()
+                              bool  isEEGap()
+                              bool  isEEDeeGap()
+                              bool  isEERingGap()
+  reco::GsfElectron::FiducialFlags  fiducialFlags()
+                             float  sigmaEtaEta()
+                             float  sigmaIetaIeta()
+                             float  e1x5()
+                             float  e2x5Max()
+                             float  e5x5()
+                             float  hcalDepth1OverEcal()
+                             float  hcalDepth2OverEcal()
+                             float  hcalOverEcal()
+    reco::GsfElectron::ShowerShape  showerShape()
+                             float  scSigmaEtaEta()
+                             float  scSigmaIEtaIEta()
+                             float  scE1x5()
+                             float  scE2x5Max()
+                             float  scE5x5()
+                             float  hadronicOverEm()
+                             float  hadronicOverEm1()
+                             float  hadronicOverEm2()
+                             float  dr03TkSumPt()
+                             float  dr03EcalRecHitSumEt()
+                             float  dr03HcalDepth1TowerSumEt()
+                             float  dr03HcalDepth2TowerSumEt()
+                             float  dr03HcalTowerSumEt()
+  reco::GsfElectron::IsolationVariables  dr03IsolationVariables()
+                             float  dr04TkSumPt()
+                             float  dr04EcalRecHitSumEt()
+                             float  dr04HcalDepth1TowerSumEt()
+                             float  dr04HcalDepth2TowerSumEt()
+                             float  dr04HcalTowerSumEt()
+  reco::GsfElectron::IsolationVariables  dr04IsolationVariables()
+  reco::GsfElectron::IsolationVariables  isolationVariables03()
+  reco::GsfElectron::IsolationVariables  isolationVariables04()
+                             float  mva()
+                             float  fbrem()
+                               int  numberOfBrems()
+  reco::GsfElectron::Classification  classification()
+                              bool  isEcalEnergyCorrected()
+                             float  ecalEnergy()
+                             float  ecalEnergyError()
+                              bool  isMomentumCorrected()
+                             float  trackMomentumError()
+                             float  electronMomentumError()
+    reco::GsfElectron::Corrections  corrections()
+                             float  caloEnergy()
+                              bool  isEnergyScaleCorrected()
+
+AccessMethods - reco::RecoCandidate
+                    reco::TrackRef  track()
+                    reco::TrackRef  track(size_t)
+                            size_t  numberOfTracks()
+                    reco::TrackRef  standAloneMuon()
+                    reco::TrackRef  combinedMuon()
+                      CaloTowerRef  caloTower()
+                      reco::Track*  bestTrack()
+                reco::TrackBaseRef  bestTrackRef()
+    reco::RecoCandidate::TrackType  bestTrackType()
+
+AccessMethods - reco::LeafCandidate
+   reco::candidate::const_iterator  begin()
+   reco::candidate::const_iterator  end()
+         reco::candidate::iterator  begin()
+         reco::candidate::iterator  end()
+                            size_t  numberOfDaughters()
+                  reco::Candidate*  daughter(size_t)
+                            size_t  numberOfMothers()
+                  reco::Candidate*  mother(size_t)
+                  reco::Candidate*  daughter(std::string)
+                            size_t  numberOfSourceCandidatePtrs()
+                reco::CandidatePtr  sourceCandidatePtr(size_t)
+                               int  charge()
+                               int  threeCharge()
+           math::XYZTLorentzVector  p4()
+      math::PtEtaPhiMLorentzVector  polarP4()
+                   math::XYZVector  momentum()
+                   math::XYZVector  boostToCM()
+                            double  p()
+                            double  energy()
+                            double  et()
+                            double  mass()
+                            double  massSqr()
+                            double  mt()
+                            double  mtSqr()
+                            double  px()
+                            double  py()
+                            double  pz()
+                            double  pt()
+                            double  phi()
+                            double  theta()
+                            double  eta()
+                            double  rapidity()
+                            double  y()
+                    math::XYZPoint  vertex()
+                            double  vx()
+                            double  vy()
+                            double  vz()
+                               int  pdgId()
+                               int  status()
+                              bool  longLived()
+                              bool  massConstraint()
+                            double  vertexChi2()
+                            double  vertexNdof()
+                            double  vertexNormalizedChi2()
+                            double  vertexCovariance(int, int)
+  ROOT::Math::SMatrix<double,3,3,ROOT::Math::MatRepSym<double,3> >  vertexCovariance()
+                              bool  hasMasterClone()
+            reco::CandidateBaseRef  masterClone()
+                              bool  hasMasterClonePtr()
+                reco::CandidatePtr  masterClonePtr()
+                              bool  isMuon()
+                              bool  isStandAloneMuon()
+                              bool  isGlobalMuon()
+                              bool  isTrackerMuon()
+                              bool  isCaloMuon()
+                              bool  isPhoton()
+                              bool  isConvertedPhoton()
+                              bool  isJet()
+
+AccessMethods - reco::Candidate

@@ -1,55 +1,16 @@
-Class:
-	pat::JetCorrFactors
+Class:       pat::JetCorrFactors
 
-Header:
-	DataFormats/PatCandidates/interface/JetCorrFactors.h
+Header:      DataFormats/PatCandidates/interface/JetCorrFactors.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:21 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:31:57 2010	mkdocs.py
 
-Methods from pat::JetCorrFactors
-
-	-o- scaleDefault
-		Return: float
-		Arguments: void	
-
-	-o- correction
-		Return: float
-		Arguments: CorrStep	step
-		           CorrStep=Raw	begin
-
-	-o- corrStep
-		Return: static CorrStep const
-		Arguments: const std::string&	step
-		           const std::string&=""	flavour
-
-	-o- corrStep
-		Return: std::string
-		Arguments: CorrStep	step
-
-	-o- flavour
-		Return: std::string
-		Arguments: CorrStep	step
-
-	-o- getLabel
-		Return: std::string
-		Arguments: void	
-
-	-o- clearLabel
-		Return: void
-		Arguments: void	
-
-	-o- print
-		Return: void
-		Arguments: void	
-
-	-o- uncertainty
-		Return: float
-		Arguments: CorrStep	step
-		           const std::string&	direction
-
-	-o- uncertainty
-		Return: float
-		Arguments: CorrStep	step
-		           const UncertVar	direction
-
+AccessMethods - pat::JetCorrFactors
+                             float  scaleDefault()
+                             float  correction(pat::JetCorrFactors::CorrStep, pat::JetCorrFactors::CorrStep)
+     pat::JetCorrFactors::CorrStep  corrStep(std::string, std::string)
+                       std::string  corrStep(pat::JetCorrFactors::CorrStep)
+                       std::string  flavour(pat::JetCorrFactors::CorrStep)
+                       std::string  getLabel()
+                             float  uncertainty(pat::JetCorrFactors::CorrStep, std::string)
+                             float  uncertainty(pat::JetCorrFactors::CorrStep, pat::JetCorrFactors::UncertVar)

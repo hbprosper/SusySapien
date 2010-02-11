@@ -1,64 +1,31 @@
-Class:
-	reco::TrackIPTagInfo
+Class:       reco::TrackIPTagInfo
 
-Header:
-	DataFormats/BTauReco/interface/TrackIPTagInfo.h
+Header:      DataFormats/BTauReco/interface/TrackIPTagInfo.h
 
-BaseClasses:
-	reco::JTATagInfo	DataFormats/BTauReco/interface/JTATagInfo.h
-	reco::BaseTagInfo	DataFormats/BTauReco/interface/BaseTagInfo.h
+BaseClasses: reco::JTATagInfo
+             reco::BaseTagInfo
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:42 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:28:40 2010	mkdocs.py
 
-Methods from reco::TrackIPTagInfo
+AccessMethods - reco::TrackIPTagInfo
+             reco::TrackIPTagInfo*  clone()
+                              bool  hasProbabilities()
+  std::vector<reco::TrackIPTagInfo::TrackIPData>  impactParameterData()
+  edm::RefVector<std::vector<reco::Track>,reco::Track,edm::refhelper::FindUsingAdvance<std::vector<reco::Track>,reco::Track> >  selectedTracks()
+                std::vector<float>  probabilities(int)
+         std::vector<unsigned int>  sortedIndexesWithCut(float, reco::TrackIPTagInfo::SortCriteria)
+         std::vector<unsigned int>  sortedIndexes(reco::TrackIPTagInfo::SortCriteria)
+              reco::TrackRefVector  sortedTracks(std::vector<unsigned int>)
+         reco::TaggingVariableList  taggingVariables()
+                   reco::VertexRef  primaryVertex()
+                      GlobalVector  axis()
+                    reco::TrackRef  ghostTrack()
 
-	-o- clone
-		Return: TrackIPTagInfo*
-		Arguments: void	
+AccessMethods - reco::JTATagInfo
+         edm::RefToBase<reco::Jet>  jet()
+              reco::TrackRefVector  tracks()
+     reco::JetTracksAssociationRef  jtaRef()
+                              bool  hasTracks()
 
-	-o- hasProbabilities
-		Return: bool
-		Arguments: void	
-
-	-o- taggingVariables
-		Return: TaggingVariableList
-		Arguments: void	
-
-	-o- axis
-		Return: const GlobalVector&
-		Arguments: void	
-
-	-o- ghostTrack
-		Return: const TrackRef&
-		Arguments: void	
-
-	-o- impactParameterData
-		Return: const std::vector<TrackIPData>&
-		Arguments: void	
-
-	-o- selectedTracks
-		Return: const edm::RefVector<TrackCollection>&
-		Arguments: void	
-
-	-o- probabilities
-		Return: const std::vector<float>&
-		Arguments: int	ip
-
-	-o- sortedIndexesWithCut
-		Return: std::vector<size_t>
-		Arguments: float	cut
-		           SortCriteria=IP3DSig	mode
-
-	-o- sortedIndexes
-		Return: std::vector<size_t>
-		Arguments: SortCriteria=IP3DSig	mode
-
-	-o- sortedTracks
-		Return: reco::TrackRefVector
-		Arguments: std::vector<size_t>	indexes
-
-	-o- primaryVertex
-		Return: const edm::Ref<VertexCollection>&
-		Arguments: void	
-
+AccessMethods - reco::BaseTagInfo

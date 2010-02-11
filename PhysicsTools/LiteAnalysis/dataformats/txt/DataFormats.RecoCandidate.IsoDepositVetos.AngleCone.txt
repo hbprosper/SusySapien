@@ -1,22 +1,8 @@
-Class:
-	reco::isodeposit::AngleCone
+Class:       reco::isodeposit::AngleCone
 
-Header:
-	DataFormats/RecoCandidate/interface/IsoDepositVetos.h
+Header:      DataFormats/RecoCandidate/interface/IsoDepositVetos.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:10 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:32:36 2010	mkdocs.py
 
-Methods from reco::isodeposit::AngleCone
-
-	-o- veto
-		Return: bool
-		Arguments: double	eta
-		           double	phi
-		           float	value
-
-	-o- centerOn
-		Return: void
-		Arguments: double	eta
-		           double	phi
-
+AccessMethods - reco::isodeposit::AngleCone

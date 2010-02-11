@@ -1,38 +1,16 @@
-Class:
-	reco::JTATagInfo
+Class:       reco::JTATagInfo
 
-Header:
-	DataFormats/BTauReco/interface/JTATagInfo.h
+Header:      DataFormats/BTauReco/interface/JTATagInfo.h
 
-BaseClasses:
-	reco::BaseTagInfo	DataFormats/BTauReco/interface/BaseTagInfo.h
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:28:25 2010	mkdocs.py
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:43 2010	lsclass.py $Revision:$
+AccessMethods - reco::JTATagInfo
+                 reco::JTATagInfo*  clone()
+         edm::RefToBase<reco::Jet>  jet()
+              reco::TrackRefVector  tracks()
+     reco::JetTracksAssociationRef  jtaRef()
+                              bool  hasTracks()
 
-Methods from reco::JTATagInfo
-
-	-o- clone
-		Return: JTATagInfo*
-		Arguments: void	
-
-	-o- tracks
-		Return: TrackRefVector
-		Arguments: void	
-
-	-o- jtaRef
-		Return: const JetTracksAssociationRef&
-		Arguments: void	
-
-	-o- hasTracks
-		Return: bool
-		Arguments: void	
-
-	-o- setJTARef
-		Return: void
-		Arguments: const JetTracksAssociationRef&	jtaRef
-
-	-o- jet
-		Return: edm::RefToBase<Jet>
-		Arguments: void	
-
+AccessMethods - reco::BaseTagInfo
+         reco::TaggingVariableList  taggingVariables()

@@ -1,9 +1,8 @@
-Class:
-	trigger::TriggerEvent::TriggerFilterObject
+Class:       trigger::TriggerEvent::TriggerFilterObject
 
-Header:
-	DataFormats/HLTReco/interface/TriggerEvent.h
+Header:      DataFormats/HLTReco/interface/TriggerEvent.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:56:50 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:29:45 2010	mkdocs.py
 
+AccessMethods - trigger::TriggerEvent::TriggerFilterObject

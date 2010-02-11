@@ -1,52 +1,15 @@
-Class:
-	reco::CaloTauTagInfo
+Class:       reco::CaloTauTagInfo
 
-Header:
-	DataFormats/TauReco/interface/CaloTauTagInfo.h
+Header:      DataFormats/TauReco/interface/CaloTauTagInfo.h
 
-BaseClasses:
-	reco::BaseTauTagInfo	DataFormats/TauReco/interface/BaseTauTagInfo.h
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:33:05 2010	mkdocs.py
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:58 2010	lsclass.py $Revision:$
+AccessMethods - reco::CaloTauTagInfo
+             reco::CaloTauTagInfo*  clone()
+                  reco::CaloJetRef  calojetRef()
+  std::vector<std::pair<ROOT::Math::PositionVector3D<ROOT::Math::Cartesian3D<double>,ROOT::Math::DefaultCoordinateSystemTag>,float> >  positionAndEnergyECALRecHits()
+  std::vector<reco::CaloClusterRef>  neutralECALBasicClusters()
 
-Methods from reco::CaloTauTagInfo
-
-	-o- clone
-		Return: CaloTauTagInfo*
-		Arguments: void	
-
-	-o- calojetRef
-		Return: const CaloJetRef&
-		Arguments: void	
-
-	-o- setcalojetRef
-		Return: void
-		Arguments: const CaloJetRef	
-
-	-o- positionAndEnergyECALRecHits
-		Return: const std::vector<std::pair<math::XYZPoint, float> >
-		Arguments: void	
-
-	-o- setpositionAndEnergyECALRecHits
-		Return: void
-		Arguments: std::vector<std::pair<math::XYZPoint, float>	>
-
-	-o- neutralECALBasicClusters
-		Return: const std::vector<edm::Ref<std::vector<BasicCluster>>>
-		Arguments: void	
-
-	-o- setneutralECALBasicClusters
-		Return: void
-		Arguments: std::vector<BasicClusterRef>	
-
-Methods from reco::BaseTauTagInfo
-
-	-o- Tracks
-		Return: const reco::TrackRefVector&
-		Arguments: void	
-
-	-o- setTracks
-		Return: void
-		Arguments: const TrackRefVector	
-
+AccessMethods - reco::BaseTauTagInfo
+              reco::TrackRefVector  Tracks()

@@ -1,123 +1,36 @@
-Class:
-	HcalNoiseSummary
+Class:       HcalNoiseSummary
 
-Header:
-	DataFormats/METReco/interface/HcalNoiseSummary.h
+Header:      DataFormats/METReco/interface/HcalNoiseSummary.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:56:57 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:30:49 2010	mkdocs.py
 
-Methods from HcalNoiseSummary
-
-	-o- passLooseNoiseFilter
-		Return: bool
-		Arguments: void	
-
-	-o- passTightNoiseFilter
-		Return: bool
-		Arguments: void	
-
-	-o- passHighLevelNoiseFilter
-		Return: bool
-		Arguments: void	
-
-	-o- noiseFilterStatus
-		Return: int
-		Arguments: void	
-
-	-o- noiseType
-		Return: int
-		Arguments: void	
-
-	-o- eventEMEnergy
-		Return: float
-		Arguments: void	
-
-	-o- eventHadEnergy
-		Return: float
-		Arguments: void	
-
-	-o- eventTrackEnergy
-		Return: float
-		Arguments: void	
-
-	-o- eventEMFraction
-		Return: float
-		Arguments: void	
-
-	-o- eventChargeFraction
-		Return: float
-		Arguments: void	
-
-	-o- min10GeVHitTime
-		Return: float
-		Arguments: void	
-
-	-o- max10GeVHitTime
-		Return: float
-		Arguments: void	
-
-	-o- rms10GeVHitTime
-		Return: float
-		Arguments: void	
-
-	-o- min25GeVHitTime
-		Return: float
-		Arguments: void	
-
-	-o- max25GeVHitTime
-		Return: float
-		Arguments: void	
-
-	-o- rms25GeVHitTime
-		Return: float
-		Arguments: void	
-
-	-o- num10GeVHits
-		Return: int
-		Arguments: void	
-
-	-o- num25GeVHits
-		Return: int
-		Arguments: void	
-
-	-o- minE2TS
-		Return: float
-		Arguments: void	
-
-	-o- minE10TS
-		Return: float
-		Arguments: void	
-
-	-o- minE2Over10TS
-		Return: float
-		Arguments: void	
-
-	-o- maxZeros
-		Return: int
-		Arguments: void	
-
-	-o- maxHPDHits
-		Return: int
-		Arguments: void	
-
-	-o- maxRBXHits
-		Return: int
-		Arguments: void	
-
-	-o- minHPDEMF
-		Return: float
-		Arguments: void	
-
-	-o- minRBXEMF
-		Return: float
-		Arguments: void	
-
-	-o- numProblematicRBXs
-		Return: int
-		Arguments: void	
-
-	-o- problematicJets
-		Return: edm::RefVector<reco::CaloJetCollection>
-		Arguments: void	
-
+AccessMethods - HcalNoiseSummary
+                              bool  passLooseNoiseFilter()
+                              bool  passTightNoiseFilter()
+                              bool  passHighLevelNoiseFilter()
+                               int  noiseFilterStatus()
+                               int  noiseType()
+                             float  eventEMEnergy()
+                             float  eventHadEnergy()
+                             float  eventTrackEnergy()
+                             float  eventEMFraction()
+                             float  eventChargeFraction()
+                             float  min10GeVHitTime()
+                             float  max10GeVHitTime()
+                             float  rms10GeVHitTime()
+                             float  min25GeVHitTime()
+                             float  max25GeVHitTime()
+                             float  rms25GeVHitTime()
+                               int  num10GeVHits()
+                               int  num25GeVHits()
+                             float  minE2TS()
+                             float  minE10TS()
+                             float  minE2Over10TS()
+                               int  maxZeros()
+                               int  maxHPDHits()
+                               int  maxRBXHits()
+                             float  minHPDEMF()
+                             float  minRBXEMF()
+                               int  numProblematicRBXs()
+  edm::RefVector<std::vector<reco::CaloJet>,reco::CaloJet,edm::refhelper::FindUsingAdvance<std::vector<reco::CaloJet>,reco::CaloJet> >  problematicJets()

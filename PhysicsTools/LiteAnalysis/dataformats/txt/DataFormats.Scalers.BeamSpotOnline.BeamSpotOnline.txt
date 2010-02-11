@@ -1,107 +1,32 @@
-Class:
-	BeamSpotOnline
+Class:       BeamSpotOnline
 
-Header:
-	DataFormats/Scalers/interface/BeamSpotOnline.h
+Header:      DataFormats/Scalers/interface/BeamSpotOnline.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:56:52 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:32:45 2010	mkdocs.py
 
-Methods from BeamSpotOnline
-
-	-o- name
-		Return: std::string
-		Arguments: void	
-
-	-o- empty
-		Return: bool
-		Arguments: void	
-
-	-o- trigType
-		Return: unsigned int
-		Arguments: void	
-
-	-o- eventID
-		Return: unsigned int
-		Arguments: void	
-
-	-o- sourceID
-		Return: unsigned int
-		Arguments: void	
-
-	-o- bunchNumber
-		Return: unsigned int
-		Arguments: void	
-
-	-o- version
-		Return: int
-		Arguments: void	
-
-	-o- collectionTime
-		Return: timespec
-		Arguments: void	
-
-	-o- x
-		Return: float
-		Arguments: void	
-
-	-o- y
-		Return: float
-		Arguments: void	
-
-	-o- z
-		Return: float
-		Arguments: void	
-
-	-o- dxdz
-		Return: float
-		Arguments: void	
-
-	-o- dydz
-		Return: float
-		Arguments: void	
-
-	-o- err_x
-		Return: float
-		Arguments: void	
-
-	-o- err_y
-		Return: float
-		Arguments: void	
-
-	-o- err_z
-		Return: float
-		Arguments: void	
-
-	-o- err_dxdz
-		Return: float
-		Arguments: void	
-
-	-o- err_dydz
-		Return: float
-		Arguments: void	
-
-	-o- width_x
-		Return: float
-		Arguments: void	
-
-	-o- width_y
-		Return: float
-		Arguments: void	
-
-	-o- sigma_z
-		Return: float
-		Arguments: void	
-
-	-o- err_width_x
-		Return: float
-		Arguments: void	
-
-	-o- err_width_y
-		Return: float
-		Arguments: void	
-
-	-o- err_sigma_z
-		Return: float
-		Arguments: void	
-
+AccessMethods - BeamSpotOnline
+                       std::string  name()
+                              bool  empty()
+                      unsigned int  trigType()
+                      unsigned int  eventID()
+                      unsigned int  sourceID()
+                      unsigned int  bunchNumber()
+                               int  version()
+                          timespec  collectionTime()
+                             float  x()
+                             float  y()
+                             float  z()
+                             float  dxdz()
+                             float  dydz()
+                             float  err_x()
+                             float  err_y()
+                             float  err_z()
+                             float  err_dxdz()
+                             float  err_dydz()
+                             float  width_x()
+                             float  width_y()
+                             float  sigma_z()
+                             float  err_width_x()
+                             float  err_width_y()
+                             float  err_sigma_z()

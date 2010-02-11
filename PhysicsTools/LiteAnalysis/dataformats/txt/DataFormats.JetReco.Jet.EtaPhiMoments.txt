@@ -1,9 +1,8 @@
-Class:
-	reco::Jet::EtaPhiMoments
+Class:       reco::Jet::EtaPhiMoments
 
-Header:
-	DataFormats/JetReco/interface/Jet.h
+Header:      DataFormats/JetReco/interface/Jet.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:38 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:30:03 2010	mkdocs.py
 
+AccessMethods - reco::Jet::EtaPhiMoments

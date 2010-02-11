@@ -1,65 +1,22 @@
-Class:
-	CaloTowerDetId
+Class:       CaloTowerDetId
 
-Header:
-	DataFormats/CaloTowers/interface/CaloTowerDetId.h
+Header:      DataFormats/CaloTowers/interface/CaloTowerDetId.h
 
-BaseClasses:
-	DetId	DataFormats/DetId/interface/DetId.h
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:28:50 2010	mkdocs.py
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:56:47 2010	lsclass.py $Revision:$
+AccessMethods - CaloTowerDetId
+                               int  zside()
+                               int  ietaAbs()
+                               int  ieta()
+                               int  iphi()
+                              bool  validDetId(int, int)
+                          uint32_t  denseIndex()
+                    CaloTowerDetId  detIdFromDenseIndex(uint32_t)
+                              bool  validDenseIndex(uint32_t)
 
-Methods from CaloTowerDetId
-
-	-o- zside
-		Return: int
-		Arguments: void	
-
-	-o- ietaAbs
-		Return: int
-		Arguments: void	
-
-	-o- ieta
-		Return: int
-		Arguments: void	
-
-	-o- iphi
-		Return: int
-		Arguments: void	
-
-	-o- validDetId
-		Return: static bool
-		Arguments: int	ie
-		           int	ip
-
-	-o- denseIndex
-		Return: uint32_t
-		Arguments: void	
-
-	-o- detIdFromDenseIndex
-		Return: static CaloTowerDetId
-		Arguments: uint32_t	din
-
-	-o- validDenseIndex
-		Return: static bool
-		Arguments: uint32_t	din
-
-Methods from DetId
-
-	-o- det
-		Return: Detector
-		Arguments: void	
-
-	-o- subdetId
-		Return: int
-		Arguments: void	
-
-	-o- rawId
-		Return: uint32_t
-		Arguments: void	
-
-	-o- null
-		Return: bool
-		Arguments: void	
-
+AccessMethods - DetId
+                   DetId::Detector  det()
+                               int  subdetId()
+                          uint32_t  rawId()
+                              bool  null()

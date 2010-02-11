@@ -1,31 +1,11 @@
-Class:
-	TimeSpec
+Class:       TimeSpec
 
-Header:
-	DataFormats/Scalers/interface/TimeSpec.h
+Header:      DataFormats/Scalers/interface/TimeSpec.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:56:52 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:32:57 2010	mkdocs.py
 
-Methods from TimeSpec
-
-	-o- tv_sec
-		Return: long
-		Arguments: void	
-
-	-o- tv_nsec
-		Return: long
-		Arguments: void	
-
-	-o- set_tv_sec
-		Return: void
-		Arguments: long	value
-
-	-o- set_tv_nsec
-		Return: void
-		Arguments: long	value
-
-	-o- get_timespec
-		Return: timespec
-		Arguments: void	
-
+AccessMethods - TimeSpec
+                              long  tv_sec()
+                              long  tv_nsec()
+                          timespec  get_timespec()

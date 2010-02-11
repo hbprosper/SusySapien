@@ -1,9 +1,8 @@
-Class:
-	reco::MuonEnergy
+Class:       reco::MuonEnergy
 
-Header:
-	DataFormats/MuonReco/interface/MuonEnergy.h
+Header:      DataFormats/MuonReco/interface/MuonEnergy.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:56:03 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:31:01 2010	mkdocs.py
 
+AccessMethods - reco::MuonEnergy

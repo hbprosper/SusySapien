@@ -1,60 +1,15 @@
-Class:
-	L1DataEmulRecord
+Class:       L1DataEmulRecord
 
-Header:
-	DataFormats/L1Trigger/interface/L1DataEmulRecord.h
+Header:      DataFormats/L1Trigger/interface/L1DataEmulRecord.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:56:08 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:30:29 2010	mkdocs.py
 
-Methods from L1DataEmulRecord
-
-	-o- get_status
-		Return: bool
-		Arguments: void	
-
-	-o- get_status
-		Return: bool
-		Arguments: int	s
-
-	-o- get_status
-		Return: void
-		Arguments: bool[]	result[]
-
-	-o- getColl
-		Return: std::vector<L1DataEmulDigi>
-		Arguments: void	
-
-	-o- getGlt
-		Return: GltDEDigi
-		Arguments: void	
-
-	-o- getNCand
-		Return: int
-		Arguments: int	i
-		           int	j
-
-	-o- get_isComp
-		Return: bool
-		Arguments: int	i
-
-	-o- set_status
-		Return: void
-		Arguments: const bool	result
-
-	-o- set_status
-		Return: void
-		Arguments: const bool[]	result[]
-
-	-o- setColl
-		Return: void
-		Arguments: const L1DEDigiCollection	col
-
-	-o- setGlt
-		Return: void
-		Arguments: GltDEDigi	glt
-
-	-o- empty
-		Return: bool
-		Arguments: void	
-
+AccessMethods - L1DataEmulRecord
+                              bool  get_status()
+                              bool  get_status(int)
+       std::vector<L1DataEmulDigi>  getColl()
+                         GltDEDigi  getGlt()
+                               int  getNCand(int, int)
+                              bool  get_isComp(int)
+                              bool  empty()

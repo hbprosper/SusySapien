@@ -1,107 +1,32 @@
-Class:
-	reco::ClusterShape
+Class:       reco::ClusterShape
 
-Header:
-	DataFormats/EgammaReco/interface/ClusterShape.h
+Header:      DataFormats/EgammaReco/interface/ClusterShape.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:56:54 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:29:29 2010	mkdocs.py
 
-Methods from reco::ClusterShape
-
-	-o- eMax
-		Return: double
-		Arguments: void	
-
-	-o- e2nd
-		Return: double
-		Arguments: void	
-
-	-o- e2x2
-		Return: double
-		Arguments: void	
-
-	-o- e3x2
-		Return: double
-		Arguments: void	
-
-	-o- e3x3
-		Return: double
-		Arguments: void	
-
-	-o- e4x4
-		Return: double
-		Arguments: void	
-
-	-o- e5x5
-		Return: double
-		Arguments: void	
-
-	-o- e2x5Right
-		Return: double
-		Arguments: void	
-
-	-o- e2x5Left
-		Return: double
-		Arguments: void	
-
-	-o- e2x5Top
-		Return: double
-		Arguments: void	
-
-	-o- e2x5Bottom
-		Return: double
-		Arguments: void	
-
-	-o- e3x2Ratio
-		Return: double
-		Arguments: void	
-
-	-o- covEtaEta
-		Return: double
-		Arguments: void	
-
-	-o- covEtaPhi
-		Return: double
-		Arguments: void	
-
-	-o- covPhiPhi
-		Return: double
-		Arguments: void	
-
-	-o- lat
-		Return: double
-		Arguments: void	
-
-	-o- etaLat
-		Return: double
-		Arguments: void	
-
-	-o- phiLat
-		Return: double
-		Arguments: void	
-
-	-o- zernike20
-		Return: double
-		Arguments: void	
-
-	-o- zernike42
-		Return: double
-		Arguments: void	
-
-	-o- eMaxId
-		Return: DetId
-		Arguments: void	
-
-	-o- e2ndId
-		Return: DetId
-		Arguments: void	
-
-	-o- energyBasketFractionEta
-		Return: std::vector<double>
-		Arguments: void	
-
-	-o- energyBasketFractionPhi
-		Return: std::vector<double>
-		Arguments: void	
-
+AccessMethods - reco::ClusterShape
+                            double  eMax()
+                            double  e2nd()
+                            double  e2x2()
+                            double  e3x2()
+                            double  e3x3()
+                            double  e4x4()
+                            double  e5x5()
+                            double  e2x5Right()
+                            double  e2x5Left()
+                            double  e2x5Top()
+                            double  e2x5Bottom()
+                            double  e3x2Ratio()
+                            double  covEtaEta()
+                            double  covEtaPhi()
+                            double  covPhiPhi()
+                            double  lat()
+                            double  etaLat()
+                            double  phiLat()
+                            double  zernike20()
+                            double  zernike42()
+               std::vector<double>  energyBasketFractionEta()
+               std::vector<double>  energyBasketFractionPhi()
+                             DetId  eMaxId()
+                             DetId  e2ndId()

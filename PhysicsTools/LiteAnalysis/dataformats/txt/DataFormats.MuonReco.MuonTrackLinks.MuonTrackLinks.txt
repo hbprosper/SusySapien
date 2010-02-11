@@ -1,35 +1,11 @@
-Class:
-	reco::MuonTrackLinks
+Class:       reco::MuonTrackLinks
 
-Header:
-	DataFormats/MuonReco/interface/MuonTrackLinks.h
+Header:      DataFormats/MuonReco/interface/MuonTrackLinks.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:56:05 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:31:08 2010	mkdocs.py
 
-Methods from reco::MuonTrackLinks
-
-	-o- trackerTrack
-		Return: inline reco::TrackRef
-		Arguments: void	
-
-	-o- standAloneTrack
-		Return: inline reco::TrackRef
-		Arguments: void	
-
-	-o- globalTrack
-		Return: inline reco::TrackRef
-		Arguments: void	
-
-	-o- setTrackerTrack
-		Return: inline void
-		Arguments: reco::TrackRef	tk
-
-	-o- setStandAloneTrack
-		Return: inline void
-		Arguments: reco::TrackRef	sta
-
-	-o- setGlobalTrack
-		Return: inline void
-		Arguments: reco::TrackRef	glb
-
+AccessMethods - reco::MuonTrackLinks
+                    reco::TrackRef  trackerTrack()
+                    reco::TrackRef  standAloneTrack()
+                    reco::TrackRef  globalTrack()

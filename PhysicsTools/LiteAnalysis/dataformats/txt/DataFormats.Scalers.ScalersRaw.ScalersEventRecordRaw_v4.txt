@@ -1,9 +1,8 @@
-Class:
-	ScalersEventRecordRaw_v4
+Class:       ScalersEventRecordRaw_v4
 
-Header:
-	DataFormats/Scalers/interface/ScalersRaw.h
+Header:      DataFormats/Scalers/interface/ScalersRaw.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:56:51 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:32:56 2010	mkdocs.py
 
+AccessMethods - ScalersEventRecordRaw_v4

@@ -1,23 +1,8 @@
-Class:
-	reco::CandidateWithRef<Ref>
+Class:       reco::CandidateWithRef
 
-Header:
-	DataFormats/Candidate/interface/CandidateWithRef.h
+Header:      DataFormats/Candidate/interface/CandidateWithRef.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:57 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:28:54 2010	mkdocs.py
 
-Methods from reco::CandidateWithRef<Ref>
-
-	-o- clone
-		Return: CandidateWithRef*
-		Arguments: void	
-
-	-o- setRef
-		Return: void
-		Arguments: const Ref&	r
-
-	-o- ref
-		Return: Ref
-		Arguments: void	
-
+AccessMethods - reco::CandidateWithRef

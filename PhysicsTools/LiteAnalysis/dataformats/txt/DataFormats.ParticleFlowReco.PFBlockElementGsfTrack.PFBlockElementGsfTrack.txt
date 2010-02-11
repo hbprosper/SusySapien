@@ -1,44 +1,29 @@
-Class:
-	reco::PFBlockElementGsfTrack
+Class:       reco::PFBlockElementGsfTrack
 
-Header:
-	DataFormats/ParticleFlowReco/interface/PFBlockElementGsfTrack.h
+Header:      DataFormats/ParticleFlowReco/interface/PFBlockElementGsfTrack.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:28 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:31:24 2010	mkdocs.py
 
-Methods from reco::PFBlockElementGsfTrack
+AccessMethods - reco::PFBlockElementGsfTrack
+             reco::PFBlockElement*  clone()
+                              bool  trackType(reco::PFBlockElement::TrackType)
+                              bool  isSecondary()
+            reco::GsfPFRecTrackRef  GsftrackRefPF()
+                 reco::GsfTrackRef  GsftrackRef()
+                   math::XYZPointF  positionAtECALEntrance()
+               reco::GsfPFRecTrack  GsftrackPF()
+           math::XYZTLorentzVector  Pin()
+           math::XYZTLorentzVector  Pout()
 
-	-o- clone
-		Return: PFBlockElement*
-		Arguments: void	
-
-	-o- Dump
-		Return: void
-		Arguments: std::ostream&=std::cout	out
-		           const char*=" "	tab
-
-	-o- GsftrackRefPF
-		Return: GsfPFRecTrackRef
-		Arguments: void	
-
-	-o- GsftrackRef
-		Return: reco::GsfTrackRef
-		Arguments: void	
-
-	-o- positionAtECALEntrance
-		Return: const math::XYZPointF&
-		Arguments: void	
-
-	-o- GsftrackPF
-		Return: const GsfPFRecTrack&
-		Arguments: void	
-
-	-o- Pin
-		Return: const math::XYZTLorentzVector&
-		Arguments: void	
-
-	-o- Pout
-		Return: const math::XYZTLorentzVector&
-		Arguments: void	
-
+AccessMethods - reco::PFBlockElement
+        reco::PFBlockElement::Type  type()
+                              bool  locked()
+                      unsigned int  index()
+                    reco::TrackRef  trackRef()
+               reco::PFRecTrackRef  trackRefPF()
+                reco::PFClusterRef  clusterRef()
+       reco::NuclearInteractionRef  nuclearRef()
+               reco::ConversionRef  convRef()
+                     reco::MuonRef  muonRef()
+  reco::VertexCompositeCandidateRef  V0Ref()

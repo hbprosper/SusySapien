@@ -1,28 +1,8 @@
-Class:
-	reco::JetTrackMatch<JetC>
+Class:       reco::JetTrackMatch
 
-Header:
-	DataFormats/JetReco/interface/JetTrackMatch.h
+Header:      DataFormats/JetReco/interface/JetTrackMatch.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:38 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:30:07 2010	mkdocs.py
 
-Methods from reco::JetTrackMatch<JetC>
-
-	-o- insert
-		Return: void
-		Arguments: const JetRef&	fJet
-
-	-o- insert
-		Return: void
-		Arguments: const JetRef&	fJet
-		           const TrackRef&	fTrack
-
-	-o- allJets
-		Return: std::vector<edm::Ref<JetC>>
-		Arguments: void	
-
-	-o- getTracks
-		Return: std::vector<edm::Ref<reco::TrackCollection>>
-		Arguments: const JetRef&	mJet
-
+AccessMethods - reco::JetTrackMatch

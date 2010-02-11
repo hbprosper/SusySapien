@@ -1,190 +1,101 @@
-Class:
-	reco::SiStripElectron
+Class:       reco::SiStripElectron
 
-Header:
-	DataFormats/EgammaCandidates/interface/SiStripElectron.h
+Header:      DataFormats/EgammaCandidates/interface/SiStripElectron.h
 
-BaseClasses:
-	reco::RecoCandidate	DataFormats/RecoCandidate/interface/RecoCandidate.h
-	reco::LeafCandidate	DataFormats/Candidate/interface/LeafCandidate.h
-	reco::Candidate	DataFormats/Candidate/interface/Candidate.h
+BaseClasses: reco::RecoCandidate
+             reco::LeafCandidate
+             reco::Candidate
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:56:17 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:29:27 2010	mkdocs.py
 
-Methods from reco::SiStripElectron
+AccessMethods - reco::SiStripElectron
+            reco::SiStripElectron*  clone()
+             reco::SuperClusterRef  superCluster()
+      std::vector<SiStripRecHit2D>  rphiRecHits()
+      std::vector<SiStripRecHit2D>  stereoRecHits()
+                            double  superClusterPhiVsRSlope()
+                            double  phiVsRSlope()
+                            double  phiAtOrigin()
+                            double  chi2()
+                               int  ndof()
+                            double  pt()
+                            double  pz()
+                            double  zVsRSlope()
+                      unsigned int  numberOfStereoHits()
+                      unsigned int  numberOfBarrelRphiHits()
+                      unsigned int  numberOfEndcapZphiHits()
+                              bool  isElectron()
 
-	-o- clone
-		Return: SiStripElectron*
-		Arguments: void	
+AccessMethods - reco::RecoCandidate
+                              bool  overlap(reco::Candidate)
+                    reco::TrackRef  track()
+                    reco::TrackRef  track(size_t)
+                            size_t  numberOfTracks()
+                 reco::GsfTrackRef  gsfTrack()
+                    reco::TrackRef  standAloneMuon()
+                    reco::TrackRef  combinedMuon()
+                      CaloTowerRef  caloTower()
+                      reco::Track*  bestTrack()
+                reco::TrackBaseRef  bestTrackRef()
+    reco::RecoCandidate::TrackType  bestTrackType()
 
-	-o- superCluster
-		Return: reco::SuperClusterRef
-		Arguments: void	
+AccessMethods - reco::LeafCandidate
+   reco::candidate::const_iterator  begin()
+   reco::candidate::const_iterator  end()
+         reco::candidate::iterator  begin()
+         reco::candidate::iterator  end()
+                            size_t  numberOfDaughters()
+                  reco::Candidate*  daughter(size_t)
+                            size_t  numberOfMothers()
+                  reco::Candidate*  mother(size_t)
+                  reco::Candidate*  daughter(std::string)
+                            size_t  numberOfSourceCandidatePtrs()
+                reco::CandidatePtr  sourceCandidatePtr(size_t)
+                               int  charge()
+                               int  threeCharge()
+           math::XYZTLorentzVector  p4()
+      math::PtEtaPhiMLorentzVector  polarP4()
+                   math::XYZVector  momentum()
+                   math::XYZVector  boostToCM()
+                            double  p()
+                            double  energy()
+                            double  et()
+                            double  mass()
+                            double  massSqr()
+                            double  mt()
+                            double  mtSqr()
+                            double  px()
+                            double  py()
+                            double  phi()
+                            double  theta()
+                            double  eta()
+                            double  rapidity()
+                            double  y()
+                    math::XYZPoint  vertex()
+                            double  vx()
+                            double  vy()
+                            double  vz()
+                               int  pdgId()
+                               int  status()
+                              bool  longLived()
+                              bool  massConstraint()
+                            double  vertexChi2()
+                            double  vertexNdof()
+                            double  vertexNormalizedChi2()
+                            double  vertexCovariance(int, int)
+  ROOT::Math::SMatrix<double,3,3,ROOT::Math::MatRepSym<double,3> >  vertexCovariance()
+                              bool  hasMasterClone()
+            reco::CandidateBaseRef  masterClone()
+                              bool  hasMasterClonePtr()
+                reco::CandidatePtr  masterClonePtr()
+                              bool  isMuon()
+                              bool  isStandAloneMuon()
+                              bool  isGlobalMuon()
+                              bool  isTrackerMuon()
+                              bool  isCaloMuon()
+                              bool  isPhoton()
+                              bool  isConvertedPhoton()
+                              bool  isJet()
 
-	-o- superClusterPhiVsRSlope
-		Return: double
-		Arguments: void	
-
-	-o- phiVsRSlope
-		Return: double
-		Arguments: void	
-
-	-o- phiAtOrigin
-		Return: double
-		Arguments: void	
-
-	-o- chi2
-		Return: double
-		Arguments: void	
-
-	-o- ndof
-		Return: int
-		Arguments: void	
-
-	-o- pt
-		Return: double
-		Arguments: void	
-
-	-o- pz
-		Return: double
-		Arguments: void	
-
-	-o- zVsRSlope
-		Return: double
-		Arguments: void	
-
-	-o- numberOfStereoHits
-		Return: unsigned int
-		Arguments: void	
-
-	-o- numberOfBarrelRphiHits
-		Return: unsigned int
-		Arguments: void	
-
-	-o- numberOfEndcapZphiHits
-		Return: unsigned int
-		Arguments: void	
-
-	-o- isElectron
-		Return: bool
-		Arguments: void	
-
-	-o- rphiRecHits
-		Return: const std::vector<SiStripRecHit2D>&
-		Arguments: void	
-
-	-o- stereoRecHits
-		Return: const std::vector<SiStripRecHit2D>&
-		Arguments: void	
-
-Methods from reco::RecoCandidate
-
-	-o- overlap
-		Return: bool
-		Arguments: const Candidate&	
-
-	-o- track
-		Return: reco::TrackRef
-		Arguments: void	
-
-	-o- track
-		Return: reco::TrackRef
-		Arguments: size_t	
-
-	-o- numberOfTracks
-		Return: size_t
-		Arguments: void	
-
-	-o- gsfTrack
-		Return: reco::GsfTrackRef
-		Arguments: void	
-
-	-o- standAloneMuon
-		Return: reco::TrackRef
-		Arguments: void	
-
-	-o- combinedMuon
-		Return: reco::TrackRef
-		Arguments: void	
-
-Methods from reco::LeafCandidate
-
-	-o- begin
-		Return: candidate::const_iterator
-		Arguments: void	
-
-	-o- end
-		Return: candidate::const_iterator
-		Arguments: void	
-
-Methods from reco::Candidate
-
-	-o- charge
-		Return: int
-		Arguments: void	
-
-	-o- setCharge
-		Return: void
-		Arguments: Charge	q
-
-	-o- threeCharge
-		Return: int
-		Arguments: void	
-
-	-o- setThreeCharge
-		Return: void
-		Arguments: Charge	qx3
-
-	-o- p4
-		Return: const math::XYZTLorentzVector&
-		Arguments: void	
-
-	-o- polarP4
-		Return: const math::PtEtaPhiMLorentzVector&
-		Arguments: void	
-
-	-o- momentum
-		Return: math::XYZVector
-		Arguments: void	
-
-	-o- boostToCM
-		Return: math::XYZVector
-		Arguments: void	
-
-	-o- p
-		Return: double
-		Arguments: void	
-
-	-o- energy
-		Return: double
-		Arguments: void	
-
-	-o- et
-		Return: double
-		Arguments: void	
-
-	-o- mass
-		Return: double
-		Arguments: void	
-
-	-o- massSqr
-		Return: double
-		Arguments: void	
-
-	-o- mt
-		Return: double
-		Arguments: void	
-
-	-o- mtSqr
-		Return: double
-		Arguments: void	
-
-	-o- px
-		Return: double
-		Arguments: void	
-
-	-o- py
-		Return: double
-		Arguments: void	
-
+AccessMethods - reco::Candidate

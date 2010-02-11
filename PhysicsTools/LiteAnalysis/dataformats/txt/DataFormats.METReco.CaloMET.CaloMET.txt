@@ -1,357 +1,122 @@
-Class:
-	reco::CaloMET
-
-Header:
-	DataFormats/METReco/interface/CaloMET.h
-
-BaseClasses:
-	reco::MET	DataFormats/METReco/interface/MET.h
-	reco::RecoCandidate	DataFormats/RecoCandidate/interface/RecoCandidate.h
-	reco::LeafCandidate	DataFormats/Candidate/interface/LeafCandidate.h
-	reco::Candidate	DataFormats/Candidate/interface/Candidate.h
-
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:56:58 2010	lsclass.py $Revision:$
-
-Methods from reco::CaloMET
-
-	-o- maxEtInEmTowers
-		Return: double
-		Arguments: void	
-
-	-o- maxEtInHadTowers
-		Return: double
-		Arguments: void	
-
-	-o- etFractionHadronic
-		Return: double
-		Arguments: void	
-
-	-o- emEtFraction
-		Return: double
-		Arguments: void	
-
-	-o- hadEtInHB
-		Return: double
-		Arguments: void	
-
-	-o- hadEtInHO
-		Return: double
-		Arguments: void	
-
-	-o- hadEtInHE
-		Return: double
-		Arguments: void	
-
-	-o- hadEtInHF
-		Return: double
-		Arguments: void	
-
-	-o- emEtInEB
-		Return: double
-		Arguments: void	
-
-	-o- emEtInEE
-		Return: double
-		Arguments: void	
-
-	-o- emEtInHF
-		Return: double
-		Arguments: void	
-
-	-o- metSignificance
-		Return: double
-		Arguments: void	
-
-	-o- CaloSETInpHF
-		Return: double
-		Arguments: void	
-
-	-o- CaloSETInmHF
-		Return: double
-		Arguments: void	
-
-	-o- CaloMETInpHF
-		Return: double
-		Arguments: void	
-
-	-o- CaloMETInmHF
-		Return: double
-		Arguments: void	
-
-	-o- CaloMETPhiInpHF
-		Return: double
-		Arguments: void	
-
-	-o- CaloMETPhiInmHF
-		Return: double
-		Arguments: void	
-
-	-o- SetMetSignificance
-		Return: void
-		Arguments: double	metsig
-
-	-o- getSpecific
-		Return: SpecificCaloMETData
-		Arguments: void	
-
-Methods from reco::MET
-
-	-o- sumEt
-		Return: double
-		Arguments: void	
-
-	-o- mEtSig
-		Return: double
-		Arguments: void	
-
-	-o- e_longitudinal
-		Return: double
-		Arguments: void	
-
-	-o- dmEx
-		Return: std::vector<double>
-		Arguments: void	
-
-	-o- dmEy
-		Return: std::vector<double>
-		Arguments: void	
-
-	-o- dsumEt
-		Return: std::vector<double>
-		Arguments: void	
-
-	-o- mEtCorr
-		Return: std::vector<CorrMETData>
-		Arguments: void	
-
-Methods from reco::RecoCandidate
-
-	-o- overlap
-		Return: bool
-		Arguments: const Candidate&	
-
-	-o- track
-		Return: reco::TrackRef
-		Arguments: void	
-
-	-o- track
-		Return: reco::TrackRef
-		Arguments: size_t	
-
-	-o- numberOfTracks
-		Return: size_t
-		Arguments: void	
-
-	-o- gsfTrack
-		Return: reco::GsfTrackRef
-		Arguments: void	
-
-	-o- standAloneMuon
-		Return: reco::TrackRef
-		Arguments: void	
-
-	-o- combinedMuon
-		Return: reco::TrackRef
-		Arguments: void	
-
-	-o- superCluster
-		Return: reco::SuperClusterRef
-		Arguments: void	
-
-	-o- caloTower
-		Return: CaloTowerRef
-		Arguments: void	
-
-	-o- bestTrack
-		Return: const Track*
-		Arguments: void	
-
-	-o- bestTrackRef
-		Return: TrackBaseRef
-		Arguments: void	
-
-	-o- bestTrackType
-		Return: TrackType
-		Arguments: void	
-
-Methods from reco::LeafCandidate
-
-	-o- begin
-		Return: candidate::const_iterator
-		Arguments: void	
-
-	-o- end
-		Return: candidate::const_iterator
-		Arguments: void	
-
-Methods from reco::Candidate
-
-	-o- charge
-		Return: int
-		Arguments: void	
-
-	-o- setCharge
-		Return: void
-		Arguments: Charge	q
-
-	-o- threeCharge
-		Return: int
-		Arguments: void	
-
-	-o- setThreeCharge
-		Return: void
-		Arguments: Charge	qx3
-
-	-o- p4
-		Return: const math::XYZTLorentzVector&
-		Arguments: void	
-
-	-o- polarP4
-		Return: const math::PtEtaPhiMLorentzVector&
-		Arguments: void	
-
-	-o- momentum
-		Return: math::XYZVector
-		Arguments: void	
-
-	-o- boostToCM
-		Return: math::XYZVector
-		Arguments: void	
-
-	-o- p
-		Return: double
-		Arguments: void	
-
-	-o- energy
-		Return: double
-		Arguments: void	
-
-	-o- et
-		Return: double
-		Arguments: void	
-
-	-o- mass
-		Return: double
-		Arguments: void	
-
-	-o- massSqr
-		Return: double
-		Arguments: void	
-
-	-o- mt
-		Return: double
-		Arguments: void	
-
-	-o- mtSqr
-		Return: double
-		Arguments: void	
-
-	-o- px
-		Return: double
-		Arguments: void	
-
-	-o- py
-		Return: double
-		Arguments: void	
-
-	-o- pz
-		Return: double
-		Arguments: void	
-
-	-o- pt
-		Return: double
-		Arguments: void	
-
-	-o- phi
-		Return: double
-		Arguments: void	
-
-	-o- theta
-		Return: double
-		Arguments: void	
-
-	-o- eta
-		Return: double
-		Arguments: void	
-
-	-o- rapidity
-		Return: double
-		Arguments: void	
-
-	-o- y
-		Return: double
-		Arguments: void	
-
-	-o- setP4
-		Return: void
-		Arguments: const LorentzVector&	p4
-
-	-o- setP4
-		Return: void
-		Arguments: const PolarLorentzVector&	p4
-
-	-o- setMass
-		Return: void
-		Arguments: double	m
-
-	-o- setPz
-		Return: void
-		Arguments: double	pz
-
-	-o- vertex
-		Return: const math::XYZPoint&
-		Arguments: void	
-
-	-o- vx
-		Return: double
-		Arguments: void	
-
-	-o- vy
-		Return: double
-		Arguments: void	
-
-	-o- vz
-		Return: double
-		Arguments: void	
-
-	-o- setVertex
-		Return: void
-		Arguments: const Point&	vertex
-
-	-o- pdgId
-		Return: int
-		Arguments: void	
-
-	-o- setPdgId
-		Return: void
-		Arguments: int	pdgId
-
-	-o- status
-		Return: int
-		Arguments: void	
-
-	-o- setStatus
-		Return: void
-		Arguments: int	status
-
-	-o- setLongLived
-		Return: void
-		Arguments: void	
-
-	-o- longLived
-		Return: bool
-		Arguments: void	
-
-	-o- setMassConstraint
-		Return: void
-		Arguments: void	
-
-	-o- massConstraint
-		Return: bool
-		Arguments: void	
-
-	-o- clone
-		Return: Candidate*
-		Arguments: void	
-
+Class:       reco::CaloMET
+
+Header:      DataFormats/METReco/interface/CaloMET.h
+
+BaseClasses: reco::MET
+             reco::RecoCandidate
+             reco::LeafCandidate
+             reco::Candidate
+
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:30:42 2010	mkdocs.py
+
+AccessMethods - reco::CaloMET
+                            double  maxEtInEmTowers()
+                            double  maxEtInHadTowers()
+                            double  etFractionHadronic()
+                            double  emEtFraction()
+                            double  hadEtInHB()
+                            double  hadEtInHO()
+                            double  hadEtInHE()
+                            double  hadEtInHF()
+                            double  emEtInEB()
+                            double  emEtInEE()
+                            double  emEtInHF()
+                            double  metSignificance()
+                            double  CaloSETInpHF()
+                            double  CaloSETInmHF()
+                            double  CaloMETInpHF()
+                            double  CaloMETInmHF()
+                            double  CaloMETPhiInpHF()
+                            double  CaloMETPhiInmHF()
+               SpecificCaloMETData  getSpecific()
+
+AccessMethods - reco::MET
+                            double  sumEt()
+                            double  mEtSig()
+                            double  significance()
+                            double  e_longitudinal()
+               std::vector<double>  dmEx()
+               std::vector<double>  dmEy()
+               std::vector<double>  dsumEt()
+               std::vector<double>  dSignificance()
+          std::vector<CorrMETData>  mEtCorr()
+                          TMatrixD  getSignificanceMatrix()
+
+AccessMethods - reco::RecoCandidate
+                              bool  overlap(reco::Candidate)
+                    reco::TrackRef  track()
+                    reco::TrackRef  track(size_t)
+                            size_t  numberOfTracks()
+                 reco::GsfTrackRef  gsfTrack()
+                    reco::TrackRef  standAloneMuon()
+                    reco::TrackRef  combinedMuon()
+             reco::SuperClusterRef  superCluster()
+                      CaloTowerRef  caloTower()
+                      reco::Track*  bestTrack()
+                reco::TrackBaseRef  bestTrackRef()
+    reco::RecoCandidate::TrackType  bestTrackType()
+
+AccessMethods - reco::LeafCandidate
+   reco::candidate::const_iterator  begin()
+   reco::candidate::const_iterator  end()
+         reco::candidate::iterator  begin()
+         reco::candidate::iterator  end()
+                            size_t  numberOfDaughters()
+                  reco::Candidate*  daughter(size_t)
+                            size_t  numberOfMothers()
+                  reco::Candidate*  mother(size_t)
+                  reco::Candidate*  daughter(std::string)
+                            size_t  numberOfSourceCandidatePtrs()
+                reco::CandidatePtr  sourceCandidatePtr(size_t)
+                               int  charge()
+                               int  threeCharge()
+           math::XYZTLorentzVector  p4()
+      math::PtEtaPhiMLorentzVector  polarP4()
+                   math::XYZVector  momentum()
+                   math::XYZVector  boostToCM()
+                            double  p()
+                            double  energy()
+                            double  et()
+                            double  mass()
+                            double  massSqr()
+                            double  mt()
+                            double  mtSqr()
+                            double  px()
+                            double  py()
+                            double  pz()
+                            double  pt()
+                            double  phi()
+                            double  theta()
+                            double  eta()
+                            double  rapidity()
+                            double  y()
+                    math::XYZPoint  vertex()
+                            double  vx()
+                            double  vy()
+                            double  vz()
+                               int  pdgId()
+                               int  status()
+                              bool  longLived()
+                              bool  massConstraint()
+              reco::LeafCandidate*  clone()
+                            double  vertexChi2()
+                            double  vertexNdof()
+                            double  vertexNormalizedChi2()
+                            double  vertexCovariance(int, int)
+  ROOT::Math::SMatrix<double,3,3,ROOT::Math::MatRepSym<double,3> >  vertexCovariance()
+                              bool  hasMasterClone()
+            reco::CandidateBaseRef  masterClone()
+                              bool  hasMasterClonePtr()
+                reco::CandidatePtr  masterClonePtr()
+                              bool  isElectron()
+                              bool  isMuon()
+                              bool  isStandAloneMuon()
+                              bool  isGlobalMuon()
+                              bool  isTrackerMuon()
+                              bool  isCaloMuon()
+                              bool  isPhoton()
+                              bool  isConvertedPhoton()
+                              bool  isJet()
+
+AccessMethods - reco::Candidate

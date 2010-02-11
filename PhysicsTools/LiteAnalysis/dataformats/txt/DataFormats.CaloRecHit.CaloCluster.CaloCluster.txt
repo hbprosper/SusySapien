@@ -1,76 +1,22 @@
-Class:
-	reco::CaloCluster
+Class:       reco::CaloCluster
 
-Header:
-	DataFormats/CaloRecHit/interface/CaloCluster.h
+Header:      DataFormats/CaloRecHit/interface/CaloCluster.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:56:15 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:28:44 2010	mkdocs.py
 
-Methods from reco::CaloCluster
-
-	-o- reset
-		Return: void
-		Arguments: void	
-
-	-o- energy
-		Return: double
-		Arguments: void	
-
-	-o- position
-		Return: const math::XYZPoint&
-		Arguments: void	
-
-	-o- x
-		Return: double
-		Arguments: void	
-
-	-o- y
-		Return: double
-		Arguments: void	
-
-	-o- z
-		Return: double
-		Arguments: void	
-
-	-o- eta
-		Return: double
-		Arguments: void	
-
-	-o- phi
-		Return: double
-		Arguments: void	
-
-	-o- size
-		Return: size_t
-		Arguments: void	
-
-	-o- algo
-		Return: AlgoId
-		Arguments: void	
-
-	-o- algoID
-		Return: AlgoId
-		Arguments: void	
-
-	-o- caloID
-		Return: const CaloID&
-		Arguments: void	
-
-	-o- addHitAndFraction
-		Return: void
-		Arguments: DetId	id
-		           float	fraction
-
-	-o- printHitAndFraction
-		Return: std::string
-		Arguments: unsigned	i
-
-	-o- seed
-		Return: DetId
-		Arguments: void	
-
-	-o- hitsAndFractions
-		Return: const std::vector<std::pair<DetId, float> >&
-		Arguments: void	
-
+AccessMethods - reco::CaloCluster
+                            double  energy()
+                    math::XYZPoint  position()
+                            double  x()
+                            double  y()
+                            double  z()
+                            double  eta()
+                            double  phi()
+                            size_t  size()
+         reco::CaloCluster::AlgoId  algo()
+         reco::CaloCluster::AlgoId  algoID()
+                      reco::CaloID  caloID()
+  std::vector<std::pair<DetId,float> >  hitsAndFractions()
+                       std::string  printHitAndFraction(unsigned int)
+                             DetId  seed()

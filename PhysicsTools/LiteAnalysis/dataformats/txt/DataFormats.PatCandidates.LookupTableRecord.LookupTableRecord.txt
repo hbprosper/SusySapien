@@ -1,23 +1,11 @@
-Class:
-	pat::LookupTableRecord
+Class:       pat::LookupTableRecord
 
-Header:
-	DataFormats/PatCandidates/interface/LookupTableRecord.h
+Header:      DataFormats/PatCandidates/interface/LookupTableRecord.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:13 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:31:59 2010	mkdocs.py
 
-Methods from pat::LookupTableRecord
-
-	-o- value
-		Return: float
-		Arguments: void	
-
-	-o- error
-		Return: float
-		Arguments: void	
-
-	-o- bin
-		Return: uint16_t
-		Arguments: void	
-
+AccessMethods - pat::LookupTableRecord
+                             float  value()
+                             float  error()
+                          uint16_t  bin()

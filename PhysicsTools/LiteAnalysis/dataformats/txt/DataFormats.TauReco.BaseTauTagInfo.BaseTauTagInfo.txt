@@ -1,19 +1,9 @@
-Class:
-	reco::BaseTauTagInfo
+Class:       reco::BaseTauTagInfo
 
-Header:
-	DataFormats/TauReco/interface/BaseTauTagInfo.h
+Header:      DataFormats/TauReco/interface/BaseTauTagInfo.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:56:03 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:32:59 2010	mkdocs.py
 
-Methods from reco::BaseTauTagInfo
-
-	-o- Tracks
-		Return: const reco::TrackRefVector&
-		Arguments: void	
-
-	-o- setTracks
-		Return: void
-		Arguments: const TrackRefVector	
-
+AccessMethods - reco::BaseTauTagInfo
+              reco::TrackRefVector  Tracks()

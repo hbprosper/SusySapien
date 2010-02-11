@@ -1,145 +1,27 @@
-Class:
-	reco::IsoDeposit
+Class:       reco::IsoDeposit
 
-Header:
-	DataFormats/RecoCandidate/interface/IsoDeposit.h
+Header:      DataFormats/RecoCandidate/interface/IsoDeposit.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:12 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:32:34 2010	mkdocs.py
 
-Methods from reco::IsoDeposit
-
-	-o- direction
-		Return: const isodeposit::Direction&
-		Arguments: void	
-
-	-o- eta
-		Return: double
-		Arguments: void	
-
-	-o- phi
-		Return: double
-		Arguments: void	
-
-	-o- veto
-		Return: const Veto&
-		Arguments: void	
-
-	-o- setVeto
-		Return: void
-		Arguments: const Veto&	aVeto
-
-	-o- addDeposit
-		Return: void
-		Arguments: double	dr
-		           double	deposit
-
-	-o- addDeposit
-		Return: void
-		Arguments: const Direction&	depDir
-		           double	deposit
-
-	-o- depositWithin
-		Return: double
-		Arguments: double	coneSize
-		           const Vetos&=Vetos()	vetos
-		           bool=false	skipDepositVeto
-
-	-o- depositWithin
-		Return: double
-		Arguments: Direction	dir
-		           double	coneSize
-		           const Vetos&=Vetos()	vetos
-		           bool=false	skipDepositVeto
-
-	-o- depositWithin
-		Return: double
-		Arguments: double	coneSize
-		           const AbsVetos&	vetos
-		           bool=false	skipDepositVeto
-
-	-o- candEnergy
-		Return: double
-		Arguments: void	
-
-	-o- addCandEnergy
-		Return: void
-		Arguments: double	et
-
-	-o- print
-		Return: std::string
-		Arguments: void	
-
-	-o- begin
-		Return: const_iterator
-		Arguments: void	
-
-	-o- end
-		Return: const_iterator
-		Arguments: void	
-
-	-o- countWithin
-		Return: double
-		Arguments: double	coneSize
-		           const AbsVetos&=AbsVetos()	vetos
-		           bool=false	skipDepositVeto
-
-	-o- sumWithin
-		Return: double
-		Arguments: double	coneSize
-		           const AbsVetos&=AbsVetos()	vetos
-		           bool=false	skipDepositVeto
-
-	-o- sumWithin
-		Return: double
-		Arguments: const Direction&	dir
-		           double	coneSize
-		           const AbsVetos&=AbsVetos()	vetos
-		           bool=false	skipDepositVeto
-
-	-o- sum2Within
-		Return: double
-		Arguments: double	coneSize
-		           const AbsVetos&=AbsVetos()	vetos
-		           bool=false	skipDepositVeto
-
-	-o- maxWithin
-		Return: double
-		Arguments: double	coneSize
-		           const AbsVetos&=AbsVetos()	vetos
-		           bool=false	skipDepositVeto
-
-	-o- depositAndCountWithin
-		Return: std::pair<double, int>
-		Arguments: double	coneSize
-		           const Vetos&=Vetos()	vetos
-		           double=-1e+36	threshold
-		           bool=false	skipDepositVeto
-
-	-o- depositAndCountWithin
-		Return: std::pair<double, int>
-		Arguments: Direction	dir
-		           double	coneSize
-		           const Vetos&=Vetos()	vetos
-		           double=-1e+36	threshold
-		           bool=false	skipDepositVeto
-
-	-o- depositAndCountWithin
-		Return: std::pair<double, int>
-		Arguments: double	coneSize
-		           const AbsVetos&	vetos
-		           bool=false	skipDepositVeto
-
-	-o- algoWithin
-		Return: template<typename Algo> double
-		Arguments: double	coneSize
-		           const AbsVetos&=AbsVetos()	vetos
-		           bool=false	skipDepositVeto
-
-	-o- algoWithin
-		Return: template<typename Algo> double
-		Arguments: const Direction&	
-		           double	coneSize
-		           const AbsVetos&=AbsVetos()	vetos
-		           bool=false	skipDepositVeto
-
+AccessMethods - reco::IsoDeposit
+       reco::isodeposit::Direction  direction()
+                            double  eta()
+                            double  phi()
+            reco::IsoDeposit::Veto  veto()
+                            double  depositWithin(double, std::vector<reco::IsoDeposit::Veto>, bool)
+                            double  depositWithin(reco::isodeposit::Direction, double, std::vector<reco::IsoDeposit::Veto>, bool)
+             std::pair<double,int>  depositAndCountWithin(double, std::vector<reco::IsoDeposit::Veto>, double, bool)
+             std::pair<double,int>  depositAndCountWithin(reco::isodeposit::Direction, double, std::vector<reco::IsoDeposit::Veto>, double, bool)
+                            double  depositWithin(double, reco::isodeposit::AbsVetos, bool)
+             std::pair<double,int>  depositAndCountWithin(double, reco::isodeposit::AbsVetos, bool)
+                            double  candEnergy()
+                       std::string  print()
+  reco::IsoDeposit::const_iterator  begin()
+  reco::IsoDeposit::const_iterator  end()
+                            double  countWithin(double, reco::isodeposit::AbsVetos, bool)
+                            double  sumWithin(double, reco::isodeposit::AbsVetos, bool)
+                            double  sumWithin(reco::isodeposit::Direction, double, reco::isodeposit::AbsVetos, bool)
+                            double  sum2Within(double, reco::isodeposit::AbsVetos, bool)
+                            double  maxWithin(double, reco::isodeposit::AbsVetos, bool)

@@ -1,131 +1,31 @@
-Class:
-	reco::Vertex
+Class:       reco::Vertex
 
-Header:
-	DataFormats/VertexReco/interface/Vertex.h
+Header:      DataFormats/VertexReco/interface/Vertex.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:56:13 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:33:29 2010	mkdocs.py
 
-Methods from reco::Vertex
-
-	-o- isValid
-		Return: bool
-		Arguments: void	
-
-	-o- isFake
-		Return: bool
-		Arguments: void	
-
-	-o- add
-		Return: void
-		Arguments: const TrackBaseRef&	r
-		           float=1.0	w
-
-	-o- add
-		Return: void
-		Arguments: const TrackBaseRef&	r
-		           const Track&	refTrack
-		           float=1.0	w
-
-	-o- removeTracks
-		Return: void
-		Arguments: void	
-
-	-o- trackWeight
-		Return: float
-		Arguments: const TrackBaseRef&	r
-
-	-o- trackWeight
-		Return: float
-		Arguments: const TrackRef&	r
-
-	-o- tracks_begin
-		Return: std::vector<TrackBaseRef >::const_iterator
-		Arguments: void	
-
-	-o- tracks_end
-		Return: std::vector<TrackBaseRef >::const_iterator
-		Arguments: void	
-
-	-o- tracksSize
-		Return: size_t
-		Arguments: void	
-
-	-o- chi2
-		Return: double
-		Arguments: void	
-
-	-o- ndof
-		Return: double
-		Arguments: void	
-
-	-o- normalizedChi2
-		Return: double
-		Arguments: void	
-
-	-o- position
-		Return: const math::XYZPoint&
-		Arguments: void	
-
-	-o- x
-		Return: double
-		Arguments: void	
-
-	-o- y
-		Return: double
-		Arguments: void	
-
-	-o- z
-		Return: double
-		Arguments: void	
-
-	-o- xError
-		Return: double
-		Arguments: void	
-
-	-o- yError
-		Return: double
-		Arguments: void	
-
-	-o- zError
-		Return: double
-		Arguments: void	
-
-	-o- covariance
-		Return: double
-		Arguments: int	i
-		           int	j
-
-	-o- covariance
-		Return: math::math::Error<dimension>::ROOT::Math::SMatrix<double, N, N, ROOT::Math::MatRepSym<double, N> ><dimension>::ROOT::Math::SMatrix<double, N, N, ROOT::Math::MatRepSym<double, N> >
-		Arguments: void	
-
-	-o- error
-		Return: math::Error<dimension>::ROOT::Math::SMatrix<double, N, N, ROOT::Math::MatRepSym<double, N> >
-		Arguments: void	
-
-	-o- fill
-		Return: void
-		Arguments: CovarianceMatrix&	v
-
-	-o- hasRefittedTracks
-		Return: bool
-		Arguments: void	
-
-	-o- originalTrack
-		Return: TrackBaseRef
-		Arguments: const Track&	refTrack
-
-	-o- refittedTrack
-		Return: Track
-		Arguments: const TrackBaseRef&	track
-
-	-o- refittedTrack
-		Return: Track
-		Arguments: const TrackRef&	track
-
-	-o- refittedTracks
-		Return: const std::vector<Track>&
-		Arguments: void	
-
+AccessMethods - reco::Vertex
+                              bool  isValid()
+                              bool  isFake()
+                             float  trackWeight(reco::TrackBaseRef)
+                             float  trackWeight(reco::TrackRef)
+                            size_t  tracksSize()
+                            double  chi2()
+                            double  ndof()
+                            double  normalizedChi2()
+                    math::XYZPoint  position()
+                            double  x()
+                            double  y()
+                            double  z()
+                            double  xError()
+                            double  yError()
+                            double  zError()
+                            double  covariance(int, int)
+  ROOT::Math::SMatrix<double,3,3,ROOT::Math::MatRepSym<double,3> >  covariance()
+  ROOT::Math::SMatrix<double,3,3,ROOT::Math::MatRepSym<double,3> >  error()
+                              bool  hasRefittedTracks()
+                reco::TrackBaseRef  originalTrack(reco::Track)
+                       reco::Track  refittedTrack(reco::TrackBaseRef)
+                       reco::Track  refittedTrack(reco::TrackRef)
+          std::vector<reco::Track>  refittedTracks()

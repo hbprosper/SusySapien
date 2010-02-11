@@ -1,39 +1,8 @@
-Class:
-	edm::EventTime
+Class:       edm::EventTime
 
-Header:
-	DataFormats/HLTReco/interface/ModuleTiming.h
+Header:      DataFormats/HLTReco/interface/ModuleTiming.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:56:49 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:29:44 2010	mkdocs.py
 
-Methods from edm::EventTime
-
-	-o- size
-		Return: unsigned
-		Arguments: void	
-
-	-o- moduleTime
-		Return: const ModuleTime&
-		Arguments: unsigned	i
-
-	-o- tot_time
-		Return: double
-		Arguments: void	
-
-	-o- name
-		Return: std::string
-		Arguments: unsigned	i
-
-	-o- time
-		Return: double
-		Arguments: unsigned	i
-
-	-o- addModuleTime
-		Return: void
-		Arguments: const ModuleTime&	m
-
-	-o- reset
-		Return: void
-		Arguments: void	
-
+AccessMethods - edm::EventTime

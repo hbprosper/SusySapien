@@ -1,487 +1,126 @@
-Class:
-	reco::PFTau
-
-Header:
-	DataFormats/TauReco/interface/PFTau.h
-
-BaseClasses:
-	reco::BaseTau	DataFormats/TauReco/interface/BaseTau.h
-	reco::RecoCandidate	DataFormats/RecoCandidate/interface/RecoCandidate.h
-	reco::LeafCandidate	DataFormats/Candidate/interface/LeafCandidate.h
-	reco::Candidate	DataFormats/Candidate/interface/Candidate.h
-
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:56:02 2010	lsclass.py $Revision:$
-
-Methods from reco::PFTau
-
-	-o- clone
-		Return: PFTau*
-		Arguments: void	
-
-	-o- pfTauTagInfoRef
-		Return: const PFTauTagInfoRef&
-		Arguments: void	
-
-	-o- setpfTauTagInfoRef
-		Return: void
-		Arguments: const PFTauTagInfoRef	
-
-	-o- leadPFChargedHadrCand
-		Return: const PFCandidateRef&
-		Arguments: void	
-
-	-o- leadPFNeutralCand
-		Return: const PFCandidateRef&
-		Arguments: void	
-
-	-o- leadPFCand
-		Return: const PFCandidateRef&
-		Arguments: void	
-
-	-o- setleadPFChargedHadrCand
-		Return: void
-		Arguments: const PFCandidateRef&	
-
-	-o- setleadPFNeutralCand
-		Return: void
-		Arguments: const PFCandidateRef&	
-
-	-o- setleadPFCand
-		Return: void
-		Arguments: const PFCandidateRef&	
-
-	-o- leadPFChargedHadrCandsignedSipt
-		Return: float
-		Arguments: void	
-
-	-o- setleadPFChargedHadrCandsignedSipt
-		Return: void
-		Arguments: const float&	
-
-	-o- signalPFCands
-		Return: const PFCandidateRefVector&
-		Arguments: void	
-
-	-o- setsignalPFCands
-		Return: void
-		Arguments: const PFCandidateRefVector&	
-
-	-o- signalPFChargedHadrCands
-		Return: const PFCandidateRefVector&
-		Arguments: void	
-
-	-o- setsignalPFChargedHadrCands
-		Return: void
-		Arguments: const PFCandidateRefVector&	
-
-	-o- signalPFNeutrHadrCands
-		Return: const PFCandidateRefVector&
-		Arguments: void	
-
-	-o- setsignalPFNeutrHadrCands
-		Return: void
-		Arguments: const PFCandidateRefVector&	
-
-	-o- signalPFGammaCands
-		Return: const PFCandidateRefVector&
-		Arguments: void	
-
-	-o- setsignalPFGammaCands
-		Return: void
-		Arguments: const PFCandidateRefVector&	
-
-	-o- isolationPFCands
-		Return: const PFCandidateRefVector&
-		Arguments: void	
-
-	-o- setisolationPFCands
-		Return: void
-		Arguments: const PFCandidateRefVector&	
-
-	-o- isolationPFChargedHadrCands
-		Return: const PFCandidateRefVector&
-		Arguments: void	
-
-	-o- setisolationPFChargedHadrCands
-		Return: void
-		Arguments: const PFCandidateRefVector&	
-
-	-o- isolationPFNeutrHadrCands
-		Return: const PFCandidateRefVector&
-		Arguments: void	
-
-	-o- setisolationPFNeutrHadrCands
-		Return: void
-		Arguments: const PFCandidateRefVector&	
-
-	-o- isolationPFGammaCands
-		Return: const PFCandidateRefVector&
-		Arguments: void	
-
-	-o- setisolationPFGammaCands
-		Return: void
-		Arguments: const PFCandidateRefVector&	
-
-	-o- isolationPFChargedHadrCandsPtSum
-		Return: float
-		Arguments: void	
-
-	-o- setisolationPFChargedHadrCandsPtSum
-		Return: void
-		Arguments: const float&	
-
-	-o- isolationPFGammaCandsEtSum
-		Return: float
-		Arguments: void	
-
-	-o- setisolationPFGammaCandsEtSum
-		Return: void
-		Arguments: const float&	
-
-	-o- maximumHCALPFClusterEt
-		Return: float
-		Arguments: void	
-
-	-o- setmaximumHCALPFClusterEt
-		Return: void
-		Arguments: const float&	
-
-	-o- emFraction
-		Return: float
-		Arguments: void	
-
-	-o- hcalTotOverPLead
-		Return: float
-		Arguments: void	
-
-	-o- hcalMaxOverPLead
-		Return: float
-		Arguments: void	
-
-	-o- hcal3x3OverPLead
-		Return: float
-		Arguments: void	
-
-	-o- ecalStripSumEOverPLead
-		Return: float
-		Arguments: void	
-
-	-o- bremsRecoveryEOverPLead
-		Return: float
-		Arguments: void	
-
-	-o- electronPreIDTrack
-		Return: reco::TrackRef
-		Arguments: void	
-
-	-o- electronPreIDOutput
-		Return: float
-		Arguments: void	
-
-	-o- electronPreIDDecision
-		Return: bool
-		Arguments: void	
-
-	-o- setemFraction
-		Return: void
-		Arguments: const float&	
-
-	-o- sethcalTotOverPLead
-		Return: void
-		Arguments: const float&	
-
-	-o- sethcalMaxOverPLead
-		Return: void
-		Arguments: const float&	
-
-	-o- sethcal3x3OverPLead
-		Return: void
-		Arguments: const float&	
-
-	-o- setecalStripSumEOverPLead
-		Return: void
-		Arguments: const float&	
-
-	-o- setbremsRecoveryEOverPLead
-		Return: void
-		Arguments: const float&	
-
-	-o- setelectronPreIDTrack
-		Return: void
-		Arguments: const reco::TrackRef&	
-
-	-o- setelectronPreIDOutput
-		Return: void
-		Arguments: const float&	
-
-	-o- setelectronPreIDDecision
-		Return: void
-		Arguments: const bool&	
-
-	-o- hasMuonReference
-		Return: bool
-		Arguments: void	
-
-	-o- caloComp
-		Return: float
-		Arguments: void	
-
-	-o- segComp
-		Return: float
-		Arguments: void	
-
-	-o- muonDecision
-		Return: bool
-		Arguments: void	
-
-	-o- setCaloComp
-		Return: void
-		Arguments: const float&	
-
-	-o- setSegComp
-		Return: void
-		Arguments: const float&	
-
-	-o- setMuonDecision
-		Return: void
-		Arguments: const bool&	
-
-	-o- numberOfSourceCandidatePtrs
-		Return: size_type
-		Arguments: void	
-
-	-o- sourceCandidatePtr
-		Return: CandidatePtr
-		Arguments: size_type	i
-
-	-o- dump
-		Return: void
-		Arguments: std::ostream&=std::cout	out
-
-Methods from reco::RecoCandidate
-
-	-o- overlap
-		Return: bool
-		Arguments: const Candidate&	
-
-	-o- track
-		Return: reco::TrackRef
-		Arguments: void	
-
-	-o- track
-		Return: reco::TrackRef
-		Arguments: size_t	
-
-	-o- numberOfTracks
-		Return: size_t
-		Arguments: void	
-
-	-o- gsfTrack
-		Return: reco::GsfTrackRef
-		Arguments: void	
-
-	-o- standAloneMuon
-		Return: reco::TrackRef
-		Arguments: void	
-
-	-o- combinedMuon
-		Return: reco::TrackRef
-		Arguments: void	
-
-	-o- superCluster
-		Return: reco::SuperClusterRef
-		Arguments: void	
-
-	-o- caloTower
-		Return: CaloTowerRef
-		Arguments: void	
-
-	-o- bestTrack
-		Return: const Track*
-		Arguments: void	
-
-	-o- bestTrackRef
-		Return: TrackBaseRef
-		Arguments: void	
-
-	-o- bestTrackType
-		Return: TrackType
-		Arguments: void	
-
-Methods from reco::LeafCandidate
-
-	-o- begin
-		Return: candidate::const_iterator
-		Arguments: void	
-
-	-o- end
-		Return: candidate::const_iterator
-		Arguments: void	
-
-Methods from reco::Candidate
-
-	-o- charge
-		Return: int
-		Arguments: void	
-
-	-o- setCharge
-		Return: void
-		Arguments: Charge	q
-
-	-o- threeCharge
-		Return: int
-		Arguments: void	
-
-	-o- setThreeCharge
-		Return: void
-		Arguments: Charge	qx3
-
-	-o- p4
-		Return: const math::XYZTLorentzVector&
-		Arguments: void	
-
-	-o- polarP4
-		Return: const math::PtEtaPhiMLorentzVector&
-		Arguments: void	
-
-	-o- momentum
-		Return: math::XYZVector
-		Arguments: void	
-
-	-o- boostToCM
-		Return: math::XYZVector
-		Arguments: void	
-
-	-o- p
-		Return: double
-		Arguments: void	
-
-	-o- energy
-		Return: double
-		Arguments: void	
-
-	-o- et
-		Return: double
-		Arguments: void	
-
-	-o- mass
-		Return: double
-		Arguments: void	
-
-	-o- massSqr
-		Return: double
-		Arguments: void	
-
-	-o- mt
-		Return: double
-		Arguments: void	
-
-	-o- mtSqr
-		Return: double
-		Arguments: void	
-
-	-o- px
-		Return: double
-		Arguments: void	
-
-	-o- py
-		Return: double
-		Arguments: void	
-
-	-o- pz
-		Return: double
-		Arguments: void	
-
-	-o- pt
-		Return: double
-		Arguments: void	
-
-	-o- phi
-		Return: double
-		Arguments: void	
-
-	-o- theta
-		Return: double
-		Arguments: void	
-
-	-o- eta
-		Return: double
-		Arguments: void	
-
-	-o- rapidity
-		Return: double
-		Arguments: void	
-
-	-o- y
-		Return: double
-		Arguments: void	
-
-	-o- setP4
-		Return: void
-		Arguments: const LorentzVector&	p4
-
-	-o- setP4
-		Return: void
-		Arguments: const PolarLorentzVector&	p4
-
-	-o- setMass
-		Return: void
-		Arguments: double	m
-
-	-o- setPz
-		Return: void
-		Arguments: double	pz
-
-	-o- vertex
-		Return: const math::XYZPoint&
-		Arguments: void	
-
-	-o- vx
-		Return: double
-		Arguments: void	
-
-	-o- vy
-		Return: double
-		Arguments: void	
-
-	-o- vz
-		Return: double
-		Arguments: void	
-
-	-o- setVertex
-		Return: void
-		Arguments: const Point&	vertex
-
-	-o- pdgId
-		Return: int
-		Arguments: void	
-
-	-o- setPdgId
-		Return: void
-		Arguments: int	pdgId
-
-	-o- status
-		Return: int
-		Arguments: void	
-
-	-o- setStatus
-		Return: void
-		Arguments: int	status
-
-	-o- setLongLived
-		Return: void
-		Arguments: void	
-
-	-o- longLived
-		Return: bool
-		Arguments: void	
-
-	-o- setMassConstraint
-		Return: void
-		Arguments: void	
-
-	-o- massConstraint
-		Return: bool
-		Arguments: void	
-
+Class:       reco::PFTau
+
+Header:      DataFormats/TauReco/interface/PFTau.h
+
+BaseClasses: reco::BaseTau
+             reco::RecoCandidate
+             reco::LeafCandidate
+             reco::Candidate
+
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:33:09 2010	mkdocs.py
+
+AccessMethods - reco::PFTau
+                      reco::PFTau*  clone()
+             reco::PFTauTagInfoRef  pfTauTagInfoRef()
+              reco::PFCandidateRef  leadPFChargedHadrCand()
+              reco::PFCandidateRef  leadPFNeutralCand()
+              reco::PFCandidateRef  leadPFCand()
+                             float  leadPFChargedHadrCandsignedSipt()
+        reco::PFCandidateRefVector  signalPFCands()
+        reco::PFCandidateRefVector  signalPFChargedHadrCands()
+        reco::PFCandidateRefVector  signalPFNeutrHadrCands()
+        reco::PFCandidateRefVector  signalPFGammaCands()
+        reco::PFCandidateRefVector  isolationPFCands()
+        reco::PFCandidateRefVector  isolationPFChargedHadrCands()
+        reco::PFCandidateRefVector  isolationPFNeutrHadrCands()
+        reco::PFCandidateRefVector  isolationPFGammaCands()
+                             float  isolationPFChargedHadrCandsPtSum()
+                             float  isolationPFGammaCandsEtSum()
+                             float  maximumHCALPFClusterEt()
+                             float  emFraction()
+                             float  hcalTotOverPLead()
+                             float  hcalMaxOverPLead()
+                             float  hcal3x3OverPLead()
+                             float  ecalStripSumEOverPLead()
+                             float  bremsRecoveryEOverPLead()
+                    reco::TrackRef  electronPreIDTrack()
+                             float  electronPreIDOutput()
+                              bool  electronPreIDDecision()
+                              bool  hasMuonReference()
+                             float  caloComp()
+                             float  segComp()
+                              bool  muonDecision()
+                            size_t  numberOfSourceCandidatePtrs()
+                reco::CandidatePtr  sourceCandidatePtr(size_t)
+
+AccessMethods - reco::BaseTau
+           math::XYZTLorentzVector  alternatLorentzVect()
+                    reco::TrackRef  leadTrack()
+              reco::TrackRefVector  signalTracks()
+              reco::TrackRefVector  isolationTracks()
+
+AccessMethods - reco::RecoCandidate
+                              bool  overlap(reco::Candidate)
+                    reco::TrackRef  track()
+                    reco::TrackRef  track(size_t)
+                            size_t  numberOfTracks()
+                 reco::GsfTrackRef  gsfTrack()
+                    reco::TrackRef  standAloneMuon()
+                    reco::TrackRef  combinedMuon()
+             reco::SuperClusterRef  superCluster()
+                      CaloTowerRef  caloTower()
+                      reco::Track*  bestTrack()
+                reco::TrackBaseRef  bestTrackRef()
+    reco::RecoCandidate::TrackType  bestTrackType()
+
+AccessMethods - reco::LeafCandidate
+   reco::candidate::const_iterator  begin()
+   reco::candidate::const_iterator  end()
+         reco::candidate::iterator  begin()
+         reco::candidate::iterator  end()
+                            size_t  numberOfDaughters()
+                  reco::Candidate*  daughter(size_t)
+                            size_t  numberOfMothers()
+                  reco::Candidate*  mother(size_t)
+                  reco::Candidate*  daughter(std::string)
+                               int  charge()
+                               int  threeCharge()
+           math::XYZTLorentzVector  p4()
+      math::PtEtaPhiMLorentzVector  polarP4()
+                   math::XYZVector  momentum()
+                   math::XYZVector  boostToCM()
+                            double  p()
+                            double  energy()
+                            double  et()
+                            double  mass()
+                            double  massSqr()
+                            double  mt()
+                            double  mtSqr()
+                            double  px()
+                            double  py()
+                            double  pz()
+                            double  pt()
+                            double  phi()
+                            double  theta()
+                            double  eta()
+                            double  rapidity()
+                            double  y()
+                    math::XYZPoint  vertex()
+                            double  vx()
+                            double  vy()
+                            double  vz()
+                               int  pdgId()
+                               int  status()
+                              bool  longLived()
+                              bool  massConstraint()
+                            double  vertexChi2()
+                            double  vertexNdof()
+                            double  vertexNormalizedChi2()
+                            double  vertexCovariance(int, int)
+  ROOT::Math::SMatrix<double,3,3,ROOT::Math::MatRepSym<double,3> >  vertexCovariance()
+                              bool  hasMasterClone()
+            reco::CandidateBaseRef  masterClone()
+                              bool  hasMasterClonePtr()
+                reco::CandidatePtr  masterClonePtr()
+                              bool  isElectron()
+                              bool  isMuon()
+                              bool  isStandAloneMuon()
+                              bool  isGlobalMuon()
+                              bool  isTrackerMuon()
+                              bool  isCaloMuon()
+                              bool  isPhoton()
+                              bool  isConvertedPhoton()
+                              bool  isJet()
+
+AccessMethods - reco::Candidate

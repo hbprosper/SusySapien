@@ -1,44 +1,9 @@
-Class:
-	StringMap
+Class:       StringMap
 
-Header:
-	DataFormats/PatCandidates/interface/StringMap.h
+Header:      DataFormats/PatCandidates/interface/StringMap.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:25 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:32:15 2010	mkdocs.py
 
-Methods from StringMap
-
-	-o- add
-		Return: void
-		Arguments: const std::string&	string
-		           int32_t	value
-
-	-o- sort
-		Return: void
-		Arguments: void	
-
-	-o- clear
-		Return: void
-		Arguments: void	
-
-	-o- find
-		Return: std::vector<std::pair<std::string, int32_t>>::const_iterator
-		Arguments: const std::string&	string
-
-	-o- find
-		Return: std::vector<std::pair<std::string, int32_t>>::const_iterator
-		Arguments: int32_t	number
-
-	-o- begin
-		Return: std::vector<std::pair<std::string, int32_t>>::const_iterator
-		Arguments: void	
-
-	-o- end
-		Return: std::vector<std::pair<std::string, int32_t>>::const_iterator
-		Arguments: void	
-
-	-o- size
-		Return: size_t
-		Arguments: void	
-
+AccessMethods - StringMap
+                            size_t  size()

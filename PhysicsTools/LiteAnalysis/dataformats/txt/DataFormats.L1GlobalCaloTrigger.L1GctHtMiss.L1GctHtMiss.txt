@@ -1,39 +1,15 @@
-Class:
-	L1GctHtMiss
+Class:       L1GctHtMiss
 
-Header:
-	DataFormats/L1GlobalCaloTrigger/interface/L1GctHtMiss.h
+Header:      DataFormats/L1GlobalCaloTrigger/interface/L1GctHtMiss.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:48 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:30:19 2010	mkdocs.py
 
-Methods from L1GctHtMiss
-
-	-o- name
-		Return: std::string
-		Arguments: void	
-
-	-o- empty
-		Return: bool
-		Arguments: void	
-
-	-o- raw
-		Return: uint32_t
-		Arguments: void	
-
-	-o- et
-		Return: unsigned
-		Arguments: void	
-
-	-o- overFlow
-		Return: bool
-		Arguments: void	
-
-	-o- phi
-		Return: unsigned
-		Arguments: void	
-
-	-o- bx
-		Return: int16_t
-		Arguments: void	
-
+AccessMethods - L1GctHtMiss
+                       std::string  name()
+                              bool  empty()
+                          uint32_t  raw()
+                      unsigned int  et()
+                              bool  overFlow()
+                      unsigned int  phi()
+                           int16_t  bx()

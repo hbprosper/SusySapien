@@ -1,838 +1,210 @@
-Class:
-	pat::Tau
-
-Header:
-	DataFormats/PatCandidates/interface/Tau.h
-
-BaseClasses:
-	pat::Lepton<reco::BaseTau>	DataFormats/PatCandidates/interface/Lepton.h
-	pat::PATObject<reco::BaseTau>	DataFormats/PatCandidates/interface/PATObject.h
-	reco::BaseTau	DataFormats/TauReco/interface/BaseTau.h
-	reco::RecoCandidate	DataFormats/RecoCandidate/interface/RecoCandidate.h
-	reco::LeafCandidate	DataFormats/Candidate/interface/LeafCandidate.h
-	reco::Candidate	DataFormats/Candidate/interface/Candidate.h
-
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:18 2010	lsclass.py $Revision:$
-
-Methods from pat::Tau
-
-	-o- clone
-		Return: Tau*
-		Arguments: void	
-
-	-o- isolationTracks
-		Return: const reco::TrackRefVector&
-		Arguments: void	
-
-	-o- leadTrack
-		Return: reco::TrackRef
-		Arguments: void	
-
-	-o- signalTracks
-		Return: const reco::TrackRefVector&
-		Arguments: void	
-
-	-o- embedIsolationTracks
-		Return: void
-		Arguments: void	
-
-	-o- embedLeadTrack
-		Return: void
-		Arguments: void	
-
-	-o- embedSignalTracks
-		Return: void
-		Arguments: void	
-
-	-o- genJet
-		Return: const reco::GenJet*
-		Arguments: void	
-
-	-o- setGenJet
-		Return: void
-		Arguments: const reco::GenJetRef&	ref
-
-	-o- isCaloTau
-		Return: bool
-		Arguments: void	
-
-	-o- caloSpecific
-		Return: const pat::tau::TauCaloSpecific&
-		Arguments: void	
-
-	-o- caloTauTagInfoRef
-		Return: reco::CaloTauTagInfoRef
-		Arguments: void	
-
-	-o- leadTracksignedSipt
-		Return: float
-		Arguments: void	
-
-	-o- leadTrackHCAL3x3hitsEtSum
-		Return: float
-		Arguments: void	
-
-	-o- leadTrackHCAL3x3hottesthitDEta
-		Return: float
-		Arguments: void	
-
-	-o- signalTracksInvariantMass
-		Return: float
-		Arguments: void	
-
-	-o- TracksInvariantMass
-		Return: float
-		Arguments: void	
-
-	-o- isolationTracksPtSum
-		Return: float
-		Arguments: void	
-
-	-o- isolationECALhitsEtSum
-		Return: float
-		Arguments: void	
-
-	-o- maximumHCALhitEt
-		Return: float
-		Arguments: void	
-
-	-o- isPFTau
-		Return: bool
-		Arguments: void	
-
-	-o- pfSpecific
-		Return: const pat::tau::TauPFSpecific&
-		Arguments: void	
-
-	-o- pfTauTagInfoRef
-		Return: const reco::PFTauTagInfoRef&
-		Arguments: void	
-
-	-o- leadPFChargedHadrCand
-		Return: const reco::PFCandidateRef&
-		Arguments: void	
-
-	-o- leadPFChargedHadrCandsignedSipt
-		Return: float
-		Arguments: void	
-
-	-o- leadPFNeutralCand
-		Return: const reco::PFCandidateRef&
-		Arguments: void	
-
-	-o- leadPFCand
-		Return: const reco::PFCandidateRef&
-		Arguments: void	
-
-	-o- signalPFCands
-		Return: const reco::PFCandidateRefVector&
-		Arguments: void	
-
-	-o- signalPFChargedHadrCands
-		Return: const reco::PFCandidateRefVector&
-		Arguments: void	
-
-	-o- signalPFNeutrHadrCands
-		Return: const reco::PFCandidateRefVector&
-		Arguments: void	
-
-	-o- signalPFGammaCands
-		Return: const reco::PFCandidateRefVector&
-		Arguments: void	
-
-	-o- isolationPFCands
-		Return: const reco::PFCandidateRefVector&
-		Arguments: void	
-
-	-o- isolationPFChargedHadrCands
-		Return: const reco::PFCandidateRefVector&
-		Arguments: void	
-
-	-o- isolationPFNeutrHadrCands
-		Return: const reco::PFCandidateRefVector&
-		Arguments: void	
-
-	-o- isolationPFGammaCands
-		Return: const reco::PFCandidateRefVector&
-		Arguments: void	
-
-	-o- isolationPFChargedHadrCandsPtSum
-		Return: float
-		Arguments: void	
-
-	-o- isolationPFGammaCandsEtSum
-		Return: float
-		Arguments: void	
-
-	-o- maximumHCALPFClusterEt
-		Return: float
-		Arguments: void	
-
-	-o- emFraction
-		Return: float
-		Arguments: void	
-
-	-o- hcalTotOverPLead
-		Return: float
-		Arguments: void	
-
-	-o- hcalMaxOverPLead
-		Return: float
-		Arguments: void	
-
-	-o- hcal3x3OverPLead
-		Return: float
-		Arguments: void	
-
-	-o- ecalStripSumEOverPLead
-		Return: float
-		Arguments: void	
-
-	-o- bremsRecoveryEOverPLead
-		Return: float
-		Arguments: void	
-
-	-o- electronPreIDTrack
-		Return: const reco::TrackRef&
-		Arguments: void	
-
-	-o- electronPreIDOutput
-		Return: float
-		Arguments: void	
-
-	-o- electronPreIDDecision
-		Return: bool
-		Arguments: void	
-
-	-o- caloComp
-		Return: float
-		Arguments: void	
-
-	-o- segComp
-		Return: float
-		Arguments: void	
-
-	-o- muonDecision
-		Return: bool
-		Arguments: void	
-
-	-o- decayMode
-		Return: int
-		Arguments: void	
-
-	-o- setDecayMode
-		Return: void
-		Arguments: int	
-
-	-o- tauID
-		Return: float
-		Arguments: const std::string&	name
-
-	-o- isTauIDAvailable
-		Return: bool
-		Arguments: const std::string&	name
-
-	-o- tauIDs
-		Return: const std::vector<std::pair<std::string, float>>&
-		Arguments: void	
-
-	-o- setTauIDs
-		Return: void
-		Arguments: const std::vector<IdPair>&	ids
-
-Methods from pat::Lepton<reco::BaseTau>
-
-	-o- genLepton
-		Return: const reco::GenParticle*
-		Arguments: void	
-
-	-o- setGenLepton
-		Return: void
-		Arguments: const reco::GenParticleRef&	gl
-		           bool=false	embed
-
-	-o- userIsolation
-		Return: float
-		Arguments: IsolationKeys	key
-
-	-o- setIsolation
-		Return: void
-		Arguments: IsolationKeys	key
-		           float	value
-
-	-o- trackIso
-		Return: float
-		Arguments: void	
-
-	-o- caloIso
-		Return: float
-		Arguments: void	
-
-	-o- ecalIso
-		Return: float
-		Arguments: void	
-
-	-o- hcalIso
-		Return: float
-		Arguments: void	
-
-	-o- particleIso
-		Return: float
-		Arguments: void	
-
-	-o- chargedHadronIso
-		Return: float
-		Arguments: void	
-
-	-o- neutralHadronIso
-		Return: float
-		Arguments: void	
-
-	-o- photonIso
-		Return: float
-		Arguments: void	
-
-	-o- userIso
-		Return: float
-		Arguments: uint8_t=0	index
-
-	-o- setTrackIso
-		Return: void
-		Arguments: float	trackIso
-
-	-o- setEcalIso
-		Return: void
-		Arguments: float	caloIso
-
-	-o- setHcalIso
-		Return: void
-		Arguments: float	caloIso
-
-	-o- setUserIso
-		Return: void
-		Arguments: float	value
-		           uint8_t=0	index
-
-	-o- isoDeposit
-		Return: const IsoDeposit*
-		Arguments: IsolationKeys	key
-
-	-o- setIsoDeposit
-		Return: void
-		Arguments: IsolationKeys	key
-		           const IsoDeposit&	dep
-
-	-o- trackIsoDeposit
-		Return: const IsoDeposit*
-		Arguments: void	
-
-	-o- ecalIsoDeposit
-		Return: const IsoDeposit*
-		Arguments: void	
-
-	-o- hcalIsoDeposit
-		Return: const IsoDeposit*
-		Arguments: void	
-
-	-o- userIsoDeposit
-		Return: const IsoDeposit*
-		Arguments: uint8_t=0	index
-
-	-o- trackIsoDeposit
-		Return: void
-		Arguments: const IsoDeposit&	dep
-
-	-o- ecalIsoDeposit
-		Return: void
-		Arguments: const IsoDeposit&	dep
-
-	-o- hcalIsoDeposit
-		Return: void
-		Arguments: const IsoDeposit&	dep
-
-	-o- userIsoDeposit
-		Return: void
-		Arguments: const IsoDeposit&	dep
-		           uint8_t=0	index
-
-Methods from pat::PATObject<reco::BaseTau>
-
-	-o- originalObject
-		Return: const reco::Candidate*
-		Arguments: void	
-
-	-o- triggerObjectMatches
-		Return: const std::vector<TriggerObjectStandAlone >&
-		Arguments: void	
-
-	-o- triggerObjectMatchesByFilterID
-		Return: const std::vector<TriggerObjectStandAlone >
-		Arguments: const unsigned	id
-
-	-o- triggerObjectMatchesByCollection
-		Return: const std::vector<TriggerObjectStandAlone >
-		Arguments: const std::string&	coll
-
-	-o- triggerObjectMatchesByFilter
-		Return: const std::vector<TriggerObjectStandAlone >
-		Arguments: const std::string&	labelFilter
-
-	-o- triggerObjectMatchesByPath
-		Return: const std::vector<TriggerObjectStandAlone >
-		Arguments: const std::string&	namePath
-
-	-o- addTriggerObjectMatch
-		Return: void
-		Arguments: const TriggerObjectStandAlone&	trigObj
-
-	-o- efficiency
-		Return: const pat::LookupTableRecord&
-		Arguments: const std::string&	name
-
-	-o- setEfficiency
-		Return: void
-		Arguments: const std::string&	name
-		           const pat::LookupTableRecord&	value
-
-	-o- genParticleRef
-		Return: reco::GenParticleRef
-		Arguments: size_t=0	idx
-
-	-o- genParticleById
-		Return: reco::GenParticleRef
-		Arguments: int	pdgId
-		           int	status
-		           uint8_t=0	autoCharge
-
-	-o- genParticle
-		Return: const reco::GenParticle*
-		Arguments: size_t=0	idx
-
-	-o- genParticlesSize
-		Return: size_t
-		Arguments: void	
-
-	-o- setGenParticleRef
-		Return: void
-		Arguments: const reco::GenParticleRef&	ref
-		           bool=false	embed
-
-	-o- addGenParticleRef
-		Return: void
-		Arguments: const reco::GenParticleRef&	ref
-
-	-o- setGenParticle
-		Return: void
-		Arguments: const reco::GenParticle&	particle
-
-	-o- embedGenParticle
-		Return: void
-		Arguments: void	
-
-	-o- hasOverlaps
-		Return: bool
-		Arguments: const std::string&	label
-
-	-o- overlaps
-		Return: const reco::CandidatePtrVector&
-		Arguments: const std::string&	label
-
-	-o- setOverlaps
-		Return: void
-		Arguments: const std::string&	label
-		           const reco::CandidatePtrVector&	overlaps
-
-	-o- hasUserData
-		Return: bool
-		Arguments: const std::string&	key
-
-	-o- userDataObjectType
-		Return: const std::string&
-		Arguments: const std::string&	key
-
-	-o- userDataBare
-		Return: const void*
-		Arguments: const std::string&	key
-
-	-o- userFloat
-		Return: float
-		Arguments: const std::string&	key
-
-	-o- addUserFloat
-		Return: void
-		Arguments: const std::string&	label
-		           float	data
-
-	-o- hasUserFloat
-		Return: bool
-		Arguments: const std::string&	key
-
-	-o- userInt
-		Return: int32_t
-		Arguments: const std::string&	key
-
-	-o- addUserInt
-		Return: void
-		Arguments: const std::string&	label
-		           int32_t	data
-
-	-o- hasUserInt
-		Return: bool
-		Arguments: const std::string&	key
-
-	-o- userCand
-		Return: reco::CandidatePtr
-		Arguments: const std::string&	key
-
-	-o- addUserCand
-		Return: void
-		Arguments: const std::string&	label
-		           const reco::CandidatePtr&	data
-
-	-o- hasUserCand
-		Return: bool
-		Arguments: const std::string&	key
-
-	-o- getKinResolution
-		Return: const pat::CandKinResolution&
-		Arguments: const std::string&=""	label
-
-	-o- hasKinResolution
-		Return: bool
-		Arguments: const std::string&=""	label
-
-	-o- setKinResolution
-		Return: void
-		Arguments: const pat::CandKinResolution&	resol
-		           const std::string&=""	label
-
-	-o- resolEta
-		Return: double
-		Arguments: const std::string&=""	label
-
-	-o- resolTheta
-		Return: double
-		Arguments: const std::string&=""	label
-
-	-o- resolPhi
-		Return: double
-		Arguments: const std::string&=""	label
-
-	-o- resolE
-		Return: double
-		Arguments: const std::string&=""	label
-
-	-o- resolEt
-		Return: double
-		Arguments: const std::string&=""	label
-
-	-o- resolP
-		Return: double
-		Arguments: const std::string&=""	label
-
-	-o- resolPt
-		Return: double
-		Arguments: const std::string&=""	label
-
-	-o- resolPInv
-		Return: double
-		Arguments: const std::string&=""	label
-
-	-o- resolPx
-		Return: double
-		Arguments: const std::string&=""	label
-
-	-o- resolPy
-		Return: double
-		Arguments: const std::string&=""	label
-
-	-o- resolPz
-		Return: double
-		Arguments: const std::string&=""	label
-
-	-o- resolM
-		Return: double
-		Arguments: const std::string&=""	label
-
-	-o- originalObjectRef
-		Return: const edm::Ptr<reco::Candidate>&
-		Arguments: void	
-
-	-o- efficiencies
-		Return: std::vector<std::pair<std::string, pat::LookupTableRecord> >
-		Arguments: void	
-
-	-o- efficiencyNames
-		Return: const std::vector<std::string>&
-		Arguments: void	
-
-	-o- efficiencyValues
-		Return: const std::vector<pat::LookupTableRecord>&
-		Arguments: void	
-
-	-o- genParticleRefs
-		Return: std::vector<reco::GenParticleRef>
-		Arguments: void	
-
-	-o- overlapLabels
-		Return: const std::vector<std::string>&
-		Arguments: void	
-
-	-o- userData
-		Return: template<typename T> const T*
-		Arguments: const std::string&	key
-
-	-o- userDataNames
-		Return: const std::vector<std::string>&
-		Arguments: void	
-
-	-o- addUserData
-		Return: template<typename T> void
-		Arguments: const std::string&	label
-		           const T&	data
-		           bool=false	transientOnly
-
-	-o- addUserDataFromPtr
-		Return: void
-		Arguments: const std::string&	label
-		           const edm::Ptr<pat::UserData>&	data
-
-	-o- userFloatNames
-		Return: const std::vector<std::string>&
-		Arguments: void	
-
-	-o- userIntNames
-		Return: const std::vector<std::string>&
-		Arguments: void	
-
-	-o- userCandNames
-		Return: const std::vector<std::string>&
-		Arguments: void	
-
-Methods from reco::RecoCandidate
-
-	-o- overlap
-		Return: bool
-		Arguments: const Candidate&	
-
-	-o- track
-		Return: reco::TrackRef
-		Arguments: void	
-
-	-o- track
-		Return: reco::TrackRef
-		Arguments: size_t	
-
-	-o- numberOfTracks
-		Return: size_t
-		Arguments: void	
-
-	-o- gsfTrack
-		Return: reco::GsfTrackRef
-		Arguments: void	
-
-	-o- standAloneMuon
-		Return: reco::TrackRef
-		Arguments: void	
-
-	-o- combinedMuon
-		Return: reco::TrackRef
-		Arguments: void	
-
-	-o- superCluster
-		Return: reco::SuperClusterRef
-		Arguments: void	
-
-	-o- caloTower
-		Return: CaloTowerRef
-		Arguments: void	
-
-	-o- bestTrack
-		Return: const Track*
-		Arguments: void	
-
-	-o- bestTrackRef
-		Return: TrackBaseRef
-		Arguments: void	
-
-	-o- bestTrackType
-		Return: TrackType
-		Arguments: void	
-
-Methods from reco::LeafCandidate
-
-	-o- begin
-		Return: candidate::const_iterator
-		Arguments: void	
-
-	-o- end
-		Return: candidate::const_iterator
-		Arguments: void	
-
-Methods from reco::Candidate
-
-	-o- charge
-		Return: int
-		Arguments: void	
-
-	-o- setCharge
-		Return: void
-		Arguments: Charge	q
-
-	-o- threeCharge
-		Return: int
-		Arguments: void	
-
-	-o- setThreeCharge
-		Return: void
-		Arguments: Charge	qx3
-
-	-o- p4
-		Return: const math::XYZTLorentzVector&
-		Arguments: void	
-
-	-o- polarP4
-		Return: const math::PtEtaPhiMLorentzVector&
-		Arguments: void	
-
-	-o- momentum
-		Return: math::XYZVector
-		Arguments: void	
-
-	-o- boostToCM
-		Return: math::XYZVector
-		Arguments: void	
-
-	-o- p
-		Return: double
-		Arguments: void	
-
-	-o- energy
-		Return: double
-		Arguments: void	
-
-	-o- et
-		Return: double
-		Arguments: void	
-
-	-o- mass
-		Return: double
-		Arguments: void	
-
-	-o- massSqr
-		Return: double
-		Arguments: void	
-
-	-o- mt
-		Return: double
-		Arguments: void	
-
-	-o- mtSqr
-		Return: double
-		Arguments: void	
-
-	-o- px
-		Return: double
-		Arguments: void	
-
-	-o- py
-		Return: double
-		Arguments: void	
-
-	-o- pz
-		Return: double
-		Arguments: void	
-
-	-o- pt
-		Return: double
-		Arguments: void	
-
-	-o- phi
-		Return: double
-		Arguments: void	
-
-	-o- theta
-		Return: double
-		Arguments: void	
-
-	-o- eta
-		Return: double
-		Arguments: void	
-
-	-o- rapidity
-		Return: double
-		Arguments: void	
-
-	-o- y
-		Return: double
-		Arguments: void	
-
-	-o- setP4
-		Return: void
-		Arguments: const LorentzVector&	p4
-
-	-o- setP4
-		Return: void
-		Arguments: const PolarLorentzVector&	p4
-
-	-o- setMass
-		Return: void
-		Arguments: double	m
-
-	-o- setPz
-		Return: void
-		Arguments: double	pz
-
-	-o- vertex
-		Return: const math::XYZPoint&
-		Arguments: void	
-
-	-o- vx
-		Return: double
-		Arguments: void	
-
-	-o- vy
-		Return: double
-		Arguments: void	
-
-	-o- vz
-		Return: double
-		Arguments: void	
-
-	-o- setVertex
-		Return: void
-		Arguments: const Point&	vertex
-
-	-o- pdgId
-		Return: int
-		Arguments: void	
-
-	-o- setPdgId
-		Return: void
-		Arguments: int	pdgId
-
-	-o- status
-		Return: int
-		Arguments: void	
-
-	-o- setStatus
-		Return: void
-		Arguments: int	status
-
-	-o- setLongLived
-		Return: void
-		Arguments: void	
-
-	-o- longLived
-		Return: bool
-		Arguments: void	
-
-	-o- setMassConstraint
-		Return: void
-		Arguments: void	
-
-	-o- massConstraint
-		Return: bool
-		Arguments: void	
-
+Class:       pat::Tau
+
+Header:      DataFormats/PatCandidates/interface/Tau.h
+
+BaseClasses: pat::Lepton<reco::BaseTau>
+             pat::PATObject<reco::BaseTau>
+             reco::BaseTau
+             reco::RecoCandidate
+             reco::LeafCandidate
+             reco::Candidate
+
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:32:18 2010	mkdocs.py
+
+AccessMethods - pat::Tau
+                         pat::Tau*  clone()
+              reco::TrackRefVector  isolationTracks()
+                    reco::TrackRef  leadTrack()
+              reco::TrackRefVector  signalTracks()
+                     reco::GenJet*  genJet()
+                              bool  isCaloTau()
+         pat::tau::TauCaloSpecific  caloSpecific()
+           reco::CaloTauTagInfoRef  caloTauTagInfoRef()
+                             float  leadTracksignedSipt()
+                             float  leadTrackHCAL3x3hitsEtSum()
+                             float  leadTrackHCAL3x3hottesthitDEta()
+                             float  signalTracksInvariantMass()
+                             float  TracksInvariantMass()
+                             float  isolationTracksPtSum()
+                             float  isolationECALhitsEtSum()
+                             float  maximumHCALhitEt()
+                              bool  isPFTau()
+           pat::tau::TauPFSpecific  pfSpecific()
+             reco::PFTauTagInfoRef  pfTauTagInfoRef()
+              reco::PFCandidateRef  leadPFChargedHadrCand()
+                             float  leadPFChargedHadrCandsignedSipt()
+              reco::PFCandidateRef  leadPFNeutralCand()
+              reco::PFCandidateRef  leadPFCand()
+        reco::PFCandidateRefVector  signalPFCands()
+        reco::PFCandidateRefVector  signalPFChargedHadrCands()
+        reco::PFCandidateRefVector  signalPFNeutrHadrCands()
+        reco::PFCandidateRefVector  signalPFGammaCands()
+        reco::PFCandidateRefVector  isolationPFCands()
+        reco::PFCandidateRefVector  isolationPFChargedHadrCands()
+        reco::PFCandidateRefVector  isolationPFNeutrHadrCands()
+        reco::PFCandidateRefVector  isolationPFGammaCands()
+                             float  isolationPFChargedHadrCandsPtSum()
+                             float  isolationPFGammaCandsEtSum()
+                             float  maximumHCALPFClusterEt()
+                             float  emFraction()
+                             float  hcalTotOverPLead()
+                             float  hcalMaxOverPLead()
+                             float  hcal3x3OverPLead()
+                             float  ecalStripSumEOverPLead()
+                             float  bremsRecoveryEOverPLead()
+                    reco::TrackRef  electronPreIDTrack()
+                             float  electronPreIDOutput()
+                              bool  electronPreIDDecision()
+                             float  caloComp()
+                             float  segComp()
+                              bool  muonDecision()
+                               int  decayMode()
+                             float  tauID(std::string)
+                              bool  isTauIDAvailable(std::string)
+  std::vector<std::pair<std::string,float> >  tauIDs()
+
+AccessMethods - pat::Lepton<reco::BaseTau>
+                reco::GenParticle*  genLepton()
+                             float  userIsolation(pat::IsolationKeys)
+                             float  trackIso()
+                             float  caloIso()
+                             float  ecalIso()
+                             float  hcalIso()
+                             float  particleIso()
+                             float  chargedHadronIso()
+                             float  neutralHadronIso()
+                             float  photonIso()
+                             float  userIso(uint8_t)
+                 reco::IsoDeposit*  isoDeposit(pat::IsolationKeys)
+                 reco::IsoDeposit*  trackIsoDeposit()
+                 reco::IsoDeposit*  ecalIsoDeposit()
+                 reco::IsoDeposit*  hcalIsoDeposit()
+                 reco::IsoDeposit*  userIsoDeposit(uint8_t)
+
+AccessMethods - pat::PATObject<reco::BaseTau>
+                  reco::Candidate*  originalObject()
+         edm::Ptr<reco::Candidate>  originalObjectRef()
+  std::vector<pat::TriggerObjectStandAlone>  triggerObjectMatches()
+  std::vector<pat::TriggerObjectStandAlone>  triggerObjectMatchesByFilterID(unsigned int)
+  std::vector<pat::TriggerObjectStandAlone>  triggerObjectMatchesByCollection(std::string)
+  std::vector<pat::TriggerObjectStandAlone>  triggerObjectMatchesByFilter(std::string)
+  std::vector<pat::TriggerObjectStandAlone>  triggerObjectMatchesByPath(std::string)
+            pat::LookupTableRecord  efficiency(std::string)
+  std::vector<std::pair<std::string,pat::LookupTableRecord> >  efficiencies()
+          std::vector<std::string>  efficiencyNames()
+  std::vector<pat::LookupTableRecord>  efficiencyValues()
+              reco::GenParticleRef  genParticleRef(size_t)
+              reco::GenParticleRef  genParticleById(int, int, uint8_t)
+                reco::GenParticle*  genParticle(size_t)
+                            size_t  genParticlesSize()
+  std::vector<reco::GenParticleRef>  genParticleRefs()
+                              bool  hasOverlaps(std::string)
+   edm::PtrVector<reco::Candidate>  overlaps(std::string)
+          std::vector<std::string>  overlapLabels()
+                              bool  hasUserData(std::string)
+                       std::string  userDataObjectType(std::string)
+          std::vector<std::string>  userDataNames()
+                             float  userFloat(std::string)
+          std::vector<std::string>  userFloatNames()
+                              bool  hasUserFloat(std::string)
+                               int  userInt(std::string)
+          std::vector<std::string>  userIntNames()
+                              bool  hasUserInt(std::string)
+         edm::Ptr<reco::Candidate>  userCand(std::string)
+          std::vector<std::string>  userCandNames()
+                              bool  hasUserCand(std::string)
+            pat::CandKinResolution  getKinResolution(std::string)
+                              bool  hasKinResolution(std::string)
+                            double  resolEta(std::string)
+                            double  resolTheta(std::string)
+                            double  resolPhi(std::string)
+                            double  resolE(std::string)
+                            double  resolEt(std::string)
+                            double  resolP(std::string)
+                            double  resolPt(std::string)
+                            double  resolPInv(std::string)
+                            double  resolPx(std::string)
+                            double  resolPy(std::string)
+                            double  resolPz(std::string)
+                            double  resolM(std::string)
+
+AccessMethods - reco::BaseTau
+           math::XYZTLorentzVector  alternatLorentzVect()
+
+AccessMethods - reco::RecoCandidate
+                              bool  overlap(reco::Candidate)
+                    reco::TrackRef  track()
+                    reco::TrackRef  track(size_t)
+                            size_t  numberOfTracks()
+                 reco::GsfTrackRef  gsfTrack()
+                    reco::TrackRef  standAloneMuon()
+                    reco::TrackRef  combinedMuon()
+             reco::SuperClusterRef  superCluster()
+                      CaloTowerRef  caloTower()
+                      reco::Track*  bestTrack()
+                reco::TrackBaseRef  bestTrackRef()
+    reco::RecoCandidate::TrackType  bestTrackType()
+
+AccessMethods - reco::LeafCandidate
+   reco::candidate::const_iterator  begin()
+   reco::candidate::const_iterator  end()
+         reco::candidate::iterator  begin()
+         reco::candidate::iterator  end()
+                            size_t  numberOfDaughters()
+                  reco::Candidate*  daughter(size_t)
+                            size_t  numberOfMothers()
+                  reco::Candidate*  mother(size_t)
+                  reco::Candidate*  daughter(std::string)
+                            size_t  numberOfSourceCandidatePtrs()
+                reco::CandidatePtr  sourceCandidatePtr(size_t)
+                               int  charge()
+                               int  threeCharge()
+           math::XYZTLorentzVector  p4()
+      math::PtEtaPhiMLorentzVector  polarP4()
+                   math::XYZVector  momentum()
+                   math::XYZVector  boostToCM()
+                            double  p()
+                            double  energy()
+                            double  et()
+                            double  mass()
+                            double  massSqr()
+                            double  mt()
+                            double  mtSqr()
+                            double  px()
+                            double  py()
+                            double  pz()
+                            double  pt()
+                            double  phi()
+                            double  theta()
+                            double  eta()
+                            double  rapidity()
+                            double  y()
+                    math::XYZPoint  vertex()
+                            double  vx()
+                            double  vy()
+                            double  vz()
+                               int  pdgId()
+                               int  status()
+                              bool  longLived()
+                              bool  massConstraint()
+                            double  vertexChi2()
+                            double  vertexNdof()
+                            double  vertexNormalizedChi2()
+                            double  vertexCovariance(int, int)
+  ROOT::Math::SMatrix<double,3,3,ROOT::Math::MatRepSym<double,3> >  vertexCovariance()
+                              bool  hasMasterClone()
+            reco::CandidateBaseRef  masterClone()
+                              bool  hasMasterClonePtr()
+                reco::CandidatePtr  masterClonePtr()
+                              bool  isElectron()
+                              bool  isMuon()
+                              bool  isStandAloneMuon()
+                              bool  isGlobalMuon()
+                              bool  isTrackerMuon()
+                              bool  isCaloMuon()
+                              bool  isPhoton()
+                              bool  isConvertedPhoton()
+                              bool  isJet()
+
+AccessMethods - reco::Candidate

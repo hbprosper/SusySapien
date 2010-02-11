@@ -1,97 +1,24 @@
-Class:
-	reco::PFSimParticle
+Class:       reco::PFSimParticle
 
-Header:
-	DataFormats/ParticleFlowReco/interface/PFSimParticle.h
+Header:      DataFormats/ParticleFlowReco/interface/PFSimParticle.h
 
-BaseClasses:
-	reco::PFTrack	DataFormats/ParticleFlowReco/interface/PFTrack.h
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:31:35 2010	mkdocs.py
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:30 2010	lsclass.py $Revision:$
+AccessMethods - reco::PFSimParticle
+                               int  pdgCode()
+                      unsigned int  id()
+                               int  motherId()
+                  std::vector<int>  daughterIds()
+                      unsigned int  rectrackId()
+         std::vector<unsigned int>  recHitContrib()
+               std::vector<double>  recHitContribFrac()
 
-Methods from reco::PFSimParticle
-
-	-o- pdgCode
-		Return: int
-		Arguments: void	
-
-	-o- id
-		Return: unsigned
-		Arguments: void	
-
-	-o- motherId
-		Return: int
-		Arguments: void	
-
-	-o- rectrackId
-		Return: unsigned
-		Arguments: void	
-
-	-o- daughterIds
-		Return: const std::vector<int>&
-		Arguments: void	
-
-	-o- recHitContrib
-		Return: std::vector<unsigned>
-		Arguments: void	
-
-	-o- recHitContribFrac
-		Return: std::vector<double>
-		Arguments: void	
-
-Methods from reco::PFTrack
-
-	-o- addPoint
-		Return: void
-		Arguments: const reco::PFTrajectoryPoint&	trajPt
-
-	-o- setPoint
-		Return: void
-		Arguments: unsigned int	index
-		           const reco::PFTrajectoryPoint&	measurement
-
-	-o- calculatePositionREP
-		Return: void
-		Arguments: void	
-
-	-o- charge
-		Return: double
-		Arguments: void	
-
-	-o- nTrajectoryPoints
-		Return: unsigned int
-		Arguments: void	
-
-	-o- nTrajectoryMeasurements
-		Return: unsigned int
-		Arguments: void	
-
-	-o- trajectoryPoint
-		Return: const reco::PFTrajectoryPoint&
-		Arguments: unsigned	index
-
-	-o- extrapolatedPoint
-		Return: const reco::PFTrajectoryPoint&
-		Arguments: unsigned	layerid
-
-	-o- setColor
-		Return: void
-		Arguments: int	color
-
-	-o- color
-		Return: int
-		Arguments: void	
-
-	-o- trajectoryPoints
-		Return: const std::vector<reco::PFTrajectoryPoint >&
-		Arguments: void	
-
-	-o- innermostMeasurement
-		Return: std::vector<reco::PFTrajectoryPoint >::const_iterator
-		Arguments: void	
-
-	-o- outermostMeasurement
-		Return: std::vector<reco::PFTrajectoryPoint >::const_iterator
-		Arguments: void	
-
+AccessMethods - reco::PFTrack
+                            double  charge()
+                      unsigned int  nTrajectoryPoints()
+                      unsigned int  nTrajectoryMeasurements()
+  std::vector<reco::PFTrajectoryPoint>  trajectoryPoints()
+           reco::PFTrajectoryPoint  trajectoryPoint(unsigned int)
+           reco::PFTrajectoryPoint  extrapolatedPoint(unsigned int)
+                               int  color()

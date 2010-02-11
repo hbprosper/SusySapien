@@ -1,108 +1,20 @@
-Class:
-	pat::EventHypothesis
+Class:       pat::EventHypothesis
 
-Header:
-	DataFormats/PatCandidates/interface/EventHypothesis.h
+Header:      DataFormats/PatCandidates/interface/EventHypothesis.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:23 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:31:45 2010	mkdocs.py
 
-Methods from pat::EventHypothesis
-
-	-o- add
-		Return: void
-		Arguments: const CandRefType&	ref
-		           const std::string&	role
-
-	-o- begin
-		Return: vector_type::const_iterator
-		Arguments: void	
-
-	-o- end
-		Return: vector_type::const_iterator
-		Arguments: void	
-
-	-o- rbegin
-		Return: vector_type::const_reverse_iterator
-		Arguments: void	
-
-	-o- rend
-		Return: vector_type::const_reverse_iterator
-		Arguments: void	
-
-	-o- get
-		Return: const reco::CandidatePtr&
-		Arguments: const std::string&	role
-		           int=0	index
-
-	-o- get
-		Return: const reco::CandidatePtr&
-		Arguments: const ParticleFilter&	filter
-		           int=0	index
-
-	-o- count
-		Return: size_t
-		Arguments: void	
-
-	-o- count
-		Return: size_t
-		Arguments: const std::string&	roleRegexp
-
-	-o- count
-		Return: size_t
-		Arguments: const ParticleFilter&	role
-
-	-o- loop
-		Return: eventhypothesis::Looper<reco::Candidate>
-		Arguments: void	
-
-	-o- loop
-		Return: eventhypothesis::Looper<reco::Candidate>
-		Arguments: const std::string&	roleRegexp
-
-	-o- loop
-		Return: eventhypothesis::Looper<reco::Candidate>
-		Arguments: const ParticleFilter&	filter
-
-	-o- loop
-		Return: eventhypothesis::Looper<reco::Candidate>
-		Arguments: const ParticleFilter*	filter
-
-	-o- loop
-		Return: eventhypothesis::Looper<reco::Candidate>
-		Arguments: const ParticleFilterPtr&	filter
-
-	-o- getAs
-		Return: template<typename T> const T*
-		Arguments: const std::string&	role
-		           int=0	index
-
-	-o- getAs
-		Return: template<typename T> const T*
-		Arguments: const ParticleFilter&	filter
-		           int=0	index
-
-	-o- all
-		Return: std::vector<reco::CandidatePtr>
-		Arguments: const std::string&	roleRegexp
-
-	-o- all
-		Return: std::vector<reco::CandidatePtr>
-		Arguments: const ParticleFilter&	filter
-
-	-o- loopAs
-		Return: template<typename T> eventhypothesis::Looper<T>
-		Arguments: const std::string&	roleRegexp
-
-	-o- loopAs
-		Return: template<typename T> eventhypothesis::Looper<T>
-		Arguments: const ParticleFilter&	filter
-
-	-o- loopAs
-		Return: template<typename T> eventhypothesis::Looper<T>
-		Arguments: const ParticleFilter*	filter
-
-	-o- loopAs
-		Return: template<typename T> eventhypothesis::Looper<T>
-		Arguments: const ParticleFilterPtr&	filter
-
+AccessMethods - pat::EventHypothesis
+  pat::eventhypothesis::CandRefType  get(std::string, int)
+  pat::eventhypothesis::CandRefType  get(pat::eventhypothesis::ParticleFilter, int)
+  std::vector<edm::Ptr<reco::Candidate> >  all(std::string)
+  std::vector<edm::Ptr<reco::Candidate> >  all(pat::eventhypothesis::ParticleFilter)
+                            size_t  count()
+                            size_t  count(std::string)
+                            size_t  count(pat::eventhypothesis::ParticleFilter)
+  pat::eventhypothesis::Looper<reco::Candidate>  loop()
+  pat::eventhypothesis::Looper<reco::Candidate>  loop(std::string)
+  pat::eventhypothesis::Looper<reco::Candidate>  loop(pat::eventhypothesis::ParticleFilter)
+  pat::eventhypothesis::Looper<reco::Candidate>  loop(pat::eventhypothesis::ParticleFilter*)
+  pat::eventhypothesis::Looper<reco::Candidate>  loop(pat::eventhypothesis::ParticleFilterPtr)

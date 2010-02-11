@@ -1,116 +1,34 @@
-Class:
-	Level1TriggerRates
+Class:       Level1TriggerRates
 
-Header:
-	DataFormats/Scalers/interface/Level1TriggerRates.h
+Header:      DataFormats/Scalers/interface/Level1TriggerRates.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:56:50 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:32:51 2010	mkdocs.py
 
-Methods from Level1TriggerRates
-
-	-o- computeRates
-		Return: void
-		Arguments: Level1TriggerScalers const&	t1
-
-	-o- computeRates
-		Return: void
-		Arguments: Level1TriggerScalers const&	t1
-		           Level1TriggerScalers const&	t2
-
-	-o- name
-		Return: std::string
-		Arguments: void	
-
-	-o- empty
-		Return: bool
-		Arguments: void	
-
-	-o- version
-		Return: int
-		Arguments: void	
-
-	-o- collectionTime
-		Return: timespec
-		Arguments: void	
-
-	-o- deltaNS
-		Return: unsigned long long
-		Arguments: void	
-
-	-o- deltaT
-		Return: double
-		Arguments: void	
-
-	-o- gtTriggersRate
-		Return: double
-		Arguments: void	
-
-	-o- gtEventsRate
-		Return: double
-		Arguments: void	
-
-	-o- collectionTimeLumiSeg
-		Return: timespec
-		Arguments: void	
-
-	-o- triggersPhysicsGeneratedFDLRate
-		Return: double
-		Arguments: void	
-
-	-o- triggersPhysicsLostRate
-		Return: double
-		Arguments: void	
-
-	-o- triggersPhysicsLostBeamActiveRate
-		Return: double
-		Arguments: void	
-
-	-o- triggersPhysicsLostBeamInactiveRate
-		Return: double
-		Arguments: void	
-
-	-o- l1AsPhysicsRate
-		Return: double
-		Arguments: void	
-
-	-o- l1AsRandomRate
-		Return: double
-		Arguments: void	
-
-	-o- l1AsTestRate
-		Return: double
-		Arguments: void	
-
-	-o- l1AsCalibrationRate
-		Return: double
-		Arguments: void	
-
-	-o- deadtimePercent
-		Return: double
-		Arguments: void	
-
-	-o- deadtimeBeamActivePercent
-		Return: double
-		Arguments: void	
-
-	-o- deadtimeBeamActiveTriggerRulesPercent
-		Return: double
-		Arguments: void	
-
-	-o- deadtimeBeamActiveCalibrationPercent
-		Return: double
-		Arguments: void	
-
-	-o- deadtimeBeamActivePrivateOrbitPercent
-		Return: double
-		Arguments: void	
-
-	-o- deadtimeBeamActivePartitionControllerPercent
-		Return: double
-		Arguments: void	
-
-	-o- deadtimeBeamActiveTimeSlotPercent
-		Return: double
-		Arguments: void	
-
+AccessMethods - Level1TriggerRates
+                       std::string  name()
+                              bool  empty()
+                               int  version()
+                          timespec  collectionTime()
+                unsigned long long  deltaNS()
+                            double  deltaT()
+                            double  gtTriggersRate()
+                            double  gtEventsRate()
+                          timespec  collectionTimeLumiSeg()
+                            double  triggersPhysicsGeneratedFDLRate()
+                            double  triggersPhysicsLostRate()
+                            double  triggersPhysicsLostBeamActiveRate()
+                            double  triggersPhysicsLostBeamInactiveRate()
+                            double  l1AsPhysicsRate()
+                            double  l1AsRandomRate()
+                            double  l1AsTestRate()
+                            double  l1AsCalibrationRate()
+                            double  deadtimePercent()
+                            double  deadtimeBeamActivePercent()
+                            double  deadtimeBeamActiveTriggerRulesPercent()
+                            double  deadtimeBeamActiveCalibrationPercent()
+                            double  deadtimeBeamActivePrivateOrbitPercent()
+                            double  deadtimeBeamActivePartitionControllerPercent()
+                            double  deadtimeBeamActiveTimeSlotPercent()
+               std::vector<double>  gtAlgoCountsRate()
+               std::vector<double>  gtTechCountsRate()

@@ -1,425 +1,104 @@
-Class:
-	reco::HitPattern
-
-Header:
-	DataFormats/TrackReco/interface/HitPattern.h
-
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:57:01 2010	lsclass.py $Revision:$
-
-Methods from reco::HitPattern
-
-	-o- printHitPattern
-		Return: void
-		Arguments: int	position
-		           std::ostream&	stream
-
-	-o- print
-		Return: void
-		Arguments: std::ostream&=std::cout	stream
-
-	-o- set
-		Return: void
-		Arguments: const TrackingRecHit&	
-		           unsigned int	i
-
-	-o- getHitPattern
-		Return: uint32_t
-		Arguments: int	position
-
-	-o- trackerHitFilter
-		Return: bool
-		Arguments: uint32_t	pattern
-
-	-o- muonHitFilter
-		Return: bool
-		Arguments: uint32_t	pattern
-
-	-o- getSubStructure
-		Return: uint32_t
-		Arguments: uint32_t	pattern
-
-	-o- pixelHitFilter
-		Return: bool
-		Arguments: uint32_t	pattern
-
-	-o- pixelBarrelHitFilter
-		Return: bool
-		Arguments: uint32_t	pattern
-
-	-o- pixelEndcapHitFilter
-		Return: bool
-		Arguments: uint32_t	pattern
-
-	-o- stripHitFilter
-		Return: bool
-		Arguments: uint32_t	pattern
-
-	-o- stripTIBHitFilter
-		Return: bool
-		Arguments: uint32_t	pattern
-
-	-o- stripTIDHitFilter
-		Return: bool
-		Arguments: uint32_t	pattern
-
-	-o- stripTOBHitFilter
-		Return: bool
-		Arguments: uint32_t	pattern
-
-	-o- stripTECHitFilter
-		Return: bool
-		Arguments: uint32_t	pattern
-
-	-o- muonDTHitFilter
-		Return: bool
-		Arguments: uint32_t	pattern
-
-	-o- muonCSCHitFilter
-		Return: bool
-		Arguments: uint32_t	pattern
-
-	-o- muonRPCHitFilter
-		Return: bool
-		Arguments: uint32_t	pattern
-
-	-o- getLayer
-		Return: uint32_t
-		Arguments: uint32_t	pattern
-
-	-o- getHitType
-		Return: uint32_t
-		Arguments: uint32_t	pattern
-
-	-o- validHitFilter
-		Return: bool
-		Arguments: uint32_t	pattern
-
-	-o- type_1_HitFilter
-		Return: bool
-		Arguments: uint32_t	pattern
-
-	-o- type_2_HitFilter
-		Return: bool
-		Arguments: uint32_t	pattern
-
-	-o- type_3_HitFilter
-		Return: bool
-		Arguments: uint32_t	pattern
-
-	-o- getSide
-		Return: static uint32_t
-		Arguments: uint32_t	pattern
-
-	-o- hasValidHitInFirstPixelBarrel
-		Return: bool
-		Arguments: void	
-
-	-o- numberOfHits
-		Return: int
-		Arguments: void	
-
-	-o- numberOfValidHits
-		Return: int
-		Arguments: void	
-
-	-o- numberOfValidTrackerHits
-		Return: int
-		Arguments: void	
-
-	-o- numberOfValidMuonHits
-		Return: int
-		Arguments: void	
-
-	-o- numberOfValidPixelHits
-		Return: int
-		Arguments: void	
-
-	-o- numberOfValidPixelBarrelHits
-		Return: int
-		Arguments: void	
-
-	-o- numberOfValidPixelEndcapHits
-		Return: int
-		Arguments: void	
-
-	-o- numberOfValidStripHits
-		Return: int
-		Arguments: void	
-
-	-o- numberOfValidStripTIBHits
-		Return: int
-		Arguments: void	
-
-	-o- numberOfValidStripTIDHits
-		Return: int
-		Arguments: void	
-
-	-o- numberOfValidStripTOBHits
-		Return: int
-		Arguments: void	
-
-	-o- numberOfValidStripTECHits
-		Return: int
-		Arguments: void	
-
-	-o- numberOfValidMuonDTHits
-		Return: int
-		Arguments: void	
-
-	-o- numberOfValidMuonCSCHits
-		Return: int
-		Arguments: void	
-
-	-o- numberOfValidMuonRPCHits
-		Return: int
-		Arguments: void	
-
-	-o- numberOfLostHits
-		Return: int
-		Arguments: void	
-
-	-o- numberOfLostTrackerHits
-		Return: int
-		Arguments: void	
-
-	-o- numberOfLostMuonHits
-		Return: int
-		Arguments: void	
-
-	-o- numberOfLostPixelHits
-		Return: int
-		Arguments: void	
-
-	-o- numberOfLostPixelBarrelHits
-		Return: int
-		Arguments: void	
-
-	-o- numberOfLostPixelEndcapHits
-		Return: int
-		Arguments: void	
-
-	-o- numberOfLostStripHits
-		Return: int
-		Arguments: void	
-
-	-o- numberOfLostStripTIBHits
-		Return: int
-		Arguments: void	
-
-	-o- numberOfLostStripTIDHits
-		Return: int
-		Arguments: void	
-
-	-o- numberOfLostStripTOBHits
-		Return: int
-		Arguments: void	
-
-	-o- numberOfLostStripTECHits
-		Return: int
-		Arguments: void	
-
-	-o- numberOfLostMuonDTHits
-		Return: int
-		Arguments: void	
-
-	-o- numberOfLostMuonCSCHits
-		Return: int
-		Arguments: void	
-
-	-o- numberOfLostMuonRPCHits
-		Return: int
-		Arguments: void	
-
-	-o- numberOfBadHits
-		Return: int
-		Arguments: void	
-
-	-o- numberOfBadMuonHits
-		Return: int
-		Arguments: void	
-
-	-o- numberOfBadMuonDTHits
-		Return: int
-		Arguments: void	
-
-	-o- numberOfBadMuonCSCHits
-		Return: int
-		Arguments: void	
-
-	-o- numberOfBadMuonRPCHits
-		Return: int
-		Arguments: void	
-
-	-o- numberOfValidStripLayersWithMonoAndStereo
-		Return: int
-		Arguments: void	
-
-	-o- getTrackerLayerCase
-		Return: uint32_t
-		Arguments: uint32_t	substr
-		           uint32_t	layer
-
-	-o- getTrackerMonoStereo
-		Return: uint32_t
-		Arguments: uint32_t	substr
-		           uint32_t	layer
-
-	-o- trackerLayersWithMeasurement
-		Return: int
-		Arguments: void	
-
-	-o- pixelLayersWithMeasurement
-		Return: int
-		Arguments: void	
-
-	-o- stripLayersWithMeasurement
-		Return: int
-		Arguments: void	
-
-	-o- pixelBarrelLayersWithMeasurement
-		Return: int
-		Arguments: void	
-
-	-o- pixelEndcapLayersWithMeasurement
-		Return: int
-		Arguments: void	
-
-	-o- stripTIBLayersWithMeasurement
-		Return: int
-		Arguments: void	
-
-	-o- stripTIDLayersWithMeasurement
-		Return: int
-		Arguments: void	
-
-	-o- stripTOBLayersWithMeasurement
-		Return: int
-		Arguments: void	
-
-	-o- stripTECLayersWithMeasurement
-		Return: int
-		Arguments: void	
-
-	-o- trackerLayersWithoutMeasurement
-		Return: int
-		Arguments: void	
-
-	-o- pixelLayersWithoutMeasurement
-		Return: int
-		Arguments: void	
-
-	-o- stripLayersWithoutMeasurement
-		Return: int
-		Arguments: void	
-
-	-o- pixelBarrelLayersWithoutMeasurement
-		Return: int
-		Arguments: void	
-
-	-o- pixelEndcapLayersWithoutMeasurement
-		Return: int
-		Arguments: void	
-
-	-o- stripTIBLayersWithoutMeasurement
-		Return: int
-		Arguments: void	
-
-	-o- stripTIDLayersWithoutMeasurement
-		Return: int
-		Arguments: void	
-
-	-o- stripTOBLayersWithoutMeasurement
-		Return: int
-		Arguments: void	
-
-	-o- stripTECLayersWithoutMeasurement
-		Return: int
-		Arguments: void	
-
-	-o- trackerLayersTotallyOffOrBad
-		Return: int
-		Arguments: void	
-
-	-o- pixelLayersTotallyOffOrBad
-		Return: int
-		Arguments: void	
-
-	-o- stripLayersTotallyOffOrBad
-		Return: int
-		Arguments: void	
-
-	-o- pixelBarrelLayersTotallyOffOrBad
-		Return: int
-		Arguments: void	
-
-	-o- pixelEndcapLayersTotallyOffOrBad
-		Return: int
-		Arguments: void	
-
-	-o- stripTIBLayersTotallyOffOrBad
-		Return: int
-		Arguments: void	
-
-	-o- stripTIDLayersTotallyOffOrBad
-		Return: int
-		Arguments: void	
-
-	-o- stripTOBLayersTotallyOffOrBad
-		Return: int
-		Arguments: void	
-
-	-o- stripTECLayersTotallyOffOrBad
-		Return: int
-		Arguments: void	
-
-	-o- trackerLayersNull
-		Return: int
-		Arguments: void	
-
-	-o- pixelLayersNull
-		Return: int
-		Arguments: void	
-
-	-o- stripLayersNull
-		Return: int
-		Arguments: void	
-
-	-o- pixelBarrelLayersNull
-		Return: int
-		Arguments: void	
-
-	-o- pixelEndcapLayersNull
-		Return: int
-		Arguments: void	
-
-	-o- stripTIBLayersNull
-		Return: int
-		Arguments: void	
-
-	-o- stripTIDLayersNull
-		Return: int
-		Arguments: void	
-
-	-o- stripTOBLayersNull
-		Return: int
-		Arguments: void	
-
-	-o- stripTECLayersNull
-		Return: int
-		Arguments: void	
-
-	-o- HitPattern
-		Return: template<typename I>
-		Arguments: const I&	begin
-		           const I&	end
-
-	-o- HitPattern
-		Return: template<typename C>
-		Arguments: const C&	c
-
-	-o- set
-		Return: template<typename I> void
-		Arguments: const I&	begin
-		           const I&	end
-
+Class:       reco::HitPattern
+
+Header:      DataFormats/TrackReco/interface/HitPattern.h
+
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:33:19 2010	mkdocs.py
+
+AccessMethods - reco::HitPattern
+                          uint32_t  getHitPattern(int)
+                              bool  trackerHitFilter(uint32_t)
+                              bool  muonHitFilter(uint32_t)
+                          uint32_t  getSubStructure(uint32_t)
+                              bool  pixelHitFilter(uint32_t)
+                              bool  pixelBarrelHitFilter(uint32_t)
+                              bool  pixelEndcapHitFilter(uint32_t)
+                              bool  stripHitFilter(uint32_t)
+                              bool  stripTIBHitFilter(uint32_t)
+                              bool  stripTIDHitFilter(uint32_t)
+                              bool  stripTOBHitFilter(uint32_t)
+                              bool  stripTECHitFilter(uint32_t)
+                              bool  muonDTHitFilter(uint32_t)
+                              bool  muonCSCHitFilter(uint32_t)
+                              bool  muonRPCHitFilter(uint32_t)
+                          uint32_t  getLayer(uint32_t)
+                          uint32_t  getHitType(uint32_t)
+                              bool  validHitFilter(uint32_t)
+                              bool  type_1_HitFilter(uint32_t)
+                              bool  type_2_HitFilter(uint32_t)
+                              bool  type_3_HitFilter(uint32_t)
+                          uint32_t  getSide(uint32_t)
+                              bool  hasValidHitInFirstPixelBarrel()
+                               int  numberOfHits()
+                               int  numberOfValidHits()
+                               int  numberOfValidTrackerHits()
+                               int  numberOfValidMuonHits()
+                               int  numberOfValidPixelHits()
+                               int  numberOfValidPixelBarrelHits()
+                               int  numberOfValidPixelEndcapHits()
+                               int  numberOfValidStripHits()
+                               int  numberOfValidStripTIBHits()
+                               int  numberOfValidStripTIDHits()
+                               int  numberOfValidStripTOBHits()
+                               int  numberOfValidStripTECHits()
+                               int  numberOfValidMuonDTHits()
+                               int  numberOfValidMuonCSCHits()
+                               int  numberOfValidMuonRPCHits()
+                               int  numberOfLostHits()
+                               int  numberOfLostTrackerHits()
+                               int  numberOfLostMuonHits()
+                               int  numberOfLostPixelHits()
+                               int  numberOfLostPixelBarrelHits()
+                               int  numberOfLostPixelEndcapHits()
+                               int  numberOfLostStripHits()
+                               int  numberOfLostStripTIBHits()
+                               int  numberOfLostStripTIDHits()
+                               int  numberOfLostStripTOBHits()
+                               int  numberOfLostStripTECHits()
+                               int  numberOfLostMuonDTHits()
+                               int  numberOfLostMuonCSCHits()
+                               int  numberOfLostMuonRPCHits()
+                               int  numberOfBadHits()
+                               int  numberOfBadMuonHits()
+                               int  numberOfBadMuonDTHits()
+                               int  numberOfBadMuonCSCHits()
+                               int  numberOfBadMuonRPCHits()
+                               int  numberOfValidStripLayersWithMonoAndStereo()
+                          uint32_t  getTrackerLayerCase(uint32_t, uint32_t)
+                          uint32_t  getTrackerMonoStereo(uint32_t, uint32_t)
+                               int  trackerLayersWithMeasurement()
+                               int  pixelLayersWithMeasurement()
+                               int  stripLayersWithMeasurement()
+                               int  pixelBarrelLayersWithMeasurement()
+                               int  pixelEndcapLayersWithMeasurement()
+                               int  stripTIBLayersWithMeasurement()
+                               int  stripTIDLayersWithMeasurement()
+                               int  stripTOBLayersWithMeasurement()
+                               int  stripTECLayersWithMeasurement()
+                               int  trackerLayersWithoutMeasurement()
+                               int  pixelLayersWithoutMeasurement()
+                               int  stripLayersWithoutMeasurement()
+                               int  pixelBarrelLayersWithoutMeasurement()
+                               int  pixelEndcapLayersWithoutMeasurement()
+                               int  stripTIBLayersWithoutMeasurement()
+                               int  stripTIDLayersWithoutMeasurement()
+                               int  stripTOBLayersWithoutMeasurement()
+                               int  stripTECLayersWithoutMeasurement()
+                               int  trackerLayersTotallyOffOrBad()
+                               int  pixelLayersTotallyOffOrBad()
+                               int  stripLayersTotallyOffOrBad()
+                               int  pixelBarrelLayersTotallyOffOrBad()
+                               int  pixelEndcapLayersTotallyOffOrBad()
+                               int  stripTIBLayersTotallyOffOrBad()
+                               int  stripTIDLayersTotallyOffOrBad()
+                               int  stripTOBLayersTotallyOffOrBad()
+                               int  stripTECLayersTotallyOffOrBad()
+                               int  trackerLayersNull()
+                               int  pixelLayersNull()
+                               int  stripLayersNull()
+                               int  pixelBarrelLayersNull()
+                               int  pixelEndcapLayersNull()
+                               int  stripTIBLayersNull()
+                               int  stripTIDLayersNull()
+                               int  stripTOBLayersNull()
+                               int  stripTECLayersNull()

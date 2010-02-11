@@ -1,27 +1,23 @@
-Class:
-	reco::PFBlockElementCluster
+Class:       reco::PFBlockElementCluster
 
-Header:
-	DataFormats/ParticleFlowReco/interface/PFBlockElementCluster.h
+Header:      DataFormats/ParticleFlowReco/interface/PFBlockElementCluster.h
 
-BaseClasses:
-	reco::PFBlockElement	DataFormats/ParticleFlowReco/interface/PFBlockElement.h
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:31:23 2010	mkdocs.py
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:32 2010	lsclass.py $Revision:$
+AccessMethods - reco::PFBlockElementCluster
+             reco::PFBlockElement*  clone()
+                reco::PFClusterRef  clusterRef()
 
-Methods from reco::PFBlockElementCluster
-
-	-o- clone
-		Return: PFBlockElement*
-		Arguments: void	
-
-	-o- clusterRef
-		Return: PFClusterRef
-		Arguments: void	
-
-	-o- Dump
-		Return: void
-		Arguments: std::ostream&=std::cout	out
-		           const char*=" "	tab
-
+AccessMethods - reco::PFBlockElement
+        reco::PFBlockElement::Type  type()
+                              bool  trackType(reco::PFBlockElement::TrackType)
+                              bool  locked()
+                      unsigned int  index()
+                    reco::TrackRef  trackRef()
+               reco::PFRecTrackRef  trackRefPF()
+       reco::NuclearInteractionRef  nuclearRef()
+               reco::ConversionRef  convRef()
+                     reco::MuonRef  muonRef()
+  reco::VertexCompositeCandidateRef  V0Ref()
+                              bool  isSecondary()

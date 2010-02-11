@@ -1,143 +1,41 @@
-Class:
-	L1TriggerScalers
+Class:       L1TriggerScalers
 
-Header:
-	DataFormats/Scalers/interface/L1TriggerScalers.h
+Header:      DataFormats/Scalers/interface/L1TriggerScalers.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:56:52 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:32:50 2010	mkdocs.py
 
-Methods from L1TriggerScalers
-
-	-o- name
-		Return: std::string
-		Arguments: void	
-
-	-o- empty
-		Return: bool
-		Arguments: void	
-
-	-o- version
-		Return: int
-		Arguments: void	
-
-	-o- trigType
-		Return: unsigned int
-		Arguments: void	
-
-	-o- eventID
-		Return: unsigned int
-		Arguments: void	
-
-	-o- sourceID
-		Return: unsigned int
-		Arguments: void	
-
-	-o- bunchNumber
-		Return: unsigned int
-		Arguments: void	
-
-	-o- collectionTimeSpecial
-		Return: timespec
-		Arguments: void	
-
-	-o- orbitNumber
-		Return: unsigned int
-		Arguments: void	
-
-	-o- luminositySection
-		Return: unsigned int
-		Arguments: void	
-
-	-o- bunchCrossingErrors
-		Return: unsigned int
-		Arguments: void	
-
-	-o- collectionTimeSummary
-		Return: timespec
-		Arguments: void	
-
-	-o- triggerNumber
-		Return: unsigned int
-		Arguments: void	
-
-	-o- eventNumber
-		Return: unsigned int
-		Arguments: void	
-
-	-o- finalTriggersDistributed
-		Return: unsigned int
-		Arguments: void	
-
-	-o- calibrationTriggers
-		Return: unsigned int
-		Arguments: void	
-
-	-o- randomTriggers
-		Return: unsigned int
-		Arguments: void	
-
-	-o- totalTestTriggers
-		Return: unsigned int
-		Arguments: void	
-
-	-o- finalTriggersGenerated
-		Return: unsigned int
-		Arguments: void	
-
-	-o- finalTriggersInvalidBC
-		Return: unsigned int
-		Arguments: void	
-
-	-o- deadTime
-		Return: unsigned long long
-		Arguments: void	
-
-	-o- lostFinalTriggers
-		Return: unsigned long long
-		Arguments: void	
-
-	-o- deadTimeActive
-		Return: unsigned long long
-		Arguments: void	
-
-	-o- lostFinalTriggersActive
-		Return: unsigned long long
-		Arguments: void	
-
-	-o- deadTimeActivePrivate
-		Return: unsigned long long
-		Arguments: void	
-
-	-o- deadTimeActivePartition
-		Return: unsigned long long
-		Arguments: void	
-
-	-o- deadTimeActiveThrottle
-		Return: unsigned long long
-		Arguments: void	
-
-	-o- deadTimeActiveCalibration
-		Return: unsigned long long
-		Arguments: void	
-
-	-o- deadTimeActiveTimeSlot
-		Return: unsigned long long
-		Arguments: void	
-
-	-o- numberResets
-		Return: unsigned int
-		Arguments: void	
-
-	-o- collectionTimeDetails
-		Return: timespec
-		Arguments: void	
-
-	-o- triggers
-		Return: std::vector<unsigned int>
-		Arguments: void	
-
-	-o- testTriggers
-		Return: std::vector<unsigned int>
-		Arguments: void	
-
+AccessMethods - L1TriggerScalers
+                       std::string  name()
+                              bool  empty()
+                               int  version()
+                      unsigned int  trigType()
+                      unsigned int  eventID()
+                      unsigned int  sourceID()
+                      unsigned int  bunchNumber()
+                          timespec  collectionTimeSpecial()
+                      unsigned int  orbitNumber()
+                      unsigned int  luminositySection()
+                      unsigned int  bunchCrossingErrors()
+                          timespec  collectionTimeSummary()
+                      unsigned int  triggerNumber()
+                      unsigned int  eventNumber()
+                      unsigned int  finalTriggersDistributed()
+                      unsigned int  calibrationTriggers()
+                      unsigned int  randomTriggers()
+                      unsigned int  totalTestTriggers()
+                      unsigned int  finalTriggersGenerated()
+                      unsigned int  finalTriggersInvalidBC()
+                unsigned long long  deadTime()
+                unsigned long long  lostFinalTriggers()
+                unsigned long long  deadTimeActive()
+                unsigned long long  lostFinalTriggersActive()
+                unsigned long long  deadTimeActivePrivate()
+                unsigned long long  deadTimeActivePartition()
+                unsigned long long  deadTimeActiveThrottle()
+                unsigned long long  deadTimeActiveCalibration()
+                unsigned long long  deadTimeActiveTimeSlot()
+                      unsigned int  numberResets()
+                          timespec  collectionTimeDetails()
+         std::vector<unsigned int>  triggers()
+         std::vector<unsigned int>  testTriggers()

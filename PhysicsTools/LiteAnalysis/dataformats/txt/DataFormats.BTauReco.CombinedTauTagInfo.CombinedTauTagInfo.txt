@@ -1,219 +1,47 @@
-Class:
-	reco::CombinedTauTagInfo
+Class:       reco::CombinedTauTagInfo
 
-Header:
-	DataFormats/BTauReco/interface/CombinedTauTagInfo.h
+Header:      DataFormats/BTauReco/interface/CombinedTauTagInfo.h
 
-BaseClasses:
-	reco::JTATagInfo	DataFormats/BTauReco/interface/JTATagInfo.h
-	reco::BaseTagInfo	DataFormats/BTauReco/interface/BaseTagInfo.h
+BaseClasses: reco::JTATagInfo
+             reco::BaseTagInfo
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:41 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:28:21 2010	mkdocs.py
 
-Methods from reco::CombinedTauTagInfo
+AccessMethods - reco::CombinedTauTagInfo
+       reco::IsolatedTauTagInfoRef  isolatedtautaginfoRef()
+              reco::TrackRefVector  allTks()
+              reco::TrackRefVector  selectedTks()
+              reco::TrackRefVector  signalTks()
+                               int  signalTks_qsum()
+              reco::TrackRefVector  isolTks()
+         reco::CombinedTauTagInfo*  clone()
+                              bool  passed_trackerselection()
+                              bool  is_GoodTauCandidate()
+                              bool  infact_GoodElectronCandidate()
+                              bool  infact_GoodMuonCandidate()
+                              bool  needs_LikelihoodRatio_discrimination()
+                            double  leadTk_signedipt_significance()
+                            double  leadTk_signedip3D_significance()
+                            double  signedflightpath_significance()
+                            double  TksEt_o_JetEt()
+                            double  neutralE()
+                            double  isolneutralE()
+                            double  isolneutralEtsum()
+                               int  neutralECALClus_number()
+                            double  neutralECALClus_radius()
+                            double  neutralE_o_TksEneutralE()
+                            double  isolneutralE_o_TksEneutralE()
+                            double  neutralE_ratio()
+           CLHEP::HepLorentzVector  alternatrecJet_HepLV()
+                            double  ECALEt_o_leadTkPt()
+                            double  HCALEt_o_leadTkPt()
 
-	-o- isolatedtautaginfoRef
-		Return: const edm::Ref<std::vector<IsolatedTauTagInfo >>&
-		Arguments: void	
+AccessMethods - reco::JTATagInfo
+         edm::RefToBase<reco::Jet>  jet()
+              reco::TrackRefVector  tracks()
+     reco::JetTracksAssociationRef  jtaRef()
+                              bool  hasTracks()
 
-	-o- setisolatedtautaginfoRef
-		Return: void
-		Arguments: const IsolatedTauTagInfoRef&	x
-
-	-o- allTks
-		Return: const TrackRefVector&
-		Arguments: void	
-
-	-o- selectedTks
-		Return: const TrackRefVector&
-		Arguments: void	
-
-	-o- setselectedTks
-		Return: void
-		Arguments: const TrackRefVector&	x
-
-	-o- signalTks
-		Return: const TrackRefVector&
-		Arguments: void	
-
-	-o- setsignalTks
-		Return: void
-		Arguments: const TrackRefVector&	x
-
-	-o- signalTks_qsum
-		Return: int
-		Arguments: void	
-
-	-o- isolTks
-		Return: const TrackRefVector&
-		Arguments: void	
-
-	-o- setisolTks
-		Return: void
-		Arguments: const TrackRefVector&	x
-
-	-o- clone
-		Return: CombinedTauTagInfo*
-		Arguments: void	
-
-	-o- passed_trackerselection
-		Return: bool
-		Arguments: void	
-
-	-o- setpassed_trackerselection
-		Return: void
-		Arguments: bool	x
-
-	-o- is_GoodTauCandidate
-		Return: bool
-		Arguments: void	
-
-	-o- setis_GoodTauCandidate
-		Return: void
-		Arguments: bool	x
-
-	-o- infact_GoodElectronCandidate
-		Return: bool
-		Arguments: void	
-
-	-o- setinfact_GoodElectronCandidate
-		Return: void
-		Arguments: bool	x
-
-	-o- infact_GoodMuonCandidate
-		Return: bool
-		Arguments: void	
-
-	-o- setinfact_GoodMuonCandidate
-		Return: void
-		Arguments: bool	x
-
-	-o- needs_LikelihoodRatio_discrimination
-		Return: bool
-		Arguments: void	
-
-	-o- setneeds_LikelihoodRatio_discrimination
-		Return: void
-		Arguments: bool	x
-
-	-o- leadTk_signedipt_significance
-		Return: double
-		Arguments: void	
-
-	-o- setleadTk_signedipt_significance
-		Return: void
-		Arguments: double	x
-
-	-o- leadTk_signedip3D_significance
-		Return: double
-		Arguments: void	
-
-	-o- setleadTk_signedip3D_significance
-		Return: void
-		Arguments: double	x
-
-	-o- signedflightpath_significance
-		Return: double
-		Arguments: void	
-
-	-o- setsignedflightpath_significance
-		Return: void
-		Arguments: double	x
-
-	-o- TksEt_o_JetEt
-		Return: double
-		Arguments: void	
-
-	-o- setTksEt_o_JetEt
-		Return: void
-		Arguments: double	x
-
-	-o- neutralE
-		Return: double
-		Arguments: void	
-
-	-o- setneutralE
-		Return: void
-		Arguments: double	x
-
-	-o- isolneutralE
-		Return: double
-		Arguments: void	
-
-	-o- setisolneutralE
-		Return: void
-		Arguments: double	x
-
-	-o- isolneutralEtsum
-		Return: double
-		Arguments: void	
-
-	-o- setisolneutralEtsum
-		Return: void
-		Arguments: double	x
-
-	-o- neutralECALClus_number
-		Return: int
-		Arguments: void	
-
-	-o- setneutralECALClus_number
-		Return: void
-		Arguments: int	x
-
-	-o- neutralECALClus_radius
-		Return: double
-		Arguments: void	
-
-	-o- setneutralECALClus_radius
-		Return: void
-		Arguments: double	x
-
-	-o- neutralE_o_TksEneutralE
-		Return: double
-		Arguments: void	
-
-	-o- setneutralE_o_TksEneutralE
-		Return: void
-		Arguments: double	x
-
-	-o- isolneutralE_o_TksEneutralE
-		Return: double
-		Arguments: void	
-
-	-o- setisolneutralE_o_TksEneutralE
-		Return: void
-		Arguments: double	x
-
-	-o- neutralE_ratio
-		Return: double
-		Arguments: void	
-
-	-o- setneutralE_ratio
-		Return: void
-		Arguments: double	x
-
-	-o- alternatrecJet_HepLV
-		Return: CLHEP::HepLorentzVector
-		Arguments: void	
-
-	-o- setalternatrecJet_HepLV
-		Return: void
-		Arguments: CLHEP::HepLorentzVector	x
-
-	-o- ECALEt_o_leadTkPt
-		Return: double
-		Arguments: void	
-
-	-o- setECALEt_o_leadTkPt
-		Return: void
-		Arguments: double	x
-
-	-o- HCALEt_o_leadTkPt
-		Return: double
-		Arguments: void	
-
-	-o- setHCALEt_o_leadTkPt
-		Return: void
-		Arguments: double	x
-
+AccessMethods - reco::BaseTagInfo
+         reco::TaggingVariableList  taggingVariables()

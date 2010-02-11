@@ -1,89 +1,24 @@
-Class:
-	reco::PFBlockElementTrack
+Class:       reco::PFBlockElementTrack
 
-Header:
-	DataFormats/ParticleFlowReco/interface/PFBlockElementTrack.h
+Header:      DataFormats/ParticleFlowReco/interface/PFBlockElementTrack.h
 
-BaseClasses:
-	reco::PFBlockElement	DataFormats/ParticleFlowReco/interface/PFBlockElement.h
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:31:26 2010	mkdocs.py
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:28 2010	lsclass.py $Revision:$
+AccessMethods - reco::PFBlockElementTrack
+             reco::PFBlockElement*  clone()
+                              bool  trackType(reco::PFBlockElement::TrackType)
+                   math::XYZPointF  positionAtECALEntrance()
+               reco::PFRecTrackRef  trackRefPF()
+                    reco::TrackRef  trackRef()
+                              bool  isSecondary()
+       reco::NuclearInteractionRef  nuclearRef()
+                     reco::MuonRef  muonRef()
+               reco::ConversionRef  convRef()
+  reco::VertexCompositeCandidateRef  V0Ref()
 
-Methods from reco::PFBlockElementTrack
-
-	-o- clone
-		Return: PFBlockElement*
-		Arguments: void	
-
-	-o- Dump
-		Return: void
-		Arguments: std::ostream&=std::cout	out
-		           const char*=" "	tab
-
-	-o- trackType
-		Return: bool
-		Arguments: TrackType	trType
-
-	-o- setTrackType
-		Return: void
-		Arguments: TrackType	trType
-		           bool	value
-
-	-o- setPositionAtECALEntrance
-		Return: void
-		Arguments: float	x
-		           float	y
-		           float	z
-
-	-o- positionAtECALEntrance
-		Return: const math::XYZPointF&
-		Arguments: void	
-
-	-o- trackRefPF
-		Return: PFRecTrackRef
-		Arguments: void	
-
-	-o- trackRef
-		Return: reco::TrackRef
-		Arguments: void	
-
-	-o- isSecondary
-		Return: bool
-		Arguments: void	
-
-	-o- nuclearRef
-		Return: NuclearInteractionRef
-		Arguments: void	
-
-	-o- setNuclearRef
-		Return: void
-		Arguments: const NuclearInteractionRef&	niref
-		           TrackType	trType
-
-	-o- muonRef
-		Return: reco::MuonRef
-		Arguments: void	
-
-	-o- setMuonRef
-		Return: void
-		Arguments: const MuonRef&	muref
-
-	-o- convRef
-		Return: ConversionRef
-		Arguments: void	
-
-	-o- setConversionRef
-		Return: void
-		Arguments: const ConversionRef&	convRef
-		           TrackType	trType
-
-	-o- V0Ref
-		Return: VertexCompositeCandidateRef
-		Arguments: void	
-
-	-o- setV0Ref
-		Return: void
-		Arguments: const VertexCompositeCandidateRef&	V0Ref
-		           TrackType	trType
-
+AccessMethods - reco::PFBlockElement
+        reco::PFBlockElement::Type  type()
+                              bool  locked()
+                      unsigned int  index()
+                reco::PFClusterRef  clusterRef()

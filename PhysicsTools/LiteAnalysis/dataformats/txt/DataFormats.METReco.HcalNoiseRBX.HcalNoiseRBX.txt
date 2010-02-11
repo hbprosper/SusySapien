@@ -1,79 +1,24 @@
-Class:
-	reco::HcalNoiseRBX
+Class:       reco::HcalNoiseRBX
 
-Header:
-	DataFormats/METReco/interface/HcalNoiseRBX.h
+Header:      DataFormats/METReco/interface/HcalNoiseRBX.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:56:56 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:30:48 2010	mkdocs.py
 
-Methods from reco::HcalNoiseRBX
-
-	-o- idnumber
-		Return: int
-		Arguments: void	
-
-	-o- allChargeTotal
-		Return: float
-		Arguments: void	
-
-	-o- allChargeHighest2TS
-		Return: float
-		Arguments: void	
-
-	-o- allChargeHighest3TS
-		Return: float
-		Arguments: void	
-
-	-o- totalZeros
-		Return: int
-		Arguments: void	
-
-	-o- maxZeros
-		Return: int
-		Arguments: void	
-
-	-o- recHitEnergy
-		Return: double
-		Arguments: double=1.5	theshold
-
-	-o- minRecHitTime
-		Return: double
-		Arguments: double=20.0	threshold
-
-	-o- maxRecHitTime
-		Return: double
-		Arguments: double=20.0	threshold
-
-	-o- numRecHits
-		Return: int
-		Arguments: double=1.5	threshold
-
-	-o- caloTowerHadE
-		Return: double
-		Arguments: void	
-
-	-o- caloTowerEmE
-		Return: double
-		Arguments: void	
-
-	-o- caloTowerTotalE
-		Return: double
-		Arguments: void	
-
-	-o- caloTowerEmFraction
-		Return: double
-		Arguments: void	
-
-	-o- HPDs
-		Return: const std::vector<HcalNoiseHPD>
-		Arguments: void	
-
-	-o- maxHPD
-		Return: std::vector<HcalNoiseHPD>::const_iterator
-		Arguments: double=1.5	threshold
-
-	-o- allCharge
-		Return: const std::vector<float>
-		Arguments: void	
-
+AccessMethods - reco::HcalNoiseRBX
+                               int  idnumber()
+   std::vector<reco::HcalNoiseHPD>  HPDs()
+                std::vector<float>  allCharge()
+                             float  allChargeTotal()
+                             float  allChargeHighest2TS()
+                             float  allChargeHighest3TS()
+                               int  totalZeros()
+                               int  maxZeros()
+                            double  recHitEnergy(double)
+                            double  minRecHitTime(double)
+                            double  maxRecHitTime(double)
+                               int  numRecHits(double)
+                            double  caloTowerHadE()
+                            double  caloTowerEmE()
+                            double  caloTowerTotalE()
+                            double  caloTowerEmFraction()

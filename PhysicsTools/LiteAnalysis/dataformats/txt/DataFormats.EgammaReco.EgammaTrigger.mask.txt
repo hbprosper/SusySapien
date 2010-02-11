@@ -1,9 +1,8 @@
-Class:
-	reco::egamma::mask<L1>
+Class:       reco::egamma::mask
 
-Header:
-	DataFormats/EgammaReco/interface/EgammaTrigger.h
+Header:      DataFormats/EgammaReco/interface/EgammaTrigger.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:56:55 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:29:30 2010	mkdocs.py
 
+AccessMethods - reco::egamma::mask

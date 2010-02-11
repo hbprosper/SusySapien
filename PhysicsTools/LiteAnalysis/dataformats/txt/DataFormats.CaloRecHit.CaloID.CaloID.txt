@@ -1,32 +1,12 @@
-Class:
-	reco::CaloID
+Class:       reco::CaloID
 
-Header:
-	DataFormats/CaloRecHit/interface/CaloID.h
+Header:      DataFormats/CaloRecHit/interface/CaloID.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:56:14 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:28:45 2010	mkdocs.py
 
-Methods from reco::CaloID
-
-	-o- setDetector
-		Return: void
-		Arguments: CaloID::Detectors	theDetector
-		           bool	value
-
-	-o- detectors
-		Return: unsigned
-		Arguments: void	
-
-	-o- detector
-		Return: bool
-		Arguments: CaloID::Detectors	theDetector
-
-	-o- isSingleDetector
-		Return: bool
-		Arguments: void	
-
-	-o- detector
-		Return: Detectors
-		Arguments: void	
-
+AccessMethods - reco::CaloID
+                      unsigned int  detectors()
+                              bool  detector(reco::CaloID::Detectors)
+                              bool  isSingleDetector()
+           reco::CaloID::Detectors  detector()

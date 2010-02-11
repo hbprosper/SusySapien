@@ -1,69 +1,17 @@
-Class:
-	L1MonitorDigi
+Class:       L1MonitorDigi
 
-Header:
-	DataFormats/L1Trigger/interface/L1MonitorDigi.h
+Header:      DataFormats/L1Trigger/interface/L1MonitorDigi.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:56:09 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:30:36 2010	mkdocs.py
 
-Methods from L1MonitorDigi
-
-	-o- setSid
-		Return: void
-		Arguments: int	sid
-
-	-o- setCid
-		Return: void
-		Arguments: int	cid
-
-	-o- setLoc
-		Return: void
-		Arguments: unsigned	x1
-		           unsigned	x2
-		           unsigned	x3
-
-	-o- setRaw
-		Return: void
-		Arguments: unsigned	raw
-
-	-o- setValue
-		Return: void
-		Arguments: unsigned	val
-
-	-o- sid
-		Return: unsigned
-		Arguments: void	
-
-	-o- cid
-		Return: unsigned
-		Arguments: void	
-
-	-o- x1
-		Return: unsigned
-		Arguments: void	
-
-	-o- x2
-		Return: unsigned
-		Arguments: void	
-
-	-o- x3
-		Return: unsigned
-		Arguments: void	
-
-	-o- raw
-		Return: unsigned
-		Arguments: void	
-
-	-o- value
-		Return: unsigned
-		Arguments: void	
-
-	-o- reset
-		Return: unsigned
-		Arguments: void	
-
-	-o- empty
-		Return: bool
-		Arguments: void	
-
+AccessMethods - L1MonitorDigi
+                      unsigned int  sid()
+                      unsigned int  cid()
+                      unsigned int  x1()
+                      unsigned int  x2()
+                      unsigned int  x3()
+                      unsigned int  raw()
+                      unsigned int  value()
+                      unsigned int  reset()
+                              bool  empty()

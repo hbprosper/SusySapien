@@ -1,31 +1,28 @@
-Class:
-	reco::PreshowerCluster
+Class:       reco::PreshowerCluster
 
-Header:
-	DataFormats/EgammaReco/interface/PreshowerCluster.h
+Header:      DataFormats/EgammaReco/interface/PreshowerCluster.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:56:54 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:29:34 2010	mkdocs.py
 
-Methods from reco::PreshowerCluster
+AccessMethods - reco::PreshowerCluster
+                               int  nhits()
+                               int  plane()
+                            double  et()
+              reco::CaloClusterPtr  basicCluster()
 
-	-o- nhits
-		Return: int
-		Arguments: void	
-
-	-o- plane
-		Return: int
-		Arguments: void	
-
-	-o- et
-		Return: double
-		Arguments: void	
-
-	-o- basicCluster
-		Return: CaloClusterPtr
-		Arguments: void	
-
-	-o- setBCRef
-		Return: void
-		Arguments: const CaloClusterPtr&	r
-
+AccessMethods - reco::CaloCluster
+                            double  energy()
+                    math::XYZPoint  position()
+                            double  x()
+                            double  y()
+                            double  z()
+                            double  eta()
+                            double  phi()
+                            size_t  size()
+         reco::CaloCluster::AlgoId  algo()
+         reco::CaloCluster::AlgoId  algoID()
+                      reco::CaloID  caloID()
+  std::vector<std::pair<DetId,float> >  hitsAndFractions()
+                       std::string  printHitAndFraction(unsigned int)
+                             DetId  seed()

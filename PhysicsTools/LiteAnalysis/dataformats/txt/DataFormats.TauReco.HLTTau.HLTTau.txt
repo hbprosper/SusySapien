@@ -1,131 +1,27 @@
-Class:
-	reco::HLTTau
+Class:       reco::HLTTau
 
-Header:
-	DataFormats/TauReco/interface/HLTTau.h
+Header:      DataFormats/TauReco/interface/HLTTau.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:56:01 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:33:07 2010	mkdocs.py
 
-Methods from reco::HLTTau
-
-	-o- getEta
-		Return: float
-		Arguments: void	
-
-	-o- getPhi
-		Return: float
-		Arguments: void	
-
-	-o- getPt
-		Return: float
-		Arguments: void	
-
-	-o- getEMIsolationValue
-		Return: float
-		Arguments: void	
-
-	-o- getL25TrackIsolationResponse
-		Return: int
-		Arguments: void	
-
-	-o- getNL25TrackIsolation
-		Return: int
-		Arguments: void	
-
-	-o- getL25LeadTrackPtValue
-		Return: float
-		Arguments: void	
-
-	-o- getL3TrackIsolationResponse
-		Return: int
-		Arguments: void	
-
-	-o- getNL3TrackIsolation
-		Return: int
-		Arguments: void	
-
-	-o- getL3LeadTrackPtValue
-		Return: float
-		Arguments: void	
-
-	-o- getSumPtTracksL25
-		Return: float
-		Arguments: void	
-
-	-o- getSumPtTracksL3
-		Return: float
-		Arguments: void	
-
-	-o- getSeedEcalHitEt
-		Return: double
-		Arguments: void	
-
-	-o- getNEcalHits
-		Return: int
-		Arguments: void	
-
-	-o- getHcalIsolEt
-		Return: double
-		Arguments: void	
-
-	-o- getSeedHcalHitEt
-		Return: double
-		Arguments: void	
-
-	-o- getNHcalHits
-		Return: int
-		Arguments: void	
-
-	-o- setNL25TrackIsolation
-		Return: void
-		Arguments: int	nTracks
-
-	-o- setNL3TrackIsolation
-		Return: void
-		Arguments: int	nTracks
-
-	-o- setSumPtTracksL25
-		Return: void
-		Arguments: double	sumPt
-
-	-o- setSumPtTracksL3
-		Return: void
-		Arguments: double	sumPt
-
-	-o- setSeedEcalHitEt
-		Return: void
-		Arguments: double	seed
-
-	-o- setNEcalHits
-		Return: void
-		Arguments: int	nhits
-
-	-o- setHcalIsolEt
-		Return: void
-		Arguments: double	hcalIso
-
-	-o- setSeedHcalHitEt
-		Return: void
-		Arguments: double	seed
-
-	-o- setNHcalHits
-		Return: void
-		Arguments: int	nhits
-
-	-o- getEcalClusterShape
-		Return: std::vector<double>
-		Arguments: void	
-
-	-o- getHcalClusterShape
-		Return: std::vector<double>
-		Arguments: void	
-
-	-o- setEcalClusterShape
-		Return: void
-		Arguments: std::vector<double>	clusters
-
-	-o- setHcalClusterShape
-		Return: void
-		Arguments: std::vector<double>	clusters
-
+AccessMethods - reco::HLTTau
+                             float  getEta()
+                             float  getPhi()
+                             float  getPt()
+                             float  getEMIsolationValue()
+                               int  getL25TrackIsolationResponse()
+                               int  getNL25TrackIsolation()
+                             float  getL25LeadTrackPtValue()
+                               int  getL3TrackIsolationResponse()
+                               int  getNL3TrackIsolation()
+                             float  getL3LeadTrackPtValue()
+                             float  getSumPtTracksL25()
+                             float  getSumPtTracksL3()
+                            double  getSeedEcalHitEt()
+               std::vector<double>  getEcalClusterShape()
+                               int  getNEcalHits()
+                            double  getHcalIsolEt()
+                            double  getSeedHcalHitEt()
+               std::vector<double>  getHcalClusterShape()
+                               int  getNHcalHits()

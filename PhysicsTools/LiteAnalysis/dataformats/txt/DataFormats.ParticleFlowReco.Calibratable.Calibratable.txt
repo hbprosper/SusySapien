@@ -1,27 +1,10 @@
-Class:
-	pftools::Calibratable
+Class:       pftools::Calibratable
 
-Header:
-	DataFormats/ParticleFlowReco/interface/Calibratable.h
+Header:      DataFormats/ParticleFlowReco/interface/Calibratable.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:34 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:31:15 2010	mkdocs.py
 
-Methods from pftools::Calibratable
-
-	-o- reset
-		Return: void
-		Arguments: void	
-
-	-o- recompute
-		Return: void
-		Arguments: void	
-
-	-o- computeMean
-		Return: CalibratableElement
-		Arguments: const std::vector<CalibratableElement>&	diets
-
-	-o- computeMean
-		Return: CandidateWrapper
-		Arguments: const std::vector<CandidateWrapper>&	wrappers
-
+AccessMethods - pftools::Calibratable
+      pftools::CalibratableElement  computeMean(std::vector<pftools::CalibratableElement>)
+         pftools::CandidateWrapper  computeMean(std::vector<pftools::CandidateWrapper>)

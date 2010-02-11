@@ -3,7 +3,7 @@ Class:       reco::MuonMETCorrectionData
 Header:      DataFormats/MuonReco/interface/MuonMETCorrectionData.h
 
 Version:     CMSSW_3_4_1
-Created:     Sun Feb  7 17:09:46 2010	mkdocs.py
+Created:     Wed Feb 10 14:31:03 2010	mkdocs.py
 
 AccessMethods - reco::MuonMETCorrectionData
   reco::MuonMETCorrectionData::Type  type()

@@ -1,137 +1,33 @@
-Class:
-	reco::SuperCluster
+Class:       reco::SuperCluster
 
-Header:
-	DataFormats/EgammaReco/interface/SuperCluster.h
+Header:      DataFormats/EgammaReco/interface/SuperCluster.h
 
-BaseClasses:
-	reco::CaloCluster	DataFormats/CaloRecHit/interface/CaloCluster.h
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:29:37 2010	mkdocs.py
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:56:56 2010	lsclass.py $Revision:$
+AccessMethods - reco::SuperCluster
+                            double  rawEnergy()
+                            double  preshowerEnergy()
+                            double  phiWidth()
+                            double  etaWidth()
+              reco::CaloClusterPtr  seed()
+        reco::CaloCluster_iterator  clustersBegin()
+        reco::CaloCluster_iterator  clustersEnd()
+        reco::CaloCluster_iterator  preshowerClustersBegin()
+        reco::CaloCluster_iterator  preshowerClustersEnd()
+                            size_t  clustersSize()
 
-Methods from reco::SuperCluster
-
-	-o- rawEnergy
-		Return: double
-		Arguments: void	
-
-	-o- preshowerEnergy
-		Return: double
-		Arguments: void	
-
-	-o- phiWidth
-		Return: double
-		Arguments: void	
-
-	-o- etaWidth
-		Return: double
-		Arguments: void	
-
-	-o- setPreshowerEnergy
-		Return: void
-		Arguments: double	preshowerEnergy
-
-	-o- setPhiWidth
-		Return: void
-		Arguments: double	pw
-
-	-o- setEtaWidth
-		Return: void
-		Arguments: double	ew
-
-	-o- seed
-		Return: const CaloClusterPtr&
-		Arguments: void	
-
-	-o- clustersBegin
-		Return: CaloCluster_iterator
-		Arguments: void	
-
-	-o- clustersEnd
-		Return: CaloCluster_iterator
-		Arguments: void	
-
-	-o- preshowerClustersBegin
-		Return: CaloCluster_iterator
-		Arguments: void	
-
-	-o- preshowerClustersEnd
-		Return: CaloCluster_iterator
-		Arguments: void	
-
-	-o- clustersSize
-		Return: size_t
-		Arguments: void	
-
-	-o- setSeed
-		Return: void
-		Arguments: const CaloClusterPtr&	r
-
-	-o- addCluster
-		Return: void
-		Arguments: const CaloClusterPtr&	r
-
-	-o- addPreshowerCluster
-		Return: void
-		Arguments: const CaloClusterPtr&	r
-
-Methods from reco::CaloCluster
-
-	-o- reset
-		Return: void
-		Arguments: void	
-
-	-o- energy
-		Return: double
-		Arguments: void	
-
-	-o- position
-		Return: const math::XYZPoint&
-		Arguments: void	
-
-	-o- x
-		Return: double
-		Arguments: void	
-
-	-o- y
-		Return: double
-		Arguments: void	
-
-	-o- z
-		Return: double
-		Arguments: void	
-
-	-o- eta
-		Return: double
-		Arguments: void	
-
-	-o- phi
-		Return: double
-		Arguments: void	
-
-	-o- size
-		Return: size_t
-		Arguments: void	
-
-	-o- algo
-		Return: AlgoId
-		Arguments: void	
-
-	-o- algoID
-		Return: AlgoId
-		Arguments: void	
-
-	-o- caloID
-		Return: const CaloID&
-		Arguments: void	
-
-	-o- addHitAndFraction
-		Return: void
-		Arguments: DetId	id
-		           float	fraction
-
-	-o- printHitAndFraction
-		Return: std::string
-		Arguments: unsigned	i
-
+AccessMethods - reco::CaloCluster
+                            double  energy()
+                    math::XYZPoint  position()
+                            double  x()
+                            double  y()
+                            double  z()
+                            double  eta()
+                            double  phi()
+                            size_t  size()
+         reco::CaloCluster::AlgoId  algo()
+         reco::CaloCluster::AlgoId  algoID()
+                      reco::CaloID  caloID()
+  std::vector<std::pair<DetId,float> >  hitsAndFractions()
+                       std::string  printHitAndFraction(unsigned int)

@@ -1,15 +1,8 @@
-Class:
-	pftools::CalibratableElement
+Class:       pftools::CalibratableElement
 
-Header:
-	DataFormats/ParticleFlowReco/interface/Calibratable.h
+Header:      DataFormats/ParticleFlowReco/interface/Calibratable.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:34 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:31:15 2010	mkdocs.py
 
-Methods from pftools::CalibratableElement
-
-	-o- reset
-		Return: void
-		Arguments: void	
-
+AccessMethods - pftools::CalibratableElement

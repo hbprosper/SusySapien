@@ -1,27 +1,10 @@
-Class:
-	pftools::CalibrationResultWrapper
+Class:       pftools::CalibrationResultWrapper
 
-Header:
-	DataFormats/ParticleFlowReco/interface/CalibrationResultWrapper.h
+Header:      DataFormats/ParticleFlowReco/interface/CalibrationResultWrapper.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:34 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:31:16 2010	mkdocs.py
 
-Methods from pftools::CalibrationResultWrapper
-
-	-o- reset
-		Return: void
-		Arguments: void	
-
-	-o- compute
-		Return: void
-		Arguments: void	
-
-	-o- bias
-		Return: double
-		Arguments: void	
-
-	-o- ratio
-		Return: double
-		Arguments: void	
-
+AccessMethods - pftools::CalibrationResultWrapper
+                            double  bias()
+                            double  ratio()

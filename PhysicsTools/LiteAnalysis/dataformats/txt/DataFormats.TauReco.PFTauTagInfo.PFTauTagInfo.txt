@@ -1,64 +1,17 @@
-Class:
-	reco::PFTauTagInfo
+Class:       reco::PFTauTagInfo
 
-Header:
-	DataFormats/TauReco/interface/PFTauTagInfo.h
+Header:      DataFormats/TauReco/interface/PFTauTagInfo.h
 
-BaseClasses:
-	reco::BaseTauTagInfo	DataFormats/TauReco/interface/BaseTauTagInfo.h
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:33:14 2010	mkdocs.py
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:56:02 2010	lsclass.py $Revision:$
+AccessMethods - reco::PFTauTagInfo
+               reco::PFTauTagInfo*  clone()
+        reco::PFCandidateRefVector  PFCands()
+        reco::PFCandidateRefVector  PFChargedHadrCands()
+        reco::PFCandidateRefVector  PFNeutrHadrCands()
+        reco::PFCandidateRefVector  PFGammaCands()
+                    reco::PFJetRef  pfjetRef()
 
-Methods from reco::PFTauTagInfo
-
-	-o- clone
-		Return: PFTauTagInfo*
-		Arguments: void	
-
-	-o- PFCands
-		Return: PFCandidateRefVector
-		Arguments: void	
-
-	-o- PFChargedHadrCands
-		Return: const PFCandidateRefVector&
-		Arguments: void	
-
-	-o- setPFChargedHadrCands
-		Return: void
-		Arguments: const PFCandidateRefVector	
-
-	-o- PFNeutrHadrCands
-		Return: const PFCandidateRefVector&
-		Arguments: void	
-
-	-o- setPFNeutrHadrCands
-		Return: void
-		Arguments: const PFCandidateRefVector	
-
-	-o- PFGammaCands
-		Return: const PFCandidateRefVector&
-		Arguments: void	
-
-	-o- setPFGammaCands
-		Return: void
-		Arguments: const PFCandidateRefVector	
-
-	-o- pfjetRef
-		Return: const PFJetRef&
-		Arguments: void	
-
-	-o- setpfjetRef
-		Return: void
-		Arguments: const PFJetRef	
-
-Methods from reco::BaseTauTagInfo
-
-	-o- Tracks
-		Return: const reco::TrackRefVector&
-		Arguments: void	
-
-	-o- setTracks
-		Return: void
-		Arguments: const TrackRefVector	
-
+AccessMethods - reco::BaseTauTagInfo
+              reco::TrackRefVector  Tracks()

@@ -1,9 +1,10 @@
-Class:
-	reco::JetCrystalsAssociation
+Class:       reco::JetCrystalsAssociation
 
-Header:
-	DataFormats/BTauReco/interface/JetCrystalsAssociation.h
+Header:      DataFormats/BTauReco/interface/JetCrystalsAssociation.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:44 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:28:25 2010	mkdocs.py
 
+AccessMethods - reco::JetCrystalsAssociation
+
+AccessMethods - std::pair<edm::RefToBase<reco::Jet>,edm::RefVector<std::vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiE4D<double> > >,ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiE4D<double> >,edm::refhelper::FindUsingAdvance<std::vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiE4D<double> > >,ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiE4D<double> > > > >

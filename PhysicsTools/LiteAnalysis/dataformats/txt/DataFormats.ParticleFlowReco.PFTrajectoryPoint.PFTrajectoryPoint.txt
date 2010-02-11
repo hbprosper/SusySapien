@@ -1,43 +1,15 @@
-Class:
-	reco::PFTrajectoryPoint
+Class:       reco::PFTrajectoryPoint
 
-Header:
-	DataFormats/ParticleFlowReco/interface/PFTrajectoryPoint.h
+Header:      DataFormats/ParticleFlowReco/interface/PFTrajectoryPoint.h
 
-Version:     CMSSW_3_3_6
-Created:     Fri Jan 15 21:55:34 2010	lsclass.py $Revision:$
+Version:     CMSSW_3_4_1
+Created:     Wed Feb 10 14:31:37 2010	mkdocs.py
 
-Methods from reco::PFTrajectoryPoint
-
-	-o- detId
-		Return: int
-		Arguments: void	
-
-	-o- layer
-		Return: int
-		Arguments: void	
-
-	-o- isValid
-		Return: bool
-		Arguments: void	
-
-	-o- isTrackerLayer
-		Return: bool
-		Arguments: void	
-
-	-o- position
-		Return: const math::XYZPoint&
-		Arguments: void	
-
-	-o- positionREP
-		Return: const ROOT::Math::PositionVector3D<ROOT::Math::CylindricalEta3D<Double32_t> >&
-		Arguments: void	
-
-	-o- calculatePositionREP
-		Return: void
-		Arguments: void	
-
-	-o- momentum
-		Return: const math::XYZTLorentzVector&
-		Arguments: void	
-
+AccessMethods - reco::PFTrajectoryPoint
+                               int  detId()
+                               int  layer()
+                              bool  isValid()
+                              bool  isTrackerLayer()
+                    math::XYZPoint  position()
+  ROOT::Math::PositionVector3D<ROOT::Math::CylindricalEta3D<double>,ROOT::Math::DefaultCoordinateSystemTag>  positionREP()
+           math::XYZTLorentzVector  momentum()
