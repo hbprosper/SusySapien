@@ -1,3 +1,0 @@
-edm::EDProduct|bool|isPresent|void
-edm::EDProduct|bool|isMergeable|void
-edm::EDProduct|bool|hasIsProductEqual|void

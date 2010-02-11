@@ -1,0 +1,26 @@
+<use name=FWCore/FWLite>
+<use name=FWCore/PluginManager>
+
+<use name=DataFormats/MuonReco>
+<use name=DataFormats/PatCandidates>
+
+<use name=PhysicsTools/LiteAnalysis>
+<use name=PhysicsTools/Mkntuple>
+<use name=SO10/Analysis>
+
+<use name=boost_regex>
+<use name=boost_python>
+<use name=rootrflx>
+<use name=rootminuit>
+<use name=rootmath>
+<use name=f77compiler>
+
+<library file=myplugins.cc name=MyPlugins>
+<flags EDM_PLUGIN=1>
+</library>
+
+
+
+
+
+

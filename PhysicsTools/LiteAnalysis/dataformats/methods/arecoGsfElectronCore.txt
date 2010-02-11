@@ -1,3 +1,0 @@
-bool	isEcalDriven()
-bool	isTrackerDriven()
-

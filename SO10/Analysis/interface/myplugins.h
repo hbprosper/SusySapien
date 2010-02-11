@@ -7,15 +7,17 @@
 // Description: Simple plugin for
 //              class:   pat::Muon
 // Created:     Tue Jan 19 HBP
-//$Revision: 1.2 $
+//$Revision: 1.3 $
 //-----------------------------------------------------------------------------
-#include "DataFormats/MuonReco/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
 //-----------------------------------------------------------------------------
+// Note: patMuonExtra inherits all the methods of pat::Muon
 class patMuonExtra : public pat::Muon
 {
 public:
   patMuonExtra() {}
+
+  /// Copy pat::Muon object to patMuonExtra object.
   patMuonExtra(const pat::Muon& o) : pat::Muon(o) {}
   ~patMuonExtra() {}
 
@@ -26,20 +28,6 @@ public:
     else
       return -1;
   }
-};
-
-class recoMuonIsol : public reco::Muon
-{
-public:
-  recoMuonIsol() {}
-  recoMuonIsol(const reco::Muon& o) : reco::Muon(o) {}
-  ~recoMuonIsol() {}
-
-  float sumPt() const { return isolationR03().sumPt; }
-  float emEt()  const { return isolationR03().emEt; }
-  float hadEt() const { return isolationR03().hadEt; }
-  int nTracks() const { return isolationR03().nTracks; }
-
 };
 
 #endif

@@ -1,6 +1,0 @@
-unsigned	indexFilter(const std::string x)
-unsigned	indexPath(const std::string x)
-bool	wasAccept()
-bool	wasError()
-bool	wasRun()
-

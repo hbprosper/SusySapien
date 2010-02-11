@@ -1,6 +1,0 @@
-edm::AssociativeIterator<KeyRefType, AssociativeCollection, ItemGetter>|AssociativeIterator<KeyRefType, AssociativeCollection, ItemGetter>&|nextProductID|void
-edm::AssociativeIterator<KeyRefType, AssociativeCollection, ItemGetter>|const typename std::pair<key_type, val_type>*|get|void
-edm::AssociativeIterator<KeyRefType, AssociativeCollection, ItemGetter>|const KeyRefType&|key|void
-edm::AssociativeIterator<KeyRefType, AssociativeCollection, ItemGetter>|const typename helper::AssociativeCollectionValueType<AssociativeCollection>::typename AC::value_type&|val|void
-edm::AssociativeIterator<KeyRefType, AssociativeCollection, ItemGetter>|const ProductID&|id|void
-edm::AssociativeIterator<KeyRefType, AssociativeCollection, ItemGetter>|AssociativeIterator<KeyRefType, AssociativeCollection, ItemGetter>|end|void

@@ -1,3 +1,0 @@
-edm::EDCollection<T>|bool|empty|void
-edm::EDCollection<T>|typename std::vector<T>::size_type|size|void
-edm::EDCollection<T>|typename std::vector<T>::size_type|capacity|void

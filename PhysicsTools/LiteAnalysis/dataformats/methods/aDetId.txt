@@ -1,3 +1,0 @@
-bool	null()
-int	subdetId()
-

@@ -1,3 +1,0 @@
-reco::HLTResult<numberOfBits, word>|template<unsigned short 0> bool|match|void
-reco::HLTResult<numberOfBits, word>|template<unsigned short 0> void|set|void
-reco::HLTResult<numberOfBits, word>|template<unsigned short 0> void|unSet|void
