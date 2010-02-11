@@ -5,6 +5,8 @@
 <use name=DataFormats/PatCandidates>
 
 <use name=PhysicsTools/LiteAnalysis>
+<use name=PhysicsTools/Mkntuple>
+<use name=SO10/Analysis>
 
 <use name=boost_regex>
 <use name=boost_python>
@@ -15,8 +17,6 @@
 
 <library file=myplugins.cc name=MyPlugins>
 <flags EDM_PLUGIN=1>
-<lib name=BufferFactory>
-<lib name=SO10Analysis>
 </library>
 
 
