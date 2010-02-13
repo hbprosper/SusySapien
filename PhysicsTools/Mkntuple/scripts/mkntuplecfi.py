@@ -4,8 +4,9 @@
 # Description: Gui to create cfi fragment for Mkntuple
 # Created:     06-Jan-2010 Harrison B. Prosper
 # Updated:     16-Jan-2010 HBP - simplify command line
+#              12-Feb-2010 HBP - Change to single quotes
 #-----------------------------------------------------------------------------
-#$Revision: 1.3 $
+#$Revision: 1.4 $
 #-----------------------------------------------------------------------------
 import sys, os, re, platform
 from ROOT import *
@@ -30,7 +31,7 @@ if not os.environ.has_key("CMSSW_BASE"):
 BASE           = "%s/src/PhysicsTools/LiteAnalysis" % os.environ["CMSSW_BASE"]
 VERSION        = \
 """
-mkntuplecfi.py v1.0.2 February 2010
+mkntuplecfi.py v1.0.3 February 2010
 Python %s
 Root   %s
 """ % (platform.python_version(),
@@ -58,6 +59,9 @@ HEIGHT         = 500            # Height of GUI in pixels
 STATUS_PARTS   = array('i')     # Status bar division in percentage
 STATUS_PARTS.append(23)
 STATUS_PARTS.append(77)
+CFI_NAME = "ntuplecfi"
+CFI_LIS  = "%s.lis" % CFI_NAME
+CFI_PY   = "%s.py"  % CFI_NAME
 #-----------------------------------------------------------------------------
 # We need a few simple regular expressions to extract sub-strings
 #-----------------------------------------------------------------------------
@@ -226,6 +230,7 @@ HA_HEIGHT = 300
 
 YELLOW      = root.Color("yellow")
 GREEN       = root.Color("green")
+DARKRED     = root.Color("darkred")
 LIGHTYELLOW = root.Color("lightyellow")
 LIGHTGREEN  = root.Color("lightgreen")
 
@@ -413,8 +418,26 @@ class Gui:
 			self.toolBar.AddFrame(self.saveButton, BUTTON_LAYOUT)
 			self.connection.append(Connection(self.saveButton,
 											  "Clicked()",
-											  self, "save"))	
+											  self, "save"))
 
+
+		#-------------------------------------------------------------------
+		# Add a find window
+		#-------------------------------------------------------------------
+		self.findlabel = TGLabel(self.toolBar, "Find method:")
+		FINDLABEL_LAYOUT = TGLayoutHints(kLHintsLeft,2,2,5,5)
+		self.toolBar.AddFrame(self.findlabel, FINDLABEL_LAYOUT)
+		self.findBox = TGTextEntry(self.toolBar)
+		self.findBox.SetToolTipText("Find method")
+		self.findBox.SetTextColor(DARKRED)
+		self.findcurrentPos = 0
+		
+		FIND_LAYOUT  = TGLayoutHints(kLHintsLeft,2,2,2,2)
+		self.toolBar.AddFrame(self.findBox, FIND_LAYOUT)
+		self.connection.append(Connection(self.findBox,
+										  "ReturnPressed()",
+										  self, "find"))
+			
 		#-------------------------------------------------------------------
 		# Add a horizontal progress bar
 		#-------------------------------------------------------------------
@@ -584,7 +607,7 @@ class Gui:
 			return
 		self.statusBar.SetText("Done!", 0)
 
-		open("mkntuple_cfi.lis","w").writelines(joinfields(records,'\n'))
+		open(CFI_LIS,"w").writelines(joinfields(records,'\n'))
 		
 		# Creat a map to keep track of selections
 		
@@ -856,10 +879,44 @@ class Gui:
 #---------------------------------------------------------------------------
 	def undo(self):
 		self.notdone()
+
+#---------------------------------------------------------------------------
+	def find(self):
+
+		# If this is the selected methods page, do nothing
+		
+		pageNumber = self.noteBook.GetCurrent()
+		if pageNumber == P_SELECTED: return
+
+		cid   = self.classBox[pageNumber].GetSelected()
+		if cid < 0: return
+
+		searchstr = lower(self.findBox.GetText())
+		findit = re.compile(searchstr)		
+		cname = self.classBox[pageNumber].GetEntry(cid).GetText().Data()
+		nentries = len(self.cmap[cname]['methods'])
+		start = self.findcurrentPos + 1
+		
+		for id in xrange(start, nentries):
+			self.findcurrentPos = id
+			name = self.methodBox[pageNumber].GetEntry(id).GetText().Data()
+			lowername  = lower(name)
+			if findit.search(lowername) == None: continue
+			self.methodBox[pageNumber].SetTopEntry(id)
+			break
+
+		if self.findcurrentPos >= (nentries-1):
+			self.findcurrentPos = 0
+			THelpDialog(self.window,
+						"Warning",
+						"Method %s not found!" % searchstr, 230, 30)
+						
+		self.methodBox[pageNumber].Layout()
+		
 #---------------------------------------------------------------------------
 	def save(self):
 
-		filename = "mkntuple_cfi.py"
+		filename = CFI_PY
 
 		self.statusBar.SetText("Saving to file", 0)
 		self.statusBar.SetText(filename, 1)
@@ -869,7 +926,7 @@ class Gui:
 		out = open(filename, "w")
 		out.write('#------------------------------------'\
 				  '-------------------------------------\n')
-		out.write("# Created: %s by mkntuplecfi.py\n" % ctime(time()))
+		out.write("# Created: %s by %s\n" % (ctime(time()), filename))
 		out.write('#------------------------------------'\
 				  '-------------------------------------\n')
 		out.write("import FWCore.ParameterSet.Config as cms\n")
@@ -900,7 +957,7 @@ class Gui:
 			if not self.cmap[name]['selected']: continue
 			buffer = stripname.sub("", name)
 			cnames.append(name)
-			out.write('%s"%s"' % (delim, buffer))
+			out.write("%s'%s'" % (delim, buffer))
 			delim = ",\n%s" % tab
 		out.write('\n%s),\n' % tab)
 			
@@ -931,6 +988,17 @@ class Gui:
 				labels.append(name)
 			labels.sort()
 
+			# If no label selected for this class, complain
+
+			if labels == []:
+				out.close()
+				os.system("rm -rf %s.*" % CFI_NAME)
+
+				message = "Either:\ngo boil your head...\n" \
+						  "or choose getByLabel for class:\n%s" % cname
+				THelpDialog(self.window, "Warning", message, 250, 100)
+				return
+			
 			###D
 			#print "  class( %s )" % cname
 
@@ -946,7 +1014,7 @@ class Gui:
 			
 			for index, label in enumerate(labels):
 
-				record = '%s"%-31s %-31s %3d",\n' % \
+				record = "%s'%-31s %-31s %3d',\n" % \
 						 (tab, buffer, label, maxcount)
 				###D
 				#print record
@@ -958,7 +1026,7 @@ class Gui:
 				delim = tab
 				if nlines < K_MAX_LINES-2:
 					for index, method in enumerate(methods):
-						record = '%s"%s"' % (delim, method)
+						record = "%s'%s'" % (delim, method)
 						delim  = ",\n%s"  % tab
 						out.write(record); nlines += 1
 						nmethods += 1

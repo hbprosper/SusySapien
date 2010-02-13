@@ -1,4 +1,4 @@
-#$Revision: 1.4 $ example.py
+#$Revision: 1.1 $ example.py
 #------------------------------------------------------------------------------
 import FWCore.ParameterSet.Config as cms
 
@@ -48,7 +48,7 @@ cms.EDAnalyzer("Mkntuple",
                recoBeamSpot =
                cms.untracked.
                vstring(
-    "recoBeamSpot                    offlineBeamSpot                   1",
+	"recoBeamSpot                    offlineBeamSpot                   1",
     #---------------------------------------------------------------------
     " double   x0()",
     " double   y0()",
