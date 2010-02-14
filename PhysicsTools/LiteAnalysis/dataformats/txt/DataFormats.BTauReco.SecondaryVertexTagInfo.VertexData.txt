@@ -3,6 +3,6 @@ Class:       reco::SecondaryVertexTagInfo::VertexData
 Header:      DataFormats/BTauReco/interface/SecondaryVertexTagInfo.h
 
 Version:     CMSSW_3_4_1
-Created:     Wed Feb 10 14:28:30 2010	mkdocs.py
+Created:     Thu Feb 11 13:54:34 2010	mkdocs.py
 
 AccessMethods - reco::SecondaryVertexTagInfo::VertexData

@@ -3,6 +3,6 @@ Class:       pat::Flags
 Header:      DataFormats/PatCandidates/interface/Flags.h
 
 Version:     CMSSW_3_4_1
-Created:     Wed Feb 10 14:31:48 2010	mkdocs.py
+Created:     Thu Feb 11 13:54:53 2010	mkdocs.py
 
 AccessMethods - pat::Flags

@@ -3,7 +3,7 @@ Class:       L1GctFibreWord
 Header:      DataFormats/L1GlobalCaloTrigger/interface/L1GctFibreWord.h
 
 Version:     CMSSW_3_4_1
-Created:     Wed Feb 10 14:30:15 2010	mkdocs.py
+Created:     Thu Feb 11 13:54:44 2010	mkdocs.py
 
 AccessMethods - L1GctFibreWord
                           uint32_t  data()

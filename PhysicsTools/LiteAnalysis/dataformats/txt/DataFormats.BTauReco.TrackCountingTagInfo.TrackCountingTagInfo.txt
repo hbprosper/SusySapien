@@ -6,7 +6,7 @@ BaseClasses: reco::JTATagInfo
              reco::BaseTagInfo
 
 Version:     CMSSW_3_4_1
-Created:     Wed Feb 10 14:28:37 2010	mkdocs.py
+Created:     Thu Feb 11 13:54:35 2010	mkdocs.py
 
 AccessMethods - reco::TrackCountingTagInfo
                              float  significance(size_t, int)

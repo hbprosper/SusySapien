@@ -3,7 +3,7 @@ Class:       reco::CaloTauTagInfo
 Header:      DataFormats/TauReco/interface/CaloTauTagInfo.h
 
 Version:     CMSSW_3_4_1
-Created:     Wed Feb 10 14:33:05 2010	mkdocs.py
+Created:     Thu Feb 11 13:55:00 2010	mkdocs.py
 
 AccessMethods - reco::CaloTauTagInfo
              reco::CaloTauTagInfo*  clone()

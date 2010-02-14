@@ -3,7 +3,7 @@ Class:       pftools::Calibratable
 Header:      DataFormats/ParticleFlowReco/interface/Calibratable.h
 
 Version:     CMSSW_3_4_1
-Created:     Wed Feb 10 14:31:15 2010	mkdocs.py
+Created:     Thu Feb 11 13:54:50 2010	mkdocs.py
 
 AccessMethods - pftools::Calibratable
       pftools::CalibratableElement  computeMean(std::vector<pftools::CalibratableElement>)

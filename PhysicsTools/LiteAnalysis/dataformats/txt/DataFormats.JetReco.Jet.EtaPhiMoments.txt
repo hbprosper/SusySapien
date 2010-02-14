@@ -3,6 +3,6 @@ Class:       reco::Jet::EtaPhiMoments
 Header:      DataFormats/JetReco/interface/Jet.h
 
 Version:     CMSSW_3_4_1
-Created:     Wed Feb 10 14:30:03 2010	mkdocs.py
+Created:     Thu Feb 11 13:54:43 2010	mkdocs.py
 
 AccessMethods - reco::Jet::EtaPhiMoments

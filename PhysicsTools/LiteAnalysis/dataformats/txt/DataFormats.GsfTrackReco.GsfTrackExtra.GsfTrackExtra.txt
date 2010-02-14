@@ -3,7 +3,7 @@ Class:       reco::GsfTrackExtra
 Header:      DataFormats/GsfTrackReco/interface/GsfTrackExtra.h
 
 Version:     CMSSW_3_4_1
-Created:     Wed Feb 10 14:29:40 2010	mkdocs.py
+Created:     Thu Feb 11 13:54:41 2010	mkdocs.py
 
 AccessMethods - reco::GsfTrackExtra
                             double  outerStateLocalPzSign()

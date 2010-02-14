@@ -3,7 +3,7 @@ Class:       pat::LookupTableRecord
 Header:      DataFormats/PatCandidates/interface/LookupTableRecord.h
 
 Version:     CMSSW_3_4_1
-Created:     Wed Feb 10 14:31:59 2010	mkdocs.py
+Created:     Thu Feb 11 13:54:54 2010	mkdocs.py
 
 AccessMethods - pat::LookupTableRecord
                              float  value()

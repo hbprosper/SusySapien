@@ -3,7 +3,7 @@ Class:       reco::MuonChamberMatch
 Header:      DataFormats/MuonReco/interface/MuonChamberMatch.h
 
 Version:     CMSSW_3_4_1
-Created:     Wed Feb 10 14:31:00 2010	mkdocs.py
+Created:     Thu Feb 11 13:54:48 2010	mkdocs.py
 
 AccessMethods - reco::MuonChamberMatch
                                int  detector()

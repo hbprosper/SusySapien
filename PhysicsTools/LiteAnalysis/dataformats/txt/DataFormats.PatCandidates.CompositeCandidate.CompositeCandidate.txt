@@ -8,7 +8,7 @@ BaseClasses: pat::PATObject<reco::CompositeCandidate>
              reco::Candidate
 
 Version:     CMSSW_3_4_1
-Created:     Wed Feb 10 14:31:41 2010	mkdocs.py
+Created:     Thu Feb 11 13:54:52 2010	mkdocs.py
 
 AccessMethods - pat::CompositeCandidate
           pat::CompositeCandidate*  clone()

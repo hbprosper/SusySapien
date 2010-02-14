@@ -3,7 +3,7 @@ Class:       reco::BaseTauTagInfo
 Header:      DataFormats/TauReco/interface/BaseTauTagInfo.h
 
 Version:     CMSSW_3_4_1
-Created:     Wed Feb 10 14:32:59 2010	mkdocs.py
+Created:     Thu Feb 11 13:55:00 2010	mkdocs.py
 
 AccessMethods - reco::BaseTauTagInfo
               reco::TrackRefVector  Tracks()

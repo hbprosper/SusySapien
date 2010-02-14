@@ -3,6 +3,6 @@ Class:       reco::MuonIsolation
 Header:      DataFormats/MuonReco/interface/MuonIsolation.h
 
 Version:     CMSSW_3_4_1
-Created:     Wed Feb 10 14:31:02 2010	mkdocs.py
+Created:     Thu Feb 11 13:54:48 2010	mkdocs.py
 
 AccessMethods - reco::MuonIsolation

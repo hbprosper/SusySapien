@@ -3,7 +3,7 @@ Class:       reco::TaggingVariableList
 Header:      DataFormats/BTauReco/interface/TaggingVariable.h
 
 Version:     CMSSW_3_4_1
-Created:     Wed Feb 10 14:28:33 2010	mkdocs.py
+Created:     Thu Feb 11 13:54:35 2010	mkdocs.py
 
 AccessMethods - reco::TaggingVariableList
                             size_t  size()

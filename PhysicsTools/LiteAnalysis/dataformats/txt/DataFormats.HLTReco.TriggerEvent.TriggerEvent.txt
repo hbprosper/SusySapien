@@ -3,6 +3,6 @@ Class:       trigger::TriggerEvent
 Header:      DataFormats/HLTReco/interface/TriggerEvent.h
 
 Version:     CMSSW_3_4_1
-Created:     Wed Feb 10 14:29:45 2010	mkdocs.py
+Created:     Thu Feb 11 13:54:41 2010	mkdocs.py
 
 AccessMethods - trigger::TriggerEvent

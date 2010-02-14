@@ -7,7 +7,7 @@ BaseClasses: reco::CompositeRefBaseCandidate
              reco::Candidate
 
 Version:     CMSSW_3_4_1
-Created:     Wed Feb 10 14:32:03 2010	mkdocs.py
+Created:     Thu Feb 11 13:54:54 2010	mkdocs.py
 
 AccessMethods - pat::MHT
                             double  mht()

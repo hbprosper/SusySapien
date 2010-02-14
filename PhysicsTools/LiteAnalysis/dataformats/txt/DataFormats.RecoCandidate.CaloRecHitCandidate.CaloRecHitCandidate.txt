@@ -6,7 +6,7 @@ BaseClasses: reco::LeafCandidate
              reco::Candidate
 
 Version:     CMSSW_3_4_1
-Created:     Wed Feb 10 14:32:31 2010	mkdocs.py
+Created:     Thu Feb 11 13:54:57 2010	mkdocs.py
 
 AccessMethods - reco::CaloRecHitCandidate
         reco::CaloRecHitCandidate*  clone()

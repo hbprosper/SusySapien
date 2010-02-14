@@ -3,7 +3,7 @@ Class:       reco::ElectronSeed
 Header:      DataFormats/EgammaReco/interface/ElectronSeed.h
 
 Version:     CMSSW_3_4_1
-Created:     Wed Feb 10 14:29:32 2010	mkdocs.py
+Created:     Thu Feb 11 13:54:40 2010	mkdocs.py
 
 AccessMethods - reco::ElectronSeed
                        std::string  name()

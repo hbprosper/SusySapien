@@ -3,7 +3,7 @@ Class:       reco::PreshowerClusterShape
 Header:      DataFormats/EgammaReco/interface/PreshowerClusterShape.h
 
 Version:     CMSSW_3_4_1
-Created:     Wed Feb 10 14:29:35 2010	mkdocs.py
+Created:     Thu Feb 11 13:54:40 2010	mkdocs.py
 
 AccessMethods - reco::PreshowerClusterShape
                                int  plane()

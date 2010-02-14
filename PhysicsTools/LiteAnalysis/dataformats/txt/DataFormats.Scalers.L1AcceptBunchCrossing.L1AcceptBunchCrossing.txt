@@ -3,7 +3,7 @@ Class:       L1AcceptBunchCrossing
 Header:      DataFormats/Scalers/interface/L1AcceptBunchCrossing.h
 
 Version:     CMSSW_3_4_1
-Created:     Wed Feb 10 14:32:47 2010	mkdocs.py
+Created:     Thu Feb 11 13:54:58 2010	mkdocs.py
 
 AccessMethods - L1AcceptBunchCrossing
                        std::string  name()

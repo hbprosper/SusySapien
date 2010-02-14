@@ -3,7 +3,7 @@ Class:       reco::TrackExtraBase
 Header:      DataFormats/TrackReco/interface/TrackExtraBase.h
 
 Version:     CMSSW_3_4_1
-Created:     Wed Feb 10 14:33:25 2010	mkdocs.py
+Created:     Thu Feb 11 13:55:02 2010	mkdocs.py
 
 AccessMethods - reco::TrackExtraBase
            trackingRecHit_iterator  recHitsBegin()

@@ -95,50 +95,23 @@ readntuple(string filename="ntuple.root")
 
       if ( count % 10 == 0 )
         {
-          cch->cd();
-          hch->Draw();
-          cch->Update();
-
-          cpt->cd();
-          hpt->Draw();
-          cpt->Update();
-
-          ceta->cd();
-          heta->Draw();
-          ceta->Update();
-
-          cphi->cd();
-          hphi->Draw();
-          cphi->Update();
-
-          cn->cd();
-          hn->Draw();
-          cn->Update();
+          kit::plot(cch, hch);
+          kit::plot(cpt, hpt);
+          kit::plot(ceta, heta);
+          kit::plot(cphi, hphi);
+          kit::plot(cn, hn);
         }
     }
   stream.close();
 
+  kit::plot(cch, hch, "s");
+  kit::plot(cpt, hpt, "s");
+  kit::plot(ceta, heta, "s");
+  kit::plot(cphi, hphi, "s");
+  kit::plot(cn, hn, "s");
 
-  cch->cd();
-  hch->Draw();
-  cch->Update();
-  
-  cpt->cd();
-  hpt->Draw();
-  cpt->Update();
-  
-  ceta->cd();
-  heta->Draw();
-  ceta->Update();
-  
-  cphi->cd();
-  hphi->Draw();
-  cphi->Update();
-  
-  cn->cd();
-  hn->Draw();
-  cn->Update();
-
-  return 0;
+  // Wait 10 seconds before exit
+  gSystem->Sleep(10000);
+  exit(0);
 }
 

@@ -3,6 +3,6 @@ Class:       pat::PATObject
 Header:      DataFormats/PatCandidates/interface/PATObject.h
 
 Version:     CMSSW_3_4_1
-Created:     Wed Feb 10 14:32:07 2010	mkdocs.py
+Created:     Thu Feb 11 13:54:55 2010	mkdocs.py
 
 AccessMethods - pat::PATObject

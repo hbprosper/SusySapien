@@ -3,7 +3,7 @@ Class:       Level1TriggerScalers
 Header:      DataFormats/Scalers/interface/Level1TriggerScalers.h
 
 Version:     CMSSW_3_4_1
-Created:     Wed Feb 10 14:32:53 2010	mkdocs.py
+Created:     Thu Feb 11 13:54:59 2010	mkdocs.py
 
 AccessMethods - Level1TriggerScalers
                        std::string  name()

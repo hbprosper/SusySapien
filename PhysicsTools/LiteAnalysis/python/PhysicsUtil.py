@@ -1,5 +1,5 @@
 #-----------------------------------------------------------------------------
-#$Revision: 1.2 $
+#$Revision: 1.3 $
 import sys
 from ROOT import *
 #-----------------------------------------------------------------------------
@@ -15,6 +15,7 @@ def enableAutoLoader():
 enableAutoLoader()
 
 vint         = vector("int")
+vfloat       = vector("float")
 vdouble      = vector("double")
 vstring      = vector("string")
 vvdouble     = vector("vector<double>")

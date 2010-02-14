@@ -3,7 +3,7 @@ Class:       reco::NuclearInteraction
 Header:      DataFormats/VertexReco/interface/NuclearInteraction.h
 
 Version:     CMSSW_3_4_1
-Created:     Wed Feb 10 14:33:28 2010	mkdocs.py
+Created:     Thu Feb 11 13:55:03 2010	mkdocs.py
 
 AccessMethods - reco::NuclearInteraction
        edm::RefToBase<reco::Track>  primaryTrack()

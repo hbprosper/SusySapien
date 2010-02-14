@@ -3,7 +3,7 @@ Class:       reco::CaloTauDiscriminatorByIsolation
 Header:      DataFormats/TauReco/interface/CaloTauDiscriminatorByIsolation.h
 
 Version:     CMSSW_3_4_1
-Created:     Wed Feb 10 14:33:04 2010	mkdocs.py
+Created:     Thu Feb 11 13:55:00 2010	mkdocs.py
 
 AccessMethods - reco::CaloTauDiscriminatorByIsolation
 

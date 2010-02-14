@@ -3,7 +3,7 @@ Class:       reco::PFRecHitFraction
 Header:      DataFormats/ParticleFlowReco/interface/PFRecHitFraction.h
 
 Version:     CMSSW_3_4_1
-Created:     Wed Feb 10 14:31:33 2010	mkdocs.py
+Created:     Thu Feb 11 13:54:51 2010	mkdocs.py
 
 AccessMethods - reco::PFRecHitFraction
                  reco::PFRecHitRef  recHitRef()

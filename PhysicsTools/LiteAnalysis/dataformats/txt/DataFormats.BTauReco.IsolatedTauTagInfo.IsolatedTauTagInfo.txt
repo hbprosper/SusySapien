@@ -6,7 +6,7 @@ BaseClasses: reco::JTATagInfo
              reco::BaseTagInfo
 
 Version:     CMSSW_3_4_1
-Created:     Wed Feb 10 14:28:24 2010	mkdocs.py
+Created:     Thu Feb 11 13:54:33 2010	mkdocs.py
 
 AccessMethods - reco::IsolatedTauTagInfo
               reco::TrackRefVector  allTracks()

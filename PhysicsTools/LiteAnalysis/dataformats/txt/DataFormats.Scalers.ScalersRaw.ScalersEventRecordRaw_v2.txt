@@ -3,6 +3,6 @@ Class:       ScalersEventRecordRaw_v2
 Header:      DataFormats/Scalers/interface/ScalersRaw.h
 
 Version:     CMSSW_3_4_1
-Created:     Wed Feb 10 14:32:56 2010	mkdocs.py
+Created:     Thu Feb 11 13:55:00 2010	mkdocs.py
 
 AccessMethods - ScalersEventRecordRaw_v2
