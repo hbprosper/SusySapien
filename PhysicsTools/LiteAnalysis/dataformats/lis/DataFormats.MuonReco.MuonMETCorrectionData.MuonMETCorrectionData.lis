@@ -1,6 +1,0 @@
-reco::MuonMETCorrectionData|Type|type|void
-reco::MuonMETCorrectionData|float|corrX|void
-reco::MuonMETCorrectionData|float|corrY|void
-reco::MuonMETCorrectionData|float|x|void
-reco::MuonMETCorrectionData|float|y|void
-reco::MuonMETCorrectionData|float|pt|void

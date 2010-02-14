@@ -1,3 +1,0 @@
-reco::SecondaryVertexTagInfo::TrackData|inline bool|usedForVertexFit|void
-reco::SecondaryVertexTagInfo::TrackData|inline bool|associatedToVertex|void
-reco::SecondaryVertexTagInfo::TrackData|inline bool|associatedToVertex|unsigned int

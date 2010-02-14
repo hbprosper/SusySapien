@@ -1,5 +1,0 @@
-edm::IDVectorMap<ID, C, P>|const_iterator|begin|void
-edm::IDVectorMap<ID, C, P>|const_iterator|end|void
-edm::IDVectorMap<ID, C, P>|id_iterator|id_begin|void
-edm::IDVectorMap<ID, C, P>|id_iterator|id_end|void
-edm::IDVectorMap<ID, C, P>|size_t|id_size|void

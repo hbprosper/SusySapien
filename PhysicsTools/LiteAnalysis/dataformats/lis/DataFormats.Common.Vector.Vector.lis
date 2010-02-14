@@ -1,2 +1,0 @@
-edm::Vector<T>|typename base::iterator|begin|void
-edm::Vector<T>|typename base::iterator|end|void

@@ -1,2 +1,0 @@
-edm::DetSetVector<T>|bool|empty|void
-edm::DetSetVector<T>|typename std::vector<detset>::size_type|size|void

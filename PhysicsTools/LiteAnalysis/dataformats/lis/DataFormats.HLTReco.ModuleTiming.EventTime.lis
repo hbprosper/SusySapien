@@ -1,5 +1,0 @@
-edm::EventTime|unsigned|size|void
-edm::EventTime|const ModuleTime&|moduleTime|unsigned
-edm::EventTime|double|tot_time|void
-edm::EventTime|std::string|name|unsigned
-edm::EventTime|double|time|unsigned

@@ -1,5 +1,0 @@
-edm::HLTPathStatus|hlt::HLTState|state|void
-edm::HLTPathStatus|unsigned int|index|void
-edm::HLTPathStatus|bool|wasrun|void
-edm::HLTPathStatus|bool|accept|void
-edm::HLTPathStatus|bool|error|void

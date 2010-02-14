@@ -1,7 +1,0 @@
-int16_t	bx()
-int16_t	htx()
-int16_t	hty()
-bool	isThereHtx()
-bool	isThereHty()
-bool	overflow()
-

@@ -1,3 +1,0 @@
-reco::CaloID|unsigned|detectors|void
-reco::CaloID|bool|isSingleDetector|void
-reco::CaloID|Detectors|detector|void

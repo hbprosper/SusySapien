@@ -1,5 +1,0 @@
-bool	empty()
-bool	isAvailable()
-bool	isInvalid()
-bool	isValid()
-
