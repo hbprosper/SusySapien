@@ -914,15 +914,112 @@ class Gui:
 		self.methodBox[pageNumber].Layout()
 		
 #---------------------------------------------------------------------------
+# Save selected class/label/methods to config file fragment
+#---------------------------------------------------------------------------
 	def save(self):
+		
+		# Get info to be written out
 
+		cnames = self.cmap.keys()
+		cnames.sort()
+		blocks  = []
+		databuf = {}
+		for index, cname in enumerate(cnames):
+			
+			if not self.cmap[cname]['selected']: continue
+
+			##D
+			#print "selected class(%s)" % cname
+			
+			# Current class selected
+			
+			# Get selected labels
+			
+			labels = []
+			selected = self.cmap[cname]['labels']
+			for label in selected.keys():
+				if not selected[label]: continue
+				labels.append(label)
+				##D
+				#print "  selected label(%s)" % label
+				
+			# If no label selected for this class, complain
+
+			if labels == []:
+				message = "Either:\ngo boil your head...\n" \
+						  "or choose getByLabel for class:\n%s" % cname
+				THelpDialog(self.window, "Warning", message, 250, 100)
+				return
+
+			# If this class is a vector, set the maximum count to K_MAX_COUNT,
+			# otherwise assume we have a singleton
+			
+			if isVector(cname):
+				maxcount = K_MAX_COUNT
+			else:
+				maxcount = 1
+
+			##D
+			#print "    max count: %d" % maxcount
+			
+			# Get selected methods
+
+			methods = []	
+			selected = self.cmap[cname]['methods']
+			sortedmethods = self.cmap[cname]['sortedmethods']
+			for method in sortedmethods:
+				if not selected[method]: continue
+				methods.append(method)
+			    ##D
+				#print "    selected method(%s)" % method
+
+			# vstring seems to have a limit on the number of strings,
+			# which implies a maximum number of variables/buffer
+			
+			if len(methods) > K_MAX_LINES - 1:
+				THelpDialog(self.window,
+							"Warning!",
+							"maximum variable count %d reached" % K_MAX_LINES,
+							320, 40)
+				methods = methods[:K_MAX_LINES-1]
+
+			# If the current class is associated with multiple labels
+			# make sure each buffer block has a unique name
+
+			labels.sort()
+			buffer = stripname.sub("", cname)
+			blocks.append(buffer)
+
+			##D
+			#print "    buffer(%s)" % buffer
+			databuf[buffer] = {}
+			databuf[buffer]['buffer']  = buffer
+			databuf[buffer]['label']   = labels[0]
+			databuf[buffer]['count']   = maxcount
+			databuf[buffer]['methods'] = methods
+			
+			for index in xrange(1, len(labels)):
+				key = "%s%d" % (buffer, index)
+				blocks.append(key)
+			    ##D
+				#print "    buffer(%s)" % key
+
+				databuf[key] = {}
+				databuf[key]['buffer']  = buffer
+				databuf[key]['label']   = labels[index]
+				databuf[key]['count']   = maxcount
+				databuf[key]['methods'] = methods
+					
+		# Now write out info
+
+		#D
+		#print "    write out info"
+		
 		filename = CFI_PY
-
 		self.statusBar.SetText("Saving to file", 0)
 		self.statusBar.SetText(filename, 1)
 
 		tab  = ' '*15
-
 		out = open(filename, "w")
 		out.write('#------------------------------------'\
 				  '-------------------------------------\n')
@@ -932,8 +1029,6 @@ class Gui:
 		out.write("import FWCore.ParameterSet.Config as cms\n")
 		out.write("demo =\\\n")
 		out.write('cms.EDAnalyzer("Mkntuple",\n')
-		#out.write('%sdebugLevel = cms.untracked.int32(0),\n' % tab)
-		#out.write('\n')
 		out.write('%sntupleName = cms.untracked.string("ntuple.root"),\n\n' % \
 				  tab)
 		out.write('%sbuffers =\n' % tab)
@@ -941,111 +1036,56 @@ class Gui:
 		out.write("%svstring(\n" % tab)
 		tab1 = tab
 
-		nmethods = 0
-		
-		###D
-		#print "get selected classes"
-		
-		# Get selected classes
+		# 1. Write out list of buffer blocks
 
 		tab = 4*' '
-		names = self.cmap.keys()
-		names.sort()
-		cnames = []
 		delim = tab
-		for index, name in enumerate(names):
-			if not self.cmap[name]['selected']: continue
-			buffer = stripname.sub("", name)
-			cnames.append(name)
-			out.write("%s'%s'" % (delim, buffer))
+		for index, block in enumerate(blocks):
+			out.write("%s'%s'" % (delim, block))
 			delim = ",\n%s" % tab
 		out.write('\n%s),\n' % tab)
-			
 
+		# 2. For each buffer block, write out associated methods
+		
 		prefix = tab1
-		for index, cname in enumerate(cnames):
-			if isVector(cname):
-				maxcount = K_MAX_COUNT
-			else:
-				maxcount = 1
-
-			# Get selected methods
+		for index, block in enumerate(blocks):
 			
-			buffer = stripname.sub("", cname)
-			methods = []
-			selected = self.cmap[cname]['methods']
-			sortedmethods = self.cmap[cname]['sortedmethods']
-			for name in sortedmethods:
-				if not selected[name]: continue
-				methods.append(name)
+			buffer  = databuf[block]['buffer']
+			label   = databuf[block]['label']
+			maxcount= databuf[block]['count']
+			methods = databuf[block]['methods']
 
-			# Get selected labels
-			
-			labels = []
-			selected = self.cmap[cname]['labels']
-			for name in selected.keys():
-				if not selected[name]: continue
-				labels.append(name)
-			labels.sort()
-
-			# If no label selected for this class, complain
-
-			if labels == []:
-				out.close()
-				os.system("rm -rf %s.*" % CFI_NAME)
-
-				message = "Either:\ngo boil your head...\n" \
-						  "or choose getByLabel for class:\n%s" % cname
-				THelpDialog(self.window, "Warning", message, 250, 100)
-				return
-			
-			###D
-			#print "  class( %s )" % cname
-
-			out.write('%s%s =\n' % (prefix, buffer))
+			out.write('%s%s =\n' % (prefix, block))
 			out.write('%scms.untracked.\n' % tab1)
-			out.write("%svstring(\n" % tab1)
-			
+			out.write("%svstring(\n" % tab1)			
 			prefix = ",\n%s" % tab1
 			
-			# loop over class/label pairs
-
-			nlines = 0
+			# Write block header
 			
-			for index, label in enumerate(labels):
+			record = "%s'%-31s %-31s %3d',\n" % \
+					 (tab, buffer, label, maxcount)
+			out.write(record)
+			out.write('%s#--------------------------------'\
+					  '-------------------------------------\n' % tab)
 
-				record = "%s'%-31s %-31s %3d',\n" % \
-						 (tab, buffer, label, maxcount)
-				###D
-				#print record
-				out.write(record); nlines += 1
-				out.write('%s#--------------------------------'\
-						  '-------------------------------------\n' % tab)
+			#D
+			#print record
+			
+			# Loop over methods for current block
 
-				# get selected methods
-				delim = tab
-				if nlines < K_MAX_LINES-2:
-					for index, method in enumerate(methods):
-						record = "%s'%s'" % (delim, method)
-						delim  = ",\n%s"  % tab
-						out.write(record); nlines += 1
-						nmethods += 1
-						
-						if nlines > K_MAX_LINES-2:
-							break
-				out.write('\n%s)' % tab); nlines += 1
-				
-				if nlines > K_MAX_LINES-1:
-					THelpDialog(self.window,
-								"Warning!",
-								"maximum variable count %d reached" % nmethods,
-								320, 40)
-					break
+			delim = tab
+			for index, method in enumerate(methods):
+				self.statusBar.SetText(method, 1)
+				record = "%s'%s'" % (delim, method)
+				delim  = ",\n%s"  % tab
+				out.write(record)
+			out.write('\n%s)' % tab)
 				
 		out.write("\n%s)\n" % tab1)
 		out.close()
 
 		self.statusBar.SetText("Done!", 0)
+		self.statusBar.SetText("", 1)
 
 					
 	def usage(self):

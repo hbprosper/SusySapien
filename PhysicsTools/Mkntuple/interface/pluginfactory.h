@@ -9,12 +9,13 @@
 */
 //
 // Original Author:  HBP
-// $Id: pluginfactory.h,v 1.1.2.2 2010/01/17 23:23:19 prosper Exp $
+// $Id: pluginfactory.h,v 1.3 2010/01/20 04:57:22 prosper Exp $
 //
 //
 
 #include <vector>
 #include <string>
+#include <fstream>
 #include "FWCore/PluginManager/interface/PluginFactory.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "PhysicsTools/LiteAnalysis/interface/treestream.hpp"
@@ -48,6 +49,7 @@ struct BufferThing
                     std::string prefix,
                     std::vector<VariableDescriptor>& var,
                     int maxcount,
+                    std::ofstream& log,
                     int debug=0)=0;
   
   /// Call requested methods of selected objects and fill buffer.

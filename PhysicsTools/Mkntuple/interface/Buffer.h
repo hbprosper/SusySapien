@@ -15,7 +15,7 @@
 //         Updated:  Wed Feb 10 HBP add UserBuffer, which allows for the
 //                   insertion of user-defined variables into the n-tuple.
 //
-// $Id: Buffer.h,v 1.4 2010/02/08 03:16:19 prosper Exp $
+// $Id: Buffer.h,v 1.5 2010/02/11 03:46:39 prosper Exp $
 //
 //
 // If using Python, include its header first to avoid annoying compiler
@@ -25,6 +25,7 @@
 #include <boost/regex.hpp>
 #include <iostream>
 #include <sstream>
+#include <fstream>
 #include <string>
 #include <cassert>
 
@@ -73,7 +74,8 @@ void initBuffer(otreestream& out,
                 bool& singleton,
                 int&  debug,
                 int&  count,
-                std::vector<Variable<Y> >& variable)
+                std::vector<Variable<Y> >& variable,
+                std::ofstream& log)
 {
   // Define regular expressions to check for compound methods; i.e., methods
   // of the form y = a()->b()
@@ -119,6 +121,7 @@ void initBuffer(otreestream& out,
       counter = "n" + prefix;        
       out.add(counter, count);
       std::cout << "      counter: " << counter << std::endl;
+      log << counter << std::endl;
     }
   
   // For every method, create the associated n-tuple variable name
@@ -131,6 +134,8 @@ void initBuffer(otreestream& out,
       varname = boost::regex_replace(varname, stripptr,  ".");
       
       std::string name = prefix + "." + varname;
+
+      log << name << std::endl;
         
       if ( !singleton ) name += "[" + counter + "]";
       
@@ -349,6 +354,7 @@ struct Buffer  : public BufferThing
        std::string  prefix,
        std::vector<VariableDescriptor>& var,
        int maxcount,
+       std::ofstream& log,
        int debug=0)
   {
     out_    = &out;
@@ -369,7 +375,8 @@ struct Buffer  : public BufferThing
                   singleton_,
                   debug_,
                   count_,
-                  variable_);
+                  variable_,
+                  log);
   }
   
   // -----------------------------------------------------
@@ -447,6 +454,7 @@ struct UserBuffer  : public BufferThing
        std::string  prefix,
        std::vector<VariableDescriptor>& var,
        int maxcount,
+       std::ofstream& log,
        int debug=0)
   {
     out_    = &out;
@@ -467,7 +475,8 @@ struct UserBuffer  : public BufferThing
                   singleton_,
                   debug_,
                   count_,
-                  variable_);
+                  variable_,
+                  log);
   }
   
   // -----------------------------------------------------

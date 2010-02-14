@@ -44,7 +44,7 @@
 // Original Author:  Sezen SEKMEN & Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Jan 17 HBP - add log file
-// $Id: Mkntuple.cc,v 1.3 2010/01/20 04:57:23 prosper Exp $
+// $Id: Mkntuple.cc,v 1.1 2010/02/08 03:21:10 prosper Exp $
 //
 //
 // ---------------------------------------------------------------------------
@@ -116,7 +116,7 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
 
   time_t tt = time(0);
   string ct(ctime(&tt));
-  *log_ << "Mkntuple log started: " << ct << endl;
+  *log_ << "Created: " << ct << endl;
 
   // Allocate buffers.
   //
@@ -166,8 +166,6 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
       int maxcount  = atoi(field[2].c_str());   // max object count to store
       string prefix = buffer + "_" + label;
       if (field.size() == 4) prefix = field[3]; // n-tuple variable prefix
-      
-      *log_ << "  create buffer: " << buffer << endl;      
       
       //DB
       if ( DEBUG > 0 )
@@ -227,15 +225,10 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
           if ( DEBUG > 1 )
             cout << "\t  varname(" << varname << ")"
                  << endl;
-          
-          // Write some info to log file
-
-          *log_ << "    method: " << method << endl;
-        
         }
       
       // Create a buffer of appropriate type...
-      //
+      // 
       // Note: ->create(...) returns an auto_ptr to BufferThing. 
       // Ordinarily, an auto_ptr owns the object pointed to. But, a 
       // push_back makes a copy of the thing pushed back. The act of 
@@ -262,7 +255,7 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
                              "that lurks in the mud hatch out\n"
                              + BLACK);
       // ... and initialize it
-      buffers.back()->init(output, label, prefix, var, maxcount, DEBUG);
+      buffers.back()->init(output, label, prefix, var, maxcount, *log_, DEBUG);
     }
   log_->close();
 
