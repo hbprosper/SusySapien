@@ -15,7 +15,7 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Wed Jun 20 19:53:47 EDT 2007
 //         Updated:  Sat Oct 25 2008 - make matchInDeltaR saner
-// $Id: kit.cc,v 1.2 2010/01/16 04:08:19 prosper Exp $
+// $Id: kit.cc,v 1.3 2010/02/08 03:22:06 prosper Exp $
 //
 //
 //-----------------------------------------------------------------------------
@@ -351,7 +351,7 @@ kit::getMethod(std::string classname,
   boost::regex expr(args);
   boost::smatch what;
 
-//   //DB
+  //DB
 //   cout << "getMethod - \n"
 //        << "  classname<" << classname << ">\n"
 //        << "    method<" << methodname << ">\n" 
@@ -361,7 +361,7 @@ kit::getMethod(std::string classname,
   for(unsigned i=0; i < names.size(); i++)
     {
       //DB
-      //cout << i << "\t" << names[i] << endl;
+      //cout << i << "\tSCOPE( " << names[i] << " )" << endl;
 
       Type t = Type::ByName(names[i]); 
 
@@ -460,7 +460,7 @@ kit::decodeArguments(std::string  args,
 
   // Regex for integers
   expr.push_back(boost::regex("[-+]?[0-9]+"));
-  atype.push_back("((unsigned )?(short|int|long))");
+  atype.push_back("((unsigned )?(short|int|long|size_t))");
 
   // Regex for bools
   expr.push_back(boost::regex("\b(false|true)\b"));
@@ -581,17 +581,17 @@ kit::invokeMethod(Member& method, void* address, vector<void*>& args)
     {
       raddr = *static_cast<void**>(raddr);
       //DB
-     cout << "** invokeMethod - POINTER ** " << raddr << endl;
+      //cout << "** invokeMethod - POINTER ** " << raddr << endl;
     }
   else if ( rtype.IsReference() )
     {
       //DB
-      cout << "** invokeMethod - REFERENCE ** " << raddr << endl;
+      //cout << "** invokeMethod - REFERENCE ** " << raddr << endl;
     }
 
   //DB
-  cout << "** invokeMethod - " << method.Name() << " = " 
-       << RED << *static_cast<double*>(raddr) << BLACK << endl;
+  // cout << "** invokeMethod - " << method.Name() << " = " 
+//        << RED << *static_cast<double*>(raddr) << BLACK << endl;
   return raddr;
 }
 
