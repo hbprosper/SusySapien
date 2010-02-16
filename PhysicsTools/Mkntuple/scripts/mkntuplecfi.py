@@ -6,7 +6,7 @@
 # Updated:     16-Jan-2010 HBP - simplify command line
 #              12-Feb-2010 HBP - Change to single quotes
 #-----------------------------------------------------------------------------
-#$Revision: 1.4 $
+#$Revision: 1.6 $
 #-----------------------------------------------------------------------------
 import sys, os, re, platform
 from ROOT import *
@@ -28,7 +28,7 @@ if not os.environ.has_key("CMSSW_BASE"):
 	print "\t*** please set up CMSSW first\n"
 	sys.exit(0)
 
-BASE           = "%s/src/PhysicsTools/LiteAnalysis" % os.environ["CMSSW_BASE"]
+BASE = os.environ["PWD"]
 VERSION        = \
 """
 mkntuplecfi.py v1.0.3 February 2010
@@ -36,12 +36,24 @@ Python %s
 Root   %s
 """ % (platform.python_version(),
 	   gROOT.GetVersion())
-ICONDIR        = "%s/icons" % os.environ["ROOTSYS"]
-METHODDIR      = "methods"
+ICONDIR   = "%s/icons" % os.environ["ROOTSYS"]
+METHODDIR = "methods"
+TXTDIR    = "txt"
+
+# Make sure methods directory and txt directories exist
 
 if not os.path.exists(METHODDIR):
-	cmd = "mkmethodlist.py %s/dataformats/txt/*.txt" % BASE
-	print cmd
+	if not os.path.exists(TXTDIR):
+		cmd = "mkdocs.py"
+		print "\n%s\n" % cmd
+		
+		os.system(cmd)
+	if not os.path.exists(TXTDIR):
+		print "\t** error ** unable to run mkdocs.py"
+		sys.exit(0)
+		
+	cmd = "mkmethodlist.py %s/*.txt" % TXTDIR
+	print "\n%s\n" % cmd
 	os.system(cmd)
 
 print VERSION
@@ -50,7 +62,7 @@ from string import *
 from time import *
 from glob import glob
 from array import array
-from PhysicsTools.LiteAnalysis import *
+from PhysicsTools.LiteAnalysis.AutoLoader import *
 #-----------------------------------------------------------------------------
 
 WIDTH          = 750            # Width of GUI in pixels

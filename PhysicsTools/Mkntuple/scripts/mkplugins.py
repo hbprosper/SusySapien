@@ -2,13 +2,29 @@
 #------------------------------------------------------------------------------
 # create plugins.cc
 # Created: 05-Jan-2010 Harrison B. Prosper
-#$Revision: 1.3 $
+# Updated: 15-Feb-2010 HBP - run make docs in needed
+#$Revision: 1.4 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
 from time import *
-from boostlib import nameonly
-from classmap import ClassToHeaderMap
+from PhysicsTools.LiteAnalysis.Lib import nameonly
+
+# Add map directory to PYTHONPATH
+mapdir = "%s/map" % os.environ["PWD"]
+sys.path.append(mapdir)
+
+# Try to load class to header map
+
+try:
+	from classmap import ClassToHeaderMap
+except:
+	os.system("mkdocs.py")
+	try:
+		from classmap import ClassToHeaderMap
+	except:
+		print "\n\t**unable to load classmap.py"
+		sys.exit(0)
 #------------------------------------------------------------------------------
 if not os.environ.has_key("CMSSW_BASE"):
 	print "\t**you must first set up CMSSW"
@@ -17,8 +33,7 @@ if not os.environ.has_key("CMSSW_BASE"):
 getclass  = re.compile(r'(?<=[0-9] ).+$',re.M)
 isVector  = re.compile(r'(?<=^vector\<).+(?=\>)')
 hasnspace = re.compile(r'::')
-TXTDIR    = "%s/src/PhysicsTools/LiteAnalysis/dataformats/txt" % \
-			os.environ["CMSSW_BASE"]
+TXTDIR    = "%s/txt" % os.environ["PWD"]
 #------------------------------------------------------------------------------
 def exclass(x):
 	m = isVector.findall(x)
@@ -68,7 +83,7 @@ names = {'time': ctime(time())}
 out  = open("plugins.cc","w")
 record = '''// ----------------------------------------------------------------------------
 // Created: %(time)s by mkplugins.py
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/Buffer.h"
 '''

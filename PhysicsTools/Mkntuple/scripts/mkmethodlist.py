@@ -10,14 +10,28 @@ from time   import *
 from string import *
 from getopt import getopt, GetoptError
 from pprint import PrettyPrinter
-from boostlib import nameonly, readMethods
-from classmap import ClassToHeaderMap
+from PhysicsTools.LiteAnalysis.Lib import nameonly, readMethods
+
+# Add map directory to PYTHONPATH
+mapdir = "%s/map" % os.environ["PWD"]
+sys.path.append(mapdir)
+
+# Now try to load classmap
+
+try:
+	from classmap import ClassToHeaderMap
+except:
+	os.system("mkdocs.py")
+	try:
+		from classmap import ClassToHeaderMap
+	except:
+		print "\n\t**unable to load classmap.py"
+		sys.exit(0)
 #-----------------------------------------------------------------------------
 if not os.environ.has_key('CMSSW_BASE'):
 	print 'CMSSW_BASE not defined!\n'
 	exit(0)
-BASE = "%s/src/PhysicsTools/LiteAnalysis/dataformats" % \
-	   os.environ['CMSSW_BASE']
+BASE = os.environ["PWD"]
 PP = PrettyPrinter()
 def usage():
 	print '''
@@ -180,12 +194,15 @@ def mkmethodlist(filename):
 	compoundmethods = map(lambda x: "%12s  %s%s%s" % (x[3],x[0],x[1],x[2]),
 						  compoundmethods)
 		
-	# Write a simple summary document for this class
+	# Write a summary document for this class
+
+	os.system("mkdir -p methods")
+	
 	methods = simplemethods + compoundmethods
+
+	if len(methods) < 1: return
 	
 	str = '%s\n' % joinfields(methods,'\n')
-	os.system("mkdir -p methods")
-
 	classname = stripcolon.sub("", classname)
 	headerfilename   = striptemplatepars.sub("", classname)
 	open("methods/%s.txt" % headerfilename, 'w').write(str+'\n')
