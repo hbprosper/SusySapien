@@ -3,6 +3,7 @@
 # File: mkdoc.py
 # Description: Create documentation of classes.
 # Created: 11-Dec-2009 HBP, (during CERN visit)
+#$Revision:$
 #------------------------------------------------------------------------------
 import os, sys, glob
 from string import *
@@ -45,11 +46,7 @@ def usage():
 	sys.exit(0)
 #------------------------------------------------------------------------------
 def main():
-	cwd = os.path.basename(os.environ['PWD'])
-	if cwd != "dataformats":
-		print "\t** must be run from dataformats directory"
-		sys.exit(0)
-
+	
 	DIR = "html"
 	if os.environ.has_key("CMSSW_RELEASE_BASE"):
 		version = split(os.environ['CMSSW_RELEASE_BASE'],'/')[-1]

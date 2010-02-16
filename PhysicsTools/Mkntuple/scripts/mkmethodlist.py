@@ -70,7 +70,7 @@ def expandMethod(filename, methlist):
 
 	for rtype, name, atype, record in methodlist:
 
-		if DEBUG3 > 2: print "\t\texpandMethod RTYPE( %s, %s )" % (rtype, name)
+		if DEBUG3 > 3: print "\t\texpandMethod RTYPE( %s, %s )" % (rtype, name)
 		
 		if rtype == "void": continue
 		if atype != "void": continue

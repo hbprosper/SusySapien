@@ -3,7 +3,7 @@
 // Original Author:  Sezen SEKMEN & Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Jan 17 HBP - add log file
-// $Id: Mkntuple.cc,v 1.3 2010/01/20 04:57:23 prosper Exp $
+// $Id: TestBed.cc,v 1.1 2010/02/08 03:21:10 prosper Exp $
 //
 //
 // ---------------------------------------------------------------------------
@@ -25,6 +25,7 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/FWLite/interface/AutoLibraryLoader.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
+#include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 #include "DataFormats/GsfTrackReco/interface/GsfTrack.h"
 #include "TROOT.h"
 
@@ -67,8 +68,8 @@ void
 TestBed::analyze(const edm::Event& iEvent, 
                  const edm::EventSetup& iSetup)
 {
-  edm::Handle< edm::View<pat::Muon> > handle;
-  iEvent.getByLabel("cleanLayer1Muons", handle);
+  edm::Handle< edm::View<reco::GenParticle> > handle;
+  iEvent.getByLabel("genParticles", handle);
   if ( !handle.isValid() )
     throw edm::Exception(edm::errors::Configuration,
                          "\nBuffer - " + 
@@ -80,58 +81,14 @@ TestBed::analyze(const edm::Event& iEvent,
 
   if ( handle->size() < 1 ) return;
 
-  Method<pat::Muon> method("track()->pt()");
-
-  const pat::Muon muon = (*handle)[0];
-
-  //bool isnull = false;
-  gROOT->ProcessLine(Form("pat::Muon* o = (pat::Muon*)0x%x", &muon));
-
- //  reco::GsfTrackRef gsftrack = muon->gsfTrack();
-//   bool isnull = (bool)gROOT->ProcessLineFast("o->gsfTrack().isNull()");
-//   //cout << "gstTrack().isNull() = " << RED << isnull << BLACK << endl;
-//   if ( ! isnull )
-//     {
-//       double chi2 = gsftrack->chi2();
-//       cout << "\tchi2: " << chi2 << endl;
-//     }
-
-  reco::TrackRef track = muon.track();
-  bool isnull = (bool)gROOT->ProcessLineFast("o->track().isNull()");
-  //cout << "track().isNull() = " << RED << isnull << BLACK << endl;
-  if ( ! isnull )
+  const reco::GenParticle& p = ((*handle)[0]);
+  int n = p.numberOfMothers();
+  cout << "Number of mothers: " << n << endl;
+  if ( p.motherRef(0).get() )
     {
-      double pt1 = 0;
-      gROOT->ProcessLine(Form("double* x = (double*)0x%x", &pt1));
-      gROOT->ProcessLineFast("kit::set(o->track()->pt(),x)");
-      int charge = muon.charge();
-      double pt  = track->pt();
-      double pt2 = method(muon);
-
-      cout << counter 
-           << "  charge[0]: " << charge 
-           << "\tpt[0]:  " << pt 
-           << "\tpt1[0]: " << pt1
-           << "\tpt2[0]: " << pt2 
-           << endl;
+      cout << " found mother" << endl;
     }
-
-//   void* addr = (void*)gROOT->ProcessLineFast("o->gsfTrack().get()");
-//   cout << "gstTrack().get() = " 
-//        << RED 
-//        << addr 
-//        << BLACK
-//        << endl;
-
-//   addr = (void*)gROOT->ProcessLineFast("o->track().get()");
-//   reco::Track* trk = static_cast<reco::Track*>(addr);
-//   cout << "track().get() = " 
-//        << RED 
-//        << addr 
-//        << BLACK << " " << trk->pt() 
-//        << endl;
 }
-
 
 // --- method called once each job just before starting event loop  -----------
 void 
