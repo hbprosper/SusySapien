@@ -6,7 +6,7 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
-// $Id: Method.h,v 1.3 2010/01/20 06:11:34 prosper Exp $
+// $Id: Method.h,v 1.1 2010/02/08 03:22:05 prosper Exp $
 //
 // If using Python, include its header first to avoid annoying compiler
 // complaints.
@@ -208,9 +208,14 @@ struct Method
                         << callMethod1_
                         << BLACK
                         << std::endl;
+            void* y = 0;
+            try
+              {
+                y = (void*)gROOT->ProcessLineFast(callMethod1_.c_str());
+              }
+            catch (...)
+              {}
 
-            void* y = (void*)gROOT->ProcessLineFast(callMethod1_.c_str());
-                       
             if ( y == 0 )
               {
                 double x = -99999;
@@ -239,7 +244,12 @@ struct Method
                     << BLACK
                     << std::endl;
 
-        gROOT->ProcessLineFast(compoundCall_.c_str());
+        try
+          {
+            gROOT->ProcessLineFast(compoundCall_.c_str());
+          }
+        catch (...)
+          {}
 
         if ( debug_ > 0 )
           //DB
