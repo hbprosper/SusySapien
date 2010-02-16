@@ -3,13 +3,12 @@
 #  File: readntuple.py
 #        Example of how to read ntuples created by Mkntuple
 #  Created: 14-Feb-2010 Harrison B. Prosper
+#$Revision:$
 # -----------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
 from time import sleep
-print "enabling autoloader..."
-from PhysicsTools.LiteAnalysis import *
-print "done!"
+from PhysicsTools.LiteAnalysis.AutoLoader import *
 # -----------------------------------------------------------------------------
 MAXTRACK=500
 MAXMUON=50

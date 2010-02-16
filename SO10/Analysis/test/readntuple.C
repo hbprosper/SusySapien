@@ -2,6 +2,7 @@
 // File: readntuple.C
 //       Example of how to read ntuples created by Mkntuple
 // Created: 13-Feb-2010 Harrison B. Prosper
+//$Revision:$
 //-----------------------------------------------------------------------------
 #include "TCanvas.h"
 using namespace std;

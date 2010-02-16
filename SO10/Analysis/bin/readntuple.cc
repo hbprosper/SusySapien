@@ -2,6 +2,7 @@
 // File: readntuple.cc
 //       Example of how to read ntuples created by Mkntuple
 // Created: 14-Feb-2010 Harrison B. Prosper
+//$Revision:$
 //-----------------------------------------------------------------------------
 #include <stdio.h>
 #include <string>

@@ -6,10 +6,11 @@
 # Updated:     16-Jan-2010 HBP - simplify command line
 #              12-Feb-2010 HBP - Change to single quotes
 #-----------------------------------------------------------------------------
-#$Revision: 1.6 $
+#$Revision: 1.7 $
 #-----------------------------------------------------------------------------
 import sys, os, re, platform
 from ROOT import *
+from string import split
 #-----------------------------------------------------------------------------
 def usage():
 	print """
@@ -29,12 +30,15 @@ if not os.environ.has_key("CMSSW_BASE"):
 	sys.exit(0)
 
 BASE = os.environ["PWD"]
+REVISION="$Revision: 1.7 $"
+rev = split(REVISION)[1]
 VERSION        = \
 """
-mkntuplecfi.py v1.0.3 February 2010
+mkntuplecfi.py v%s February 2010
 Python %s
 Root   %s
-""" % (platform.python_version(),
+""" % (rev,
+	   platform.python_version(),
 	   gROOT.GetVersion())
 ICONDIR   = "%s/icons" % os.environ["ROOTSYS"]
 METHODDIR = "methods"
@@ -440,7 +444,7 @@ class Gui:
 		FINDLABEL_LAYOUT = TGLayoutHints(kLHintsLeft,2,2,5,5)
 		self.toolBar.AddFrame(self.findlabel, FINDLABEL_LAYOUT)
 		self.findBox = TGTextEntry(self.toolBar)
-		self.findBox.SetToolTipText("Find method")
+		self.findBox.SetToolTipText("type, then hit return to continue")
 		self.findBox.SetTextColor(DARKRED)
 		self.findcurrentPos = 0
 		
