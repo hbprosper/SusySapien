@@ -1,5 +1,5 @@
 #-----------------------------------------------------------------------------
-#$Revision: 1.3 $
+#$Revision: 1.4 $
 import sys
 from ROOT import *
 #-----------------------------------------------------------------------------
@@ -8,9 +8,11 @@ def fatal(message):
 	sys.exit(0)
 #-----------------------------------------------------------------------------
 def enableAutoLoader():
+	print "enabling autoloader..."
 	if not (gSystem.Load( "libFWCoreFWLite" ) == 0):
 		fatal("unable to load FWCoreFWLite")        
 	AutoLibraryLoader.enable()
+	print "done!"
 #-----------------------------------------------------------------------------
 enableAutoLoader()
 
