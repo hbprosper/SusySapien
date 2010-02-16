@@ -6,7 +6,7 @@
 #------------------------------------------------------------------------------
 import os, sys
 from ROOT import *
-from PhysicsTools.LiteAnalysis import *
+from PhysicsTools.LiteAnalysis.AutoLoader import *
 #------------------------------------------------------------------------------
 if len(sys.argv) < 2:
     print '''
