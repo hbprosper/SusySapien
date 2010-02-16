@@ -1,8 +1,0 @@
-Class:       TrackCandidate
-
-Header:      DataFormats/TrackCandidate/interface/TrackCandidate.h
-
-Version:     CMSSW_3_4_1
-Created:     Thu Feb 11 13:55:01 2010	mkdocs.py
-
-AccessMethods - TrackCandidate

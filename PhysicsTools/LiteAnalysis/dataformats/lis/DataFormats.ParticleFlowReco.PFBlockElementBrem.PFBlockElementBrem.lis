@@ -1,8 +1,0 @@
-reco::PFBlockElementBrem|PFBlockElement*|clone|void
-reco::PFBlockElementBrem|GsfPFRecTrackRef|GsftrackRefPF|void
-reco::PFBlockElementBrem|reco::GsfTrackRef|GsftrackRef|void
-reco::PFBlockElementBrem|const PFRecTrack&|trackPF|void
-reco::PFBlockElementBrem|double|DeltaP|void
-reco::PFBlockElementBrem|double|SigmaDeltaP|void
-reco::PFBlockElementBrem|unsigned int|indTrajPoint|void
-reco::PFBlockElementBrem|const math::XYZPointF&|positionAtECALEntrance|void

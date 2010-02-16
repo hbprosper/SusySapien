@@ -1,6 +1,0 @@
-double	deltaR()
-unsigned int	highestFlavor()
-bool	isCached()
-unsigned int	nb()
-unsigned int	nc()
-

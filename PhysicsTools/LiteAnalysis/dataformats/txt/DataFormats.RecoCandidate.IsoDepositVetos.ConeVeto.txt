@@ -1,8 +1,0 @@
-Class:       reco::isodeposit::ConeVeto
-
-Header:      DataFormats/RecoCandidate/interface/IsoDepositVetos.h
-
-Version:     CMSSW_3_4_1
-Created:     Thu Feb 11 13:54:57 2010	mkdocs.py
-
-AccessMethods - reco::isodeposit::ConeVeto

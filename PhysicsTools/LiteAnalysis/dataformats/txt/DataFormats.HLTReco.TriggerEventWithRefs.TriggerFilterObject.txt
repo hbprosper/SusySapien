@@ -1,8 +1,0 @@
-Class:       trigger::TriggerEventWithRefs::TriggerFilterObject
-
-Header:      DataFormats/HLTReco/interface/TriggerEventWithRefs.h
-
-Version:     CMSSW_3_4_1
-Created:     Thu Feb 11 13:54:42 2010	mkdocs.py
-
-AccessMethods - trigger::TriggerEventWithRefs::TriggerFilterObject

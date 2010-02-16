@@ -1,8 +1,0 @@
-Class:       reco::SoftLeptonProperties
-
-Header:      DataFormats/BTauReco/interface/SoftLeptonTagInfo.h
-
-Version:     CMSSW_3_4_1
-Created:     Thu Feb 11 13:54:34 2010	mkdocs.py
-
-AccessMethods - reco::SoftLeptonProperties

@@ -1,9 +1,0 @@
-Class:       reco::MuonTime
-
-Header:      DataFormats/MuonReco/interface/MuonTime.h
-
-Version:     CMSSW_3_4_1
-Created:     Thu Feb 11 13:54:49 2010	mkdocs.py
-
-AccessMethods - reco::MuonTime
-         reco::MuonTime::Direction  direction()

@@ -1,3 +1,0 @@
-edm::DataFrame|inline|DataFrame|void
-edm::DataFrame|inline unsigned short*|begin|void
-edm::DataFrame|inline unsigned short*|end|void

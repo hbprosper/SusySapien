@@ -1,8 +1,0 @@
-Class:       OverlapChecker
-
-Header:      DataFormats/Candidate/interface/OverlapChecker.h
-
-Version:     CMSSW_3_4_1
-Created:     Thu Feb 11 13:54:38 2010	mkdocs.py
-
-AccessMethods - OverlapChecker

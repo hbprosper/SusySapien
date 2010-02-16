@@ -1,8 +1,0 @@
-Class:       DcsStatusRaw_v4
-
-Header:      DataFormats/Scalers/interface/ScalersRaw.h
-
-Version:     CMSSW_3_4_1
-Created:     Thu Feb 11 13:55:00 2010	mkdocs.py
-
-AccessMethods - DcsStatusRaw_v4

@@ -1,8 +1,0 @@
-Class:       pat::MET::UncorInfo
-
-Header:      DataFormats/PatCandidates/interface/MET.h
-
-Version:     CMSSW_3_4_1
-Created:     Thu Feb 11 13:54:54 2010	mkdocs.py
-
-AccessMethods - pat::MET::UncorInfo

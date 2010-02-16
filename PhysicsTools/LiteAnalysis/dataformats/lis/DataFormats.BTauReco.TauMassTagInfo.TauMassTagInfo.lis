@@ -1,3 +1,0 @@
-reco::TauMassTagInfo|TauMassTagInfo*|clone|void
-reco::TauMassTagInfo|float|discriminator|void
-reco::TauMassTagInfo|const edm::Ref<IsolatedTauTagInfoCollection>&|getIsolatedTauTag|void

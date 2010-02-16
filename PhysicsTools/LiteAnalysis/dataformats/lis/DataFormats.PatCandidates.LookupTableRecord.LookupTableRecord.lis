@@ -1,3 +1,0 @@
-pat::LookupTableRecord|float|value|void
-pat::LookupTableRecord|float|error|void
-pat::LookupTableRecord|uint16_t|bin|void

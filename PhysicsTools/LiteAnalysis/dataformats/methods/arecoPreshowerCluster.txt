@@ -1,4 +1,0 @@
-double	et()
-int	nhits()
-int	plane()
-

@@ -1,7 +1,0 @@
-double	ecalIsolEt()
-double	hcalIsolEt()
-int	nEcalHits()
-int	nHcalHits()
-double	seedEcalHitEt()
-double	seedHcalHitEt()
-

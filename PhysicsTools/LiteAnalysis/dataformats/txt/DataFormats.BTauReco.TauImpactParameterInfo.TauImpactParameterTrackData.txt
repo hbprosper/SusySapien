@@ -1,8 +1,0 @@
-Class:       reco::TauImpactParameterTrackData
-
-Header:      DataFormats/BTauReco/interface/TauImpactParameterInfo.h
-
-Version:     CMSSW_3_4_1
-Created:     Thu Feb 11 13:54:35 2010	mkdocs.py
-
-AccessMethods - reco::TauImpactParameterTrackData

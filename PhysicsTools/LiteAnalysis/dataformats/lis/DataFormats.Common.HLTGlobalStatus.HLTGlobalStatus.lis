@@ -1,5 +1,0 @@
-edm::HLTGlobalStatus|unsigned int|size|void
-edm::HLTGlobalStatus|bool|wasrun|void
-edm::HLTGlobalStatus|bool|accept|void
-edm::HLTGlobalStatus|bool|error|void
-edm::HLTGlobalStatus|const HLTPathStatus&|at|const unsigned int

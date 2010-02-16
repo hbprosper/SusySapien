@@ -3,7 +3,7 @@
 # Description: A collection of boostutil utilities. Most have been culled
 #              from either xml2boost.py or header2xml.
 # Created: 19-May-2006 Harrison B. Prosper
-#$Revision: 1.2 $
+#$Revision: 1.3 $
 #---------------------------------------------------------------------------
 import os, sys, re, posixpath, shelve
 from string import *
@@ -387,6 +387,7 @@ def readMethods(txtfilename):
 	
 	for rec in records:
 		t = split(rec)
+			
 		if len(t) > 0:
 			token = t[0]
 		else:

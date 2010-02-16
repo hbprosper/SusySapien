@@ -1,8 +1,0 @@
-reco::GsfTrackExtra|double|outerStateLocalPzSign|void
-reco::GsfTrackExtra|double|innerStateLocalPzSign|void
-reco::GsfTrackExtra|std::vector<double>|outerStateWeights|void
-reco::GsfTrackExtra|std::vector<math::Vector<dimension>::type>|outerStateLocalParameters|void
-reco::GsfTrackExtra|std::vector<math::Error<dimension>::type>|outerStateCovariances|void
-reco::GsfTrackExtra|std::vector<double>|innerStateWeights|void
-reco::GsfTrackExtra|std::vector<math::Vector<dimension>::type>|innerStateLocalParameters|void
-reco::GsfTrackExtra|std::vector<math::Error<dimension>::type>|innerStateCovariances|void
