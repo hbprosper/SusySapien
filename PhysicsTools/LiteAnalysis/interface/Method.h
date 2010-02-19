@@ -6,7 +6,7 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
-// $Id: Method.h,v 1.1 2010/02/08 03:22:05 prosper Exp $
+// $Id: Method.h,v 1.2 2010/02/16 03:07:01 prosper Exp $
 //
 // If using Python, include its header first to avoid annoying compiler
 // complaints.
@@ -56,9 +56,14 @@ struct Method
 
     // method could be of the form
     // y = method1(...)->method2(...) or
-    // y = method1(...).method2(...)
+    // y = method1(...).method2(...) or
+    // y = method1(..).variable
     boost::regex expr("(?<=[)]) *([-][>]|[.]) *(?=[a-zA-Z])");
     boost::smatch what;
+
+    if ( debug_ > 0 )
+      std::cout << "Expression( " 
+                << BLUE << expression_ <<  BLACK << " )" << std::endl;
 
     compoundMethod_ = boost::regex_search(expression_, what, expr);
     
@@ -147,8 +152,8 @@ struct Method
       }
 
     if ( debug_ > 0 )
-      std::cout << "Method - " << expression1_ << std::endl
-                << "         " << expression2_ << std::endl;
+      std::cout << "Method - 1: " << expression1_ << std::endl
+                << "         2: " << expression2_ << std::endl;
     
   }
   

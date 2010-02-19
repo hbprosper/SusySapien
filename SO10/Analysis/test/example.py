@@ -37,7 +37,8 @@ cms.EDAnalyzer("Mkntuple",
     "recoBeamSpot",
     "patMuon",
 	"patMuonExtra",
-    "recoGenParticle"
+    "recoGenParticle",
+	"recoGenMother"
     ),
 			   #----------------------------------------------------------
 			   # Format of 1st line:
@@ -69,7 +70,6 @@ cms.EDAnalyzer("Mkntuple",
     " double   pt()",
     "  float   caloIso()",
     "  float   ecalIso()",
-	# It is possible to call the following, so long as the 2nd method is simple
     " double   ecalIsoDeposit()->candEnergy()",
     "  float   hcalIso()",
     "  float   trackIso()",
@@ -89,22 +89,29 @@ cms.EDAnalyzer("Mkntuple",
                recoGenParticle =
                cms.untracked.
                vstring(
-    "recoGenParticle                 genParticles                     100",
+    "recoGenParticle                 genParticles                    1000",
     #---------------------------------------------------------------------
     "    int   charge()",
-    " double   energy()",
-    " double   et()",
-    " double   eta()",
-    " double   p()",
-    " double   phi()",
-    " double   pt()",
-    " double   px()",
-    " double   py()",
-    " double   pz()",
-    " double   mass()",
     "    int   pdgId()",
-    "    int   status()"
-    )
+    "    int   status()",
+    " double   pt()",
+    " double   eta()",
+    " double   phi()",
+    " double   mass()"
+    ),
+
+               recoGenMother =
+               cms.untracked.
+               vstring(
+    "recoGenMother                    genParticles                   1000",
+    #---------------------------------------------------------------------
+    "    int   motherPdgId()",
+    "    int   motherStatus()",
+    " double   motherPt()",
+    " double   motherEta()",
+    " double   motherPhi()",
+    " double   motherMass()"
+    )			   
                )
 
 process.p = cms.Path(process.demo)

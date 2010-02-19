@@ -44,7 +44,7 @@
 // Original Author:  Sezen SEKMEN & Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Jan 17 HBP - add log file
-// $Id: Mkntuple.cc,v 1.1 2010/02/08 03:21:10 prosper Exp $
+// $Id: Mkntuple.cc,v 1.2 2010/02/14 04:21:46 prosper Exp $
 //
 //
 // ---------------------------------------------------------------------------
@@ -54,6 +54,7 @@
 #include <fstream>
 #include <cassert>
 #include <time.h>
+#include <stdlib.h>
  
 #include "PhysicsTools/LiteAnalysis/interface/treestream.hpp"
 #include "PhysicsTools/LiteAnalysis/interface/kit.h"
@@ -103,14 +104,10 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
 {
   cout << GREEN << "BEGIN Mkntuple" << BLACK << endl;
 
-  try
-    {
-      DEBUG = iConfig.getUntrackedParameter<int>("debug");
-    }
-  catch (...)
-    {
-      DEBUG = 0;
-    }
+  if ( getenv("DEBUGMKNTUPLE") > 0 )
+    DEBUG = atoi(getenv("DEBUGMKNTUPLE"));
+  else
+    DEBUG = 0;
 
   // Write to log file
 
@@ -131,6 +128,10 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   // 
   vector<string> vrecords = iConfig.
     getUntrackedParameter<vector<string> >("buffers");
+
+
+  boost::regex getmethod("[a-zA-Z][^ ]*[(].*[)][^ ]*");
+  boost::smatch matchmethod;
 
   for(unsigned ii=0; ii < vrecords.size(); ii++)
     {
@@ -168,7 +169,7 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
       if (field.size() == 4) prefix = field[3]; // n-tuple variable prefix
       
       //DB
-      if ( DEBUG > 0 )
+      if ( DEBUG > 1 )
         cout 
           << GREEN
           << "   buffer("   << buffer << ")"
@@ -187,10 +188,10 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
       for(unsigned i=1; i < bufferrecords.size(); i++)
         {
           string record = bufferrecords[i];
+
           // Get method
       
-          boost::regex getmethod("[a-zA-Z][^ ]*[(].*[)]");
-          boost::smatch matchmethod;
+
           if ( ! boost::regex_search(record, matchmethod, getmethod) ) 
             // Yet another tantrum!
             throw edm::Exception(edm::errors::Configuration,
@@ -201,28 +202,20 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
                                  record);
           string method = kit::strip(matchmethod[0]);
       
-          if ( DEBUG > 1 ) 
-            cout << "    method: " << method << endl;
+          if ( DEBUG > 0 ) 
+            cout << "    method: " << BLUE << method << BLACK << endl;
           
           // Get optional method alias name
           
-          string varname = kit::truncate(method,"(");
-          boost::regex getalias("(?<=[)]) .+");
-          boost::smatch matchalias;
-          if ( boost::regex_search(record, matchalias, getalias) ) 
-            varname = kit::strip(matchalias[0]);
-          
-          //       // Get return type
+          string varname = method;
+          string left, right;
+          kit::bisplit(record, left, right, method);
+          right = kit::strip(right);
+          if ( right != "" ) varname = right;
 
-          //       string rtype("");
-          //       boost::regex getrtype(".+(?= " + method + ")");
-          //       boost::smatch matchrtype;
-          //       if ( boost::regex_search(record, matchrtype, getrtype) ) 
-          //         rtype = kit::strip(matchrtype[0]);
-          
           var.push_back(VariableDescriptor(method, varname));
 
-          if ( DEBUG > 1 )
+          if ( DEBUG > 0 )
             cout << "\t  varname(" << varname << ")"
                  << endl;
         }

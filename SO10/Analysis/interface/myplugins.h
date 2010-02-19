@@ -3,12 +3,13 @@
 //-----------------------------------------------------------------------------
 // Package:     SO10
 // Sub-Package: Analysis
-// Class:       patMuonExtra
-// Description: Simple plugin for
-//              class:   pat::Muon
+// Description: add user-defined methods
 // Created:     Tue Jan 19 HBP
-//$Revision: 1.3 $
+//$Revision: 1.4 $
 //-----------------------------------------------------------------------------
+#include <algorithm>
+#include <iostream>
+#include <map>
 #include "DataFormats/PatCandidates/interface/Muon.h"
 //-----------------------------------------------------------------------------
 // Note: patMuonExtra inherits all the methods of pat::Muon
@@ -29,6 +30,4 @@ public:
       return -1;
   }
 };
-
 #endif
-

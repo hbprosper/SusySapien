@@ -29,6 +29,10 @@
 <flags EDM_PLUGIN=1>
 </library>
 
+<library file=userplugins.cc name=UserBuffers>
+<flags EDM_PLUGIN=1>
+</library>
+
 <library file=Mkntuple.cc name=Mkntuple>
 <flags EDM_PLUGIN=1>
 </library>

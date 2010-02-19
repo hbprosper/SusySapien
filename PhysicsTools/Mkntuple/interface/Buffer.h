@@ -15,7 +15,7 @@
 //         Updated:  Wed Feb 10 HBP add UserBuffer, which allows for the
 //                   insertion of user-defined variables into the n-tuple.
 //
-// $Id: Buffer.h,v 1.5 2010/02/11 03:46:39 prosper Exp $
+// $Id: Buffer.h,v 1.6 2010/02/14 04:21:46 prosper Exp $
 //
 //
 // If using Python, include its header first to avoid annoying compiler
@@ -78,7 +78,7 @@ void initBuffer(otreestream& out,
                 std::ofstream& log)
 {
   // Define regular expressions to check for compound methods; i.e., methods
-  // of the form y = a()->b()
+  // of the form y = a()->b() or a().b(), or a().b
 
   boost::regex stripargs("[(].*[)]");
   boost::regex stripptr("-[>]");

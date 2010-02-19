@@ -1,11 +1,11 @@
-#$Revision: 1.2 $
+#$Revision: 1.1 $
 import FWCore.ParameterSet.Config as cms
 
 process = cms.Process("TestBed")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1) )
 
 process.source = cms.Source("PoolSource",
 							fileNames =

@@ -3,15 +3,17 @@
 // Original Author:  Sezen SEKMEN & Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Jan 17 HBP - add log file
-// $Id: TestBed.cc,v 1.1 2010/02/08 03:21:10 prosper Exp $
+// $Id: TestBed.cc,v 1.2 2010/02/16 03:05:17 prosper Exp $
 //
 //
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
+#include <algorithm>
 #include <iostream>
 #include <fstream>
 #include <cassert>
+#include <map>
 #include <time.h>
  
 #include "PhysicsTools/LiteAnalysis/interface/treestream.hpp"
@@ -81,13 +83,75 @@ TestBed::analyze(const edm::Event& iEvent,
 
   if ( handle->size() < 1 ) return;
 
-  const reco::GenParticle& p = ((*handle)[0]);
-  int n = p.numberOfMothers();
-  cout << "Number of mothers: " << n << endl;
-  if ( p.motherRef(0).get() )
+
+  map<string, vector<int> > particleMap;
+
+  int nhep = handle->size();
+
+  for (int i=0; i < nhep; i++)
     {
-      cout << " found mother" << endl;
+      const reco::GenParticle& p = ((*handle)[i]);
+      char key[512];
+      sprintf(key, "%-16s %d %10.3e %10.3e %10.3e %10.3e",
+              kit::particleName(p.pdgId()).c_str(), 
+              p.status(), 
+              p.energy(),  p.px(), p.py(), p.pz());
+      particleMap[key] = vector<int>();
     }
+
+  for (int i=0; i < nhep; i++)
+    {
+      const reco::GenParticle& p = ((*handle)[i]);
+      if ( p.numberOfMothers() < 1 ) continue;
+
+      char key[512];
+      sprintf(key, "%-16s %d %10.3e %10.3e %10.3e %10.3e",
+              kit::particleName(p.mother(0)->pdgId()).c_str(), 
+              p.mother(0)->status(), 
+              p.mother(0)->energy(),  
+              p.mother(0)->px(),
+              p.mother(0)->py(),
+              p.mother(0)->pz());
+
+      if ( particleMap.find(key) == particleMap.end() )
+        {
+          cout << " ** error ** can't find key: " << key << endl;
+          exit(0);
+        }
+      particleMap[key].push_back(i);
+    }
+
+  for (int i=0; i < nhep; i++)
+    {
+      const reco::GenParticle& p = ((*handle)[i]);
+      char key[512];
+      sprintf(key, "%-16s %d %10.3e %10.3e %10.3e %10.3e",
+              kit::particleName(p.pdgId()).c_str(), 
+              p.status(), 
+              p.energy(),  p.px(), p.py(), p.pz());
+
+      if ( particleMap.find(key) == particleMap.end() )
+        {
+          cout << " ** error ** can't find key: " << key << endl;
+          continue;
+        }
+
+      string name = kit::particleName(p.pdgId());
+      char record[512];
+      sprintf(record, "%4d %-16s\t%d\t%d",i,name.c_str(),
+              particleMap[key].size(), p.status());
+      cout << record << endl;
+
+      for(unsigned j=0; j < particleMap[key].size(); j++)
+        {
+          int k = particleMap[key][j];
+          const reco::GenParticle& q = ((*handle)[k]);
+          string name = kit::particleName(q.pdgId());
+          sprintf(record, "\t%4d %-16s\t%d", k, name.c_str(), p.status());
+          cout << record << endl;
+        }
+    }
+
 }
 
 // --- method called once each job just before starting event loop  -----------
