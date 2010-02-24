@@ -38,7 +38,7 @@
 //          30-Nov-2005 HBP fix counter loading bug
 //          31-Oct-2009 HBP allow use of regexes in branch names
 //                      fix looping bug so operator[] works for Python
-//$Revision: 1.1.2.2 $
+//$Revision: 1.3 $
 //----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python/errors.hpp>
@@ -1284,7 +1284,7 @@ itreestream::_select(string namen, void* address, int maxsize, char srctype,
       // This seems like a regular expression
 
       TString tnom(namen.c_str());
-      namen = tnom.ReplaceAll("*",".*");
+      namen = tnom.ReplaceAll("*",".*") + "\\b"; // Add a boundary
 
       if ( DEBUGLEVEL > 0 )
         cout << "_select REGEX( " << namen << " )" << endl;
@@ -1386,7 +1386,7 @@ itreestream::_select(string namen, void* address, int maxsize, char srctype,
     }
   else
     {
-      warning("itreestream - branch " + namen + " not found");
+      fatal("itreestream - branch " + namen + " not found");
       _statuscode = kBADBRANCH;
     }
 }  

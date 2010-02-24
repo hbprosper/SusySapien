@@ -1,4 +1,4 @@
-#$Revision: 1.1 $ example.py
+#$Revision: 1.2 $ example.py
 #------------------------------------------------------------------------------
 import FWCore.ParameterSet.Config as cms
 
@@ -35,6 +35,7 @@ cms.EDAnalyzer("Mkntuple",
                cms.untracked.
                vstring(
     "recoBeamSpot",
+	"patJet",
     "patMuon",
     "recoGenParticle"
     ),
@@ -53,6 +54,15 @@ cms.EDAnalyzer("Mkntuple",
     " double   x0()",
     " double   y0()",
     " double   z0()"
+    ),
+
+               patJet =
+               cms.untracked.
+               vstring(
+	"patJet                          cleanLayer1JetsAK5              500",
+    #---------------------------------------------------------------------
+    ' float   bDiscriminator("trackCountingHighEffBJetTags")  highbtag',
+	' float   bDiscriminator("simpleSecondaryVertexBJetTags") vtxbtag'
     ),
                patMuon =
                cms.untracked.

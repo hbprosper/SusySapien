@@ -3,7 +3,7 @@
 // Purpose: Simple interface to GenParticles
 // Created: 16-Feb-2010 Harrison B. Prosper
 //          Based on code written in 2005
-//$Revision: 1.6 $
+//$Revision: 1.1 $
 //----------------------------------------------------------------------------
 #include <cmath>
 #include <iostream>
@@ -152,16 +152,17 @@ gEvent::update()
 // Created: 06-Sep-2004 Harrison B. Prosper
 //---------------------------------------------------------------------------
 void 
-gEvent::printTable(std::ostream& stream)
+gEvent::printTable(std::ostream& stream, int maxrows)
 {
   char record[512];
-  sprintf(record, "%-4s %-16s %8s %4s %4s %10s %10s %10s %10s %6s", 
-          " ", "name", "mother", "d1", "d2", 
+  sprintf(record, "%-4s %-16s %4s %4s %4s %10s %10s %10s %10s %6s", 
+          " ", "name", "m", "d1", "d2", 
           "pt", "eta", "phi", "mass", "status");
   stream << record << endl;
-  for(int i=0; i < nhep; i++)
+  int nrows = maxrows < nhep ? maxrows : nhep;
+  for(int i=0; i < nrows; i++)
     {
-      sprintf(record,"%4d %-16s %8d %4d %4d %10.2e %10.2e %10.2e %10.2e %6d", 
+      sprintf(record,"%4d %-16s %4d %4d %4d %10.2e %10.2e %10.2e %10.2e %6d", 
               i, kit::particleName(pdgId[i]).c_str(), 
               mother[i], 
               firstDaughter[i], 
@@ -176,10 +177,10 @@ gEvent::printTable(std::ostream& stream)
 }
 
 std::string
-gEvent::table()
+gEvent::table(int maxcount)
 {
   std::ostringstream os;
-  printTable(os);
+  printTable(os, maxcount);
   return os.str();
 }
 

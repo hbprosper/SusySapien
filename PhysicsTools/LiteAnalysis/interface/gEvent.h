@@ -1,7 +1,7 @@
 #ifndef GEVENT_HPP
 #define GEVENT_HPP
 //-----------------------------------------------------------------------------
-// $Revision:$
+// $Revision: 1.1 $
 //-----------------------------------------------------------------------------
 #include <string>
 #include <iostream>
@@ -39,8 +39,7 @@ class gEvent
   void        printTable(std::ostream& stream);
 
   ///
-  std::string table();
-
+  std::string table(int maxcount=50);
 
   int                 nhep;
             
