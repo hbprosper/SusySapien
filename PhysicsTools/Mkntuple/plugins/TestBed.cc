@@ -3,7 +3,7 @@
 // Original Author:  Sezen SEKMEN & Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Jan 17 HBP - add log file
-// $Id: TestBed.cc,v 1.2 2010/02/16 03:05:17 prosper Exp $
+// $Id: TestBed.cc,v 1.3 2010/02/19 05:09:41 prosper Exp $
 //
 //
 // ---------------------------------------------------------------------------
@@ -41,9 +41,9 @@ public:
 
 
 private:
-  virtual void beginJob(const edm::EventSetup&) ;
+  virtual void beginJob();
   virtual void analyze(const edm::Event&, const edm::EventSetup&);
-  virtual void endJob() ;
+  virtual void endJob();
 };
 
 
@@ -156,7 +156,7 @@ TestBed::analyze(const edm::Event& iEvent,
 
 // --- method called once each job just before starting event loop  -----------
 void 
-TestBed::beginJob(const edm::EventSetup&)
+TestBed::beginJob()
 {
 }
 

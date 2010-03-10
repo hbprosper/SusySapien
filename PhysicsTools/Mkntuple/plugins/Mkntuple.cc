@@ -45,7 +45,7 @@
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Jan 17 HBP - add log file
 //
-// $Id: Mkntuple.cc,v 1.3 2010/02/19 05:09:41 prosper Exp $
+// $Id: Mkntuple.cc,v 1.4 2010/03/10 13:29:59 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -76,9 +76,9 @@ public:
 
 
 private:
-  virtual void beginJob(const edm::EventSetup&) ;
+  virtual void beginJob();
   virtual void analyze(const edm::Event&, const edm::EventSetup&);
-  virtual void endJob() ;
+  virtual void endJob();
 
   // Object that models the output n-tuple.
   otreestream output;
@@ -325,7 +325,7 @@ Mkntuple::analyze(const edm::Event& iEvent,
 
 // --- method called once each job just before starting event loop  -----------
 void 
-Mkntuple::beginJob(const edm::EventSetup&)
+Mkntuple::beginJob()
 {
 }
 
