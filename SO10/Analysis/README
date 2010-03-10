@@ -1,5 +1,5 @@
 Harrison B. Prosper		Wed Feb 10, 2010
-$Revision: 1.4 $
+$Revision: 1.5 $
 
 
 A. INTRODUCTION
@@ -74,10 +74,11 @@ As usual, the code is compiled and linked using
 D. RESTRICTIONS
 
 The current version of Mkntuple does not permit extensions to RECO and 
-PAT classes that require access to objects other than the one being extended. 
-For example, a method that extends pat::Muon but requires access to a
-reco::BeamSpot object cannot be handled at present. If necessary, I can lift 
-this restriction later.
+PAT classes that require access to objects other than the one being extended,
+at least not directly. However, there is a mechanism to access the event, from
+which one can then access the other objects. (See triggerBits class in
+MKntuple/interface/userplugins.h.
+
 
 
 

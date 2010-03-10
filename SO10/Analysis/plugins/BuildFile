@@ -19,6 +19,10 @@
 <flags EDM_PLUGIN=1>
 </library>
 
+<library file=TestMe.cc name=TestMe>
+<flags EDM_PLUGIN=1>
+</library>
+
 
 
 

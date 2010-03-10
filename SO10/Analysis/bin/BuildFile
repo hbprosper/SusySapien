@@ -27,6 +27,7 @@
 <use name=f77compiler>
 
 <bin name=readntuple file=readntuple.cc></bin>
+<bin name=analyzer file=analyzer.cc></bin>
 
 
 
