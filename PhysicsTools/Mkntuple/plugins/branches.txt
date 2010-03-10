@@ -1,23 +1,13 @@
-CosmicMuonSeed__RECO. / edm::Wrapper<vector<TrajectorySeed> >
 PhotonIDProd_PhotonCutBasedIDLoose_RECO. / edm::Wrapper<edm::ValueMap<bool> >
 PhotonIDProd_PhotonCutBasedIDTight_RECO. / edm::Wrapper<edm::ValueMap<bool> >
 SETMuonSeed__RECO. / edm::Wrapper<vector<TrajectorySeed> >
 TriggerResults__HLT. / edm::Wrapper<edm::TriggerResults>
 TriggerResults__RECO. / edm::Wrapper<edm::TriggerResults>
-TriggerResults__SKIM. / edm::Wrapper<edm::TriggerResults>
-ak5CaloJets__RECO. / edm::Wrapper<vector<reco::CaloJet> >
-ak5JetExtender__RECO. / edm::Wrapper<edm::AssociationVector<edm::RefToBaseProd<reco::Jet>,vector<reco::JetExtendedAssociation::JetExtendedData>,edm::RefToBase<reco::Jet>,unsigned int,edm::helper::AssociationIdenticalKeyReference> >
-ak5JetID__RECO. / edm::Wrapper<edm::ValueMap<reco::JetID> >
-ak5JetTracksAssociatorAtCaloFace__RECO. / edm::Wrapper<edm::AssociationVector<edm::RefToBaseProd<reco::Jet>,vector<edm::RefVector<vector<reco::Track>,reco::Track,edm::refhelper::FindUsingAdvance<vector<reco::Track>,reco::Track> > >,edm::RefToBase<reco::Jet>,unsigned int,edm::helper::AssociationIdenticalKeyReference> >
-ak5JetTracksAssociatorAtVertex__RECO. / edm::Wrapper<edm::AssociationVector<edm::RefToBaseProd<reco::Jet>,vector<edm::RefVector<vector<reco::Track>,reco::Track,edm::refhelper::FindUsingAdvance<vector<reco::Track>,reco::Track> > >,edm::RefToBase<reco::Jet>,unsigned int,edm::helper::AssociationIdenticalKeyReference> >
-ak5PFJets__RECO. / edm::Wrapper<vector<reco::PFJet> >
-ak7CaloJets__RECO. / edm::Wrapper<vector<reco::CaloJet> >
-ak7JetExtender__RECO. / edm::Wrapper<edm::AssociationVector<edm::RefToBaseProd<reco::Jet>,vector<reco::JetExtendedAssociation::JetExtendedData>,edm::RefToBase<reco::Jet>,unsigned int,edm::helper::AssociationIdenticalKeyReference> >
-ak7JetID__RECO. / edm::Wrapper<edm::ValueMap<reco::JetID> >
-ak7JetTracksAssociatorAtCaloFace__RECO. / edm::Wrapper<edm::AssociationVector<edm::RefToBaseProd<reco::Jet>,vector<edm::RefVector<vector<reco::Track>,reco::Track,edm::refhelper::FindUsingAdvance<vector<reco::Track>,reco::Track> > >,edm::RefToBase<reco::Jet>,unsigned int,edm::helper::AssociationIdenticalKeyReference> >
-ak7JetTracksAssociatorAtVertex__RECO. / edm::Wrapper<edm::AssociationVector<edm::RefToBaseProd<reco::Jet>,vector<edm::RefVector<vector<reco::Track>,reco::Track,edm::refhelper::FindUsingAdvance<vector<reco::Track>,reco::Track> > >,edm::RefToBase<reco::Jet>,unsigned int,edm::helper::AssociationIdenticalKeyReference> >
-ak7PFJets__RECO. / edm::Wrapper<vector<reco::PFJet> >
+ak5GenJetsNoNu__PAT. / edm::Wrapper<vector<reco::GenJet> >
 ancientMuonSeed__RECO. / edm::Wrapper<vector<TrajectorySeed> >
+antikt5CaloJets__RECO. / edm::Wrapper<vector<reco::CaloJet> >
+antikt5GenJets__HLT. / edm::Wrapper<vector<reco::GenJet> >
+antikt5PFJets__RECO. / edm::Wrapper<vector<reco::PFJet> >
 caloRecoTauDiscriminationAgainstElectron__RECO. / edm::Wrapper<reco::CaloTauDiscriminator>
 caloRecoTauDiscriminationByIsolation__RECO. / edm::Wrapper<reco::CaloTauDiscriminator>
 caloRecoTauDiscriminationByLeadingTrackFinding__RECO. / edm::Wrapper<reco::CaloTauDiscriminator>
@@ -33,7 +23,13 @@ ckfOutInTracksFromConversions__RECO. / edm::Wrapper<vector<reco::Track> >
 ckfOutInTracksFromConversions__RECO. / edm::Wrapper<vector<reco::TrackExtra> >
 cleanLayer1Electrons__PAT. / edm::Wrapper<vector<pat::Electron> >
 cleanLayer1Hemispheres__PAT. / edm::Wrapper<vector<pat::Hemisphere> >
-cleanLayer1Jets__PAT. / edm::Wrapper<vector<pat::Jet> >
+cleanLayer1JetsAK5JPT__PAT. / edm::Wrapper<vector<pat::Jet> >
+cleanLayer1JetsAK5PF__PAT. / edm::Wrapper<vector<pat::Jet> >
+cleanLayer1JetsAK5Track__PAT. / edm::Wrapper<vector<pat::Jet> >
+cleanLayer1JetsAK5__PAT. / edm::Wrapper<vector<pat::Jet> >
+cleanLayer1JetsIC5__PAT. / edm::Wrapper<vector<pat::Jet> >
+cleanLayer1JetsSC5PF__PAT. / edm::Wrapper<vector<pat::Jet> >
+cleanLayer1JetsSC5__PAT. / edm::Wrapper<vector<pat::Jet> >
 cleanLayer1Muons__PAT. / edm::Wrapper<vector<pat::Muon> >
 cleanLayer1Photons__PAT. / edm::Wrapper<vector<pat::Photon> >
 cleanLayer1Taus__PAT. / edm::Wrapper<vector<pat::Tau> >
@@ -43,22 +39,13 @@ conversions__RECO. / edm::Wrapper<vector<reco::Conversion> >
 corMetGlobalMuons__RECO. / edm::Wrapper<vector<reco::CaloMET> >
 correctedHybridSuperClusters__RECO. / edm::Wrapper<vector<reco::SuperCluster> >
 correctedMulti5x5SuperClustersWithPreshower__RECO. / edm::Wrapper<vector<reco::SuperCluster> >
-cosmicMuons__RECO. / edm::Wrapper<edm::OwnVector<TrackingRecHit,edm::ClonePolicy<TrackingRecHit> > >
-cosmicMuons__RECO. / edm::Wrapper<vector<reco::Track> >
-cosmicMuons__RECO. / edm::Wrapper<vector<reco::TrackExtra> >
 csc2DRecHits__RECO. / edm::Wrapper<edm::RangeMap<CSCDetId,edm::OwnVector<CSCRecHit2D,edm::ClonePolicy<CSCRecHit2D> >,edm::ClonePolicy<CSCRecHit2D> > >
 cscSegments__RECO. / edm::Wrapper<edm::RangeMap<CSCDetId,edm::OwnVector<CSCSegment,edm::ClonePolicy<CSCSegment> >,edm::ClonePolicy<CSCSegment> > >
-ctfPixelLess__RECO. / edm::Wrapper<edm::AssociationMap<edm::OneToOne<vector<Trajectory>,vector<reco::Track>,unsigned short> > >
-ctfPixelLess__RECO. / edm::Wrapper<edm::OwnVector<TrackingRecHit,edm::ClonePolicy<TrackingRecHit> > >
-ctfPixelLess__RECO. / edm::Wrapper<vector<reco::Track> >
-ctfPixelLess__RECO. / edm::Wrapper<vector<reco::TrackExtra> >
 dedxHarmonic2__RECO. / edm::Wrapper<edm::ValueMap<reco::DeDxData> >
 dedxMedian__RECO. / edm::Wrapper<edm::ValueMap<reco::DeDxData> >
 dedxTruncated40__RECO. / edm::Wrapper<edm::ValueMap<reco::DeDxData> >
 dt1DRecHits__RECO. / edm::Wrapper<edm::RangeMap<DTLayerId,edm::OwnVector<DTRecHit1DPair,edm::ClonePolicy<DTRecHit1DPair> >,edm::ClonePolicy<DTRecHit1DPair> > >
 dt4DSegments__RECO. / edm::Wrapper<edm::RangeMap<DTChamberId,edm::OwnVector<DTRecSegment4D,edm::ClonePolicy<DTRecSegment4D> >,edm::ClonePolicy<DTRecSegment4D> > >
-ecalDigis__RECO. / edm::Wrapper<edm::SortedCollection<EBSrFlag,edm::StrictWeakOrdering<EBSrFlag> > >
-ecalDigis__RECO. / edm::Wrapper<edm::SortedCollection<EESrFlag,edm::StrictWeakOrdering<EESrFlag> > >
 ecalPreshowerRecHit_EcalRecHitsES_RECO. / edm::Wrapper<edm::SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit> > >
 ecalRecHit_EcalRecHitsEB_RECO. / edm::Wrapper<edm::SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit> > >
 ecalRecHit_EcalRecHitsEE_RECO. / edm::Wrapper<edm::SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit> > >
@@ -96,26 +83,20 @@ fixedConePFTauDiscriminationByLeadingTrackPtCut__RECO. / edm::Wrapper<reco::PFTa
 fixedConePFTauDiscriminationByTrackIsolationUsingLeadingPion__RECO. / edm::Wrapper<reco::PFTauDiscriminator>
 fixedConePFTauDiscriminationByTrackIsolation__RECO. / edm::Wrapper<reco::PFTauDiscriminator>
 fixedConePFTauProducer__RECO. / edm::Wrapper<vector<reco::PFTau> >
-gctDigis__RECO. / edm::Wrapper<vector<L1GctEtHad> >
-gctDigis__RECO. / edm::Wrapper<vector<L1GctEtMiss> >
-gctDigis__RECO. / edm::Wrapper<vector<L1GctEtTotal> >
-gctDigis__RECO. / edm::Wrapper<vector<L1GctHFBitCounts> >
-gctDigis__RECO. / edm::Wrapper<vector<L1GctHFRingEtSums> >
-gctDigis__RECO. / edm::Wrapper<vector<L1GctHtMiss> >
-gctDigis__RECO. / edm::Wrapper<vector<L1GctJetCounts> >
-gctDigis_cenJets_RECO. / edm::Wrapper<vector<L1GctJetCand> >
-gctDigis_forJets_RECO. / edm::Wrapper<vector<L1GctJetCand> >
-gctDigis_isoEm_RECO. / edm::Wrapper<vector<L1GctEmCand> >
-gctDigis_nonIsoEm_RECO. / edm::Wrapper<vector<L1GctEmCand> >
-gctDigis_tauJets_RECO. / edm::Wrapper<vector<L1GctJetCand> >
+g4SimHits__HLT. / edm::Wrapper<vector<SimTrack> >
+g4SimHits__HLT. / edm::Wrapper<vector<SimVertex> >
+genMetCaloAndNonPrompt__HLT. / edm::Wrapper<vector<reco::GenMET> >
+genMetCalo__HLT. / edm::Wrapper<vector<reco::GenMET> >
+genMetTrue__HLT. / edm::Wrapper<vector<reco::GenMET> >
+genParticles__HLT. / edm::Wrapper<vector<int> >
+genParticles__HLT. / edm::Wrapper<vector<reco::GenParticle> >
 generalTracks__RECO. / edm::Wrapper<edm::OwnVector<TrackingRecHit,edm::ClonePolicy<TrackingRecHit> > >
 generalTracks__RECO. / edm::Wrapper<vector<reco::Track> >
 generalTracks__RECO. / edm::Wrapper<vector<reco::TrackExtra> >
 generalV0Candidates_Kshort_RECO. / edm::Wrapper<vector<reco::VertexCompositeCandidate> >
 generalV0Candidates_Lambda_RECO. / edm::Wrapper<vector<reco::VertexCompositeCandidate> >
-globalCosmicMuons__RECO. / edm::Wrapper<edm::OwnVector<TrackingRecHit,edm::ClonePolicy<TrackingRecHit> > >
-globalCosmicMuons__RECO. / edm::Wrapper<vector<reco::Track> >
-globalCosmicMuons__RECO. / edm::Wrapper<vector<reco::TrackExtra> >
+generator__HLT. / edm::Wrapper<GenEventInfoProduct>
+generator__HLT. / edm::Wrapper<edm::HepMCProduct>
 globalMuons__RECO. / edm::Wrapper<edm::OwnVector<TrackingRecHit,edm::ClonePolicy<TrackingRecHit> > >
 globalMuons__RECO. / edm::Wrapper<vector<reco::Track> >
 globalMuons__RECO. / edm::Wrapper<vector<reco::TrackExtra> >
@@ -124,7 +105,6 @@ globalSETMuons__RECO. / edm::Wrapper<vector<reco::TrackExtra> >
 gsfElectronCores__RECO. / edm::Wrapper<vector<reco::GsfElectronCore> >
 gsfElectrons__RECO. / edm::Wrapper<vector<reco::GsfElectron> >
 gtDigis__RECO. / edm::Wrapper<L1GlobalTriggerReadoutRecord>
-gtDigis__RECO. / edm::Wrapper<L1MuGMTReadoutCollection>
 hbhereco__RECO. / edm::Wrapper<edm::SortedCollection<HBHERecHit,edm::StrictWeakOrdering<HBHERecHit> > >
 hcalnoise__RECO. / edm::Wrapper<HcalNoiseSummary>
 hcalnoise__RECO. / edm::Wrapper<vector<reco::HcalNoiseRBX> >
@@ -134,6 +114,7 @@ hfEMClusters__RECO. / edm::Wrapper<vector<reco::HFEMClusterShape> >
 hfEMClusters__RECO. / edm::Wrapper<vector<reco::SuperCluster> >
 hfRecoEcalCandidate__RECO. / edm::Wrapper<vector<reco::RecoEcalCandidate> >
 hfreco__RECO. / edm::Wrapper<edm::SortedCollection<HFRecHit,edm::StrictWeakOrdering<HFRecHit> > >
+hltL1GtObjectMap__HLT. / edm::Wrapper<L1GlobalTriggerObjectMapRecord>
 hltTriggerSummaryAOD__HLT. / edm::Wrapper<trigger::TriggerEvent>
 horeco__RECO. / edm::Wrapper<edm::SortedCollection<HORecHit,edm::StrictWeakOrdering<HORecHit> > >
 htMetIC5__RECO. / edm::Wrapper<vector<reco::MET> >
@@ -144,11 +125,12 @@ htMetSC7__RECO. / edm::Wrapper<vector<reco::MET> >
 hybridSuperClusters__RECO. / edm::Wrapper<vector<reco::SuperCluster> >
 hybridSuperClusters_hybridBarrelBasicClusters_RECO. / edm::Wrapper<vector<reco::CaloCluster> >
 hybridSuperClusters_hybridShapeAssoc_RECO. / edm::Wrapper<edm::AssociationMap<edm::OneToOne<vector<reco::CaloCluster>,vector<reco::ClusterShape>,unsigned int> > >
-ic5JetID__RECO. / edm::Wrapper<edm::ValueMap<reco::JetID> >
 ic5JetTracksAssociatorAtVertex__RECO. / edm::Wrapper<edm::AssociationVector<edm::RefToBaseProd<reco::Jet>,vector<edm::RefVector<vector<reco::Track>,reco::Track,edm::refhelper::FindUsingAdvance<vector<reco::Track>,reco::Track> > >,edm::RefToBase<reco::Jet>,unsigned int,edm::helper::AssociationIdenticalKeyReference> >
+ic5PFJetTracksAssociatorAtVertex__RECO. / edm::Wrapper<edm::AssociationVector<edm::RefToBaseProd<reco::Jet>,vector<edm::RefVector<vector<reco::Track>,reco::Track,edm::refhelper::FindUsingAdvance<vector<reco::Track>,reco::Track> > >,edm::RefToBase<reco::Jet>,unsigned int,edm::helper::AssociationIdenticalKeyReference> >
 impactParameterTagInfos__RECO. / edm::Wrapper<vector<reco::TrackIPTagInfo> >
 impactParameterTagInfos_ghostTracks_RECO. / edm::Wrapper<vector<reco::Track> >
 iterativeCone5CaloJets__RECO. / edm::Wrapper<vector<reco::CaloJet> >
+iterativeCone5GenJets__HLT. / edm::Wrapper<vector<reco::GenJet> >
 iterativeCone5JetExtender__RECO. / edm::Wrapper<edm::AssociationVector<edm::RefToBaseProd<reco::Jet>,vector<reco::JetExtendedAssociation::JetExtendedData>,edm::RefToBase<reco::Jet>,unsigned int,edm::helper::AssociationIdenticalKeyReference> >
 iterativeCone5JetTracksAssociatorAtCaloFace__RECO. / edm::Wrapper<edm::AssociationVector<edm::RefToBaseProd<reco::Jet>,vector<edm::RefVector<vector<reco::Track>,reco::Track,edm::refhelper::FindUsingAdvance<vector<reco::Track>,reco::Track> > >,edm::RefToBase<reco::Jet>,unsigned int,edm::helper::AssociationIdenticalKeyReference> >
 iterativeCone5JetTracksAssociatorAtVertex__RECO. / edm::Wrapper<edm::AssociationVector<edm::RefToBaseProd<reco::Jet>,vector<edm::RefVector<vector<reco::Track>,reco::Track,edm::refhelper::FindUsingAdvance<vector<reco::Track>,reco::Track> > >,edm::RefToBase<reco::Jet>,unsigned int,edm::helper::AssociationIdenticalKeyReference> >
@@ -156,24 +138,19 @@ iterativeCone5PFJets__RECO. / edm::Wrapper<vector<reco::PFJet> >
 jetBProbabilityBJetTags__RECO. / edm::Wrapper<edm::AssociationVector<edm::RefToBaseProd<reco::Jet>,vector<float>,edm::RefToBase<reco::Jet>,unsigned int,edm::helper::AssociationIdenticalKeyReference> >
 jetProbabilityBJetTags__RECO. / edm::Wrapper<edm::AssociationVector<edm::RefToBaseProd<reco::Jet>,vector<float>,edm::RefToBase<reco::Jet>,unsigned int,edm::helper::AssociationIdenticalKeyReference> >
 kt4CaloJets__RECO. / edm::Wrapper<vector<reco::CaloJet> >
+kt4GenJets__HLT. / edm::Wrapper<vector<reco::GenJet> >
 kt4JetExtender__RECO. / edm::Wrapper<edm::AssociationVector<edm::RefToBaseProd<reco::Jet>,vector<reco::JetExtendedAssociation::JetExtendedData>,edm::RefToBase<reco::Jet>,unsigned int,edm::helper::AssociationIdenticalKeyReference> >
-kt4JetID__RECO. / edm::Wrapper<edm::ValueMap<reco::JetID> >
 kt4JetTracksAssociatorAtCaloFace__RECO. / edm::Wrapper<edm::AssociationVector<edm::RefToBaseProd<reco::Jet>,vector<edm::RefVector<vector<reco::Track>,reco::Track,edm::refhelper::FindUsingAdvance<vector<reco::Track>,reco::Track> > >,edm::RefToBase<reco::Jet>,unsigned int,edm::helper::AssociationIdenticalKeyReference> >
 kt4JetTracksAssociatorAtVertex__RECO. / edm::Wrapper<edm::AssociationVector<edm::RefToBaseProd<reco::Jet>,vector<edm::RefVector<vector<reco::Track>,reco::Track,edm::refhelper::FindUsingAdvance<vector<reco::Track>,reco::Track> > >,edm::RefToBase<reco::Jet>,unsigned int,edm::helper::AssociationIdenticalKeyReference> >
 kt4PFJets__RECO. / edm::Wrapper<vector<reco::PFJet> >
 kt6CaloJets__RECO. / edm::Wrapper<vector<reco::CaloJet> >
-kt6JetID__RECO. / edm::Wrapper<edm::ValueMap<reco::JetID> >
+kt6GenJets__HLT. / edm::Wrapper<vector<reco::GenJet> >
 kt6PFJets__RECO. / edm::Wrapper<vector<reco::PFJet> >
-l1extraParticles_Central_RECO. / edm::Wrapper<vector<l1extra::L1JetParticle> >
-l1extraParticles_Forward_RECO. / edm::Wrapper<vector<l1extra::L1JetParticle> >
-l1extraParticles_Isolated_RECO. / edm::Wrapper<vector<l1extra::L1EmParticle> >
-l1extraParticles_MET_RECO. / edm::Wrapper<vector<l1extra::L1EtMissParticle> >
-l1extraParticles_MHT_RECO. / edm::Wrapper<vector<l1extra::L1EtMissParticle> >
-l1extraParticles_NonIsolated_RECO. / edm::Wrapper<vector<l1extra::L1EmParticle> >
-l1extraParticles_Tau_RECO. / edm::Wrapper<vector<l1extra::L1JetParticle> >
-l1extraParticles__RECO. / edm::Wrapper<vector<l1extra::L1HFRings> >
-l1extraParticles__RECO. / edm::Wrapper<vector<l1extra::L1MuonParticle> >
-layer1METs__PAT. / edm::Wrapper<vector<pat::MET> >
+layer1METsAK5__PAT. / edm::Wrapper<vector<pat::MET> >
+layer1METsIC5__PAT. / edm::Wrapper<vector<pat::MET> >
+layer1METsSC5__PAT. / edm::Wrapper<vector<pat::MET> >
+layer1METsTC__PAT. / edm::Wrapper<vector<pat::MET> >
+layer1MHTsAK5__PAT. / edm::Wrapper<vector<pat::MHT> >
 logErrorHarvester__RECO. / edm::Wrapper<vector<edm::ErrorSummaryEntry> >
 metHO__RECO. / edm::Wrapper<vector<reco::CaloMET> >
 metNoHFHO__RECO. / edm::Wrapper<vector<reco::CaloMET> >
@@ -189,9 +166,6 @@ muIsoDepositCalByAssociatorTowers_ho_RECO. / edm::Wrapper<edm::ValueMap<reco::Is
 muIsoDepositJets__RECO. / edm::Wrapper<edm::ValueMap<reco::IsoDeposit> >
 muIsoDepositTk__RECO. / edm::Wrapper<edm::ValueMap<reco::IsoDeposit> >
 muidAllArbitrated__RECO. / edm::Wrapper<edm::ValueMap<bool> >
-muidGMStaChiCompatibility__RECO. / edm::Wrapper<edm::ValueMap<bool> >
-muidGMTkChiCompatibility__RECO. / edm::Wrapper<edm::ValueMap<bool> >
-muidGMTkKinkTight__RECO. / edm::Wrapper<edm::ValueMap<bool> >
 muidGlobalMuonPromptTight__RECO. / edm::Wrapper<edm::ValueMap<bool> >
 muidTM2DCompatibilityLoose__RECO. / edm::Wrapper<edm::ValueMap<bool> >
 muidTM2DCompatibilityTight__RECO. / edm::Wrapper<edm::ValueMap<bool> >
@@ -214,11 +188,8 @@ multi5x5SuperClustersWithPreshower_preshowerYClusters_RECO. / edm::Wrapper<vecto
 multi5x5SuperClusters_multi5x5EndcapSuperClusters_RECO. / edm::Wrapper<vector<reco::SuperCluster> >
 muonMETValueMapProducer_muCorrData_RECO. / edm::Wrapper<edm::ValueMap<reco::MuonMETCorrectionData> >
 muonTCMETValueMapProducer_muCorrData_RECO. / edm::Wrapper<edm::ValueMap<reco::MuonMETCorrectionData> >
-muonsFromCosmics__RECO. / edm::Wrapper<vector<reco::Muon> >
 muons__RECO. / edm::Wrapper<vector<reco::Muon> >
-muons_combined_RECO. / edm::Wrapper<edm::ValueMap<reco::MuonTimeExtra> >
-muons_csc_RECO. / edm::Wrapper<edm::ValueMap<reco::MuonTimeExtra> >
-muons_dt_RECO. / edm::Wrapper<edm::ValueMap<reco::MuonTimeExtra> >
+muontiming__RECO. / edm::Wrapper<edm::ValueMap<reco::MuonTimeExtra> >
 offlineBeamSpot__RECO. / edm::Wrapper<reco::BeamSpot>
 offlinePrimaryVerticesWithBS__RECO. / edm::Wrapper<vector<reco::Vertex> >
 offlinePrimaryVertices__RECO. / edm::Wrapper<vector<reco::Vertex> >
@@ -235,12 +206,16 @@ pfElectronTranslator_pf_RECO. / edm::Wrapper<edm::ValueMap<float> >
 pfElectronTranslator_pf_RECO. / edm::Wrapper<vector<reco::CaloCluster> >
 pfElectronTranslator_pf_RECO. / edm::Wrapper<vector<reco::PreshowerCluster> >
 pfElectronTranslator_pf_RECO. / edm::Wrapper<vector<reco::SuperCluster> >
+pfLayer0Taus__PAT. / edm::Wrapper<vector<reco::PFTau> >
+pfLayer1Electrons__PAT. / edm::Wrapper<vector<pat::Electron> >
+pfLayer1Jets__PAT. / edm::Wrapper<vector<pat::Jet> >
+pfLayer1METs__PAT. / edm::Wrapper<vector<pat::MET> >
+pfLayer1Muons__PAT. / edm::Wrapper<vector<pat::Muon> >
+pfLayer1Taus__PAT. / edm::Wrapper<vector<pat::Tau> >
 pfMet__RECO. / edm::Wrapper<vector<reco::PFMET> >
 pfRecoTauTagInfoProducer__RECO. / edm::Wrapper<vector<reco::PFTauTagInfo> >
 photonCore__RECO. / edm::Wrapper<vector<reco::PhotonCore> >
 photons__RECO. / edm::Wrapper<vector<reco::Photon> >
-pixelMatchGsfFit__RECO. / edm::Wrapper<vector<reco::GsfTrackExtra> >
-pixelMatchGsfFit__RECO. / edm::Wrapper<vector<reco::TrackExtra> >
 pixelTracks__RECO. / edm::Wrapper<edm::OwnVector<TrackingRecHit,edm::ClonePolicy<TrackingRecHit> > >
 pixelTracks__RECO. / edm::Wrapper<vector<reco::Track> >
 pixelTracks__RECO. / edm::Wrapper<vector<reco::TrackExtra> >
@@ -248,13 +223,8 @@ pixelVertices__RECO. / edm::Wrapper<vector<reco::Vertex> >
 reducedEcalRecHitsEB__RECO. / edm::Wrapper<edm::SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit> > >
 reducedEcalRecHitsEE__RECO. / edm::Wrapper<edm::SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit> > >
 rpcRecHits__RECO. / edm::Wrapper<edm::RangeMap<RPCDetId,edm::OwnVector<RPCRecHit,edm::ClonePolicy<RPCRecHit> >,edm::ClonePolicy<RPCRecHit> > >
-sc5JetID__RECO. / edm::Wrapper<edm::ValueMap<reco::JetID> >
-sc7JetID__RECO. / edm::Wrapper<edm::ValueMap<reco::JetID> >
-scalersRawToDigi__RECO. / edm::Wrapper<vector<BeamSpotOnline> >
-scalersRawToDigi__RECO. / edm::Wrapper<vector<DcsStatus> >
 scalersRawToDigi__RECO. / edm::Wrapper<vector<L1AcceptBunchCrossing> >
 scalersRawToDigi__RECO. / edm::Wrapper<vector<L1TriggerScalers> >
-scalersRawToDigi__RECO. / edm::Wrapper<vector<Level1TriggerScalers> >
 scalersRawToDigi__RECO. / edm::Wrapper<vector<LumiScalers> >
 secondaryVertexTagInfos__RECO. / edm::Wrapper<vector<reco::SecondaryVertexTagInfo> >
 shrinkingConePFTauDecayModeIndexProducer__RECO. / edm::Wrapper<reco::PFTauDiscriminator>
@@ -278,13 +248,19 @@ shrinkingConePFTauProducer__RECO. / edm::Wrapper<vector<reco::PFTau> >
 siPixelClusters__RECO. / edm::Wrapper<edmNew::DetSetVector<SiPixelCluster> >
 siStripClusters__RECO. / edm::Wrapper<edmNew::DetSetVector<SiStripCluster> >
 siStripDigis__RECO. / edm::Wrapper<edm::EDCollection<DetId> >
+simMuonCSCDigis_MuonCSCStripDigiSimLinks_HLT. / edm::Wrapper<edm::DetSetVector<StripDigiSimLink> >
+simMuonCSCDigis_MuonCSCWireDigiSimLinks_HLT. / edm::Wrapper<edm::DetSetVector<StripDigiSimLink> >
+simMuonDTDigis__HLT. / edm::Wrapper<MuonDigiCollection<DTLayerId,DTDigiSimLink> >
+simMuonRPCDigis_RPCDigiSimLink_HLT. / edm::Wrapper<edm::DetSetVector<RPCDigiSimLink> >
 simpleSecondaryVertexBJetTags__RECO. / edm::Wrapper<edm::AssociationVector<edm::RefToBaseProd<reco::Jet>,vector<float>,edm::RefToBase<reco::Jet>,unsigned int,edm::helper::AssociationIdenticalKeyReference> >
 sisCone5CaloJets__RECO. / edm::Wrapper<vector<reco::CaloJet> >
+sisCone5GenJets__HLT. / edm::Wrapper<vector<reco::GenJet> >
 sisCone5JetExtender__RECO. / edm::Wrapper<edm::AssociationVector<edm::RefToBaseProd<reco::Jet>,vector<reco::JetExtendedAssociation::JetExtendedData>,edm::RefToBase<reco::Jet>,unsigned int,edm::helper::AssociationIdenticalKeyReference> >
 sisCone5JetTracksAssociatorAtCaloFace__RECO. / edm::Wrapper<edm::AssociationVector<edm::RefToBaseProd<reco::Jet>,vector<edm::RefVector<vector<reco::Track>,reco::Track,edm::refhelper::FindUsingAdvance<vector<reco::Track>,reco::Track> > >,edm::RefToBase<reco::Jet>,unsigned int,edm::helper::AssociationIdenticalKeyReference> >
 sisCone5JetTracksAssociatorAtVertex__RECO. / edm::Wrapper<edm::AssociationVector<edm::RefToBaseProd<reco::Jet>,vector<edm::RefVector<vector<reco::Track>,reco::Track,edm::refhelper::FindUsingAdvance<vector<reco::Track>,reco::Track> > >,edm::RefToBase<reco::Jet>,unsigned int,edm::helper::AssociationIdenticalKeyReference> >
 sisCone5PFJets__RECO. / edm::Wrapper<vector<reco::PFJet> >
 sisCone7CaloJets__RECO. / edm::Wrapper<vector<reco::CaloJet> >
+sisCone7GenJets__HLT. / edm::Wrapper<vector<reco::GenJet> >
 sisCone7PFJets__RECO. / edm::Wrapper<vector<reco::PFJet> >
 softElectronByIP3dBJetTags__RECO. / edm::Wrapper<edm::AssociationVector<edm::RefToBaseProd<reco::Jet>,vector<float>,edm::RefToBase<reco::Jet>,unsigned int,edm::helper::AssociationIdenticalKeyReference> >
 softElectronByPtBJetTags__RECO. / edm::Wrapper<edm::AssociationVector<edm::RefToBaseProd<reco::Jet>,vector<float>,edm::RefToBase<reco::Jet>,unsigned int,edm::helper::AssociationIdenticalKeyReference> >
@@ -294,7 +270,6 @@ softMuonByIP3dBJetTags__RECO. / edm::Wrapper<edm::AssociationVector<edm::RefToBa
 softMuonByPtBJetTags__RECO. / edm::Wrapper<edm::AssociationVector<edm::RefToBaseProd<reco::Jet>,vector<float>,edm::RefToBase<reco::Jet>,unsigned int,edm::helper::AssociationIdenticalKeyReference> >
 softMuonTagInfos__RECO. / edm::Wrapper<vector<reco::SoftLeptonTagInfo> >
 softPFElectrons__RECO. / edm::Wrapper<vector<reco::GsfElectron> >
-source__HLT. / edm::Wrapper<FEDRawDataCollection>
 standAloneMuons_UpdatedAtVtx_RECO. / edm::Wrapper<vector<reco::Track> >
 standAloneMuons__RECO. / edm::Wrapper<edm::OwnVector<TrackingRecHit,edm::ClonePolicy<TrackingRecHit> > >
 standAloneMuons__RECO. / edm::Wrapper<vector<reco::Track> >

@@ -64,6 +64,7 @@ namespace {
     std::map<std::string, std::vector<float>* > c7;
     std::map<std::string, std::vector<float> >  c8;
     std::map<std::string, std::vector<double> > c9;
+    std::vector<bool>    c10;
   }
 }
 

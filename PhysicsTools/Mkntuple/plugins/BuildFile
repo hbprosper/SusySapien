@@ -2,6 +2,7 @@
 <use name=PhysicsTools/Mkntuple>
 <use name=PhysicsTools/UtilAlgos>
 <use name=PhysicsTools/Utilities>
+<use name=PhysicsTools/PatUtils>
 
 <use name=FWCore/FWLite>
 <use name=FWCore/PluginManager>
@@ -13,10 +14,14 @@
 <use name=DataFormats/TrackReco>
 <use name=DataFormats/BTauReco>
 <use name=DataFormats/BeamSpot>
-<use name=PhysicsTools/PatUtils>
 <use name=DataFormats/PatCandidates>
 <use name=DataFormats/HepMCCandidate>
 <use name=DataFormats/Math>
+<use name=DataFormats/L1GlobalTrigger>
+<use name=DataFormats/Scalers>
+<use name=DataFormats/TrajectorySeed>
+<use name=SimDataFormats/GeneratorProducts>
+<use name=SimDataFormats/Vertex>
 
 <use name=boost_regex>
 <use name=boost_python>

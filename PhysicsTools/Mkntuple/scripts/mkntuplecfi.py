@@ -6,7 +6,7 @@
 # Updated:     16-Jan-2010 HBP - simplify command line
 #              12-Feb-2010 HBP - Change to single quotes
 #-----------------------------------------------------------------------------
-#$Revision: 1.7 $
+#$Revision: 1.8 $
 #-----------------------------------------------------------------------------
 import sys, os, re, platform
 from ROOT import *
@@ -30,7 +30,7 @@ if not os.environ.has_key("CMSSW_BASE"):
 	sys.exit(0)
 
 BASE = os.environ["PWD"]
-REVISION="$Revision: 1.7 $"
+REVISION="$Revision: 1.8 $"
 rev = split(REVISION)[1]
 VERSION        = \
 """
@@ -604,7 +604,10 @@ class Gui:
 
 		# List root file
 
-		cmd = "rlist.py %s Events" % filename
+		cmd = '''
+		rlist.py %s Events
+		rlist.py %s Runs
+		''' % filename
 
 		self.statusBar.SetText("Listing file ...", 0)
 		self.statusBar.SetText(filename, 1)

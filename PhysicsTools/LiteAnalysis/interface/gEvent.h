@@ -1,7 +1,7 @@
 #ifndef GEVENT_HPP
 #define GEVENT_HPP
 //-----------------------------------------------------------------------------
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 //-----------------------------------------------------------------------------
 #include <string>
 #include <iostream>
@@ -36,7 +36,7 @@ class gEvent
                    int  depth=0);
 
   ///
-  void        printTable(std::ostream& stream);
+  void        printTable(std::ostream& stream, int maxrows=50);
 
   ///
   std::string table(int maxcount=50);
@@ -62,5 +62,6 @@ class gEvent
   std::vector<float>  mothereta;
   std::vector<float>  motherphi;
   std::vector<float>  mothermass;
+  std::vector<float>  mothercharge;           
 };
 #endif

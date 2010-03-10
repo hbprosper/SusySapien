@@ -44,9 +44,8 @@
 // Original Author:  Sezen SEKMEN & Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Jan 17 HBP - add log file
-// $Id: Mkntuple.cc,v 1.2 2010/02/14 04:21:46 prosper Exp $
 //
-//
+// $Id: Mkntuple.cc,v 1.3 2010/02/19 05:09:41 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -91,6 +90,7 @@ private:
   int event_;
   std::string logfilename_;
   std::ofstream* log_;
+  std::string analyzername_;
 };
 
 
@@ -102,6 +102,15 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
     logfilename_("Mkntuple.log"),
     log_(new std::ofstream(logfilename_.c_str()))
 {
+  try
+    {
+      analyzername_ = iConfig.getUntrackedParameter<string>("analyzerName");
+    }
+  catch (...)
+    {
+      analyzername_ = "";
+    }
+
   cout << GREEN << "BEGIN Mkntuple" << BLACK << endl;
 
   if ( getenv("DEBUGMKNTUPLE") > 0 )
@@ -132,6 +141,8 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
 
   boost::regex getmethod("[a-zA-Z][^ ]*[(].*[)][^ ]*");
   boost::smatch matchmethod;
+
+  *log_ << "BEGIN VARIABLES" << endl;
 
   for(unsigned ii=0; ii < vrecords.size(); ii++)
     {
@@ -191,7 +202,6 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
 
           // Get method
       
-
           if ( ! boost::regex_search(record, matchmethod, getmethod) ) 
             // Yet another tantrum!
             throw edm::Exception(edm::errors::Configuration,
@@ -205,15 +215,22 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
           if ( DEBUG > 0 ) 
             cout << "    method: " << BLUE << method << BLACK << endl;
           
+          // Try to construct a plausible variable name
+
           // Get optional method alias name
           
           string varname = method;
+
+          // The left sub-string is the return type of the method
+          // The right sub-string is the optional alias
           string left, right;
           kit::bisplit(record, left, right, method);
-          right = kit::strip(right);
-          if ( right != "" ) varname = right;
 
-          var.push_back(VariableDescriptor(method, varname));
+          string rtype = kit::strip(left);
+          right = kit::strip(right);
+          if ( right != "" )  varname = right;
+
+          var.push_back(VariableDescriptor(rtype, method, varname));
 
           if ( DEBUG > 0 )
             cout << "\t  varname(" << varname << ")"
@@ -248,9 +265,17 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
                              "that lurks in the mud hatch out\n"
                              + BLACK);
       // ... and initialize it
-      buffers.back()->init(output, label, prefix, var, maxcount, *log_, DEBUG);
+      buffers.back()->init(output, label, prefix, var, maxcount, 
+                           *log_, DEBUG);
     }
+
+  *log_ << "END VARIABLES" << endl << endl;
+
   log_->close();
+
+  // Create ntuple analyzer template if requested
+  if ( analyzername_ != "" )
+    kit::shell("mkanalyzer.py " + analyzername_ + " " + logfilename_);
 
   cout << "END Mkntuple" << endl;
 }

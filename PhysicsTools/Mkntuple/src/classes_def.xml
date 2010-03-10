@@ -1,3 +1,4 @@
 <lcgdict>
- <class name="recoGenMother"/>
+ <class name="GenMother"/>
+ <class name="triggerBits"/>
 </lcgdict>

@@ -14,8 +14,10 @@
 //
 //         Updated:  Wed Feb 10 HBP add UserBuffer, which allows for the
 //                   insertion of user-defined variables into the n-tuple.
+//                   Sat Mar 06 HBP - write out variables to be used by
+//                                    mkntanalyzer.py
 //
-// $Id: Buffer.h,v 1.6 2010/02/14 04:21:46 prosper Exp $
+// $Id: Buffer.h,v 1.7 2010/02/19 05:09:41 prosper Exp $
 //
 //
 // If using Python, include its header first to avoid annoying compiler
@@ -31,11 +33,13 @@
 
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/Event.h"
+#include "FWCore/Framework/interface/Run.h"
 #include "PhysicsTools/Mkntuple/interface/pluginfactory.h"
+#include "PhysicsTools/Mkntuple/interface/CurrentEvent.h"
 #include "PhysicsTools/LiteAnalysis/interface/treestream.hpp"
 #include "PhysicsTools/LiteAnalysis/interface/kit.h"
 #include "PhysicsTools/LiteAnalysis/interface/Method.h"
-
+#include "SimDataFormats/GeneratorProducts/interface/GenRunInfoProduct.h"
 // ---------------------------------------------------------------------
 // We need a few templates to make the code generic.
 // ---------------------------------------------------------------------
@@ -80,8 +84,17 @@ void initBuffer(otreestream& out,
   // Define regular expressions to check for compound methods; i.e., methods
   // of the form y = a()->b() or a().b(), or a().b
 
-  boost::regex stripargs("[(].*[)]");
-  boost::regex stripptr("-[>]");
+  boost::regex stripargs("[(].*?[)]");
+  boost::regex stripme("-[>]|[.]|\"|[(]|[)]");
+  boost::regex stripcolon("[a-zA-Z]+::");
+  boost::regex strip3_("___");
+  boost::regex strip2_("__");
+  boost::regex strip2_atend("_$");
+
+
+  // Class name
+
+  std::string classname = boost::python::type_id<Y>().name();
 
   // Split getByLabel into its component parts
 
@@ -100,13 +113,21 @@ void initBuffer(otreestream& out,
     {
       std::cout 
         << "** Warning! Buffer::init - no variables defined for class " 
-        << boost::python::type_id<Y>().name()
+        << classname
         << std::endl
         << "** and getByLabel \"" << label << "\""
         << std::endl;
       return;
     }
   
+  // create name of object
+
+  std::string objectname = classname;
+  TString objname = TString(boost::regex_replace(objectname, 
+                                                 stripcolon, "").c_str());
+  objname.ToLower();
+  objectname = std::string(objname.Data());
+
   // Define variables destined for the output tree
   
   std::cout << "   n-tuple variables:" << std::endl;
@@ -121,21 +142,50 @@ void initBuffer(otreestream& out,
       counter = "n" + prefix;        
       out.add(counter, count);
       std::cout << "      counter: " << counter << std::endl;
-      log << counter << std::endl;
+      log << "int\t" 
+          << counter << "\t"
+          << "n"+objectname << "\t"
+          << 1 
+          << std::endl;
     }
   
   // For every method, create the associated n-tuple variable name
 
+
   for(unsigned i=0; i < var.size(); i++)
     {    
-      std::string method  = var[i].first;
-      std::string varname = var[i].second;
-      varname = boost::regex_replace(varname, stripargs, "");
-      varname = boost::regex_replace(varname, stripptr,  ".");
-      
+      std::string rtype   = var[i].rtype;
+      std::string method  = var[i].method;
+      std::string varname = var[i].varname;
+      if ( debug > 0 )
+        std::cout << "Buffer -"
+                  << " varname(" << varname << ")"
+                  << std::endl;
+
+      // Replace "->", ".", "(", ")" and quotes by "_"
+      varname = boost::regex_replace(varname, stripme,  "_");
+
+      // Replace "___" by "_"
+      varname = boost::regex_replace(varname, strip3_,  "_");
+
+      // Replace "__" by "_"
+      varname = boost::regex_replace(varname, strip2_,  "_");
+
+      // Strip away possible "_" at the end 
+      varname = boost::regex_replace(varname, strip2_atend,  "");
+
+      if ( debug > 0 )
+        std::cout << "        "
+                  << " varname(" << varname << ")"
+                  << std::endl;      
+
       std::string name = prefix + "." + varname;
 
-      log << name << std::endl;
+      log << rtype << "\t" 
+          << name  << "\t"
+          << objectname + "_" + varname << "\t"
+          << maxcount 
+          << std::endl;
         
       if ( !singleton ) name += "[" + counter + "]";
       
@@ -146,7 +196,7 @@ void initBuffer(otreestream& out,
                 << std::endl
                 << "\t\t" << GREEN << method << BLACK << std::endl;
     }
-  
+
   // Add variables to output tree. This must be done after all
   // variables have been defined, because it is only then that their
   // addresses are guaranteed to be stable.
@@ -159,6 +209,39 @@ void initBuffer(otreestream& out,
 // Function to fill a Buffer
 
 template <typename X, typename Y>
+void callMethods(int j, 
+                 const X& object, 
+                 std::vector<Variable<Y> >& variable, 
+                 int debug)
+{
+  for(unsigned i=0; i < variable.size(); i++)
+    {
+      if ( debug > 0 ) 
+        std::cout << RED 
+                  << "\t" << j << "\tcall: " 
+                  << BLACK
+                  << variable[i].fname << std::endl;
+      try
+        {
+          variable[i].value[j] = variable[i].function(object);
+        }
+      catch (cms::Exception& e)
+        {
+          throw cms::Exception("BufferFillFailure",
+                               "failed on call to \"" + 
+                               RED + 
+                               variable[i].fname+"\"\n" +
+                               GREEN +
+                               "thou lump of foul deformity..." 
+                               + BLACK, e);
+        }
+      if ( debug > 0 ) 
+        std::cout << "\t\t\tvalue = " 
+                  << variable[i].value[j] << std::endl;
+    }
+}
+
+template <typename X, typename Y>
 bool fillBuffer(const edm::Event& event,
                 otreestream& out,  
                 std::string& label,
@@ -169,7 +252,9 @@ bool fillBuffer(const edm::Event& event,
                 int&  debug,
                 int&  count,
                 std::string& message,
-                std::vector<Variable<Y> >& variable)
+                std::vector<Variable<Y> >& variable,
+                bool copy,
+                bool isruninfo)
 {
   if ( debug > 0 ) 
     std::cout << RED + "Begin Buffer::fill " + BLACK + 
@@ -177,17 +262,28 @@ bool fillBuffer(const edm::Event& event,
               << RED 
               << boost::python::type_id<X>().name() << BLACK 
               << std::endl;
+
+  // Cache current event
   
+  CurrentEvent::instance().set(event);
+
   count = 0; // reset count, just in case we have to bail out
   message = "";
 
   if ( singleton )
     {
+      // We have a single instance of this object
+
       edm::Handle<X> handle;
       try
         {
           if ( label2 == "" )
-            event.getByLabel(label1, handle);
+            {
+              if ( isruninfo )
+                event.getRun().getByLabel(label1, handle);
+              else
+                event.getByLabel(label1, handle);
+            }
           else
             event.getByLabel(label1, label2, handle);
         }
@@ -215,29 +311,26 @@ bool fillBuffer(const edm::Event& event,
                              + BLACK);
 
       // extract datum for each variable
-        
-      const X& object = *handle;
 
-      for(unsigned i=0; i < variable.size(); i++)
+      // Note: If X differs from Y, we need to copy X into Y before calling
+      // its methods. X can differ from Y if Y is a user-defined class that
+      // inherits from X. See userplugins.h.
+      
+      if ( copy )
         {
-          try
-            {
-              variable[i].value[0] = variable[i].function(object);
-            }
-          catch (cms::Exception& e)
-            {
-              throw cms::Exception("\nBufferFillFailure",
-                                   "failed on call to \"" + 
-                                   RED + 
-                                   variable[i].fname + "\"\n" +
-                                   GREEN +
-                                   "thou lump of foul deformity..." 
-                                   + BLACK, e);
-            }
-          }
+          const Y object(*handle);
+          callMethods(0, object, variable, debug);
+        }
+      else
+        {
+          const X& object = *handle;
+          callMethods(0, object, variable, debug);
+        }
     }
   else
     {
+      // We have multiple instances of this object
+
       edm::Handle< edm::View<X> > handle;
       try 
         {
@@ -268,43 +361,34 @@ bool fillBuffer(const edm::Event& event,
                              BLACK);
 
       // update data count. Use the smaller of count and maxcount.
+
       count = (int)handle->size() < maxcount ? handle->size() : maxcount;
       
       // extract datum for each variable
       
       for(int j=0; j < count; j++)
         {
-          const X& object = (*handle)[j];
-          
-          for(unsigned i=0; i < variable.size(); i++)
+          // extract datum for each variable
+      
+          if ( copy )
             {
-              if ( debug > 0 ) 
-                std::cout << RED +"\t" << j << "\tcall: " + BLACK
-                          << variable[i].fname << std::endl;
-              try
-                {
-                  variable[i].value[j] = variable[i].function(object);
-                }
-              catch (cms::Exception& e)
-                {
-                  throw cms::Exception("BufferFillFailure",
-                                       "failed on call to \"" + 
-                                       RED + 
-                                       variable[i].fname+"\"\n" +
-                                       GREEN +
-                                       "thou lump of foul deformity..." 
-                                       + BLACK, e);
-                }
-            } 
+              const Y object((*handle)[j]);
+              callMethods(j, object, variable, debug);
+            }
+          else
+            {
+              const X& object = (*handle)[j];
+              callMethods(j, object, variable, debug);
+            }
         }
     }
   
   if ( debug > 0 ) std::cout << RED + "End Buffer::fill " + BLACK + 
     "objects of type: " 
-                              << RED  
-                              << boost::python::type_id<X>().name() 
-                              << BLACK 
-                              << std::endl; 
+                             << RED  
+                             << boost::python::type_id<Y>().name() 
+                             << BLACK 
+                             << std::endl; 
   return true;
 }
 
@@ -365,6 +449,14 @@ struct Buffer  : public BufferThing
     singleton_ = maxcount == 1;
     debug_  = debug;
 
+    // Check for RunInfo classes. Data for these classes are extracted
+    // using the getRun() method of the event object
+
+    boost::regex isruninfo("RunInfo");
+    boost::smatch match;
+    std::string classname = boost::python::type_id<X>().name();
+    isruninfo_ = boost::regex_search(classname, match, isruninfo); 
+
     initBuffer<X>(out,
                   label_,
                   label1_,
@@ -394,7 +486,9 @@ struct Buffer  : public BufferThing
                             debug_,
                             count_,
                             message_,
-                            variable_);
+                            variable_,
+                            false,
+                            isruninfo_);
   }
   
   std::string& message() { return message_; }
@@ -414,6 +508,7 @@ private:
   int  count_;
   std::string message_;
   std::vector<Variable<X> > variable_;
+  bool isruninfo_;
 };
 
 
@@ -465,6 +560,20 @@ struct UserBuffer  : public BufferThing
     singleton_ = maxcount == 1;
     debug_  = debug;
 
+    // Decide whether to copy X to Y
+
+    copy_   
+      =  boost::python::type_id<X>().name() 
+      != boost::python::type_id<Y>().name();
+
+    // Check for RunInfo classes. Data for these classes are extracted
+    // using the getRun() method of the event object
+
+    boost::regex isruninfo("RunInfo");
+    boost::smatch match;
+    std::string classname = boost::python::type_id<X>().name();
+    isruninfo_ = boost::regex_search(classname, match, isruninfo); 
+
     initBuffer<Y>(out,
                   label_,
                   label1_,
@@ -494,12 +603,14 @@ struct UserBuffer  : public BufferThing
                             debug_,
                             count_,
                             message_,
-                            variable_);
+                            variable_,
+                            copy_,
+                            isruninfo_);
   }
   
   std::string& message() { return message_; }
 
-  std::string name() { return boost::python::type_id<X>().name(); }
+  std::string name() { return boost::python::type_id<Y>().name(); }
 
 private:
   otreestream* out_;  
@@ -514,6 +625,8 @@ private:
   int  count_;
   std::string message_;
   std::vector<Variable<Y> > variable_;
+  bool copy_;
+  bool isruninfo_;
 };
 
 #endif

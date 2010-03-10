@@ -35,9 +35,9 @@ cms.EDAnalyzer("Mkntuple",
                cms.untracked.
                vstring(
     "recoBeamSpot",
-	"patJet",
     "patMuon",
-    "recoGenParticle"
+    "recoGenParticle",
+	"GenMother"
     ),
 			   #----------------------------------------------------------
 			   # Format of 1st line:
@@ -49,20 +49,11 @@ cms.EDAnalyzer("Mkntuple",
                recoBeamSpot =
                cms.untracked.
                vstring(
-	"recoBeamSpot                    offlineBeamSpot                   1",
+    "recoBeamSpot                    offlineBeamSpot                   1",
     #---------------------------------------------------------------------
     " double   x0()",
     " double   y0()",
     " double   z0()"
-    ),
-
-               patJet =
-               cms.untracked.
-               vstring(
-	"patJet                          cleanLayer1JetsAK5              500",
-    #---------------------------------------------------------------------
-    ' float   bDiscriminator("trackCountingHighEffBJetTags")  highbtag',
-	' float   bDiscriminator("simpleSecondaryVertexBJetTags") vtxbtag'
     ),
                patMuon =
                cms.untracked.
@@ -78,7 +69,6 @@ cms.EDAnalyzer("Mkntuple",
     " double   pt()",
     "  float   caloIso()",
     "  float   ecalIso()",
-	# It is possible to call the following, so long as the 2nd method is simple
     " double   ecalIsoDeposit()->candEnergy()",
     "  float   hcalIso()",
     "  float   trackIso()",
@@ -87,25 +77,34 @@ cms.EDAnalyzer("Mkntuple",
     "   bool   isStandAloneMuon()",
     "   bool   isTrackerMuon()"
     ),
-               recoGenParticle =
+
+			   recoGenParticle =
                cms.untracked.
                vstring(
-    "recoGenParticle                 genParticles                     100",
+    "recoGenParticle                 genParticles                    1000",
     #---------------------------------------------------------------------
     "    int   charge()",
-    " double   energy()",
-    " double   et()",
-    " double   eta()",
-    " double   p()",
-    " double   phi()",
-    " double   pt()",
-    " double   px()",
-    " double   py()",
-    " double   pz()",
-    " double   mass()",
     "    int   pdgId()",
-    "    int   status()"
-    )
+    "    int   status()",
+    " double   pt()",
+    " double   eta()",
+    " double   phi()",
+    " double   mass()"
+    ),
+
+               GenMother =
+               cms.untracked.
+               vstring(
+    "GenMother                        genParticles                   1000",
+    #---------------------------------------------------------------------
+    "    int   charge()",
+    "    int   pdgId()",
+    "    int   status()",
+    " double   pt()",
+    " double   eta()",
+    " double   phi()",
+    " double   mass()"
+    )			   
                )
 
 process.p = cms.Path(process.demo)

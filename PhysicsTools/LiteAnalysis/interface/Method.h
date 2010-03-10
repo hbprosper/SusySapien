@@ -6,7 +6,7 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
-// $Id: Method.h,v 1.2 2010/02/16 03:07:01 prosper Exp $
+// $Id: Method.h,v 1.3 2010/02/19 05:09:40 prosper Exp $
 //
 // If using Python, include its header first to avoid annoying compiler
 // complaints.
@@ -101,7 +101,7 @@ struct Method
         // Command to set address of object
         char cmd[1024];
 
-        sprintf(cmd, "%s* o = (%s*)0x%s", 
+        sprintf(cmd, "gROOT->Reset(); %s* o = (%s*)0x%s", 
                 classname_.c_str(), classname_.c_str(), "%x");
         setAddress_ = std::string(cmd);
 
@@ -268,6 +268,7 @@ struct Method
   }
   
 private:
+
   std::string expression_;
   std::string expression1_;
   std::string expression2_;

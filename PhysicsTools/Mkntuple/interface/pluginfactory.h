@@ -9,7 +9,7 @@
 */
 //
 // Original Author:  HBP
-// $Id: pluginfactory.h,v 1.3 2010/01/20 04:57:22 prosper Exp $
+// $Id: pluginfactory.h,v 1.4 2010/02/14 04:21:46 prosper Exp $
 //
 //
 
@@ -36,7 +36,21 @@
 // to fill() method in plugins.cc.
 //
 
-typedef std::pair<std::string, std::string> VariableDescriptor;
+struct VariableDescriptor
+{
+  VariableDescriptor(std::string r, std::string m, std::string v)
+    : rtype(r),
+      method(m),
+      varname(v)
+  {}
+
+  ~VariableDescriptor() {}
+
+  std::string rtype;
+  std::string method;
+  std::string varname;
+};
+
 
 ///
 struct BufferThing

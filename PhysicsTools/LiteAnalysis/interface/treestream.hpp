@@ -40,7 +40,7 @@
 //          14-Jul-2005 Allow for arrays
 //          13-Aug-2005 Tidy up
 //          11-Aug-2007 Add ls() method as a proxy for print
-//$Revision: 1.3 $
+//$Revision: 1.4 $
 //----------------------------------------------------------------------------
 #include <vector>
 #include <string>
@@ -240,7 +240,6 @@ class itreestream
 
   ///
   void   select(std::string namen, std::vector<unsigned short>& data);
-
 
   /** Read tree with ordinal value entry. 
       Return the ordinal value of the

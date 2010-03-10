@@ -1,8 +1,16 @@
 // ----------------------------------------------------------------------------
-// Created: Sun Feb  7 20:09:59 2010 by mkplugins.py
-// $Revision: 1.1 $
+// Created: Tue Mar  9 14:45:05 2010 by mkplugins.py
+// $Revision: 1.5 $
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/Buffer.h"
+
+#include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
+DEFINE_EDM_PLUGIN(BufferFactory, Buffer<GenEventInfoProduct>,
+                  "GenEventInfoProduct");
+
+#include "SimDataFormats/GeneratorProducts/interface/GenRunInfoProduct.h"
+DEFINE_EDM_PLUGIN(BufferFactory, Buffer<GenRunInfoProduct>,
+                  "GenRunInfoProduct");
 
 #include "DataFormats/METReco/interface/HcalNoiseSummary.h"
 DEFINE_EDM_PLUGIN(BufferFactory, Buffer<HcalNoiseSummary>,
@@ -12,6 +20,14 @@ DEFINE_EDM_PLUGIN(BufferFactory, Buffer<HcalNoiseSummary>,
 DEFINE_EDM_PLUGIN(BufferFactory, Buffer<L1AcceptBunchCrossing>,
                   "L1AcceptBunchCrossing");
 
+#include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerObjectMapRecord.h"
+DEFINE_EDM_PLUGIN(BufferFactory, Buffer<L1GlobalTriggerObjectMapRecord>,
+                  "L1GlobalTriggerObjectMapRecord");
+
+#include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerReadoutRecord.h"
+DEFINE_EDM_PLUGIN(BufferFactory, Buffer<L1GlobalTriggerReadoutRecord>,
+                  "L1GlobalTriggerReadoutRecord");
+
 #include "DataFormats/Scalers/interface/L1TriggerScalers.h"
 DEFINE_EDM_PLUGIN(BufferFactory, Buffer<L1TriggerScalers>,
                   "L1TriggerScalers");
@@ -20,9 +36,21 @@ DEFINE_EDM_PLUGIN(BufferFactory, Buffer<L1TriggerScalers>,
 DEFINE_EDM_PLUGIN(BufferFactory, Buffer<LumiScalers>,
                   "LumiScalers");
 
+#include "SimDataFormats/Track/interface/SimTrack.h"
+DEFINE_EDM_PLUGIN(BufferFactory, Buffer<SimTrack>,
+                  "SimTrack");
+
+#include "SimDataFormats/Vertex/interface/SimVertex.h"
+DEFINE_EDM_PLUGIN(BufferFactory, Buffer<SimVertex>,
+                  "SimVertex");
+
 #include "DataFormats/TrajectorySeed/interface/TrajectorySeed.h"
 DEFINE_EDM_PLUGIN(BufferFactory, Buffer<TrajectorySeed>,
                   "TrajectorySeed");
+
+#include "SimDataFormats/GeneratorProducts/interface/HepMCProduct.h"
+DEFINE_EDM_PLUGIN(BufferFactory, Buffer<edm::HepMCProduct>,
+                  "edmHepMCProduct");
 
 #include "DataFormats/PatCandidates/interface/Electron.h"
 DEFINE_EDM_PLUGIN(BufferFactory, Buffer<pat::Electron>,
@@ -227,4 +255,3 @@ DEFINE_EDM_PLUGIN(BufferFactory, Buffer<reco::VertexCompositeCandidate>,
 #include "DataFormats/HLTReco/interface/TriggerEvent.h"
 DEFINE_EDM_PLUGIN(BufferFactory, Buffer<trigger::TriggerEvent>,
                   "triggerTriggerEvent");
-

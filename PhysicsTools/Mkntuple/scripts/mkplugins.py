@@ -3,7 +3,7 @@
 # create plugins.cc
 # Created: 05-Jan-2010 Harrison B. Prosper
 # Updated: 15-Feb-2010 HBP - run make docs in needed
-#$Revision: 1.4 $
+#$Revision: 1.5 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -11,20 +11,14 @@ from time import *
 from PhysicsTools.LiteAnalysis.Lib import nameonly
 
 # Add map directory to PYTHONPATH
-mapdir = "%s/map" % os.environ["PWD"]
-sys.path.append(mapdir)
-
-# Try to load class to header map
+mapfile = "%s/map/classmap.py" % os.environ["PWD"]
 
 try:
-	from classmap import ClassToHeaderMap
+	execfile(mapfile)
 except:
-	os.system("mkdocs.py")
-	try:
-		from classmap import ClassToHeaderMap
-	except:
-		print "\n\t**unable to load classmap.py"
-		sys.exit(0)
+	print "\n\t**unable to load classmap.py"\
+		  "\t** maybe you need to run mkdocs.py"
+	sys.exit(0)
 #------------------------------------------------------------------------------
 if not os.environ.has_key("CMSSW_BASE"):
 	print "\t**you must first set up CMSSW"
@@ -83,7 +77,7 @@ names = {'time': ctime(time())}
 out  = open("plugins.cc","w")
 record = '''// ----------------------------------------------------------------------------
 // Created: %(time)s by mkplugins.py
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/Buffer.h"
 '''

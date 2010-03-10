@@ -3,7 +3,7 @@
 // Purpose: Simple interface to GenParticles
 // Created: 16-Feb-2010 Harrison B. Prosper
 //          Based on code written in 2005
-//$Revision: 1.1 $
+//$Revision: 1.2 $
 //----------------------------------------------------------------------------
 #include <cmath>
 #include <iostream>
@@ -36,7 +36,7 @@ namespace {
 }
 
 gEvent::gEvent()
-  : nhep         (0),
+  : nhep(0),
 
     mother(std::vector<int>(MAXSIZE, 0)),
 
@@ -49,14 +49,15 @@ gEvent::gEvent()
     eta    (std::vector<float>(MAXSIZE, 0)),
     phi    (std::vector<float>(MAXSIZE, 0)),
     mass   (std::vector<float>(MAXSIZE, 0)),
-    charge(std::vector<float>(MAXSIZE,  0)),
+    charge (std::vector<float>(MAXSIZE,  0)),
   
     motherpdgId (std::vector<int>(MAXSIZE, 0)),
     motherstatus(std::vector<int>(MAXSIZE, 0)),
     motherpt    (std::vector<float>(MAXSIZE, 0)),
     mothereta   (std::vector<float>(MAXSIZE, 0)),
     motherphi   (std::vector<float>(MAXSIZE, 0)),
-    mothermass  (std::vector<float>(MAXSIZE, 0))
+    mothermass  (std::vector<float>(MAXSIZE, 0)),
+    mothercharge(std::vector<float>(MAXSIZE, 0))
 {}
 
 gEvent::~gEvent() {}

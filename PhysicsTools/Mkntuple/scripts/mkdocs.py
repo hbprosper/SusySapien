@@ -5,7 +5,8 @@
 #              accessor methods
 # Created:     23-Jan-2010 Harrison B. Prosper
 # Updated:     15-Feb-2010 HBP, make it possible to be run anywhere
-#$Revision: 1.2 $
+#              09-Mar-2010 HBP, add search of SimDataFormats
+#$Revision: 1.1 $
 #---------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
@@ -113,22 +114,22 @@ struct       = '(?P<struct>^[ \t]*struct'   \
 # Compiled regular expressions
 #===========================================================================
 
-# Packages to ignore
+# subsystems to ignore
 
-skippackage = re.compile('Alignment|'\
-						 'CLHEP|'\
-						 'Common|'\
-						 'FWLite|'\
-						 'Geometry|'\
-						 'Histograms|'\
-						 'Math|'\
-						 'Provenance|'\
-						 'Road|'\
-						 'StdDict|'\
-						 'Streamer|'\
-						 'TestObj|'\
-						 'VZero|'\
-						 'Wrapped')
+skipsubsystem = re.compile('Alignment|'\
+						   'CLHEP|'\
+						   'Common|'\
+						   'FWLite|'\
+						   'Geometry|'\
+						   'Histograms|'\
+						   'Math|'\
+						   'Provenance|'\
+						   'Road|'\
+						   'StdDict|'\
+						   'Streamer|'\
+						   'TestObj|'\
+						   'VZero|'\
+						   'Wrapped')
 
 skipheader = re.compile('(classes|Fwd|print).h$')
 
@@ -798,17 +799,22 @@ def main():
 			filelist = map(strip, open(HEADERFILELIST))
 			
 		else:
-			cmd = "ls -1 $CMSSW_RELEASE_BASE/src/DataFormats/"
-			packages = map(strip, os.popen(cmd).readlines())
+
 			filelist = []
-			for package in packages:
-				if skippackage.match(package) != None: continue
+			for package in ["DataFormats", "SimDataFormats"]:
 				
-				file =  "%sDataFormats/%s/interface/*.h" % (BASE, package)
-				cmd = 'find %s' % file
-				print "\tscan package: %s" % package
-				hlist = map(strip, os.popen(cmd).readlines())
-				filelist += hlist
+				cmd = "ls -1 $CMSSW_RELEASE_BASE/src/%s/" % package
+				
+				subsystems = map(strip, os.popen(cmd).readlines())
+
+				for subsystem in subsystems:
+					if skipsubsystem.match(subsystem) != None: continue
+
+					file = "%s%s/%s/interface/*.h" % (BASE, package, subsystem)
+					cmd  = "find %s" % file
+					print "\tscan package: %s/%s" % (package, subsystem)
+					hlist = map(strip, os.popen(cmd).readlines())
+					filelist += hlist
 
 	# Filter headers
 
@@ -818,7 +824,7 @@ def main():
 	# Loop over header files to be scanned
 	#-------------------------------------------------
 
-	print "mkdocs.py $Revision: 1.2 $\n"
+	print "mkdocs.py $Revision: 1.1 $\n"
 
 	# Make sure html and txt directories exist
 	
@@ -830,7 +836,7 @@ def main():
 
 		# Create full pathname to header
 		
-		if file[0:5] == "DataF": file = BASE + file
+		if file[0:8] in ["DataForm", "SimDataF"]: file = BASE + file
 		if not os.path.exists(file):
 			print "** file %s not found" % file
 			continue

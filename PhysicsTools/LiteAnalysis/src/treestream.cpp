@@ -1386,7 +1386,7 @@ itreestream::_select(string namen, void* address, int maxsize, char srctype,
     }
   else
     {
-      fatal("itreestream - branch " + namen + " not found");
+      warning("itreestream - branch " + namen + " not found");
       _statuscode = kBADBRANCH;
     }
 }  

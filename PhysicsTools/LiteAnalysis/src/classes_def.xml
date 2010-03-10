@@ -5,6 +5,7 @@
    <class name="std::vector<TH1F*>"/>
    <class name="std::vector<kit::MatchedPair>"/>
    <class name="std::vector<kit::PtThing>"/>
+   <class name="std::vector<bool>"/>
    <class name="std::map<std::string, std::vector<float>* >"/>
    <class name="std::map<std::string, std::vector<float> >"/>
    <class name="std::map<std::string, std::vector<double> >"/>
