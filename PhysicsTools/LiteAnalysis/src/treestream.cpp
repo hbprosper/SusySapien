@@ -38,7 +38,7 @@
 //          30-Nov-2005 HBP fix counter loading bug
 //          31-Oct-2009 HBP allow use of regexes in branch names
 //                      fix looping bug so operator[] works for Python
-//$Revision: 1.5 $
+//$Revision: 1.6 $
 //----------------------------------------------------------------------------
 #ifdef PROJECT_NAME
 #include <boost/regex.hpp>
@@ -52,6 +52,7 @@
 #include <algorithm>
 #include <typeinfo>
 #include <cctype>
+#include <cassert>
 #include <glob.h>
 
 #include "TList.h"
