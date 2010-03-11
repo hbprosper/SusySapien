@@ -40,7 +40,7 @@
 //          14-Jul-2005 Allow for arrays
 //          13-Aug-2005 Tidy up
 //          11-Aug-2007 Add ls() method as a proxy for print
-//$Revision: 1.4 $
+//$Revision: 1.5 $
 //----------------------------------------------------------------------------
 #include <vector>
 #include <string>
@@ -288,8 +288,8 @@ class itreestream
 
   void   ls(std::ostream& out=std::cout) { print(out); }
 
-  /// Proxy for read.
-  int    operator[](int entry);
+//   /// Proxy for read.
+//   int    operator[](int entry);
 
   ///
   TTree* tree();

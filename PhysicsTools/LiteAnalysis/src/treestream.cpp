@@ -38,12 +38,11 @@
 //          30-Nov-2005 HBP fix counter loading bug
 //          31-Oct-2009 HBP allow use of regexes in branch names
 //                      fix looping bug so operator[] works for Python
-//$Revision: 1.3 $
+//$Revision: 1.5 $
 //----------------------------------------------------------------------------
-#include <Python.h>
-#include <boost/python/errors.hpp>
-#include <boost/python/type_id.hpp>
+#ifdef PROJECT_NAME
 #include <boost/regex.hpp>
+#endif
 
 #include <map>
 #include <vector>
@@ -63,8 +62,12 @@
 #include "TTree.h"
 #include "TClass.h"
 #include "TChain.h"
+
+#ifdef PROJECT_NAME
 #include "PhysicsTools/LiteAnalysis/interface/treestream.hpp"
-#include "PhysicsTools/LiteAnalysis/interface/kit.h"
+#else
+#include "treestream.hpp"
+#endif
 //----------------------------------------------------------------------------
 
 #ifdef __WITH_CINT__
@@ -104,6 +107,18 @@ namespace
     if ( DEBUGLEVEL >= level ) cout << message << endl;
   }
 
+  void split(string str, vector<string>& vstr)
+  {
+    vstr.clear();
+    istringstream stream(str);
+    while ( stream )
+      {
+        string str;
+        stream >> str;
+      if ( stream ) vstr.push_back(str);
+      }
+  }
+ 
   // For given leaf, find maximum number of items.
   int getmaxsize(TLeaf* leaf)
   {
@@ -664,7 +679,7 @@ itreestream::itreestream(string filename, int bufsize)
     selecteddata(SelectedData())
 {
   vector<string> fname;
-  kit::split(filename, fname);
+  split(filename, fname);
   _open(fname);
 }
 
@@ -696,7 +711,7 @@ itreestream::itreestream(string filename, string treename, int bufsize)
     selecteddata(SelectedData())
 {
   vector<string> fname;
-  kit::split(filename, fname);
+  split(filename, fname);
   _open(fname, treename);
 }
 
@@ -827,8 +842,9 @@ itreestream::_open(vector<string>& fname, string treename)
   // ----------------------------------------
   // Update tree pointer
   // ----------------------------------------
-  _tree = _chain;
+  _tree = _chain;  
   
+
   // ----------------------------------------
   // Get all branches.
   // ----------------------------------------
@@ -1120,8 +1136,6 @@ itreestream::get(string namen)
 int 
 itreestream::read(int entry)
 {
-  //DEBUGLEVEL = entry < 5 ? 1 : 0;
-
   _statuscode = kSUCCESS;
   _entry = entry;
 
@@ -1137,8 +1151,9 @@ itreestream::read(int entry)
 
   if ( _chain->GetTreeNumber() != _current) _update();
 
-  if ( DEBUGLEVEL > 0 ) cout << "entry(" << entry << ")"
-			     << "localentry(" << localentry << ")" << endl;
+  if ( DEBUGLEVEL > 0 ) 
+    cout << "entry(" << entry << ")"
+         << "localentry(" << localentry << ")" << endl;
 
   // Copy data into external buffers
 
@@ -1274,6 +1289,8 @@ itreestream::_select(string namen, void* address, int maxsize, char srctype,
          << " isvector: " << isvector
          << endl;
 
+#ifdef PROJECT_NAME
+
   // If this is a regular expression, expand to full name of branch
   
   boost::regex e("[+&*?<>=()]|[[][^0-9]+[]]");
@@ -1325,7 +1342,8 @@ itreestream::_select(string namen, void* address, int maxsize, char srctype,
                 " is not unique:" + rec); 
         }
     }
-  
+ #endif
+ 
   if ( DEBUGLEVEL > 0 )
     cout << "_select - NAMEN(" << namen << ")" << endl;
 
@@ -1398,29 +1416,22 @@ itreestream::_select(string namen, void* address, int maxsize, char srctype,
 void 
 itreestream::_update()
 {
-  _statuscode = kSUCCESS;
-
-  DBUG("\nupdate branch pointers", 1);
- 
+  _statuscode = kSUCCESS; 
   _current = _chain->GetTreeNumber();
 
   SelectedData::iterator it;
   for(it=selecteddata.begin(); it != selecteddata.end(); it++)
     {
       Field* field = it->second;
-      string name  = string(field->branch->GetName());
-     
-      // Update branch and leaf pointers in field object
-    
+      if ( field == 0 )  fatal("update - zero field pointer");
+
+      string name = field->branchname;
+      
       TBranch* branch = _tree->GetBranch(name.c_str());
       if ( branch == 0 ) fatal("update - pointer is zero for branch " + name);
 
       TLeaf* leaf = branch->GetLeaf(field->leafname.c_str());
       if ( leaf == 0 ) fatal(string("leaf ") + field->leafname + " not found");
-
-      string message("  update " + name + " " + field->leafname + 
-		     string(" iotype ") + field->iotype);
-      DBUG(message, 1);
 
       field->branch = branch;
       field->leaf   = leaf;
@@ -1440,17 +1451,17 @@ itreestream::maximum(string name)
 bool
 itreestream::present(string name) { return data.find(name) != data.end(); }
 
-int 
-itreestream::operator[](int entry) 
-{
-  int ev = read(entry);
-  if ( ev < 0 )
-    {
-      PyErr_SetString(PyExc_IndexError, "index out of range");
-      boost::python::throw_error_already_set(); // bail out
-    } 
-  return ev; 
-}
+// int 
+// itreestream::operator[](int entry) 
+// {
+//   int ev = read(entry);
+//   if ( ev < 0 )
+//     {
+//       PyErr_SetString(PyExc_IndexError, "index out of range");
+//       boost::python::throw_error_already_set(); // bail out
+//     } 
+//   return ev; 
+// }
 
 std::ostream& operator<<(std::ostream& os, itreestream& tuple)
 {

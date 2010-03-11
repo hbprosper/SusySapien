@@ -19,9 +19,9 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Fri Apr 04 2008
-// $Id: kit.h,v 1.2 2010/01/16 04:08:18 prosper Exp $
+// $Id: kit.h,v 1.3 2010/02/08 03:22:05 prosper Exp $
 //
-//$Revision: 1.2 $
+//$Revision: 1.3 $
 //-----------------------------------------------------------------------------
 #include <iostream>
 #include <fstream>
@@ -35,12 +35,10 @@
 #include "DataFormats/EgammaReco/interface/BasicCluster.h"
 #include "DataFormats/EgammaReco/interface/SuperCluster.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
-// #include "CommonTools/Utils/src/ExpressionPtr.h"
-// #include "CommonTools/Utils/src/ExpressionBase.h"
-// #include "CommonTools/Utils/interface/expressionParser.h"
 #include "HepMC/GenEvent.h"
 #include "HepMC/GenParticle.h"
 #include "TLorentzVector.h"
+#include "TDirectory.h"
 #include "TH1F.h"
 #include "TH2F.h"
 #include "TCanvas.h"
@@ -579,7 +577,11 @@ struct kit
   static
   TH1F*               divideHistograms(TH1F* N, TH1F* D, std::string ytitle);
 
-  
+  ///
+  static
+  void                saveHistograms(std::string histfilename, 
+                                     TDirectory* dir=gDirectory, 
+                                     TFile* hfile=0, int depth=0);
   ///
   static
   TCanvas*            canvas(std::string name, 

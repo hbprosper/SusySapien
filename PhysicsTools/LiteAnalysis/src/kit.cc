@@ -15,7 +15,7 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Wed Jun 20 19:53:47 EDT 2007
 //         Updated:  Sat Oct 25 2008 - make matchInDeltaR saner
-// $Id: kit.cc,v 1.3 2010/02/08 03:22:06 prosper Exp $
+// $Id: kit.cc,v 1.4 2010/02/16 02:24:57 prosper Exp $
 //
 //
 //-----------------------------------------------------------------------------
@@ -34,6 +34,10 @@
 #include "TROOT.h"
 #include "TSystem.h"
 #include "TString.h"
+#include "TList.h"
+#include "TClass.h"
+#include "TIterator.h"
+#include "TFile.h"
 #include "TInterpreter.h"
 #include "CLHEP/Random/RandGamma.h"
 #include "HepMC/SimpleVector.h"
@@ -1220,17 +1224,17 @@ kit::table(vector<reco::GenParticle>& vp)
       int maxcount = 5;
       string delim("\t\t\t");
       for(unsigned i=0; i < d.size(); i++)
-	{
-	  os << delim << kit::particleName(d[i]).substr(0,10);
-	  delim = " ";
-	  count++;
-	  if (count == maxcount)
-	    {
-	      count = 0;
-	      os << endl;
-	      delim = "\t\t\t";
-	    }
-	}
+        {
+          os << delim << kit::particleName(d[i]).substr(0,10);
+          delim = " ";
+          count++;
+          if (count == maxcount)
+            {
+              count = 0;
+              os << endl;
+              delim = "\t\t\t";
+            }
+        }
       os << endl;
     }
   return os.str();
@@ -1254,8 +1258,8 @@ kit::tree(reco::GenParticle& p,
 {
   std::ostringstream os;
   kit::tree(os, 
-	    p,
-	    printlevel, maxdepth, depth);
+            p,
+            printlevel, maxdepth, depth);
   return os.str();
 }
 
@@ -1348,15 +1352,15 @@ kit::tree(int    index,
 //---------------------------------------------------------------------------
 void 
 kit::tree(std::ostream& stream,
-	  int    index,
-	  int    nhep,
-	  int*   pdgid,
-	  int*   status,
-	  double p[][5],
-	  int    d[][2],
-	  int           printlevel,
-	  int           maxdepth,
-	  int           depth)
+          int    index,
+          int    nhep,
+          int*   pdgid,
+          int*   status,
+          double p[][5],
+          int    d[][2],
+          int           printlevel,
+          int           maxdepth,
+          int           depth)
 {
   if ( index >  nhep - 1 ) return;
   if ( depth >  (maxdepth <= 0 ? MAXDEPTH : maxdepth) ) return;    
@@ -1579,6 +1583,64 @@ kit::divideHistograms(TH1F* N, TH1F* D, string ytitle)
     }
   return h;
 }
+
+
+
+void
+kit::saveHistograms(string histfilename, 
+                    TDirectory* dir, TFile* hfile, int depth)
+{
+  // Create output file
+
+  if ( depth == 0 )
+    {
+      cout << "Saving histograms to " << histfilename << endl;
+      hfile = new TFile(histfilename.c_str(), "RECREATE");
+    }
+
+  // Important!
+  depth++;
+  // Check recursion depth 
+  if ( depth > 100 )
+    {
+      cout << "saveHistograms is lost in trees!" << endl;
+      exit(0);
+    }
+  string tab(2*depth, ' ');
+
+  // Loop over all histograms
+
+  TList* list = dir->GetList();
+  TListIter* it = (TListIter*)list->MakeIterator();
+
+  while ( TObject* o = it->Next() )
+    {
+      dir->cd();
+      
+      if ( o->IsA()->InheritsFrom("TDirectory") )
+        {
+          TDirectory* d = (TDirectory*)o;
+          cout << tab << "BEGIN " << d->GetName() << endl;
+          kit::saveHistograms(histfilename, d, hfile, depth);
+          cout << tab << "END " << d->GetName() << endl;
+        }
+      // Note: All histograms inherit from TH1
+      else if ( o->IsA()->InheritsFrom("TH1") )
+        {
+          TH1* h = (TH1*)o;
+          cout << tab << o->ClassName() 
+               << "\t" << h->GetName()
+               << "\t" << h->GetTitle()
+               << endl;
+          hfile->cd();
+          h->Write("", TObject::kOverwrite);
+        }
+    } // end of loop over keys
+
+  hfile->Close();
+  delete hfile;
+}
+
 
 TCanvas*
 kit::canvas(string name, int n, int width, int height)

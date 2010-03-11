@@ -1,8 +1,8 @@
 //-----------------------------------------------------------------------------
 // File:        analyzer.cc
 // Description: Analyzer for ntuples created by Mkntuple
-// Created:     Wed Mar 10 08:10:43 2010 by mkntanalyzer.py
-// $Revision:$
+// Created:     Thu Mar 11 12:04:52 2010 by mkntanalyzer.py
+// $Revision: 1.1 $
 //-----------------------------------------------------------------------------
 
 // -- System
@@ -15,69 +15,49 @@
 #include <iomanip>
 #include <fstream>
 
-// -- CMSSW
+#ifdef PROJECT_NAME
 
-#include "FWCore/FWLite/interface/AutoLibraryLoader.h"
+// --- CMSSW
+
 #include "PhysicsTools/LiteAnalysis/interface/treestream.hpp"
-#include "PhysicsTools/LiteAnalysis/interface/kit.h"
+
+#else
+
+#include "treestream.hpp"
+
+#endif
 
 // -- Root
 
 #include "TApplication.h"
+#include "TDirectory.h"
 #include "TCanvas.h"
+#include "TFile.h"
+#include "TKey.h"
 #include "TH1F.h"
 //-----------------------------------------------------------------------------
 using namespace std;
 //-----------------------------------------------------------------------------
-
-// -- Procedures and functions
-
-void
-error(string message)
-{
-  cout << "** error ** " << message << endl;
-  exit(0);
-}
-
-// Read ntuple filenames from file list
-
-vector<string>
-getFilenames(int argc, char** argv)
-{
-  string filelist("filelist.txt");
-  if ( argc > 1 ) filelist = string(argv[1]);
-
-  // Open file list
-  
-  ifstream stream(filelist.c_str());
-  if ( !stream.good() ) error("unable to open file: " + filelist);
-
-  // Get list of ntuple files to be processed
-  
-  vector<string> v;
-  string filename;
-  while ( stream >> filename )
-    if ( kit::strip(filename) != "" ) v.push_back(filename);
-  return v;
-}
-
-//=============================================================================
-
+void           decodeCommandLine(int argc, char** argv, 
+                                 string& filelist, string& histfilename);
+void           error(string message);
+string         strip(string line);
+vector<string> getFilenames(string filelist);
+void           saveHistograms(string histfilename, 
+                              TDirectory* dir=gDirectory, 
+                              TFile* hfile=0, int depth=0);
+//-----------------------------------------------------------------------------
 int main(int argc, char** argv)
 {
-  cout << "enabling autoloader...";
-  AutoLibraryLoader::enable();
-  cout << "done!" << endl;
-  
-  // The root application is needed to make canvases visible during
-  // program execution. If this is not needed, just comment out the following
-  // line
+  // Get file list and histogram filename from command line
 
-  TApplication app("analyzer", &argc, argv);
-  
+  string filelist;
+  string histfilename;
+  decodeCommandLine(argc, argv, filelist, histfilename);
+
   // Get names of ntuple files to be processed and open chain of ntuples
   
-  vector<string> filenames = getFilenames(argc, argv);
+  vector<string> filenames = getFilenames(filelist);
   itreestream stream(filenames, "Events");
   if ( !stream.good() ) error("unable to open ntuple file(s)");
   
@@ -181,7 +161,11 @@ int main(int argc, char** argv)
   //---------------------------------------------------------------------------
   // Book histograms etc.
   //---------------------------------------------------------------------------
-  kit::setStyle();
+  // The root application is needed to make canvases visible during
+  // program execution. If this is not needed, just comment out the following
+  // line
+
+  TApplication app("analyzer", &argc, argv);
 
   //---------------------------------------------------------------------------
   // Loop over events
@@ -191,9 +175,127 @@ int main(int argc, char** argv)
     {
       stream.read(entry);
 
-	  // Find SUSY...
-	  
+	  // Find SUSY...	  
     }
   stream.close();
+
+  saveHistograms(histfilename);
+  
   return 0;
 }
+
+//-----------------------------------------------------------------------------
+// -- Utilities
+//-----------------------------------------------------------------------------
+void
+decodeCommandLine(int argc, char** argv, 
+                  string& filelist, string& histfilename)
+{
+  filelist = string("filelist.txt");
+  if ( argc > 1 ) filelist = string(argv[1]);
+
+  if ( argc > 2 ) 
+    histfilename = string(argv[2]); // 2nd (optional) command line argument
+  else
+    histfilename = string(argv[0]); // default: name of program
+
+  // Make sure extension is ".root"
+  int i = histfilename.rfind(".");
+  if ( i >= 0 ) histfilename = histfilename.substr(0,i);
+  histfilename += ".root";
+}
+
+void
+error(string message)
+{
+  cout << "** error ** " << message << endl;
+  exit(0);
+}
+
+string 
+strip(string line)
+{
+  int l = line.size();
+  if ( l == 0 ) return string("");
+  int n = 0;
+  while (((line[n] == 0)    ||
+	  (line[n] == ' ' ) ||
+	  (line[n] == '\n') ||
+	  (line[n] == '\t')) && n < l) n++;
+  
+  int m = l-1;
+  while (((line[m] == 0)    ||
+	  (line[m] == ' ')  ||
+	  (line[m] == '\n') ||
+	  (line[m] == '\t')) && m > 0) m--;
+  return line.substr(n,m-n+1);
+}
+
+// Read ntuple filenames from file list
+
+vector<string>
+getFilenames(string filelist)
+{
+  ifstream stream(filelist.c_str());
+  if ( !stream.good() ) error("unable to open file: " + filelist);
+
+  // Get list of ntuple files to be processed
+  
+  vector<string> v;
+  string filename;
+  while ( stream >> filename )
+    if ( strip(filename) != "" ) v.push_back(filename);
+  return v;
+}
+
+void
+saveHistograms(string histfilename, 
+               TDirectory* dir, TFile* hfile, int depth)
+{
+  // Create output file
+
+  if ( depth == 0 )
+    {
+      cout << "Saving histograms to " << histfilename << endl;
+      hfile = new TFile(histfilename.c_str(), "RECREATE");
+    }
+
+  // Important!
+  depth++;
+  // Check recursion depth 
+  if ( depth > 100 )error("saveHistograms is lost in trees!");
+  string tab(2*depth, ' ');
+
+  // Loop over all histograms
+
+  TList* list = dir->GetList();
+  TListIter* it = (TListIter*)list->MakeIterator();
+
+  while ( TObject* o = it->Next() )
+    {
+      dir->cd();
+      
+      if ( o->IsA()->InheritsFrom("TDirectory") )
+        {
+          TDirectory* d = (TDirectory*)o;
+          cout << tab << "BEGIN " << d->GetName() << endl;
+          saveHistograms(histfilename, d, hfile, depth);
+          cout << tab << "END " << d->GetName() << endl;
+        }
+      // Note: All histograms inherit from TH1
+      else if ( o->IsA()->InheritsFrom("TH1") )
+        {
+          TH1* h = (TH1*)o;
+          cout << tab  << o->ClassName() 
+               << "\t" << h->GetName()
+               << "\t" << h->GetTitle()
+               << endl;
+          hfile->cd();
+          h->Write("", TObject::kOverwrite);
+        }
+    } // end of loop over keys
+
+  hfile->Close();
+  delete hfile;
+}
+
