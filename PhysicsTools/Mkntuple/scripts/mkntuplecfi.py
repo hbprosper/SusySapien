@@ -6,7 +6,7 @@
 # Updated:     16-Jan-2010 HBP - simplify command line
 #              12-Feb-2010 HBP - Change to single quotes
 #-----------------------------------------------------------------------------
-#$Revision: 1.9 $
+#$Revision: 1.10 $
 #-----------------------------------------------------------------------------
 import sys, os, re, platform
 from ROOT import *
@@ -30,7 +30,7 @@ if not os.environ.has_key("CMSSW_BASE"):
 	sys.exit(0)
 
 BASE = os.environ["PWD"]
-REVISION="$Revision: 1.9 $"
+REVISION="$Revision: 1.10 $"
 rev = split(REVISION)[1]
 VERSION        = \
 """
@@ -97,9 +97,11 @@ stmethods = re.compile(r'energy|et|pt|eta|phi'\
 					   '|px|py|pz|p\('\
 					   '|charge')
 
-isomethods = re.compile(r'.+Iso')
+isomethods= re.compile(r'.+Iso')
 
 ismethods = re.compile(r'is.+')
+
+isRootFile= re.compile(r'[.]root$')
 
 # Strip away namespace, vector< etc.
 stripname = re.compile(r'::|vector\<|\>| ')
@@ -894,6 +896,11 @@ class Gui:
 
 		filename = fdialog.Filename()
 		self.iniDir  = fdialog.IniDir()
+		if isRootFile.search(filename) == None:
+			THelpDialog(self.window,
+						"Warning",
+						"Please select a root file!", 230, 50)
+			return 			
 		self.loadData(filename)
 #---------------------------------------------------------------------------
 	def undo(self):
@@ -1048,8 +1055,11 @@ class Gui:
 		out.write("import FWCore.ParameterSet.Config as cms\n")
 		out.write("demo =\\\n")
 		out.write('cms.EDAnalyzer("Mkntuple",\n')
-		out.write('%sntupleName = cms.untracked.string("ntuple.root"),\n\n' % \
+		out.write('%sntupleName = cms.untracked.string("ntuple.root"),\n' % \
 				  tab)
+		out.write('%sanalyzerName = cms.untracked.string("analyzer.cc"),\n\n' \
+				  % tab)
+		
 		out.write('%sbuffers =\n' % tab)
 		out.write('%scms.untracked.\n' % tab)
 		out.write("%svstring(\n" % tab)

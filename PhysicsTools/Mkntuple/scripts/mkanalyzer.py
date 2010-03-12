@@ -2,7 +2,8 @@
 #------------------------------------------------------------------------------
 # Description: Create ntuple analyzer template
 # Created: 06-Mar-2010 Harrison B. Prosper
-#$Revision: 1.1 $
+# Updated: 12-Mar-2010 HBP - fix appending of .root
+#$Revision: 1.2 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -13,6 +14,20 @@ from PhysicsTools.LiteAnalysis.Lib import nameonly
 if not os.environ.has_key("CMSSW_BASE"):
 	print "\t**you must first set up CMSSW"
 	sys.exit(0)
+
+PACKAGE = "%s/src/PhysicsTools/LiteAnalysis" % os.environ["CMSSW_BASE"]
+TREESTREAM_HPP = "%s/interface/treestream.hpp" % PACKAGE
+TREESTREAM_CPP = "%s/src/treestream.cpp" % PACKAGE
+
+if not os.path.exists(TREESTREAM_HPP):
+	print "\n** error ** - file:\n\t%s\n\t\tNOT found!" % TREESTREAM_HPP
+	sys.exit(0)
+
+if not os.path.exists(TREESTREAM_CPP):
+	print "\n** error ** - file:\n\t%s\n\t\tNOT found!" % TREESTREAM_CPP
+	sys.exit(0)
+	
+# Make sure that we can find treestream etc.
 
 getvno = re.compile(r'[0-9]+$')
 
@@ -34,7 +49,7 @@ TEMPLATE =\
 // File:        %(name)s
 // Description: Analyzer for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 //-----------------------------------------------------------------------------
 
 // -- System
@@ -73,6 +88,7 @@ using namespace std;
 void           decodeCommandLine(int argc, char** argv, 
                                  string& filelist, string& histfilename);
 void           error(string message);
+string         nameonly(string filename);
 string         strip(string line);
 vector<string> getFilenames(string filelist);
 void           saveHistograms(string histfilename, 
@@ -145,8 +161,7 @@ decodeCommandLine(int argc, char** argv,
     histfilename = string(argv[0]); // default: name of program
 
   // Make sure extension is ".root"
-  int i = histfilename.rfind(".");
-  if ( i >= 0 ) histfilename = histfilename.substr(0,i);
+  histfilename = nameonly(histfilename);
   histfilename += ".root";
 }
 
@@ -174,6 +189,15 @@ strip(string line)
 	  (line[m] == '\\n') ||
 	  (line[m] == '\\t')) && m > 0) m--;
   return line.substr(n,m-n+1);
+}
+
+string
+nameonly(string filename)
+{
+  int i = filename.rfind("/");
+  int j = filename.rfind(".");
+  if ( j < 0 ) j = filename.size();
+  return filename.substr(i+1,j-i-1);
 }
 
 // Read ntuple filenames from file list
@@ -251,7 +275,7 @@ PYTEMPLATE =\
 #  File:        %(name)s
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
-#  $Revision: 1.1 $
+#  $Revision: 1.2 $
 # -----------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
@@ -275,7 +299,6 @@ def decodeCommandLine():
 	# Make sure extension is ".root"
 	histfilename = os.path.basename(histfilename)
 	histfilename = split(histfilename, ".")[0] + ".root"
-
 	return (filelist, histfilename)
 	
 def error(message):
@@ -335,6 +358,101 @@ def main():
 # -----------------------------------------------------------------------------
 main()
 '''
+
+MAKEFILE = '''#------------------------------------------------------------------------------
+# Description: Makefile to build executable %(filename)s
+# Created: %(time)s by mkanalyzer.py
+#
+#               available switches:
+#
+#                 debugflag  (e.g., debugflags=-g)
+#                 cppflags
+#                 cxxflags
+#                 optflag
+#                 verbose    (e.g., verbose=1)
+#                 withcern   (e.g., withcern=1  expects to find CERN_LIB)
+#------------------------------------------------------------------------------
+ifndef ROOTSYS
+$(error *** Please set up Root)
+endif
+withroot:=1
+#------------------------------------------------------------------------------
+program := %(filename)s
+cppsrcs	:= $(wildcard *.cpp)
+ccsrcs  := $(wildcard *.cc)
+cppobjs	:= $(patsubst %(percent)s.cpp,tmp/%(percent)s.o,$(cppsrcs))
+ccobjs	:= $(patsubst %(percent)s.cc,tmp/%(percent)s.o,$(ccsrcs))
+objects	:= $(ccobjs) $(cppobjs)
+say     := $(shell echo "Program: $(program)" >& 2)
+#------------------------------------------------------------------------------
+ifdef GCC_DIR
+GCC_BIN_PREFIX	:= $(GCC_DIR)/bin/
+else
+GCC_BIN_PREFIX	:= /usr/bin/
+endif
+C++	    := $(GCC_BIN_PREFIX)g++
+LDSHARED:= $(GCC_BIN_PREFIX)g++
+C++VER	:= $(shell $(C++) --version)
+COMP	:= $(word 1, $(C++VER))
+CTYPE	:= $(word 2, $(C++VER))
+CVER	:= $(word 3, $(C++VER))
+say 	:= $(shell echo "$(COMP) $(CTYPE) $(CVER)" >& 2)
+#------------------------------------------------------------------------------
+ifdef verbose
+	AT =
+else
+	AT = @
+endif
+#------------------------------------------------------------------------------
+# Products to compile/link against
+#------------------------------------------------------------------------------
+ifdef withcern
+	ifndef CERN_LIB
+		ifdef CERN_DIR
+			CERN_LIB:= $(CERN_DIR)/lib
+		else
+			say:=$(error CERN_LIB must point to CERN lib directory)
+		endif
+	endif
+	cernlib	:= -L$(CERN_LIB) -lpacklib -lmathlib -lkernlib
+endif
+
+ifdef withroot
+	rootcpp	:= $(shell root-config --cflags)
+	rootlib	:= $(shell root-config --glibs) -lTreePlayer
+endif
+#------------------------------------------------------------------------------
+# Switches/includes
+#------------------------------------------------------------------------------
+ifndef optflag
+	optflag:=-O2
+endif
+CPPFLAGS:= -I. $(rootcpp) $(cppflags)
+CXXFLAGS:= -c -pipe $(optflag) -fPIC -Wall $(cxxflags) $(debugflag)
+LDFLAGS	:= $(ldflags) $(debugflag)
+LIBS	:= $(libs) $(rootlib) $(cernlib)
+#------------------------------------------------------------------------------
+# Rules
+#------------------------------------------------------------------------------
+bin:	$(program)
+
+$(program)	: $(objects)
+	@echo "---> Linking $@"
+	$(AT)$(LDSHARED) $(LDFLAGS) $(objects) $(LIBS) -o $@
+	@echo ""
+
+$(cppobjs)	: tmp/%(percent)s.o : %(percent)s.cpp
+	@echo "---> Compiling $<" 
+	$(AT)$(CXX)	$(CXXFLAGS) $(CPPFLAGS) $< -o $@
+
+$(ccobjs)	: tmp/%(percent)s.o : %(percent)s.cc
+	@echo "---> Compiling $<" 
+	$(AT)$(CXX)	$(CXXFLAGS) $(CPPFLAGS) $< -o $@
+
+# Define clean up rule
+clean   	:
+	rm -rf $(objects) $(program)
+'''
 #------------------------------------------------------------------------------
 def main():
 	print "\n\tmkanalyzer.py"
@@ -353,15 +471,6 @@ def main():
 	if not os.path.exists(varfilename):
 		print "mkntanalyzer.py - can't find variable file: %s" % varfilename
 		sys.exit(0)
-
-	# rename existing file(s) if they exist
-
-	if os.path.exists("%s.cc" % filename):
-		cmd = "cp %s.cc %s.cc.bak" % (filename, filename)
-		os.system(cmd)
-	if os.path.exists("%s.py" % filename):
-		cmd = "cp %s.py %s.py.bak" % (filename, filename)
-		os.system(cmd)		
 
 	# Read variable names
 	
@@ -420,23 +529,45 @@ def main():
 		pyselect.append('stream.select("%s", %s)'  % (branchname, varname))
 
 	# Write out files
+
+	# Put everything into a directory
+	cmd = '''
+	mkdir -p %(dir)s/tmp
+	cp %(hpp)s %(dir)s
+	cp %(cpp)s %(dir)s
+	''' % {'dir': filename,
+		   'hpp': TREESTREAM_HPP,
+		   'cpp': TREESTREAM_CPP}
+	os.system(cmd)
+
+	# Create Makefile
+	record = MAKEFILE % {'time': ctime(time()),
+						 'filename': filename,
+						 'percent': '%'}
+	open("%s/Makefile" % filename, "w").write(record)
+	
+
+	# Create C++ code
 	
 	s = join("  ", declare, "\n") + "\n" + join("  ", select, "\n")
-	outfilename = "%s.cc" % filename
+	outfilename = "%s/%s.cc" % (filename, filename)
 	names = {'name': outfilename,
 			 'time': ctime(time()),
 			 'selection': s[1:]}
 	record = TEMPLATE % names
 	open(outfilename,"w").write(record)
 
+	# Create python code
+	
 	s = join("\t", pydeclare, "\n") + "\n" + join("\t", pyselect,"\n")
-	outfilename = "%s.py" % filename
+	outfilename = "%s/%s.py" % (filename, filename)
 	names = {'name': outfilename,
 			 'time': ctime(time()),
 			 'selection': s}
 	record = PYTEMPLATE % names
 	open(outfilename,"w").write(record)
 	os.system("chmod +x %s" % outfilename)
+
 	print "\tdone!"
 #------------------------------------------------------------------------------
 main()

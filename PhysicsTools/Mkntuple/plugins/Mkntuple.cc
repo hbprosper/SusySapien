@@ -45,7 +45,7 @@
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Jan 17 HBP - add log file
 //
-// $Id: Mkntuple.cc,v 1.4 2010/03/10 13:29:59 prosper Exp $
+// $Id: Mkntuple.cc,v 1.5 2010/03/10 15:09:32 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -97,11 +97,12 @@ private:
 Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   : output(otreestream(iConfig.getUntrackedParameter<string>("ntupleName"), 
                        "Events", 
-                       "The time has come the walrus said")),
+                       "made by Mkntuple $Revision:$")),
     event_(0),
     logfilename_("Mkntuple.log"),
     log_(new std::ofstream(logfilename_.c_str()))
 {
+  // Get optional analyzer name
   try
     {
       analyzername_ = iConfig.getUntrackedParameter<string>("analyzerName");
@@ -111,7 +112,7 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
       analyzername_ = "";
     }
 
-  cout << GREEN << "BEGIN Mkntuple" << BLACK << endl;
+  cout << "\nBEGIN Mkntuple" << endl;
 
   if ( getenv("DEBUGMKNTUPLE") > 0 )
     DEBUG = atoi(getenv("DEBUGMKNTUPLE"));
@@ -169,9 +170,8 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
                              "cfg error: "
                              "you need at least 3 fields in first line of"
                              " each buffer block\n"
-                             + RED +
                              "\tyou blocks you stones you worse than "
-                             "senseless things..." + BLACK);
+                             "senseless things...");
       
       string buffer = field[0];                 // Buffer name
       string label  = field[1];                 // getByLabel
@@ -182,10 +182,16 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
       //DB
       if ( DEBUG > 1 )
         cout 
-          << GREEN
-          << "   buffer("   << buffer << ")"
-          << BLACK
-          << " label("    << label << ")"
+          << "   buffer("
+          << RED  
+          << buffer 
+          << BLACK 
+          << ")"
+          << " label("    
+          << BLUE 
+          << label 
+          << BLACK 
+          << ")"
           << " maxcount(" << maxcount << ")"
           << " prefix("   << prefix << ")"
           << endl;
@@ -205,15 +211,13 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
           if ( ! boost::regex_search(record, matchmethod, getmethod) ) 
             // Yet another tantrum!
             throw edm::Exception(edm::errors::Configuration,
-                                 "regex error: " +
-                                 RED +
+                                 "regex error: "
                                  "I can't get method name from \n" +
-                                 BLACK +
                                  record);
           string method = kit::strip(matchmethod[0]);
       
           if ( DEBUG > 0 ) 
-            cout << "    method: " << BLUE << method << BLACK << endl;
+            cout << "    method: " << RED <<  method << BLACK << endl;
           
           // Try to construct a plausible variable name
 
@@ -259,11 +263,9 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
         throw edm::Exception(edm::errors::Configuration,
                              "plugin error: "
                              "unable to create buffer " + buffer + 
-                             "\n\tso" +
-                             RED + 
-                             "...let all the evil "
-                             "that lurks in the mud hatch out\n"
-                             + BLACK);
+                             "\n\tso...let all the evil "
+                             "that lurks in the mud hatch out\n");
+
       // ... and initialize it
       buffers.back()->init(output, label, prefix, var, maxcount, 
                            *log_, DEBUG);

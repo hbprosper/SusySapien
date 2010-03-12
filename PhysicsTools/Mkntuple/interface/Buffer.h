@@ -17,7 +17,7 @@
 //                   Sat Mar 06 HBP - write out variables to be used by
 //                                    mkntanalyzer.py
 //
-// $Id: Buffer.h,v 1.7 2010/02/19 05:09:41 prosper Exp $
+// $Id: Buffer.h,v 1.8 2010/03/10 13:29:59 prosper Exp $
 //
 //
 // If using Python, include its header first to avoid annoying compiler
@@ -159,7 +159,9 @@ void initBuffer(otreestream& out,
       std::string varname = var[i].varname;
       if ( debug > 0 )
         std::cout << "Buffer -"
+                  << RED
                   << " varname(" << varname << ")"
+                  << BLACK
                   << std::endl;
 
       // Replace "->", ".", "(", ")" and quotes by "_"
@@ -176,7 +178,9 @@ void initBuffer(otreestream& out,
 
       if ( debug > 0 )
         std::cout << "        "
+                  << RED 
                   << " varname(" << varname << ")"
+                  << BLACK
                   << std::endl;      
 
       std::string name = prefix + "." + varname;
@@ -194,7 +198,7 @@ void initBuffer(otreestream& out,
                                      method));
       std::cout << "   " << i << ":\t" << name 
                 << std::endl
-                << "\t\t" << GREEN << method << BLACK << std::endl;
+                << "\t\t" << method << std::endl;
     }
 
   // Add variables to output tree. This must be done after all
@@ -217,9 +221,7 @@ void callMethods(int j,
   for(unsigned i=0; i < variable.size(); i++)
     {
       if ( debug > 0 ) 
-        std::cout << RED 
-                  << "\t" << j << "\tcall: " 
-                  << BLACK
+        std::cout << "\t" << j << "\tcall: " 
                   << variable[i].fname << std::endl;
       try
         {
@@ -229,15 +231,15 @@ void callMethods(int j,
         {
           throw cms::Exception("BufferFillFailure",
                                "failed on call to \"" + 
-                               RED + 
                                variable[i].fname+"\"\n" +
-                               GREEN +
-                               "thou lump of foul deformity..." 
-                               + BLACK, e);
+                               "thou lump of foul deformity...", e);
         }
       if ( debug > 0 ) 
         std::cout << "\t\t\tvalue = " 
-                  << variable[i].value[j] << std::endl;
+                  << BLUE 
+                  << variable[i].value[j] 
+                  << BLACK 
+                  << std::endl;
     }
 }
 
@@ -257,10 +259,10 @@ bool fillBuffer(const edm::Event& event,
                 bool isruninfo)
 {
   if ( debug > 0 ) 
-    std::cout << RED + "Begin Buffer::fill " + BLACK + 
-      "objects of type: " 
+    std::cout << "Begin Buffer::fill objects of type: " 
               << RED 
-              << boost::python::type_id<X>().name() << BLACK 
+              << boost::python::type_id<X>().name()
+              << BLACK
               << std::endl;
 
   // Cache current event
@@ -302,13 +304,11 @@ bool fillBuffer(const edm::Event& event,
       if ( !handle.isValid() )
         // ...and another!
         throw edm::Exception(edm::errors::Configuration,
-                             "\n" + RED + "singleton " + BLACK + 
-                             "Buffer - "
+                             "\nsingleton Buffer - "
                              "getByLabel failed on label \"" + 
-                             label + "\"\n" + RED +
+                             label + "\"\n" +
                              "\tmay I humbly suggest you "
-                             "go boil your head!\n"
-                             + BLACK);
+                             "go boil your head!\n");
 
       // extract datum for each variable
 
@@ -352,13 +352,10 @@ bool fillBuffer(const edm::Event& event,
 
       if ( !handle.isValid() )
         throw edm::Exception(edm::errors::Configuration,
-                             "\nBuffer - " + 
-                             RED +
-                             "getByLabel failed on label \"" + 
-                             BLACK +
-                             label + "\"\n" + RED +
-                             "you're a waste of space..." + 
-                             BLACK);
+                             "\nBuffer - "
+                             "getByLabel failed on label \""
+                             + label + "\"\n"
+                             "you're a waste of space...");
 
       // update data count. Use the smaller of count and maxcount.
 
@@ -383,9 +380,11 @@ bool fillBuffer(const edm::Event& event,
         }
     }
   
-  if ( debug > 0 ) std::cout << RED + "End Buffer::fill " + BLACK + 
-    "objects of type: " 
-                             << RED  
+  if ( debug > 0 ) std::cout << GREEN
+                             << "End Buffer::fill " 
+                             << BLACK 
+                             << "objects of type: " 
+                             << RED 
                              << boost::python::type_id<Y>().name() 
                              << BLACK 
                              << std::endl; 
@@ -425,8 +424,7 @@ struct Buffer  : public BufferThing
       singleton_(false)
   {
     std::cout << "Buffer created for objects of type: " 
-              << GREEN  
-              << name() << BLACK 
+              << name()
               << std::endl;
   }
 
@@ -536,8 +534,7 @@ struct UserBuffer  : public BufferThing
       singleton_(false)
   {
     std::cout << "UserBuffer created for objects of type: " 
-              << GREEN  
-              << name() << BLACK 
+              << name()
               << std::endl;
   }
 
