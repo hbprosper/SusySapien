@@ -6,7 +6,7 @@
 # Created:     23-Jan-2010 Harrison B. Prosper
 # Updated:     15-Feb-2010 HBP, make it possible to be run anywhere
 #              09-Mar-2010 HBP, add search of SimDataFormats
-#$Revision: 1.2 $
+#$Revision: 1.3 $
 #---------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
@@ -832,7 +832,7 @@ def main():
 	# Loop over header files to be scanned
 	#-------------------------------------------------
 
-	print "mkdocs.py $Revision: 1.2 $\n"
+	print "mkdocs.py $Revision: 1.3 $\n"
 
 	# Make sure html and txt directories exist
 	
@@ -934,9 +934,6 @@ def main():
 				classname, basenames, template = getClassname(record)
 				names.append(classname)
 
-	###D
-	sys.exit(0)
-	
 	# Write out a class to header map
 	
 	os.system("mkdir -p map")
@@ -953,6 +950,7 @@ def main():
 	# Create index.html
 	
 	os.system("mkindex.py")
+	print "\n\tdone!\n"
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
 main()
