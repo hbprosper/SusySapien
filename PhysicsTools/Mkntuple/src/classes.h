@@ -1,3 +1,3 @@
-//$Revision: 1.2 $
-#include "PhysicsTools/Mkntuple/interface/userplugins.h"
+//$Revision: 1.1 $
+#include "PhysicsTools/Mkntuple/interface/user.h"
 

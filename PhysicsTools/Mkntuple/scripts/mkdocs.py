@@ -6,7 +6,7 @@
 # Created:     23-Jan-2010 Harrison B. Prosper
 # Updated:     15-Feb-2010 HBP, make it possible to be run anywhere
 #              09-Mar-2010 HBP, add search of SimDataFormats
-#$Revision: 1.1 $
+#$Revision: 1.2 $
 #---------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
@@ -816,6 +816,14 @@ def main():
 					hlist = map(strip, os.popen(cmd).readlines())
 					filelist += hlist
 
+			# Add user.h
+
+			file = "%s/src/%s/%s/interface/user.h" % \
+				   (os.environ["CMSSW_BASE"],
+					"PhysicsTools",
+					"Mkntuple")
+			filelist.append(file)
+
 	# Filter headers
 
 	filelist = filter(lambda x: skipheader.search(x) == None, filelist)
@@ -824,7 +832,7 @@ def main():
 	# Loop over header files to be scanned
 	#-------------------------------------------------
 
-	print "mkdocs.py $Revision: 1.1 $\n"
+	print "mkdocs.py $Revision: 1.2 $\n"
 
 	# Make sure html and txt directories exist
 	
@@ -847,17 +855,19 @@ def main():
 		records = splitHeader(record)
 		if len(records) == 0: continue
 
-		# Now strip away path up to "src/" in pathname of header
+		# Now strip away path up to "/src/" in pathname of header
 		
 		header = file
-		if BASE != "":
-			if find(file, BASE) > -1: 
-				header = replace(file, BASE, "")
-
+		k = rfind(header, "/src/") # search from right
+		if k > 0: header = header[k+5:]
+	
 		filestem = replace(header, 'interface/', '')
 		filestem = split(filestem, '.h')[0]
 		filestem = replace(filestem, '/', '.')
 
+		###D
+		#print "filestem(%s) header(%s)" % (filestem, header)
+		
 		# Initialize map to contain info about classes and methods
 		
 		db = {'version':  VERSION,
@@ -924,6 +934,9 @@ def main():
 				classname, basenames, template = getClassname(record)
 				names.append(classname)
 
+	###D
+	sys.exit(0)
+	
 	# Write out a class to header map
 	
 	os.system("mkdir -p map")

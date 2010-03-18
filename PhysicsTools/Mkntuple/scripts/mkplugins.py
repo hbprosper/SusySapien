@@ -2,28 +2,34 @@
 #------------------------------------------------------------------------------
 # create plugins.cc
 # Created: 05-Jan-2010 Harrison B. Prosper
-# Updated: 15-Feb-2010 HBP - run make docs in needed
-#$Revision: 1.5 $
+# Updated: 15-Feb-2010 HBP - run make docs if needed
+#$Revision: 1.6 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
 from time import *
 from PhysicsTools.LiteAnalysis.Lib import nameonly
-
-# Add map directory to PYTHONPATH
-mapfile = "%s/map/classmap.py" % os.environ["PWD"]
-
-try:
-	execfile(mapfile)
-except:
-	print "\n\t**unable to load classmap.py"\
-		  "\t** maybe you need to run mkdocs.py"
-	sys.exit(0)
 #------------------------------------------------------------------------------
 if not os.environ.has_key("CMSSW_BASE"):
 	print "\t**you must first set up CMSSW"
 	sys.exit(0)
 	
+# Load classmap.py
+
+cmd = 'find %s -name "classmap.py"' % BASE
+t = map(strip, os.popen(cmd).readlines())
+if len(t) == 0:
+	print "\n\t** unable to locate classmap.py"\
+		  "\t** try running mkdocs.py in the test directory"
+	sys.exit(0)
+
+mapfile = t[0]
+try:
+	execfile(mapfile)
+except:
+	print "\n\t** unable to load classmap.py"
+	sys.exit(0)
+#------------------------------------------------------------------------------
 getclass  = re.compile(r'(?<=[0-9] ).+$',re.M)
 isVector  = re.compile(r'(?<=^vector\<).+(?=\>)')
 hasnspace = re.compile(r'::')
@@ -77,7 +83,7 @@ names = {'time': ctime(time())}
 out  = open("plugins.cc","w")
 record = '''// ----------------------------------------------------------------------------
 // Created: %(time)s by mkplugins.py
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/Buffer.h"
 '''

@@ -4,8 +4,8 @@
 import FWCore.ParameterSet.Config as cms
 demo =\
 cms.EDAnalyzer("Mkntuple",
-               ntupleName = cms.untracked.string("ntuple.root"),
-               analyzerName = cms.untracked.string("analyzer.cc"),
+               ntupleName = cms.untracked.string("ntuple.root"),			   
+			   analyzerName = cms.untracked.string("analyzer.cc"),
 
                buffers =
                cms.untracked.
@@ -15,7 +15,8 @@ cms.EDAnalyzer("Mkntuple",
     'recoBeamSpot',
     'patJet',
     'patMuon',
-    'recoGenParticle'
+    'recoGenParticle',
+	'triggerBits'
     ),
                GenEventInfoProduct =
                cms.untracked.
@@ -68,7 +69,8 @@ cms.EDAnalyzer("Mkntuple",
     '  float   ecalIso()',
     ' double   ecalIsoDeposit()->candEnergy()',
     '  float   hcalIso()',
-    '  float   trackIso()'
+    '  float   trackIso()',
+	' double   isolationR03().emEt'
     ),
                recoGenParticle =
                cms.untracked.
@@ -82,5 +84,15 @@ cms.EDAnalyzer("Mkntuple",
     ' double   mass()',
     '    int   pdgId()',
     '    int   status()'
-    )
+    ),
+               triggerBits =
+               cms.untracked.
+               vstring(
+    "triggerBits                     TriggerResults                     1",
+    #---------------------------------------------------------------------
+    '   bool   value("HLT_L1Jet15")',
+	'   bool   value("HLT_Jet30")   HLT_Jet30',
+	'   bool   value("HLT_Jet50")   HLT_Jet50',
+	'   bool   value("HLT_Jet80")   HLT_Jet80'
+    )			   			   			   
                )
