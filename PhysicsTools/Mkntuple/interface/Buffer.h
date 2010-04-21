@@ -17,7 +17,7 @@
 //                   Sat Mar 06 HBP - write out variables to be used by
 //                                    mkntanalyzer.py
 //
-// $Id: Buffer.h,v 1.8 2010/03/10 13:29:59 prosper Exp $
+// $Id: Buffer.h,v 1.9 2010/03/12 23:17:14 prosper Exp $
 //
 //
 // If using Python, include its header first to avoid annoying compiler
@@ -35,7 +35,6 @@
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/Run.h"
 #include "PhysicsTools/Mkntuple/interface/pluginfactory.h"
-#include "PhysicsTools/Mkntuple/interface/CurrentEvent.h"
 #include "PhysicsTools/LiteAnalysis/interface/treestream.hpp"
 #include "PhysicsTools/LiteAnalysis/interface/kit.h"
 #include "PhysicsTools/LiteAnalysis/interface/Method.h"
@@ -265,10 +264,6 @@ bool fillBuffer(const edm::Event& event,
               << BLACK
               << std::endl;
 
-  // Cache current event
-  
-  CurrentEvent::instance().set(event);
-
   count = 0; // reset count, just in case we have to bail out
   message = "";
 
@@ -361,6 +356,7 @@ bool fillBuffer(const edm::Event& event,
 
       count = (int)handle->size() < maxcount ? handle->size() : maxcount;
       
+      // 
       // extract datum for each variable
       
       for(int j=0; j < count; j++)

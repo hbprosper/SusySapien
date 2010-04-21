@@ -45,7 +45,7 @@
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Jan 17 HBP - add log file
 //
-// $Id: Mkntuple.cc,v 1.5 2010/03/10 15:09:32 prosper Exp $
+// $Id: Mkntuple.cc,v 1.6 2010/03/12 23:17:14 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -58,6 +58,7 @@
 #include "PhysicsTools/LiteAnalysis/interface/treestream.hpp"
 #include "PhysicsTools/LiteAnalysis/interface/kit.h"
 #include "PhysicsTools/Mkntuple/interface/pluginfactory.h"
+#include "PhysicsTools/Mkntuple/interface/CurrentEvent.h"
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/EDAnalyzer.h"
 #include "FWCore/Framework/interface/Event.h"
@@ -97,7 +98,7 @@ private:
 Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   : output(otreestream(iConfig.getUntrackedParameter<string>("ntupleName"), 
                        "Events", 
-                       "made by Mkntuple $Revision:$")),
+                       "made by Mkntuple $Revision: 1.6 $")),
     event_(0),
     logfilename_("Mkntuple.log"),
     log_(new std::ofstream(logfilename_.c_str()))
@@ -298,7 +299,9 @@ void
 Mkntuple::analyze(const edm::Event& iEvent, 
                   const edm::EventSetup& iSetup)
 {
+  // Cache current event
   event_++;
+  CurrentEvent::instance().set(iEvent, event_);
 
   // Loop over allocated buffers and for each call its fill method
   
@@ -321,6 +324,9 @@ Mkntuple::analyze(const edm::Event& iEvent,
       log_->close();
     }
 
+  // Apply optional cuts
+
+  
   output.commit();
 }
 

@@ -1,4 +1,4 @@
-#$Revision: 1.2 $ example.py
+#$Revision: 1.4 $ example.py
 #------------------------------------------------------------------------------
 import FWCore.ParameterSet.Config as cms
 
@@ -36,12 +36,12 @@ cms.EDAnalyzer("Mkntuple",
                vstring(
     "recoBeamSpot",
     "patMuon",
-    "recoGenParticle",
-	"GenMother"
+	"patElectron",
+    "recoGenParticle"
     ),
 			   #----------------------------------------------------------
 			   # Format of 1st line:
-			   #   buffer-name         getByLabel         maxiumum-count
+			   #   buffer-name         getByLabel         maximum-count
 			   #
 			   # Format of subsequent lines:
 			   #   [return-type] method [alias]
@@ -58,7 +58,7 @@ cms.EDAnalyzer("Mkntuple",
                patMuon =
                cms.untracked.
                vstring(
-    "patMuon                         cleanLayer1Muons                500",
+    "patMuon                         cleanLayer1Muons                50",
     #---------------------------------------------------------------------
     "    int   charge()",
     " double   energy()",
@@ -78,6 +78,22 @@ cms.EDAnalyzer("Mkntuple",
     "   bool   isTrackerMuon()"
     ),
 
+               patElectron =
+               cms.untracked.
+               vstring(
+    "patElectron                      cleanLayer1Electrons            50",
+    #---------------------------------------------------------------------
+    "    int   charge()",
+    " double   energy()",
+    " double   et()",
+    " double   eta()",
+    " double   p()",
+    " double   phi()",
+    " double   pt()",
+	" double   gsfTrack()->d0()",
+	" double   gsfTrack()->phi()"
+    ),
+
 			   recoGenParticle =
                cms.untracked.
                vstring(
@@ -91,20 +107,14 @@ cms.EDAnalyzer("Mkntuple",
     " double   phi()",
     " double   mass()"
     ),
-
-               GenMother =
-               cms.untracked.
-               vstring(
-    "GenMother                        genParticles                   1000",
-    #---------------------------------------------------------------------
-    "    int   charge()",
-    "    int   pdgId()",
-    "    int   status()",
-    " double   pt()",
-    " double   eta()",
-    " double   phi()",
-    " double   mass()"
-    )			   
+			   cuts =
+			   cms.untracked.
+			   string(
+	'''
+	bool keep = false;
+	'''
+	)
+			   
                )
 
 process.p = cms.Path(process.demo)

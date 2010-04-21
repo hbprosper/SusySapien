@@ -6,7 +6,8 @@
 // Description: Add user-defined methods
 // Created:     Tue Jan 19, 2010 HBP
 // Updated:     Mon Mar 08, 2010 Sezen & HBP - add triggerBits class
-//$Revision: 1.2 $
+//              Thu Apr 08, 2010 Sezen & HBP - add GParticle class
+//$Revision: 1.1 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -18,23 +19,30 @@
 #include "FWCore/Framework/interface/Event.h"
 //-----------------------------------------------------------------------------
 
-class GenMother : public reco::GenParticle
+class GParticle : public reco::GenParticle
 {
 public:
-  GenMother();
+  GParticle();
 
-  /// Copy reco::GenParticle object to recoGenP object.
-  GenMother(const reco::GenParticle& o);
+  /// Copy reco::GenParticle object to GParticle object.
+  GParticle(const reco::GenParticle& o);
 
-  ~GenMother();
+  ~GParticle();
 
-  int charge()  const;
-  int pdgId()   const;
-  int status()  const;
-  double pt()   const;
-  double eta()  const;
-  double phi()  const;
-  double mass() const;
+  ///
+  int firstDaughter() const;
+
+  ///
+  int lastDaughter()  const;
+
+private:
+  // one daughterpos per GenParticle
+  std::vector<int> daughterpos;
+
+  // declare static so that we have one amap and one count per
+  // event
+  static std::map<std::string, int> amap;
+  static int count;
 };
 
 //-----------------------------------------------------------------------------
@@ -53,6 +61,10 @@ class triggerBits : public edm::TriggerResults
 
   ///
   bool value(std::string tname) const;
+
+private:
+  static bool first;
+  const edm::TriggerResults* tresults;
 };
 
 #endif

@@ -13,8 +13,8 @@ cms.EDAnalyzer("Mkntuple",
     'GenEventInfoProduct',
     'GenRunInfoProduct',
     'recoBeamSpot',
-    'patJet',
-    'patMuon',
+#    'patJet',
+#    'patMuon',
     'recoGenParticle',
 	'triggerBits'
     ),
@@ -93,6 +93,7 @@ cms.EDAnalyzer("Mkntuple",
     '   bool   value("HLT_L1Jet15")',
 	'   bool   value("HLT_Jet30")   HLT_Jet30',
 	'   bool   value("HLT_Jet50")   HLT_Jet50',
-	'   bool   value("HLT_Jet80")   HLT_Jet80'
+	'   bool   value("HLT_Jet80")   HLT_Jet80',
+	'   bool   value("HLT_Mu9")     HLT_Mu9'
     )			   			   			   
                )
