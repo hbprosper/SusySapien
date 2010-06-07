@@ -3,7 +3,7 @@
 // Original Author:  Sezen SEKMEN & Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Jan 17 HBP - add log file
-// $Id: TestBed.cc,v 1.3 2010/02/19 05:09:41 prosper Exp $
+// $Id: TestBed.cc,v 1.4 2010/03/10 15:09:32 prosper Exp $
 //
 //
 // ---------------------------------------------------------------------------
@@ -29,9 +29,13 @@
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 #include "DataFormats/GsfTrackReco/interface/GsfTrack.h"
+#include "DataFormats/Common/interface/TriggerResults.h"
+#include "FWCore/Common/interface/TriggerNames.h"
 #include "TROOT.h"
+#include "TSystem.h"
 
 using namespace std;
+using namespace reco;
 
 class TestBed : public edm::EDAnalyzer 
 {
@@ -44,13 +48,22 @@ private:
   virtual void beginJob();
   virtual void analyze(const edm::Event&, const edm::EventSetup&);
   virtual void endJob();
+
+  otreestream output;
+  std::vector<double> pt;
+  int nhep;
+
 };
 
 
 TestBed::TestBed(const edm::ParameterSet& iConfig)
+  : output(otreestream("testbed.root", "Events", "test")),
+    pt(std::vector<double>(4000,0))
 {
   cout << GREEN << "BEGIN TestBed" << BLACK << endl;
-  //gROOT->ProcessLine(".> /dev/null");
+  gSystem->Load("selector_C.so");
+  output.add(string("nhep"), nhep);
+  output.add(string("pt[nhep]"), pt);
 }
 
 
@@ -62,7 +75,7 @@ TestBed::~TestBed()
 //
 // member functions
 //
-
+ 
 static int counter=-1;
 
 // ------------ method called to for each event  ------------
@@ -70,88 +83,27 @@ void
 TestBed::analyze(const edm::Event& iEvent, 
                  const edm::EventSetup& iSetup)
 {
-  edm::Handle< edm::View<reco::GenParticle> > handle;
-  iEvent.getByLabel("genParticles", handle);
-  if ( !handle.isValid() )
-    throw edm::Exception(edm::errors::Configuration,
-                         "\nBuffer - " + 
-                         RED +
-                         "getByLabel failed" +
-                         BLACK);
 
   counter++;
+  cout << "Event count: " << counter << endl;
 
-  if ( handle->size() < 1 ) return;
-
-
-  map<string, vector<int> > particleMap;
-
-  int nhep = handle->size();
-
-  for (int i=0; i < nhep; i++)
+  // Get genparticles:
+  edm::Handle<GenParticleCollection> genParticles;
+  iEvent.getByLabel("genParticles", genParticles);
+  
+  nhep = genParticles->size();
+  for(int i = 0; i < nhep; i++) 
     {
-      const reco::GenParticle& p = ((*handle)[i]);
-      char key[512];
-      sprintf(key, "%-16s %d %10.3e %10.3e %10.3e %10.3e",
-              kit::particleName(p.pdgId()).c_str(), 
-              p.status(), 
-              p.energy(),  p.px(), p.py(), p.pz());
-      particleMap[key] = vector<int>();
+      const GenParticle* p = &((*genParticles)[i]);
+      pt[i] = sqrt(p->px()*p->px()+p->py()*p->py());
     }
 
-  for (int i=0; i < nhep; i++)
-    {
-      const reco::GenParticle& p = ((*handle)[i]);
-      if ( p.numberOfMothers() < 1 ) continue;
+  cout << "\tnhep  = " << nhep  << endl;
+  cout << "\tpt[3] = " << pt[3] << endl;
 
-      char key[512];
-      sprintf(key, "%-16s %d %10.3e %10.3e %10.3e %10.3e",
-              kit::particleName(p.mother(0)->pdgId()).c_str(), 
-              p.mother(0)->status(), 
-              p.mother(0)->energy(),  
-              p.mother(0)->px(),
-              p.mother(0)->py(),
-              p.mother(0)->pz());
-
-      if ( particleMap.find(key) == particleMap.end() )
-        {
-          cout << " ** error ** can't find key: " << key << endl;
-          exit(0);
-        }
-      particleMap[key].push_back(i);
-    }
-
-  for (int i=0; i < nhep; i++)
-    {
-      const reco::GenParticle& p = ((*handle)[i]);
-      char key[512];
-      sprintf(key, "%-16s %d %10.3e %10.3e %10.3e %10.3e",
-              kit::particleName(p.pdgId()).c_str(), 
-              p.status(), 
-              p.energy(),  p.px(), p.py(), p.pz());
-
-      if ( particleMap.find(key) == particleMap.end() )
-        {
-          cout << " ** error ** can't find key: " << key << endl;
-          continue;
-        }
-
-      string name = kit::particleName(p.pdgId());
-      char record[512];
-      sprintf(record, "%4d %-16s\t%d\t%d",i,name.c_str(),
-              particleMap[key].size(), p.status());
-      cout << record << endl;
-
-      for(unsigned j=0; j < particleMap[key].size(); j++)
-        {
-          int k = particleMap[key][j];
-          const reco::GenParticle& q = ((*handle)[k]);
-          string name = kit::particleName(q.pdgId());
-          sprintf(record, "\t%4d %-16s\t%d", k, name.c_str(), p.status());
-          cout << record << endl;
-        }
-    }
-
+  output.store();
+  gROOT->ProcessLine("gROOT->Reset(); selector()");
+  output.save();
 }
 
 // --- method called once each job just before starting event loop  -----------

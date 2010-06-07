@@ -4,7 +4,7 @@
 // Description: Add user-defined methods
 // Created:     Tue Jan 19, 2010 HBP
 // Updated:     Mon Mar 08, 2010 Sezen & HBP - add triggerBits class
-//$Revision: 1.1 $
+//$Revision: 1.2 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -23,6 +23,7 @@ using namespace std;
 
 // Initialize static variables
 int GParticle::count=0;
+int GParticle::index=0;
 std::map<std::string, int> GParticle::amap;
 
 GParticle::GParticle() {}
@@ -30,12 +31,12 @@ GParticle::GParticle() {}
 /// Copy reco::GenParticle object to recoGenP object.
 GParticle::GParticle(const reco::GenParticle& o) : reco::GenParticle(o) 
 {
-  // Initialize string representation to position map
+  // Initialize string representation/position map
   // This need be done only once per event. We ensure this by
   // comparing the current event count to the previously cached one. If they
   // differ this triggers the re-population of the map.
 
-  char particle[80]; // character array for unique string representation
+  char particle[255]; // character array for unique string representation
   
   int count = CurrentEvent::instance().count();
   if ( count != GParticle::count )
@@ -43,9 +44,10 @@ GParticle::GParticle(const reco::GenParticle& o) : reco::GenParticle(o)
       // NB: remember to cache the current event count 
       // to ensure this code segment is called once/event
       GParticle::count = count;
- 
+      GParticle::index = 0;
+
       //DB
-      cout << "\t*** fill amap for event: " << GParticle::count << endl;
+      //cout << "\t*** fill amap for event: " << GParticle::count << endl;
 
       // Get cached event
       const edm::Event* event = CurrentEvent::instance().get();
@@ -56,49 +58,96 @@ GParticle::GParticle(const reco::GenParticle& o) : reco::GenParticle(o)
   
       // Get genparticles:
       Handle<GenParticleCollection> genParticles;
+      // For now, hard-code getByLabel
       event->getByLabel("genParticles", genParticles);
   
       // Write a unique string for each genparticle:
       GParticle::amap.clear();
+
       for(unsigned int i = 0; i < genParticles->size(); i++) 
         {
           const GenParticle* p = &((*genParticles)[i]);
-          sprintf(particle,"%d%d%f%f%f%f", 
-                  p->pdgId(), p->status(), 
-                  p->px(), p->py(), p->pz(), p->energy());
-          GParticle::amap[particle] = i;
+          sprintf(particle,"%d%d%f%f%f%f",
+                  p->pdgId(), 
+                  p->status(), 
+                  p->px(), 
+                  p->py(), 
+                  p->pz(), 
+                  p->energy());
+          GParticle::amap[string(particle)] = i;
         }
     }
 
+  // Find the ordinal value of first and last mothers by comparing the 
+  // string representation of mothers with the string representation of 
+  // each gen-particle in the list:
 
-  // Find the place of first and last daughters by comparing 
-  // the strings belonging to daughters
-  // with the strings of each individual genpartle in the list:
-
-  daughterpos.clear();
-
-  for(unsigned int j=0; j < numberOfDaughters(); j++) 
+  mothers_.clear();
+  for(unsigned int j=0; j < o.numberOfMothers(); j++) 
     {
-      const Candidate* d = daughter(j);
-      if (status()==3 && d->status()!=3) continue;
+      // Must use original object because its copy constructor does not
+      // do a deep copy and the pointers are not copied
+      const GenParticle* m = dynamic_cast<const GenParticle*>(o.mother(j));
+      if ( m == 0 ) continue;
+      sprintf(particle,"%d%d%f%f%f%f",
+              m->pdgId(), 
+              m->status(), 
+              m->px(), 
+              m->py(), 
+              m->pz(), 
+              m->energy());
+      if (GParticle::amap.find(string(particle)) != GParticle::amap.end() ) 
+        mothers_.push_back( GParticle::amap[string(particle)] );
+    }
+
+  // Find the ordinal value of first and last daughters by comparing the 
+  // string representation of mothers with the string representation of 
+  // each gen-particle in the list:
+
+  daughters_.clear();
+  for(unsigned int j=0; j < o.numberOfDaughters(); j++) 
+    {
+      // Must use original object because its copy constructor does not
+      // do a deep copy.
+      const GenParticle* d = dynamic_cast<const GenParticle*>(o.daughter(j));
+      if ( d == 0 ) continue;
       sprintf(particle,"%d%d%f%f%f%f", 
-              d->pdgId(), d->status(), 
-              d->px(), d->py(), d->pz(), d->energy());
-      if (GParticle::amap.find(particle) != GParticle::amap.end() ) 
-        {
-          int k = GParticle::amap[particle];
-          daughterpos.push_back(k);
-        }
+              d->pdgId(),  
+              d->status(), 
+              d->px(), 
+              d->py(), 
+              d->pz(), 
+              d->energy());
+      if (GParticle::amap.find(string(particle)) != GParticle::amap.end() ) 
+        daughters_.push_back( GParticle::amap[string(particle)] );
     }
 }
 
 GParticle::~GParticle() {}
 
 int 
+GParticle::firstMother() const
+{
+  if ( mothers_.size() > 0 )
+    return mothers_.front();
+  else
+    return -1;
+}
+
+int 
+GParticle::lastMother() const
+{
+  if ( mothers_.size() > 0 )
+    return mothers_.back();
+  else
+    return -1;
+}
+
+int 
 GParticle::firstDaughter() const
 {
-  if ( daughterpos.size() > 0 )
-    return daughterpos.front();
+  if ( daughters_.size() > 0 )
+    return daughters_.front();
   else
     return -1;
 }
@@ -106,8 +155,8 @@ GParticle::firstDaughter() const
 int 
 GParticle::lastDaughter() const
 {
-  if ( daughterpos.size() > 0 )
-    return daughterpos.back();
+  if ( daughters_.size() > 0 )
+    return daughters_.back();
   else
     return -1;
 }

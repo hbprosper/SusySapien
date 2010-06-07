@@ -3,7 +3,7 @@
 # Description: Create ntuple analyzer template
 # Created: 06-Mar-2010 Harrison B. Prosper
 # Updated: 12-Mar-2010 HBP - fix appending of .root
-#$Revision: 1.2 $
+#$Revision: 1.3 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -34,7 +34,7 @@ getvno = re.compile(r'[0-9]+$')
 def usage():
 	print '''
 	Usage:
-	   mkanalyzer.py <output-filename> [var-filename=Mkntuple.log]
+	   mkanalyzer.py <output-filename> [var-filename=variables.txt]
 	'''
 	sys.exit(0)
 
@@ -49,7 +49,7 @@ TEMPLATE =\
 // File:        %(name)s
 // Description: Analyzer for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 //-----------------------------------------------------------------------------
 
 // -- System
@@ -269,13 +269,50 @@ saveHistograms(string histfilename,
 }
 
 '''
+
+SLTEMPLATE=\
+'''#ifndef SELECTOR_H
+#define SELECTOR_H
+//-----------------------------------------------------------------------------
+// File:        selector.h
+// Description: selector template
+// Created:     %(time)s by mkntanalyzer.py
+// $Revision: 1.3 $
+//-----------------------------------------------------------------------------
+#include <iostream>
+#include <vector>
+#include <stdlib.h>
+#include "TROOT.h"
+#include "TTree.h"
+#include "TLeaf.h"
+
+TTree* tree=0;
+
+%(leafdecl)s
+
+void initselector()
+{
+  tree = (TTree*)gROOT->FindObject("Events");
+  if ( ! tree )
+  {
+    std::cout << "** error ** selector, tree pointer is zero" << std::endl;
+	exit(0);
+  }
+	
+%(leafimpl)s
+}
+
+#endif
+
+'''
+
 PYTEMPLATE =\
 '''#!/usr/bin/env python
 # -----------------------------------------------------------------------------
 #  File:        %(name)s
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
-#  $Revision: 1.2 $
+#  $Revision: 1.3 $
 # -----------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
@@ -371,6 +408,7 @@ MAKEFILE = '''#-----------------------------------------------------------------
 #                 optflag
 #                 verbose    (e.g., verbose=1)
 #                 withcern   (e.g., withcern=1  expects to find CERN_LIB)
+#$Revision:$
 #------------------------------------------------------------------------------
 ifndef ROOTSYS
 $(error *** Please set up Root)
@@ -388,7 +426,7 @@ say     := $(shell echo "Program: $(program)" >& 2)
 ifdef GCC_DIR
 GCC_BIN_PREFIX	:= $(GCC_DIR)/bin/
 else
-GCC_BIN_PREFIX	:= /usr/bin/
+GCC_BIN_PREFIX	:=
 endif
 C++	    := $(GCC_BIN_PREFIX)g++
 LDSHARED:= $(GCC_BIN_PREFIX)g++
@@ -447,12 +485,15 @@ $(cppobjs)	: tmp/%(percent)s.o : %(percent)s.cpp
 
 $(ccobjs)	: tmp/%(percent)s.o : %(percent)s.cc
 	@echo "---> Compiling $<" 
+
 	$(AT)$(CXX)	$(CXXFLAGS) $(CPPFLAGS) $< -o $@
 
 # Define clean up rule
 clean   	:
 	rm -rf $(objects) $(program)
 '''
+
+
 #------------------------------------------------------------------------------
 def main():
 	print "\n\tmkanalyzer.py"
@@ -467,7 +508,7 @@ def main():
 	if argc > 1:
 		varfilename = argv[1]
 	else:
-		varfilename = "Mkntuple.log"
+		varfilename = "variables.txt"
 	if not os.path.exists(varfilename):
 		print "mkntanalyzer.py - can't find variable file: %s" % varfilename
 		sys.exit(0)
@@ -475,16 +516,13 @@ def main():
 	# Read variable names
 	
 	records = map(strip, open(varfilename, "r").readlines())
+	
 	vars = {}
-	active = False
+	# skip first line
+	records = records[1:]
 	for index in xrange(len(records)):
 		record = records[index]
 		if record == "": continue
-		if record == "END VARIABLES": break
-		if record == "BEGIN VARIABLES":
-			active = True
-			continue
-		if not active: continue
 		
 		rtype, branchname, varname, count = split(record)
 		count = atoi(count)
@@ -506,6 +544,8 @@ def main():
 	pyselect  = []
 	declare = []
 	select  = []
+	selimpl= []
+	seldecl= []
 	for varname in keys:
 		n, rtype, branchname, count = vars[varname]
 
@@ -527,6 +567,10 @@ def main():
 							 (varname, rtype, count))
 		select.append('stream.select("%s", %s);' % (branchname, varname))
 		pyselect.append('stream.select("%s", %s)'  % (branchname, varname))
+
+		seldecl.append('TLeaf* l%s\t= 0;' % varname)
+		selimpl.append('l%s\t= tree->GetLeaf("%s");' % (varname,
+														branchname))
 
 	# Write out files
 
@@ -557,6 +601,12 @@ def main():
 	record = TEMPLATE % names
 	open(outfilename,"w").write(record)
 
+	names = {'leafdecl': join("", seldecl, "\n"),
+			 'time': ctime(time()),
+			 'leafimpl': join("  ", selimpl, "\n")}
+	record = SLTEMPLATE % names
+	open("selector.h","w").write(record)
+	
 	# Create python code
 	
 	s = join("\t", pydeclare, "\n") + "\n" + join("\t", pyselect,"\n")

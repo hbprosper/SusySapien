@@ -38,7 +38,7 @@
 //          30-Nov-2005 HBP fix counter loading bug
 //          31-Oct-2009 HBP allow use of regexes in branch names
 //                      fix looping bug so operator[] works for Python
-//$Revision: 1.6 $
+//$Revision: 1.7 $
 //----------------------------------------------------------------------------
 #ifdef PROJECT_NAME
 #include <boost/regex.hpp>
@@ -496,37 +496,37 @@ namespace
 
     if ( field->isvector )
       {
-	vector<T>* d = reinterpret_cast<vector<T>*>(field->address);
-	if ( d == 0 ) fatal("toexternal - reinterpret_cast failed" + 
-			    string(field->branch->GetName()));
-
-	if ( (int)d->size() != count ) d->resize(count, 0);
-
-	if ( (int)d->size() != count ) 
-	  fatal("toexternal - unable to resize external buffer for " + 
-		field->leafname);
-
-	for(int index=0; index < count; index++)
-	  (*d)[index] = static_cast<T>(field->leaf->GetValue(index));
+        vector<T>* d = reinterpret_cast<vector<T>*>(field->address);
+        if ( d == 0 ) fatal("toexternal - reinterpret_cast failed" + 
+                            string(field->branch->GetName()));
+        
+        if ( (int)d->size() != count ) d->resize(count, 0);
+        
+        if ( (int)d->size() != count ) 
+          fatal("toexternal - unable to resize external buffer for " + 
+                field->leafname);
+        
+        for(int index=0; index < count; index++)
+          (*d)[index] = static_cast<T>(field->leaf->GetValue(index));
       }
     else
       *reinterpret_cast<T*>(field->address) =
-	static_cast<T>(field->leaf->GetValue());
-
+        static_cast<T>(field->leaf->GetValue());
+    
     if ( DEBUGLEVEL > 0 )
       {
-	char message[160];
-	string acount = field->iscounter ? string("C") : string("");
-	sprintf(message,
-		"toexternal - %-16s (%s -> %s) = (%f, %f, %d) %s",
-		field->leafname.c_str(),
-		getiotype (field).c_str(),
-		getsrctype(field).c_str(),
-		getexvalue(field),
-		getinvalue(field),
-		count, 
-		acount.c_str());
-	cout << message << endl;
+        char message[160];
+        string acount = field->iscounter ? string("C") : string("");
+        sprintf(message,
+                "toexternal - %-16s (%s -> %s) = (%f, %f, %d) %s",
+                field->leafname.c_str(),
+                getiotype (field).c_str(),
+                getsrctype(field).c_str(),
+                getexvalue(field),
+                getinvalue(field),
+                count, 
+                acount.c_str());
+        cout << message << endl;
       }
   }
 
@@ -1719,11 +1719,10 @@ void
 otreestream::insert(vector<double>& data) 
 { 
   copy(data.begin(), data.end(), _databuf.begin());
-  commit();
 }
 
 void
-otreestream::commit() 
+otreestream::store() 
 { 
   _statuscode = kSUCCESS;
   _entry = _entries;
@@ -1809,7 +1808,11 @@ otreestream::commit()
           break;
         }
     }
+}
 
+void
+otreestream::save()
+{
   // ..and store away.
 
   _file->cd();
@@ -1822,6 +1825,13 @@ otreestream::commit()
       cout << _entries << "\totreestream::commit is saving header" << endl;
       _tree->AutoSave("SaveSelf");
     }
+}
+
+void
+otreestream::commit()
+{
+  store();
+  save();
 }
 
 void

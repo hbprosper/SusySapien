@@ -40,7 +40,8 @@
 //          14-Jul-2005 Allow for arrays
 //          13-Aug-2005 Tidy up
 //          11-Aug-2007 Add ls() method as a proxy for print
-//$Revision: 1.5 $
+//          06-Jun-2010 Add store and save (commt = store + save)
+//$Revision: 1.6 $
 //----------------------------------------------------------------------------
 #include <vector>
 #include <string>
@@ -424,7 +425,13 @@ class otreestream
   ///
   void   insert(std::vector<double>& data);
 
-  /// Read values of all name/value pairs and store away.
+  /// Store values of all name/value pairs in output buffers.
+  void   store();
+
+  /// Save contents of output buffers.
+  void   save();
+
+  /// Store and save.
   void   commit();
 
   ///

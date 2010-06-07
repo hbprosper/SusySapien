@@ -1,4 +1,4 @@
-#$Revision: 1.4 $ example.py
+#$Revision: 1.5 $ example.py
 #------------------------------------------------------------------------------
 import FWCore.ParameterSet.Config as cms
 
@@ -22,7 +22,7 @@ process.demo =\
 cms.EDAnalyzer("Mkntuple",
 
 			   # Name of output n-tuple
-               ntupleName = cms.untracked.string("ntuple.root"),
+               ntupleName = cms.untracked.string("ntuple_pat.root"),
 
 			   # List of buffers to allocate.
 			   #----------------------------------------------------------
@@ -34,10 +34,14 @@ cms.EDAnalyzer("Mkntuple",
                buffers =
                cms.untracked.
                vstring(
-    "recoBeamSpot",
-    "patMuon",
-	"patElectron",
-    "recoGenParticle"
+	'GenEventInfoProduct',
+    'GenRunInfoProduct',
+    'recoBeamSpot',
+	'patMET',
+    'patMuon',
+	'patElectron',
+    'GParticle',
+	'triggerBits'
     ),
 			   #----------------------------------------------------------
 			   # Format of 1st line:
@@ -46,6 +50,23 @@ cms.EDAnalyzer("Mkntuple",
 			   # Format of subsequent lines:
 			   #   [return-type] method [alias]
 			   #----------------------------------------------------------
+               GenEventInfoProduct =
+               cms.untracked.
+               vstring(
+    'GenEventInfoProduct             generator                         1',
+    #---------------------------------------------------------------------
+    ' double   weight()'
+    ),
+               GenRunInfoProduct =
+               cms.untracked.
+               vstring(
+    'GenRunInfoProduct               generator                         1',
+    #---------------------------------------------------------------------
+    ' double   externalXSecLO().value()',
+    ' double   externalXSecNLO().value()',
+    ' double   filterEfficiency()',
+    ' double   internalXSec().value()'
+    ),			   
                recoBeamSpot =
                cms.untracked.
                vstring(
@@ -55,6 +76,16 @@ cms.EDAnalyzer("Mkntuple",
     " double   y0()",
     " double   z0()"
     ),
+               patMET =
+               cms.untracked.
+               vstring(
+    "patMuon                         layer1METsAK5                50",
+    #---------------------------------------------------------------------
+    " double   et()",
+    " double   phi()",
+    " double   pt()"
+    ),
+
                patMuon =
                cms.untracked.
                vstring(
@@ -94,10 +125,10 @@ cms.EDAnalyzer("Mkntuple",
 	" double   gsfTrack()->phi()"
     ),
 
-			   recoGenParticle =
+			   GParticle =
                cms.untracked.
                vstring(
-    "recoGenParticle                 genParticles                    1000",
+    "GParticle                 genParticles                    1000",
     #---------------------------------------------------------------------
     "    int   charge()",
     "    int   pdgId()",
@@ -105,16 +136,23 @@ cms.EDAnalyzer("Mkntuple",
     " double   pt()",
     " double   eta()",
     " double   phi()",
-    " double   mass()"
+    " double   mass()",
+	"    int   firstMother()",
+	"    int   lastMother()",
+	"    int   firstDaughter()",
+	"    int   lastDaughter()"
     ),
-			   cuts =
-			   cms.untracked.
-			   string(
-	'''
-	bool keep = false;
-	'''
-	)
-			   
+               triggerBits =
+               cms.untracked.
+               vstring(
+    "triggerBits                     TriggerResults                     1",
+    #---------------------------------------------------------------------
+    '   bool   value("HLT_L1Jet15")',
+	'   bool   value("HLT_Jet30")',
+	'   bool   value("HLT_Jet50")',
+	'   bool   value("HLT_Jet80")',
+	'   bool   value("HLT_Mu9")'
+    )			   			   			   
                )
 
 process.p = cms.Path(process.demo)

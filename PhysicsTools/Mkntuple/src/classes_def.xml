@@ -1,4 +1,5 @@
 <lcgdict>
  <class name="GParticle"/>
+ <class name="GEvent"/>
  <class name="triggerBits"/>
 </lcgdict>

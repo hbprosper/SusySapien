@@ -17,7 +17,7 @@
 //                   Sat Mar 06 HBP - write out variables to be used by
 //                                    mkntanalyzer.py
 //
-// $Id: Buffer.h,v 1.9 2010/03/12 23:17:14 prosper Exp $
+// $Id: Buffer.h,v 1.10 2010/04/21 02:22:43 prosper Exp $
 //
 //
 // If using Python, include its header first to avoid annoying compiler
@@ -277,9 +277,9 @@ bool fillBuffer(const edm::Event& event,
           if ( label2 == "" )
             {
               if ( isruninfo )
-                event.getRun().getByLabel(label1, handle);
+                event.getRun().getByLabel(edm::InputTag(label1), handle);
               else
-                event.getByLabel(label1, handle);
+                event.getByLabel(edm::InputTag(label1), handle);
             }
           else
             event.getByLabel(label1, label2, handle);
@@ -330,7 +330,7 @@ bool fillBuffer(const edm::Event& event,
       try 
         {
           if ( label2 == "" )
-            event.getByLabel(label1, handle);
+            event.getByLabel(edm::InputTag(label1), handle);
           else
             event.getByLabel(label1, label2, handle);
         }

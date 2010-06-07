@@ -29,7 +29,6 @@
    <class name="otreestream"/>
    <class name="kit::MatchedPair"/>
    <class name="kit::PtThing"/>
-   <class name="gEvent"/>
 
    <class name="ATest"/>
    <class name="Aclass"/>

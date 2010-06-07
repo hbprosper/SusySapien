@@ -15,7 +15,6 @@
 #include "PhysicsTools/LiteAnalysis/interface/Bayespack.hpp"
 #include "PhysicsTools/LiteAnalysis/interface/Slurper.hpp"
 #include "PhysicsTools/LiteAnalysis/interface/ATest.h"
-#include "PhysicsTools/LiteAnalysis/interface/gEvent.h"
 //-----------------------------------------------------------------------------
 #include "DataFormats/CaloTowers/interface/CaloTower.h"
 #include "DataFormats/EgammaReco/interface/BasicCluster.h"

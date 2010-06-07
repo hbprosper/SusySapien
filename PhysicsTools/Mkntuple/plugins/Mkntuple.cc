@@ -44,8 +44,9 @@
 // Original Author:  Sezen SEKMEN & Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Jan 17 HBP - add log file
+//                   Sun Jun 06 HBP - add variables.txt file
 //
-// $Id: Mkntuple.cc,v 1.6 2010/03/12 23:17:14 prosper Exp $
+// $Id: Mkntuple.cc,v 1.7 2010/04/21 02:22:43 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -66,6 +67,7 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/FWLite/interface/AutoLibraryLoader.h"
 #include "TROOT.h"
+#include "TSystem.h"
 
 using namespace std;
 
@@ -81,6 +83,8 @@ private:
   virtual void analyze(const edm::Event&, const edm::EventSetup&);
   virtual void endJob();
 
+  bool select();
+
   // Object that models the output n-tuple.
   otreestream output;
 
@@ -92,17 +96,23 @@ private:
   std::string logfilename_;
   std::ofstream* log_;
   std::string analyzername_;
+  std::string selectorname_;
+  std::string selectorcmd_;
 };
 
 
 Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   : output(otreestream(iConfig.getUntrackedParameter<string>("ntupleName"), 
                        "Events", 
-                       "made by Mkntuple $Revision: 1.6 $")),
+                       "made by Mkntuple $Revision: 1.7 $")),
     event_(0),
     logfilename_("Mkntuple.log"),
-    log_(new std::ofstream(logfilename_.c_str()))
+    log_(new std::ofstream(logfilename_.c_str())),
+    selectorname_(""),
+    selectorcmd_("")
 {
+  cout << "\nBEGIN Mkntuple" << endl;
+
   // Get optional analyzer name
   try
     {
@@ -113,7 +123,45 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
       analyzername_ = "";
     }
 
-  cout << "\nBEGIN Mkntuple" << endl;
+  // Get name of optional selector
+  try
+    {
+      selectorname_ = iConfig.getUntrackedParameter<string>("selectorName");
+
+      // Try to load associated shared library
+
+      // First find shared lib
+      char cmd[1024];
+      sprintf(cmd, "find %s*.so", selectorname_.c_str());      
+      string shlib = kit::shell(string(cmd));
+      if ( TString(shlib).Contains("No such file") )
+        // Have a tantrum!
+        throw edm::Exception(edm::errors::Configuration,
+                             "cfg error: "
+                             "cannot find shared library\n\t\t" +
+                             selectorname_ + string("*.so")); 
+
+      // Found shared library, so try to load it
+      if ( gSystem->Load(shlib.c_str()) != 0 )
+        // Scream loudly!
+        throw edm::Exception(edm::errors::Configuration,
+                             "cfg error: "
+                             "unable to load selector shared library\n\t\t" +
+                             shlib);
+
+      // Create command to execute selector
+      sprintf(cmd, "*keep = %s();", selectorname_.c_str());
+      selectorcmd_ = string(cmd);
+
+      cout << endl << "Loaded selector library: " << shlib << endl << endl;
+    }
+  catch (...)
+    {
+      selectorname_ = "";
+    }
+
+
+
 
   if ( getenv("DEBUGMKNTUPLE") > 0 )
     DEBUG = atoi(getenv("DEBUGMKNTUPLE"));
@@ -125,7 +173,13 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   time_t tt = time(0);
   string ct(ctime(&tt));
   *log_ << "Created: " << ct << endl;
+  log_->close();
 
+  // Write branches and variables to file
+
+  ofstream vout("variables.txt");
+  vout << ct << endl;
+  
   // Allocate buffers.
   //
   // Each buffer descriptor (a series of strings) comprises
@@ -140,11 +194,8 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   vector<string> vrecords = iConfig.
     getUntrackedParameter<vector<string> >("buffers");
 
-
   boost::regex getmethod("[a-zA-Z][^ ]*[(].*[)][^ ]*");
   boost::smatch matchmethod;
-
-  *log_ << "BEGIN VARIABLES" << endl;
 
   for(unsigned ii=0; ii < vrecords.size(); ii++)
     {
@@ -177,7 +228,9 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
       string buffer = field[0];                 // Buffer name
       string label  = field[1];                 // getByLabel
       int maxcount  = atoi(field[2].c_str());   // max object count to store
-      string prefix = buffer + "_" + label;
+
+      // replace double colon with an "_"
+      string prefix = buffer + "_" + kit::replace(label, "::", "_");
       if (field.size() == 4) prefix = field[3]; // n-tuple variable prefix
       
       //DB
@@ -269,16 +322,13 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
 
       // ... and initialize it
       buffers.back()->init(output, label, prefix, var, maxcount, 
-                           *log_, DEBUG);
+                           vout, DEBUG);
     }
-
-  *log_ << "END VARIABLES" << endl << endl;
-
-  log_->close();
+  vout.close();
 
   // Create ntuple analyzer template if requested
   if ( analyzername_ != "" )
-    kit::shell("mkanalyzer.py " + analyzername_ + " " + logfilename_);
+    kit::shell("mkanalyzer.py " + analyzername_ + " variables.txt");
 
   cout << "END Mkntuple" << endl;
 }
@@ -309,6 +359,10 @@ Mkntuple::analyze(const edm::Event& iEvent,
   for(unsigned i=0; i < buffers.size(); i++)
     if ( !buffers[i]->fill(iEvent) ) message += buffers[i]->message();
 
+  // Copy data to output buffers
+
+  output.store();
+
   // Check for error report from buffers
 
   if ( message != "" )
@@ -326,10 +380,30 @@ Mkntuple::analyze(const edm::Event& iEvent,
 
   // Apply optional cuts
 
-  
-  output.commit();
+  if ( ! select() ) return;
+
+  // Event kept so save buffers
+
+  output.save();
 }
 
+bool
+Mkntuple::select()
+{
+  bool keep=true;
+  if ( selectorcmd_ == "" ) return keep;
+
+  // Execute selector
+
+  gROOT->ProcessLine(Form("bool* keep = (bool*)0x%x", &keep)); 
+  gROOT->ProcessLineFast(selectorcmd_.c_str());
+
+  if ( keep )
+    cout << "\t** Mkntuple::select() - KEEP" << endl;
+  else
+    cout << "\t** Mkntuple::select() - SKIP" << endl;
+  return keep;
+}
 
 // --- method called once each job just before starting event loop  -----------
 void 

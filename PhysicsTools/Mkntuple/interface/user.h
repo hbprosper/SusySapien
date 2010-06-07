@@ -7,7 +7,7 @@
 // Created:     Tue Jan 19, 2010 HBP
 // Updated:     Mon Mar 08, 2010 Sezen & HBP - add triggerBits class
 //              Thu Apr 08, 2010 Sezen & HBP - add GParticle class
-//$Revision: 1.1 $
+//$Revision: 1.2 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -30,19 +30,26 @@ public:
   ~GParticle();
 
   ///
+  int firstMother() const;
+
+  ///
+  int lastMother()  const;
+
+  ///
   int firstDaughter() const;
 
   ///
   int lastDaughter()  const;
 
 private:
-  // one daughterpos per GenParticle
-  std::vector<int> daughterpos;
+  // one mothers vector and daughters veector per GenParticle
+  std::vector<int> mothers_;
+  std::vector<int> daughters_;
 
-  // declare static so that we have one amap and one count per
-  // event
+  // declare static so that we have one amap and one count per event
   static std::map<std::string, int> amap;
   static int count;
+  static int index;
 };
 
 //-----------------------------------------------------------------------------
