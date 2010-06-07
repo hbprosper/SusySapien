@@ -46,7 +46,7 @@
 //         Updated:  Sun Jan 17 HBP - add log file
 //                   Sun Jun 06 HBP - add variables.txt file
 //
-// $Id: Mkntuple.cc,v 1.7 2010/04/21 02:22:43 prosper Exp $
+// $Id: Mkntuple.cc,v 1.8 2010/06/07 02:33:13 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -83,7 +83,7 @@ private:
   virtual void analyze(const edm::Event&, const edm::EventSetup&);
   virtual void endJob();
 
-  bool select();
+  bool select(const edm::Event& iEvent);
 
   // Object that models the output n-tuple.
   otreestream output;
@@ -104,7 +104,7 @@ private:
 Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   : output(otreestream(iConfig.getUntrackedParameter<string>("ntupleName"), 
                        "Events", 
-                       "made by Mkntuple $Revision: 1.7 $")),
+                       "made by Mkntuple $Revision: 1.8 $")),
     event_(0),
     logfilename_("Mkntuple.log"),
     log_(new std::ofstream(logfilename_.c_str())),
@@ -159,9 +159,6 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
     {
       selectorname_ = "";
     }
-
-
-
 
   if ( getenv("DEBUGMKNTUPLE") > 0 )
     DEBUG = atoi(getenv("DEBUGMKNTUPLE"));
@@ -380,7 +377,7 @@ Mkntuple::analyze(const edm::Event& iEvent,
 
   // Apply optional cuts
 
-  if ( ! select() ) return;
+  if ( ! select(iEvent) ) return;
 
   // Event kept so save buffers
 
@@ -388,7 +385,7 @@ Mkntuple::analyze(const edm::Event& iEvent,
 }
 
 bool
-Mkntuple::select()
+Mkntuple::select(const edm::Event& iEvent)
 {
   bool keep=true;
   if ( selectorcmd_ == "" ) return keep;
@@ -397,11 +394,10 @@ Mkntuple::select()
 
   gROOT->ProcessLine(Form("bool* keep = (bool*)0x%x", &keep)); 
   gROOT->ProcessLineFast(selectorcmd_.c_str());
-
   if ( keep )
-    cout << "\t** Mkntuple::select() - KEEP" << endl;
+    cout << "\t\t** KEEP EVENT - " << event_ << endl;
   else
-    cout << "\t** Mkntuple::select() - SKIP" << endl;
+    cout << "\t\t** SKIP EVENT - " << event_ << endl;
   return keep;
 }
 

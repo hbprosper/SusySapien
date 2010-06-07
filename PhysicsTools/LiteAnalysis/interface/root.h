@@ -19,7 +19,7 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Fri Apr 04 2008
-// $Id: root.h,v 1.2 2008/10/31 02:02:53 harry Exp $
+// $Id: root.h,v 1.2 2010/01/16 04:08:18 prosper Exp $
 //
 //
 //-----------------------------------------------------------------------------
@@ -57,7 +57,8 @@ public:
   TFileDialog(const TGWindow* window, 
               const TGWindow* main,
               EFileDialogMode dlg_type=kFDOpen, 
-              std::string inidir=".");
+              std::string inidir=".",
+              std::string inifilename="");
 
   ///
   ~TFileDialog();

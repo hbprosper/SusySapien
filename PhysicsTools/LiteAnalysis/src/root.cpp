@@ -63,15 +63,23 @@ TFileDialog::TFileDialog() {}
 TFileDialog::TFileDialog(const TGWindow* window, 
                          const TGWindow* main,
                          EFileDialogMode dlg_type,
-                         string IniDir)
+                         string IniDir,
+                         string IniFilename)
   {
     TGFileInfo file_info;
 
     char* inidir = new char[IniDir.size()+1];
     copy(IniDir.begin(), IniDir.end(), inidir);
     inidir[IniDir.size()]=0;
-
     file_info.fIniDir = inidir;
+
+    if ( IniFilename != "" )
+      {
+        char* inifilename = new char[IniFilename.size()+1];
+        copy(IniFilename.begin(), IniFilename.end(), inifilename);
+        inifilename[IniFilename.size()]=0;
+        file_info.fFilename = inifilename;
+      }
 
     const char* filetypes[] = {"Root files", "*.root",
                                "All files",  "*",

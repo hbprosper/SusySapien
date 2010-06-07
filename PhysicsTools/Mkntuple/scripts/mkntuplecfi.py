@@ -5,8 +5,10 @@
 # Created:     06-Jan-2010 Harrison B. Prosper
 # Updated:     16-Jan-2010 HBP - simplify command line
 #              12-Feb-2010 HBP - Change to single quotes
+#              06-Jun-2010 HBP - always highlight selected methods when a class
+#                          is selected
 #-----------------------------------------------------------------------------
-#$Revision: 1.10 $
+#$Revision: 1.11 $
 #-----------------------------------------------------------------------------
 import sys, os, re, platform
 from ROOT import *
@@ -30,7 +32,7 @@ if not os.environ.has_key("CMSSW_BASE"):
 	sys.exit(0)
 
 BASE = os.environ["PWD"]
-REVISION="$Revision: 1.10 $"
+REVISION="$Revision: 1.11 $"
 rev = split(REVISION)[1]
 VERSION        = \
 """
@@ -813,6 +815,8 @@ class Gui:
 			if SelectedPage:
 				if not methods[name]: continue
 			self.methodBox[pageNumber].AddEntry(name, index)
+			if not SelectedPage and self.cmap[cname]['methods'][name]:
+				self.methodBox[pageNumber].Select(index)
 		self.methodBox[pageNumber].Layout()
 
 		# List getByLabels
@@ -825,8 +829,9 @@ class Gui:
 			if SelectedPage:
 				if not labels[name]: continue
 			self.labelBox[pageNumber].AddEntry(name, index)
+			if not SelectedPage and self.cmap[cname]['labels'][name]:
+				self.labelBox[pageNumber].Select(index)
 		self.labelBox[pageNumber].Layout()
-		
 #---------------------------------------------------------------------------
 	def methodListBox(self, id):
 
@@ -1041,7 +1046,16 @@ class Gui:
 		#D
 		#print "    write out info"
 		
-		filename = CFI_PY
+		fdialog = TFileDialog(self.window,
+							  self.main,
+							  kFDOpen,
+							  self.iniDir,
+							  CFI_PY)
+
+
+		self.iniDir  = fdialog.IniDir()
+		filename = fdialog.Filename()
+		
 		self.statusBar.SetText("Saving to file", 0)
 		self.statusBar.SetText(filename, 1)
 
