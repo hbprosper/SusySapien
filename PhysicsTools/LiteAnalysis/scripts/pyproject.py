@@ -28,7 +28,7 @@
 #              23-Oct-2005 HBP, Decouple a bit from CMS structure
 #              25-May-2006 HBP, Use environment variables in setup(..)
 #              25-Sep-2008 HBP, Fix bug in addflags
-#$Revision: 1.12 $
+#$Revision: 1.2 $
 #==============================================================================
 import os, sys, re, shelve
 from boostlib import \
@@ -51,11 +51,12 @@ pp = PrettyPrinter()
 #==============================================================================
 # Constants
 #==============================================================================
-VERSION='$Revision: 1.12 $'
+VERSION='$Revision: 1.2 $'
 VERSION=split(VERSION[:-1]).pop()
 USAGE = '''
 Usage:
-   pyproject setup | config | h2xml | clean  | veryclean | shell  | test
+   pyproject setup | config | h2xml | xml2b | template | build
+                   | clean  | veryclean | shell  | test
 			 [-h]                  Print this
 			 [-v]                  Verbose mode: echo all commands
 			 [-V]                  Print version number
@@ -834,7 +835,7 @@ class Command:
 		out.write("# \t%s\n" % path)
 		out.write("# Created:     %(time)s with pyproject.py"
 				  " %(VERSION)s\n" % names)
-		out.write("#$Revision: 1.12 $\n")
+		out.write("#$Revision: 1.2 $\n")
 		out.write("#" + 78*'-' + '\n')
 		out.write("ifndef PYTHON_PROJECTS\n")
 		out.write("$(error PYTHON_PROJECTS is undefined)\n")
@@ -863,7 +864,7 @@ class Command:
 		out.write("# GNUmakefile to create XML files\n")
 		out.write("# Created: %(time)s with pyproject.py "
 				  "%(VERSION)s\n" % names)
-		out.write("#$Revision: 1.12 $\n")
+		out.write("#$Revision: 1.2 $\n")
 		out.write("#" + 78*'-' + '\n')
 		out.write("ifndef PYTHON_PROJECTS\n")
 		out.write("$(error PYTHON_PROJECTS is undefined)\n")
@@ -884,7 +885,7 @@ class Command:
 		out.write("# GNUmakefile to create lib%(module)s library\n" % names)
 		out.write("# Created: %(time)s with pyproject.py "
 				  "%(VERSION)s\n" % names)
-		out.write("#$Revision: 1.12 $\n")
+		out.write("#$Revision: 1.2 $\n")
 		out.write("#" + 78*'-' + '\n')
 		out.write("ifndef PYTHON_PROJECTS\n")
 		out.write("$(error PYTHON_PROJECTS is undefined)\n")
@@ -958,7 +959,7 @@ class Command:
 			out.write("# GNUmakefile to create Python modules\n")
 			out.write("# Created: %(time)s with pyproject.py "
 					  "%(VERSION)s\n" % names)
-			out.write("#$Revision: 1.12 $\n")
+			out.write("#$Revision: 1.2 $\n")
 			out.write("#" + 78*'-' + '\n')
 			out.write("ifndef PYTHON_PROJECTS\n")
 			out.write("$(error PYTHON_PROJECTS is undefined)\n")
@@ -1245,7 +1246,7 @@ class Command:
 		out.write("# File:    TypesDB\n" % names)
 		out.write("# Created: %(date)s, pyproject.py"
 				  " %(VERSION)s\n" % names)
-		out.write("#$Revision: 1.12 $\n")
+		out.write("#$Revision: 1.2 $\n")
 		out.write(79*"#"+'\n')
 		PP = PrettyPrinter(stream=out)
 		out.write("ClassDB =\\\n")

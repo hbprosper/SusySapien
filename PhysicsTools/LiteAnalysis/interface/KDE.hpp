@@ -216,9 +216,9 @@ class KDE
   { if ( !_initialized ) _init(); return _lambda;  }
 
   /** Return integral of density over specified hyper-rectangular domain.
-      @param a lower bounds of domain
-      @param b upper bounds of domain
-      @return the value of the integral
+      @param a - lower bounds of domain
+      @param b - upper bounds of domain
+      @return - the value of the integral
    */
   double integral(std::vector<double>& a, std::vector<double>& b);
 

@@ -4,7 +4,7 @@
 ifndef PYTHON_PROJECTS
 $(error PYTHON_PROJECTS is undefined)
 endif
-#include $(PYTHON_PROJECTS)/config/checkenv.mk
+include $(PYTHON_PROJECTS)/config/checkenv.mk
 #------------------------------------------------------------------------------
 ifdef verbose
 	VERBOSE:= "verbose=1"
@@ -45,13 +45,13 @@ all:	lib h2xml xml2b template build
 
 ifeq ($(pwd),$(topdir))
 setup:
-	@pyproject.py setup
+	@$(PYTHON_PROJECTS)/bin/pyproject.py setup
 
 config:
-	@pyproject.py config
+	@$(PYTHON_PROJECTS)/bin/pyproject.py config
 
 shell:
-	@pyproject.py shell $(shell)
+	@$(PYTHON_PROJECTS)/bin/pyproject.py shell $(shell)
 endif
 
 lib:

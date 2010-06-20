@@ -51,15 +51,13 @@
 #              08-May-2006 HBP Add printable attribute to classes with
 #                              operator<<
 #              11-Dec-2009 HBP Fix problem with __attribute__(...) 
-#$Revision: 1.13 $
+#$Revision: 1.2 $
 #---------------------------------------------------------------------------
 import os, sys, re, posixpath, shelve
-from popen2 import popen3
 from time   import time, ctime
 from string import *
 from glob   import glob
 from getopt import getopt
-from sets   import Set
 from elementtree.ElementTree import ElementTree
 from xml.parsers.expat import ExpatError
 #---------------------------------------------------------------------------
@@ -67,27 +65,34 @@ from boostlib import *
 #---------------------------------------------------------------------------
 # Constants
 #---------------------------------------------------------------------------
-VERSION='$Revision: 1.13 $'
+VERSION='$Revision: 1.2 $'
 VERSION=split(VERSION[:-1]).pop()
 HEADERSFILE = 'Headers'
 MAXCONSTRUCT=50000 # Maximum number of constructs to search for
+
+if not os.environ.has_key('PYTHON_PROJECTS'):
+	print "\n\t** PYTHON_PROJECTS undefined ** choi!\n"
+	sys.exit(1)
+
+BASE = os.environ['PYTHON_PROJECTS']
+sys.path.insert(0, "%s/python" %  BASE)
 
 # Determine module etc.
 
 def getProject():
 
-	if not os.environ.has_key('PYTHON_PROJECTS'):
-		print "\n\t** PYTHON_PROJECTS undefined ** choi!\n"
-		sys.exit(1)
+## 	if not os.environ.has_key('PYTHON_PROJECTS'):
+## 		print "\n\t** PYTHON_PROJECTS undefined ** choi!\n"
+## 		sys.exit(1)
 
-	BASE = os.environ['PYTHON_PROJECTS']
+## 	BASE = os.environ['PYTHON_PROJECTS']
 	PWD  = strip(os.popen('pwd').read())
 	PROJECT = ''
 	PACKAGE = ''
 	MODULE  = ''
 	PROJECTPATH = BASE
 	XMLMAPFILE  = '%s/python/XmlMap.py' % BASE
-
+	
 	tmp  = split(replace(PWD, BASE, ''),'/')
 
 	try:
@@ -125,9 +130,9 @@ PROBLEMSFILE= 'CHECKME'
 DEBUGFILE   = 'DEBUG.h'
 XMLDIR      = '.'
 FILEKEY     = 1
-VERBOSE     = 0
+VERBOSE     = 1
 SILENT      = 1
-STANDALONE  = 0
+STANDALONE  = 1
 
 SYNOPSIS=\
 '''h2xml         [-Iinclude-path...]
@@ -797,7 +802,7 @@ def updateXmlMap(xmlfile):
 		from XmlMap import XmlMap
 	except:
 		XmlMap = {}
-		warning("Re-building XmlMap...")
+		warning("Re-building XmlMap **")
 
 	from pprint import PrettyPrinter
 
@@ -891,7 +896,7 @@ def updateXmlMap(xmlfile):
 	out.write("# File:    XmlMap.py\n" % names)
 	out.write("# Created: %(date)s"
 			  " %(version)s\n" % names)
-	out.write("#$Revision: 1.13 $\n")
+	out.write("#$Revision: 1.2 $\n")
 	out.write(79*"#"+'\n')
 	out.write("XmlMap =\\\n")
 	PP = PrettyPrinter(stream=out)
@@ -916,7 +921,7 @@ def getHeaderList():
 		fatal("getHeaderList - can't find file %s\n" % HEADERSFILE)
 
 	files = map(lambda x: strip(x), open(HEADERSFILE,"r").readlines())
-	names = Set()
+	names = set()
 	filelist = []
 	for file in files:
 		name = nameonly(file)
@@ -1797,7 +1802,6 @@ def extractTemplatedItems(record):
 #            syntax analysis.
 #===========================================================================
 def parseHeader(record, scrub, macros, includepaths): 
-
 	record = rstrip(record)
 	debug(1,['=== Original Header ===',record])
 
@@ -2580,18 +2584,19 @@ def main():
 	MACROS= ""
 	INCLUDE = []
 	INCLUDEPATHS = ""
-	VERBOSE = 0
+	VERBOSE = 1
 	SILENT  = 0
 	STANDALONE = 0
 
 	argv = sys.argv[1:]
 	opts, args = getopt(argv, SHORTOPTIONS)
-	for option, value in opts:
 
+	for option, value in opts:
 		if   option == "-d":
 			DEBUG = atoi(value)
 			OUTDEBUG = open(DEBUGFILE,"w")
-
+			print "----DEBUG"
+			
 		elif option == "-D":
 			MACROS = MACROS + " -D%s" % value
 
@@ -2734,8 +2739,8 @@ def main():
 		previousGroup = ""
 		classnameList = [] # Could have more than one class per file
 		abstractClass = 0
-		typelist = Set()   # To keep track of all types within classes
-		classlist= Set()
+		typelist = set()   # To keep track of all types within classes
+		classlist= set()
 		typemap  = {}
 		ignoredtypes = ['static',
 						'explicit',
@@ -2844,8 +2849,8 @@ def main():
 							# a subset of the second then we have another
 							# kind of specialized template. See, for example,
 							# IsPointer in TClass.
-							tset = Set(templateParameters(template))
-							t = Set(swords.findall(classname[n:]))
+							tset = set(templateParameters(template))
+							t = set(swords.findall(classname[n:]))
 							specializedClass = tset.issubset(t)
 				else:
 					specializedClass = 0                
@@ -3187,10 +3192,10 @@ def main():
 			invalidXML = 1
 		else:
 			invalidXML = 0
-
+			
 		# Update XmlMap.py
 
-		if not invalidXML:
+		if not invalidXML:			
 			if not STANDALONE:
 				updateXmlMap(xmlfile)
 

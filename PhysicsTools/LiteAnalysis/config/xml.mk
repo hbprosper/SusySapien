@@ -11,7 +11,7 @@
 #                               verbose         [no]
 #
 #			Requires:
-#                               header2xml.py
+#                               $PYTHON_PROJECTS/bin/header2xml.py
 #
 #  Updated: 06-May-2004 HBP
 #           17-Oct-2005 HBP make xml only
@@ -41,7 +41,7 @@ endif
 #-----------------------------------------------------------------------
 # COMPILERS/LINKER
 #-----------------------------------------------------------------------
-H2XML		:= header2xml.py
+H2XML		:= $(PYTHON_PROJECTS)/bin/header2xml.py
 
 # SWITCHES/INCLUDES
 

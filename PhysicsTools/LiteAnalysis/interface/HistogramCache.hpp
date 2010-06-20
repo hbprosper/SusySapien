@@ -27,41 +27,47 @@
 //--------------------------------------------------------------------
 // Cache TH1F and TH2F histograms from a TFile. 
 
+/** Model a cache of TH1 and TH2 histograms obtained from a TFile.
+ */
 class HistogramCache
 {
 public:
-  //
+  ///
   HistogramCache() {}
   
-  //
+  /** Construct and initialize a cache of histograms.
+      @param filename - Name of TFile
+      @para, verbose - Speak loudly if true
+   */
   HistogramCache(std::string filename, bool verbose=false);
   
   //
   ~HistogramCache();
   
-  // Return true if specified histogram exists in cache; false otherwise.
+  /// Return true if specified histogram exists in cache; false otherwise.
   bool                  exists(std::string histname);
   
-  // Given a histogram name, return its contents. 
+  /// Given a histogram name, return its contents. 
   std::vector<double>   contents(std::string histname, 
                                  int RebinSize=1, 
                                  double Normalization=-1.0,
                                  std::string option="");
-  // given a 1d histogram, return its content
-  std::vector<double>   contents_TH1(TH1D *h, 
+
+  /// Given a 1d histogram, return its content
+  std::vector<double>   contents_TH1(TH1* h, 
                                      int RebinSize, 
                                      double Normalization);
   
-  // return the type of the histogram with this name.
+  /// Return the type of the named histogram.
   std::string           type(std::string histname);
     
-  // Return a pointer to the histogram. 
+  /// Return a pointer to the named histogram. 
   TH1*                  histogram(std::string histname);
     
-  // List contents of cache.
+  /// List contents of cache.
   void                  ls(std::ostream& os=std::cout);
 
-  // List contents of cache.
+  /// List contents of cache.
   std::string           str();
     
 private:

@@ -28,7 +28,7 @@
 #				g77
 #				g++
 #                               boost
-#                               xml2boost.py
+#                               $PYTHON_PROJECTS/bin/xml2boost.py
 #                                    
 #
 #  Updated: 06-May-2004 HBP
@@ -53,7 +53,7 @@ optflag		:= -Os
 withboost	:= yes
 withpython	:= yes
 #-----------------------------------------------------------------------
-include $(PYTHON_PROJECTS)config/common.mk
+include $(PYTHON_PROJECTS)/config/common.mk
 #-----------------------------------------------------------------------
 say 	:= $(shell echo "Package:     $(package)"    >& 2)
 say 	:= $(shell echo "Sub-package: $(subpackage)" >& 2)

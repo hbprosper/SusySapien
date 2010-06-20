@@ -16,7 +16,8 @@
 #include "TObject.h"
 #endif
 
-///
+/** Slurp (that is, read) a text file into memory.
+ */
 class Slurper
 {
  public:
@@ -24,7 +25,11 @@ class Slurper
   ///
   Slurper();
 
-  ///
+  /** Slurp a text file into memory.
+      @param filename - name of file
+      @param start - starting row
+      @param count - number of rows (0=all rows)
+   */
   Slurper(std::string filename, int start=0, int count=0);
 
   ~Slurper();

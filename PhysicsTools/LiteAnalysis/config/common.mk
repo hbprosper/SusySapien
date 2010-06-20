@@ -57,9 +57,9 @@ C++	:= $(GCC_BIN_PREFIX)g++
 CC	:= $(GCC_BIN_PREFIX)gcc
 F77	:= $(GCC_BIN_PREFIX)g77
 LDSHARED:= $(GCC_BIN_PREFIX)g++
-H2XML	:= $(PYTHON_PROJECTS)header2xml.py
-XML2B	:= $(PYTHON_PROJECTS)xml2boost.py
-PYCONFIG:= $(PYTHON_PROJECTS)pymodule-config.py
+H2XML	:= $(PYTHON_PROJECTS)/bin/header2xml.py
+XML2B	:= $(PYTHON_PROJECTS)/bin/xml2boost.py
+PYCONFIG:= $(PYTHON_PROJECTS)/bin/pymodule-config.py
 CINT	:= $(ROOTSYS)/bin/rootcint
 
 C++VER	:= $(shell $(C++) --version)
@@ -70,8 +70,8 @@ say 	:= $(shell echo "$(COMP) $(CTYPE) $(CVER)" >& 2)
 #-----------------------------------------------------------------------
 dirlist := $(subst /, ,$(PYTHON_PROJECTS))
 prjdir	:= $(word $(words $(dirlist)), $(dirlist))
-pwd	:= $(shell pwd)
-tmp	:= $(word 2, $(subst $(prjdir)/, ,$(pwd)))
+pwd		:= $(shell pwd)
+tmp		:= $(word 2, $(subst $(prjdir)/, ,$(pwd)))
 project := $(word 1,$(subst /, ,$(tmp)))
 topdir	:= $(PYTHON_PROJECTS)/$(project)
 #-----------------------------------------------------------------------
@@ -146,7 +146,7 @@ ifdef withcern
 endif
 #-----------------------------------------------------------------------
 ifdef withboost
-	boostutilcpp	:= -I$(PYTHON_PROJECTS)include
+	boostutilcpp	:= -I$(PYTHON_PROJECTS)/boostutil/include
 
 #	Boost include path
 
@@ -154,33 +154,16 @@ ifdef withboost
 
 #	Boost lib path
 
+	boostlib:= -L$(BOOST_BASE)/lib -lboost_python		
 	version:= $(subst /, ,$(BOOST_BASE))
 	version:= $(word $(words $(version)),$(version))
-
-	boostlib:= \
-	$(shell find $(BOOST_BASE)/lib/libboost_python*.so)
-	ifeq "$(boostlib)" ""
-		boostlib:= \
-		$(shell \
-		find $(BOOST_BASE)/lib/libboost_python.so)
-		ifeq "$(boostlib)" ""
-			say:= \
-			$(shell echo -e "\nCheck boost installation\n" >& 2)
-			say:= $(error )
-		else
-			boostlib:= -L$(BOOST_BASE)/lib -lboost_python
-		endif
-	else
-		boostlib:= -L$(BOOST_BASE)/lib -lboost_python-gcc
-	endif
-
 	boostcxx:= -ftemplate-depth-1000 -DBOOST_PYTHON_DYNAMIC_LIB 
 	say 	:= $(shell echo Boost $(version)   >& 2)
 endif 
 
 ifdef withboostutil
-	boostutilcpp	:= -I$(PYTHON_PROJECTS)include
-	boostutillib	:= -L$(PYTHON_PROJECTS)lib -lboostutil
+	boostutilcpp	:= -I$(PYTHON_PROJECTS)/boostutil/include
+	boostutillib	:= -L$(PYTHON_PROJECTS)/boostutil/lib -lboostutil
 endif 
 #-----------------------------------------------------------------------
 ifdef withpython
@@ -209,11 +192,6 @@ ifdef withpython
 	version	:= $(strip $(shell $(PYTHON_BASE)/bin/python -V))
 	say 	:= $(shell echo $(version)   >& 2)
 endif
-	#say 	:= $(shell echo $(pythoncpp)   >& 2)
-	#say 	:= $(shell echo $(pythonlib)   >& 2)
-	#say 	:= $(shell echo $(boostcpp)   >& 2)
-	#say 	:= $(shell echo $(boostlib)   >& 2)
-#$(error )
 #-----------------------------------------------------------------------
 ifdef withcint
 	withroot:= yes
@@ -281,12 +259,13 @@ ifdef libdir
 	ldflags += -L$(libdir)
 endif
 
-LDFLAGS	:= -L/usr/lib -L/lib $(ldflags) $(debugflag)
+#LDFLAGS	:= -L/usr/lib -L/lib $(ldflags) $(debugflag)
+LDFLAGS	:= $(ldflags) $(debugflag)
 EXEFLAGS:= $(LDFLAGS) 
 SYSLIB	:=  -lg2c -lpthread -lm -ldl -lutil -lc
 rootlib	:= $(filter-out $(SYSLIB),$(rootlib))
 LIBS	:= $(libs) $(modulelib) $(boostutillib) $(rootlib) \
 		$(cernlib) $(boostlib) $(pythonlib) $(SYSLIB)
-EXELIBS	:=  $(libs) $(modulelib) $(boostutillib) $(rootlib) \
-		$(cernlib)  $(boostlib) $(pythonlib) $(SYSLIB)
+EXELIBS	:=  $(boostlib) $(libs) $(modulelib) $(boostutillib) $(rootlib) \
+		$(cernlib)  $(pythonlib) $(SYSLIB)
 #-----------------------------------------------------------------------

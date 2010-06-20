@@ -27,9 +27,16 @@
 typedef std::vector<int> vint;
 typedef std::vector<float> vfloat;
 typedef std::vector<double> vdouble;
+
+/** Function to be integrated
+    @param ndim - dimension of space
+    @param point - point in space
+    @param numint - number of integrands
+    @param value - values of function at given point, one per integrand
+ */
 typedef void   FUNSUB(int* ndim, double* point, int* numfun, double* value);
 
-/// Wrapper of ADBAYS program by Alan Genz
+/// Wrapper of ADBAYS program by Alan Genz.
 class AdBayes
 {
 public:
@@ -40,31 +47,54 @@ public:
   ///
   ~AdBayes();
 
-  ///
+  /** Integrate given function over domain \f$[a, b]\f$.
+      @param a - lower bounds of integration domain
+      @param b - upper bounds of integration domain
+      @param fun - function to be integrated
+      @param numint - number of integrands
+   */
   vdouble& integrate(vdouble& a,
-		     vdouble& b,
-		     FUNSUB*  fun,
-		     int      numfun=1);
+                     vdouble& b,
+                     FUNSUB*  fun,
+                     int      numint=1);
 
   ///
   void restart(){_restart = 1;}
+
+  ///
   void reset()  {_restart = 0;}
 
+  ///
   void setMaxpoints(int maxpts){_maxpts=maxpts;}  // Max. points
+
+  ///
   void setAccuracy(double relerr){_relerr=relerr;}// Rel. error of estimates
+
+  ///
   void setRule  (int    key)   {_key=key;}        // Rule type
 
   // Getters
   //////////
 
+  ///
   double   accuracy() {return _relerr;}
+
+  ///
   int      maxpoints(){return _maxpts;}
-  int      rule()     {return _key;} 
+
+  ///
+  int      rule()     {return _key;}
+
+  ///
   int      neval()    {return _neval;}
 
+  ///
   vdouble  results()  {return _result;}
+
+  ///
   vdouble  errors()   {return _error;}
-  //const double* derrors(){return (const double*)(&_error[0]);}
+
+  ///
   int      status()   {return _status;}
 
 private:

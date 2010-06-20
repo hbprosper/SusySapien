@@ -19,9 +19,9 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Fri Apr 04 2008
-// $Id: kit.h,v 1.3 2010/02/08 03:22:05 prosper Exp $
+// $Id: kit.h,v 1.4 2010/03/11 17:44:12 prosper Exp $
 //
-//$Revision: 1.3 $
+//$Revision: 1.4 $
 //-----------------------------------------------------------------------------
 #include <iostream>
 #include <fstream>
@@ -77,6 +77,7 @@ struct kit
   ///
   void set(double y, double* x);
   
+  ///
   struct MatchedPair
   {
     int first;
@@ -89,19 +90,19 @@ struct kit
   // Simple struct to collect together standard attributes
 
   // Note: Unlike a class, all attributes of a struct are public
-  
+  ///
   struct PtThing
   {
     PtThing() {}
     ~PtThing() {}
 
-    // Copy constructor
+    /// Copy constructor.
     PtThing(const PtThing& rhs)
     {
       *this = rhs; // this will call assignment operator
     }
 
-    // Assignment 
+    /// Assignment. 
     PtThing& operator=(const PtThing& rhs)
     {
       index  = rhs.index;
@@ -116,6 +117,9 @@ struct kit
       return *this;
     }
 
+    /** Find \f$|Delta R = \sqrt{\Delta\phi^2+\Delta\eta^2}\f$ between this
+        PtThing and the given.
+     */
     float deltaR(PtThing& thing)
     {
       float deta = eta - thing.eta;
@@ -126,8 +130,7 @@ struct kit
       return sqrt(deta*deta+dphi*dphi);
     }
 
-    // Compare direction of this PtThing with another using deltaR
-
+    /// Compare direction of this PtThing with another using deltaR.
     bool matches(PtThing& thing, float drcut=0.4)
     {
       return deltaR(thing) < drcut;
@@ -142,37 +145,43 @@ struct kit
     float et;
     float charge;
     
-    // Map for additional variables
+    /// Map for additional variables.
     std::map<std::string, float> var;
     
-    // To sort in descending pt
+    /// To sort PtThings in descending pt.
     bool operator<(const PtThing& o) const { return o.pt < this->pt; }
   };
   
-  //--------------------------------------------------------------------------
-  // A simple class to model a count. Each time the (function) object is 
-  // called, the count is incremented for the given string. The object is
-  // self-initializing; that is, their is no need for an explicit zeroing of
-  // the count.
-  //
-  // Usage:
-  // 
-  // Count count;
-  //
-  // increment count
-  // count("Selected Muon");
-  //
-  // To display the counts at the end, do
-  //
-  // count.ls();
-  //
-  //--------------------------------------------------------------------------
+  /**
+     Model a count as a function object. 
+     Each time the (function) object is 
+     called, the count is incremented for the given string. The object is
+     self-initializing; that is, there is no need for an explicit zeroing of
+     the count.
+     <p>
+     \code
+     Usage:
+     
+     Count count;
+     : :
+     // increment count
+     count("Selected Muon");
+     
+     // To display the counts at the end, do
+     : :
+     count.ls();
+     \endcode
+  */
   class Count
   {
   public:
+    ///
     Count() : _var(std::map<std::string, int>()) {}
+
+    ///
     ~Count(){}
 
+    ///
     int operator()(std::string var) 
     {
       if ( _var.find(var) == _var.end() ) _var[var] = 0;
@@ -180,8 +189,7 @@ struct kit
       return _var[var];
     }
     
-    // List counts. Default = list to screen
-    
+    /// List counts (default = list to screen).
     void ls(std::ostream& os = std::cout)
     {
       int index = 0;
@@ -205,7 +213,7 @@ struct kit
  
 
   // ------------------------------------------------------------------------
-  
+  ///
   struct ValueThing
   {
     virtual ~ValueThing() {}
@@ -213,6 +221,7 @@ struct kit
     virtual void*       address()=0;
   };
 
+  ///
   template <typename X>
   struct Value : public ValueThing
   {
@@ -333,6 +342,7 @@ struct kit
 
   // ------------------------------------------------------------------------
 
+  ///
   enum PDGID
   {
     BOTTOM  = 5,
@@ -428,15 +438,15 @@ struct kit
   static
   TVector3         vector3(math::XYZVector& p);
 
-  ///
-  static
-  std::vector<reco::GenParticle*>  daughters(reco::GenParticle& p, 
-                                             bool skipsame=true);
+//   ///
+//   static
+//   std::vector<reco::GenParticle*>  daughters(reco::GenParticle& p, 
+//                                              bool skipsame=true);
 
-  ///
-  static
-  std::vector<reco::GenParticle*>  daughters(reco::GenParticle* p,
-                                             bool skipsame=true);
+//   ///
+//   static
+//   std::vector<reco::GenParticle*>  daughters(reco::GenParticle* p,
+//                                              bool skipsame=true);
 
   ///
   static

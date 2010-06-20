@@ -65,7 +65,7 @@ ifndef library
 	endif
 endif
 #-----------------------------------------------------------------------
-include $(PYTHON_PROJECTS)/boostutil/config/common.mk
+include $(PYTHON_PROJECTS)/config/common.mk
 #-----------------------------------------------------------------------
 say 	:= $(shell echo "Library:      $(library)" >& 2)
 say 	:= $(shell echo "Library Area: $(libdir)"  >& 2)

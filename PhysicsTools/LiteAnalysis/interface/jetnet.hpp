@@ -26,6 +26,7 @@ typedef std::vector<std::vector<int> >    vvint;
 //-----------------------------------------------------------------------------
 namespace jetnet 
 {
+  ///
   struct ID 
   {
     int   type;
@@ -37,6 +38,8 @@ namespace jetnet
   typedef std::map<std::string, ID>    mid;
 
   /** Feed-forward neural network using JETNET 3.4.
+      This is a wrapper around one of the first well-documented neural
+      network training codes.
    */
   class NN
   {
@@ -83,8 +86,9 @@ namespace jetnet
 	The network structure is specified by giving the names of the
 	input variables and the number of hidden nodes.<br>
       
-	@param variab     Names of variables
-	@param hidden     Number of hidden nodes
+	@param variab  -   Names of variables (space delimited)
+	@param hidden  -   Number of hidden nodes
+    @param output - Type of output node
     */
     NN(std::string variab, int hidden, Output output=kSIGMOID);
 
@@ -92,13 +96,14 @@ namespace jetnet
 	The network structure is specified by giving the names of the
 	input variables and the number of hidden nodes.<br>
       
-	@param variab     Vector of variable names
-	@param hidden     Number of hidden nodes
+	@param variab   -  Vector of variable names
+	@param hidden   -  Number of hidden nodes
+    @param output - Type of output node
     */
     NN(std::vector<std::string>& variab, int hidden, Output output=kSIGMOID);
     
     /** Create an already-trained network, given a file of weights.
-	@param filename Filename of the weights
+	@param filename - Filename of the weights
     */
     NN(std::string filename);
 
@@ -106,8 +111,8 @@ namespace jetnet
     virtual ~NN();
     
     /** Set name of parameter.
-	@param name Name of network parameter
-	@param val  Value of network parameter
+	@param name - Name of network parameter
+	@param val  - Value of network parameter
     */
     void  setParameter(std::string name, float val);
     
@@ -144,7 +149,7 @@ namespace jetnet
 	
 	</table>
 
-	@param val  Minimization code
+	@param val  - Minimization code
     */
     void  setMethod(int val);
     
@@ -170,9 +175,9 @@ namespace jetnet
     void  setSample(Sample sample=kTRAINING);
     
     /** Set pattern.
-	@param inp    Input values
-	@param out    Output value
-	@param weight Pattern weight
+	@param inp    - Input values
+	@param out    - Output value
+	@param weight - Pattern weight
     */
     void  setPattern(vfloat& inp, float out, float weight = 1.0);
 
@@ -180,8 +185,8 @@ namespace jetnet
  
     /// 
     void  loadPatterns(vvfloat& inp, 
-		       vfloat&  out, 
-		       vfloat&  weight);
+                       vfloat&  out, 
+                       vfloat&  weight);
     
     /// Return value of network training parameter.
     float     parameter(std::string name);
@@ -189,7 +194,7 @@ namespace jetnet
     /// Return names of network inputs.
     vstring&  names();
     
-    /// Save network weights and, by default, the network function
+    /// Save network weights and, by default, the network function.
     void  save (std::string name, bool savecpp=true);
     
     ///
@@ -239,10 +244,10 @@ namespace jetnet
     
     where 
     
-      \f$D(p|q) = \int p(x) ln p(x) / q(x) dx \f$ 
+      \f$\kappa(q|p) = \int p(x) ln p(x) / q(x) dx \f$ 
       
-      is the Kullback-Liebler divergence between two densities \f$p(x)\f$
-      and \f$q(x)\f$. The symmetric version was introduced by 
+      is the Kullback-Leibler divergence between two densities \f$q(x)\f$
+      and \f$p(x)\f$. The symmetric version was introduced by 
       Professor Jose Bernardo.
     */
     float divergence(Divergence how=kBYBINNING);
