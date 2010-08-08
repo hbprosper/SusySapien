@@ -17,7 +17,7 @@
 //                   Sat Mar 06 HBP - write out variables to be used by
 //                                    mkntanalyzer.py
 //
-// $Id: Buffer.h,v 1.10 2010/04/21 02:22:43 prosper Exp $
+// $Id: Buffer.h,v 1.11 2010/06/07 02:33:13 prosper Exp $
 //
 //
 // If using Python, include its header first to avoid annoying compiler
@@ -43,14 +43,21 @@
 // We need a few templates to make the code generic.
 // ---------------------------------------------------------------------
 
-// Model a variable as a thing with
-// 1. a name
-// 2. a value (a vector of doubles)
-// 3. a function to access data from the associated RECO or PAT object
 
+/** Model a variable.
+    A (CMS) variable is a thing with<br>
+    1 - name
+    2 - value (a vector of doubles)
+    3 - a function to access data from the associated RECO or PAT object
+*/
 template <typename X>
 struct Variable 
 {
+  /** Construct a variable.
+      @param namen - name of variable
+      @param count - maximum number of values/variable
+      @param f - name of accessor function
+   */
   Variable(std::string namen, int count, std::string f) 
     : name(namen),
       fname(f),
@@ -64,8 +71,7 @@ struct Variable
   Method<X>           function;
 };
 
-// Function to initialize a Buffer
-
+// Function to initialize a Buffer.
 template <typename Y>
 void initBuffer(otreestream& out,  
                 std::string& label,
@@ -387,28 +393,34 @@ bool fillBuffer(const edm::Event& event,
   return true;
 }
 
-// Model a buffer as a thing with
-// 1. a maximum count
-// 2. a count of the number of values per variable
-// 3. a vector of variables, each with the same maxcount and count
-//
-// The name of the ith n-tuple variable is constructed as follows:
-// name = prefix + "_" + var[i].second
-//
-// where var[i] is a pair of strings with
-// var[i].first the name of the (simple) method to be called
-// var[i].second is the name of the n-tuple variable
-//
-// We use a base class (BufferThing) to permit polymorphic behavior, that is,
-// to allow generic calls to the buffer methods init(...) and fill(...) that
-// operate on objects of differing type.
-//
-// typenames:
-//   X = class of object to be extracted using getByLabel
+/** Model a buffer.
+    A buffer is a thing with<br>
+    1 - a maximum count
+    2 - a count of the number of values per variable
+    3 - a vector of variables, each with the same <i>maxcount</i> and 
+    <i>count</i>
+    <p>
 
+    The name of the ith n-tuple variable is constructed as follows:<br>
+    \code
+    name = prefix + "_" + var[i].second
+    \endcode
+    <br>
+    where var[i] is a pair of strings with
+    var[i].first the name of the method to be called
+    var[i].second is the name of the n-tuple variable
+    <p>
+    We use a base class (BufferThing) to permit polymorphic behavior, that is,
+    to allow generic calls to the buffer methods init(...) and fill(...) that
+    operate on objects of differing type.
+    <p>
+    <i>typenames</i>:<br>
+    X = class of object to be extracted using <i>getByLabel</i>
+*/
 template <typename X>
 struct Buffer  : public BufferThing
 {
+  ///
   Buffer() 
     : out_(0),
       label_(""),
@@ -424,8 +436,17 @@ struct Buffer  : public BufferThing
               << std::endl;
   }
 
+  ///
   virtual ~Buffer() {}
 
+  /** Initialize buffer.
+      @param out - output ntuple file.
+      @param label - getByLabel
+      @param prefix - prefix for variable names (and internal name of buffer)
+      @param var - variable descriptors
+      @param maxcount - maximum count for this buffer
+      @param log - log file
+   */
   void
   init(otreestream& out,
        std::string  label, 
@@ -465,9 +486,9 @@ struct Buffer  : public BufferThing
                   log);
   }
   
-  // -----------------------------------------------------
-  // fill output tree
-  // -----------------------------------------------------
+  /** Fill buffer.
+      @param event - well...isn't this obvious!
+   */
   bool fill(const edm::Event& event)
   {
     return fillBuffer<X, X>(event,
@@ -484,10 +505,24 @@ struct Buffer  : public BufferThing
                             false,
                             isruninfo_);
   }
-  
+
+  ///
   std::string& message() { return message_; }
 
+  ///
   std::string name() { return boost::python::type_id<X>().name(); }
+
+  /** Shrink buffer size using specified vector of indices.
+      It is possible to select which objects are to be written to the
+      output ntuple by giving their indices.
+   */
+  void shrink(std::vector<int>& index)
+  {
+    count_ = index.size();
+    for(unsigned i=0; i < variable_.size(); ++i)
+      for(int j=0; j < count_; ++j)
+        variable_[i].value[j] = variable_[i].value[index[j]];
+  }
 
 private:
   otreestream* out_;  
@@ -506,19 +541,21 @@ private:
 };
 
 
-// Model a slightly more general buffer in which the object
-// extracted from the event using getByLabel differs from the
-// object whose methods are exported as n-tuple variables. UserBuffer
-// is useful when one wants to add variables to an n-tuple that are
-// functions of the methods of getByLabel extracted object.
-//
-// typenames:
-//   X = class of object extracted using getByLabel
-//   Y = class of object exporting methods
-
+/** Model a more general buffer. 
+    This class models a buffer in which the object
+    extracted from the event using getByLabel differs from the
+    object whose methods are exported as n-tuple variables. <i>UserBuffer</i>
+    is useful when one wants to add variables to an n-tuple that are
+    functions of the methods of <i>getByLabel</i> extracted object.
+    <p>
+    <i>typenames</i>:<br>
+    1 - X = class of object extracted using getByLabel
+    2 - Y = class of object exporting methods
+*/
 template <typename X, typename Y>
 struct UserBuffer  : public BufferThing
 {
+  ///
   UserBuffer() 
     : out_(0),
       label_(""),
@@ -534,8 +571,17 @@ struct UserBuffer  : public BufferThing
               << std::endl;
   }
 
+  ///
   virtual ~UserBuffer() {}
 
+  /** Initialize buffer.
+      @param out - output ntuple file.
+      @param label - getByLabel
+      @param prefix - prefix for variable names (and internal name of buffer)
+      @param var - variable descriptors
+      @param maxcount - maximum count for this buffer
+      @param log - log file
+   */
   void
   init(otreestream& out,
        std::string  label, 
@@ -581,9 +627,8 @@ struct UserBuffer  : public BufferThing
                   log);
   }
   
-  // -----------------------------------------------------
-  // fill output tree
-  // -----------------------------------------------------
+  /** Fill buffer.
+   */
   bool fill(const edm::Event& event)
   {
     return fillBuffer<X, Y>(event,
@@ -604,6 +649,15 @@ struct UserBuffer  : public BufferThing
   std::string& message() { return message_; }
 
   std::string name() { return boost::python::type_id<Y>().name(); }
+
+  /// Shrink buffer size using specified array of indices.
+  void shrink(std::vector<int>& index)
+  {
+    count_ = index.size();
+    for(unsigned i=0; i < variable_.size(); ++i)
+      for(int j=0; j < count_; ++j)
+        variable_[i].value[j] = variable_[i].value[index[j]];
+  }
 
 private:
   otreestream* out_;  

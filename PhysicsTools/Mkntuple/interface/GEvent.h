@@ -1,7 +1,7 @@
 #ifndef GEVENT_HPP
 #define GEVENT_HPP
 //-----------------------------------------------------------------------------
-// $Revision: 1.3 $
+// $Revision: 1.1 $
 //-----------------------------------------------------------------------------
 #include <string>
 #include <iostream>
@@ -14,6 +14,7 @@ class GEvent
 
   enum SIZE {MAXSIZE=4000};
 
+  ///
   enum PDGID
   {
     DOWN    = 1,

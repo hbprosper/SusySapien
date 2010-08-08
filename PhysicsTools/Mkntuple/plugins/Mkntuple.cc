@@ -46,7 +46,7 @@
 //         Updated:  Sun Jan 17 HBP - add log file
 //                   Sun Jun 06 HBP - add variables.txt file
 //
-// $Id: Mkntuple.cc,v 1.8 2010/06/07 02:33:13 prosper Exp $
+// $Id: Mkntuple.cc,v 1.9 2010/06/07 03:37:13 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -60,6 +60,7 @@
 #include "PhysicsTools/LiteAnalysis/interface/kit.h"
 #include "PhysicsTools/Mkntuple/interface/pluginfactory.h"
 #include "PhysicsTools/Mkntuple/interface/CurrentEvent.h"
+#include "PhysicsTools/Mkntuple/interface/SelectedObjectMap.h"
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/EDAnalyzer.h"
 #include "FWCore/Framework/interface/Event.h"
@@ -83,13 +84,16 @@ private:
   virtual void analyze(const edm::Event&, const edm::EventSetup&);
   virtual void endJob();
 
-  bool select(const edm::Event& iEvent);
+  bool selectEvent(const edm::Event& iEvent);
+
+  void shrinkBuffers();
 
   // Object that models the output n-tuple.
   otreestream output;
 
   // Object that models the allocated buffers, one per object to be read.
   std::vector<BufferThing*> buffers;
+  std::map<std::string, BufferThing*> buffermap;
 
   int DEBUG;
   int event_;
@@ -104,7 +108,7 @@ private:
 Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   : output(otreestream(iConfig.getUntrackedParameter<string>("ntupleName"), 
                        "Events", 
-                       "made by Mkntuple $Revision: 1.8 $")),
+                       "made by Mkntuple $Revision: 1.9 $")),
     event_(0),
     logfilename_("Mkntuple.log"),
     log_(new std::ofstream(logfilename_.c_str())),
@@ -320,6 +324,10 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
       // ... and initialize it
       buffers.back()->init(output, label, prefix, var, maxcount, 
                            vout, DEBUG);
+
+      // cache buffer addresses in a map. Use prefix as a unique
+      // identifier for the buffer
+      buffermap[prefix] = buffers.back();
     }
   vout.close();
 
@@ -377,18 +385,24 @@ Mkntuple::analyze(const edm::Event& iEvent,
 
   // Apply optional cuts
 
-  if ( ! select(iEvent) ) return;
+  if ( ! selectEvent(iEvent) ) return;
 
-  // Event kept so save buffers
+  // Event kept. Shrink buffers as needed. Shrinking is needed if only
+  // certain objects of a given buffer have been selected.
+
+  shrinkBuffers();
 
   output.save();
 }
 
 bool
-Mkntuple::select(const edm::Event& iEvent)
+Mkntuple::selectEvent(const edm::Event& iEvent)
 {
   bool keep=true;
   if ( selectorcmd_ == "" ) return keep;
+
+  // Clear selection buffer
+  SelectedObjectMap::instance().clear();
 
   // Execute selector
 
@@ -399,6 +413,33 @@ Mkntuple::select(const edm::Event& iEvent)
   else
     cout << "\t\t** SKIP EVENT - " << event_ << endl;
   return keep;
+}
+
+void
+Mkntuple::shrinkBuffers()
+{
+  if ( selectorcmd_ == "" ) return;
+
+  map<string, vector<int> >& smap = SelectedObjectMap::instance().get();
+  map<string, vector<int> >::iterator iter = smap.begin();
+  for(iter=smap.begin(); iter != smap.end(); ++iter)
+    {
+      string name(iter->first);
+      vector<int>& index = iter->second;
+      
+      if ( buffermap.find(name) != buffermap.end() )
+        {
+          //DEBUG
+          cout << "\t** SHRINK( " << name << " ) " << index.size() << endl;
+          buffermap[name]->shrink(index);
+        }
+      else
+        throw edm::Exception(edm::errors::Configuration,
+                             "object selection error: "
+                             "bad internal buffer name - " + name + 
+                             "\n\tyou blocks you stones you worse "
+                             "than senseless things\n");
+    }
 }
 
 // --- method called once each job just before starting event loop  -----------

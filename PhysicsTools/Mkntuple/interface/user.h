@@ -7,7 +7,7 @@
 // Created:     Tue Jan 19, 2010 HBP
 // Updated:     Mon Mar 08, 2010 Sezen & HBP - add triggerBits class
 //              Thu Apr 08, 2010 Sezen & HBP - add GParticle class
-//$Revision: 1.2 $
+//$Revision: 1.3 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -19,6 +19,9 @@
 #include "FWCore/Framework/interface/Event.h"
 //-----------------------------------------------------------------------------
 
+/** Model a generator level particle.
+    This class extends the class reco::GenParticle.
+ */
 class GParticle : public reco::GenParticle
 {
 public:
@@ -56,6 +59,8 @@ private:
 // provides method
 // bool value(triggername)
 //-----------------------------------------------------------------------------
+
+///
 class triggerBits : public edm::TriggerResults
 {
  public:

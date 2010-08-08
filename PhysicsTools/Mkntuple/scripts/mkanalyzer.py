@@ -3,7 +3,8 @@
 # Description: Create ntuple analyzer template
 # Created: 06-Mar-2010 Harrison B. Prosper
 # Updated: 12-Mar-2010 HBP - fix appending of .root
-#$Revision: 1.3 $
+#          08-Jun-2010 HBP - add creation of selector.h 
+#$Revision: 1.4 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -18,6 +19,10 @@ if not os.environ.has_key("CMSSW_BASE"):
 PACKAGE = "%s/src/PhysicsTools/LiteAnalysis" % os.environ["CMSSW_BASE"]
 TREESTREAM_HPP = "%s/interface/treestream.hpp" % PACKAGE
 TREESTREAM_CPP = "%s/src/treestream.cpp" % PACKAGE
+MKNTUPLE= "%s/src/PhysicsTools/Mkntuple" % os.environ["CMSSW_BASE"]
+SELECTEDOBJECTMAP_H = "%s/interface/SelectedObjectMap.h" % MKNTUPLE
+
+# Make sure that we can find treestream etc.
 
 if not os.path.exists(TREESTREAM_HPP):
 	print "\n** error ** - file:\n\t%s\n\t\tNOT found!" % TREESTREAM_HPP
@@ -26,8 +31,12 @@ if not os.path.exists(TREESTREAM_HPP):
 if not os.path.exists(TREESTREAM_CPP):
 	print "\n** error ** - file:\n\t%s\n\t\tNOT found!" % TREESTREAM_CPP
 	sys.exit(0)
-	
-# Make sure that we can find treestream etc.
+
+if not os.path.exists(SELECTEDOBJECTMAP_H):
+	print "\n** error ** - file:\n\t%s\n\t\tNOT found!" % SELECTEDOBJECTMAP_H
+	sys.exit(0)
+
+# Functions
 
 getvno = re.compile(r'[0-9]+$')
 
@@ -44,12 +53,14 @@ def join(left, a, right):
 		s = s + "%s%s%s" % (left, x, right)
 	return s
 
-TEMPLATE =\
-'''//-----------------------------------------------------------------------------
-// File:        %(name)s
-// Description: Analyzer for ntuples created by Mkntuple
+TEMPLATE_H =\
+'''#ifndef %(NAME)s_H
+#define %(NAME)s_H
+//-----------------------------------------------------------------------------
+// File:        %(name)s.h
+// Description: Analyzer header for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 //-----------------------------------------------------------------------------
 
 // -- System
@@ -58,6 +69,7 @@ TEMPLATE =\
 #include <stdlib.h>
 #include <string>
 #include <vector>
+#include <cmath>
 #include <iostream>
 #include <iomanip>
 #include <fstream>
@@ -83,17 +95,153 @@ TEMPLATE =\
 #include "TKey.h"
 #include "TH1F.h"
 //-----------------------------------------------------------------------------
-using namespace std;
+// -- Utilities
 //-----------------------------------------------------------------------------
-void           decodeCommandLine(int argc, char** argv, 
-                                 string& filelist, string& histfilename);
-void           error(string message);
-string         nameonly(string filename);
-string         strip(string line);
-vector<string> getFilenames(string filelist);
-void           saveHistograms(string histfilename, 
-                              TDirectory* dir=gDirectory, 
-                              TFile* hfile=0, int depth=0);
+void
+error(std::string message)
+{
+  std::cout << "** error ** " << message << std::endl;
+  exit(0);
+}
+
+std::string 
+strip(std::string line)
+{
+  int l = line.size();
+  if ( l == 0 ) return std::string("");
+  int n = 0;
+  while (((line[n] == 0)    ||
+	  (line[n] == ' ' ) ||
+	  (line[n] == '\\n') ||
+	  (line[n] == '\\t')) && n < l) n++;
+  
+  int m = l-1;
+  while (((line[m] == 0)    ||
+	  (line[m] == ' ')  ||
+	  (line[m] == '\\n') ||
+	  (line[m] == '\\t')) && m > 0) m--;
+  return line.substr(n,m-n+1);
+}
+
+std::string
+nameonly(std::string filename)
+{
+  int i = filename.rfind("/");
+  int j = filename.rfind(".");
+  if ( j < 0 ) j = filename.size();
+  return filename.substr(i+1,j-i-1);
+}
+
+void
+decodeCommandLine(int argc, char** argv, 
+                  std::string& filelist, std::string& histfilename)
+{
+  filelist = std::string("filelist.txt");
+  if ( argc > 1 ) filelist = std::string(argv[1]);
+
+  if ( argc > 2 ) 
+    histfilename = std::string(argv[2]);// 2nd (optional) command line argument
+  else
+    histfilename = std::string(argv[0]);// default: name of program
+
+  // Make sure extension is ".root"
+  histfilename = nameonly(histfilename);
+  histfilename += ".root";
+}
+
+// Read ntuple filenames from file list
+
+std::vector<std::string>
+getFilenames(std::string filelist)
+{
+  std::ifstream stream(filelist.c_str());
+  if ( !stream.good() ) error("unable to open file: " + filelist);
+
+  // Get list of ntuple files to be processed
+  
+  std::vector<std::string> v;
+  std::string filename;
+  while ( stream >> filename )
+    if ( strip(filename) != "" ) v.push_back(filename);
+  return v;
+}
+
+void
+saveHistograms(std::string histfilename, 
+               TDirectory* dir=gDirectory,
+			   TFile* hfile=0,
+			   int depth=0)
+{
+  // Create output file
+
+  if ( depth == 0 )
+    {
+      std::cout << "Saving histograms to " << histfilename << std::endl;
+      hfile = new TFile(histfilename.c_str(), "RECREATE");
+    }
+
+  // Important!
+  depth++;
+  // Check recursion depth 
+  if ( depth > 100 )error("saveHistograms is lost in trees!");
+  std::string tab(2*depth, ' ');
+
+  // Loop over all histograms
+
+  TList* list = dir->GetList();
+  TListIter* it = (TListIter*)list->MakeIterator();
+
+  while ( TObject* o = it->Next() )
+    {
+      dir->cd();
+      
+      if ( o->IsA()->InheritsFrom("TDirectory") )
+        {
+          TDirectory* d = (TDirectory*)o;
+          std::cout << tab << "BEGIN " << d->GetName() << std::endl;
+          saveHistograms(histfilename, d, hfile, depth);
+          std::cout << tab << "END " << d->GetName() << std::endl;
+        }
+      // Note: All histograms inherit from TH1
+      else if ( o->IsA()->InheritsFrom("TH1") )
+        {
+          TH1* h = (TH1*)o;
+          std::cout << tab  << o->ClassName() 
+                    << "\\t" << h->GetName()
+                    << "\\t" << h->GetTitle()
+                    << std::endl;
+          hfile->cd();
+          h->Write("", TObject::kOverwrite);
+        }
+    } // end of loop over keys
+
+  hfile->Close();
+  delete hfile;
+}
+  
+//-----------------------------------------------------------------------------
+// Define variables to be read
+//-----------------------------------------------------------------------------
+%(vardecl)s
+
+void selectVariables(itreestream& stream)
+{
+%(selection)s
+}
+
+#endif
+'''
+
+TEMPLATE_CC =\
+'''//-----------------------------------------------------------------------------
+// File:        %(name)s.cc
+// Description: Analyzer for ntuples created by Mkntuple
+// Created:     %(time)s by mkntanalyzer.py
+// $Revision: 1.4 $
+//-----------------------------------------------------------------------------
+#include "%(name)s.h"
+
+using namespace std;
 //-----------------------------------------------------------------------------
 int main(int argc, char** argv)
 {
@@ -113,12 +261,11 @@ int main(int argc, char** argv)
   
   int nevents = stream.size();
   cout << "Number of events: " << nevents << endl;
-  
-  //---------------------------------------------------------------------------
-  // Define variables to be read
-  //---------------------------------------------------------------------------
- %(selection)s
 
+  // Select variables to be read
+  
+  selectVariables(stream);
+  
   //---------------------------------------------------------------------------
   // Book histograms etc.
   //---------------------------------------------------------------------------
@@ -132,11 +279,10 @@ int main(int argc, char** argv)
   // Loop over events
   //---------------------------------------------------------------------------
 
-  for(int entry=0; entry < nevents; entry++)
+  for(int entry=0; entry < nevents; ++entry)
     {
       stream.read(entry);
-
-	  // Find SUSY...	  
+	  // Find SUSY already!
     }
   stream.close();
 
@@ -144,130 +290,6 @@ int main(int argc, char** argv)
   
   return 0;
 }
-
-//-----------------------------------------------------------------------------
-// -- Utilities
-//-----------------------------------------------------------------------------
-void
-decodeCommandLine(int argc, char** argv, 
-                  string& filelist, string& histfilename)
-{
-  filelist = string("filelist.txt");
-  if ( argc > 1 ) filelist = string(argv[1]);
-
-  if ( argc > 2 ) 
-    histfilename = string(argv[2]); // 2nd (optional) command line argument
-  else
-    histfilename = string(argv[0]); // default: name of program
-
-  // Make sure extension is ".root"
-  histfilename = nameonly(histfilename);
-  histfilename += ".root";
-}
-
-void
-error(string message)
-{
-  cout << "** error ** " << message << endl;
-  exit(0);
-}
-
-string 
-strip(string line)
-{
-  int l = line.size();
-  if ( l == 0 ) return string("");
-  int n = 0;
-  while (((line[n] == 0)    ||
-	  (line[n] == ' ' ) ||
-	  (line[n] == '\\n') ||
-	  (line[n] == '\\t')) && n < l) n++;
-  
-  int m = l-1;
-  while (((line[m] == 0)    ||
-	  (line[m] == ' ')  ||
-	  (line[m] == '\\n') ||
-	  (line[m] == '\\t')) && m > 0) m--;
-  return line.substr(n,m-n+1);
-}
-
-string
-nameonly(string filename)
-{
-  int i = filename.rfind("/");
-  int j = filename.rfind(".");
-  if ( j < 0 ) j = filename.size();
-  return filename.substr(i+1,j-i-1);
-}
-
-// Read ntuple filenames from file list
-
-vector<string>
-getFilenames(string filelist)
-{
-  ifstream stream(filelist.c_str());
-  if ( !stream.good() ) error("unable to open file: " + filelist);
-
-  // Get list of ntuple files to be processed
-  
-  vector<string> v;
-  string filename;
-  while ( stream >> filename )
-    if ( strip(filename) != "" ) v.push_back(filename);
-  return v;
-}
-
-void
-saveHistograms(string histfilename, 
-               TDirectory* dir, TFile* hfile, int depth)
-{
-  // Create output file
-
-  if ( depth == 0 )
-    {
-      cout << "Saving histograms to " << histfilename << endl;
-      hfile = new TFile(histfilename.c_str(), "RECREATE");
-    }
-
-  // Important!
-  depth++;
-  // Check recursion depth 
-  if ( depth > 100 )error("saveHistograms is lost in trees!");
-  string tab(2*depth, ' ');
-
-  // Loop over all histograms
-
-  TList* list = dir->GetList();
-  TListIter* it = (TListIter*)list->MakeIterator();
-
-  while ( TObject* o = it->Next() )
-    {
-      dir->cd();
-      
-      if ( o->IsA()->InheritsFrom("TDirectory") )
-        {
-          TDirectory* d = (TDirectory*)o;
-          cout << tab << "BEGIN " << d->GetName() << endl;
-          saveHistograms(histfilename, d, hfile, depth);
-          cout << tab << "END " << d->GetName() << endl;
-        }
-      // Note: All histograms inherit from TH1
-      else if ( o->IsA()->InheritsFrom("TH1") )
-        {
-          TH1* h = (TH1*)o;
-          cout << tab  << o->ClassName() 
-               << "\\t" << h->GetName()
-               << "\\t" << h->GetTitle()
-               << endl;
-          hfile->cd();
-          h->Write("", TObject::kOverwrite);
-        }
-    } // end of loop over keys
-
-  hfile->Close();
-  delete hfile;
-}
-
 '''
 
 SLTEMPLATE=\
@@ -277,29 +299,60 @@ SLTEMPLATE=\
 // File:        selector.h
 // Description: selector template
 // Created:     %(time)s by mkntanalyzer.py
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 //-----------------------------------------------------------------------------
-#include <iostream>
+#include <map>
+#include <string>
 #include <vector>
+#include <cmath>
+#include <iostream>
 #include <stdlib.h>
 #include "TROOT.h"
 #include "TTree.h"
 #include "TLeaf.h"
+//-----------------------------------------------------------------------------
 
-TTree* tree=0;
+// Classes
 
-%(leafdecl)s
+%(class)s
+
+// Functions
+
+inline
+void keep(std::string name, int index)
+{
+  SelectedObjectMap::instance().set(name, index);
+}
+
+int leafcount(TLeaf* leaf)
+{
+  int count = 0;
+  TLeaf* leafcounter = leaf->GetLeafCounter(count);
+  if ( leafcounter != 0 )
+    // Variable length array
+	count = leafcounter->GetMaximum();
+  else
+    // Either fixed length array or a simple variable
+	count = leaf->GetLen();
+  return count;
+}
+
+// Variables
+
+%(vardecl)s
 
 void initselector()
 {
-  tree = (TTree*)gROOT->FindObject("Events");
+  TTree* tree = (TTree*)gROOT->FindObject("Events");
   if ( ! tree )
   {
     std::cout << "** error ** selector, tree pointer is zero" << std::endl;
 	exit(0);
   }
-	
-%(leafimpl)s
+
+  // Fill variables
+  
+%(varimpl)s
 }
 
 #endif
@@ -312,7 +365,7 @@ PYTEMPLATE =\
 #  File:        %(name)s
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
-#  $Revision: 1.3 $
+#  $Revision: 1.4 $
 # -----------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
@@ -408,7 +461,7 @@ MAKEFILE = '''#-----------------------------------------------------------------
 #                 optflag
 #                 verbose    (e.g., verbose=1)
 #                 withcern   (e.g., withcern=1  expects to find CERN_LIB)
-#$Revision:$
+#$Revision: 1.4 $
 #------------------------------------------------------------------------------
 ifndef ROOTSYS
 $(error *** Please set up Root)
@@ -544,8 +597,9 @@ def main():
 	pyselect  = []
 	declare = []
 	select  = []
-	selimpl= []
-	seldecl= []
+	varimpl= []
+	varimpl.append('TLeaf* leaf=0;')
+	varimpl.append('int N=0;\n')
 	for varname in keys:
 		n, rtype, branchname, count = vars[varname]
 
@@ -568,10 +622,27 @@ def main():
 		select.append('stream.select("%s", %s);' % (branchname, varname))
 		pyselect.append('stream.select("%s", %s)'  % (branchname, varname))
 
-		seldecl.append('TLeaf* l%s\t= 0;' % varname)
-		selimpl.append('l%s\t= tree->GetLeaf("%s");' % (varname,
-														branchname))
+		# Code for selector.h
+		
+		varimpl.append('leaf = tree->GetLeaf("%s");' % branchname)
+		if count == 1:
+			if rtype != "double":
+				varimpl.append('%s = static_cast<%s>(leaf->GetValue());' % \
+							   (varname, rtype))
+			else:
+				varimpl.append('%s = leaf->GetValue();' % varname)
+		else:
+			varimpl.append('N    = min(leafcount(leaf), %d);' % count)
+			varimpl.append('%s.resize(N);' % varname)
+			varimpl.append('for(int i=0; i < N; ++i)')
+			if rtype != "double":
+				varimpl.append('  %s[i] = static_cast<%s>'\
+							   '(leaf->GetValue(i));' % (varname, rtype))
+			else:
+				varimpl.append('  %s[i] = leaf->GetValue(i);' % varname)
 
+		varimpl.append('')
+		
 	# Write out files
 
 	# Put everything into a directory
@@ -593,17 +664,26 @@ def main():
 
 	# Create C++ code
 	
-	s = join("  ", declare, "\n") + "\n" + join("  ", select, "\n")
-	outfilename = "%s/%s.cc" % (filename, filename)
-	names = {'name': outfilename,
+	outfilename = "%s/%s.h" % (filename, filename)
+	names = {'name': filename,
+			 'NAME': upper(filename),
 			 'time': ctime(time()),
-			 'selection': s[1:]}
-	record = TEMPLATE % names
+			 'vardecl': join("", declare, "\n"),
+			 'selection': join("  ", select, "\n")}
+	record = TEMPLATE_H % names
 	open(outfilename,"w").write(record)
 
-	names = {'leafdecl': join("", seldecl, "\n"),
-			 'time': ctime(time()),
-			 'leafimpl': join("  ", selimpl, "\n")}
+	outfilename = "%s/%s.cc" % (filename, filename)
+	record = TEMPLATE_CC % names
+	open(outfilename,"w").write(record)
+
+	# Create selector.h code
+
+	records = open(SELECTEDOBJECTMAP_H).readlines()[2:-1]
+	names = {'vardecl': join("", declare, "\n"),
+			 'class':   join("", records, ""),
+			 'time':    ctime(time()),
+			 'varimpl': join("  ", varimpl, "\n")}
 	record = SLTEMPLATE % names
 	open("selector.h","w").write(record)
 	

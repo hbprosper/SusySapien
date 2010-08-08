@@ -9,7 +9,7 @@
 */
 //
 // Original Author:  HBP
-// $Id: pluginfactory.h,v 1.4 2010/02/14 04:21:46 prosper Exp $
+// $Id: pluginfactory.h,v 1.5 2010/03/10 13:29:59 prosper Exp $
 //
 //
 
@@ -69,7 +69,15 @@ struct BufferThing
   /// Call requested methods of selected objects and fill buffer.
   virtual bool fill(const edm::Event& event)=0;
 
+  ///
   virtual std::string& message()=0;
+
+  ///
+  virtual std::string name()=0;
+
+  ///
+  virtual void shrink(std::vector<int>& index)=0;
+
 };
 
 
