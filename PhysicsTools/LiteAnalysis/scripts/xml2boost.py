@@ -50,7 +50,7 @@
 #              13-May-2006 HBP Change handling of auto-instantiation of
 #                              vectors. Create separate wrapper functions.
 #              29-Aug-2009 HBP change opaque to opaque_
-#$Revision: 1.2 $
+#$Revision: 1.3 $
 #------------ ---------------------------------------------------------------
 # TODO
 #  1. Tidy up use of context. Wherever possible use class element directly.
@@ -4124,7 +4124,7 @@ def writeModule(context, exports, exportmap, other):
 	records.append("# File:    %(module)s.py" % context)
 	records.append("# Created: %(date)s, xml2boost.py"
 				   " %(version)s" % context)
-	records.append("#$Revision: 1.2 $")
+	records.append("#$Revision: 1.3 $")
 	records.append("#"+MAXWIDTH*"-")
 
 	for header in exports:
@@ -4219,7 +4219,7 @@ def instantiateTemplate(context, templatename, ttypes, pyname='',
 					"export_%(exportname)s.cpp")
 	preamble.append("// Created: %(date)s, xml2boost.py"
 					" %(version)s")
-	preamble.append("//$Revision: 1.2 $")
+	preamble.append("//$Revision: 1.3 $")
 	preamble.append("//"+MAXWIDTH*'-')
 	preamble.append("//@BaseDependency: @DEPENDS@")
 	preamble.append("//"+MAXWIDTH*'-')
@@ -4253,8 +4253,8 @@ def instantiateTemplate(context, templatename, ttypes, pyname='',
 
 	if templatename[0:5] == 'std::': templatename = templatename[5:]
 	if templatename in ['vector','map','list','pair','array']:
-
-		# STL template
+		
+		# STL or array template
 
 		shortname  = templatename
 		exportname = templatename
@@ -4276,22 +4276,19 @@ def instantiateTemplate(context, templatename, ttypes, pyname='',
 		shortname  = celement.attrib['name']
 		headername = DB.headername(helement)
 		exportname = shortname
+		modulelist = split(celement.attrib['module'],'.')
+		package    = modulelist[0]
+		module     = joinfields(modulelist[1:],'/')
 		namespace  = ''
 
-		project = celement.attrib['project']
-		module  = replace(celement.attrib['module'],'.','/')
+		# get module and create correct path to header
+		headerfilename = "%s/python/export_%s.hpp" % (module, headername)
+		headerpathname = "%s/%s/src/%s" % (BASE, package, headerfilename)
+		
+		if not os.path.exists(headerpathname):
+			fatal("Cannot find location of file\n\t%s" % headerpathname)
 
-		# Try to determine location of header
-
-		headerpath = '%s/python/' % project        
-		if not os.path.exists("%s/%s" % (BASE, headerpath)):
-			headerpath = '%s/src/%s/python/' % (project, module)
-			if not os.path.exists("%s/%s" % (BASE, headerpath)):
-				fatal("Cannot find location of file export_%s.hpp" % \
-					  headername)
-
-		context['exportheader'] = '#include "%sexport_%s.hpp"' % \
-										  (headerpath, headername)
+		context['exportheader'] = '#include "%s"' % headerfilename
 	#----------------------------------------------------------------------
 	postfix = ''
 	delim = '< '
@@ -4408,7 +4405,7 @@ def instantiateTemplate(context, templatename, ttypes, pyname='',
 		command = '''
 		mkdir -p %(ttypesdir)s
 		cd %(ttypesdir)s
-		echo "$(PYTHON_PROJECTS)/boostutil/config/boost.mk" > GNUmakefile
+		echo "$(PYTHON_PROJECTS)/config/boost.mk" > GNUmakefile
 		''' % context
 		os.system(command)
 
@@ -4913,7 +4910,7 @@ def main():
 	CONTEXT['preamble'].append("// Created: %(date)s, xml2boost.py"
 							   " %(version)s" % \
 							   CONTEXT)                          
-	CONTEXT['preamble'].append("//$Revision: 1.2 $")
+	CONTEXT['preamble'].append("//$Revision: 1.3 $")
 	CONTEXT['preamble'].append("//"+MAXWIDTH*"-")
 	CONTEXT['preamble'].append('#include "boostpython.hpp"')
 
@@ -5091,7 +5088,7 @@ def main():
 		cppstr = cppstr + "// Created: %(date)s, xml2boost.py" \
 				 " %(version)s\n" % CONTEXT
 
-		cppstr = cppstr + "//$Revision: 1.2 $\n"
+		cppstr = cppstr + "//$Revision: 1.3 $\n"
 		cppstr = cppstr + "//"+MAXWIDTH*"-" + '\n'
 		cppstr = cppstr + '#include "export_%s.hpp"\n' % headername
 		cppstr = cppstr + "//" + MAXWIDTH*'-'

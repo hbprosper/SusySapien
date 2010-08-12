@@ -19,9 +19,9 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Fri Apr 04 2008
-// $Id: kit.h,v 1.4 2010/03/11 17:44:12 prosper Exp $
+// $Id: kit.h,v 1.5 2010/06/20 18:30:51 prosper Exp $
 //
-//$Revision: 1.4 $
+//$Revision: 1.5 $
 //-----------------------------------------------------------------------------
 #include <iostream>
 #include <fstream>
@@ -283,6 +283,41 @@ struct kit
   static
   std::string    getReturnClass(Reflex::Member& method);
 
+
+  ///
+  class ClassMethods
+  {
+  public:
+    ///
+    ClassMethods();
+    
+    ///
+    ClassMethods(std::string classname, int debug=0);
+
+
+    ~ClassMethods();
+
+    ///
+    std::vector<std::string>& baseclasses() { return baseclasses_; }
+
+    ///
+    std::vector<std::string>& getters() { return getters_; }
+
+    ///
+    std::vector<std::string>& setters() { return setters_; }
+
+  private:
+    std::string classname_;
+    int debug_;
+    std::vector<std::string> baseclasses_;
+    std::vector<std::string> getters_;
+    std::vector<std::string> setters_;
+    std::map<std::string, int> signatures_;
+
+    void  getmethods_(std::string classname, int depth=0);
+  };
+
+
   ///
   class Method
   {
@@ -315,6 +350,7 @@ struct kit
 
     ///
     //std::ostream& operator<<(std::ostream& os, kit::Method& o);
+    std::ostream& operator<<(std::ostream& os);
 
   private:
     std::string classname1_;
@@ -438,15 +474,15 @@ struct kit
   static
   TVector3         vector3(math::XYZVector& p);
 
-//   ///
-//   static
-//   std::vector<reco::GenParticle*>  daughters(reco::GenParticle& p, 
-//                                              bool skipsame=true);
+  ///
+  static
+  std::vector<reco::GenParticle*>  daughters(reco::GenParticle& p, 
+                                             bool skipsame=true);
 
-//   ///
-//   static
-//   std::vector<reco::GenParticle*>  daughters(reco::GenParticle* p,
-//                                              bool skipsame=true);
+  ///
+  static
+  std::vector<reco::GenParticle*>  daughters(reco::GenParticle* p,
+                                             bool skipsame=true);
 
   ///
   static
@@ -549,16 +585,6 @@ struct kit
                                        std::string  regex,
                                        std::string  rstr);
 
- //  ///
-//   static
-//   void                classGetterInfo(std::string classname,
-//                                       std::vector<std::string>& baseclasses,
-//                                       std::map<std::string, 
-//                                       std::vector<std::string> >& methodmap,
-//                                       std::map<std::string, int>& =
-//                                       std::map<std::string, int>()
-//                                       int depth=0);
-
   // -------------------
   // HISTOGRAM UTILITIES
   // -------------------
@@ -569,23 +595,23 @@ struct kit
 
   ///
   static
-  std::vector<double> contents(TH1F* hist);
+  std::vector<double> contents(TH1* hist);
 
   ///
   static
-  std::vector<double> cdf(TH1F* hist);
+  std::vector<double> cdf(TH1* hist);
 
   ///
   static
-  void                setContents(TH1F* hist, std::vector<double>& c);
+  void                setContents(TH1* hist, std::vector<double>& c);
 
   ///
   static
-  void                setErrors(TH1F* hist, std::vector<double>& err);
+  void                setErrors(TH1* hist, std::vector<double>& err);
 
   ///
   static
-  TH1F*               divideHistograms(TH1F* N, TH1F* D, std::string ytitle);
+  TH1F*               divideHistograms(TH1* N, TH1* D, std::string ytitle);
 
   ///
   static
@@ -650,12 +676,12 @@ struct kit
   ///
   static
   void                plot(TCanvas* canvas, 
-                           TH1F* h1, std::string option="");
+                           TH1* h1, std::string option="");
 
   ///
   static
   void                plot(TCanvas* canvas, 
-                           std::vector<TH1F*>& h, std::string option="");
+                           std::vector<TH1*>& h, std::string option="");
 
   // Statistics
 

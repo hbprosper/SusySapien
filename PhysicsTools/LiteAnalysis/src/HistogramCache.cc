@@ -18,7 +18,8 @@
 // 
 // 03/15/2005, RS+SJ: - added option for projecting a 2D histogram onto 
 //                      one axis
-//
+// 08/08/2010, HBP - overload contents
+//$Revision:$
 //---------------------------------------------------------------------
 #include "TClass.h"
 #include "TMath.h"
@@ -56,9 +57,9 @@ HistogramCache::exists(std::string histname)
 
 vector<double>
 HistogramCache::contents(std::string histname, 
-			 int RebinSize, 
-			 double Normalization,
-			 std::string option) 
+                         int RebinSize, 
+                         double Normalization,
+                         std::string option) 
 {
   vector<double> v;
   
@@ -75,37 +76,37 @@ HistogramCache::contents(std::string histname,
     {
       double bincontent;
       for (int binx=1; binx <= h->GetNbinsX(); binx++) 
-	{
-	  for (int biny=1; biny <= h->GetNbinsY(); biny++) 
-	    {
-	      for (int binz=1; binz <= h->GetNbinsZ(); binz++)
-		{
-		  bincontent = h->GetBinContent(binx, biny, binz);
-		  if(TMath::IsNaN(bincontent)) 
-		    {
-		      cout << "ERROR: In HistogramCache:" << endl;
-		      cout << "Bin[" << binx<<", "<< biny<<", "
-			   << binz<<"] has NaN."<<endl;
-		      exit(0); 
-		    } // if NaN
-		  v.push_back(bincontent);
-		} // loop over binz
-	    } // loop over biny
-	} // loop over binx
+        {
+          for (int biny=1; biny <= h->GetNbinsY(); biny++) 
+            {
+              for (int binz=1; binz <= h->GetNbinsZ(); binz++)
+                {
+                  bincontent = h->GetBinContent(binx, biny, binz);
+                  if(TMath::IsNaN(bincontent)) 
+                    {
+                      cout << "ERROR: In HistogramCache:" << endl;
+                      cout << "Bin[" << binx<<", "<< biny<<", "
+                           << binz<<"] has NaN."<<endl;
+                      exit(0); 
+                    } // if NaN
+                  v.push_back(bincontent);
+                } // loop over binz
+            } // loop over biny
+        } // loop over binx
       
       if (Normalization>=0.0) 
-	{
-	  double total_count = 0.0;
-	  for (unsigned ibin = 0; ibin < v.size(); ibin++) 
-	    total_count +=  v[ibin];
-	  if (total_count > 0.0) 
-	    {
-	      for (unsigned ibin = 0; ibin < v.size(); ibin++) 
-		v[ibin] *= Normalization / total_count;
-	    } 
-	  else 
-	    cout << "ERROR: Histogram has zero content !" << endl;
-	} // Normalize the histogram
+        {
+          double total_count = 0.0;
+          for (unsigned ibin = 0; ibin < v.size(); ibin++) 
+            total_count +=  v[ibin];
+          if (total_count > 0.0) 
+            {
+              for (unsigned ibin = 0; ibin < v.size(); ibin++) 
+                v[ibin] *= Normalization / total_count;
+            } 
+          else 
+            cout << "ERROR: Histogram has zero content !" << endl;
+        } // Normalize the histogram
     } // if 3D histogram	      
   else if ( h->IsA()->InheritsFrom("TH2") ) 
     {
@@ -114,66 +115,66 @@ HistogramCache::contents(std::string histname,
       bool doProjectionY = option=="ProjectionY";
       
       if(doProjectionX) 
-	{
-	  // use a projection on the X axis
-	  TH2* h2dtemp=(TH2*) h;
-	  TH1D *htemp=h2dtemp->ProjectionX("");
-	  return contents_TH1(htemp,RebinSize,Normalization);
-	}
+        {
+          // use a projection on the X axis
+          TH2* h2dtemp=(TH2*) h;
+          TH1D *htemp=h2dtemp->ProjectionX("");
+          return contents(htemp, RebinSize, Normalization);
+        }
       else if(doProjectionY) 
-	{
-	  TH2* h2dtemp=(TH2*) h;
-	  TH1D *htemp=h2dtemp->ProjectionY("");
-	  return contents_TH1(htemp,RebinSize,Normalization);
-	}
+        {
+          TH2* h2dtemp=(TH2*) h;
+          TH1D *htemp=h2dtemp->ProjectionY("");
+          return contents(htemp, RebinSize, Normalization);
+        }
       else 
-	{
-	  // no projections, take all the bins!
-	  double bincontent;
-	  for (int binx=1; binx <= h->GetNbinsX(); binx++)
-	    {
-	      for (int biny=1; biny <= h->GetNbinsY(); biny++)
-		{
-		  bincontent = h->GetBinContent(binx, biny);
-		  if(TMath::IsNaN(bincontent)) 
-		    {
-		      cout << "ERROR: In HistogramCache:" << endl;
-		      cout << "Bin[" << binx<<", "
-			   << biny<<"] has NaN."<<endl;
-		      exit(0); 
-		    } // if NaN
-		  v.push_back(bincontent);
-		}// loop over biny
-	    } // loop over binx
-	  if (Normalization>=0.0) 
-	    {
-	      double total_count = 0.0;
-	      for (unsigned ibin = 0; ibin < v.size(); ibin++) 
-		total_count +=  v[ibin];
-	      if (total_count > 0.0) 
-		{
-		  for (unsigned ibin = 0; ibin < v.size(); ibin++) 
-		    v[ibin] *= Normalization / total_count;
-		} 
-	      else 
-		cout << "ERROR: Histogram has zero content !" 
-		     << endl;
-	    } // Normalize the histogram
-	}
+        {
+          // no projections, take all the bins!
+          double bincontent;
+          for (int binx=1; binx <= h->GetNbinsX(); binx++)
+            {
+              for (int biny=1; biny <= h->GetNbinsY(); biny++)
+                {
+                  bincontent = h->GetBinContent(binx, biny);
+                  if(TMath::IsNaN(bincontent)) 
+                    {
+                      cout << "ERROR: In HistogramCache:" << endl;
+                      cout << "Bin[" << binx<<", "
+                           << biny<<"] has NaN."<<endl;
+                      exit(0); 
+                    } // if NaN
+                  v.push_back(bincontent);
+                }// loop over biny
+            } // loop over binx
+          if (Normalization>=0.0) 
+            {
+              double total_count = 0.0;
+              for (unsigned ibin = 0; ibin < v.size(); ibin++) 
+                total_count +=  v[ibin];
+              if (total_count > 0.0) 
+                {
+                  for (unsigned ibin = 0; ibin < v.size(); ibin++) 
+                    v[ibin] *= Normalization / total_count;
+                } 
+              else 
+                cout << "ERROR: Histogram has zero content !" 
+                     << endl;
+            } // Normalize the histogram
+        }
     } // if 2D histogram
   else 
     {
       // do this for a 1d histogram
-      return contents_TH1((TH1D*)h,RebinSize,Normalization);
+      return contents(h, RebinSize, Normalization);
     }     // else if 1D histogram)  
   return v;
 }
 
 // helper function to return the contents of a 1d histogram
 vector<double>
-HistogramCache::contents_TH1(TH1D *h, 
-			     int RebinSize, 
-			     double Normalization) 
+HistogramCache::contents(TH1 *h, 
+                         int RebinSize, 
+                         double Normalization) 
 {
   vector<double> v;
   double sumRebin; 
@@ -182,16 +183,16 @@ HistogramCache::contents_TH1(TH1D *h,
     {  
       sumRebin = 0.0 ;
       for (int i=0; i < RebinSize; i++)
-	{
-	  bincontent = h->GetBinContent(binx+i);
-	  if(TMath::IsNaN(bincontent)) 
-	    {
-	      cout << "ERROR: In HistogramCache:" << endl;
-	      cout << "Bin[" << binx+i<<"] has NaN."<<endl;
-	      exit(0); 
-	    } // if NaN
-	  sumRebin += bincontent;
-	} // loop over binx
+        {
+          bincontent = h->GetBinContent(binx+i);
+          if(TMath::IsNaN(bincontent)) 
+            {
+              cout << "ERROR: In HistogramCache:" << endl;
+              cout << "Bin[" << binx+i<<"] has NaN."<<endl;
+              exit(0); 
+            } // if NaN
+          sumRebin += bincontent;
+        } // loop over binx
 
       v.push_back(sumRebin);
       binx += RebinSize;
@@ -201,14 +202,14 @@ HistogramCache::contents_TH1(TH1D *h,
     {
       double total_count = 0.0;
       for (unsigned ibin = 0; ibin < v.size(); ibin++) 
-	total_count +=  v[ibin];
+        total_count +=  v[ibin];
       if (total_count > 0.0) 
-	{
-	  for (unsigned ibin = 0; ibin < v.size(); ibin++) 
-	    v[ibin] *= Normalization / total_count;
-	} 
+        {
+          for (unsigned ibin = 0; ibin < v.size(); ibin++) 
+            v[ibin] *= Normalization / total_count;
+        } 
       else 
-	cout << "ERROR: Histogram has zero content !" << endl;
+        cout << "ERROR: Histogram has zero content !" << endl;
     } // Normalize the histogram
   return v;
 }
@@ -253,7 +254,7 @@ HistogramCache::_check(int depth)
   if ( depth > MAXDEPTH )
     {
       std::cerr << "**Warning** I'm lost in the trees...goodbye!" 
-		<< std::endl;
+                << std::endl;
       exit(1);
     }
 }
@@ -323,43 +324,43 @@ HistogramCache::_name(TH1* h)
 }
 
 #ifdef __TEST__
-    //-----------------------------------------------------------
-    // Test program
-    //-----------------------------------------------------------
-    int main(int argc, char** argv)
+//-----------------------------------------------------------
+// Test program
+//-----------------------------------------------------------
+int main(int argc, char** argv)
+{
+  string filename;
+  if ( argc > 1 )
+    filename = string(argv[1]);
+  else
+    filename = string("data.root");
+
+  TFile* file = new TFile(filename.c_str());
+  if ( ! file ) 
     {
-	string filename;
-	if ( argc > 1 )
-	    filename = string(argv[1]);
-	else
-	    filename = string("data.root");
-
-	TFile* file = new TFile(filename.c_str());
-	if ( ! file ) 
-	    {
-		cout << "**Error** Unable to open file " << filename 
-		     << endl;
-		exit(1);
-	    }
-
-	HistogramCache cache(file);
-
-	ofstream out("list.txt");
-	cache.ls(out);
-	out.close();
-
-	vector<double> d1d = cache.contents("01_Create_W_e_VOID/MissingEt_Pt");
-	//  cout << "1-D Histogram with " << d1d.size() << " bins" << endl;
-	// for(int bin=0; bin < (int)d1d.size(); bin=bin+10)
-	//    cout << "\t" << bin+1 << "\t" << d1d[bin] << endl;
-
-	vector<double> d2d = cache.
-	    contents("04_CommonHistos/08_Histogramming_D0Jet_good_jet/Pt_vs_Ntracks");
-	cout << "2-D Histogram with " << d2d.size() << " bins" << endl;
-	for(int bin=0; bin < (int)d2d.size(); bin++)
-	    cout << "\t" << bin+1 << "\t" << d2d[bin] << endl;
-
-	file->Close();
+      cout << "**Error** Unable to open file " << filename 
+           << endl;
+      exit(1);
     }
+
+  HistogramCache cache(file);
+
+  ofstream out("list.txt");
+  cache.ls(out);
+  out.close();
+
+  vector<double> d1d = cache.contents("01_Create_W_e_VOID/MissingEt_Pt");
+  //  cout << "1-D Histogram with " << d1d.size() << " bins" << endl;
+  // for(int bin=0; bin < (int)d1d.size(); bin=bin+10)
+  //    cout << "\t" << bin+1 << "\t" << d1d[bin] << endl;
+
+  vector<double> d2d = cache.
+    contents("04_CommonHistos/08_Histogramming_D0Jet_good_jet/Pt_vs_Ntracks");
+  cout << "2-D Histogram with " << d2d.size() << " bins" << endl;
+  for(int bin=0; bin < (int)d2d.size(); bin++)
+    cout << "\t" << bin+1 << "\t" << d2d[bin] << endl;
+
+  file->Close();
+}
 #endif
 

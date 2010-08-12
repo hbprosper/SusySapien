@@ -8,7 +8,7 @@
 #              06-Jun-2010 HBP - always highlight selected methods when a class
 #                          is selected
 #-----------------------------------------------------------------------------
-#$Revision: 1.11 $
+#$Revision: 1.12 $
 #-----------------------------------------------------------------------------
 import sys, os, re, platform
 from ROOT import *
@@ -32,7 +32,7 @@ if not os.environ.has_key("CMSSW_BASE"):
 	sys.exit(0)
 
 BASE = os.environ["PWD"]
-REVISION="$Revision: 1.11 $"
+REVISION="$Revision: 1.12 $"
 rev = split(REVISION)[1]
 VERSION        = \
 """
@@ -197,7 +197,8 @@ M_FILE_SAVE        = 2;  M_CALLBACK[M_FILE_SAVE]  = "self.save()"
 M_FILE_EXIT        = 6;  M_CALLBACK[M_FILE_EXIT]  = "self.exit()"
 M_EDIT_CLEAR       = 21; M_CALLBACK[M_EDIT_CLEAR] = "self.clear()"
 M_EDIT_SELECT      = 22; M_CALLBACK[M_EDIT_SELECT]= "self.select()"
-M_EDIT_UNDO        = 23; M_CALLBACK[M_EDIT_UNDO]  = "self.undo()"
+M_EDIT_UNSELECT    = 23; M_CALLBACK[M_EDIT_UNSELECT]= "self.unselect()"
+M_EDIT_UNDO        = 24; M_CALLBACK[M_EDIT_UNDO]  = "self.undo()"
 M_HELP_ABOUT       = 51; M_CALLBACK[M_HELP_ABOUT] = "self.about()"
 M_HELP_USAGE       = 52; M_CALLBACK[M_HELP_USAGE] = "self.usage()"
 
@@ -388,16 +389,17 @@ class Gui:
 
 		self.menuEdit = TGPopupMenu(self.window)
 		self.menuBar.AddPopup("&Edit", self.menuEdit, TOP_LEFT_PADDED)
-		self.menuEdit.AddEntry("&Select All", M_EDIT_SELECT)
+		self.menuEdit.AddEntry("Select   All Methods", M_EDIT_SELECT)
+		self.menuEdit.AddEntry("UnSelect All Methods", M_EDIT_UNSELECT)
 		self.menuEdit.AddSeparator()
-		self.menuEdit.AddEntry("Clear", M_EDIT_CLEAR)
+		self.menuEdit.AddEntry("&UnSelect Class", M_EDIT_CLEAR)
 		self.connection.append(Connection(self.menuEdit, "Activated(Int_t)",
 										  self,          "menu"))
 
 		self.menuHelp = TGPopupMenu(self.window)
 		self.menuBar.AddPopup("&Help", self.menuHelp, TOP_LEFT_PADDED)
-		self.menuHelp.AddEntry("&Usage", M_HELP_USAGE)
-		self.menuHelp.AddEntry("&About", M_HELP_ABOUT)
+		self.menuHelp.AddEntry("Usage", M_HELP_USAGE)
+		self.menuHelp.AddEntry("About", M_HELP_ABOUT)
 		self.menuHelp.AddSeparator()
 		self.connection.append(Connection(self.menuHelp, "Activated(Int_t)",
 										  self,          "menu"))
@@ -737,7 +739,7 @@ class Gui:
 		for index, entry in enumerate(cnames):
 
 			if not self.cmap[entry]['selected']: continue
-			
+
 			self.classBox[P_SELECTED].AddEntry(entry, index)
 			if entry != cname: continue
 
@@ -815,6 +817,9 @@ class Gui:
 			if SelectedPage:
 				if not methods[name]: continue
 			self.methodBox[pageNumber].AddEntry(name, index)
+
+			# If this is the Methods page, highlight the selected
+			# methods
 			if not SelectedPage and self.cmap[cname]['methods'][name]:
 				self.methodBox[pageNumber].Select(index)
 		self.methodBox[pageNumber].Layout()
@@ -829,6 +834,9 @@ class Gui:
 			if SelectedPage:
 				if not labels[name]: continue
 			self.labelBox[pageNumber].AddEntry(name, index)
+			
+			# If this is the Methods page, highlight the selected
+			# getByLabels
 			if not SelectedPage and self.cmap[cname]['labels'][name]:
 				self.labelBox[pageNumber].Select(index)
 		self.labelBox[pageNumber].Layout()
@@ -891,6 +899,29 @@ class Gui:
 			name = self.methodBox[pageNumber].GetEntry(id).GetText().Data()
 			self.cmap[cname]['methods'][name] = True
 			self.methodBox[pageNumber].Select(id)
+		self.methodBox[pageNumber].Layout()
+
+
+#---------------------------------------------------------------------------
+	def unselect(self):
+
+		# If this is the selected methods page, do nothing
+		
+		pageNumber = self.noteBook.GetCurrent()
+		if pageNumber == P_SELECTED: return
+
+		cid   = self.classBox[pageNumber].GetSelected()
+		if cid < 0: return
+		
+		# Un-select all methods
+
+		cname = self.classBox[pageNumber].GetEntry(cid).GetText().Data()
+		nentries = len(self.cmap[cname]['methods'])
+
+		for id in xrange(nentries):
+			name = self.methodBox[pageNumber].GetEntry(id).GetText().Data()
+			self.cmap[cname]['methods'][name] = False
+			self.methodBox[pageNumber].Select(id, kFALSE)
 		self.methodBox[pageNumber].Layout()
 #---------------------------------------------------------------------------
 	def open(self):

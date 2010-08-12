@@ -5,6 +5,7 @@
 #              2. call mkclasslist.py to create classes.txt
 #              3. call mkplugins.py
 # Created: Sat Mar 13 2010 Harrison B. Prosper
+#$Revision:$
 #------------------------------------------------------------------------------
 import os, sys
 from string import *
@@ -31,7 +32,9 @@ def main():
 			  "getByLabels\n"\
 			  "\tusing edmDumpEventContent\n"
 		sys.exit(0)
-	rootfiles = joinfields(argv, ' ')
+
+	# Get full path names of root files
+	rootfiles = joinfields(map(os.path.abspath, argv), ' ')
 	
 	# First copy python scripts to bin/$SCRAM_ARCH
 	print "\n\tStep 1. - copy python scripts to bin area"
@@ -49,7 +52,8 @@ def main():
 		cd $CMSSW_BASE/src/PhysicsTools/Mkntuple/test
 		mkdocs.py'''
 		print cmd
-
+		os.system(cmd)
+		
 	if not os.path.exists("%s/classes.txt" % PLUGINS_DIR):
 		print "\n\tStep 3. - call mkclasslist.py to create file" \
 			  "\n\t\t\tclasses.txt"
@@ -57,6 +61,7 @@ def main():
 		cd $CMSSW_BASE/src/PhysicsTools/Mkntuple/plugins
 		mkclasslist.py %s''' % rootfiles
 		print cmd
+		os.system(cmd)
 		
 	if not os.path.exists("%s/plugins.cc" % PLUGINS_DIR):
 		print "\n\tStep 4. - call mkplugins.py to create file" \
@@ -65,6 +70,7 @@ def main():
 		cd $CMSSW_BASE/src/PhysicsTools/Mkntuple/plugins
 		mkplugins.py'''
 		print cmd
+		os.system(cmd)
 
 	print "\n\n\t** now do scramv1 b clean, followed by scramv1 b\n"
 #------------------------------------------------------------------------------

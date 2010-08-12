@@ -7,7 +7,8 @@
 //                [dir1/[dir2/..]]histogramName
 //
 // Created: 11-Oct-2004 Harrison B. Prosper
-// $Revision: 1.1 $
+// Updated: 08-Aug-2010 HBP overload contents
+// $Revision: 1.2 $
 //--------------------------------------------------------------------
 #include <map>
 #include <stack>
@@ -53,10 +54,10 @@ public:
                                  double Normalization=-1.0,
                                  std::string option="");
 
-  /// Given a 1d histogram, return its content
-  std::vector<double>   contents_TH1(TH1* h, 
-                                     int RebinSize, 
-                                     double Normalization);
+  /// Given a 1d histogram, return its content.
+  std::vector<double>   contents(TH1* h, 
+                                 int RebinSize, 
+                                 double Normalization);
   
   /// Return the type of the named histogram.
   std::string           type(std::string histname);

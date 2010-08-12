@@ -6,7 +6,8 @@
 # Created:     23-Jan-2010 Harrison B. Prosper
 # Updated:     15-Feb-2010 HBP, make it possible to be run anywhere
 #              09-Mar-2010 HBP, add search of SimDataFormats
-#$Revision: 1.3 $
+#              08-Aug-2010 HBP, fix search of user.h in Mkntuple
+#$Revision: 1.4 $
 #---------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
@@ -47,8 +48,14 @@ if os.environ.has_key("CMSSW_VERSION"):
 else:
 	VERSION = "unknown"
 
-CLASSMAPFILE = 'map/classmap.py'	
+CLASSMAPFILE = 'map/classmap.py'
+
 DEBUG=0
+if DEBUG > 0:
+	OUTDEBUG = open("debug.h","w")
+else:
+	OUTDEBUG = None
+	
 PLACEHOLDERS =['namespace',
 			   'endnamespace',
 			   'class',
@@ -61,7 +68,9 @@ WEIRD        = "<|<@&@>|>"
 
 SHORTOPTIONS = 'hI:'
 
+# Load needed libraries
 from PhysicsTools.LiteAnalysis.AutoLoader import *
+gSystem.Load("libPhysicsToolsMkntuple")
 
 #---------------------------------------------------------------------------
 # Exceptions
@@ -832,7 +841,7 @@ def main():
 	# Loop over header files to be scanned
 	#-------------------------------------------------
 
-	print "mkdocs.py $Revision: 1.3 $\n"
+	print "mkdocs.py $Revision: 1.4 $\n"
 
 	# Make sure html and txt directories exist
 	
@@ -848,7 +857,8 @@ def main():
 		if not os.path.exists(file):
 			print "** file %s not found" % file
 			continue
-
+		file = os.path.abspath(file)
+		
 		# Scan header and parse it for classes
 		
 		record, items = parseHeader(file)
@@ -866,7 +876,7 @@ def main():
 		filestem = replace(filestem, '/', '.')
 
 		###D
-		#print "filestem(%s) header(%s)" % (filestem, header)
+		print "filestem(%s) header(%s)" % (filestem, header)
 		
 		# Initialize map to contain info about classes and methods
 		

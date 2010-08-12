@@ -1,4 +1,4 @@
-#$Revision: 1.5 $ example.py
+#$Revision: 1.1 $ example.py
 #------------------------------------------------------------------------------
 import FWCore.ParameterSet.Config as cms
 
@@ -24,9 +24,9 @@ cms.EDAnalyzer("Mkntuple",
 			   # Name of output n-tuple file
                ntupleName = cms.untracked.string("ntuple_pat.root"),
 
-			   # Name of selector function
-               selectorName = cms.untracked.string("selector"),
-
+			   # Name of analyzer
+			   analyzerName = cms.untracked.string("analyzer.cc"),
+			   			   
 			   # List of buffers to allocate.
 			   #----------------------------------------------------------
 			   # The names are arbitrary so long as each agrees with
@@ -132,7 +132,7 @@ cms.EDAnalyzer("Mkntuple",
 			   GParticle =
                cms.untracked.
                vstring(
-    "GParticle                 genParticles                    1000",
+    "GParticle                 genParticles                    4000",
     #---------------------------------------------------------------------
     "    int   charge()",
     "    int   pdgId()",

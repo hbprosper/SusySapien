@@ -3,7 +3,7 @@
 # create plugins.cc
 # Created: 05-Jan-2010 Harrison B. Prosper
 # Updated: 15-Feb-2010 HBP - run make docs if needed
-#$Revision: 1.6 $
+#$Revision: 1.7 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -13,7 +13,8 @@ from PhysicsTools.LiteAnalysis.Lib import nameonly
 if not os.environ.has_key("CMSSW_BASE"):
 	print "\t**you must first set up CMSSW"
 	sys.exit(0)
-	
+BASE = os.environ['CMSSW_BASE']
+
 # Load classmap.py
 
 cmd = 'find %s -name "classmap.py"' % BASE
@@ -46,10 +47,9 @@ def exclass(x):
 		#print "class(%s)" % x
 		return x
 #------------------------------------------------------------------------------
-# If adapters.txt, objects.txt and headers.txt do not exist, run
-# mkobjectlist.py first.
+# If classes.txt does not exit, run mkclasslist.py to create it.
 #------------------------------------------------------------------------------
-# Make sure we are in the bin directory
+# Make sure we are in the plugins directory
 localdir = split(os.environ["PWD"],"/").pop()
 if localdir != "plugins":
 	print "\t** mkplugins.py should be run from the plugins directory!"
@@ -57,20 +57,19 @@ if localdir != "plugins":
 	
 if not os.path.exists("classes.txt"):
 	print "** required file classes.txt not found.\n"\
-		  "** I'll try to create them...but for that you should"
-	rootfile = raw_input("** enter a root file name: ")
-	if not os.path.exists(rootfile):
-		print "\nfile %s not found...try again!" % rootfile
-		sys.exit(0)
-
-	# run mkclasslist.py
+		  "** I'll try to create it...but for that you should"
+	rootfile = raw_input("** enter the names of a reco file and a pat file: ")
+	for filename in split(rootfile):
+		if not os.path.exists(filename):
+			print "\nfile %s not found...try again!" % filename
+			sys.exit(0)
 	
 	os.system("mkclasslist.py %s" % rootfile)
 	
 if not os.path.exists("classes.txt"):
 	print """
-	** mkclasselist.py failed to create required files...
-	** try running mkclasslist.py separately
+	** mkclasselist.py failed to create classes.txt...
+	** try running mkclasslist.py by hand
 	"""
 	sys.exit(0)
 #------------------------------------------------------------------------------
@@ -83,7 +82,7 @@ names = {'time': ctime(time())}
 out  = open("plugins.cc","w")
 record = '''// ----------------------------------------------------------------------------
 // Created: %(time)s by mkplugins.py
-// $Revision: 1.6 $
+// $Revision: 1.7 $
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/Buffer.h"
 '''

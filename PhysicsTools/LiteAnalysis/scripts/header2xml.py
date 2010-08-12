@@ -51,7 +51,7 @@
 #              08-May-2006 HBP Add printable attribute to classes with
 #                              operator<<
 #              11-Dec-2009 HBP Fix problem with __attribute__(...) 
-#$Revision: 1.2 $
+#$Revision: 1.3 $
 #---------------------------------------------------------------------------
 import os, sys, re, posixpath, shelve
 from time   import time, ctime
@@ -65,7 +65,7 @@ from boostlib import *
 #---------------------------------------------------------------------------
 # Constants
 #---------------------------------------------------------------------------
-VERSION='$Revision: 1.2 $'
+VERSION='$Revision: 1.3 $'
 VERSION=split(VERSION[:-1]).pop()
 HEADERSFILE = 'Headers'
 MAXCONSTRUCT=50000 # Maximum number of constructs to search for
@@ -130,7 +130,7 @@ PROBLEMSFILE= 'CHECKME'
 DEBUGFILE   = 'DEBUG.h'
 XMLDIR      = '.'
 FILEKEY     = 1
-VERBOSE     = 1
+VERBOSE     = 0
 SILENT      = 1
 STANDALONE  = 1
 
@@ -896,7 +896,7 @@ def updateXmlMap(xmlfile):
 	out.write("# File:    XmlMap.py\n" % names)
 	out.write("# Created: %(date)s"
 			  " %(version)s\n" % names)
-	out.write("#$Revision: 1.2 $\n")
+	out.write("#$Revision: 1.3 $\n")
 	out.write(79*"#"+'\n')
 	out.write("XmlMap =\\\n")
 	PP = PrettyPrinter(stream=out)

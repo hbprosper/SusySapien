@@ -3,12 +3,11 @@
 # File: symlist.py
 # Description: List symbols etc. ldd/nm
 # Created:     October-2003 Harrison B. Prosper
-# $Revision: 1.3 $
+# $Revision: 1.2 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from popen2     import popen3
 from string     import *
-from pythonutil import pathname, nameonly
 from getopt     import getopt, GetoptError
 from glob       import glob
 from pprint     import PrettyPrinter
@@ -48,6 +47,9 @@ def quit(s):
     print "\n**error** %s" %s
     print "\tgoodbye!"
     sys.exit(1)
+
+def nameonly(x):
+    return os.path.splitext(os.path.basename(x))[0]
 #------------------------------------------------------------------------------
 # List shared libraries on which specified shared libraries depend
 #------------------------------------------------------------------------------

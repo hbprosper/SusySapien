@@ -4,6 +4,19 @@
 #include <string>
 #include <iostream>
 
+template <class X>
+class Atemp
+{
+public:
+  Atemp() {}
+  ~Atemp() {}
+
+  void speak() { x_.say(); }
+
+private:
+  X x_;
+};
+
 class Aclass
 {
 public:
@@ -42,6 +55,14 @@ public:
 private:
   double val;
   
+};
+
+class BTest : public Atemp<Bclass>
+{
+public:
+  BTest() : Atemp<Bclass>() {}
+  ~BTest() {}
+  void hello() {std::cout << "hello from BTest" << std::endl;}
 };
 
 class ATest : public ATestBase

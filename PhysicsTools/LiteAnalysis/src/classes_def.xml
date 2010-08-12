@@ -31,7 +31,9 @@
    <class name="kit::PtThing"/>
 
    <class name="ATest"/>
+   <class name="BTest"/>
    <class name="Aclass"/>
    <class name="Bclass"/>
+   <class name="Atemp<Bclass>"/>
 
 </lcgdict>

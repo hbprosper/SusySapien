@@ -6,16 +6,16 @@
 /**\class kit kit.cc 
    PhysicsTools/LiteAnalysis/src/kit.cc
 
- Description: Some simple utilities
+   Description: Some simple utilities
 
- Implementation:
-     Common sense and a sense of beauty.
+   Implementation:
+   Common sense and a sense of beauty.
 */
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Wed Jun 20 19:53:47 EDT 2007
 //         Updated:  Sat Oct 25 2008 - make matchInDeltaR saner
-// $Id: kit.cc,v 1.4 2010/02/16 02:24:57 prosper Exp $
+// $Id: kit.cc,v 1.5 2010/03/11 17:44:12 prosper Exp $
 //
 //
 //-----------------------------------------------------------------------------
@@ -90,11 +90,11 @@ kit::deltaR(std::vector<TLorentzVector>& v1,
   for(unsigned i=0; i < v1.size(); i++)
     {
       for(unsigned j=0; j < v2.size(); j++)
-      {
-        vp[j].first = i;
-        vp[j].second = j;
-        vp[j].distance = v1[i].DeltaR(v2[j]);
-      }
+        {
+          vp[j].first = i;
+          vp[j].second = j;
+          vp[j].distance = v1[i].DeltaR(v2[j]);
+        }
       std::sort(vp.begin(), vp.end());
       mp[i].first = i;
       mp[i].second = vp[0].second;
@@ -126,11 +126,11 @@ kit::deltaR(std::vector<PtThing>& v1,
   for(unsigned i=0; i < v1.size(); i++)
     {
       for(unsigned j=0; j < v2.size(); j++)
-      {
-        vp[j].first = i;
-        vp[j].second = j;
-        vp[j].distance = v1[i].deltaR(v2[j]);
-      }
+        {
+          vp[j].first = i;
+          vp[j].second = j;
+          vp[j].distance = v1[i].deltaR(v2[j]);
+        }
       std::sort(vp.begin(), vp.end());
       mp[i].first = i;
       mp[i].second = vp[0].second;
@@ -162,15 +162,15 @@ kit::strip(string line)
   if ( l == 0 ) return string("");
   int n = 0;
   while (((line[n] == 0)    ||
-	  (line[n] == ' ' ) ||
-	  (line[n] == '\n') ||
-	  (line[n] == '\t')) && n < l) n++;
+          (line[n] == ' ' ) ||
+          (line[n] == '\n') ||
+          (line[n] == '\t')) && n < l) n++;
   
   int m = l-1;
   while (((line[m] == 0)    ||
-	  (line[m] == ' ')  ||
-	  (line[m] == '\n') ||
-	  (line[m] == '\t')) && m > 0) m--;
+          (line[m] == ' ')  ||
+          (line[m] == '\n') ||
+          (line[m] == '\t')) && m > 0) m--;
   return line.substr(n,m-n+1);
 }
 
@@ -261,7 +261,6 @@ kit::regex_findall(string& str, string expr)
                                matches, regexp,
                                boost::match_partial) )
         {
-          cout << matches[0] << endl;
           v.push_back(matches[0]);
           int index=0;
           start 
@@ -306,7 +305,7 @@ string subbasicstr(string& str)
 
 bool skipmethod(string& str)
 {
-  string expr("TClass|TBuffer|TMember|operator|^__");
+  string expr("TClass|TBuffer|TMember|operator|__get");
   vector<string> v = kit::regex_findall(str, expr);
   return v.size() > 0;
 }
@@ -331,7 +330,7 @@ kit::getScopes(std::string classname,
   if ( depth > 20 )
     {
       throw cms::Exception("LostInTrees")
-        << "\tgetBasemames: yikes! lost in trees" << std::endl;
+        << "\tgetScopes: yikes! I'm lost in the trees" << std::endl;
     }
   names.push_back(classname);
 
@@ -356,11 +355,11 @@ kit::getMethod(std::string classname,
   boost::smatch what;
 
   //DB
-//   cout << "getMethod - \n"
-//        << "  classname<" << classname << ">\n"
-//        << "    method<" << methodname << ">\n" 
-//        << "      args<" << args << ">" 
-//        << endl;
+  //   cout << "getMethod - \n"
+  //        << "  classname<" << classname << ">\n"
+  //        << "    method<" << methodname << ">\n" 
+  //        << "      args<" << args << ">" 
+  //        << endl;
 
   for(unsigned i=0; i < names.size(); i++)
     {
@@ -503,47 +502,47 @@ kit::decodeArguments(std::string  args,
                 }
             }
         }
-          // Make sure we had a match
+      // Make sure we had a match
       if ( vartype[i] < 0 )
         {
           throw cms::Exception("ArgDecodeFailure")
             << "kit::decodeArguments - failed on: " << args << endl;
         }
-       delim = ", ";
+      delim = ", ";
 
-       //DB
-       //cout << "\ttype: " << vartype[i] << endl;
+      //DB
+      //cout << "\ttype: " << vartype[i] << endl;
 
-       string s;
-       double d;
-       long l;
-       bool b;
-       istringstream inp(str);
+      string s;
+      double d;
+      long l;
+      bool b;
+      istringstream inp(str);
 
-       switch (vartype[i])
-         {
-         case 0:
-           vars.push_back(new kit::Value<string>(str));
-           break;
+      switch (vartype[i])
+        {
+        case 0:
+          vars.push_back(new kit::Value<string>(str));
+          break;
 
-         case 1:
-           inp >> d;
-           vars.push_back(new kit::Value<double>(d));
-           break;
+        case 1:
+          inp >> d;
+          vars.push_back(new kit::Value<double>(d));
+          break;
 
-         case 2:
-           inp >> l;
-           vars.push_back(new kit::Value<long>(l));
-           break;
+        case 2:
+          inp >> l;
+          vars.push_back(new kit::Value<long>(l));
+          break;
 
-         case 3:
-           inp >> b;
-           vars.push_back(new kit::Value<bool>(b));
-           break;
+        case 3:
+          inp >> b;
+          vars.push_back(new kit::Value<bool>(b));
+          break;
 
-         case 4:
-           break;
-         };
+        case 4:
+          break;
+        };
     }
   if ( argsregex != "" ) argsregex += "[)]";
 }
@@ -571,10 +570,10 @@ kit::invokeMethod(Member& method, void* address, vector<void*>& args)
   Object* tmp = new Object();
   Object* ret = new Object(rtype, tmp);
 
-//   cout << "** invokeMethod - method  (" << method.Name() << ")" 
-//        << endl;
-//   cout << "                   rtype  (" << rtype.Name() << ")" << endl;
-//   cout << "                  address (" << address << ")" << endl;
+  //   cout << "** invokeMethod - method  (" << method.Name() << ")" 
+  //        << endl;
+  //   cout << "                   rtype  (" << rtype.Name() << ")" << endl;
+  //   cout << "                  address (" << address << ")" << endl;
 
   method.Invoke(object, ret, args);
   raddr = ret->Address();
@@ -595,7 +594,7 @@ kit::invokeMethod(Member& method, void* address, vector<void*>& args)
 
   //DB
   // cout << "** invokeMethod - " << method.Name() << " = " 
-//        << RED << *static_cast<double*>(raddr) << BLACK << endl;
+  //        << RED << *static_cast<double*>(raddr) << BLACK << endl;
   return raddr;
 }
 
@@ -876,7 +875,7 @@ kit::Method::raddress(void* address)
   // use the CINT interpreter to return the object it points to
   if ( useCINT_ )
     {
-       if ( debug_ > 0 )
+      if ( debug_ > 0 )
         cout << "Method::raddress - " 
              << RED   << " use CINT" << endl
              << GREEN 
@@ -991,105 +990,158 @@ kit::Method::str()
 }
 
 
-// std::ostream&
-// kit::Method::operator<<(std::ostream& os, kit::Method& o)
-// {
-//   os << str() << endl;
-//   return os;
-// }
+std::ostream&
+kit::Method::operator<<(std::ostream& os)
+{
+  os << str() << endl;
+  return os;
+}
 
-// void
-// kit::classGetterInfo(string classname,
-//                      vector<string>& baseclasses,
-//                      map<string, vector<string> >& methmap, 
-//                      map<string, int>& db,
-//                      int depth)
-// {
-//   using namespace Reflex;
+/** Recursively scan class and return all "getter" methods.
+ */
 
-//   if ( depth == 0)
-//     methmap.clear();
-//   else if ( depth > 10 ) 
-//     {
-//       cout << "kit::classMethods - yikes, lost in the trees!" << endl;
-//       exit(0);
-//     }
+kit::ClassMethods::ClassMethods()
+  : classname_(""),
+    debug_(0),
+    baseclasses_(vector<string>()),
+    getters_(vector<string>()),
+    setters_(vector<string>()),
+    signatures_(map<string, int>())
+{}
 
-//   char cstr[80];
-//   string tab = " "
-//   cout << depth << "\tclass: " << classname << endl;
+kit::ClassMethods::ClassMethods(string classname, int debug)
+  : classname_(classname),
+    debug_(debug),
+    baseclasses_(vector<string>()),
+    getters_(vector<string>()),
+    setters_(vector<string>()),
+    signatures_(map<string, int>())
+{
+  getmethods_(classname);
+}
 
-//   Type thing;
-//   Type c = thing.ByName(cname);
-//   for(int i=0; i < c.FunctionMemberSize(); i++)
-//     {
-//       Member m = c.FunctionMemberAt(i);
-//       if ( !m.IsPublic() ) continue;
-//       if ( !m.IsFunctionMember() ) continue;
-//       if ( m.IsConstructor() ) continue;
-//       if ( m.IsDestructor() ) continue;
+kit::ClassMethods::~ClassMethods() {}
 
-//       string name = m.Name();
-//       string mtype  = m.TypeOf().Name(SCOPED);
-//       string rtype, args;
-//       kit::bisplit(mtype, rtype, args);
-//       sprintf(cstr, "(%s", args.c_str());
+void
+kit::ClassMethods::getmethods_(string classname, int depth)
+{
+  using namespace Reflex;
 
-//       args = kit::replace(args, "(void)", "()");
-//       string signature = name + args;
-//       if ( db.find(signature) != db.end() ) continue;
-//       db[signature] = 0;
+  string spaces = "                                                          ";
+  string tab = spaces.substr(0, 2*depth);
+  if ( debug_ > 0 )
+    cout << tab << "CLASS(" << classname  << ")" << endl;
 
-//       // Skip setters
-//       rtype = kit::strip(rtype);
-//       if ( rtype == "void" )  continue;
-//       if ( rtype == "void*" ) continue;
+  if ( depth > 10 ) 
+    {
+      cout << "ClassMethods::getmethods - yikes, lost in the trees!" 
+           << endl;
+      exit(0);
+    }
 
-//       // Replace basic_str replaced with std::string
-//       rtype = kit::strip( subbasicstr(rtype) );
-//       signature kit::strip( subbasicstr(signature) );
-
-//       // skip Root serialization methods
-//       string method = rtype + "   " + signature;
-//       if ( skipmethod(method) ) continue;
-
-//       // simplify Ref<...> types
-      
-//       vector<string> reftype;
-//       kit::regex_findall("(?<=edm::Ref\<std::vector\<)(.+?)(?=\>,)", 
-//                          method, reftype);
-//       for(int i=0; i < (int)reftype.size(); i++)
-//         {
-//           string cname = reftype[i] + "Ref";
-//           string cmd("edm::Ref\<.+?,") + cname + "\> \>";
-//           vector<string> v;
-//           kit::regex_findall(cmd, method, v);
-//           for(int k=0; k < (int)v.size(); k++)
-//             method = kit::replace(method, 
-//         }
-//       string key = m.Name() + "\\" + m.TypeOf().Name();
-//       if ( methmap.find(key) == methmap.end() ) 
-//         {
-//           methmap[key] = m.FunctionParameterSize();
-//           string name = key + "\\" + classname;
-//           methods.push_back(name);
-//           cout << "\t\t" << name << endl;
-//         }
-//     }
+  Type thing;
+  Type c = thing.ByName(classname);
+  int nfunctions = c.FunctionMemberSize();
   
-//   // Loop over base classes, if present
+  if ( debug_ > 0 )
+    cout << tab << "  number of functions: " << nfunctions << endl;
+ 
+  for(int i=0; i < nfunctions; i++)
+    {
+      Member m = c.FunctionMemberAt(i);
+      if ( !m.IsPublic() ) continue;
+      if ( !m.IsFunctionMember() ) continue;
+      if ( m.IsConstructor() ) continue;
+      if ( m.IsDestructor() ) continue;
 
-//   int nbase = c.BaseSize();
-//   if ( nbase > 0 )
-//     {
-//       for(int i=0; i < nbase; i++)
-//         {
-//           Type b = c.BaseAt(i).ToType();
-//           string basename = b.Name();
-//           kit::classMethods(basename, methods, methmap, depth+1);
-//         }
-//     }
-// }
+      // we have a public method, decode it
+
+      string mname = m.Name();
+      string mtype = m.TypeOf().Name(SCOPED);
+
+      if ( debug_ > 2 )
+        cout << tab << "\t  "
+             << "NAME(" << mname << ") "
+             << "MTYPE(" << mtype << ")" << endl;
+
+      // simplify edm::Refs
+
+      boost::regex expr1("edm::Ref<std::vector<.+?(?=> >)");  
+      boost::smatch match1;
+      if ( boost::regex_search(mtype, match1, expr1) )
+        {
+          boost::regex expr2("edm::Ref<std::vector<.+?(?=>,)");  
+          boost::smatch match2;
+          if ( boost::regex_search(mtype, match2, expr2) )
+            mtype = kit::replace(mtype, match1[0], match2[0]);
+        }
+
+      // replace basic_str with std::string
+
+      mtype = kit::strip( subbasicstr(mtype) );
+
+      // split method type into return type and argument list
+      string rtype, args;
+      kit::bisplit(mtype, rtype, args, "(");
+      args = "(" + args;
+      rtype = kit::strip(rtype);
+
+      if ( debug_ > 2 )
+        cout << tab << "\t "
+             << " RTYPE(" << rtype << ")" 
+             << " ARGS(" << args << ")" 
+             << endl;
+
+      args = kit::replace(args, "(void)", "()");
+      string signature = mname + args;
+
+      // skip if this method already included
+
+      if ( signatures_.find(signature) != signatures_.end() ) continue;
+      signatures_[signature] = i;
+      if ( debug_ > 2 )
+        cout << tab << "\t  signature(" << signature << ")" << endl;
+
+      // skip Root serialization methods
+      string method = rtype + " " + signature;
+      if ( skipmethod(method) )
+        {
+          if ( debug_ > 1 ) 
+            cout << tab << "\t** skip: " << method << endl << endl;
+          continue;
+        }
+
+      string record 
+        = rtype + "|"
+        + mname + "|"
+        + args + "|"
+        + classname;
+
+      rtype = kit::strip(rtype);
+      if ( rtype.substr(0, 4) == "void" )
+        setters_.push_back(record);
+      else
+        getters_.push_back(record);
+
+      if ( debug_ > 0 )
+        cout << tab << "\t  METHOD(" << record << ")" 
+             << endl << endl;
+    }
+  
+  // Loop over base classes, if present
+
+  int nbase = c.BaseSize();
+  if ( debug_ > 0 )
+    cout << tab << "\t number of base classes: " << nbase << endl;
+
+  for(int i=0; i < nbase; i++)
+    {
+      Type b = c.BaseAt(i).ToType();
+      string basename = b.Name(SCOPED);
+      baseclasses_.push_back(basename);
+      getmethods_(basename, depth+1);
+    }
+}
 
 TLorentzVector 
 kit::lorentzVector(reco::GenParticle& p)
@@ -1124,22 +1176,22 @@ kit::vector3(math::XYZVector& q)
 }
 
 /*
-vector<HepMC::GenParticle*>
-kit::daughters(HepMC::GenParticle* part)
-{
+  vector<HepMC::GenParticle*>
+  kit::daughters(HepMC::GenParticle* part)
+  {
   vector<HepMC::GenParticle*> vp;
   HepMC::GenVertex* v = part->end_vertex();
   if ( v )
-    {
-      HepMC::GenVertex::particles_out_const_iterator p;
-      HepMC::GenVertex::particles_out_const_iterator start = 
-	v->particles_out_const_begin();
-      HepMC::GenVertex::particles_out_const_iterator end = 
-	v->particles_out_const_end();
-      for ( p = start; p != end; ++p ) vp.push_back(*p);
-    }
+  {
+  HepMC::GenVertex::particles_out_const_iterator p;
+  HepMC::GenVertex::particles_out_const_iterator start = 
+  v->particles_out_const_begin();
+  HepMC::GenVertex::particles_out_const_iterator end = 
+  v->particles_out_const_end();
+  for ( p = start; p != end; ++p ) vp.push_back(*p);
+  }
   return vp;
-}
+  }
 */
 
 std::vector<reco::GenParticle*>
@@ -1152,16 +1204,16 @@ kit::daughters(reco::GenParticle& p, bool skipsame)
   for(int i=0; i < nd; i++)
     {
       if ( p.daughter(i) == 0 )
-	{
-	  cout << "\t** kit::daughters - no daughters found, while expecting " 
-	       << nd << endl;
-	  continue;
-	}
+        {
+          cout << "\t** kit::daughters - no daughters found, while expecting " 
+               << nd << endl;
+          continue;
+        }
       reco::GenParticle* d = dynamic_cast<reco::GenParticle*>(p.daughter(i));
       if ( d == 0 ) continue;
 
       if ( skipsame )
-	if ( p.pdgId() == d->pdgId() ) continue;
+        if ( p.pdgId() == d->pdgId() ) continue;
       vp.push_back( d );
     }
   return vp;
@@ -1203,20 +1255,20 @@ kit::table(vector<reco::GenParticle>& vp)
 
   char record[256];
   sprintf(record, 
-	  "%6s %-10s%9s%10s%10s%10s%10s%4s", 
-	  "index", "name", "pdgid","px","py","pz","e","stat");
+          "%6s %-10s%9s%10s%10s%10s%10s%4s", 
+          "index", "name", "pdgid","px","py","pz","e","stat");
   os << record << endl;
 
   for(unsigned index=0; index < vp.size(); index++)
     {
       reco::GenParticle& p = vp[index];
       sprintf(record, 
-	      "%6d %-10s%9d %9.2e %9.2e %9.2e %9.2e%4d", 
-	      index, 
-	      kit::particleName(p).substr(0,10).c_str(),
-	      p.pdgId(), 
-	      p.px(), p.py(), p.pz(), p.energy(), 
-	      p.status());
+              "%6d %-10s%9d %9.2e %9.2e %9.2e %9.2e%4d", 
+              index, 
+              kit::particleName(p).substr(0,10).c_str(),
+              p.pdgId(), 
+              p.px(), p.py(), p.pz(), p.energy(), 
+              p.status());
       os << record << endl;
 
       vector<reco::GenParticle*> d = kit::daughters(p);
@@ -1241,20 +1293,20 @@ kit::table(vector<reco::GenParticle>& vp)
 }
 
 /*
-std::ostream& operator<<(std::ostream& os, vector<reco::GenParticle*>& vp)
-{
+  std::ostream& operator<<(std::ostream& os, vector<reco::GenParticle*>& vp)
+  {
   return os << kit::table(vp);
-}
+  }
 
-std::ostream& operator<<(std::ostream& os, reco::GenParticle* p)
-{
+  std::ostream& operator<<(std::ostream& os, reco::GenParticle* p)
+  {
   return os << kit::tree(os, p, 1);
-}
+  }
 */
 
 std::string
 kit::tree(reco::GenParticle& p,
-	  int printlevel, int maxdepth, int depth)
+          int printlevel, int maxdepth, int depth)
 {
   std::ostringstream os;
   kit::tree(os, 
@@ -1269,10 +1321,10 @@ kit::tree(reco::GenParticle& p,
 //---------------------------------------------------------------------------
 void 
 kit::tree(std::ostream& stream,
-	  reco::GenParticle& p,
-	  int           printlevel,
-	  int           maxdepth,
-	  int           depth)
+          reco::GenParticle& p,
+          int           printlevel,
+          int           maxdepth,
+          int           depth)
 {
   if ( depth >  (maxdepth <= 0 ? MAXDEPTH : maxdepth) ) return;    
   
@@ -1295,19 +1347,19 @@ kit::tree(std::ostream& stream,
       stream << std::setw(10) << kit::particleName(p);
 
       if ( printlevel > 0 )
-	{
-	  stream.setf(std::ios::right);  // right justify  
-	  stream.precision(4);
-	  stream << "  "	    
-		 << pt << "  "
-		 << "("
-		 << e  << ", "  
-		 << px << ", "
-		 << py << ", "
-		 << pz
-		 << ")";
-	  stream << " " << status;
-	}
+        {
+          stream.setf(std::ios::right);  // right justify  
+          stream.precision(4);
+          stream << "  "	    
+                 << pt << "  "
+                 << "("
+                 << e  << ", "  
+                 << px << ", "
+                 << py << ", "
+                 << pz
+                 << ")";
+          stream << " " << status;
+        }
       if ( printlevel > 1 ) stream << " " << ppid;
       stream << std::endl;
     }
@@ -1318,31 +1370,31 @@ kit::tree(std::ostream& stream,
   // Loop over daughters
   for (unsigned i=0; i < d.size(); i++)
     kit::tree(stream, 
-	      *d[i],
-	      printlevel,
-	      maxdepth,
-	      depth);
+              *d[i],
+              printlevel,
+              maxdepth,
+              depth);
 }
 
 
 std::string
 kit::tree(int    index,
-	  int    nhep,
-	  int*   pdgid,
-	  int*   status,
-	  double p[][5],
-	  int    d[][2],
-	  int printlevel, int maxdepth, int depth)
+          int    nhep,
+          int*   pdgid,
+          int*   status,
+          double p[][5],
+          int    d[][2],
+          int printlevel, int maxdepth, int depth)
 {
   std::ostringstream os;
   kit::tree(os, 
-	    index,
-	    nhep,
-	    pdgid,
-	    status,
-	    p,
-	    d,
-	    printlevel, maxdepth, depth);
+            index,
+            nhep,
+            pdgid,
+            status,
+            p,
+            d,
+            printlevel, maxdepth, depth);
   return os.str();
 }
 
@@ -1384,19 +1436,19 @@ kit::tree(std::ostream& stream,
       stream << std::setw(10) << kit::particleName(ppid);
 
       if ( printlevel > 0 )
-	{
-	  stream.setf(std::ios::right);  // right justify  
-	  stream.precision(4);
-	  stream << "  "	    
-		 << pt << "  "
-		 << "("
-		 << e  << ", "  
-		 << px << ", "
-		 << py << ", "
-		 << pz
-		 << ")";
-	  stream << " " << stat;
-	}
+        {
+          stream.setf(std::ios::right);  // right justify  
+          stream.precision(4);
+          stream << "  "	    
+                 << pt << "  "
+                 << "("
+                 << e  << ", "  
+                 << px << ", "
+                 << py << ", "
+                 << pz
+                 << ")";
+          stream << " " << stat;
+        }
       if ( printlevel > 1 ) stream << " " << ppid;
       stream << std::endl;
     }
@@ -1406,15 +1458,15 @@ kit::tree(std::ostream& stream,
   // Loop over daughters
   for (int i=d[index][0]; i <= d[index][1]; i++)
     kit::tree(stream, 
-	      i,
-	      nhep,
-	      pdgid,
-	      status,
-	      p,
-	      d,
-	      printlevel,
-	      maxdepth,
-	      depth);
+              i,
+              nhep,
+              pdgid,
+              status,
+              p,
+              d,
+              printlevel,
+              maxdepth,
+              depth);
 }
 
 std::string 
@@ -1498,7 +1550,7 @@ kit::setStyle()
 }
 
 vector<double> 
-kit::contents(TH1F* hist)
+kit::contents(TH1* hist)
 {
   vector<double> c(hist->GetNbinsX());
   for(int i=0; i < hist->GetNbinsX(); i++)
@@ -1507,7 +1559,7 @@ kit::contents(TH1F* hist)
 }
 
 vector<double> 
-kit::cdf(TH1F* hist)
+kit::cdf(TH1* hist)
 {
   vector<double> c(hist->GetNbinsX());
   c[0] = hist->GetBinContent(1);
@@ -1517,7 +1569,7 @@ kit::cdf(TH1F* hist)
 }
 
 void
-kit::setContents(TH1F* hist, vector<double>& c)
+kit::setContents(TH1* hist, vector<double>& c)
 {
   int n = hist->GetNbinsX();
   int nbin = n < (int)c.size() ? n : c.size();
@@ -1525,7 +1577,7 @@ kit::setContents(TH1F* hist, vector<double>& c)
 }
 
 void
-kit::setErrors(TH1F* hist, vector<double>& err)
+kit::setErrors(TH1* hist, vector<double>& err)
 {
   int n = hist->GetNbinsX();
   int nbin = n < (int)err.size() ? n : err.size();
@@ -1533,7 +1585,7 @@ kit::setErrors(TH1F* hist, vector<double>& err)
 }
 
 TH1F*
-kit::divideHistograms(TH1F* N, TH1F* D, string ytitle)
+kit::divideHistograms(TH1* N, TH1* D, string ytitle)
 {
   int nN = N->GetNbinsX();
   int nD = D->GetNbinsX();
@@ -1573,11 +1625,11 @@ kit::divideHistograms(TH1F* N, TH1F* D, string ytitle)
       double p = 0;
       double e = 0;
       if ( (d[i] > 0) && (n[i] > 0) ) 
-	{
-	  p = n[i] / d[i];
-	  // Use rough error calculation for now
-	  e = sqrt(d[i]*p*(1-p))/d[i];
-	}
+        {
+          p = n[i] / d[i];
+          // Use rough error calculation for now
+          e = sqrt(d[i]*p*(1-p))/d[i];
+        }
       h->SetBinContent(bin, p);
       h->SetBinError(bin, e);
     }
@@ -1651,8 +1703,8 @@ kit::canvas(string name, int n, int width, int height)
   int xoffset = 40*n;
   int yoffset = 10*n;
   return new TCanvas(cname.c_str(), 
-		     ctitle.c_str(), 
-		     xoffset, yoffset, width, height);
+                     ctitle.c_str(), 
+                     xoffset, yoffset, width, height);
 }
 //-----------------------------------------------------------------------------
 TLegend*
@@ -1670,14 +1722,14 @@ kit::legend(string title, int nlines, float xmin, float xmax, float ymax)
 //-----------------------------------------------------------------------------
 TH1F* 
 kit::histogram(string hname,
-	       string xtitle,
-	       string ytitle,
-	       int    nbin,
-	       float  xmin,
-	       float  xmax,
-	       int    color,
-	       int    lstyle,
-	       int    lwidth)
+               string xtitle,
+               string ytitle,
+               int    nbin,
+               float  xmin,
+               float  xmax,
+               int    color,
+               int    lstyle,
+               int    lwidth)
 {
   TH1F* h = new TH1F(hname.c_str(), "", nbin, xmin, xmax);
 
@@ -1697,17 +1749,17 @@ kit::histogram(string hname,
 //-----------------------------------------------------------------------------
 TH2F* 
 kit::histogram(string hname,
-	       string xtitle,
-	       int    nbinx,
-	       float  xmin,
-	       float  xmax,
-	       string ytitle,
-	       int    nbiny,
-	       float  ymin,
-	       float  ymax,
-	       int    color,
-	       int    lstyle,
-	       int    lwidth)
+               string xtitle,
+               int    nbinx,
+               float  xmin,
+               float  xmax,
+               string ytitle,
+               int    nbiny,
+               float  ymin,
+               float  ymax,
+               int    color,
+               int    lstyle,
+               int    lwidth)
 {
   TH2F* h = new TH2F(hname.c_str(), "", nbinx, xmin, xmax, nbiny, ymin, ymax);
 
@@ -1727,16 +1779,16 @@ kit::histogram(string hname,
 //-----------------------------------------------------------------------------
 TGraph* 
 kit::graph(vector<double>& x, 
-	   vector<double>& y,
-	   string xtitle,
-	   string ytitle,
-	   float  xmin,
-	   float  xmax,
-	   float  ymin,
-	   float  ymax,
-	   int    color,
-	   int    lstyle,
-	   int    lwidth)
+           vector<double>& y,
+           string xtitle,
+           string ytitle,
+           float  xmin,
+           float  xmax,
+           float  ymin,
+           float  ymax,
+           int    color,
+           int    lstyle,
+           int    lwidth)
 {
   int nbins = x.size();
     
@@ -1759,7 +1811,7 @@ kit::graph(vector<double>& x,
 
 void 
 kit::plot(TCanvas* canvas, 
-	  TH1F* h, string opt)
+          TH1* h, string opt)
 {
   if (!canvas) return;
   if (!h) return;
@@ -1780,7 +1832,7 @@ kit::plot(TCanvas* canvas,
 
 void 
 kit::plot(TCanvas* canvas, 
-	  vector<TH1F*>& h, string opt)
+          vector<TH1*>& h, string opt)
 {
   if (!canvas) return;
   if ( h.size() == 0 ) return;
@@ -1862,9 +1914,9 @@ static double y [MAXSRC];
 
 double 
 kit::logpoisson(vdouble&	p,  // Weights "p_j" 
-		vvdouble&	A,  // Counts  "A_ji" for up to 10 sources
-		vdouble&	D,  // Counts  "D_i" for data.
-		bool scale)       // Scale p_j if true  
+                vvdouble&	A,  // Counts  "A_ji" for up to 10 sources
+                vdouble&	D,  // Counts  "D_i" for data.
+                bool scale)       // Scale p_j if true  
 {
   int N = p.size(); // Number of sources (N)
   int M = D.size(); // Number of bins    (M)
@@ -1875,11 +1927,11 @@ kit::logpoisson(vdouble&	p,  // Weights "p_j"
   if ( scale )
     {
       for ( int j = 0; j < N; j++ )
-	{
-	  double ns = 0;
-	  for ( int i = 0; i < M; i++ ) ns += A[j][i];
-	  x[j] = p[j]/(ns+M);
-	}
+        {
+          double ns = 0;
+          for ( int i = 0; i < M; i++ ) ns += A[j][i];
+          x[j] = p[j]/(ns+M);
+        }
     }
   else
     for ( int j = 0; j < N; j++ )
@@ -1901,10 +1953,10 @@ kit::logpoisson(vdouble&	p,  // Weights "p_j"
 
 double 
 kit::poissongamma(vdouble&	p,  // Weights "p_j" 
-		  vvdouble&	a,  // Counts  "A_ji" for up to 10 sources
-		  vdouble&	d,  // Counts  "D_i" for data.
-		  bool returnlog,    // return log(P) if true
-		  bool scale)     // Scale p_j if true  
+                  vvdouble&	a,  // Counts  "A_ji" for up to 10 sources
+                  vdouble&	d,  // Counts  "D_i" for data.
+                  bool returnlog,    // return log(P) if true
+                  bool scale)     // Scale p_j if true  
 {
   int N = p.size(); // Number of sources (N)
   int M = d.size(); // Number of bins    (M)
@@ -1912,17 +1964,17 @@ kit::poissongamma(vdouble&	p,  // Weights "p_j"
   if ( a.size() != (unsigned int)N )
     {
       std::cout << "**Error - poissongamma - mis-match in number of sources\n"
-		<< "size(p): " << N << " differs from size(A) = " << a.size()
-		<< std::endl;
+                << "size(p): " << N << " differs from size(A) = " << a.size()
+                << std::endl;
       exit(0);
     }
 
   if ( a[0].size() != (unsigned int)M )
     {
       std::cout << "**Error - poissongamma - mis-match in number of sources\n"
-		<< "size(d): " << M << " differs from size(A[0]) = " 
-		<< a[0].size()
-		<< std::endl;
+                << "size(d): " << M << " differs from size(A[0]) = " 
+                << a[0].size()
+                << std::endl;
       exit(0);
     }
 
@@ -1948,9 +2000,9 @@ kit::poissongamma(vdouble&	p,  // Weights "p_j"
   for ( int j = 0; j < N; j++ )
     {
       if ( scale )
-	x[j] = p[j] / (ns[j]+M);
+        x[j] = p[j] / (ns[j]+M);
       else
-	x[j] = p[j];
+        x[j] = p[j];
       y[j] = x[j] / (1+x[j]);
     }
 
@@ -1970,162 +2022,162 @@ kit::poissongamma(vdouble&	p,  // Weights "p_j"
       // compute terms of sum from zero to D
       
       for ( int j = 0; j < N; j++ )
-	{
-	  si[j]    = a[j][i];  // "A_ji"
-	  cs[j][0] = pow(1+x[j],-(si[j]+1));
-	}
+        {
+          si[j]    = a[j][i];  // "A_ji"
+          cs[j][0] = pow(1+x[j],-(si[j]+1));
+        }
       
       if ( D > 0 )
-	{
-	  for ( int k = 1; k < D+1; k++ )
-	    for ( int j = 0; j < N; j++ )
-	      cs[j][k] = cs[j][k-1] * y[j] * (si[j]+k)/k;
-	}
+        {
+          for ( int k = 1; k < D+1; k++ )
+            for ( int j = 0; j < N; j++ )
+              cs[j][k] = cs[j][k-1] * y[j] * (si[j]+k)/k;
+        }
 
       // compute sum
 
       double sum = 0.0;
       switch (N)
-	{
-	case 2:
-	  for (int j = 0; j < D+1; j++)
-	    sum += 
-	      cs[0][j] *
-	      cs[1][D-j];
-	  break;
+        {
+        case 2:
+          for (int j = 0; j < D+1; j++)
+            sum += 
+              cs[0][j] *
+              cs[1][D-j];
+          break;
 
-	case 3:
-	  for (int j = 0; j < D+1; j++)
-	    for (int k = 0; k < D+1-j; k++)
-	      sum += 
-		cs[0][j] *
-		cs[1][k] *
-		cs[2][D-j-k];
-	  break;
+        case 3:
+          for (int j = 0; j < D+1; j++)
+            for (int k = 0; k < D+1-j; k++)
+              sum += 
+                cs[0][j] *
+                cs[1][k] *
+                cs[2][D-j-k];
+          break;
 
-	case 4:
-	  for (int j = 0; j < D+1; j++)
-	    for (int k = 0; k < D+1-j; k++)
-	      for (int l = 0; l < D+1-j-k; l++)
-		sum += 
-		  cs[0][j] *
-		  cs[1][k] *
-		  cs[2][l] *
-		  cs[3][D-j-k-l];
-	  break;
+        case 4:
+          for (int j = 0; j < D+1; j++)
+            for (int k = 0; k < D+1-j; k++)
+              for (int l = 0; l < D+1-j-k; l++)
+                sum += 
+                  cs[0][j] *
+                  cs[1][k] *
+                  cs[2][l] *
+                  cs[3][D-j-k-l];
+          break;
 
-	case 5:
-	  for (int j = 0; j < D+1; j++)
-	    for (int k = 0; k < D+1-j; k++)
-	      for (int l = 0; l < D+1-j-k; l++)
-		for (int m = 0; m < D+1-j-k-l; m++)
-		  sum += 
-		    cs[0][j] *
-		    cs[1][k] *
-		    cs[2][l] *
-		    cs[3][m] *
-		    cs[4][D-j-k-l-m];
-	  break;
+        case 5:
+          for (int j = 0; j < D+1; j++)
+            for (int k = 0; k < D+1-j; k++)
+              for (int l = 0; l < D+1-j-k; l++)
+                for (int m = 0; m < D+1-j-k-l; m++)
+                  sum += 
+                    cs[0][j] *
+                    cs[1][k] *
+                    cs[2][l] *
+                    cs[3][m] *
+                    cs[4][D-j-k-l-m];
+          break;
 
-	case 6:
-	  for (int j = 0; j < D+1; j++)
-	    for (int k = 0; k < D+1-j; k++)
-	      for (int l = 0; l < D+1-j-k; l++)
-		for (int m = 0; m < D+1-j-k-l; m++)
-		  for (int m1 = 0; m1 < D+1-j-k-l-m; m1++)
-		    sum += 
-		      cs[0][j] *
-		      cs[1][k] *
-		      cs[2][l] *
-		      cs[3][m] *
-		      cs[4][m1] *
-		      cs[5][D-j-k-l-m-m1];
-	  break;
+        case 6:
+          for (int j = 0; j < D+1; j++)
+            for (int k = 0; k < D+1-j; k++)
+              for (int l = 0; l < D+1-j-k; l++)
+                for (int m = 0; m < D+1-j-k-l; m++)
+                  for (int m1 = 0; m1 < D+1-j-k-l-m; m1++)
+                    sum += 
+                      cs[0][j] *
+                      cs[1][k] *
+                      cs[2][l] *
+                      cs[3][m] *
+                      cs[4][m1] *
+                      cs[5][D-j-k-l-m-m1];
+          break;
 
-	case 7:
-	  for (int j = 0; j < D+1; j++)
-	    for (int k = 0; k < D+1-j; k++)
-	      for (int l = 0; l < D+1-j-k; l++)
-		for (int m = 0; m < D+1-j-k-l; m++)
-		  for (int m1 = 0; m1 < D+1-j-k-l-m; m1++)
-		    for (int m2 = 0; m2 < D+1-j-k-l-m-m1; m2++)
-		      sum += 
-			cs[0][j] *
-			cs[1][k] *
-			cs[2][l] *
-			cs[3][m] *
-			cs[4][m1] *
-			cs[5][m2] *
-			cs[6][D-j-k-l-m-m1-m2];
-	  break;
+        case 7:
+          for (int j = 0; j < D+1; j++)
+            for (int k = 0; k < D+1-j; k++)
+              for (int l = 0; l < D+1-j-k; l++)
+                for (int m = 0; m < D+1-j-k-l; m++)
+                  for (int m1 = 0; m1 < D+1-j-k-l-m; m1++)
+                    for (int m2 = 0; m2 < D+1-j-k-l-m-m1; m2++)
+                      sum += 
+                        cs[0][j] *
+                        cs[1][k] *
+                        cs[2][l] *
+                        cs[3][m] *
+                        cs[4][m1] *
+                        cs[5][m2] *
+                        cs[6][D-j-k-l-m-m1-m2];
+          break;
 
-	case 8:
-	  for (int j = 0; j < D+1; j++)
-	    for (int k = 0; k < D+1-j; k++)
-	      for (int l = 0; l < D+1-j-k; l++)
-		for (int m = 0; m < D+1-j-k-l; m++)
-		  for (int m1 = 0; m1 < D+1-j-k-l-m; m1++)
-		    for (int m2 = 0; m2 < D+1-j-k-l-m-m1; m2++)
-		      for (int m3 = 0; m3 < D+1-j-k-l-m-m1-m2; m3++)
-			sum += 
-			  cs[0][j] *
-			  cs[1][k] *
-			  cs[2][l] *
-			  cs[3][m] *
-			  cs[4][m1] *
-			  cs[5][m2] *
-			  cs[6][m3] *
-			  cs[7][D-j-k-l-m-m1-m2-m3];
-	  break;
+        case 8:
+          for (int j = 0; j < D+1; j++)
+            for (int k = 0; k < D+1-j; k++)
+              for (int l = 0; l < D+1-j-k; l++)
+                for (int m = 0; m < D+1-j-k-l; m++)
+                  for (int m1 = 0; m1 < D+1-j-k-l-m; m1++)
+                    for (int m2 = 0; m2 < D+1-j-k-l-m-m1; m2++)
+                      for (int m3 = 0; m3 < D+1-j-k-l-m-m1-m2; m3++)
+                        sum += 
+                          cs[0][j] *
+                          cs[1][k] *
+                          cs[2][l] *
+                          cs[3][m] *
+                          cs[4][m1] *
+                          cs[5][m2] *
+                          cs[6][m3] *
+                          cs[7][D-j-k-l-m-m1-m2-m3];
+          break;
 
-	case 9:
-	  for (int j = 0; j < D+1; j++)
-	    for (int k = 0; k < D+1-j; k++)
-	      for (int l = 0; l < D+1-j-k; l++)
-		for (int m = 0; m < D+1-j-k-l; m++)
-		  for (int m1 = 0; m1 < D+1-j-k-l-m; m1++)
-		    for (int m2 = 0; m2 < D+1-j-k-l-m-m1; m2++)
-		      for (int m3 = 0; m3 < D+1-j-k-l-m-m1-m2; m3++)
-			for (int m4 = 0; m4 < D+1-j-k-l-m-m1-m2-m3; m4++)
-			  sum += 
-			    cs[0][j] *
-			    cs[1][k] *
-			    cs[2][l] *
-			    cs[3][m] *
-			    cs[4][m1] *
-			    cs[5][m2] *
-			    cs[6][m3] *
-			    cs[7][m4] *
-			    cs[8][D-j-k-l-m-m1-m2-m3-m4];
-	  break;
+        case 9:
+          for (int j = 0; j < D+1; j++)
+            for (int k = 0; k < D+1-j; k++)
+              for (int l = 0; l < D+1-j-k; l++)
+                for (int m = 0; m < D+1-j-k-l; m++)
+                  for (int m1 = 0; m1 < D+1-j-k-l-m; m1++)
+                    for (int m2 = 0; m2 < D+1-j-k-l-m-m1; m2++)
+                      for (int m3 = 0; m3 < D+1-j-k-l-m-m1-m2; m3++)
+                        for (int m4 = 0; m4 < D+1-j-k-l-m-m1-m2-m3; m4++)
+                          sum += 
+                            cs[0][j] *
+                            cs[1][k] *
+                            cs[2][l] *
+                            cs[3][m] *
+                            cs[4][m1] *
+                            cs[5][m2] *
+                            cs[6][m3] *
+                            cs[7][m4] *
+                            cs[8][D-j-k-l-m-m1-m2-m3-m4];
+          break;
 
-	case 10:
-	  for (int j = 0; j < D+1; j++)
-	    for (int k = 0; k < D+1-j; k++)
-	      for (int l = 0; l < D+1-j-k; l++)
-		for (int m = 0; m < D+1-j-k-l; m++)
-		  for (int m1 = 0; m1 < D+1-j-k-l-m; m1++)
-		    for (int m2 = 0; m2 < D+1-j-k-l-m-m1; m2++)
-		      for (int m3 = 0; m3 < D+1-j-k-l-m-m1-m2; m3++)
-			for (int m4 = 0; m4 < D+1-j-k-l-m-m1-m2-m3; m4++)
-			  for (int m5 = 0; m5 < D+1-j-k-l-m-m1-m2-m3-m4; m5++)
-			    sum += 
-			      cs[0][j] *
-			      cs[1][k] *
-			      cs[2][l] *
-			      cs[3][m] *
-			      cs[4][m1] *
-			      cs[5][m2] *
-			      cs[6][m3] *
-			      cs[7][m4] *
-			      cs[8][m5] *
-			      cs[9][D-j-k-l-m-m1-m2-m3-m4-m5];
-	  break;
-	};
+        case 10:
+          for (int j = 0; j < D+1; j++)
+            for (int k = 0; k < D+1-j; k++)
+              for (int l = 0; l < D+1-j-k; l++)
+                for (int m = 0; m < D+1-j-k-l; m++)
+                  for (int m1 = 0; m1 < D+1-j-k-l-m; m1++)
+                    for (int m2 = 0; m2 < D+1-j-k-l-m-m1; m2++)
+                      for (int m3 = 0; m3 < D+1-j-k-l-m-m1-m2; m3++)
+                        for (int m4 = 0; m4 < D+1-j-k-l-m-m1-m2-m3; m4++)
+                          for (int m5 = 0; m5 < D+1-j-k-l-m-m1-m2-m3-m4; m5++)
+                            sum += 
+                              cs[0][j] *
+                              cs[1][k] *
+                              cs[2][l] *
+                              cs[3][m] *
+                              cs[4][m1] *
+                              cs[5][m2] *
+                              cs[6][m3] *
+                              cs[7][m4] *
+                              cs[8][m5] *
+                              cs[9][D-j-k-l-m-m1-m2-m3-m4-m5];
+          break;
+        };
       if ( returnlog )
-	prob += log(sum);
+        prob += log(sum);
       else
-	prob *= sum;
+        prob *= sum;
     }
   return prob;
 }
@@ -2135,11 +2187,11 @@ kit::poissongamma(vdouble&	p,  // Weights "p_j"
 // 
 double 
 kit::poissongamma1D(double xsec,
-		    double Lum,
-		    double sigmaLum,
-		    double Bkg,
-		    double sigmaBkg,
-		    double Datum)
+                    double Lum,
+                    double sigmaLum,
+                    double Bkg,
+                    double sigmaBkg,
+                    double Datum)
 {
   // Compute scale factors and effective counts
   double eA = sigmaLum * sigmaLum / Lum;
@@ -2169,12 +2221,12 @@ kit::poissongamma1D(double xsec,
 
 double 
 kit::poissongamma2(double	p1,
-		   double     p2,
-		   vdouble&   A1,
-		   vdouble&   A2,
-		   vdouble&	D,
-		   bool returnlog,
-		   bool scale)
+                   double     p2,
+                   vdouble&   A1,
+                   vdouble&   A2,
+                   vdouble&	D,
+                   bool returnlog,
+                   bool scale)
 {
   vdouble  p(2); p[0] = p1; p[1] = p2;
   vvdouble A(2); A[0] = A1; A[1] = A2;
@@ -2183,18 +2235,18 @@ kit::poissongamma2(double	p1,
 
 double 
 kit::poissongamma5(double	p1,
-		   double     p2,
-		   double     p3,
-		   double     p4,
-		   double     p5,
-		   vdouble&   A1,
-		   vdouble&   A2,
-		   vdouble&   A3,
-		   vdouble&   A4,
-		   vdouble&   A5,
-		   vdouble&	D,
-		   bool returnlog,
-		   bool scale)
+                   double     p2,
+                   double     p3,
+                   double     p4,
+                   double     p5,
+                   vdouble&   A1,
+                   vdouble&   A2,
+                   vdouble&   A3,
+                   vdouble&   A4,
+                   vdouble&   A5,
+                   vdouble&	D,
+                   bool returnlog,
+                   bool scale)
 {
   vdouble  p(5); p[0] = p1; p[1] = p2; p[2] = p3; p[3] = p4; p[4] = p5;
   vvdouble A(5); A[0] = A1; A[1] = A2; A[2] = A3; A[3] = A4; A[4] = A5;
@@ -2215,7 +2267,7 @@ static vector<double> YIELD;
 
 void 
 kit::initpoissongammamc(vvdouble& a, // Counts  "A_ji" 
-			int total)   // Number of MC sampling points
+                        int total)   // Number of MC sampling points
 {
   int N = a.size();    // Number of sources (N)
   int M = a[0].size(); // Number of bins    (M)
@@ -2225,19 +2277,19 @@ kit::initpoissongammamc(vvdouble& a, // Counts  "A_ji"
   for ( int i = 0; i < M; i++ )
     for (int k = 0; k < TOTAL; k++)
       for ( int j = 0; j < N; j++ )
-	{
-	  //float q = (float)(a[j][i] + 1);
-	  //YIELD.push_back(rngama_(q));
-	  //YIELD.push_back(rngama_(q));
-	}
+        {
+          //float q = (float)(a[j][i] + 1);
+          //YIELD.push_back(rngama_(q));
+          //YIELD.push_back(rngama_(q));
+        }
 }
 
 double 
 kit::poissongammamc(vdouble&	p,  // Weights "p_j" 
-		    vvdouble&	a,  // Counts  "A_ji"
-		    vdouble&	d,  // Counts  "D_i" for data.
-		    bool returnlog,
-		    bool scale)   // Scale    p_j if true  
+                    vvdouble&	a,  // Counts  "A_ji"
+                    vdouble&	d,  // Counts  "D_i" for data.
+                    bool returnlog,
+                    bool scale)   // Scale    p_j if true  
 {
   int N = p.size(); // Number of sources (N)
   int M = d.size(); // Number of bins    (M)
@@ -2245,17 +2297,17 @@ kit::poissongammamc(vdouble&	p,  // Weights "p_j"
   if ( a.size() != (unsigned int)N )
     {
       std::cout << "**Error - poissongamma - mis-match in number of sources\n"
-		<< "size(p): " << N << " differs from size(A) = " << a.size()
-		<< std::endl;
+                << "size(p): " << N << " differs from size(A) = " << a.size()
+                << std::endl;
       exit(0);
     }
 
   if ( a[0].size() != (unsigned int)M )
     {
       std::cout << "**Error - poissongamma - mis-match in number of sources\n"
-		<< "size(d): " << M << " differs from size(A[0]) = " 
-		<< a[0].size()
-		<< std::endl;
+                << "size(d): " << M << " differs from size(A[0]) = " 
+                << a[0].size()
+                << std::endl;
       exit(0);
     }
   
@@ -2276,9 +2328,9 @@ kit::poissongammamc(vdouble&	p,  // Weights "p_j"
   for ( int j = 0; j < N; j++ )
     {
       if ( scale )
-	x[j] = p[j] / (ns[j]+M);
+        x[j] = p[j] / (ns[j]+M);
       else
-	x[j] = p[j];
+        x[j] = p[j];
     }
   
   // Loop over each point in the swarm of points
@@ -2294,27 +2346,27 @@ kit::poissongammamc(vdouble&	p,  // Weights "p_j"
     {
       double P = 0;
       for (int k = 0; k < TOTAL; k++)
-	{
-	  // Compute Poisson parameter for ith bin
-	  double a = 0;
-	  for ( int j = 0; j < N; j++ )
-	    { 
-	      a += x[j] * YIELD[index];
-	      index++;
-	    }
+        {
+          // Compute Poisson parameter for ith bin
+          double a = 0;
+          for ( int j = 0; j < N; j++ )
+            { 
+              a += x[j] * YIELD[index];
+              index++;
+            }
 
-	  // Compute Poisson probability
-	  double q = exp(-a);
-	  int D = (int)d[i];
-	  if ( D > 0 ) for ( int n = 1; n <= D; n++ ) q *= a / n;
+          // Compute Poisson probability
+          double q = exp(-a);
+          int D = (int)d[i];
+          if ( D > 0 ) for ( int n = 1; n <= D; n++ ) q *= a / n;
 
-	  P += q;
-	}
+          P += q;
+        }
       P /= TOTAL;
       if ( returnlog )
-	prob += log(P);
+        prob += log(P);
       else
-	prob *= P;
+        prob *= P;
     }
   return prob;
 }

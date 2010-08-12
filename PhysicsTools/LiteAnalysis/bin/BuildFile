@@ -3,13 +3,6 @@
 <use name=FWCore/FWLite>
 <use name=FWCore/PluginManager>
 
-<use name=DataFormats/EgammaReco>
-<use name=DataFormats/JetReco>
-<use name=DataFormats/MuonReco>
-<use name=DataFormats/TrackReco>
-<use name=DataFormats/EgammaCandidates>
-<use name=DataFormats/CaloTowers>
-
 <use name=hepmc>
 <use name=boost_regex>
 <use name=boost_python>
@@ -18,14 +11,12 @@
 <use name=rootmath>
 <use name=f77compiler>
 
-<bin file=effstudy.cc name=effstudy></bin>
-<bin file=testAOD.cc name=testAOD></bin>
-<bin file=testPAT.cc name=testPAT></bin>
 <bin file=testtreestream.cc></bin>
 <bin file=testhcache.cc></bin>
 <bin file=readit.cc></bin>
 <bin file=testparser.cc></bin>
 <bin file=testreflex.cc></bin>
+<bin file=testreflex2.cc></bin>
 <bin name=testplugins file=testplugins.cc></bin>
 
 

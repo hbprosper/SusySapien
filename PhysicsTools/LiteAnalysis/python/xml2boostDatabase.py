@@ -48,7 +48,7 @@
 #                              Fix search for header
 #              05-Mar-2006 HBP Use isCkeywordNative in type translation
 #              29-Apr-2009 HBP change opaque to opaque_
-#$Revision: 1.2 $
+#$Revision: 1.3 $
 #---------------------------------------------------------------------------
 import os, sys, re, posixpath
 from time   import *
@@ -198,8 +198,8 @@ CONTEXT ={'date': date,
 		  'xmldir' : XMLDIR,
 		  'tmpdir' : TMPDIR,
 		  'docdir' : DOCDIR,
-		  'ctypesdir' : "%s/stl/src/ttypes/python" % BASE,
-		  'ttypesdir' : "%s/src/ttypes/python" % PROJECTPATH,
+		  'ctypesdir' : "%s/%s/src/ttypes/python" % (BASE, PACKAGE),
+		  'ttypesdir' : "%s/%s/src/ttypes/python" % (BASE, PACKAGE),
 		  'intdir' : INTDIR,
 		  'projectpath': PROJECTPATH,
 		  'version': VERSION,

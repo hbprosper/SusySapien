@@ -1,6 +1,7 @@
 <use name=FWCore/Framework>
 <use name=FWCore/PluginManager>
 <use name=FWCore/ParameterSet>
+
 <use name=DataFormats/JetReco>
 <use name=DataFormats/EgammaCandidates>
 <use name=DataFormats/MuonReco>
@@ -8,12 +9,15 @@
 <use name=DataFormats/TrackReco>
 <use name=DataFormats/BTauReco>
 <use name=DataFormats/BeamSpot>
-<use name=PhysicsTools/PatUtils>
+<use name=DataFormats/CastorReco>
 <use name=DataFormats/PatCandidates>
 <use name=DataFormats/HepMCCandidate>
 <use name=DataFormats/Math>
+
+<use name=PhysicsTools/PatUtils>
 <use name=PhysicsTools/LiteAnalysis>
 <use name=PhysicsTools/UtilAlgos>
+
 <use name=CommonTools/Utils>
 
 <use name=boost_regex>

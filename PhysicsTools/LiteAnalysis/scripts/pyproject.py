@@ -28,7 +28,7 @@
 #              23-Oct-2005 HBP, Decouple a bit from CMS structure
 #              25-May-2006 HBP, Use environment variables in setup(..)
 #              25-Sep-2008 HBP, Fix bug in addflags
-#$Revision: 1.2 $
+#$Revision: 1.3 $
 #==============================================================================
 import os, sys, re, shelve
 from boostlib import \
@@ -39,8 +39,6 @@ from boostlib import \
 	 decodeCallback, \
 	 hidepath
 
-from popen2 import popen3
-from sets   import Set
 from time   import time, ctime, sleep
 from glob   import glob
 from getopt import getopt, GetoptError
@@ -51,7 +49,7 @@ pp = PrettyPrinter()
 #==============================================================================
 # Constants
 #==============================================================================
-VERSION='$Revision: 1.2 $'
+VERSION='$Revision: 1.3 $'
 VERSION=split(VERSION[:-1]).pop()
 USAGE = '''
 Usage:
@@ -476,7 +474,7 @@ def headerBasepaths(nameregex, project):
 	componentnames = re.findall(nameregex, cnames)
 
 	includestr = ""
-	paths = Set()
+	paths = set()
 	for componentname in componentnames:
 		component = project['components'][componentname]
 
@@ -835,7 +833,7 @@ class Command:
 		out.write("# \t%s\n" % path)
 		out.write("# Created:     %(time)s with pyproject.py"
 				  " %(VERSION)s\n" % names)
-		out.write("#$Revision: 1.2 $\n")
+		out.write("#$Revision: 1.3 $\n")
 		out.write("#" + 78*'-' + '\n')
 		out.write("ifndef PYTHON_PROJECTS\n")
 		out.write("$(error PYTHON_PROJECTS is undefined)\n")
@@ -864,7 +862,7 @@ class Command:
 		out.write("# GNUmakefile to create XML files\n")
 		out.write("# Created: %(time)s with pyproject.py "
 				  "%(VERSION)s\n" % names)
-		out.write("#$Revision: 1.2 $\n")
+		out.write("#$Revision: 1.3 $\n")
 		out.write("#" + 78*'-' + '\n')
 		out.write("ifndef PYTHON_PROJECTS\n")
 		out.write("$(error PYTHON_PROJECTS is undefined)\n")
@@ -885,7 +883,7 @@ class Command:
 		out.write("# GNUmakefile to create lib%(module)s library\n" % names)
 		out.write("# Created: %(time)s with pyproject.py "
 				  "%(VERSION)s\n" % names)
-		out.write("#$Revision: 1.2 $\n")
+		out.write("#$Revision: 1.3 $\n")
 		out.write("#" + 78*'-' + '\n')
 		out.write("ifndef PYTHON_PROJECTS\n")
 		out.write("$(error PYTHON_PROJECTS is undefined)\n")
@@ -901,6 +899,7 @@ class Command:
 		out.close()                    
 
 	def addflags(self, names, out, flaglist):
+		
 		addline = False
 		for index, flag in enumerate(flaglist):
 
@@ -956,10 +955,11 @@ class Command:
 
 			outfile = "%(bldpath)s/python/GNUmakefile" % names
 			out = open(outfile,"w")
-			out.write("# GNUmakefile to create Python modules\n")
+			out.write("# makefile to create Python module "\
+			"%(projectname)s\n" % names)
 			out.write("# Created: %(time)s with pyproject.py "
 					  "%(VERSION)s\n" % names)
-			out.write("#$Revision: 1.2 $\n")
+			out.write("#$Revision: 1.3 $\n")
 			out.write("#" + 78*'-' + '\n')
 			out.write("ifndef PYTHON_PROJECTS\n")
 			out.write("$(error PYTHON_PROJECTS is undefined)\n")
@@ -972,6 +972,15 @@ class Command:
 					value = names['macros'][key]
 					out.write("%s\t:= %s\n" % (key, value))
 				out.write("#" + 78*'-' + '\n')
+
+			# Add -I$(PYTHON_PROJECTS)/<PACKAGE>/src to cppflags
+
+			if not names.has_key('cppflags'): names['cppflags'] = ''
+			names['cppflags'] += ' -I$(PYTHON_PROJECTS)'
+			names['cppflags'] += ' -I$(PYTHON_PROJECTS)/%(projectname)s' % \
+								 names
+			names['cppflags'] += ' -I$(PYTHON_PROJECTS)/%(projectname)s/src' %\
+								 names
 
 			self.addflags(names, out, PYFLAGS)
 
@@ -1246,7 +1255,7 @@ class Command:
 		out.write("# File:    TypesDB\n" % names)
 		out.write("# Created: %(date)s, pyproject.py"
 				  " %(VERSION)s\n" % names)
-		out.write("#$Revision: 1.2 $\n")
+		out.write("#$Revision: 1.3 $\n")
 		out.write(79*"#"+'\n')
 		PP = PrettyPrinter(stream=out)
 		out.write("ClassDB =\\\n")
