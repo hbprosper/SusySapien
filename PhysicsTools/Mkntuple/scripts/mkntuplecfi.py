@@ -8,7 +8,7 @@
 #              06-Jun-2010 HBP - always highlight selected methods when a class
 #                          is selected
 #-----------------------------------------------------------------------------
-#$Revision: 1.12 $
+#$Revision: 1.13 $
 #-----------------------------------------------------------------------------
 import sys, os, re, platform
 from ROOT import *
@@ -32,7 +32,7 @@ if not os.environ.has_key("CMSSW_BASE"):
 	sys.exit(0)
 
 BASE = os.environ["PWD"]
-REVISION="$Revision: 1.12 $"
+REVISION="$Revision: 1.13 $"
 rev = split(REVISION)[1]
 VERSION        = \
 """
@@ -1079,7 +1079,7 @@ class Gui:
 		
 		fdialog = TFileDialog(self.window,
 							  self.main,
-							  kFDOpen,
+							  kFDSave,
 							  self.iniDir,
 							  CFI_PY)
 

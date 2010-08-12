@@ -4,13 +4,13 @@
 # Created: 06-Mar-2010 Harrison B. Prosper
 # Updated: 12-Mar-2010 HBP - fix appending of .root
 #          08-Jun-2010 HBP - add creation of selector.h 
-#$Revision: 1.4 $
+#$Revision: 1.5 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
 from time import *
 from glob import glob
-from PhysicsTools.LiteAnalysis.Lib import nameonly
+from PhysicsTools.LiteAnalysis.boostlib import nameonly
 #------------------------------------------------------------------------------
 if not os.environ.has_key("CMSSW_BASE"):
 	print "\t**you must first set up CMSSW"
@@ -60,7 +60,7 @@ TEMPLATE_H =\
 // File:        %(name)s.h
 // Description: Analyzer header for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 //-----------------------------------------------------------------------------
 
 // -- System
@@ -237,7 +237,7 @@ TEMPLATE_CC =\
 // File:        %(name)s.cc
 // Description: Analyzer for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 //-----------------------------------------------------------------------------
 #include "%(name)s.h"
 
@@ -299,7 +299,7 @@ SLTEMPLATE=\
 // File:        selector.h
 // Description: selector template
 // Created:     %(time)s by mkntanalyzer.py
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 //-----------------------------------------------------------------------------
 #include <map>
 #include <string>
@@ -365,7 +365,7 @@ PYTEMPLATE =\
 #  File:        %(name)s
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
-#  $Revision: 1.4 $
+#  $Revision: 1.5 $
 # -----------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
@@ -461,7 +461,7 @@ MAKEFILE = '''#-----------------------------------------------------------------
 #                 optflag
 #                 verbose    (e.g., verbose=1)
 #                 withcern   (e.g., withcern=1  expects to find CERN_LIB)
-#$Revision: 1.4 $
+#$Revision: 1.5 $
 #------------------------------------------------------------------------------
 ifndef ROOTSYS
 $(error *** Please set up Root)

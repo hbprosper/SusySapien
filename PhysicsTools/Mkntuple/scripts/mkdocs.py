@@ -7,7 +7,7 @@
 # Updated:     15-Feb-2010 HBP, make it possible to be run anywhere
 #              09-Mar-2010 HBP, add search of SimDataFormats
 #              08-Aug-2010 HBP, fix search of user.h in Mkntuple
-#$Revision: 1.4 $
+#$Revision: 1.5 $
 #---------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
@@ -841,7 +841,7 @@ def main():
 	# Loop over header files to be scanned
 	#-------------------------------------------------
 
-	print "mkdocs.py $Revision: 1.4 $\n"
+	print "mkdocs.py $Revision: 1.5 $\n"
 
 	# Make sure html and txt directories exist
 	
@@ -876,7 +876,7 @@ def main():
 		filestem = replace(filestem, '/', '.')
 
 		###D
-		print "filestem(%s) header(%s)" % (filestem, header)
+		#print "filestem(%s) header(%s)" % (filestem, header)
 		
 		# Initialize map to contain info about classes and methods
 		

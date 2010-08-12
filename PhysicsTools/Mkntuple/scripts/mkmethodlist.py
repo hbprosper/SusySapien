@@ -10,8 +10,8 @@ from time   import *
 from string import *
 from getopt import getopt, GetoptError
 from pprint import PrettyPrinter
-from PhysicsTools.LiteAnalysis.Lib import nameonly, readMethods
-
+from PhysicsTools.LiteAnalysis.boostlib import nameonly, readMethods
+#-----------------------------------------------------------------------------
 # Add map directory to PYTHONPATH
 mapdir = "%s/map" % os.environ["PWD"]
 sys.path.append(mapdir)
