@@ -1,12 +1,8 @@
 // ----------------------------------------------------------------------------
-// Created: Thu Aug 26 17:35:14 2010 by mkplugins.py
+// Created: Thu Aug 26 21:42:20 2010 by mkplugins.py
 // $Revision: 1.9 $
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/Buffer.h"
-
-#include "FWCore/Framework/interface/Event.h"
-typedef Buffer<edm::Event, true> edmEvent_t;
-DEFINE_EDM_PLUGIN(BufferFactory, edmEvent_t, "edmEvent");
 
 #include "DataFormats/Scalers/interface/BeamSpotOnline.h"
 typedef Buffer<BeamSpotOnline, false> BeamSpotOnline_t;
@@ -17,16 +13,6 @@ DEFINE_EDM_PLUGIN(BufferFactory, BeamSpotOnline_t,
 typedef Buffer<DcsStatus, false> DcsStatus_t;
 DEFINE_EDM_PLUGIN(BufferFactory, DcsStatus_t,
                   "DcsStatus");
-
-#include "PhysicsTools/Mkntuple/interface/user.h"
-typedef Buffer<GenParticleAddon, false> GenParticleAddon_t;
-DEFINE_EDM_PLUGIN(BufferFactory, GenParticleAddon_t,
-                  "GenParticleAddon");
-
-#include "PhysicsTools/Mkntuple/interface/user.h"
-typedef Buffer<HcalNoiseRBXCaloTower, false> HcalNoiseRBXCaloTower_t;
-DEFINE_EDM_PLUGIN(BufferFactory, HcalNoiseRBXCaloTower_t,
-                  "HcalNoiseRBXCaloTower");
 
 #include "DataFormats/Scalers/interface/L1AcceptBunchCrossing.h"
 typedef Buffer<L1AcceptBunchCrossing, false> L1AcceptBunchCrossing_t;
@@ -432,11 +418,6 @@ DEFINE_EDM_PLUGIN(BufferFactory, L1GlobalTriggerObjectMapRecord_t,
 typedef Buffer<L1GlobalTriggerReadoutRecord, true> L1GlobalTriggerReadoutRecord_t;
 DEFINE_EDM_PLUGIN(BufferFactory, L1GlobalTriggerReadoutRecord_t,
                   "L1GlobalTriggerReadoutRecord");
-
-#include "PhysicsTools/Mkntuple/interface/user.h"
-typedef Buffer<TriggerResultsAddon, true> TriggerResultsAddon_t;
-DEFINE_EDM_PLUGIN(BufferFactory, TriggerResultsAddon_t,
-                  "TriggerResultsAddon");
 
 #include "DataFormats/METReco/interface/BeamHaloSummary.h"
 typedef Buffer<reco::BeamHaloSummary, true> recoBeamHaloSummary_t;

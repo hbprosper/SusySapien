@@ -1,4 +1,4 @@
-#$Revision: 1.2 $ example.py
+#$Revision: 1.6 $ example.py
 #------------------------------------------------------------------------------
 import FWCore.ParameterSet.Config as cms
 
@@ -6,7 +6,7 @@ process = cms.Process("Demo")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 
 process.source = cms.Source("PoolSource",
 							fileNames =
@@ -20,31 +20,32 @@ process.source = cms.Source("PoolSource",
 process.demo =\
 cms.EDAnalyzer("Mkntuple",
 
-			   # Name of output n-tuple file
+			   # Name of output n-tuple
                ntupleName = cms.untracked.string("ntuple_pat.root"),
 
-			   # Name of analyzer
-			   analyzerName = cms.untracked.string("analyzer_pat.cc"),
-			   			   
 			   # List of buffers to allocate.
 			   #----------------------------------------------------------
-			   # The names are arbitrary so long as each agrees with
-			   # the name of a vstring. For example, since the vstring
-			   # "buffers" contains the name "recoBeamSpot", the code
-			   # expects a vstring of that name to exist.
+			   # The names in "buffers" are arbitrary so long as each agrees
+			   # with the name of a vstring block. For example, since the
+			   # vstring "buffers" contains the name "recoBeamSpot", the code
+			   # expects a vstring block of that name to exist.
+			   # However, the names within a vstring block, for example,
+			   # edmEventAddon, must correspond to a Buffer plugin.
+			   # (See plugins.cc and userplugins.cc in the plugins dir.)
 			   #----------------------------------------------------------
                buffers =
                cms.untracked.
                vstring(
-	'GenEventInfoProduct',
-    'GenRunInfoProduct',
-    'recoBeamSpot',
-	'patMET',
-    'patMuon',
-	'patElectron',
-    'recoGenParticle',
-	'GenParticleAddon',
-	'TriggerResultsAddon'
+	'edmEventAddon'
+## 	'GenEventInfoProduct',
+##     'GenRunInfoProduct',
+##     'recoBeamSpot',
+## 	'patMET',
+##     'patMuon',
+##  	'patElectron',
+## 	'recoGenParticle',
+##  	'recoGenParticleAddon',
+##  	'edmTriggerResultsAddon'
     ),
 			   #----------------------------------------------------------
 			   # Format of 1st line:
@@ -53,6 +54,17 @@ cms.EDAnalyzer("Mkntuple",
 			   # Format of subsequent lines:
 			   #   [return-type] method [alias]
 			   #----------------------------------------------------------
+               edmEventAddon =
+               cms.untracked.
+               vstring(
+    'edmEventAddon',
+    #---------------------------------------------------------------------
+	'   bool  isRealData()',
+    '   int   run()',
+	'   int   event()',
+	'   int   luminosityBlock()',
+	'   int   bunchCrossing()'
+    ),				   
                GenEventInfoProduct =
                cms.untracked.
                vstring(
@@ -82,13 +94,13 @@ cms.EDAnalyzer("Mkntuple",
                patMET =
                cms.untracked.
                vstring(
-    "patMET                         layer1METsAK5                     50",
+    "patMET                         layer1METsAK5                    50",
     #---------------------------------------------------------------------
     " double   et()",
     " double   phi()",
-    " double   pt()",
-	" double   genMET()->pt()"
+    " double   pt()"
     ),
+
                patMuon =
                cms.untracked.
                vstring(
@@ -111,6 +123,7 @@ cms.EDAnalyzer("Mkntuple",
     "   bool   isStandAloneMuon()",
     "   bool   isTrackerMuon()"
     ),
+
                patElectron =
                cms.untracked.
                vstring(
@@ -126,10 +139,11 @@ cms.EDAnalyzer("Mkntuple",
 	" double   gsfTrack()->d0()",
 	" double   gsfTrack()->phi()"
     ),
+
 			   recoGenParticle =
                cms.untracked.
                vstring(
-    "recoGenParticle                 genParticles                    4000",
+    "recoGenParticle               genParticles                    4000",
     #---------------------------------------------------------------------
     "    int   charge()",
     "    int   pdgId()",
@@ -137,22 +151,22 @@ cms.EDAnalyzer("Mkntuple",
     " double   pt()",
     " double   eta()",
     " double   phi()",
-    " double   mass()",
-    ),
-			   GenParticleAddon =
+    " double   mass()"
+	),
+			   recoGenParticleAddon =
                cms.untracked.
                vstring(
-    "GenParticleAddon                genParticles                    4000",
+    "recoGenParticleAddon           genParticles                    4000",
     #---------------------------------------------------------------------
 	"    int   firstMother()",
 	"    int   lastMother()",
 	"    int   firstDaughter()",
 	"    int   lastDaughter()"
-    ),			   
-               TriggerResultsAddon =
+    ),
+               edmTriggerResultsAddon =
                cms.untracked.
                vstring(
-    "TriggerResultsAddon             TriggerResults                     1",
+    "edmTriggerResultsAddon         TriggerResults                     1",
     #---------------------------------------------------------------------
     '   bool   value("HLT_L1Jet15")',
 	'   bool   value("HLT_Jet30")',

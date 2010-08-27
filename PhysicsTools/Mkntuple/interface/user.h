@@ -10,7 +10,7 @@
 //              Tue Aug 24, 2010 HBP - add HcalNoiseRBXCaloTower
 //                                   - add TriggerResultsAddon
 //                                   - add GenParticleAddon
-//$Revision: 1.4 $
+//$Revision: 1.5 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -36,97 +36,142 @@ public:
 
 /** Add-on class for reco::GenParticle.
  */
-class GenParticleAddon
+namespace reco
 {
-public:
-  GenParticleAddon();
-
-  /// pass reco::GenParticle object to GenParticleAddon object.
-  GenParticleAddon(const reco::GenParticle& o);
-
-  ~GenParticleAddon();
-
-  ///
-  int firstMother() const;
-
-  ///
-  int lastMother()  const;
-
-  ///
-  int firstDaughter() const;
-
-  ///
-  int lastDaughter()  const;
-
-private:
-  // one mothers vector and daughters vector per GenParticle
-  std::vector<int> mothers_;
-  std::vector<int> daughters_;
-
-  // declare static so that we have one amap and one count per event
-  static std::map<std::string, int> amap;
-  static int count;
-  static int index;
-};
-
-
-/** Add-on class for TriggerResults.
- */
-class TriggerResultsAddon
-{
- public:
-  TriggerResultsAddon();
-  
-  /// pass edm::TriggerResults object to add-on object
-  TriggerResultsAddon(const edm::TriggerResults& o);
+  class GenParticleAddon
+  {
+  public:
+    GenParticleAddon();
     
-  ~TriggerResultsAddon();
+    /// pass reco::GenParticle object to GenParticleAddon object.
+    GenParticleAddon(const reco::GenParticle& o);
 
-  ///
-  bool value(std::string tname) const;
+    ~GenParticleAddon();
 
-private:
-  static bool first;
-  const edm::TriggerResults* object_;
-};
-
-/** Helper class for HcalNoisRBX that unpacks the associated CaloTowers.
- */
-class HcalNoiseRBXCaloTower : public HelperThing
-{
- public:
-  HcalNoiseRBXCaloTower();
-  
-  ///
-  HcalNoiseRBXCaloTower(const reco::HcalNoiseRBX& o);
+    ///
+    int firstMother() const;
     
-  virtual ~HcalNoiseRBXCaloTower();
+    ///
+    int lastMother()  const;
 
-  /// Required method.
-  void at(int index);
+    ///
+    int firstDaughter() const;
+    
+    ///
+    int lastDaughter()  const;
+    
+  private:
+    // one mothers vector and daughters vector per GenParticle
+    std::vector<int> mothers_;
+    std::vector<int> daughters_;
 
-  /// Required method.
-  int size() const;
+    // declare static so that we have one amap and one count per event
+    static std::map<std::string, int> amap;
+    static int count;
+    static int index;
+  };
 
-  /// get the z-side of the tower (1/-1)
-  int zside() const;
+  /** Helper class for HcalNoisRBX that unpacks the associated CaloTowers.
+   */
+  class HcalNoiseRBXCaloTower : public HelperThing
+  {
+  public:
+    HcalNoiseRBXCaloTower();
+    
+    ///
+    HcalNoiseRBXCaloTower(const reco::HcalNoiseRBX& o);
+    
+    virtual ~HcalNoiseRBXCaloTower();
 
-  /// get the tower ieta
-  int ieta() const;
+    /// Required method.
+    void at(int index);
+    
+    /// Required method.
+    int size() const;
+    
+    /// get the z-side of the tower (1/-1)
+    int zside() const;
+    
+    /// get the tower ieta
+    int ieta() const;
 
-  /// get the tower iphi
-  int iphi() const;
+    /// get the tower iphi
+    int iphi() const;
+    
+    /// 
+    double hadEnergy() const;
 
-  /// 
-  double hadEnergy() const;
+  private:
+    int index_;
+    std::vector<int> zside_;
+    std::vector<int> ieta_;
+    std::vector<int> iphi_;
+    std::vector<double> hadEnergy_;
+  };
+}
 
-private:
-  int index_;
-  std::vector<int> zside_;
-  std::vector<int> ieta_;
-  std::vector<int> iphi_;
-  std::vector<double> hadEnergy_;
-};
+namespace edm 
+{
+  /** Add-on class for TriggerResults.
+   */
+  class TriggerResultsAddon
+  {
+  public:
+    TriggerResultsAddon();
+    
+    /// pass edm::TriggerResults object to add-on object
+    TriggerResultsAddon(const edm::TriggerResults& o);
+    
+    ~TriggerResultsAddon();
+    
+    ///
+    bool value(std::string tname) const;
+    
+  private:
+    static bool first;
+    const edm::TriggerResults* object_;
+  };
+
+  /** Add-on class for edm::Event.
+   */
+  class EventAddon
+  {
+  public:
+    EventAddon();
+    
+    ///
+    EventAddon(const edm::Event& o);
+    
+    ~EventAddon();
+    
+    ///
+    int run() const;
+
+    ///
+    int event() const;
+    
+    ///
+    int luminosityBlock() const;
+
+    ///
+    int bunchCrossing() const;
+
+    ///
+    int orbitNumber() const;
+
+    ///
+    bool isRealData() const;
+
+    ///
+    unsigned int unixTime() const;
+
+    ///
+    unsigned int nanosecondOffset() const;
+
+  private:
+    const edm::Event* object_;
+  }; 
+}
 
 #endif
 

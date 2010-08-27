@@ -3,7 +3,6 @@ S GenRunInfoProduct
 S HcalNoiseSummary
 S L1GlobalTriggerObjectMapRecord
 S L1GlobalTriggerReadoutRecord
-S TriggerResultsAddon
 S edm::AssociationMap<edm::OneToOne<vector<reco::CaloCluster>,vector<reco::ClusterShape>,unsigned int> >
 S edm::AssociationMap<edm::OneToOne<vector<reco::SuperCluster>,vector<reco::HFEMClusterShape>,unsigned int> >
 S edm::AssociationMap<edm::OneToOne<vector<reco::Track>,vector<reco::Track>,unsigned int> >
@@ -40,8 +39,6 @@ S reco::PFTauDiscriminator
 S trigger::TriggerEvent
 C vector<BeamSpotOnline>
 C vector<DcsStatus>
-C vector<GenParticleAddon>
-C vector<HcalNoiseRBXCaloTower>
 C vector<L1AcceptBunchCrossing>
 C vector<L1GctEmCand>
 C vector<L1GctEtHad>

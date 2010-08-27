@@ -4,7 +4,7 @@
 # Created: 05-Jan-2010 Harrison B. Prosper
 # Updated: 08-Aug-2010 HBP minor fix before release
 #          25-Aug-2010 HBP add a few more classes (by hand)
-#$Revision: 1.4 $
+#$Revision: 1.5 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -41,9 +41,6 @@ records = split(record, '\n')
 # It would be more elegant to have something like edmDumpContent <treename>.
 
 records.append('GenRunInfoProduct "generator" "" "HLT."')
-records.append('TriggerResultsAddon  "TriggerResults::HLT" "" "HLT."')
-records.append('vector<GenParticleAddon>  "generator" "" "HLT."')
-records.append('vector<HcalNoiseRBXCaloTower>  "hcalnoise" "" "HLT."')
 
 # Get list of classes and labels
 

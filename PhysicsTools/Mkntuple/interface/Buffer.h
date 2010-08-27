@@ -19,7 +19,7 @@
 //                   Wed Aug 25 HBP - merged UserBuffer into Buffer and
 //                              added BufferAddon, BufferHelper
 //
-// $Id: Buffer.h,v 1.12 2010/08/08 16:26:06 prosper Exp $
+// $Id: Buffer.h,v 1.13 2010/08/27 01:34:53 prosper Exp $
 //
 //
 // If using Python, include its header first to avoid annoying compiler
@@ -278,13 +278,14 @@ bool getByLabel(const edm::Event& event,
   // otherwise again fall on sword...
   
   if ( !handle.isValid() )
-    // have a tantrum!
-    throw edm::Exception(edm::errors::Configuration,
-                         "\nBuffer::fill - "
-                         "getByLabel failed on label \"" + 
-                         label1 + " " + label2 + "\"\n" +
-                         "\tmay I humbly suggest you "
-                         "go boil your head!\n");
+    {
+      // Ok, throw up!
+      std::string m("\nBuffer::fill - getByLabel failed on ");
+      m += boost::python::type_id<X>().name();
+      m += std::string(" with label ") + label1 + std::string(" ") + label2;
+      m += std::string("\n\tso go boil your head!\n");
+      throw edm::Exception(edm::errors::Configuration, m);
+    }
   return true;
 }
 
@@ -506,113 +507,6 @@ private:
   int  debug_;
 };
 
-// ---------------------------------------------------------------------
-// Need a specialization for edm::Event
-// ---------------------------------------------------------------------
-///
-template <>
-struct Buffer<edm::Event, true>  : public BufferThing
-{
-  ///
-  Buffer() 
-    : out_(0),
-      label_(""),
-      label1_(""),
-      label2_(""),
-      prefix_(""),
-      buffertype_(EVENT),
-      var_(std::vector<VariableDescriptor>()),
-      maxcount_(1),
-      count_(0),
-      singleton_(true),
-      message_(""),
-      debug_(0)
-  {
-    std::cout << "Specialized Buffer created for edm::Event" << std::endl;
-  }
-
-  ///
-  virtual ~Buffer() {}
-
-  /** Initialize buffer.
-      @param out - output ntuple file.
-      @param label - getByLabel
-      @param prefix - prefix for variable names (and internal name of buffer)
-      @param var - variable descriptors
-      @param maxcount - maximum count for this buffer
-      @param log - log file
-   */
-  void
-  init(otreestream& out,
-       std::string  label, 
-       std::string  prefix,
-       std::vector<VariableDescriptor>& var,
-       int  maxcount,
-       std::ofstream& log,
-       int debug=0)
-  {
-    out_     = &out;
-    var_     = var;
-    maxcount_= 1;
-    debug_   = debug;
-    count_   = 1;
-
-    initBuffer<edm::Event>(out,
-                           label_,
-                           label1_,
-                           label2_,
-                           prefix_,
-                           var_,
-                           variables_,
-                           count_,
-                           singleton_,
-                           maxcount_,
-                           log,
-                           debug_);
-  }
-  
-  /** Fill buffer.
-   */
-  bool fill(const edm::Event& event)
-  {
-    if ( debug_ > 0 ) 
-      std::cout << BLACK
-                << "Begin (specialized) Buffer::fill\n\t" 
-                << RED 
-                << "X: edm::Event"
-                << BLACK
-                << std::endl;
-    count_ = 1;
-    message_ = "";
-    callMethods(0, event, variables_, debug_);
-    if ( debug_ > 0 ) std::cout << BLACK
-                                << "End Buffer::fill" 
-                                << std::endl;
-    return true;
-  }
-
-  std::string& message() { return message_; }
-
-  std::string name() { return std::string("edm::Event"); }
-
-  /// Shrink buffer size using specified array of indices.
-  void shrink(std::vector<int>& index) {}
-
-private:
-  otreestream* out_;  
-  std::string  label_;
-  std::string  label1_;
-  std::string  label2_;
-  std::string  prefix_;
-  BufferType buffertype_;
-  std::vector<VariableDescriptor> var_;
-  std::vector<Variable<edm::Event> > variables_;
-  int  maxcount_;
-  int  count_;
-  bool singleton_;
-  std::string message_;
-  int  debug_;
-};
 
 // ---------------------------------------------------------------------
 // Buffer to handle Addons

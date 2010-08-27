@@ -3,7 +3,7 @@
 # create plugins.cc
 # Created: 05-Jan-2010 Harrison B. Prosper
 # Updated: 15-Feb-2010 HBP - run mkclasslist.py if needed
-#$Revision: 1.9 $
+#$Revision: 1.10 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -78,16 +78,11 @@ names = {'time': ctime(time())}
 out  = open("plugins.cc","w")
 record = '''// ----------------------------------------------------------------------------
 // Created: %(time)s by mkplugins.py
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/Buffer.h"
 '''
 out.write(record % names)
-record ='''
-#include "FWCore/Framework/interface/Event.h"
-typedef Buffer<edm::Event, true> edmEvent_t;
-DEFINE_EDM_PLUGIN(BufferFactory, edmEvent_t, "edmEvent");\n'''
-out.write(record)
 
 count = 0
 for ctype, name in cnames:

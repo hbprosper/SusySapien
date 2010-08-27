@@ -5,7 +5,7 @@
 // Created:     Tue Jan 19, 2010 HBP
 // Updated:     Mon Mar 08, 2010 Sezen & HBP - add triggerBits class
 //              Tue Aug 24, 2010 HBP - add HcalNoiseRBXHelper
-//$Revision: 1.3 $
+//$Revision: 1.4 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -220,6 +220,40 @@ TriggerResultsAddon::value(std::string name) const
 }
 
 
+//-----------------------------------------------------------------------------
+// Add on for edm::Event
+//-----------------------------------------------------------------------------
+EventAddon::EventAddon() : object_(0) {}
+  
+///
+EventAddon::EventAddon(const edm::Event& o) : object_(&o) {}
+    
+EventAddon::~EventAddon() {}
+
+///
+int EventAddon::run() const { return object_->id().run(); }
+
+///
+int EventAddon::event() const { return object_->id().event(); }
+
+///
+int EventAddon::luminosityBlock() const { return object_->luminosityBlock(); }
+
+///
+int EventAddon::bunchCrossing() const { return object_->bunchCrossing(); }
+
+///
+int EventAddon::orbitNumber() const { return object_->orbitNumber(); }
+
+///
+bool EventAddon::isRealData() const { return object_->isRealData(); }
+
+///
+unsigned int EventAddon::unixTime() const {return object_->time().unixTime();}
+
+///
+unsigned int EventAddon::nanosecondOffset() const 
+{ return object_->time().nanosecondOffset(); }
 
 //-----------------------------------------------------------------------------
 // HcalNoiseRBX helper

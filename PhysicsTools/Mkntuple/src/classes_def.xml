@@ -1,6 +1,7 @@
 <lcgdict>
  <class name="GEvent"/>
- <class name="GenParticleAddon"/>
- <class name="TriggerResultsAddon"/>
- <class name="HcalNoiseRBXCaloTower"/>
+ <class name="reco::GenParticleAddon"/>
+ <class name="reco::HcalNoiseRBXCaloTower"/>
+ <class name="edm::TriggerResultsAddon"/>
+ <class name="edm::EventAddon"/>
 </lcgdict>

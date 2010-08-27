@@ -46,7 +46,7 @@
 //         Updated:  Sun Jan 17 HBP - add log file
 //                   Sun Jun 06 HBP - add variables.txt file
 //
-// $Id: Mkntuple.cc,v 1.10 2010/08/08 16:26:07 prosper Exp $
+// $Id: Mkntuple.cc,v 1.11 2010/08/27 01:34:53 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -109,7 +109,7 @@ private:
 Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   : output(otreestream(iConfig.getUntrackedParameter<string>("ntupleName"), 
                        "Events", 
-                       "made by Mkntuple $Revision: 1.10 $")),
+                       "made by Mkntuple $Revision: 1.11 $")),
     event_(0),
     logfilename_("Mkntuple.log"),
     log_(new std::ofstream(logfilename_.c_str())),
@@ -230,27 +230,24 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
       string prefix = buffer;
       int maxcount=1;
 
-      if ( buffer != "edmEvent" )
-        {
-          if ( field.size() < 3 )
-            // Have a tantrum!
-            throw edm::Exception(edm::errors::Configuration,
-                                 "cfg error: "
-                                 "you need at least 3 fields in first line of"
-                                 " each buffer block\n"
-                                 "\tyou blocks you stones you worse than "
-                                 "senseless things...");
+      if ( field.size() < 3 )
+        // Have a tantrum!
+        throw edm::Exception(edm::errors::Configuration,
+                             "cfg error: "
+                             "you need at least 3 fields in first line of"
+                             " each buffer block\n"
+                             "\tyou blocks you stones you worse than "
+                             "senseless things...");
       
 
-          label  = field[1];                   // getByLabel
-          maxcount  = atoi(field[2].c_str());  // max object count to store
+      label  = field[1];                   // getByLabel
+      maxcount  = atoi(field[2].c_str());  // max object count to store
 
-          if (field.size() > 3) 
-            prefix = field[3]; // n-tuple variable prefix
-          else
-            // replace double colon with an "_"
-            prefix += string("_") + kit::replace(label, "::", "_");
-        }
+      if (field.size() > 3) 
+        prefix = field[3]; // n-tuple variable prefix
+      else
+        // replace double colon with an "_"
+        prefix += string("_") + kit::replace(label, "::", "_");
 
       //DB
       if ( DEBUG > 1 )
@@ -305,9 +302,10 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
           var.push_back(VariableDescriptor(rtype, method, varname));
 
           if ( DEBUG > 0 )
-            cout << "\trtype:   " << RED   << rtype << BLACK
-                 << "\tmethod:  " << BLUE  << method << BLACK
-                 << "\tvarname: " << GREEN << varname << BLACK << endl;
+            cout << "\trtype:  <" << RED   << rtype << BLACK << ">"
+                 << "\tmethod: <" << BLUE  << method << BLACK << ">"
+                 << "\tvarname:<" << GREEN << varname << BLACK << ">" 
+                 << endl;
         }
       
       // Create a buffer of appropriate type...

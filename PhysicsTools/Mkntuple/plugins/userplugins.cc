@@ -6,22 +6,27 @@
 // Updated:     Mon Mar 08, 2010 Sezen & HBP - add triggerBits class
 //              Thu Apr 08, 2010 Sezen & HBP - add GParticle class
 //              Thu Aug 25, 2010 HBP - rename classes
-//$Revision: 1.4 $
+//$Revision: 1.5 $
 //-----------------------------------------------------------------------------
-#include "PhysicsTools/Mkntuple/interface/Buffer.h"
 #include "PhysicsTools/Mkntuple/interface/user.h"
+#include "PhysicsTools/Mkntuple/interface/Buffer.h"
+#include "PhysicsTools/Mkntuple/interface/BufferEventAddon.h"
 //-----------------------------------------------------------------------------
 typedef BufferAddon<reco::GenParticle, 
-                    GenParticleAddon, false> GenParticleAddon_t;
-DEFINE_EDM_PLUGIN(BufferFactory, GenParticleAddon_t, 
-                  "GenParticleAddon");
+                    reco::GenParticleAddon, false> recoGenParticleAddon_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoGenParticleAddon_t, 
+                  "recoGenParticleAddon");
 
 typedef BufferHelper<reco::HcalNoiseRBX, 
-                     HcalNoiseRBXCaloTower, false> HcalNoiseRBXCaloTower_t;
-DEFINE_EDM_PLUGIN(BufferFactory, HcalNoiseRBXCaloTower_t, 
-                  "HcalNoiseRBXCaloTower");
+                     reco::HcalNoiseRBXCaloTower, false> 
+recoHcalNoiseRBXCaloTower_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoHcalNoiseRBXCaloTower_t, 
+                  "recoHcalNoiseRBXCaloTower");
 
 typedef BufferAddon<edm::TriggerResults, 
-                    TriggerResultsAddon, true> TriggerResultsAddon_t;
-DEFINE_EDM_PLUGIN(BufferFactory, TriggerResultsAddon_t, 
-                  "TriggerResultsAddon");
+                    edm::TriggerResultsAddon, true> edmTriggerResultsAddon_t;
+DEFINE_EDM_PLUGIN(BufferFactory, edmTriggerResultsAddon_t, 
+                  "edmTriggerResultsAddon");
+
+typedef BufferAddon<edm::Event, edm::EventAddon, true> edmEventAddon_t;
+DEFINE_EDM_PLUGIN(BufferFactory, edmEventAddon_t, "edmEventAddon");
