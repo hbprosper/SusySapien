@@ -5,7 +5,7 @@
 // Created:     Tue Jan 19, 2010 HBP
 // Updated:     Mon Mar 08, 2010 Sezen & HBP - add triggerBits class
 //              Tue Aug 24, 2010 HBP - add HcalNoiseRBXHelper
-//$Revision: 1.4 $
+//$Revision: 1.5 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -336,3 +336,210 @@ HcalNoiseRBXCaloTower::hadEnergy() const
   else
     return -9999;
 }
+
+
+//-----------------------------------------------------------------------------
+// Deprecated:
+//-----------------------------------------------------------------------------
+int GParticle::count=0;
+int GParticle::index=0;
+std::map<std::string, int> GParticle::amap;
+
+GParticle::GParticle() : object_(0) {}
+
+/// pass reco::GenParticle object to its add-on object.
+GParticle::GParticle(const reco::GenParticle& o)
+  : object_(&o)
+{
+  // Initialize string representation/position map
+  // This need be done only once per event. We ensure this by
+  // comparing the current event count to the previously cached one. If they
+  // differ this triggers the re-population of the map.
+
+  char particle[255]; // character array for unique string representation
+  
+  int count = CurrentEvent::instance().count();
+  if ( count != GParticle::count )
+    {
+      // NB: remember to cache the current event count 
+      // to ensure this code segment is called once/event only
+      GParticle::count = count;
+      GParticle::index = 0;
+
+      //DB
+      //cout << "\t*** fill amap for event: " 
+      // << GParticle::count << endl;
+
+      // Get cached event
+      const edm::Event* event = CurrentEvent::instance().get();
+      if ( event == 0 )
+        throw edm::Exception(edm::errors::Configuration,
+                             "\nGParticle - " 
+                             "event pointer is ZERO");
+  
+      // Get genparticles:
+      edm::Handle<GenParticleCollection> handle;
+      // For now, hard-code getByLabel
+      event->getByLabel("genParticles", handle);
+      if (!handle.isValid())
+        throw edm::Exception(edm::errors::Configuration,
+                             "\nGParticle - " 
+                             "GenParticle handle is invalid");
+
+      // Write a unique string for each genparticle:
+      GParticle::amap.clear();
+
+      for(unsigned int i = 0; i < handle->size(); i++) 
+        {
+          const GenParticle* p = &((*handle)[i]);
+          sprintf(particle,"%d%d%f%f%f%f",
+                  p->pdgId(), 
+                  p->status(), 
+                  p->px(), 
+                  p->py(), 
+                  p->pz(), 
+                  p->energy());
+          GParticle::amap[string(particle)] = i;
+        }
+    }
+
+  // Find the ordinal value of first and last mothers by comparing the 
+  // string representation of mothers with the string representation of 
+  // each gen-particle in the list:
+
+  mothers_.clear();
+  for(unsigned int j=0; j < o.numberOfMothers(); j++) 
+    {
+      // Must use original object because its copy constructor does not
+      // do a deep copy so the pointers are not copied
+      const GenParticle* m = dynamic_cast<const GenParticle*>(o.mother(j));
+      if ( m == 0 ) continue;
+      sprintf(particle,"%d%d%f%f%f%f",
+              m->pdgId(), 
+              m->status(), 
+              m->px(), 
+              m->py(), 
+              m->pz(), 
+              m->energy());
+      if (GParticle::amap.find(string(particle)) 
+          != GParticle::amap.end() ) 
+        mothers_.push_back( GParticle::amap[string(particle)] );
+    }
+
+  // Find the ordinal value of first and last daughters by comparing the 
+  // string representation of mothers with the string representation of 
+  // each gen-particle in the list:
+
+  daughters_.clear();
+  for(unsigned int j=0; j < o.numberOfDaughters(); j++) 
+    {
+      const GenParticle* d = dynamic_cast<const GenParticle*>(o.daughter(j));
+      if ( d == 0 ) continue;
+      sprintf(particle,"%d%d%f%f%f%f", 
+              d->pdgId(),  
+              d->status(), 
+              d->px(), 
+              d->py(), 
+              d->pz(), 
+              d->energy());
+      if (GParticle::amap.find(string(particle)) 
+          != GParticle::amap.end() ) 
+        daughters_.push_back( GParticle::amap[string(particle)] );
+    }
+}
+
+GParticle::~GParticle() {}
+
+int      GParticle::charge() const { return object_->charge(); }
+int      GParticle::pdgId()  const { return object_->pdgId(); }
+int      GParticle::status() const { return object_->status(); }
+double   GParticle::pt()     const { return object_->pt(); }
+double   GParticle::eta()    const { return object_->eta(); }
+double   GParticle::phi()    const { return object_->phi(); }
+double   GParticle::mass()   const { return object_->mass(); }
+
+int 
+GParticle::firstMother() const
+{
+  if ( mothers_.size() > 0 )
+    return mothers_.front();
+  else
+    return -1;
+}
+
+int 
+GParticle::lastMother() const
+{
+  if ( mothers_.size() > 0 )
+    return mothers_.back();
+  else
+    return -1;
+}
+
+int 
+GParticle::firstDaughter() const
+{
+  if ( daughters_.size() > 0 )
+    return daughters_.front();
+  else
+    return -1;
+}
+
+int 
+GParticle::lastDaughter() const
+{
+  if ( daughters_.size() > 0 )
+    return daughters_.back();
+  else
+    return -1;
+}
+
+//-----------------------------------------------------------------------------
+bool triggerBits::first=true;
+
+triggerBits::triggerBits() : object_(0) {}
+  
+/// cache edm::TriggerResults object in triggerBits object.
+triggerBits::triggerBits(const edm::TriggerResults& o) 
+  : object_(&o)
+{}
+    
+triggerBits::~triggerBits() {}
+
+///
+bool 
+triggerBits::value(std::string name) const
+{
+  // Get cached event
+  const edm::Event* event = CurrentEvent::instance().get();
+  if ( event == 0 )
+    throw edm::Exception(edm::errors::Configuration,
+                         "\ntriggerBits - " 
+                         "event pointer is ZERO");
+  
+  // NB: use a reference to avoid expensive copying
+  const edm::TriggerNames& tnames = event->triggerNames(*object_);
+
+  // Write out trigger names upon first call
+  if ( triggerBits::first )
+    {
+      triggerBits::first = false;
+      ofstream fout("triggerNames.txt");
+      fout << std::endl << "Bit" << "\t" "Trigger Name" << std::endl;
+      for(unsigned  bit=0; bit < tnames.size(); bit++)
+        fout << bit << "\t" << tnames.triggerName(bit) << std::endl;
+      fout.close();
+    }
+
+  // Get bit associated with trigger name
+  unsigned int bit = tnames.triggerIndex(name);
+  
+  // If trigger does not exist, crash and burn!
+  if ( bit == tnames.size() )
+    throw edm::Exception(edm::errors::Configuration,
+                         "\ntriggerBits - " 
+                         "trigger \"" + name + "\" NOT FOUND");
+  else
+    return object_->accept(bit);
+}
+

@@ -10,7 +10,7 @@
 //              Tue Aug 24, 2010 HBP - add HcalNoiseRBXCaloTower
 //                                   - add TriggerResultsAddon
 //                                   - add GenParticleAddon
-//$Revision: 1.5 $
+//$Revision: 1.6 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -172,6 +172,50 @@ namespace edm
     const edm::Event* object_;
   }; 
 }
+
+// ----------------------------------------------------------------------------
+// Deprecated:
+// ----------------------------------------------------------------------------
+class GParticle
+{
+public:
+  GParticle();
+  GParticle(const reco::GenParticle& o);
+  ~GParticle();
+  int   charge() const;
+  int   pdgId() const;
+  int   status() const;
+  double   pt() const;
+  double   eta() const;
+  double   phi() const;
+  double   mass() const;
+  int firstMother() const;
+  int lastMother()  const;
+  int firstDaughter() const;
+  int lastDaughter()  const;
+    
+private:
+  const reco::GenParticle* object_;
+  std::vector<int> mothers_;
+  std::vector<int> daughters_;
+  static std::map<std::string, int> amap;
+  static int count;
+  static int index;
+};
+
+
+class triggerBits
+{
+public:
+  triggerBits();
+  triggerBits(const edm::TriggerResults& o);
+  ~triggerBits();
+  bool value(std::string tname) const;
+
+private:
+  static bool first;
+  const edm::TriggerResults* object_;
+};
 
 #endif
 

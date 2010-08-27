@@ -1,5 +1,7 @@
 <lcgdict>
  <class name="GEvent"/>
+ <class name="GParticle"/>
+ <class name="triggerBits"/>
  <class name="reco::GenParticleAddon"/>
  <class name="reco::HcalNoiseRBXCaloTower"/>
  <class name="edm::TriggerResultsAddon"/>
