@@ -15,7 +15,7 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Wed Jun 20 19:53:47 EDT 2007
 //         Updated:  Sat Oct 25 2008 - make matchInDeltaR saner
-// $Id: kit.cc,v 1.5 2010/03/11 17:44:12 prosper Exp $
+// $Id: kit.cc,v 1.6 2010/08/12 03:00:58 prosper Exp $
 //
 //
 //-----------------------------------------------------------------------------
@@ -414,7 +414,7 @@ kit::decodeArguments(std::string  args,
                      std::vector<kit::ValueThing*>& vars)
 {
   //DB
-  //cout << "decodeArguments - args(" << args << ")" << endl;
+  //cout << "decodeArguments - ARGS(" << args << ")" << endl;
 
   // Split string into argument fields
 
@@ -475,7 +475,7 @@ kit::decodeArguments(std::string  args,
 
   boost::smatch what;
 
-  vector<int> vartype(5,-1);
+  vector<int> vartype(expr.size(),-1);
                       
   argsregex = string("");
   string delim("[(]");
@@ -494,6 +494,8 @@ kit::decodeArguments(std::string  args,
         {
           for(unsigned j=0; j < expr.size(); j++)
             {
+              //DB
+              //cout << "\texpr(" << expr[j] << ")" << endl;
               if ( boost::regex_search(str, what, expr[j]) )
                 {
                   vartype[i] = j;

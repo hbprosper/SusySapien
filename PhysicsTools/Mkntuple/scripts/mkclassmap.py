@@ -1,14 +1,8 @@
 #!/usr/bin/env python
 #---------------------------------------------------------------------------
-# File:        mkdocs.py
-# Description: Create html and txt files giving an exhaustive listing of
-#              accessor methods
-# Created:     23-Jan-2010 Harrison B. Prosper
-# Updated:     15-Feb-2010 HBP, make it possible to be run anywhere
-#              09-Mar-2010 HBP, add search of SimDataFormats
-#              08-Aug-2010 HBP, fix search of user.h in Mkntuple
-#              26-Aug02919 HBP, get list of potential classes from
-#                          python/classmap.py
+# File:        mkclassmap.py
+# Description: Create a map of classnames to headers
+# Created:     26-Aug-2010 Harrison B. Prosper
 #$Revision: 1.6 $
 #---------------------------------------------------------------------------
 import os, sys, re
@@ -19,48 +13,33 @@ from getopt import getopt
 #---------------------------------------------------------------------------
 # Constants
 #---------------------------------------------------------------------------
+# Check for a CMSSW release
 if not os.environ.has_key("CMSSW_RELEASE_BASE"):
-	print "\t** Please setup a CMSSW release"
-	sys.exit(0)
+	print "\t*** Please setup a CMSSW release\n"
+	sys,exit(0)
 
 if not os.environ.has_key("CMSSW_BASE"):
-	print "\t** Please setup a CMSSW release"
-	sys.exit(0)
-
-if not os.environ.has_key("CMSSW_VERSION"):
-	print "\t** Please setup a CMSSW release"
-	sys.exit(0)
-
-BASE      = "%s/src/"  % os.environ["CMSSW_RELEASE_BASE"]
-LOCALBASE = "%s/src/"  % os.environ["CMSSW_BASE"]
-VERSION   = os.environ["CMSSW_VERSION"]
-CURDIR    = os.path.basename(os.environ["PWD"])
-#------------------------------------------------------------------------------
-# Load classmap.py
-
-cmd = 'find %s/PhysicsTools/Mkntuple -name "classmap.py"' % LOCALBASE
-t = map(strip, os.popen(cmd).readlines())
-if len(t) == 0:
-	print "\n\t** unable to locate classmap.py"\
-		  "\t** try running mkclassmap.py to create it"
-	sys.exit(0)
-CLASSMAPFILE = t[0]
-try:
-	execfile(CLASSMAPFILE)
-except:
-	print "\n\t** unable to load classmap.py"
-	sys.exit(0)
-#------------------------------------------------------------------------------
-
+	print "\t*** Please setup a CMSSW release\n"
+	sys,exit(0)
+	
 MAXCONSTRUCT=5000
 USAGE='''
 Usage:
-  mkdocs.py
+  mkclassmap.py [project-area,
+                default = $CMSSW_RELEASE_BASE/src/DataFormats,
+				          $CMSSW_RELEASE_BASE/src/SimDataFormats,
+						  $CMSSW_BASE/src/PhysicsTools/Mkntuple]
 '''
 def usage():
 	print USAGE
 	sys.exit(0)
-	
+
+CURDIR    = os.path.basename(os.environ["PWD"])
+BASE      = "%s/src" % os.environ["CMSSW_RELEASE_BASE"]
+LOCALBASE = "%s/src" % os.environ["CMSSW_BASE"]
+VERSION   = os.environ["CMSSW_VERSION"]
+CLASSMAPFILE = '%s/PhysicsTools/Mkntuple/python/classmap.py' % LOCALBASE
+
 DEBUG=0
 if DEBUG > 0:
 	OUTDEBUG = open("debug.h","w")
@@ -76,8 +55,6 @@ PLACEHOLDERS =['namespace',
 			   'inlineclass',
 			   'inlinestructclass']
 WEIRD        = "<|<@&@>|>"
-
-SHORTOPTIONS = 'hI:'
 
 # Load needed libraries
 from PhysicsTools.LiteAnalysis.AutoLoader import *
@@ -576,256 +553,83 @@ def getClassname(record):
 		cname = strip(title[:len(title)-1])
 
 	return (cname,bname,template)
-#----------------------------------------------------------------------------
-# Code to extract methods etc.
-#----------------------------------------------------------------------------
-FINAL   = 1
-SCOPED  = 4
-BLACK     = '"black"'
-DARKRED   = '"darkred"'
-DARKGREEN = '"darkgreen"'
-DARKBLUE  = '"darkblue"'
-BLUE      = '"blue"'
-
-stripcolon = re.compile(r':')
-striptemplatepars = re.compile(r'\<.*\>')
-skipmethod = re.compile(r'TClass|TBuffer|TMember|operator|^__')
-ref = re.compile(r'edm::Ref\<std::vector\<.+?(?=,)')
-reftype = re.compile(r'(?<=edm::Ref\<std::vector\<)(?P<name>.+?)(?=\>,)')
-basicstr = re.compile(r'std::basic_string\<char\>')
-vsqueeze = re.compile(r'(?<=[^>]) +\>')
-#----------------------------------------------------------------------------
-def classMethods(classname, db, depth=0):
-	depth += 1
-	if depth > 20:
-		print "lost in trees"
-		return
-	tab = "  " * (depth-1)
-
-	##D
-	#print "%s( %s )" % (tab, classname)
-
-	cdb = {'classname': classname,
-		   'methods': []}
-	
-	thing = Reflex.Type()
-	c = thing.ByName(classname)
-	n = c.FunctionMemberSize()
-	##D
-	#print "\tnumber of methods: %d" % n
-	
-	for i in xrange(n):
-		m = c.FunctionMemberAt(i)
-		if not m.IsPublic(): continue
-		if not m.IsFunctionMember(): continue
-		if m.IsConstructor(): continue
-		if m.IsDestructor():  continue
-
-		name  = m.Name()		
-		mtype = m.TypeOf().Name(SCOPED)
-		
-		rtype, args = split(mtype, '(')
-		args  = replace('(%s' % args, '(void)', '()')
-
-		# In C++ there is no overloading across scopes
-		# only within scopes
-		if db['scopes'].has_key(name):
-			# This method is potentially an overload.
-			# If we are not in the same scope, however, it cannot
-			# overload the existing method
-			scope = db['scopes'][name]
-			if  scope != classname: continue
-		db['scopes'][name] = classname
-
-		###D
-		#print "SCOPE(%s) METHOD(%s)" % (classname, name)
-		
-		signature = name + args
-		
-		# Skip setters
-		rtype = strip(rtype)
-		if rtype in ['void', 'void*']: continue
-
-		# Expand typedefs, but check first for pointers and
-		# references
-		fullrtype = rtype
-		if rtype[-1] in ['*','&']:
-			r = thing.ByName(rtype[:-1])
-			if r.IsTypedef():
-				fullrtype = "%s%s" % (r.Name(SCOPED+FINAL), rtype[-1])
-				rtype = fullrtype # Fri Jan 29
-		else:
-			r = thing.ByName(rtype)
-			if r.IsTypedef():
-				fullrtype = r.Name(SCOPED+FINAL)			
-		##D
-		#print "RTYPE(%s)\n\tFULLTYPE(%s)" % (rtype, fullrtype)
-		
-		rtype     = strip(basicstr.sub("std::string", rtype))
-		fullrtype = strip(basicstr.sub("std::string", fullrtype))
-		signature = basicstr.sub("std::string", signature)
-		str = "%s  %s" % (rtype, signature)
-		if skipmethod.search(str) != None: continue
-		
-		m = reftype.findall(str)
-		if len(m) != 0:
-			for x in m:
-				cname = "%sRef" % x
-				cmd = re.compile(r"edm::Ref\<.+?,%s\> \>" % x)
-				rtype = cmd.sub(cname, rtype)
-				signature = cmd.sub(cname, signature)
-
-		# Ok, now added to methods list
-		rtype = vsqueeze.sub(">", rtype)
-		signature = vsqueeze.sub(">", signature)
-		method    = "%32s  %s" % (rtype, signature)
-
-		##D
-		#print "METHOD(%s)" % method
-		# Important: make sure we don't have duplicates
-		if db['methods'].has_key(method):
-			###D
-			#print "\t*** DUPLICATE METHOD(%s)" % method
-			continue
-		db['methods'][method] = classname
-		
-		##D
-		#print "%smethod( %s )" % (tab, method)
-		cdb['methods'].append((fullrtype, method))
-
-	db['classlist'].append( cdb )
-	
-	nb = c.BaseSize()
-	for i in xrange(nb):
-		b = c.BaseAt(i).ToType()
-		basename = b.Name(SCOPED)
-		db['baseclassnames'].append(basename)
-		classMethods(basename, db, depth)
-#----------------------------------------------------------------------------
-def convert2html(record):
-	record = replace(record,'&','&amp;')
-	record = replace(record,'<','&lt;')
-	record = replace(record,'>','&gt;')
-	record = replace(record,'~','&atilde;')
-	record = replace(record,"\t","&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;")
-	record = replace(record,"\n","<br>")
-	record = replace(record," ","&nbsp;")
-	return record
-#----------------------------------------------------------------------------
-def color(c,s):
-	return '<font color=%s>%s</font>' % (c,s)
-#----------------------------------------------------------------------------
-def boldcolor(c,s):
-	return '<b><font color=%s>%s</font></b>' % (c,s)
-#-----------------------------------------------------------------------------
-def printMethods(db, out):
-	classlist = db['classlist']
-	for cdb in classlist:		
-		cname   = cdb['classname']
-		methods = cdb['methods']
-		out.write('\nAccessMethods: %s\n' % cname)
-		for fullrtype, method in methods:
-			out.write("  %s\n" % method)
-#-----------------------------------------------------------------------------
-def printHeader(db, out):
-	cname    = db['classname']
-	bname    = db['baseclassnames']
-	header   = db['header']
-	filestem = db['filestem']
-	
-	if cname == '':
-		print "\t** %s not processed!" % header
-		out.close()
-		os.system("rm -rf txt/%s*" % filestem)
-		sys.exit(0)
-
-	# Write class name and its header file
-
-	tab = 15*' '
-	out.write('Class:         %s\n\n'  % cname)
-	out.write('Header:        %s\n\n'  % header)
-
-	# Write base class names
-	
-	if len(bname) > 1:
-		delim = ''
-		out.write('BaseClasses:   ')
-		for i, fullname in enumerate(bname):
-			out.write('%s%s\n' % (delim, fullname))
-			delim = tab
-			
-		out.write("\n")
-	out.write('Version:       %s\n' % db['version'])
-	out.write('Created:       %s\tmkdocs.py\n' % ctime(time()))
-#-----------------------------------------------------------------------------
-def writeHTML(db, txtfilename):
-
-	fullname = db['classname']
-	filestem = db['filestem']
-
-	record = open(txtfilename).read()
-	record = convert2html(record)	
-	cname  = split(split(fullname, '<')[0],'::').pop()
-
- 	record = replace(record, 'Class:',
-					 boldcolor(BLUE, 'Class:'))
-
- 	record = replace(record, 'Header:',
-					 boldcolor(BLUE, 'Header:'))
-	
-  	record = replace(record, 'BaseClasses:',
- 					 boldcolor(BLUE, 'BaseClasses:'))
-
-  	record = replace(record, 'AccessMethods:',
- 					 boldcolor(DARKBLUE, 'AccessMethods:'))
-
-	htmlfile = "html/%s.%s.html" % (filestem, cname)
-	out = open(htmlfile, 'w')
-	out.write('<code>\n')
-	out.write('\t<font size=+1 color=%s>\n' % BLACK)
-	out.write(record)
-	out.write('\t</font>\n')
-	out.write('</code>\n')
-	out.close()
 #============================================================================
 # Main Program
-#  Read header list
-#  for each header in list
-#     decode header
 #============================================================================
 def main():
+	
+	print "mkclassmap.py $Revision: $\n"
 
-	print "mkdocs.py $Revision: 1.6$\n"
+	# decode command line
+	
+	argv = sys.argv[1:]
+	if len(argv) > 0:
+		packagelist = argv
+	else:
+		packagelist = ["DataFormats",
+					   "SimDataFormats"]
 
-	fmap = {}
-	for file in ClassToHeaderMap.values():
-		fmap[file] = 0
-	filelist = fmap.keys()
-	filelist.sort()
+	filelist = []
+	for package in packagelist:
 
+		cmd = "ls -1 %s/%s/" % (BASE, package)
+
+		subsystems = map(strip, os.popen(cmd).readlines())
+
+		for subsystem in subsystems:
+			if skipsubsystem.match(subsystem) != None: continue
+
+			file = "%s/%s/%s/interface/*.h" % (BASE, package, subsystem)
+			cmd  = "find %s" % file
+			print "\tscan package: %s/%s" % (package, subsystem)
+			hlist = map(strip, os.popen(cmd).readlines())
+			filelist += hlist
+
+		# Add user.h
+
+		file = "%s/%s/%s/interface/user.h" % \
+			   (LOCALBASE,
+				"PhysicsTools",
+				"Mkntuple")
+		filelist.append(file)
+
+		# Add Event.h
+
+		file = "%s/%s/%s/interface/Event.h" % \
+			   (BASE,
+				"FWCore",
+				"Framework")
+		filelist.append(file)
+
+		# Add Run.h
+
+		file = "%s/%s/%s/interface/Run.h" % \
+			   (BASE,
+				"FWCore",
+				"Framework")
+		filelist.append(file)			
+
+	# Filter headers
+
+	filelist = filter(lambda x: skipheader.search(x) == None, filelist)
+	
 	#-------------------------------------------------
 	# Loop over header files to be scanned
 	#-------------------------------------------------
-
-	# Make sure html and txt directories exist
 	
-	os.system("mkdir -p html; mkdir -p txt")
-	
+	recs = []
 	count = 0
 	for index, file in enumerate(filelist):
 
 		# Create full pathname to header
-
-		if file[0:8] == "PhysicsT":
-			file = LOCALBASE + file
-		else:
-			file = BASE + file
-			
+		
+		if file[0:8] in ["DataForm",
+						 "SimDataF"]: file = BASE + file
 		if not os.path.exists(file):
 			print "** file %s not found" % file
 			continue
 		file = os.path.abspath(file)
-
+		
 		# Scan header and parse it for classes
 		
 		record, items = parseHeader(file)
@@ -837,19 +641,6 @@ def main():
 		header = file
 		k = rfind(header, "/src/") # search from right
 		if k > 0: header = header[k+5:]
-	
-		filestem = replace(header, 'interface/', '')
-		filestem = split(filestem, '.h')[0]
-		filestem = replace(filestem, '/', '.')
-
-		###D
-		#print "filestem(%s) header(%s)" % (filestem, header)
-		
-		# Initialize map to contain info about classes and methods
-		
-		db = {'version':  VERSION,
-			  'filestem': filestem,
-			  'header':   header}
 		
 		names = []
 		for irecord, (record, group, start, end) in enumerate(records):
@@ -873,51 +664,32 @@ def main():
 			elif group in ["endclass", "endstructclass"]:
 				
 				fullname = joinfields(names, "::")
+				recs.append("'%s': '%s'" % (fullname, header))
 
 				# For now ignore uninstantiated templates
 				
 				if find(fullname, '<') > -1:
-					#print "\t\t** skip class %s\n" % fullname 
+					print "\t\t** skip class %s\n" % fullname 
 					continue
-				
-				# Get methods and write them out
 
-				db['scopes'] = {}
-				db['methods'] = {}
-				db['classname'] = fullname
-				db['classlist'] = []
-				db['baseclassnames'] = []
-				db['signature'] = {}
-				classMethods(fullname, db)
-
-				if len(db['methods']) > 0:
-
-					count += 1
-					print "%5d\t%s" % (count, fullname)
-					
-					cname  = split(fullname,'::').pop()
-					methfilename = "txt/%s.%s.txt" % (filestem, cname)
-
-					out = open(methfilename, 'w')
-					printHeader(db, out)
-					printMethods(db, out)
-					out.close()
-					
-					writeHTML(db, methfilename)
-				else:
-					#print "\t*** No accessors for class:", fullname
-					pass
-				
+				count += 1
+				print "%5d\t%s" % (count, fullname)
+								
 				names.pop()
 				
 			elif group in ["class", "structclass"]:
 				classname, basenames, template = getClassname(record)
 				names.append(classname)
 
-	# Create index.html
-	
-	os.system("mkindex.py")
-	print "\n\tmkdocs.py is done!\n"
+	# Write out class to header map
+
+	outfile = CLASSMAPFILE
+	out = open(outfile,'w')
+	out.write('# VERSION: %s\n' % VERSION)
+	out.write("ClassToHeaderMap = {\\\n")
+	record = joinfields(recs,',\n')
+	out.write(record+'\n')
+	out.write("}\n")
 #---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
 main()

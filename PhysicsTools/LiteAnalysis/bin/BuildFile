@@ -17,6 +17,7 @@
 <bin file=testparser.cc></bin>
 <bin file=testreflex.cc></bin>
 <bin file=testreflex2.cc></bin>
+<bin file=testdecodeargs.cc></bin>
 <bin name=testplugins file=testplugins.cc></bin>
 
 

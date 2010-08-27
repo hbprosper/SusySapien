@@ -16,8 +16,10 @@
 //                   insertion of user-defined variables into the n-tuple.
 //                   Sat Mar 06 HBP - write out variables to be used by
 //                                    mkntanalyzer.py
+//                   Wed Aug 25 HBP - merged UserBuffer into Buffer and
+//                              added BufferAddon, BufferHelper
 //
-// $Id: Buffer.h,v 1.11 2010/06/07 02:33:13 prosper Exp $
+// $Id: Buffer.h,v 1.12 2010/08/08 16:26:06 prosper Exp $
 //
 //
 // If using Python, include its header first to avoid annoying compiler
@@ -43,9 +45,18 @@
 // We need a few templates to make the code generic.
 // ---------------------------------------------------------------------
 
+///
+enum BufferType
+  {
+    EVENT,            // Buffer for event
+    RUNINFO,          // Buffer for RunInfo object
+    ADDON,            // Buffer that adds methods to a DataFormats class
+    HELPER,           // Buffer that performs complicated accesses
+    DEFAULT
+  };
 
 /** Model a variable.
-    A (CMS) variable is a thing with<br>
+    A (CMS) variable is a thing with a<br>
     1 - name
     2 - value (a vector of doubles)
     3 - a function to access data from the associated RECO or PAT object
@@ -71,7 +82,7 @@ struct Variable
   Method<X>           function;
 };
 
-// Function to initialize a Buffer.
+/// Function to initialize a Buffer.
 template <typename Y>
 void initBuffer(otreestream& out,  
                 std::string& label,
@@ -79,12 +90,13 @@ void initBuffer(otreestream& out,
                 std::string& label2,
                 std::string& prefix,
                 std::vector<VariableDescriptor>& var,
-                int&  maxcount,
-                bool& singleton,
-                int&  debug,
+                std::vector<Variable<Y> >& variables,
                 int&  count,
-                std::vector<Variable<Y> >& variable,
-                std::ofstream& log)
+                bool  singleton,
+                int   maxcount,
+                std::ofstream& log,
+                int   debug)
+
 {
   // Define regular expressions to check for compound methods; i.e., methods
   // of the form y = a()->b() or a().b(), or a().b
@@ -96,10 +108,20 @@ void initBuffer(otreestream& out,
   boost::regex strip2_("__");
   boost::regex strip2_atend("_$");
 
-
-  // Class name
+  // Type name of object that exports methods, that is, whose methods
+  // return values that can be stored in the n-tuple
 
   std::string classname = boost::python::type_id<Y>().name();
+
+   if ( debug > 0 )
+    {
+      if ( singleton )
+        std::cout << RED  << "\tSINGLETON( " << classname << " )" 
+                  << BLACK << std::endl;
+      else
+        std::cout << BLUE << "\tCOLLECTION( " << classname << " )" 
+                  << BLACK << std::endl;
+    }
 
   // Split getByLabel into its component parts
 
@@ -137,8 +159,12 @@ void initBuffer(otreestream& out,
   
   std::cout << "   n-tuple variables:" << std::endl;
   
-  // If we have an vector variable, create a counter variable for it.
-  // Root calls this a "leaf counter"
+  // Root is able to store vector<..> types. However, since we want the 
+  // resulting n-tuple to be as simple as possible, we'll handle the mapping 
+  // to and from vectors ourselves.
+
+  // If we have a vector variable, create a counter variable for it.
+  // Root calls this a "leaf counter".
 
   std::string counter("");
   if ( !singleton )
@@ -155,7 +181,6 @@ void initBuffer(otreestream& out,
     }
   
   // For every method, create the associated n-tuple variable name
-
 
   for(unsigned i=0; i < var.size(); i++)
     {    
@@ -198,9 +223,9 @@ void initBuffer(otreestream& out,
         
       if ( !singleton ) name += "[" + counter + "]";
       
-      variable.push_back(Variable<Y>(name, 
-                                     maxcount,
-                                     method));
+      variables.push_back(Variable<Y>(name, 
+                                      maxcount,
+                                      method));
       std::cout << "   " << i << ":\t" << name 
                 << std::endl
                 << "\t\t" << method << std::endl;
@@ -211,194 +236,101 @@ void initBuffer(otreestream& out,
   // addresses are guaranteed to be stable.
   
   for(unsigned i=0; i < var.size(); i++)
-      out.add(variable[i].name, variable[i].value);
+      out.add(variables[i].name, variables[i].value);
 }
 
-
-// Function to fill a Buffer
-
-template <typename X, typename Y>
-void callMethods(int j, 
-                 const X& object, 
-                 std::vector<Variable<Y> >& variable, 
-                 int debug)
-{
-  for(unsigned i=0; i < variable.size(); i++)
+// ---------------------------------------------------------------------
+// ---------------------------------------------------------------------
+/// Function to handle getByLabel.
+template <typename X>
+bool getByLabel(const edm::Event& event, 
+                X& handle, 
+                std::string& label1, std::string& label2, std::string& message,
+                BufferType buffertype)
+{ 
+  // Try to do a getByLabel and fall on sword if it fails.
+  try
     {
-      if ( debug > 0 ) 
-        std::cout << "\t" << j << "\tcall: " 
-                  << variable[i].fname << std::endl;
-      try
-        {
-          variable[i].value[j] = variable[i].function(object);
-        }
-      catch (cms::Exception& e)
-        {
-          throw cms::Exception("BufferFillFailure",
-                               "failed on call to \"" + 
-                               variable[i].fname+"\"\n" +
-                               "thou lump of foul deformity...", e);
-        }
-      if ( debug > 0 ) 
-        std::cout << "\t\t\tvalue = " 
-                  << BLUE 
-                  << variable[i].value[j] 
-                  << BLACK 
-                  << std::endl;
-    }
-}
-
-template <typename X, typename Y>
-bool fillBuffer(const edm::Event& event,
-                otreestream& out,  
-                std::string& label,
-                std::string& label1,
-                std::string& label2,
-                int&  maxcount,
-                bool& singleton,
-                int&  debug,
-                int&  count,
-                std::string& message,
-                std::vector<Variable<Y> >& variable,
-                bool copy,
-                bool isruninfo)
-{
-  if ( debug > 0 ) 
-    std::cout << "Begin Buffer::fill objects of type: " 
-              << RED 
-              << boost::python::type_id<X>().name()
-              << BLACK
-              << std::endl;
-
-  count = 0; // reset count, just in case we have to bail out
-  message = "";
-
-  if ( singleton )
-    {
-      // We have a single instance of this object
-
-      edm::Handle<X> handle;
-      try
-        {
-          if ( label2 == "" )
-            {
-              if ( isruninfo )
-                event.getRun().getByLabel(edm::InputTag(label1), handle);
-              else
-                event.getByLabel(edm::InputTag(label1), handle);
-            }
-          else
-            event.getByLabel(label1, label2, handle);
-        }
-      catch (cms::Exception& e)
-        {
-          // Have a royal tantrum...
-          std::ostringstream out;
-          out << "getByLabel with label \"" << label << "\" failed on " 
-              << boost::python::type_id<X>().name() << std::endl  
-              << e.explainSelf(); 
-          std::cout << out.str() << std::endl;
-          message += out.str();
-          return false;
-        }
-      
-      if ( !handle.isValid() )
-        // ...and another!
-        throw edm::Exception(edm::errors::Configuration,
-                             "\nsingleton Buffer - "
-                             "getByLabel failed on label \"" + 
-                             label + "\"\n" +
-                             "\tmay I humbly suggest you "
-                             "go boil your head!\n");
-
-      // extract datum for each variable
-
-      // Note: If X differs from Y, we need to copy X into Y before calling
-      // its methods. X can differ from Y if Y is a user-defined class that
-      // inherits from X. See userplugins.h.
-      
-      if ( copy )
-        {
-          const Y object(*handle);
-          callMethods(0, object, variable, debug);
-        }
+      if ( buffertype == RUNINFO )
+        event.getRun().getByLabel(edm::InputTag(label1), handle);
       else
-        {
-          const X& object = *handle;
-          callMethods(0, object, variable, debug);
-        }
-    }
-  else
-    {
-      // We have multiple instances of this object
-
-      edm::Handle< edm::View<X> > handle;
-      try 
         {
           if ( label2 == "" )
             event.getByLabel(edm::InputTag(label1), handle);
           else
             event.getByLabel(label1, label2, handle);
         }
-      catch (cms::Exception& e)
-        {
-          std::ostringstream out;
-          out << "getByLabel with label \"" << label << "\" failed on " 
-              << boost::python::type_id<X>().name() << std::endl  
-              << e.explainSelf(); 
-          std::cout << out.str() << std::endl;
-          message += out.str();
-          return false;
-        }
-
-      if ( !handle.isValid() )
-        throw edm::Exception(edm::errors::Configuration,
-                             "\nBuffer - "
-                             "getByLabel failed on label \""
-                             + label + "\"\n"
-                             "you're a waste of space...");
-
-      // update data count. Use the smaller of count and maxcount.
-
-      count = (int)handle->size() < maxcount ? handle->size() : maxcount;
-      
-      // 
-      // extract datum for each variable
-      
-      for(int j=0; j < count; j++)
-        {
-          // extract datum for each variable
-      
-          if ( copy )
-            {
-              const Y object((*handle)[j]);
-              callMethods(j, object, variable, debug);
-            }
-          else
-            {
-              const X& object = (*handle)[j];
-              callMethods(j, object, variable, debug);
-            }
-        }
     }
+  catch (cms::Exception& e)
+    {
+      // Fall on sword...
+      std::ostringstream out;
+      out << "getByLabel with label \"" 
+          << label1 << " " << label2 << "\" failed on " 
+          << boost::python::type_id<X>().name() << std::endl  
+          << e.explainSelf(); 
+      std::cout << out.str() << std::endl;
+      message += out.str();
+      return false;
+    }
+        
+  // getByLabel succeeded, check that we have a valid handle,
+  // otherwise again fall on sword...
   
-  if ( debug > 0 ) std::cout << GREEN
-                             << "End Buffer::fill " 
-                             << BLACK 
-                             << "objects of type: " 
-                             << RED 
-                             << boost::python::type_id<Y>().name() 
-                             << BLACK 
-                             << std::endl; 
+  if ( !handle.isValid() )
+    // have a tantrum!
+    throw edm::Exception(edm::errors::Configuration,
+                         "\nBuffer::fill - "
+                         "getByLabel failed on label \"" + 
+                         label1 + " " + label2 + "\"\n" +
+                         "\tmay I humbly suggest you "
+                         "go boil your head!\n");
   return true;
 }
 
+// ---------------------------------------------------------------------
+// ---------------------------------------------------------------------
+///
+template <typename X, typename Y>
+void callMethods(int j, 
+                 const X& object, 
+                 std::vector<Variable<Y> >& variables, 
+                 int debug)
+{
+  for(unsigned i=0; i < variables.size(); i++)
+    {
+      if ( debug > 0 ) 
+        std::cout << "\t" << j << "\tcall: " 
+                  << variables[i].fname << std::endl;
+      try
+        {
+          variables[i].value[j] = variables[i].function(object);
+        }
+      catch (cms::Exception& e)
+        {
+          throw cms::Exception("BufferFillFailure",
+                               "failed on call to \"" + 
+                               variables[i].fname+"\"\n" +
+                               "thou lump of foul deformity...", e);
+        }
+      if ( debug > 0 ) 
+        std::cout << "\t\t\tvalue = " 
+                  << BLUE 
+                  << variables[i].value[j] 
+                  << BLACK 
+                  << std::endl;
+    }
+}
+
+
+// ---------------------------------------------------------------------
+// ---------------------------------------------------------------------
 /** Model a buffer.
     A buffer is a thing with<br>
     1 - a maximum count
     2 - a count of the number of values per variable
     3 - a vector of variables, each with the same <i>maxcount</i> and 
-    <i>count</i>
+    a <i>count</i> that may vary from event to event.
     <p>
 
     The name of the ith n-tuple variable is constructed as follows:<br>
@@ -415,9 +347,9 @@ bool fillBuffer(const edm::Event& event,
     operate on objects of differing type.
     <p>
     <i>typenames</i>:<br>
-    X = class of object to be extracted using <i>getByLabel</i>
+    - X = type of object extracted using getByLabel (extractable object)
 */
-template <typename X>
+template <typename X, bool SINGLETON>
 struct Buffer  : public BufferThing
 {
   ///
@@ -427,9 +359,13 @@ struct Buffer  : public BufferThing
       label1_(""),
       label2_(""),
       prefix_(""),
+      buffertype_(DEFAULT),
       var_(std::vector<VariableDescriptor>()),
       maxcount_(0),
-      singleton_(false)
+      count_(0),
+      singleton_(SINGLETON),
+      message_(""),
+      debug_(0)
   {
     std::cout << "Buffer created for objects of type: " 
               << name()
@@ -460,68 +396,98 @@ struct Buffer  : public BufferThing
     label_  = label;
     prefix_ = prefix;
     var_    = var;
-    maxcount_  = maxcount;
-    singleton_ = maxcount == 1;
+    maxcount_ = maxcount;
     debug_  = debug;
 
-    // Check for RunInfo classes. Data for these classes are extracted
-    // using the getRun() method of the event object
-
-    boost::regex isruninfo("RunInfo");
-    boost::smatch match;
+    // Is this a RunInfo object?
+    // Data for these classes must be extracted
+    // using the getRun() method of the event object.
+    // An extractable object is one that can be extracted using getByLabel
     std::string classname = boost::python::type_id<X>().name();
-    isruninfo_ = boost::regex_search(classname, match, isruninfo); 
+    boost::regex re("RunInfo");
+    boost::smatch match;
+    if ( boost::regex_search(classname, match, re) ) buffertype_ = RUNINFO;
 
+    // Complete initialization
     initBuffer<X>(out,
                   label_,
                   label1_,
                   label2_,
                   prefix_,
                   var_,
-                  maxcount_,
-                  singleton_,
-                  debug_,
+                  variables_,
                   count_,
-                  variable_,
-                  log);
+                  singleton_,
+                  maxcount_,
+                  log,
+                  debug_);
   }
-  
+
   /** Fill buffer.
-      @param event - well...isn't this obvious!
    */
   bool fill(const edm::Event& event)
   {
-    return fillBuffer<X, X>(event,
-                            *out_,
-                            label_,
-                            label1_,
-                            label2_,
-                            maxcount_,
-                            singleton_,
-                            debug_,
-                            count_,
-                            message_,
-                            variable_,
-                            false,
-                            isruninfo_);
-  }
+    if ( debug_ > 0 ) 
+      std::cout << BLACK
+                << "Begin Buffer::fill\n\t" 
+                << RED 
+                << "X: " << boost::python::type_id<X>().name() << "\n\t"
+                << BLACK
+                << std::endl;
 
-  ///
+    count_ = 0; // reset count, just in case we have to bail out
+    message_ = "";
+
+    // Note: We use the handle edm::Handle<X> for singletons and
+    //       the handle edm::Handle< View<X> > for collections.
+  
+    if ( singleton_ )
+      {
+        edm::Handle<X> handle;
+        if ( ! getByLabel(event, handle, label1_, label2_, message_ ,
+                          buffertype_) )
+          return false;
+   
+        // OK handle is valid, so extract data for all variables
+        const X& object = *handle;
+        callMethods(0, object, variables_, debug_);
+      }
+    else
+      {
+        edm::Handle< edm::View<X> > handle;
+        if ( ! getByLabel(event, handle, label1_, label2_, message_,
+                          buffertype_) )
+          return false;
+
+        // OK handle is valid, so extract data for all variables.        
+        // For the object count, use the smaller of handle size and maxcount.
+        count_ = (int)handle->size() < maxcount_ 
+          ? handle->size() 
+          : maxcount_;
+
+        for(int j=0; j < count_; j++)
+          {
+            const X& object = (*handle)[j];
+            callMethods(j, object, variables_, debug_);
+          }
+        }
+    
+    if ( debug_ > 0 ) 
+      std::cout << BLACK << "End Buffer::fill " << std::endl; 
+    return true;
+  }
+  
   std::string& message() { return message_; }
 
-  ///
   std::string name() { return boost::python::type_id<X>().name(); }
 
-  /** Shrink buffer size using specified vector of indices.
-      It is possible to select which objects are to be written to the
-      output ntuple by giving their indices.
-   */
+  /// Shrink buffer size using specified array of indices.
   void shrink(std::vector<int>& index)
   {
     count_ = index.size();
-    for(unsigned i=0; i < variable_.size(); ++i)
+    for(unsigned i=0; i < variables_.size(); ++i)
       for(int j=0; j < count_; ++j)
-        variable_[i].value[j] = variable_[i].value[index[j]];
+        variables_[i].value[j] = variables_[i].value[index[j]];
   }
 
 private:
@@ -530,49 +496,43 @@ private:
   std::string  label1_;
   std::string  label2_;
   std::string  prefix_;
+  BufferType buffertype_;
   std::vector<VariableDescriptor> var_;
+  std::vector<Variable<X> > variables_;
   int  maxcount_;
-  bool singleton_;
-  int  debug_;
   int  count_;
+  bool singleton_;
   std::string message_;
-  std::vector<Variable<X> > variable_;
-  bool isruninfo_;
+  int  debug_;
 };
 
-
-/** Model a more general buffer. 
-    This class models a buffer in which the object
-    extracted from the event using getByLabel differs from the
-    object whose methods are exported as n-tuple variables. <i>UserBuffer</i>
-    is useful when one wants to add variables to an n-tuple that are
-    functions of the methods of <i>getByLabel</i> extracted object.
-    <p>
-    <i>typenames</i>:<br>
-    1 - X = class of object extracted using getByLabel
-    2 - Y = class of object exporting methods
-*/
-template <typename X, typename Y>
-struct UserBuffer  : public BufferThing
+// ---------------------------------------------------------------------
+// Need a specialization for edm::Event
+// ---------------------------------------------------------------------
+///
+template <>
+struct Buffer<edm::Event, true>  : public BufferThing
 {
   ///
-  UserBuffer() 
+  Buffer() 
     : out_(0),
       label_(""),
       label1_(""),
       label2_(""),
       prefix_(""),
+      buffertype_(EVENT),
       var_(std::vector<VariableDescriptor>()),
-      maxcount_(0),
-      singleton_(false)
+      maxcount_(1),
+      count_(0),
+      singleton_(true),
+      message_(""),
+      debug_(0)
   {
-    std::cout << "UserBuffer created for objects of type: " 
-              << name()
-              << std::endl;
+    std::cout << "Specialized Buffer created for edm::Event" << std::endl;
   }
 
   ///
-  virtual ~UserBuffer() {}
+  virtual ~Buffer() {}
 
   /** Initialize buffer.
       @param out - output ntuple file.
@@ -587,7 +547,117 @@ struct UserBuffer  : public BufferThing
        std::string  label, 
        std::string  prefix,
        std::vector<VariableDescriptor>& var,
-       int maxcount,
+       int  maxcount,
+       std::ofstream& log,
+       int debug=0)
+  {
+    out_     = &out;
+    var_     = var;
+    maxcount_= 1;
+    debug_   = debug;
+    count_   = 1;
+
+    initBuffer<edm::Event>(out,
+                           label_,
+                           label1_,
+                           label2_,
+                           prefix_,
+                           var_,
+                           variables_,
+                           count_,
+                           singleton_,
+                           maxcount_,
+                           log,
+                           debug_);
+  }
+  
+  /** Fill buffer.
+   */
+  bool fill(const edm::Event& event)
+  {
+    if ( debug_ > 0 ) 
+      std::cout << BLACK
+                << "Begin (specialized) Buffer::fill\n\t" 
+                << RED 
+                << "X: edm::Event"
+                << BLACK
+                << std::endl;
+    count_ = 1;
+    message_ = "";
+    callMethods(0, event, variables_, debug_);
+    if ( debug_ > 0 ) std::cout << BLACK
+                                << "End Buffer::fill" 
+                                << std::endl;
+    return true;
+  }
+
+  std::string& message() { return message_; }
+
+  std::string name() { return std::string("edm::Event"); }
+
+  /// Shrink buffer size using specified array of indices.
+  void shrink(std::vector<int>& index) {}
+
+private:
+  otreestream* out_;  
+  std::string  label_;
+  std::string  label1_;
+  std::string  label2_;
+  std::string  prefix_;
+  BufferType buffertype_;
+  std::vector<VariableDescriptor> var_;
+  std::vector<Variable<edm::Event> > variables_;
+  int  maxcount_;
+  int  count_;
+  bool singleton_;
+  std::string message_;
+  int  debug_;
+};
+
+// ---------------------------------------------------------------------
+// Buffer to handle Addons
+// ---------------------------------------------------------------------
+///
+template <typename X, typename Y, bool SINGLETON>
+struct BufferAddon  : public BufferThing
+{
+  ///
+  BufferAddon() 
+    : out_(0),
+      label_(""),
+      label1_(""),
+      label2_(""),
+      prefix_(""),
+      buffertype_(ADDON),
+      var_(std::vector<VariableDescriptor>()),
+      maxcount_(0),
+      count_(0),
+      singleton_(SINGLETON),
+      message_(""),
+      debug_(0)
+  {
+    std::cout << "Buffer created for objects of type: " 
+              << name()
+              << std::endl;
+  }
+
+  ///
+  virtual ~BufferAddon() {}
+
+  /** Initialize buffer.
+      @param out - output ntuple file.
+      @param label - getByLabel
+      @param prefix - prefix for variable names (and internal name of buffer)
+      @param var - variable descriptors
+      @param maxcount - maximum count for this buffer
+      @param log - log file
+   */
+  void
+  init(otreestream& out,
+       std::string  label, 
+       std::string  prefix,
+       std::vector<VariableDescriptor>& var,
+       int  maxcount,
        std::ofstream& log,
        int debug=0)
   {
@@ -596,22 +666,7 @@ struct UserBuffer  : public BufferThing
     prefix_ = prefix;
     var_    = var;
     maxcount_  = maxcount;
-    singleton_ = maxcount == 1;
     debug_  = debug;
-
-    // Decide whether to copy X to Y
-
-    copy_   
-      =  boost::python::type_id<X>().name() 
-      != boost::python::type_id<Y>().name();
-
-    // Check for RunInfo classes. Data for these classes are extracted
-    // using the getRun() method of the event object
-
-    boost::regex isruninfo("RunInfo");
-    boost::smatch match;
-    std::string classname = boost::python::type_id<X>().name();
-    isruninfo_ = boost::regex_search(classname, match, isruninfo); 
 
     initBuffer<Y>(out,
                   label_,
@@ -619,31 +674,70 @@ struct UserBuffer  : public BufferThing
                   label2_,
                   prefix_,
                   var_,
-                  maxcount_,
-                  singleton_,
-                  debug_,
+                  variables_,
                   count_,
-                  variable_,
-                  log);
+                  singleton_,
+                  maxcount_,
+                  log,
+                  debug_);
   }
   
   /** Fill buffer.
    */
   bool fill(const edm::Event& event)
   {
-    return fillBuffer<X, Y>(event,
-                            *out_,
-                            label_,
-                            label1_,
-                            label2_,
-                            maxcount_,
-                            singleton_,
-                            debug_,
-                            count_,
-                            message_,
-                            variable_,
-                            copy_,
-                            isruninfo_);
+    if ( debug_ > 0 ) 
+      std::cout << BLACK
+                << "Begin BufferAddon::fill\n\t" 
+                << RED 
+                << "X: " << boost::python::type_id<X>().name() << "\n\t"
+                << GREEN 
+                << "Y: " << boost::python::type_id<Y>().name()
+                << BLACK
+                << std::endl;
+    
+    count_ = 0; // reset count, just in case we have to bail out
+    message_ = "";
+    
+    // Note: We use the handle edm::Handle<X> for singletons and
+    //       the handle edm::Handle< View<X> > for collections.
+    
+    if ( singleton_ )
+      {
+        edm::Handle<X> handle;
+        if ( ! getByLabel(event, handle, label1_, label2_, message_,
+                          buffertype_) )
+          return false;
+        
+        // OK handle is valid, so extract data for all variables. 
+        // We must pass the extractable object to its add-on object
+        const Y object(*handle);
+        callMethods(0, object, variables_, debug_);        
+      }
+    else
+      {
+        edm::Handle< edm::View<X> > handle;      
+        if ( ! getByLabel(event, handle, label1_, label2_, message_,
+                          buffertype_) )
+          return false;
+        
+        // OK handle is valid, so extract data for all variables      
+        // For the object count, use the smaller of handle size and maxcount.
+        
+        count_ = (int)handle->size() < maxcount_ 
+          ? handle->size() 
+          : maxcount_;
+        
+        for(int j=0; j < count_; j++)
+          {
+            const Y object((*handle)[j]);
+            callMethods(j, object, variables_, debug_);
+          }
+      }
+  
+    if ( debug_ > 0 ) 
+      std::cout << BLACK << "End Buffer::fill " << std::endl; 
+    return true;
   }
   
   std::string& message() { return message_; }
@@ -654,9 +748,9 @@ struct UserBuffer  : public BufferThing
   void shrink(std::vector<int>& index)
   {
     count_ = index.size();
-    for(unsigned i=0; i < variable_.size(); ++i)
+    for(unsigned i=0; i < variables_.size(); ++i)
       for(int j=0; j < count_; ++j)
-        variable_[i].value[j] = variable_[i].value[index[j]];
+        variables_[i].value[j] = variables_[i].value[index[j]];
   }
 
 private:
@@ -665,15 +759,185 @@ private:
   std::string  label1_;
   std::string  label2_;
   std::string  prefix_;
+  BufferType buffertype_;
   std::vector<VariableDescriptor> var_;
+  std::vector<Variable<Y> > variables_;
   int  maxcount_;
-  bool singleton_;
-  int  debug_;
   int  count_;
+  bool singleton_;
   std::string message_;
-  std::vector<Variable<Y> > variable_;
-  bool copy_;
-  bool isruninfo_;
+  int  debug_;
+};
+
+// ---------------------------------------------------------------------
+// ---------------------------------------------------------------------
+/** Buffer to handle Helpers.
+ */
+template <typename X, typename Y, bool SINGLETON>
+struct BufferHelper  : public BufferThing
+{
+  ///
+  BufferHelper() 
+    : out_(0),
+      label_(""),
+      label1_(""),
+      label2_(""),
+      prefix_(""),
+      buffertype_(HELPER),
+      var_(std::vector<VariableDescriptor>()),
+      maxcount_(0),
+      count_(0),
+      singleton_(SINGLETON),
+      message_(""),
+      debug_(0)
+  {
+    std::cout << "Buffer created for objects of type: " 
+              << name()
+              << std::endl;
+  }
+
+  ///
+  virtual ~BufferHelper() {}
+
+  /** Initialize buffer.
+      @param out - output ntuple file.
+      @param label - getByLabel
+      @param prefix - prefix for variable names (and internal name of buffer)
+      @param var - variable descriptors
+      @param maxcount - maximum count for this buffer
+      @param log - log file
+   */
+  void
+  init(otreestream& out,
+       std::string  label, 
+       std::string  prefix,
+       std::vector<VariableDescriptor>& var,
+       int  maxcount,
+       std::ofstream& log,
+       int debug=0)
+  {
+    out_    = &out;
+    label_  = label;
+    prefix_ = prefix;
+    var_    = var;
+    maxcount_ = maxcount;
+    debug_  = debug;
+
+    initBuffer<Y>(out,
+                  label_,
+                  label1_,
+                  label2_,
+                  prefix_,
+                  var_,
+                  variables_,
+                  count_,
+                  singleton_,
+                  maxcount_,
+                  log,
+                  debug_);
+  }
+  
+  /** Fill buffer.
+   */
+  bool fill(const edm::Event& event)
+  {
+    if ( debug_ > 0 ) 
+      std::cout << BLACK
+                << "Begin BufferHelper::fill\n\t" 
+                << RED 
+                << "X: " << boost::python::type_id<X>().name() << "\n\t"
+                << GREEN 
+                << "Y: " << boost::python::type_id<Y>().name()
+                << BLACK
+                << std::endl;
+    
+    count_ = 0; // reset count, just in case we have to bail out
+    message_ = "";
+    
+    // Note: We use the handle edm::Handle<X> for singletons and
+    //       the handle edm::Handle< View<X> > for collections.
+    
+    if ( singleton_ )
+      {
+        edm::Handle<X> handle;
+        if ( ! getByLabel(event, handle, label1_, label2_, message_,
+                          buffertype_) )
+          return false;
+        
+        // OK handle is valid, so extract data for all variables. 
+
+        // A helper object provides the following methods in
+        // addition to its accessors:
+        // 1. int size() const;       Return number of items
+        // 2. void at(int index);     Set index
+        const Y object(*handle);
+        int k = 0;
+        while ( (k < object.size()) && (count_ < maxcount_) )
+          {
+            ((Y)object).at(k); // need temporary violation of "constness"
+            callMethods(count_, object, variables_, debug_);
+            k++;
+            count_++;
+          }
+      }
+    else
+      {
+        edm::Handle< edm::View<X> > handle;      
+        if ( ! getByLabel(event, handle, label1_, label2_, message_,
+                          buffertype_) )
+          return false;
+        
+        // OK handle is valid, so extract data for all variables  
+        int objectcount = (int)handle->size() < maxcount_ 
+          ? handle->size() 
+          : maxcount_;
+        
+        for(int j=0; j < objectcount; j++)
+          {
+            const Y object((*handle)[j]);
+            int k = 0;
+            while ( (k < object.size()) && (count_ < maxcount_) )
+              {
+                ((Y)object).at(k); // need temporary violation of "constness"
+                callMethods(count_, object, variables_, debug_);
+                k++;
+                count_++;
+              }
+          }
+      }
+  
+    if ( debug_ > 0 ) 
+      std::cout << BLACK << "End BufferHelper::fill " << std::endl; 
+    return true;
+  }
+  
+  std::string& message() { return message_; }
+
+  std::string name() { return boost::python::type_id<Y>().name(); }
+
+  /// Shrink buffer size using specified array of indices.
+  void shrink(std::vector<int>& index)
+  {
+    count_ = index.size();
+    for(unsigned i=0; i < variables_.size(); ++i)
+      for(int j=0; j < count_; ++j)
+        variables_[i].value[j] = variables_[i].value[index[j]];
+  }
+
+private:
+  otreestream* out_;  
+  std::string  label_;
+  std::string  label1_;
+  std::string  label2_;
+  std::string  prefix_;
+  BufferType buffertype_;
+  std::vector<VariableDescriptor> var_;
+  std::vector<Variable<Y> > variables_;
+  int  maxcount_;
+  int  count_;
+  bool singleton_;
+  std::string message_;
+  int  debug_;
 };
 
 #endif

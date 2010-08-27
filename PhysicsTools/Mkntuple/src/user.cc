@@ -4,7 +4,8 @@
 // Description: Add user-defined methods
 // Created:     Tue Jan 19, 2010 HBP
 // Updated:     Mon Mar 08, 2010 Sezen & HBP - add triggerBits class
-//$Revision: 1.2 $
+//              Tue Aug 24, 2010 HBP - add HcalNoiseRBXHelper
+//$Revision: 1.3 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -22,14 +23,14 @@ using namespace reco;
 using namespace std;
 
 // Initialize static variables
-int GParticle::count=0;
-int GParticle::index=0;
-std::map<std::string, int> GParticle::amap;
+int GenParticleAddon::count=0;
+int GenParticleAddon::index=0;
+std::map<std::string, int> GenParticleAddon::amap;
 
-GParticle::GParticle() {}
+GenParticleAddon::GenParticleAddon() {}
 
-/// Copy reco::GenParticle object to recoGenP object.
-GParticle::GParticle(const reco::GenParticle& o) : reco::GenParticle(o) 
+/// pass reco::GenParticle object to its add-on object.
+GenParticleAddon::GenParticleAddon(const reco::GenParticle& o)
 {
   // Initialize string representation/position map
   // This need be done only once per event. We ensure this by
@@ -39,34 +40,39 @@ GParticle::GParticle(const reco::GenParticle& o) : reco::GenParticle(o)
   char particle[255]; // character array for unique string representation
   
   int count = CurrentEvent::instance().count();
-  if ( count != GParticle::count )
+  if ( count != GenParticleAddon::count )
     {
       // NB: remember to cache the current event count 
-      // to ensure this code segment is called once/event
-      GParticle::count = count;
-      GParticle::index = 0;
+      // to ensure this code segment is called once/event only
+      GenParticleAddon::count = count;
+      GenParticleAddon::index = 0;
 
       //DB
-      //cout << "\t*** fill amap for event: " << GParticle::count << endl;
+      //cout << "\t*** fill amap for event: " 
+      // << GenParticleAddon::count << endl;
 
       // Get cached event
       const edm::Event* event = CurrentEvent::instance().get();
       if ( event == 0 )
         throw edm::Exception(edm::errors::Configuration,
-                             "\nGParticle - " 
+                             "\nGenParticleAddon - " 
                              "event pointer is ZERO");
   
       // Get genparticles:
-      Handle<GenParticleCollection> genParticles;
+      edm::Handle<GenParticleCollection> handle;
       // For now, hard-code getByLabel
-      event->getByLabel("genParticles", genParticles);
-  
-      // Write a unique string for each genparticle:
-      GParticle::amap.clear();
+      event->getByLabel("genParticles", handle);
+      if (!handle.isValid())
+        throw edm::Exception(edm::errors::Configuration,
+                             "\nGenParticleAddon - " 
+                             "GenParticle handle is invalid");
 
-      for(unsigned int i = 0; i < genParticles->size(); i++) 
+      // Write a unique string for each genparticle:
+      GenParticleAddon::amap.clear();
+
+      for(unsigned int i = 0; i < handle->size(); i++) 
         {
-          const GenParticle* p = &((*genParticles)[i]);
+          const GenParticle* p = &((*handle)[i]);
           sprintf(particle,"%d%d%f%f%f%f",
                   p->pdgId(), 
                   p->status(), 
@@ -74,7 +80,7 @@ GParticle::GParticle(const reco::GenParticle& o) : reco::GenParticle(o)
                   p->py(), 
                   p->pz(), 
                   p->energy());
-          GParticle::amap[string(particle)] = i;
+          GenParticleAddon::amap[string(particle)] = i;
         }
     }
 
@@ -86,7 +92,7 @@ GParticle::GParticle(const reco::GenParticle& o) : reco::GenParticle(o)
   for(unsigned int j=0; j < o.numberOfMothers(); j++) 
     {
       // Must use original object because its copy constructor does not
-      // do a deep copy and the pointers are not copied
+      // do a deep copy so the pointers are not copied
       const GenParticle* m = dynamic_cast<const GenParticle*>(o.mother(j));
       if ( m == 0 ) continue;
       sprintf(particle,"%d%d%f%f%f%f",
@@ -96,8 +102,9 @@ GParticle::GParticle(const reco::GenParticle& o) : reco::GenParticle(o)
               m->py(), 
               m->pz(), 
               m->energy());
-      if (GParticle::amap.find(string(particle)) != GParticle::amap.end() ) 
-        mothers_.push_back( GParticle::amap[string(particle)] );
+      if (GenParticleAddon::amap.find(string(particle)) 
+          != GenParticleAddon::amap.end() ) 
+        mothers_.push_back( GenParticleAddon::amap[string(particle)] );
     }
 
   // Find the ordinal value of first and last daughters by comparing the 
@@ -107,8 +114,6 @@ GParticle::GParticle(const reco::GenParticle& o) : reco::GenParticle(o)
   daughters_.clear();
   for(unsigned int j=0; j < o.numberOfDaughters(); j++) 
     {
-      // Must use original object because its copy constructor does not
-      // do a deep copy.
       const GenParticle* d = dynamic_cast<const GenParticle*>(o.daughter(j));
       if ( d == 0 ) continue;
       sprintf(particle,"%d%d%f%f%f%f", 
@@ -118,15 +123,16 @@ GParticle::GParticle(const reco::GenParticle& o) : reco::GenParticle(o)
               d->py(), 
               d->pz(), 
               d->energy());
-      if (GParticle::amap.find(string(particle)) != GParticle::amap.end() ) 
-        daughters_.push_back( GParticle::amap[string(particle)] );
+      if (GenParticleAddon::amap.find(string(particle)) 
+          != GenParticleAddon::amap.end() ) 
+        daughters_.push_back( GenParticleAddon::amap[string(particle)] );
     }
 }
 
-GParticle::~GParticle() {}
+GenParticleAddon::~GenParticleAddon() {}
 
 int 
-GParticle::firstMother() const
+GenParticleAddon::firstMother() const
 {
   if ( mothers_.size() > 0 )
     return mothers_.front();
@@ -135,7 +141,7 @@ GParticle::firstMother() const
 }
 
 int 
-GParticle::lastMother() const
+GenParticleAddon::lastMother() const
 {
   if ( mothers_.size() > 0 )
     return mothers_.back();
@@ -144,7 +150,7 @@ GParticle::lastMother() const
 }
 
 int 
-GParticle::firstDaughter() const
+GenParticleAddon::firstDaughter() const
 {
   if ( daughters_.size() > 0 )
     return daughters_.front();
@@ -153,7 +159,7 @@ GParticle::firstDaughter() const
 }
 
 int 
-GParticle::lastDaughter() const
+GenParticleAddon::lastDaughter() const
 {
   if ( daughters_.size() > 0 )
     return daughters_.back();
@@ -163,55 +169,136 @@ GParticle::lastDaughter() const
 
 
 //-----------------------------------------------------------------------------
-// provides method
-// bool value(triggername)
+// TriggerResults add-on 
 //-----------------------------------------------------------------------------
-bool triggerBits::first=true;
+bool TriggerResultsAddon::first=true;
 
-triggerBits::triggerBits() {}
+TriggerResultsAddon::TriggerResultsAddon() : object_(0) {}
   
-/// Copy edm::TriggerResults object to triggerBits object.
-triggerBits::triggerBits(const edm::TriggerResults& o) 
-  : edm::TriggerResults(o) {}
+/// cache edm::TriggerResults object in TriggerResultsAddon object.
+TriggerResultsAddon::TriggerResultsAddon(const edm::TriggerResults& o) 
+  : object_(&o)
+{}
     
-triggerBits::~triggerBits() {}
+TriggerResultsAddon::~TriggerResultsAddon() {}
 
 ///
 bool 
-triggerBits::value(std::string name) const
+TriggerResultsAddon::value(std::string name) const
 {
   // Get cached event
   const edm::Event* event = CurrentEvent::instance().get();
   if ( event == 0 )
     throw edm::Exception(edm::errors::Configuration,
-                         "\ntriggerBits - " 
+                         "\nTriggerResultsAddon - " 
                          "event pointer is ZERO");
   
   // NB: use a reference to avoid expensive copying
-  const edm::TriggerNames& tnames 
-    = event->triggerNames(*dynamic_cast<const edm::TriggerResults*>(this));
+  const edm::TriggerNames& tnames = event->triggerNames(*object_);
 
-  // Print out trigger names upon first call
-  if ( triggerBits::first )
+  // Write out trigger names upon first call
+  if ( TriggerResultsAddon::first )
     {
-      triggerBits::first = false;
-      std::cout << std::endl << "Bit" << "\t" << "Trigger Name" << std::endl;
-
+      TriggerResultsAddon::first = false;
+      ofstream fout("triggerNames.txt");
+      fout << std::endl << "Bit" << "\t" "Trigger Name" << std::endl;
       for(unsigned  bit=0; bit < tnames.size(); bit++)
-        {
-          std::cout << bit << "\t" << tnames.triggerName(bit) << std::endl;
-        }
-      std::cout << std::endl;
+        fout << bit << "\t" << tnames.triggerName(bit) << std::endl;
+      fout.close();
     }
+
   // Get bit associated with trigger name
   unsigned int bit = tnames.triggerIndex(name);
   
   // If trigger does not exist, crash and burn!
   if ( bit == tnames.size() )
     throw edm::Exception(edm::errors::Configuration,
-                         "\ntriggerBits - " 
+                         "\nTriggerResultsAddon - " 
                          "trigger \"" + name + "\" NOT FOUND");
   else
-    return accept(bit);
+    return object_->accept(bit);
 }
 
+
+
+//-----------------------------------------------------------------------------
+// HcalNoiseRBX helper
+//-----------------------------------------------------------------------------
+
+HcalNoiseRBXCaloTower::HcalNoiseRBXCaloTower() {}
+  
+/// pass object to helper.
+HcalNoiseRBXCaloTower::HcalNoiseRBXCaloTower(const reco::HcalNoiseRBX& o) 
+  : index_(0)
+{
+  // Cache results
+
+  // loop over HPDs for given RBX
+  for(std::vector<HcalNoiseHPD>::const_iterator 
+        hpd = o.HPDsBegin(); hpd != o.HPDsEnd(); hpd++)
+    {
+      // loop over calo towers
+      const RefVector<CaloTowerCollection> towers = hpd->caloTowers();
+      for(unsigned int tower=0; tower < towers.size(); tower++)
+        {
+          zside_.push_back(towers[tower]->id().zside());
+          ieta_.push_back(towers[tower]->id().ieta());
+          iphi_.push_back(towers[tower]->id().iphi());
+          hadEnergy_.push_back(towers[tower]->hadEnergy());
+        }
+    } 
+}
+    
+HcalNoiseRBXCaloTower::~HcalNoiseRBXCaloTower() {}
+
+int 
+HcalNoiseRBXCaloTower::size() const
+{
+  return zside_.size();
+}
+
+void 
+HcalNoiseRBXCaloTower::at(int index)
+{
+  index_ = index;
+}
+
+///
+int 
+HcalNoiseRBXCaloTower::zside() const
+{
+  if ( index_ < (int)zside_.size() ) 
+    return zside_[index_]; 
+  else
+    return -9999;
+}
+
+///
+int 
+HcalNoiseRBXCaloTower::ieta() const
+{
+  if ( index_ < (int)ieta_.size() ) 
+    return ieta_[index_];
+  else
+    return -9999;
+}
+
+///
+int 
+HcalNoiseRBXCaloTower::iphi() const
+{
+  if ( index_ < (int)iphi_.size() ) 
+    return iphi_[index_];
+  else
+    return -9999;
+}
+
+///
+double 
+HcalNoiseRBXCaloTower::hadEnergy() const
+{
+  if ( index_ < (int)hadEnergy_.size() ) 
+    return hadEnergy_[index_]; 
+  else
+    return -9999;
+}

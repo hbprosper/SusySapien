@@ -1,4 +1,4 @@
-#$Revision: 1.1 $ example.py
+#$Revision: 1.2 $ example.py
 #------------------------------------------------------------------------------
 import FWCore.ParameterSet.Config as cms
 
@@ -6,14 +6,13 @@ process = cms.Process("Demo")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1) )
 
 process.source = cms.Source("PoolSource",
 							fileNames =
 							cms.untracked.vstring("file:pat.root"
 												  )
 							)
-
 #-------------------------------------------------------------------------
 # Created: Sun Feb  7 22:35:29 2010 by mkntuplecfi.py
 # $Revison:$
@@ -25,7 +24,7 @@ cms.EDAnalyzer("Mkntuple",
                ntupleName = cms.untracked.string("ntuple_pat.root"),
 
 			   # Name of analyzer
-			   analyzerName = cms.untracked.string("analyzer.cc"),
+			   analyzerName = cms.untracked.string("analyzer_pat.cc"),
 			   			   
 			   # List of buffers to allocate.
 			   #----------------------------------------------------------
@@ -43,8 +42,9 @@ cms.EDAnalyzer("Mkntuple",
 	'patMET',
     'patMuon',
 	'patElectron',
-    'GParticle',
-	'triggerBits'
+    'recoGenParticle',
+	'GenParticleAddon',
+	'TriggerResultsAddon'
     ),
 			   #----------------------------------------------------------
 			   # Format of 1st line:
@@ -82,14 +82,13 @@ cms.EDAnalyzer("Mkntuple",
                patMET =
                cms.untracked.
                vstring(
-    "patMET                         layer1METsAK5                50",
+    "patMET                         layer1METsAK5                     50",
     #---------------------------------------------------------------------
     " double   et()",
     " double   phi()",
     " double   pt()",
 	" double   genMET()->pt()"
     ),
-
                patMuon =
                cms.untracked.
                vstring(
@@ -112,7 +111,6 @@ cms.EDAnalyzer("Mkntuple",
     "   bool   isStandAloneMuon()",
     "   bool   isTrackerMuon()"
     ),
-
                patElectron =
                cms.untracked.
                vstring(
@@ -128,11 +126,10 @@ cms.EDAnalyzer("Mkntuple",
 	" double   gsfTrack()->d0()",
 	" double   gsfTrack()->phi()"
     ),
-
-			   GParticle =
+			   recoGenParticle =
                cms.untracked.
                vstring(
-    "GParticle                 genParticles                    4000",
+    "recoGenParticle                 genParticles                    4000",
     #---------------------------------------------------------------------
     "    int   charge()",
     "    int   pdgId()",
@@ -141,15 +138,21 @@ cms.EDAnalyzer("Mkntuple",
     " double   eta()",
     " double   phi()",
     " double   mass()",
+    ),
+			   GenParticleAddon =
+               cms.untracked.
+               vstring(
+    "GenParticleAddon                genParticles                    4000",
+    #---------------------------------------------------------------------
 	"    int   firstMother()",
 	"    int   lastMother()",
 	"    int   firstDaughter()",
 	"    int   lastDaughter()"
-    ),
-               triggerBits =
+    ),			   
+               TriggerResultsAddon =
                cms.untracked.
                vstring(
-    "triggerBits                     TriggerResults                     1",
+    "TriggerResultsAddon             TriggerResults                     1",
     #---------------------------------------------------------------------
     '   bool   value("HLT_L1Jet15")',
 	'   bool   value("HLT_Jet30")',

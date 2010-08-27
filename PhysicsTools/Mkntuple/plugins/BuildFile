@@ -42,9 +42,6 @@
 <flags EDM_PLUGIN=1>
 </library>
 
-<library file=TestBed.cc name=TestBed>
-<flags EDM_PLUGIN=1>
-</library>
 
 
 

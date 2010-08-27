@@ -1,5 +1,6 @@
 <lcgdict>
- <class name="GParticle"/>
  <class name="GEvent"/>
- <class name="triggerBits"/>
+ <class name="GenParticleAddon"/>
+ <class name="TriggerResultsAddon"/>
+ <class name="HcalNoiseRBXCaloTower"/>
 </lcgdict>

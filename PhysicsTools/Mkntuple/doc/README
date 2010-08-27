@@ -1,97 +1,64 @@
 Mkntuple													Harrison B. Prosper
-															Sun. Feb. 07 2010
-															$Revison:$
+															Sun Feb 07 2010
+															Thu Aug 26 2010
+															$Revision: $
 
-(A) SETUP
-
+I	Setup
+---------
 	1.	Set up a local release of CMSSW 
 	
-		scramv1 project CMSSW CMSSW_3_4_1
-		cd CMSSW_3_4_1/src
+		scramv1 project CMSSW CMSSW_3_6_1
+		cd CMSSW_3_6_1/src
 		cmsenv
 
 	2.	Download PhysicsTools/LiteAnalysis and PhysicsTools/Mkntuple:
 
-		cvs co -r v3_4_1 -d PhysicsTools UserCode/SusySapien/PhysicsTools
+		cvs co -r v3_6_1 -d PhysicsTools UserCode/SusySapien/PhysicsTools
 
 	3.	Compile and link
 
 		cd PhysicsTools	
 		scramv1 b	
 
-	4.	source LiteAnalysis/setup(.sh|.csh)
+
+II 	Notes
+---------
+
+	The Mkntuple system is driven by two important files:
+
+		1.	PhysicsTools/Mkntuple/python/classmap.py
+
+		2.	PhysicsTools/Mkntuple/plugins/classes.txt
+
+The first file is created using
+
+		mkclassmap.py
+
+It constructs a map of DataFormats class names to headers and defines the
+universal set of classes from which the subset known to Mkntuple is drawn.
+
+	The 2nd file, classes.txt, lists the classes defined by the RECO and PAT
+files supplied to mkclasslist.py, which creates classes.txt:
+
+		mkclasslist.py reco.root pat.root
+ 
+The classes listed classes.txt should be a subset of those listed in 
+classmap.py. The script mkplugins.py, which creates 
+
+		3.	PhysicsTools/Mkntuple/plugins/plugins.cc
+
+uses classes.txt to determine the plugins to define and classmap.py to find the
+associated header files.
 
 
-(B)	EXAMPLE
+III	Notes
+---------
 
-	1.	Go to your test directory and edit the configuration file
-	example.py.
+	The script mkdocs.py, which is executed by mkntuplecfi.py the first time it
+is run, creates files in the directories
 
-	2.	Replace "pat.root" in "file:pat.root" with the name of your input 
-	PAT file and "ntuple.root" with the desired name of your output n-tuple 
-	file.
+		txt
+		html
+and		methods
 
-	3.	Run Mkntuple
-
-		cmsRun example.py
-
-	If all goes well, you should find a new n-tuple file in the current
-	directory.
-
-
-(C)	CONFIG FRAGMENT MAKER
-
-	You can get some help in creating a configuration fragment as follows:
-
-	1.	In your test directory execute
-
-		mkntuplecfi.py 
-
-	This program expects to find a directory called "methods" in the
-	current working directory. Since that directory does not yet exist, it
-	will be created and populated with text files listing all the methods 
-	that, in principle, are available to you. Theses files are created from
-	the master files in
-
-		$CMSSW_BASE/src/PhysicsTools/LiteAnalysis/dataformats/txt
-
-	You can get an HTML view of these files by pointing your browser to
-
-		$CMSSW_BASE/src/PhysicsTools/LiteAnalysis/dataformats/html/index.html
-	
-	Once the "methods" directory has been created, a graphical user interface 
-	will appear with two tabs, labeled "Methods" and "Selected Methods". Each
-	tab, in turn, is divided into three list boxes labeled:
-
-		Classes			Methods			getByLabel
-	
-	2.	Click on the File/Open menu item (or the File/Open button) and 
-	navigate to the location of your input Root file. Select a file and
-	return. The file will be scanned, and a list of the most useful classes
-	pertaining to it will be displayed in the "Classes" list box.
-
-	3.	Select a class by clicking on the class name. Its methods and the
-	available getByLabels will be displayed in the "Methods" and 
-	"getByLabel" list boxes, respectively.
-
-	4.	Select one or more methods from the "Methods" list box. Do not
-	forget to select at least one "getByLabel". You can display your 
-	selection at any time by going to the "Selected Methods" tab. You can
-	deselect a method by clicking on the selected method in the "Methods" 
-	list box on the Methods tab.
-
-	5.	Click on the File/Save menu item (or the File/Save button) to save
-	a file called
-
-		mkntuple_cfi.py
-
-	which you can cut-and-paste into your configuration file, or place it in
-	your python directory. If you do the latter, the configuration file
-	fragment can be loaded into your configuration file using
-
-		process.load("PhysicsTools.Mkntuple.mkntuple_cfi")
-
-	If you chose to cut-and-paste it directly into your configuration file,
-	remember to replace "demo" with "process.demo".
-
-
+The methods directory contains lists of the methods available to the user.

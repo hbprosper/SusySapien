@@ -1,99 +1,102 @@
 #-------------------------------------------------------------------------
-# Created: Fri Mar 12 17:24:35 2010 by ntuplecfi.py
+# Created: Tue Aug 24 22:06:57 2010 by /home/harry/CMS/cmssw/CMSSW_3_6_1/src/PhysicsTools/Mkntuple/test/ntuplecfi.py
 #-------------------------------------------------------------------------
 import FWCore.ParameterSet.Config as cms
 demo =\
 cms.EDAnalyzer("Mkntuple",
-               ntupleName = cms.untracked.string("ntuple.root"),			   
-			   analyzerName = cms.untracked.string("analyzer.cc"),
+               ntupleName = cms.untracked.string("ntuple.root"),
+               analyzerName = cms.untracked.string("analyzer.cc"),
 
                buffers =
                cms.untracked.
                vstring(
-    'GenEventInfoProduct',
-    'GenRunInfoProduct',
-    'recoBeamSpot',
-#    'patJet',
-#    'patMuon',
-    'recoGenParticle',
+	'edmEvent',
+    'HcalNoiseSummary',
+    'recoCaloJet',
+    'recoCaloMET',
+    'recoCaloMET1',
+    'recoHcalNoiseRBX',
+    'recoVertex',
 	'triggerBits'
     ),
-               GenEventInfoProduct =
+               edmEvent =
                cms.untracked.
                vstring(
-    'GenEventInfoProduct             generator                         1',
+    'edmEvent',
     #---------------------------------------------------------------------
-    ' double   weight()'
-    ),
-               GenRunInfoProduct =
+    '   int   id().run()',
+	'   int   id().event()',
+	'   int   luminosityBlock()',
+	'   int   bunchCrossing()'
+    ),			   
+               HcalNoiseSummary =
                cms.untracked.
                vstring(
-    'GenRunInfoProduct               generator                         1',
+    'HcalNoiseSummary                hcalnoise',
     #---------------------------------------------------------------------
-    ' double   externalXSecLO().value()',
-    ' double   externalXSecNLO().value()',
-    ' double   filterEfficiency()',
-    ' double   internalXSec().value()'
+    '   bool   passHighLevelNoiseFilter()',
+    '   bool   passLooseNoiseFilter()'
     ),
-               recoBeamSpot =
+               recoCaloJet =
                cms.untracked.
                vstring(
-    'recoBeamSpot                    offlineBeamSpot                   1',
-    #---------------------------------------------------------------------
-    ' double   x0()',
-    ' double   y0()',
-    ' double   z0()'
-    ),
-               patJet =
-               cms.untracked.
-               vstring(
-    'patJet                          cleanLayer1JetsAK5              500',
+    'recoCaloJet                     ak5CaloJets                     500',
     #---------------------------------------------------------------------
     ' double   energy()',
-    ' double   et()',
     ' double   eta()',
+    '  float   etaetaMoment()',
     ' double   phi()',
-    '   bool   isCaloJet()'
-    ),
-               patMuon =
-               cms.untracked.
-               vstring(
-    'patMuon                         cleanLayer1Muons                500',
-    #---------------------------------------------------------------------
-    '    int   charge()',
-    ' double   energy()',
-    ' double   eta()',
-    ' double   phi()',
+    '  float   phiphiMoment()',
     ' double   pt()',
-    '  float   caloIso()',
-    '  float   ecalIso()',
-    ' double   ecalIsoDeposit()->candEnergy()',
-    '  float   hcalIso()',
-    '  float   trackIso()',
-	' double   isolationR03().emEt'
+    '  float   emEnergyFraction()',
+    '    int   n90()'
     ),
-               recoGenParticle =
+               recoCaloMET =
                cms.untracked.
                vstring(
-    'recoGenParticle                 genParticles                    500',
+    'recoCaloMET                     met                             500',
     #---------------------------------------------------------------------
-    '    int   charge()',
     ' double   et()',
-    ' double   eta()',
-    ' double   phi()',
-    ' double   mass()',
-    '    int   pdgId()',
-    '    int   status()'
+    ' double   sumEt()'
+    ),
+               recoCaloMET1 =
+               cms.untracked.
+               vstring(
+    'recoCaloMET                     metNoHF                         500',
+    #---------------------------------------------------------------------
+    ' double   et()',
+    ' double   sumEt()'
+    ),
+               recoHcalNoiseRBX =
+               cms.untracked.
+               vstring(
+    'recoHcalNoiseRBX                hcalnoise                       500',
+    #---------------------------------------------------------------------
+    ' double   caloTowerEmE()',
+    ' double   caloTowerHadE()',
+    '    int   idnumber()'
+    ),
+               recoVertex =
+               cms.untracked.
+               vstring(
+    'recoVertex                      offlinePrimaryVertices          500',
+    #---------------------------------------------------------------------
+    ' double   chi2()',
+    ' double   ndof()',
+    ' size_t   tracksSize()',
+    ' double   x()',
+    ' double   y()',
+    ' double   z()'
     ),
                triggerBits =
                cms.untracked.
                vstring(
-    "triggerBits                     TriggerResults                     1",
+    "triggerBits                     TriggerResults::HLT                1",
     #---------------------------------------------------------------------
-    '   bool   value("HLT_L1Jet15")',
-	'   bool   value("HLT_Jet30")   HLT_Jet30',
-	'   bool   value("HLT_Jet50")   HLT_Jet50',
-	'   bool   value("HLT_Jet80")   HLT_Jet80',
-	'   bool   value("HLT_Mu9")     HLT_Mu9'
-    )			   			   			   
+    '   bool   value("HLT_Jet15U")   Jet15U',
+	'   bool   value("HLT_Jet30U")   Jet30U',
+	'   bool   value("HLT_Jet50U")   Jet50U',
+	'   bool   value("HLT_L1Jet6U")   L1Jet6U'	
+    )			   			   
+			   
                )

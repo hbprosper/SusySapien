@@ -3,7 +3,7 @@
 # Description: A collection of boostutil utilities. Most have been culled
 #              from either xml2boost.py or header2xml.
 # Created: 19-May-2006 Harrison B. Prosper
-#$Revision: 1.1 $
+#$Revision: 1.6 $
 #---------------------------------------------------------------------------
 import os, sys, re, posixpath, shelve
 from string import *
@@ -404,7 +404,7 @@ def readMethods(txtfilename):
 			basename = t[1]
 			basenames.append(basename)
 
-		elif token == "AccessMethods":
+		elif token == "AccessMethods:":
 			isMethod = True
 			continue
 		

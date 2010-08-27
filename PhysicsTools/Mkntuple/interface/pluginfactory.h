@@ -9,7 +9,7 @@
 */
 //
 // Original Author:  HBP
-// $Id: pluginfactory.h,v 1.5 2010/03/10 13:29:59 prosper Exp $
+// $Id: pluginfactory.h,v 1.6 2010/08/08 16:26:06 prosper Exp $
 //
 //
 
@@ -62,7 +62,7 @@ struct BufferThing
                     std::string label, 
                     std::string prefix,
                     std::vector<VariableDescriptor>& var,
-                    int maxcount,
+                    int  maxcount,
                     std::ofstream& log,
                     int debug=0)=0;
   

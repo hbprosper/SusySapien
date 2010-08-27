@@ -6,45 +6,48 @@
 #-----------------------------------------------------------------------------
 import os, sys, re
 from sys    import exit
+from glob   import glob
 from time   import *
 from string import *
-from getopt import getopt, GetoptError
-from pprint import PrettyPrinter
 from PhysicsTools.LiteAnalysis.boostlib import nameonly, readMethods
 #-----------------------------------------------------------------------------
-# Add map directory to PYTHONPATH
-mapdir = "%s/map" % os.environ["PWD"]
-sys.path.append(mapdir)
+if not os.environ.has_key("CMSSW_RELEASE_BASE"):
+	print "\t** Please setup a CMSSW release"
+	sys.exit(0)
 
-# Now try to load classmap
+if not os.environ.has_key("CMSSW_BASE"):
+	print "\t** Please setup a CMSSW release"
+	sys.exit(0)
 
+if not os.environ.has_key("CMSSW_VERSION"):
+	print "\t** Please setup a CMSSW release"
+	sys.exit(0)
+
+BASE      = os.environ["PWD"]
+LOCALBASE = "%s/src/"  % os.environ["CMSSW_BASE"]
+#------------------------------------------------------------------------------
+# Load classmap.py
+
+cmd = 'find %s/PhysicsTools/Mkntuple -name "classmap.py"' % LOCALBASE
+t = map(strip, os.popen(cmd).readlines())
+if len(t) == 0:
+	print "\n\t** unable to locate classmap.py"\
+		  "\t** try running mkclassmap.py to create it"
+	sys.exit(0)
+CLASSMAPFILE = t[0]
 try:
-	from classmap import ClassToHeaderMap
+	execfile(CLASSMAPFILE)
 except:
-	os.system("mkdocs.py")
-	try:
-		from classmap import ClassToHeaderMap
-	except:
-		print "\n\t**unable to load classmap.py"
-		sys.exit(0)
-#-----------------------------------------------------------------------------
-if not os.environ.has_key('CMSSW_BASE'):
-	print 'CMSSW_BASE not defined!\n'
-	exit(0)
-BASE = os.environ["PWD"]
-PP = PrettyPrinter()
+	print "\n\t** unable to load classmap.py"
+	sys.exit(0)
+#------------------------------------------------------------------------------
 def usage():
 	print '''
 Usage:
-    mkmethodlist.py <TXT-file1> [TXT-file2 ...]
+    mkmethodlist.py <txt-file1> [txt-file2 ...]
 				 '''
 	sys.exit(0)
-
-SHORTOPTIONS = 'he:'
-
-BLACK = "\x1b[0;30;48m" # Ctrl[attribute;foreground;backgroundm
-RED   = "\x1b[0;31;48m" # \x1b 0,1,...   30+color   40+color
-
+#------------------------------------------------------------------------------
 retype = re.compile(r'float|double|int|unsigned|bool|\bsize_t\b')
 stripnamespace = re.compile(r'\w+::')
 stripcolon = re.compile(r':')
@@ -83,7 +86,7 @@ def expandMethod(filename, methlist):
 		methlist.append((rtype, name))
 #----------------------------------------------------------------------------
 def mkmethodlist(filename):
-	
+
 	names = {}
 	tab = "//              "
 
@@ -96,10 +99,8 @@ def mkmethodlist(filename):
 	if find(classname, "<") > -1:
 		if DEBUG3 > 0:
 			print "\tskipping template class: %s" % classname
-		return
-	
-	print "processing: %s" % classname
-	
+		return 0
+		
 	# Ok now, process methods
 
 	simplemethods = []
@@ -195,27 +196,33 @@ def mkmethodlist(filename):
 						  compoundmethods)
 		
 	# Write a summary document for this class
-
-	os.system("mkdir -p methods")
 	
 	methods = simplemethods + compoundmethods
 
-	if len(methods) < 1: return
-	
+	if len(methods) < 1: return 0
+
+	print "processed: %s\t%d" % (classname, len(methods))
+
 	str = '%s\n' % joinfields(methods,'\n')
 	classname = stripcolon.sub("", classname)
 	headerfilename   = striptemplatepars.sub("", classname)
-	open("methods/%s.txt" % headerfilename, 'w').write(str+'\n')
+	open("methods/%s.txt" % headerfilename, 'w').write(str)
+	return len(methods)
 #----------------------------------------------------------------------------
 def main():
-	argv = sys.argv[1:]
-	if len(argv) == 0:
-		print """
-Usage:
-    mkmethodlist.py give txt-filename
-	"""
-		sys.exit(0)
-	for filename in argv:
-		mkmethodlist(filename)
+	filelist = sys.argv[1:]
+	if len(filelist) == 0:
+		filelist = glob("txt/*.txt")
+	filelist.sort()
+	
+	if len(filelist) == 0:
+		Usage()
+
+	os.system("mkdir -p methods")
+	count = 0
+	for filename in filelist:
+		count += mkmethodlist(filename)
+	print "\n\ttotal number of access methods: %d\n" % count
+#----------------------------------------------------------------------------
 main()
 

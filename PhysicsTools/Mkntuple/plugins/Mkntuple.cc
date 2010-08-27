@@ -46,7 +46,7 @@
 //         Updated:  Sun Jan 17 HBP - add log file
 //                   Sun Jun 06 HBP - add variables.txt file
 //
-// $Id: Mkntuple.cc,v 1.9 2010/06/07 03:37:13 prosper Exp $
+// $Id: Mkntuple.cc,v 1.10 2010/08/08 16:26:07 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -64,6 +64,7 @@
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/EDAnalyzer.h"
 #include "FWCore/Framework/interface/Event.h"
+#include "FWCore/Framework/interface/FileBlock.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/FWLite/interface/AutoLibraryLoader.h"
@@ -108,7 +109,7 @@ private:
 Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   : output(otreestream(iConfig.getUntrackedParameter<string>("ntupleName"), 
                        "Events", 
-                       "made by Mkntuple $Revision: 1.9 $")),
+                       "made by Mkntuple $Revision: 1.10 $")),
     event_(0),
     logfilename_("Mkntuple.log"),
     log_(new std::ofstream(logfilename_.c_str())),
@@ -188,6 +189,7 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   //    buffer     - name of buffer to allocate
   //    label      - used by getByLabel
   //    maxcount   - maximum number of objects to write out. If omitted,
+  //                 assumed to be unity
   //    [prefix]   - prefix for names of n-tuple output variables
   //                 otherwise, take prefix = <buffer>_<label>
   // followed by the list of methods
@@ -208,7 +210,9 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
         getUntrackedParameter<vector<string> >(vrecords[ii]);
 
       // Decode first record, which should
-      // contain the buffer name, getByLabel and max count
+      // contain the buffer name, getByLabel and max count, with
+      // the exception of buffer edmEvent, which requires only the
+      // first field
       string record = bufferrecords[0];
 
       if ( DEBUG > 1 ) 
@@ -217,23 +221,37 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
       vector<VariableDescriptor> var;
       vector<string> field;              
       kit::split(record, field);
-      if ( field.size() < 3 )
-        // Have a tantrum!
-        throw edm::Exception(edm::errors::Configuration,
-                             "cfg error: "
-                             "you need at least 3 fields in first line of"
-                             " each buffer block\n"
-                             "\tyou blocks you stones you worse than "
-                             "senseless things...");
-      
-      string buffer = field[0];                 // Buffer name
-      string label  = field[1];                 // getByLabel
-      int maxcount  = atoi(field[2].c_str());   // max object count to store
 
-      // replace double colon with an "_"
-      string prefix = buffer + "_" + kit::replace(label, "::", "_");
-      if (field.size() == 4) prefix = field[3]; // n-tuple variable prefix
+      string buffer = field[0];                 // Buffer name
+      if ( DEBUG > 0 )
+        cout << "  buffer: " << buffer << endl;
+
+      string label("");
+      string prefix = buffer;
+      int maxcount=1;
+
+      if ( buffer != "edmEvent" )
+        {
+          if ( field.size() < 3 )
+            // Have a tantrum!
+            throw edm::Exception(edm::errors::Configuration,
+                                 "cfg error: "
+                                 "you need at least 3 fields in first line of"
+                                 " each buffer block\n"
+                                 "\tyou blocks you stones you worse than "
+                                 "senseless things...");
       
+
+          label  = field[1];                   // getByLabel
+          maxcount  = atoi(field[2].c_str());  // max object count to store
+
+          if (field.size() > 3) 
+            prefix = field[3]; // n-tuple variable prefix
+          else
+            // replace double colon with an "_"
+            prefix += string("_") + kit::replace(label, "::", "_");
+        }
+
       //DB
       if ( DEBUG > 1 )
         cout 
@@ -271,11 +289,6 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
                                  record);
           string method = kit::strip(matchmethod[0]);
       
-          if ( DEBUG > 0 ) 
-            cout << "    method: " << RED <<  method << BLACK << endl;
-          
-          // Try to construct a plausible variable name
-
           // Get optional method alias name
           
           string varname = method;
@@ -292,8 +305,9 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
           var.push_back(VariableDescriptor(rtype, method, varname));
 
           if ( DEBUG > 0 )
-            cout << "\t  varname(" << varname << ")"
-                 << endl;
+            cout << "\trtype:   " << RED   << rtype << BLACK
+                 << "\tmethod:  " << BLUE  << method << BLACK
+                 << "\tvarname: " << GREEN << varname << BLACK << endl;
         }
       
       // Create a buffer of appropriate type...
@@ -311,19 +325,23 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
       
       if ( DEBUG > 0 )
         cout 
-          << "  created buffer: " << buffer << endl << endl;
+          << "  create buffer: " << buffer << endl;
           
       buffers.push_back( BufferFactory::get()->create(buffer) );
       if (buffers.back() == 0)
         throw edm::Exception(edm::errors::Configuration,
                              "plugin error: "
                              "unable to create buffer " + buffer + 
-                             "\n\tso...let all the evil "
+                             "\n\t...let all the evil "
                              "that lurks in the mud hatch out\n");
 
       // ... and initialize it
       buffers.back()->init(output, label, prefix, var, maxcount, 
                            vout, DEBUG);
+
+      if ( DEBUG > 0 )
+        cout << "  buffer: " << buffer << " created " << endl << endl;
+
 
       // cache buffer addresses in a map. Use prefix as a unique
       // identifier for the buffer
@@ -396,7 +414,7 @@ Mkntuple::analyze(const edm::Event& iEvent,
 }
 
 bool
-Mkntuple::selectEvent(const edm::Event& iEvent)
+Mkntuple::selectEvent(const edm::Event& event)
 {
   bool keep=true;
   if ( selectorcmd_ == "" ) return keep;
@@ -409,9 +427,16 @@ Mkntuple::selectEvent(const edm::Event& iEvent)
   gROOT->ProcessLine(Form("bool* keep = (bool*)0x%x", &keep)); 
   gROOT->ProcessLineFast(selectorcmd_.c_str());
   if ( keep )
-    cout << "\t\t** KEEP EVENT - " << event_ << endl;
+    cout << "\t\t** KEEP EVENT(" << event_ << ")"
+         << "\tRun: " << event.id().run() 
+         << "\tEvent: " << event.id().event()
+         << endl;
   else
-    cout << "\t\t** SKIP EVENT - " << event_ << endl;
+    cout << "\t\t** SKIP EVENT(" << event_ << ")"
+         << "\tRun: " << event.id().run() 
+         << "\tEvent: " << event.id().event()
+         << endl;
+
   return keep;
 }
 
@@ -430,7 +455,8 @@ Mkntuple::shrinkBuffers()
       if ( buffermap.find(name) != buffermap.end() )
         {
           //DEBUG
-          cout << "\t** SHRINK( " << name << " ) " << index.size() << endl;
+          if (DEBUG > 0) 
+            cout << "\t** SHRINK( " << name << " ) " << index.size() << endl;
           buffermap[name]->shrink(index);
         }
       else

@@ -3,7 +3,8 @@
 # create classes.txt
 # Created: 05-Jan-2010 Harrison B. Prosper
 # Updated: 08-Aug-2010 HBP minor fix before release
-#$Revision: 1.3 $
+#          25-Aug-2010 HBP add a few more classes (by hand)
+#$Revision: 1.4 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -14,7 +15,8 @@ if cwd != "plugins":
 	sys.exit(0)
 
 # Extract getByLabel strings using a non-greedy search
-getfields  = re.compile(r'(?<=")[^ ]*?(?=")')
+getfields = re.compile(r'(?<=")[^ ]*?(?=")')
+isvector  = re.compile(r'^(?<=std::)?vector<')
 #------------------------------------------------------------------------------
 argv = sys.argv[1:]
 argc = len(argv)
@@ -35,9 +37,13 @@ for rootfile in argv:
 	record += os.popen(cmd).read()
 records = split(record, '\n')
 
-# For now, add GenRunInfoProduct "generator" "" "HLT." to the records by hand.
+# For now, add some stuff by hand **** FIXME LATER
 # It would be more elegant to have something like edmDumpContent <treename>.
+
 records.append('GenRunInfoProduct "generator" "" "HLT."')
+records.append('TriggerResultsAddon  "TriggerResults::HLT" "" "HLT."')
+records.append('vector<GenParticleAddon>  "generator" "" "HLT."')
+records.append('vector<HcalNoiseRBXCaloTower>  "hcalnoise" "" "HLT."')
 
 # Get list of classes and labels
 
@@ -48,24 +54,21 @@ for record in records:
 	fields = getfields.findall(record)
 	if len(fields) == 0: continue
 	if classname in ['double', 'int', 'bool']: continue
+	# For now, exclude collection classes
+	if rfind(classname, "Collection") > -1: continue
 
-	if not tname.has_key(classname): tname[classname] = {}
-	label = fields[0]
-	if fields[1] != '': label += "_" + fields[1]
-	tname[classname][label]=0
+	# Determine whether or not this is a singleton
+	if isvector.match(classname) != None:
+		tname[classname] = "C"
+	else:
+		tname[classname] = "S"
 
 keys = tname.keys()
 keys.sort()
 out = open("classes.txt",'w')
 for index, key in enumerate(keys):
-	names = tname[key].keys()
-	names.sort()	
-	record = "%4d %s\n" % (index, key)
+	record = "%s %s\n" % (tname[key], key)
 	out.write(record)
-	for name in names:
-		record = "\t%s\n" % name
-		out.write(record)
-	out.write("\n")
 out.close()
 
 
