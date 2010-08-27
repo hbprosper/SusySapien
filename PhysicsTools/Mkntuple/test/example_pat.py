@@ -1,4 +1,4 @@
-#$Revision: 1.6 $ example.py
+#$Revision: 1.4 $ example.py
 #------------------------------------------------------------------------------
 import FWCore.ParameterSet.Config as cms
 
@@ -36,16 +36,16 @@ cms.EDAnalyzer("Mkntuple",
                buffers =
                cms.untracked.
                vstring(
-	'edmEventAddon'
-## 	'GenEventInfoProduct',
-##     'GenRunInfoProduct',
-##     'recoBeamSpot',
-## 	'patMET',
-##     'patMuon',
-##  	'patElectron',
-## 	'recoGenParticle',
-##  	'recoGenParticleAddon',
-##  	'edmTriggerResultsAddon'
+	'edmEventAddon',
+	'GenEventInfoProduct',
+    'GenRunInfoProduct',
+    'recoBeamSpot',
+	'patMET',
+    'patMuon',
+ 	'patElectron',
+	'recoGenParticle',
+ 	'recoGenParticleAddon',
+ 	'edmTriggerResultsAddon'
     ),
 			   #----------------------------------------------------------
 			   # Format of 1st line:
@@ -57,7 +57,7 @@ cms.EDAnalyzer("Mkntuple",
                edmEventAddon =
                cms.untracked.
                vstring(
-    'edmEventAddon',
+    'edmEventAddon                  info',
     #---------------------------------------------------------------------
 	'   bool  isRealData()',
     '   int   run()',

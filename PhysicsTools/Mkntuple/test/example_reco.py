@@ -1,4 +1,4 @@
-#$Revision: 1.2 $ example.py
+#$Revision: 1.1 $ example.py
 #------------------------------------------------------------------------------
 import FWCore.ParameterSet.Config as cms
 
@@ -39,7 +39,7 @@ cms.EDAnalyzer("Mkntuple",
                edmEventAddon =
                cms.untracked.
                vstring(
-    'edmEventAddon                   Info                              1',
+    'edmEventAddon',
     #---------------------------------------------------------------------
     '   int   isRealData()',
     '   int   run()',
