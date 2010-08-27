@@ -5,7 +5,7 @@
 // Sub-Package: Mkntuple
 // Description: Specialized buffer for edm::EventAddon
 // Created:     Thu Aug 26, 2010 Harrison B. Prosper
-//$Revision: 1.2 $
+//$Revision: 1.3 $
 //-----------------------------------------------------------------------------
 #include "FWCore/Framework/interface/Event.h"
 #include "PhysicsTools/Mkntuple/interface/user.h"
@@ -58,6 +58,7 @@ struct BufferAddon<edm::Event,
     var_     = var;
     label_   = label;
     label1_  = label;
+    prefix_  = prefix;
     maxcount_= 1;
     debug_   = debug;
     count_   = 1;

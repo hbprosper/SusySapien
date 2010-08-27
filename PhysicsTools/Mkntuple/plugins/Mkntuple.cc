@@ -46,7 +46,7 @@
 //         Updated:  Sun Jan 17 HBP - add log file
 //                   Sun Jun 06 HBP - add variables.txt file
 //
-// $Id: Mkntuple.cc,v 1.12 2010/08/27 04:39:03 prosper Exp $
+// $Id: Mkntuple.cc,v 1.13 2010/08/27 15:12:57 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -109,7 +109,7 @@ private:
 Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   : output(otreestream(iConfig.getUntrackedParameter<string>("ntupleName"), 
                        "Events", 
-                       "made by Mkntuple $Revision: 1.12 $")),
+                       "made by Mkntuple $Revision: 1.13 $")),
     event_(0),
     logfilename_("Mkntuple.log"),
     log_(new std::ofstream(logfilename_.c_str())),
@@ -231,38 +231,34 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
       int maxcount=1;
 
       // edmEVentAddon does not use getByLabel since it is just an 
-      // add-on for edm::Event; therefore, it must be handled separately
+      // add-on for edm::Event, so don't crash if there is no
+      // getByLabel
 
-      if ( buffer == "edmEventAddon" )
+      if ( buffer != "edmEventAddon" )
         {
-          if  ( field.size() > 1 ) label = field[1];
+          if ( field.size() < 3 )
+            // Have a tantrum!
+            throw edm::Exception(edm::errors::Configuration,
+                                 "cfg error: "
+                                 "you need at least 3 fields in first line of"
+                                 " each buffer block\n"
+                                 "\tyou blocks you stones you worse than "
+                                 "senseless things...");
         }
-      else if ( field.size() > 2 )
-        {
-          // all other buffers need at least 3 fields
-          // getByLabel
-          label  = field[1];   
 
-          // max object count to store
-          maxcount  = atoi(field[2].c_str());  
+      // getByLabel
+      if ( field.size() > 1 ) label = field[1];
 
-          // n-tuple variable prefix
-          if ( field.size() > 3 ) 
-            prefix = field[3]; 
+      // max object count to store
+      if ( field.size() > 2 ) maxcount  = atoi(field[2].c_str());  
 
-          else
-            // replace double colon with an "_"
-            prefix += string("_") + kit::replace(label, "::", "_");
-        }
+      // n-tuple variable prefix
+      if ( field.size() > 3 ) 
+        prefix = field[3]; 
       else
-        // Have a tantrum!
-        throw edm::Exception(edm::errors::Configuration,
-                             "cfg error: "
-                             "you need at least 3 fields in first line of"
-                             " each buffer block\n"
-                             "\tyou blocks you stones you worse than "
-                             "senseless things...");
-      
+        // replace double colon with an "_"
+        prefix += string("_") + kit::replace(label, "::", "_");
+
       //DB
       if ( DEBUG > 1 )
         cout 
