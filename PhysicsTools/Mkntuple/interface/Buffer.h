@@ -18,8 +18,10 @@
 //                                    mkntanalyzer.py
 //                   Wed Aug 25 HBP - merged UserBuffer into Buffer and
 //                              added BufferAddon, BufferHelper
+//                   Fri Aug 27 HBP - on second thoughts...go back to a
+//                                    UserBuffer class!
 //
-// $Id: Buffer.h,v 1.13 2010/08/27 01:34:53 prosper Exp $
+// $Id: Buffer.h,v 1.14 2010/08/27 04:39:03 prosper Exp $
 //
 //
 // If using Python, include its header first to avoid annoying compiler
@@ -50,7 +52,6 @@ enum BufferType
   {
     EVENT,            // Buffer for event
     RUNINFO,          // Buffer for RunInfo object
-    ADDON,            // Buffer that adds methods to a DataFormats class
     HELPER,           // Buffer that performs complicated accesses
     DEFAULT
   };
@@ -424,8 +425,7 @@ struct Buffer  : public BufferThing
                   debug_);
   }
 
-  /** Fill buffer.
-   */
+  /// Fill buffer.
   bool fill(const edm::Event& event)
   {
     if ( debug_ > 0 ) 
@@ -509,169 +509,13 @@ private:
 
 
 // ---------------------------------------------------------------------
-// Buffer to handle Addons
 // ---------------------------------------------------------------------
-///
+/// Buffer to handle Helpers.
 template <typename X, typename Y, bool SINGLETON>
-struct BufferAddon  : public BufferThing
+struct UserBuffer  : public BufferThing
 {
   ///
-  BufferAddon() 
-    : out_(0),
-      label_(""),
-      label1_(""),
-      label2_(""),
-      prefix_(""),
-      buffertype_(ADDON),
-      var_(std::vector<VariableDescriptor>()),
-      maxcount_(0),
-      count_(0),
-      singleton_(SINGLETON),
-      message_(""),
-      debug_(0)
-  {
-    std::cout << "Buffer created for objects of type: " 
-              << name()
-              << std::endl;
-  }
-
-  ///
-  virtual ~BufferAddon() {}
-
-  /** Initialize buffer.
-      @param out - output ntuple file.
-      @param label - getByLabel
-      @param prefix - prefix for variable names (and internal name of buffer)
-      @param var - variable descriptors
-      @param maxcount - maximum count for this buffer
-      @param log - log file
-   */
-  void
-  init(otreestream& out,
-       std::string  label, 
-       std::string  prefix,
-       std::vector<VariableDescriptor>& var,
-       int  maxcount,
-       std::ofstream& log,
-       int debug=0)
-  {
-    out_    = &out;
-    label_  = label;
-    prefix_ = prefix;
-    var_    = var;
-    maxcount_  = maxcount;
-    debug_  = debug;
-
-    initBuffer<Y>(out,
-                  label_,
-                  label1_,
-                  label2_,
-                  prefix_,
-                  var_,
-                  variables_,
-                  count_,
-                  singleton_,
-                  maxcount_,
-                  log,
-                  debug_);
-  }
-  
-  /** Fill buffer.
-   */
-  bool fill(const edm::Event& event)
-  {
-    if ( debug_ > 0 ) 
-      std::cout << BLACK
-                << "Begin BufferAddon::fill\n\t" 
-                << RED 
-                << "X: " << boost::python::type_id<X>().name() << "\n\t"
-                << GREEN 
-                << "Y: " << boost::python::type_id<Y>().name()
-                << BLACK
-                << std::endl;
-    
-    count_ = 0; // reset count, just in case we have to bail out
-    message_ = "";
-    
-    // Note: We use the handle edm::Handle<X> for singletons and
-    //       the handle edm::Handle< View<X> > for collections.
-    
-    if ( singleton_ )
-      {
-        edm::Handle<X> handle;
-        if ( ! getByLabel(event, handle, label1_, label2_, message_,
-                          buffertype_) )
-          return false;
-        
-        // OK handle is valid, so extract data for all variables. 
-        // We must pass the extractable object to its add-on object
-        const Y object(*handle);
-        callMethods(0, object, variables_, debug_);        
-      }
-    else
-      {
-        edm::Handle< edm::View<X> > handle;      
-        if ( ! getByLabel(event, handle, label1_, label2_, message_,
-                          buffertype_) )
-          return false;
-        
-        // OK handle is valid, so extract data for all variables      
-        // For the object count, use the smaller of handle size and maxcount.
-        
-        count_ = (int)handle->size() < maxcount_ 
-          ? handle->size() 
-          : maxcount_;
-        
-        for(int j=0; j < count_; j++)
-          {
-            const Y object((*handle)[j]);
-            callMethods(j, object, variables_, debug_);
-          }
-      }
-  
-    if ( debug_ > 0 ) 
-      std::cout << BLACK << "End Buffer::fill " << std::endl; 
-    return true;
-  }
-  
-  std::string& message() { return message_; }
-
-  std::string name() { return boost::python::type_id<Y>().name(); }
-
-  /// Shrink buffer size using specified array of indices.
-  void shrink(std::vector<int>& index)
-  {
-    count_ = index.size();
-    for(unsigned i=0; i < variables_.size(); ++i)
-      for(int j=0; j < count_; ++j)
-        variables_[i].value[j] = variables_[i].value[index[j]];
-  }
-
-private:
-  otreestream* out_;  
-  std::string  label_;
-  std::string  label1_;
-  std::string  label2_;
-  std::string  prefix_;
-  BufferType buffertype_;
-  std::vector<VariableDescriptor> var_;
-  std::vector<Variable<Y> > variables_;
-  int  maxcount_;
-  int  count_;
-  bool singleton_;
-  std::string message_;
-  int  debug_;
-};
-
-// ---------------------------------------------------------------------
-// ---------------------------------------------------------------------
-/** Buffer to handle Helpers.
- */
-template <typename X, typename Y, bool SINGLETON>
-struct BufferHelper  : public BufferThing
-{
-  ///
-  BufferHelper() 
+  UserBuffer() 
     : out_(0),
       label_(""),
       label1_(""),
@@ -691,7 +535,7 @@ struct BufferHelper  : public BufferThing
   }
 
   ///
-  virtual ~BufferHelper() {}
+  virtual ~UserBuffer() {}
 
   /** Initialize buffer.
       @param out - output ntuple file.
@@ -731,13 +575,12 @@ struct BufferHelper  : public BufferThing
                   debug_);
   }
   
-  /** Fill buffer.
-   */
+  /// Fill buffer.
   bool fill(const edm::Event& event)
   {
     if ( debug_ > 0 ) 
       std::cout << BLACK
-                << "Begin BufferHelper::fill\n\t" 
+                << "Begin UserBuffer::fill\n\t" 
                 << RED 
                 << "X: " << boost::python::type_id<X>().name() << "\n\t"
                 << GREEN 
@@ -747,7 +590,14 @@ struct BufferHelper  : public BufferThing
     
     count_ = 0; // reset count, just in case we have to bail out
     message_ = "";
-    
+
+    // Create helper.
+    // A helper provides the following methods in addition to its accessors:
+    // 1. void cache(object-to-be-helped) 
+    // 2. int  size() const       number of items/cached object
+    // 3. void set(int index)     set index of items to be returned
+    Y helper(event);
+ 
     // Note: We use the handle edm::Handle<X> for singletons and
     //       the handle edm::Handle< View<X> > for collections.
     
@@ -760,16 +610,12 @@ struct BufferHelper  : public BufferThing
         
         // OK handle is valid, so extract data for all variables. 
 
-        // A helper object provides the following methods in
-        // addition to its accessors:
-        // 1. int size() const;       Return number of items
-        // 2. void at(int index);     Set index
-        const Y object(*handle);
+        helper.cache(*handle); // cache object
         int k = 0;
-        while ( (k < object.size()) && (count_ < maxcount_) )
+        while ( (k < helper.size()) && (count_ < maxcount_) )
           {
-            ((Y)object).at(k); // need temporary violation of "constness"
-            callMethods(count_, object, variables_, debug_);
+            helper.set(k);    // set index of items to be returned
+            callMethods(count_, (const Y)helper, variables_, debug_);
             k++;
             count_++;
           }
@@ -788,12 +634,12 @@ struct BufferHelper  : public BufferThing
         
         for(int j=0; j < objectcount; j++)
           {
-            const Y object((*handle)[j]);
+            helper.cache((*handle)[j]);
             int k = 0;
-            while ( (k < object.size()) && (count_ < maxcount_) )
+            while ( (k < helper.size()) && (count_ < maxcount_) )
               {
-                ((Y)object).at(k); // need temporary violation of "constness"
-                callMethods(count_, object, variables_, debug_);
+                helper.set(k);
+                callMethods(count_, (const Y)helper, variables_, debug_);
                 k++;
                 count_++;
               }
@@ -801,7 +647,7 @@ struct BufferHelper  : public BufferThing
       }
   
     if ( debug_ > 0 ) 
-      std::cout << BLACK << "End BufferHelper::fill " << std::endl; 
+      std::cout << BLACK << "End UserBuffer::fill " << std::endl; 
     return true;
   }
   

@@ -1,6 +1,6 @@
 // ----------------------------------------------------------------------------
-// Created: Thu Aug 26 21:42:20 2010 by mkplugins.py
-// $Revision: 1.9 $
+// Created: Sun Aug 29 19:12:37 2010 by mkplugins.py
+// $Revision: 1.11 $
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/Buffer.h"
 
@@ -139,6 +139,11 @@ typedef Buffer<pat::Muon, false> patMuon_t;
 DEFINE_EDM_PLUGIN(BufferFactory, patMuon_t,
                   "patMuon");
 
+#include "DataFormats/PatCandidates/interface/PFParticle.h"
+typedef Buffer<pat::PFParticle, false> patPFParticle_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patPFParticle_t,
+                  "patPFParticle");
+
 #include "DataFormats/PatCandidates/interface/Photon.h"
 typedef Buffer<pat::Photon, false> patPhoton_t;
 DEFINE_EDM_PLUGIN(BufferFactory, patPhoton_t,
@@ -148,6 +153,26 @@ DEFINE_EDM_PLUGIN(BufferFactory, patPhoton_t,
 typedef Buffer<pat::Tau, false> patTau_t;
 DEFINE_EDM_PLUGIN(BufferFactory, patTau_t,
                   "patTau");
+
+#include "DataFormats/PatCandidates/interface/TriggerAlgorithm.h"
+typedef Buffer<pat::TriggerAlgorithm, false> patTriggerAlgorithm_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patTriggerAlgorithm_t,
+                  "patTriggerAlgorithm");
+
+#include "DataFormats/PatCandidates/interface/TriggerFilter.h"
+typedef Buffer<pat::TriggerFilter, false> patTriggerFilter_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patTriggerFilter_t,
+                  "patTriggerFilter");
+
+#include "DataFormats/PatCandidates/interface/TriggerObject.h"
+typedef Buffer<pat::TriggerObject, false> patTriggerObject_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patTriggerObject_t,
+                  "patTriggerObject");
+
+#include "DataFormats/PatCandidates/interface/TriggerPath.h"
+typedef Buffer<pat::TriggerPath, false> patTriggerPath_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patTriggerPath_t,
+                  "patTriggerPath");
 
 #include "DataFormats/CaloRecHit/interface/CaloCluster.h"
 typedef Buffer<reco::CaloCluster, false> recoCaloCluster_t;
@@ -418,6 +443,11 @@ DEFINE_EDM_PLUGIN(BufferFactory, L1GlobalTriggerObjectMapRecord_t,
 typedef Buffer<L1GlobalTriggerReadoutRecord, true> L1GlobalTriggerReadoutRecord_t;
 DEFINE_EDM_PLUGIN(BufferFactory, L1GlobalTriggerReadoutRecord_t,
                   "L1GlobalTriggerReadoutRecord");
+
+#include "DataFormats/PatCandidates/interface/TriggerEvent.h"
+typedef Buffer<pat::TriggerEvent, true> patTriggerEvent_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patTriggerEvent_t,
+                  "patTriggerEvent");
 
 #include "DataFormats/METReco/interface/BeamHaloSummary.h"
 typedef Buffer<reco::BeamHaloSummary, true> recoBeamHaloSummary_t;

@@ -46,7 +46,7 @@
 //         Updated:  Sun Jan 17 HBP - add log file
 //                   Sun Jun 06 HBP - add variables.txt file
 //
-// $Id: Mkntuple.cc,v 1.13 2010/08/27 15:12:57 prosper Exp $
+// $Id: Mkntuple.cc,v 1.14 2010/08/27 15:43:59 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -109,7 +109,7 @@ private:
 Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   : output(otreestream(iConfig.getUntrackedParameter<string>("ntupleName"), 
                        "Events", 
-                       "made by Mkntuple $Revision: 1.13 $")),
+                       "made by Mkntuple $Revision: 1.14 $")),
     event_(0),
     logfilename_("Mkntuple.log"),
     log_(new std::ofstream(logfilename_.c_str())),
@@ -230,11 +230,11 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
       string prefix = buffer;
       int maxcount=1;
 
-      // edmEVentAddon does not use getByLabel since it is just an 
-      // add-on for edm::Event, so don't crash if there is no
+      // edmEVentAddon does not use getByLabel since it is just a 
+      // helper for edm::Event, so don't crash if there is no
       // getByLabel
 
-      if ( buffer != "edmEventAddon" )
+      if ( buffer.substr(0,8) != "edmEvent" )
         {
           if ( field.size() < 3 )
             // Have a tantrum!
@@ -255,7 +255,7 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
       // n-tuple variable prefix
       if ( field.size() > 3 ) 
         prefix = field[3]; 
-      else
+      else if (label != "")
         // replace double colon with an "_"
         prefix += string("_") + kit::replace(label, "::", "_");
 

@@ -5,7 +5,7 @@
 // Sub-Package: Mkntuple
 // Description: Specialized buffer for edm::EventAddon
 // Created:     Thu Aug 26, 2010 Harrison B. Prosper
-//$Revision: 1.3 $
+//$Revision: 1.4 $
 //-----------------------------------------------------------------------------
 #include "FWCore/Framework/interface/Event.h"
 #include "PhysicsTools/Mkntuple/interface/user.h"
@@ -13,11 +13,11 @@
 //-----------------------------------------------------------------------------
 ///
 template <>
-struct BufferAddon<edm::Event, 
-                   edm::EventAddon, true>  : public BufferThing
+struct UserBuffer<edm::Event, 
+                  edm::EventAddon, true>  : public BufferThing
 {
   ///
-  BufferAddon() 
+  UserBuffer() 
     : out_(0),
       label_(""),
       label1_(""),
@@ -35,7 +35,7 @@ struct BufferAddon<edm::Event,
   }
 
   ///
-  virtual ~BufferAddon() {}
+  virtual ~UserBuffer() {}
 
   /** Initialize buffer.
       @param out - output ntuple file.
@@ -83,7 +83,7 @@ struct BufferAddon<edm::Event,
   {
     if ( debug_ > 0 ) 
       std::cout << BLACK
-                << "Begin (specialized) BufferAddon::fill\n\t" 
+                << "Begin (specialized) UserBuffer::fill\n\t" 
                 << RED 
                 << "X: edm::EventAddon"
                 << BLACK
@@ -91,11 +91,12 @@ struct BufferAddon<edm::Event,
     count_ = 1;
     message_ = "";
 
-    const edm::EventAddon object(event);
-    callMethods(0, object, variables_, debug_);  
+    edm::EventAddon helper(event);
+    helper.cache(event);
+    callMethods(0, (const edm::EventAddon)helper, variables_, debug_);  
 
     if ( debug_ > 0 ) std::cout << BLACK
-                                << "End BufferAddon::fill" 
+                                << "End UserBuffer::fill" 
                                 << std::endl;
     return true;
   }

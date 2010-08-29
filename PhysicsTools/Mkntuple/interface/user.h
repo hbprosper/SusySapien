@@ -10,7 +10,7 @@
 //              Tue Aug 24, 2010 HBP - add HcalNoiseRBXCaloTower
 //                                   - add TriggerResultsAddon
 //                                   - add GenParticleAddon
-//$Revision: 1.6 $
+//$Revision: 1.7 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -22,73 +22,97 @@
 #include "FWCore/Framework/interface/Event.h"
 #include "DataFormats/METReco/interface/HcalNoiseRBX.h"
 //-----------------------------------------------------------------------------
-
-/** Abstract base class for helper classes.
- */
-class HelperThing
+/// Base class for helpers.
+template <typename X>
+class HelperFor
 {
 public:
-  HelperThing() {}
-  virtual ~HelperThing() {}
-  virtual int size() const=0;
-  virtual void at(int index)=0;
-};
+  HelperFor() : event(0), object(0), index(0), count(0) {}
 
-/** Add-on class for reco::GenParticle.
- */
+  HelperFor(const edm::Event& e) : event(&e), object(0), index(0), count(1) {}
+
+  virtual ~HelperFor() {}
+
+  /// cache object to be helped.
+  virtual void cache(const X& o) { object = &o; }
+
+  /// set index of item to be retrieved.
+  virtual void set(int ind) { index = ind; }
+
+  /// return number of items per cached object
+  virtual int  size() const { return count; }
+  ///
+  const edm::Event* event;
+  ///
+  const X* object;
+  ///
+  int index;
+  ///
+  int count;
+};
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 namespace reco
 {
-  class GenParticleAddon
+  //---------------------------------------------------------------------------
+  /// A helper class for reco::GenParticle.
+  class GenParticleAddon : public HelperFor<reco::GenParticle>
   {
   public:
     GenParticleAddon();
-    
-    /// pass reco::GenParticle object to GenParticleAddon object.
-    GenParticleAddon(const reco::GenParticle& o);
+    ///
+    GenParticleAddon(const edm::Event& e);
 
-    ~GenParticleAddon();
+    virtual ~GenParticleAddon();
 
+    /// Cache a GenParticle and initialize id map.
+    void cache(const reco::GenParticle& o);
+    ///
+    int   charge() const;
+    ///
+    int   pdgId() const;
+    ///
+    int   status() const;
+    ///
+    double   pt() const;
+    ///
+    double   eta() const;
+    ///
+    double   phi() const;
+    ///
+    double   mass() const;
     ///
     int firstMother() const;
-    
     ///
     int lastMother()  const;
-
     ///
     int firstDaughter() const;
-    
     ///
     int lastDaughter()  const;
     
   private:
-    // one mothers vector and daughters vector per GenParticle
+    // Filled once per cached object
     std::vector<int> mothers_;
     std::vector<int> daughters_;
 
-    // declare static so that we have one amap and one count per event
-    static std::map<std::string, int> amap;
-    static int count;
-    static int index;
+    // Filled once per event
+    std::map<std::string, int> amap;
   };
-
-  /** Helper class for HcalNoisRBX that unpacks the associated CaloTowers.
-   */
-  class HcalNoiseRBXCaloTower : public HelperThing
+  //---------------------------------------------------------------------------
+  /// Helper class for HcalNoisRBX that unpacks the associated CaloTowers.
+  class HcalNoiseRBXCaloTower : public HelperFor<reco::HcalNoiseRBX>
   {
   public:
     HcalNoiseRBXCaloTower();
     
     ///
-    HcalNoiseRBXCaloTower(const reco::HcalNoiseRBX& o);
+    HcalNoiseRBXCaloTower(const edm::Event& e);
     
     virtual ~HcalNoiseRBXCaloTower();
 
-    /// Required method.
-    void at(int index);
-    
-    /// Required method.
-    int size() const;
-    
+    /// cache CaloTowers info for current RBX.
+    void cache(const reco::HcalNoiseRBX& o);
+
     /// get the z-side of the tower (1/-1)
     int zside() const;
     
@@ -102,7 +126,6 @@ namespace reco
     double hadEnergy() const;
 
   private:
-    int index_;
     std::vector<int> zside_;
     std::vector<int> ieta_;
     std::vector<int> iphi_;
@@ -112,109 +135,71 @@ namespace reco
 
 namespace edm 
 {
-  /** Add-on class for TriggerResults.
-   */
-  class TriggerResultsAddon
+  //---------------------------------------------------------------------------
+  /// Helper class for TriggerResults.
+  class TriggerResultsAddon : public HelperFor<edm::TriggerResults>
   {
   public:
     TriggerResultsAddon();
     
-    /// pass edm::TriggerResults object to add-on object
-    TriggerResultsAddon(const edm::TriggerResults& o);
+    ///
+    TriggerResultsAddon(const edm::Event& e);
     
-    ~TriggerResultsAddon();
+    virtual ~TriggerResultsAddon();
     
     ///
     bool value(std::string tname) const;
-    
+
   private:
     static bool first;
-    const edm::TriggerResults* object_;
   };
-
-  /** Add-on class for edm::Event.
-   */
-  class EventAddon
+  //---------------------------------------------------------------------------
+  /// Helper class for edm::Event.
+  class EventAddon : public HelperFor<edm::Event>
   {
   public:
-    EventAddon();
-    
+    EventAddon();    
     ///
-    EventAddon(const edm::Event& o);
+    EventAddon(const edm::Event& e);
     
-    ~EventAddon();
+    virtual ~EventAddon();
     
     ///
     int run() const;
-
     ///
     int event() const;
-    
     ///
     int luminosityBlock() const;
-
     ///
     int bunchCrossing() const;
-
     ///
     int orbitNumber() const;
-
     ///
     bool isRealData() const;
-
     ///
     unsigned int unixTime() const;
-
     ///
     unsigned int nanosecondOffset() const;
-
-  private:
-    const edm::Event* object_;
   }; 
 }
 
 // ----------------------------------------------------------------------------
-// Deprecated:
+// Synonyms
 // ----------------------------------------------------------------------------
-class GParticle
+class GParticle : public reco::GenParticleAddon
 {
 public:
   GParticle();
-  GParticle(const reco::GenParticle& o);
-  ~GParticle();
-  int   charge() const;
-  int   pdgId() const;
-  int   status() const;
-  double   pt() const;
-  double   eta() const;
-  double   phi() const;
-  double   mass() const;
-  int firstMother() const;
-  int lastMother()  const;
-  int firstDaughter() const;
-  int lastDaughter()  const;
-    
-private:
-  const reco::GenParticle* object_;
-  std::vector<int> mothers_;
-  std::vector<int> daughters_;
-  static std::map<std::string, int> amap;
-  static int count;
-  static int index;
+  GParticle(const edm::Event& e);
+  virtual ~GParticle();
 };
 
-
-class triggerBits
+class triggerBits : public edm::TriggerResultsAddon
 {
 public:
   triggerBits();
-  triggerBits(const edm::TriggerResults& o);
-  ~triggerBits();
-  bool value(std::string tname) const;
-
-private:
-  static bool first;
-  const edm::TriggerResults* object_;
+  triggerBits(const edm::Event& e);
+  virtual ~triggerBits();
 };
 
 #endif

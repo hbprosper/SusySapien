@@ -28,6 +28,7 @@ S edm::ValueMap<reco::MuonMETCorrectionData>
 S edm::ValueMap<reco::MuonTimeExtra>
 S edmNew::DetSetVector<SiPixelCluster>
 S edmNew::DetSetVector<SiStripCluster>
+S pat::TriggerEvent
 S reco::BeamHaloSummary
 S reco::BeamSpot
 S reco::CSCHaloData
@@ -65,8 +66,13 @@ C vector<pat::Jet>
 C vector<pat::MET>
 C vector<pat::MHT>
 C vector<pat::Muon>
+C vector<pat::PFParticle>
 C vector<pat::Photon>
 C vector<pat::Tau>
+C vector<pat::TriggerAlgorithm>
+C vector<pat::TriggerFilter>
+C vector<pat::TriggerObject>
+C vector<pat::TriggerPath>
 C vector<reco::CaloCluster>
 C vector<reco::CaloJet>
 C vector<reco::CaloMET>
