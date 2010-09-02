@@ -19,9 +19,9 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Fri Apr 04 2008
-// $Id: kit.h,v 1.5 2010/06/20 18:30:51 prosper Exp $
+// $Id: kit.h,v 1.6 2010/08/12 03:00:56 prosper Exp $
 //
-//$Revision: 1.5 $
+//$Revision: 1.6 $
 //-----------------------------------------------------------------------------
 #include <iostream>
 #include <fstream>
@@ -249,9 +249,15 @@ struct kit
   Reflex::Member getMethod(std::string classname,
                            std::string methodname,
                            std::string args=std::string("(void)"));
+
+
   ///
   static
-  bool           methodValid(Reflex::Member& method);
+  Reflex::Member getDataMember(std::string classname,
+                               std::string membername);
+  ///
+  static
+  bool           memberValid(Reflex::Member& member);
 
   ///
   static
@@ -273,15 +279,24 @@ struct kit
                               std::string methodrecord,
                               std::vector<kit::ValueThing*>& values,
                               std::vector<void*>& args);
-
+  ///
+  static
+  void*          datamemberValue(Reflex::Member& member, 
+                                 void* address);
   ///
   static
   void*          invokeMethod(Reflex::Member& method, 
                               void* address, 
-                              std::vector<void*>& args = DEFARGS);
+                              std::vector<void*>& args=DEFARGS,
+                              bool deallocate=false);
+
   ///
   static
-  std::string    getReturnClass(Reflex::Member& method);
+  void           deallocateMemory(Reflex::Member& member, void* address);
+
+  ///
+  static
+  std::string    returnType(Reflex::Member& method);
 
 
   ///
@@ -368,12 +383,12 @@ struct kit
     std::vector<kit::ValueThing*> values2_;
     std::vector<void*> args2_;
 
-    bool simple_;
-    bool useCINT_;
+    bool simplemethod_;
+    bool smartpointer_;
+    bool datamember_;
 
-    std::string declareobject_;
-    std::string invokeget_;
-
+    Reflex::Member isnullmethod_;
+    Reflex::Member getmethod_;
   };
 
   // ------------------------------------------------------------------------

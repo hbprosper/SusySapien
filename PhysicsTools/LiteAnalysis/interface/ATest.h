@@ -21,9 +21,11 @@ class Aclass
 {
 public:
   Aclass() : val(0) {}
+  Aclass(const Aclass& x) {val = x.val; }
   ~Aclass() {}
   void say() { std::cout << "I'm an Aclass thing" << std::endl; } 
-  double value(){return val++;}
+  void set(double x)  { val = x; }
+  double value(){return val; }
 private:
   double val;
 };
@@ -81,8 +83,11 @@ public:
 
   ~ATest() {}
 
+  double  avalue;
 
   Aclass* ptrToA() const { return a_; }
+  Aclass& refToA() const { return *a_; }
+  Aclass  toA()    const { return *a_; }
 
   Bclass& getB() 
   {
