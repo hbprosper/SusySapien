@@ -2,8 +2,16 @@
  <class name="GEvent"/>
  <class name="GParticle"/>
  <class name="triggerBits"/>
+
+ <class name="HelperFor<reco::GenParticle>"/>
  <class name="reco::GenParticleAddon"/>
+
+ <class name="HelperFor<reco::HcalNoiseRBXCaloTower>"/>
  <class name="reco::HcalNoiseRBXCaloTower"/>
+
+ <class name="HelperFor<edm::TriggerResultsAddon>"/>
  <class name="edm::TriggerResultsAddon"/>
+
+ <class name="HelperFor<edm::EventAddon>"/>
  <class name="edm::EventAddon"/>
 </lcgdict>

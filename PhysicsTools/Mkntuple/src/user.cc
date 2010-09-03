@@ -6,7 +6,7 @@
 // Updated:     Mon Mar 08, 2010 Sezen & HBP - add triggerBits class
 //              Tue Aug 24, 2010 HBP - add HcalNoiseRBXHelper
 //              Thu Sep 02, 2010 HBP - update to new version of HelperFor
-//$Revision: 1.7 $
+//$Revision: 1.8 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -135,6 +135,7 @@ GenParticleAddon::~GenParticleAddon() {}
 int      GenParticleAddon::charge() const { return object->charge(); }
 int      GenParticleAddon::pdgId()  const { return object->pdgId(); }
 int      GenParticleAddon::status() const { return object->status(); }
+double   GenParticleAddon::energy() const { return object->energy(); }
 double   GenParticleAddon::pt()     const { return object->pt(); }
 double   GenParticleAddon::eta()    const { return object->eta(); }
 double   GenParticleAddon::phi()    const { return object->phi(); }

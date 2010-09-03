@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # Create the skeleton of a user plugin
 # Created: 27-Aug-2010 Harrison B. Prosper
-#$Revision:$
+#$Revision: 1.1 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -18,16 +18,18 @@ if not os.environ.has_key("CMSSW_BASE"):
 	print "\t**you must first set up CMSSW"
 	sys.exit(0)
 LOCALBASE = "%s/src" % os.environ['CMSSW_BASE']
-PWD = os.environ['PWD']
+PWD = os.path.realpath(os.environ['PWD'])
 #------------------------------------------------------------------------------
 # Determine project directory
 project = split(replace(PWD, LOCALBASE + "/", ""), '/')
 if len(project) < 2:
-	print "\t**must run mkuserplugins in a subpackage directory"
-	print "\t**Example: Mkntuple is a subpackage of PhysicsTools"
+	print "\t**Please run mkuserplugins in your subpackage directory"
 	sys.exit(0)
 
 PACKAGE, SUBPACKAGE = project[:2]
+print "Package:     %s" % PACKAGE
+print "Sub-package: %s" % SUBPACKAGE
+
 PROJECTBASE = "%s/%s/%s"   % (LOCALBASE, PACKAGE, SUBPACKAGE)
 PLUGINDIR = "%s/plugins"   % PROJECTBASE  
 SRCDIR    = "%s/src"       % PROJECTBASE
@@ -82,15 +84,21 @@ def wrpluginheader(names):
 // Description: Mkntuple helper class for %(classname)s
 // Created:     %(time)s
 // Author:      
-//$Revision:$
+//$Revision: 1.1 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
 #include <vector>
 #include <map>
-#include "PhysicsTools/Mkntuple/interface/CurrentEvent.h"
-#include "PhysicsTools/Mkntuple/interface/user.h"
+#include "PhysicsTools/Mkntuple/interface/Helper.h"
 %(header)s
+//-----------------------------------------------------------------------------
+// Note: The following variables are automatically defined and available to
+//       all methods:
+//         1. config          pointer to configuration object
+//         2. event           pointer to the current event
+//         3. object          pointer to the current object
+//         4. count           count per object (default = 1)
 //-----------------------------------------------------------------------------
 '''
 	template_nonamespace = '''
@@ -98,17 +106,19 @@ def wrpluginheader(names):
 class %(name)s : public HelperFor<%(classname)s>
 {
 public:
-  %(name)s();
   ///
-  %(name)s(const edm::Event& e);
+  %(name)s();
 
   virtual ~(name)s();
 
-  // Uncomment if this class has a customized cache method
-  // void cache(const %(classname)s& o);
+  // Uncomment if this class does some event-level analysis
+  // virtual void analyzeEvent();
+
+  // Uncomment if this class does some object-level analysis
+  // virtual void analyzeObject();
   
   // -- Access Methods
-  // -- These are the accessors available to the user.
+
   // -- Note: access methods must be declared const
   // -- e.g., int pt() const;
   
@@ -124,20 +134,22 @@ namespace %(namespace)s
   class %(name)s : public HelperFor<%(classname)s>
   {
   public:
-    %(name)s();   
-    ///
-    %(name)s(const edm::Event& o);
+	///
+	%(name)s();
 
-    virtual ~%(name)s();
+	virtual ~%(name)s();
 
-    // Uncomment if this class has a customized cache method
-    // void cache(const %(classname)s& o);
+	// Uncomment if this class does some event-level analysis
+	// virtual void analyzeEvent();
+	 
+	// Uncomment if this class does some object-level analysis
+	// virtual void analyzeObject();
   
-    // -- Access Methods
-    // -- These are the accessors available to the user.
-    // -- Note: access methods must be declared const
-    // -- e.g., int pt() const;
-  
+	// -- Access Methods
+
+	// -- Note: access methods must be declared const
+	// -- e.g., int pt() const;
+	 
   private:
     // -- internals
   };
@@ -150,7 +162,7 @@ namespace %(namespace)s
 	else:
 		record = template_header + template_withnamespace
 	record = record % names
-		
+
 	out  = open(filename, "w")
 	out.write(record)
 	out.close()
@@ -162,38 +174,38 @@ def wrplugincode(names):
 // Description: Mkntuple helper class for %(classname)s
 // Created:     %(time)s
 // Author:      
-//$Revision:$
+//$Revision: 1.1 $
 //-----------------------------------------------------------------------------
 #include "%(package)s/%(subpackage)s/interface/%(filename)s.h"
 //-----------------------------------------------------------------------------
 using namespace std;
 %(usingnamespace)s
 //-----------------------------------------------------------------------------
-%(name)s::%(name)s() {}
-  
-%(name)s::%(name)s(const edm::Event& e)
-  : HelperFor<%(classname)s>(e) {}
+// This constructor is called once per job
+%(name)s::%(name)s()
+  : HelperFor<%(classname)s>() {}
     
 %(name)s::~%(name)s() {}
 
-// -- Write customized cache method if default in HelperFor is inadequate
-//void %(name)s::cache(const %(classname)s& o)
+// -- Called once per event
+//void %(name)s::analyzeEvent()
 //{
-//  object = &o; // cache a pointer to object to be helped
-//  count  = 1;  // change as appropriate
 //
-//  -- some code --
+//}
+
+// -- Called once per object
+//void %(name)s::analyzeObject()
+//{
 //
-//  return  -- some-value --
 //}
 
 // -- Access Methods
 //double %(name)s::someMethod(...)  const
 //{
-//  -- some-code --
-//  return  -- some-value --
+//  return  //-- some-value --
 //}
 ''' % names
+
 	filename = "%(srcdir)s/%(filename)s.cc" % names
 	out  = open(filename, "w")
 	out.write(template)
@@ -202,7 +214,7 @@ using namespace std;
 def wrplugin(names):	
 	template = '''// ----------------------------------------------------------------------------
 // Created: %(time)s by mkuserplugin.py
-//$Revision:$
+//$Revision: 1.1 $
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/Buffer.h"
 #include "%(package)s/%(subpackage)s/interface/%(filename)s.h"
@@ -210,7 +222,7 @@ typedef UserBuffer<%(classname)s, %(fullname)s, %(ctype)s>
 %(buffername)s_t;
 DEFINE_EDM_PLUGIN(BufferFactory, %(buffername)s_t,
                   "%(buffername)s");\n''' % names
-	
+
 	filename = "%(plugindir)s/userplugin_%(filename)s.cc" % names
 	out  = open(filename, "w")
 	out.write(template)
@@ -337,6 +349,12 @@ def main():
 	if find(record, pkg) < 0:
 		updated = True
 		record += "\n<use name=%s>\n" % pkg
+
+	pkg = '%(package)s/%(subpackage)s' % names
+	if find(record, pkg) < 0:
+		updated = True
+		record += "\n<use name=%s>\n" % pkg
+		
 	if find(record, filename) < 0:
 		updated = True
 		record += "<library file=userplugin_%(filename)s.cc "\
@@ -352,20 +370,49 @@ def main():
 	#------------------------------------------------------------------------
 	updated = False
 	classesfile = "%s/classes.h" % SRCDIR
+	
 	if not os.path.exists(classesfile):
 		updated = True
 		out = open(classesfile, 'w')
-		record ='''$Revision:$
-%(header)s
-		'''
+		record ='''//$Revision: 1.1 $
+//--------------------------------------------------------------------''' % \
+		names
 		out.write(record)
 		out.close()
-	record = open(classesfile).read()
-	header = '%(package)s/%(subpackage)s/interface/%(filename)s.h' % names
-	if find(record, header) < 0:
-		updated = True
-		record +='#include "%s"\n' % header
 
+
+	record = open(classesfile).read()
+
+	# update includes
+	
+	getincludes = re.compile("#include .*(?=\n)", re.M)
+	includes = getincludes.findall(record)
+	header = '%(package)s/%(subpackage)s/interface/%(filename)s.h' % names
+	
+	if len(includes) == 0:
+		updated = True
+		record += '\n#include "%s"' % header
+	else:
+		recincs  = joinfields(includes, '\n')
+		if find(recincs, header) < 0:
+			updated = True
+			newrec = '%s\n#include "%s"\n' % (includes[-1], header)
+			record = replace(record, includes[-1], newrec)
+
+	# update namespace
+	
+	if find(record, "namespace") < 0:
+		record += "\nnamespace\n{\n}\n"
+		
+	gettemplates = re.compile("(?<={)[^}]+", re.M)
+	rectemps     = gettemplates.findall(record)[0]
+	template = "HelpFor<%(classname)s>" % names
+	if find(rectemps, template) < 0:
+		updated = True
+		newrec = "  %s t_%s;\n}" % (template,
+										names['buffername'])
+		record = replace(record, "}", newrec)
+	
 	if updated:
 		open(classesfile,'w').write(record)
 		print "\tupdated:       src/classes.h"
@@ -383,10 +430,13 @@ def main():
 		'''
 		out.write(record)
 		out.close()
+		
 	record = open(classesfile).read()
 	if find(record, fullname) < 0:
 		updated = True
-		rec = ' <class name="%(fullname)s"/>\n</lcgdict>' % names
+		rec = ' <class name="HelperFor<%(classname)s>"/>\n'
+		rec +=' <class name="%(fullname)s"/>\n</lcgdict>'
+		rec = rec % names
 		record = replace(record, '</lcgdict>', rec)
 
 	if updated:
