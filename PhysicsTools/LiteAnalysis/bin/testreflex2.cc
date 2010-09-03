@@ -16,10 +16,9 @@
 #include "TSystem.h"
 
 #include "FWCore/FWLite/interface/AutoLibraryLoader.h"
-#include "PhysicsTools/LiteAnalysis/interface/kit.h"
+#include "PhysicsTools/LiteAnalysis/interface/ClassMembers.h"
 //-----------------------------------------------------------------------------
 using namespace std;
-using namespace Reflex;
 
 void fatal(string message)
 {
@@ -35,7 +34,7 @@ main(int argc, char** argv)
   AutoLibraryLoader::enable();
   cout << "done!" << endl;
 
-  kit::ClassMethods patmuon("pat::Muon", 3);
+  ClassMembers patmuon("pat::Muon", 3);
   
   vector<string>& getters = patmuon.getters();
   ofstream fout("patmuon_getters.txt");

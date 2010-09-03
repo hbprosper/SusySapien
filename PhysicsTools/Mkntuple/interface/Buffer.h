@@ -21,7 +21,7 @@
 //                   Fri Aug 27 HBP - on second thoughts...go back to a
 //                                    UserBuffer class!
 //
-// $Id: Buffer.h,v 1.14 2010/08/27 04:39:03 prosper Exp $
+// $Id: Buffer.h,v 1.15 2010/08/29 23:17:34 prosper Exp $
 //
 //
 // If using Python, include its header first to avoid annoying compiler
@@ -41,7 +41,7 @@
 #include "PhysicsTools/Mkntuple/interface/pluginfactory.h"
 #include "PhysicsTools/LiteAnalysis/interface/treestream.hpp"
 #include "PhysicsTools/LiteAnalysis/interface/kit.h"
-#include "PhysicsTools/LiteAnalysis/interface/Method.h"
+#include "PhysicsTools/LiteAnalysis/interface/MethodT.h"
 #include "SimDataFormats/GeneratorProducts/interface/GenRunInfoProduct.h"
 // ---------------------------------------------------------------------
 // We need a few templates to make the code generic.
@@ -74,13 +74,13 @@ struct Variable
     : name(namen),
       fname(f),
       value(std::vector<double>(count,0)),
-      function(Method<X>(f))
+      function(MethodT<X>(f))
   {}
 
   std::string         name;
   std::string         fname;
   std::vector<double> value;
-  Method<X>           function;
+  MethodT<X>          function;
 };
 
 /// Function to initialize a Buffer.
@@ -174,9 +174,9 @@ void initBuffer(otreestream& out,
       counter = "n" + prefix;        
       out.add(counter, count);
       std::cout << "      counter: " << counter << std::endl;
-      log << "int\t" 
-          << counter << "\t"
-          << "n"+objectname << "\t"
+      log << "int/" 
+          << counter << "/"
+          << "n"+objectname << "/"
           << 1 
           << std::endl;
     }
@@ -216,9 +216,9 @@ void initBuffer(otreestream& out,
 
       std::string name = prefix + "." + varname;
 
-      log << rtype << "\t" 
-          << name  << "\t"
-          << objectname + "_" + varname << "\t"
+      log << rtype << "/" 
+          << name  << "/"
+          << objectname + "_" + varname << "/"
           << maxcount 
           << std::endl;
         
@@ -596,8 +596,13 @@ struct UserBuffer  : public BufferThing
     // 1. void cache(object-to-be-helped) 
     // 2. int  size() const       number of items/cached object
     // 3. void set(int index)     set index of items to be returned
-    Y helper(event);
+
+    // Cache event in helper (using CurrentEvent::instance().get())
+    helper_.cacheEvent();
  
+    // Perform (optional) user event-level analysis
+    helper_.analyzeEvent();
+
     // Note: We use the handle edm::Handle<X> for singletons and
     //       the handle edm::Handle< View<X> > for collections.
     
@@ -610,12 +615,17 @@ struct UserBuffer  : public BufferThing
         
         // OK handle is valid, so extract data for all variables. 
 
-        helper.cache(*handle); // cache object
+        // cache object in helper
+        helper_.cacheObject(*handle);
+
+        // Perform (optional) user object-level analysis
+        helper_.analyzeObject();
+
         int k = 0;
-        while ( (k < helper.size()) && (count_ < maxcount_) )
+        while ( (k < helper_.size()) && (count_ < maxcount_) )
           {
-            helper.set(k);    // set index of items to be returned
-            callMethods(count_, (const Y)helper, variables_, debug_);
+            helper_.set(k);    // set index of items to be returned
+            callMethods(count_, (const Y)helper_, variables_, debug_);
             k++;
             count_++;
           }
@@ -634,12 +644,17 @@ struct UserBuffer  : public BufferThing
         
         for(int j=0; j < objectcount; j++)
           {
-            helper.cache((*handle)[j]);
+            // cache object in helper
+            helper_.cacheObject((*handle)[j]);
+
+            // Perform (optional) user object-level analysis
+            helper_.analyzeObject();
+
             int k = 0;
-            while ( (k < helper.size()) && (count_ < maxcount_) )
+            while ( (k < helper_.size()) && (count_ < maxcount_) )
               {
-                helper.set(k);
-                callMethods(count_, (const Y)helper, variables_, debug_);
+                helper_.set(k);
+                callMethods(count_, (const Y)helper_, variables_, debug_);
                 k++;
                 count_++;
               }
@@ -678,6 +693,9 @@ private:
   bool singleton_;
   std::string message_;
   int  debug_;
+
+  // helper object
+  Y helper_;
 };
 
 #endif

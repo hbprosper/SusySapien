@@ -42,6 +42,3 @@
 <flags EDM_PLUGIN=1>
 </library>
 
-<library file=userplugin_JetHelper.cc name=userplugin_JetHelper>
-<flags EDM_PLUGIN=1>
-</library>

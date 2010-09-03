@@ -5,7 +5,8 @@
 // Created:     Tue Jan 19, 2010 HBP
 // Updated:     Mon Mar 08, 2010 Sezen & HBP - add triggerBits class
 //              Tue Aug 24, 2010 HBP - add HcalNoiseRBXHelper
-//$Revision: 1.6 $
+//              Thu Sep 02, 2010 HBP - update to new version of HelperFor
+//$Revision: 1.7 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -22,12 +23,13 @@ using namespace edm;
 using namespace reco;
 using namespace std;
 //-----------------------------------------------------------------------------
-GenParticleAddon::GenParticleAddon() {}
-
-// This is called once per event
+// This is called once per job
 // Important: remember to initialize base class
-GenParticleAddon::GenParticleAddon(const edm::Event& e)
-  : HelperFor<reco::GenParticle>(e)
+GenParticleAddon::GenParticleAddon() : HelperFor<reco::GenParticle>() {}
+
+// Called once per event
+void
+GenParticleAddon::analyzeEvent()
 {
   // Initialize string representation/position map
   
@@ -68,20 +70,16 @@ GenParticleAddon::GenParticleAddon(const edm::Event& e)
     }
 }
 
-// cache object to be helped.
 void 
-GenParticleAddon::cache(const reco::GenParticle& o)
+GenParticleAddon::analyzeObject()
 {
-  // Important: be sure to cache pointer to object to be helped and
-  // set count variable correctly.
-  object = &o;
+  if ( object == 0 )
+    throw edm::Exception(edm::errors::Configuration,
+                         "\nGenParticleAddon - " 
+                         "object pointer is ZERO");
 
   // save only status = 3 particles
-  if ( object->status() == 3 )
-    {
-      count = 1;
-    }
-  else
+  if ( object->status() != 3 )
     {
       count = 0;
       return;
@@ -183,10 +181,7 @@ GenParticleAddon::lastDaughter() const
 //-----------------------------------------------------------------------------
 bool TriggerResultsAddon::first=true;
 
-TriggerResultsAddon::TriggerResultsAddon() {}
-  
-TriggerResultsAddon::TriggerResultsAddon(const edm::Event& e)
-  : HelperFor<edm::TriggerResults>(e)
+TriggerResultsAddon::TriggerResultsAddon() : HelperFor<edm::TriggerResults>()
 {}
     
 TriggerResultsAddon::~TriggerResultsAddon() {}
@@ -230,11 +225,8 @@ TriggerResultsAddon::value(std::string name) const
 //-----------------------------------------------------------------------------
 // Event helper
 //-----------------------------------------------------------------------------
-EventAddon::EventAddon() {}
-  
 ///
-EventAddon::EventAddon(const edm::Event& e)
-  : HelperFor<edm::Event>(e) {}
+EventAddon::EventAddon() : HelperFor<edm::Event>() {}
     
 EventAddon::~EventAddon() {}
 
@@ -267,19 +259,12 @@ unsigned int EventAddon::nanosecondOffset() const
 // HcalNoiseRBX helper
 //-----------------------------------------------------------------------------
 
-HcalNoiseRBXCaloTower::HcalNoiseRBXCaloTower() {}
-  
-HcalNoiseRBXCaloTower::HcalNoiseRBXCaloTower(const edm::Event& e)
-  : HelperFor<reco::HcalNoiseRBX>(e) {}
+HcalNoiseRBXCaloTower::HcalNoiseRBXCaloTower() 
+  : HelperFor<reco::HcalNoiseRBX>() {}
 
 void
-HcalNoiseRBXCaloTower::cache(const reco::HcalNoiseRBX& o)
+HcalNoiseRBXCaloTower::analyzeObject()
 {
-  // Important: Remember to cache pointer to object to be helped
-  object = &o;
-
-  // Cache results
-
   // loop over HPDs for given RBX
   for(std::vector<HcalNoiseHPD>::const_iterator 
         hpd = object->HPDsBegin(); hpd != object->HPDsEnd(); hpd++)
@@ -340,15 +325,11 @@ HcalNoiseRBXCaloTower::hadEnergy() const
     return -9999;
 }
 
-
 //-----------------------------------------------------------------------------
 // Synonyms:
 //-----------------------------------------------------------------------------
-GParticle::GParticle() {}
-GParticle::GParticle(const edm::Event& e) : GenParticleAddon(e) {}
+GParticle::GParticle() : GenParticleAddon() {}
 GParticle::~GParticle() {}
 
-//-----------------------------------------------------------------------------
-triggerBits::triggerBits() {}
-triggerBits::triggerBits(const edm::Event& e) : TriggerResultsAddon(e) {}
+triggerBits::triggerBits() : TriggerResultsAddon() {}
 triggerBits::~triggerBits() {}

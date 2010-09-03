@@ -4,7 +4,7 @@
 // Created: 16-Feb-2010 Harrison B. Prosper
 //          Based on code written in 2005
 // Updated: 28-May-2010 HBP - add first and last mothers
-//$Revision: 1.3 $
+//$Revision: 1.1 $
 //----------------------------------------------------------------------------
 #include <cmath>
 #include <iostream>
@@ -45,7 +45,7 @@ GEvent::GEvent()
     firstDaughter(std::vector<int>(MAXSIZE, 0)),
     lastDaughter (std::vector<int>(MAXSIZE, 0)),
 
-    pdgid  (std::vector<int>(MAXSIZE, 0)),
+    pdgId  (std::vector<int>(MAXSIZE, 0)),
     status (std::vector<int>(MAXSIZE, 0)),
     pt     (std::vector<float>(MAXSIZE, 0)),
     eta    (std::vector<float>(MAXSIZE, 0)),
@@ -59,7 +59,7 @@ GEvent::~GEvent() {}
 vector<int>
 GEvent::daughters(int index, int istat)
 {
-  nhep = pdgid.size();
+  nhep = pdgId.size();
   std::vector<int> d;
   if ( index < 0 || index >= nhep ) return d;
 
@@ -77,7 +77,7 @@ GEvent::daughters(int index, int istat)
              lastMother [dindex] == index) ) continue;
       vpid.push_back(PID());
       vpid.back().index = dindex;
-      vpid.back().pid = pdgid[dindex];
+      vpid.back().pid = pdgId[dindex];
     }
   std::sort(vpid.begin(), vpid.end());
   for(unsigned i=0; i < vpid.size(); i++) d.push_back(vpid[i].index);
@@ -87,10 +87,10 @@ GEvent::daughters(int index, int istat)
 int
 GEvent::find(int id, int start)
 {
-  nhep = pdgid.size();
+  nhep = pdgId.size();
   for(int index=start; index < nhep; index++)
     {
-      int pid = pdgid[index];
+      int pid = pdgId[index];
       if ( id == SUSY )
         {
           int apid = abs(pid);
@@ -107,7 +107,7 @@ string
 GEvent::name(int index)
 {
   if ( index < 0 || index >= nhep ) return "";
-  return kit::particleName(pdgid[index]);
+  return kit::particleName(pdgId[index]);
 }
 
 //---------------------------------------------------------------------------
@@ -117,7 +117,7 @@ GEvent::name(int index)
 void 
 GEvent::printTable(std::ostream& stream, int maxrows)
 {
-  nhep = pdgid.size();
+  nhep = pdgId.size();
 
   char record[512];
   sprintf(record, "%-4s %-16s %4s %4s %4s %4s %10s %10s %10s %10s %6s", 
@@ -129,7 +129,7 @@ GEvent::printTable(std::ostream& stream, int maxrows)
     {
       sprintf(record,
               "%4d %-16s %4d %4d %4d %4d %10.2e %10.2e %10.2e %10.2e %6d", 
-              i, kit::particleName(pdgid[i]).c_str(), 
+              i, kit::particleName(pdgId[i]).c_str(), 
               firstMother[i], 
               lastMother[i], 
               firstDaughter[i], 
@@ -162,7 +162,7 @@ GEvent::printTree(std::ostream& stream,
                   int           maxdepth,
                   int           depth)
 {
-  nhep = pdgid.size(); // Need number of particles
+  nhep = pdgId.size(); // Need number of particles
 
   depth++;  
 
@@ -170,7 +170,7 @@ GEvent::printTree(std::ostream& stream,
   if ( index >= nhep )  return;
   if ( depth >  (maxdepth <= 0 ? MAXDEPTH : maxdepth) ) return;    
   
-  int ppid = pdgid[index];
+  int ppid = pdgId[index];
 
   char record[255];
   if ( depth > 1 )
@@ -196,7 +196,7 @@ GEvent::printTree(std::ostream& stream,
   if ( printLevel > 1 )
     {
       stream << "\t" 
-             << pdgid[index] <<  " "
+             << pdgId[index] <<  " "
              << index
              << status[index];
     }
@@ -220,7 +220,7 @@ GEvent::printTree(std::ostream& stream,
       
       PID p; 
       p.index = dindex;
-      p.pid   = pdgid[dindex];
+      p.pid   = pdgId[dindex];
       d.push_back(p);
     }
   // Sort them in order of increasing PDG ID.

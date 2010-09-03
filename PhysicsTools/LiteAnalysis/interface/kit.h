@@ -19,9 +19,9 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Fri Apr 04 2008
-// $Id: kit.h,v 1.6 2010/08/12 03:00:56 prosper Exp $
+// $Id: kit.h,v 1.7 2010/09/02 02:26:20 prosper Exp $
 //
-//$Revision: 1.6 $
+//$Revision: 1.7 $
 //-----------------------------------------------------------------------------
 #include <iostream>
 #include <fstream>
@@ -281,15 +281,14 @@ struct kit
                               std::vector<void*>& args);
   ///
   static
-  void*          datamemberValue(Reflex::Member& member, 
-                                 void* address);
+  void*          datamemberValue(std::string& classname, void* address, 
+                                 std::string& membername);
   ///
   static
   void*          invokeMethod(Reflex::Member& method, 
                               void* address, 
                               std::vector<void*>& args=DEFARGS,
                               bool deallocate=false);
-
   ///
   static
   void           deallocateMemory(Reflex::Member& member, void* address);
@@ -297,99 +296,6 @@ struct kit
   ///
   static
   std::string    returnType(Reflex::Member& method);
-
-
-  ///
-  class ClassMethods
-  {
-  public:
-    ///
-    ClassMethods();
-    
-    ///
-    ClassMethods(std::string classname, int debug=0);
-
-
-    ~ClassMethods();
-
-    ///
-    std::vector<std::string>& baseclasses() { return baseclasses_; }
-
-    ///
-    std::vector<std::string>& getters() { return getters_; }
-
-    ///
-    std::vector<std::string>& setters() { return setters_; }
-
-  private:
-    std::string classname_;
-    int debug_;
-    std::vector<std::string> baseclasses_;
-    std::vector<std::string> getters_;
-    std::vector<std::string> setters_;
-    std::map<std::string, int> signatures_;
-
-    void  getmethods_(std::string classname, int depth=0);
-  };
-
-
-  ///
-  class Method
-  {
-  public:
-    ///
-    Method();
-    
-    ///
-    Method(std::string classname, std::string methodrecord,
-           int debug=0);
-
-    ~Method();
-
-    ///
-    void*  raddress(void* address);
-
-    ///
-    double operator()(void* address);
-
-    ///
-    Reflex::Member& method(int code)
-    { return code == 1 ? method1_ : method2_; }
-
-    ///
-    std::vector<kit::ValueThing*>& arguments(int code)
-    { return code == 1 ? values1_ : values2_; }
-
-    ///
-    std::string  str();
-
-    ///
-    //std::ostream& operator<<(std::ostream& os, kit::Method& o);
-    std::ostream& operator<<(std::ostream& os);
-
-  private:
-    std::string classname1_;
-    std::string methodrecord_;
-    int debug_;
-
-    std::string methodrecord1_;
-    Reflex::Member method1_;
-    std::vector<kit::ValueThing*> values1_;
-    std::vector<void*> args1_;
-
-    std::string classname2_;
-    std::string methodrecord2_;
-    Reflex::Member method2_;
-    std::vector<kit::ValueThing*> values2_;
-    std::vector<void*> args2_;
-
-    bool simplemethod_;
-    bool smartpointer_;
-    bool datamember_;
-
-    Reflex::Member isnullmethod_;
-    Reflex::Member getmethod_;
-  };
 
   // ------------------------------------------------------------------------
 

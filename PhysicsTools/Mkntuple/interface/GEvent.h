@@ -1,7 +1,7 @@
 #ifndef GEVENT_HPP
 #define GEVENT_HPP
 //-----------------------------------------------------------------------------
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 //-----------------------------------------------------------------------------
 #include <string>
 #include <iostream>
@@ -97,7 +97,7 @@ class GEvent
   std::vector<int>    firstDaughter;   
   std::vector<int>    lastDaughter;  
 
-  std::vector<int>    pdgid;           
+  std::vector<int>    pdgId;           
   std::vector<int>    status;          
   std::vector<float>  pt;
   std::vector<float>  eta;

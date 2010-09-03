@@ -5,10 +5,10 @@
 // Sub-Package: Mkntuple
 // Description: Specialized buffer for edm::EventAddon
 // Created:     Thu Aug 26, 2010 Harrison B. Prosper
-//$Revision: 1.4 $
+//$Revision: 1.5 $
 //-----------------------------------------------------------------------------
 #include "FWCore/Framework/interface/Event.h"
-#include "PhysicsTools/Mkntuple/interface/user.h"
+#include "PhysicsTools/Mkntuple/interface/HelperFor.h"
 #include "PhysicsTools/Mkntuple/interface/Buffer.h"
 //-----------------------------------------------------------------------------
 ///
@@ -91,9 +91,10 @@ struct UserBuffer<edm::Event,
     count_ = 1;
     message_ = "";
 
-    edm::EventAddon helper(event);
-    helper.cache(event);
-    callMethods(0, (const edm::EventAddon)helper, variables_, debug_);  
+
+    helper_.cacheObject(event);
+
+    callMethods(0, (const edm::EventAddon)helper_, variables_, debug_);  
 
     if ( debug_ > 0 ) std::cout << BLACK
                                 << "End UserBuffer::fill" 
@@ -122,6 +123,8 @@ private:
   bool singleton_;
   std::string message_;
   int  debug_;
+
+  edm::EventAddon helper_;
 };
 
 #endif

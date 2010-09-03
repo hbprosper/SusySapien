@@ -46,7 +46,7 @@
 //         Updated:  Sun Jan 17 HBP - add log file
 //                   Sun Jun 06 HBP - add variables.txt file
 //
-// $Id: Mkntuple.cc,v 1.14 2010/08/27 15:43:59 prosper Exp $
+// $Id: Mkntuple.cc,v 1.15 2010/08/29 23:17:34 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -60,6 +60,7 @@
 #include "PhysicsTools/LiteAnalysis/interface/kit.h"
 #include "PhysicsTools/Mkntuple/interface/pluginfactory.h"
 #include "PhysicsTools/Mkntuple/interface/CurrentEvent.h"
+#include "PhysicsTools/Mkntuple/interface/Configuration.h"
 #include "PhysicsTools/Mkntuple/interface/SelectedObjectMap.h"
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/EDAnalyzer.h"
@@ -109,7 +110,7 @@ private:
 Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   : output(otreestream(iConfig.getUntrackedParameter<string>("ntupleName"), 
                        "Events", 
-                       "made by Mkntuple $Revision: 1.14 $")),
+                       "made by Mkntuple $Revision: 1.15 $")),
     event_(0),
     logfilename_("Mkntuple.log"),
     log_(new std::ofstream(logfilename_.c_str())),
@@ -117,6 +118,9 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
     selectorcmd_("")
 {
   cout << "\nBEGIN Mkntuple" << endl;
+
+  // Cache config
+  Configuration::instance().set(iConfig);
 
   // Get optional analyzer name
   try

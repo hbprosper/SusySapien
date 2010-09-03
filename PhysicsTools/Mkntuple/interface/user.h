@@ -10,47 +10,24 @@
 //              Tue Aug 24, 2010 HBP - add HcalNoiseRBXCaloTower
 //                                   - add TriggerResultsAddon
 //                                   - add GenParticleAddon
-//$Revision: 1.7 $
+//              Thu Sep 02, 2010 HBP - move HelpFor to separate file
+//$Revision: 1.8 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
 #include <map>
-#include "DataFormats/HepMCCandidate/interface/GenParticle.h"
-#include "PhysicsTools/Mkntuple/interface/CurrentEvent.h"
-#include "DataFormats/Common/interface/TriggerResults.h"
+
 #include "FWCore/Common/interface/TriggerNames.h"
 #include "FWCore/Framework/interface/Event.h"
+#include "FWCore/ParameterSet/interface/ParameterSet.h"
+
+#include "DataFormats/HepMCCandidate/interface/GenParticle.h"
+#include "DataFormats/Common/interface/TriggerResults.h"
 #include "DataFormats/METReco/interface/HcalNoiseRBX.h"
-//-----------------------------------------------------------------------------
-/// Base class for helpers.
-template <typename X>
-class HelperFor
-{
-public:
-  HelperFor() : event(0), object(0), index(0), count(0) {}
 
-  HelperFor(const edm::Event& e) : event(&e), object(0), index(0), count(1) {}
-
-  virtual ~HelperFor() {}
-
-  /// cache object to be helped.
-  virtual void cache(const X& o) { object = &o; }
-
-  /// set index of item to be retrieved.
-  virtual void set(int ind) { index = ind; }
-
-  /// return number of items per cached object
-  virtual int  size() const { return count; }
-  ///
-  const edm::Event* event;
-  ///
-  const X* object;
-  ///
-  int index;
-  ///
-  int count;
-};
-//-----------------------------------------------------------------------------
+#include "PhysicsTools/Mkntuple/interface/CurrentEvent.h"
+#include "PhysicsTools/Mkntuple/interface/Configuration.h"
+#include "PhysicsTools/Mkntuple/interface/HelperFor.h"
 //-----------------------------------------------------------------------------
 namespace reco
 {
@@ -59,14 +36,15 @@ namespace reco
   class GenParticleAddon : public HelperFor<reco::GenParticle>
   {
   public:
-    GenParticleAddon();
     ///
-    GenParticleAddon(const edm::Event& e);
+    GenParticleAddon();
 
     virtual ~GenParticleAddon();
 
-    /// Cache a GenParticle and initialize id map.
-    void cache(const reco::GenParticle& o);
+    /// 
+    virtual void analyzeEvent();
+    /// 
+    virtual void analyzeObject();
     ///
     int   charge() const;
     ///
@@ -103,15 +81,13 @@ namespace reco
   class HcalNoiseRBXCaloTower : public HelperFor<reco::HcalNoiseRBX>
   {
   public:
-    HcalNoiseRBXCaloTower();
-    
     ///
-    HcalNoiseRBXCaloTower(const edm::Event& e);
+    HcalNoiseRBXCaloTower();
     
     virtual ~HcalNoiseRBXCaloTower();
 
-    /// cache CaloTowers info for current RBX.
-    void cache(const reco::HcalNoiseRBX& o);
+    ///
+    virtual void analyzeObject();
 
     /// get the z-side of the tower (1/-1)
     int zside() const;
@@ -140,10 +116,8 @@ namespace edm
   class TriggerResultsAddon : public HelperFor<edm::TriggerResults>
   {
   public:
-    TriggerResultsAddon();
-    
     ///
-    TriggerResultsAddon(const edm::Event& e);
+    TriggerResultsAddon();
     
     virtual ~TriggerResultsAddon();
     
@@ -158,9 +132,8 @@ namespace edm
   class EventAddon : public HelperFor<edm::Event>
   {
   public:
-    EventAddon();    
     ///
-    EventAddon(const edm::Event& e);
+    EventAddon();    
     
     virtual ~EventAddon();
     
@@ -190,7 +163,6 @@ class GParticle : public reco::GenParticleAddon
 {
 public:
   GParticle();
-  GParticle(const edm::Event& e);
   virtual ~GParticle();
 };
 
@@ -198,7 +170,6 @@ class triggerBits : public edm::TriggerResultsAddon
 {
 public:
   triggerBits();
-  triggerBits(const edm::Event& e);
   virtual ~triggerBits();
 };
 

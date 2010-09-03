@@ -15,7 +15,7 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Wed Jun 20 19:53:47 EDT 2007
 //         Updated:  Sat Oct 25 2008 - make matchInDeltaR saner
-// $Id: kit.cc,v 1.7 2010/08/27 01:34:53 prosper Exp $
+// $Id: kit.cc,v 1.8 2010/09/02 02:26:20 prosper Exp $
 //
 //
 //-----------------------------------------------------------------------------
@@ -296,19 +296,6 @@ kit::regex_sub(string& str, string expr, string rstr)
     return str;
 }
 
-// Needed for classGetterInfo
-
-string subbasicstr(string& str)
-{
-  return kit::replace(str, "std::basic_string<char>", "std::string");
-}
-
-bool skipmethod(string& str)
-{
-  string expr("TClass|TBuffer|TMember|operator|__get");
-  vector<string> v = kit::regex_findall(str, expr);
-  return v.size() > 0;
-}
 
 
 string vsqueeze(string& str)
@@ -588,6 +575,9 @@ void*
 kit::invokeMethod(Member& method, void* address, vector<void*>& args, 
                   bool deallocate)
 {
+  //DB
+  //cout << "\t\tCALL invokeMethod: " << method.Name() << endl;
+
   void* raddr=0;
   Type dtype = method.DeclaringType();
   if ( dtype.Name() == "" )
@@ -658,21 +648,31 @@ kit::invokeMethod(Member& method, void* address, vector<void*>& args,
 
 
 void*
-kit::datamemberValue(Member& member, void* address)
+kit::datamemberValue(string& classname, void* address, string& membername)
 {
+  //DB
+  //cout << "\t\tCALL datamemberValue: " 
+  //     << classname << "::" << membername << endl;
+
   void* raddr=0;
   if ( address == 0 )
     { 
       //cout << "** invokeMethod - object address is zero " << endl;
       return raddr;
     }
-  // Create model of class instance
-  Type   dtype = member.DeclaringType();
-  Object object(dtype, address);
 
-  // Now get the datamember
-  Object ovalue= object.Get(member.Name());
-  raddr = object.Address();
+  Type thing;
+  Type ctype = thing.ByName(classname);
+  //DB
+  //cout << "\t\tdeclaring class: " << ctype.Name() << endl;
+
+  // Model instance of class
+  Object object(ctype, address);
+
+  // Model datamember and get value
+  Object value = object.Get(membername);
+  raddr  = value.Address();
+
   return raddr;
 }
 
@@ -731,7 +731,7 @@ kit::decodeMethod(std::string classname,
     {
       throw cms::Exception("RegexFailure")
         << "Method - "
-        << "unable to get name from: " << RED << methodrecord << BLACK << endl;
+        << "unable to get name from: " << methodrecord << endl;
     }
   string methodname = what[0];
   
@@ -783,460 +783,6 @@ kit::decodeMethod(std::string classname,
   return method;
 }
 
-kit::Method::Method()
-  : classname1_(""),
-    methodrecord_(""),
-    debug_(0),
-    method1_(Member()),
-    classname2_(""),
-    method2_(Member()),
-    simplemethod_(true),
-    smartpointer_(false),
-    datamember_(false)
-{}
-
-// Model an instantiable method using the Reflex tools
-
-kit::Method::Method(std::string classname, 
-                    std::string methodrecord,
-                    int debug)
-  : classname1_(classname),
-    methodrecord_(methodrecord),
-    debug_(debug),
-    method1_(Member()),
-    classname2_(""),
-    method2_(Member()),
-    simplemethod_(true),
-    smartpointer_(false),
-    datamember_(false)
-{
-  if ( debug_ > 0 )
-    cout << "Method - classname<" << classname << ">\n" 
-         << "         method   <" << methodrecord << ">" << endl;
-
-  if ( classname == "" ) 
-    throw cms::Exception("InvalidClassname")
-      << "null classname " << endl;
-
-  // method could be of the form
-  // y = method1(...)->method2(...) or
-  // y = method1(...).method2(...)
-  // y = method1(...).datamember
-  boost::regex expr("(?<=[)]) *([-][>]|[.]) *(?=[a-zA-Z])");
-  boost::smatch what;
-  simplemethod_ = !boost::regex_search(methodrecord, what, expr);
-
-  // If method is compound, split it into its components
-  methodrecord1_ = methodrecord;
-  methodrecord2_ = "";
-  if ( !simplemethod_ )
-    {
-      string delim(what[0]);
-      if ( debug_ > 0 )
-        cout << "Method - delim<" << delim << ">" << endl;
-
-      kit::bisplit(methodrecord, methodrecord1_, methodrecord2_, delim);
-    }
-
-  if ( debug_ > 0 )
-    cout << "Method - method1<" << methodrecord1_ << ">\n" 
-         << "         method2<" << methodrecord2_ << ">" << endl;
-  
-  //----------------------------------------------
-  // method 1
-  //----------------------------------------------
-  method1_ = kit::decodeMethod(classname1_, methodrecord1_, values1_, args1_);
-
-  // If this is a simple method, we're done
-  if ( simplemethod_ )
-    {
-      if ( debug_ > 0 )
-        cout << "\tMethod - simple method(" << methodrecord1_ << ")" 
-             << endl;
-      return;
-    }
-  
-  //----------------------------------------------
-  // method 2 - 2nd part of a compound method
-  // Note: since this is a compound method it 
-  //       returns an object, either by pointer,
-  //       by reference, by value, or by smart 
-  //       pointer.
-  //----------------------------------------------
-
-  if ( debug_ > 0 )
-    cout << "\tMethod - compound method(" << methodrecord_ << ")" 
-         << endl;
-
-  classname2_ = kit::returnType(method1_);
-  if ( classname2_ == "" )
-    {
-      throw cms::Exception("returnTypeFailure")
-        << " can't get return class for method " << method1_.Name() << endl;
-    }
-
-  if ( debug_ > 0 )
-    cout << "\tMethod - return class(" << classname2_ << ")" << endl;
-
-  // Check for a data member
-  
-  boost::regex dregex("^[a-zA-Z_]+[a-zA-Z0-9_]*$");
-  boost::smatch dmatch;
-  bool datamember_ = boost::regex_search(methodrecord2_, dmatch, dregex);
-  if ( datamember_ )
-    {
-      if ( debug_ > 0 )
-        cout << "\tMethod - data member(" << methodrecord2_ << ")" << endl;
-      // This looks like a data member
-      method2_ = kit::getDataMember(classname2_, methodrecord2_);
-    }
-  else
-    {
-      if ( debug_ > 0 )
-        cout << "\tMethod - method2(" << methodrecord2_ << ")" << endl;
-      method2_ = kit::decodeMethod(classname2_, methodrecord2_, 
-                                   values2_, args2_);
-    }
-
-  // Complain if we did not find a valid method/data member
-  if ( !memberValid(method2_) )
-    {
-      throw cms::Exception("decodeMethodFailure")
-        << " can't decode method/data member: " 
-        << classname2_ << "::" 
-        << method2_.Name() << endl;
-    }
-
-  // If this is a data member we're done
-  if ( datamember_ ) return;
-
-  // Check if this is a CMSSW "smart" pointer, which are annoying: we
-  // first need to call isNull() to check for a null pointer.
-  // Then we need to call get() to return the address of the object
-  // pointer to by the smart pointer. If the address is not null,
-  // we can then call the method of the returned object. 
-  
-  isnullmethod_ = kit::getisNull(method1_);
-  smartpointer_ = memberValid(isnullmethod_);
-
-    if ( smartpointer_ )
-    { 
-      if ( debug_ > 0 )
-        cout << "Method - " << method1_.Name() 
-             << " returns a smart pointer" 
-             << endl << "\t of type: " << classname2_ << endl;
-      // get its "get" method
-      vector<kit::ValueThing*> vals;
-      std::vector<void*> args;
-      getmethod_ = kit::decodeMethod(classname2_, "get()", vals, args);
-    }
-}
-
-kit::Method::~Method() 
-{ 
-  for(unsigned i=0; i < values1_.size(); i++) delete values1_[i];
-  for(unsigned i=0; i < values2_.size(); i++) delete values2_[i];
-}
-
-void*
-kit::Method::raddress(void* address)
-{
-  debug_ = 1;
-  if ( debug_ > 0 ) cout << endl;
-
-  // This flag will be set to true by the invokeMethod routine if the
-  // returned entity is an object returned by value. invokeMethod
-  // allocates space for such an object and informs the its caller that
-  // it has done so by setting deallocate = true. If deallocate is true,
-  // then the allocated memory must be freed before we exit this routine.
-
-  bool deallocate=false;
-
-  // Call method 1
-  // method1_      object that models method 1
-  // address       address of object whose method is being called
-  // args_         the arguments of the method to be called
-  // deallocate    true is memory has been allocated, which therefore
-  //               needs to be deallocated
-
-  if ( debug_ > 0 )
-    //DB
-    cout << "Method::raddress - invokeMethod: " << methodrecord_ << endl;
-
-  void* raddr = kit::invokeMethod(method1_, address, args1_, deallocate);
-
-  // Remember address of returned object since we may have to
-  // deallocate space reserved for it by invokeMethod
-
-  void* address1 = raddr;
-
-  // simple methods return simple types whereas compound methods return
-  // objects.
-  if ( simplemethod_ )
-    {
-      if ( debug_ > 0 )
-        //DB
-        cout << "Method::raddress - simple method: " << methodrecord_ << endl;
-
-      // simple method with a (presumed) simple return type, so 
-      // address cannot be zero
-      if ( raddr == 0 )
-        {
-          // shouldn't happen!
-          throw cms::Exception("nullReturn") 
-            << " from method " << methodrecord_ << endl;
-        }
-    }
-  else
-    {
-      // This is a compound method, so it necessarily returns an object
-
-      if ( debug_ > 0 )
-        //DB
-        cout << "Method::raddress - compound method: " 
-             << methodrecord_ << endl;
-
-      // check if this is a smart pointer
-
-      if ( smartpointer_ )
-        {
-          // this is a smart pointer, so call its isNull() method
-          // and check whether it returns true or false.
-          void* addr = invokeMethod(isnullmethod_, raddr);
-          bool isnull = *static_cast<bool*>(addr);
-          if ( isnull )
-            {
-              // The object pointed to presumably does not exist
-              // so return a null pointer
-              raddr = 0;
-            }
-          else
-            {
-              // we have a valid pointer to an object, so call the 
-              // smart pointer's get() method to  get the address of 
-              // object it points to ...
-              raddr = invokeMethod(getmethod_, raddr);
-            }
-        }
-    }
-
-  // call second method on object returned by first method
-
-  if ( raddr != 0 )
-    {
-      if ( datamember_ )
-        raddr = datamemberValue(method2_, raddr);
-      else
-        raddr = invokeMethod(method2_, raddr, args2_);
-    }
-
-  // Check whether we need to deallocate memory
-  if ( deallocate ) 
-    {
-      kit::deallocateMemory(method1_, address1);
-    }
-
-  return raddr;
-}
-
-double
-kit::Method::operator()(void* address)
-{ 
-  void* raddr = raddress(address);
-  if ( raddr == 0 ) 
-    return 0;
-  else
-    return *static_cast<double*>(raddr); 
-}
-
-std::string
-kit::Method::str()
-{
-  ostringstream os;
-  os << "DeclaringType1 : " << method1_.DeclaringType().Name() << endl;
-  os << "   MethodName1 : " << method1_.Name() << endl;
-  os << "     Signature1: " << method1_.TypeOf().Name(SCOPED) << endl;
-  if ( values1_.size() > (unsigned)0 )
-    {
-      os << "     ArgValues: " << endl;
-      for(unsigned i=0; i < values1_.size(); i++)
-        {
-          os << "         " 
-             << i << " " << args1_[i]
-             << ": " << values1_[i]->str()  << endl;
-        }
-    }
-  if ( !memberValid(method2_) ) return os.str();
-
-  os << "DeclaringType2 : " << method2_.DeclaringType().Name() << endl;
-  os << "   MethodName2 : " << method2_.Name() << endl;
-  os << "     Signature2: " << method2_.TypeOf().Name(SCOPED) << endl;
-  if ( values2_.size() > (unsigned)0 )
-    {
-      os << "     ArgValues: " << endl;
-      for(unsigned i=0; i < values2_.size(); i++)
-        {
-          os << "         " 
-             << i << " " << args2_[i]
-             << ": " << values2_[i]->str()  << endl;
-        }
-    }
-  return os.str();
-}
-
-
-std::ostream&
-kit::Method::operator<<(std::ostream& os)
-{
-  os << str() << endl;
-  return os;
-}
-
-/** Recursively scan class and return all "getter" methods.
- */
-
-kit::ClassMethods::ClassMethods()
-  : classname_(""),
-    debug_(0),
-    baseclasses_(vector<string>()),
-    getters_(vector<string>()),
-    setters_(vector<string>()),
-    signatures_(map<string, int>())
-{}
-
-kit::ClassMethods::ClassMethods(string classname, int debug)
-  : classname_(classname),
-    debug_(debug),
-    baseclasses_(vector<string>()),
-    getters_(vector<string>()),
-    setters_(vector<string>()),
-    signatures_(map<string, int>())
-{
-  getmethods_(classname);
-}
-
-kit::ClassMethods::~ClassMethods() {}
-
-void
-kit::ClassMethods::getmethods_(string classname, int depth)
-{
-  using namespace Reflex;
-
-  string spaces = "                                                          ";
-  string tab = spaces.substr(0, 2*depth);
-  if ( debug_ > 0 )
-    cout << tab << "CLASS(" << classname  << ")" << endl;
-
-  if ( depth > 10 ) 
-    {
-      cout << "ClassMethods::getmethods - yikes, lost in the trees!" 
-           << endl;
-      exit(0);
-    }
-
-  Type thing;
-  Type c = thing.ByName(classname);
-  int nfunctions = c.FunctionMemberSize();
-  
-  if ( debug_ > 0 )
-    cout << tab << "  number of functions: " << nfunctions << endl;
- 
-  for(int i=0; i < nfunctions; i++)
-    {
-      Member m = c.FunctionMemberAt(i);
-      if ( !m.IsPublic() ) continue;
-      if ( !m.IsFunctionMember() ) continue;
-      if ( m.IsConstructor() ) continue;
-      if ( m.IsDestructor() ) continue;
-
-      // we have a public method, decode it
-
-      string mname = m.Name();
-      string mtype = m.TypeOf().Name(SCOPED);
-
-      if ( debug_ > 2 )
-        cout << tab << "\t  "
-             << "NAME(" << mname << ") "
-             << "MTYPE(" << mtype << ")" << endl;
-
-      // simplify edm::Refs
-
-      boost::regex expr1("edm::Ref<std::vector<.+?(?=> >)");  
-      boost::smatch match1;
-      if ( boost::regex_search(mtype, match1, expr1) )
-        {
-          boost::regex expr2("edm::Ref<std::vector<.+?(?=>,)");  
-          boost::smatch match2;
-          if ( boost::regex_search(mtype, match2, expr2) )
-            mtype = kit::replace(mtype, match1[0], match2[0]);
-        }
-
-      // replace basic_str with std::string
-
-      mtype = kit::strip( subbasicstr(mtype) );
-
-      // split method type into return type and argument list
-      string rtype, args;
-      kit::bisplit(mtype, rtype, args, "(");
-      args = "(" + args;
-      rtype = kit::strip(rtype);
-
-      if ( debug_ > 2 )
-        cout << tab << "\t "
-             << " RTYPE(" << rtype << ")" 
-             << " ARGS(" << args << ")" 
-             << endl;
-
-      args = kit::replace(args, "(void)", "()");
-      string signature = mname + args;
-
-      // skip if this method already included
-
-      if ( signatures_.find(signature) != signatures_.end() ) continue;
-      signatures_[signature] = i;
-      if ( debug_ > 2 )
-        cout << tab << "\t  signature(" << signature << ")" << endl;
-
-      // skip Root serialization methods
-      string method = rtype + " " + signature;
-      if ( skipmethod(method) )
-        {
-          if ( debug_ > 1 ) 
-            cout << tab << "\t** skip: " << method << endl << endl;
-          continue;
-        }
-
-      string record 
-        = rtype + "|"
-        + mname + "|"
-        + args + "|"
-        + classname;
-
-      rtype = kit::strip(rtype);
-      if ( rtype.substr(0, 4) == "void" )
-        setters_.push_back(record);
-      else
-        getters_.push_back(record);
-
-      if ( debug_ > 0 )
-        cout << tab << "\t  METHOD(" << record << ")" 
-             << endl << endl;
-    }
-  
-  // Loop over base classes, if present
-
-  int nbase = c.BaseSize();
-  if ( debug_ > 0 )
-    cout << tab << "\t number of base classes: " << nbase << endl;
-
-  for(int i=0; i < nbase; i++)
-    {
-      Type b = c.BaseAt(i).ToType();
-      string basename = b.Name(SCOPED);
-      baseclasses_.push_back(basename);
-      getmethods_(basename, depth+1);
-    }
-}
 
 TLorentzVector 
 kit::lorentzVector(reco::GenParticle& p)

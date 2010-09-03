@@ -3,8 +3,9 @@
 # Description: Create ntuple analyzer template
 # Created: 06-Mar-2010 Harrison B. Prosper
 # Updated: 12-Mar-2010 HBP - fix appending of .root
-#          08-Jun-2010 HBP - add creation of selector.h 
-#$Revision: 1.5 $
+#          08-Jun-2010 HBP - add creation of selector.h
+#          02-Sep-2010 HBP - fix variables.txt record splitting bug
+#$Revision: 1.6 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -60,7 +61,7 @@ TEMPLATE_H =\
 // File:        %(name)s.h
 // Description: Analyzer header for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 //-----------------------------------------------------------------------------
 
 // -- System
@@ -237,7 +238,7 @@ TEMPLATE_CC =\
 // File:        %(name)s.cc
 // Description: Analyzer for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 //-----------------------------------------------------------------------------
 #include "%(name)s.h"
 
@@ -299,7 +300,7 @@ SLTEMPLATE=\
 // File:        selector.h
 // Description: selector template
 // Created:     %(time)s by mkntanalyzer.py
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 //-----------------------------------------------------------------------------
 #include <map>
 #include <string>
@@ -365,7 +366,7 @@ PYTEMPLATE =\
 #  File:        %(name)s
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
-#  $Revision: 1.5 $
+#  $Revision: 1.6 $
 # -----------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
@@ -461,7 +462,7 @@ MAKEFILE = '''#-----------------------------------------------------------------
 #                 optflag
 #                 verbose    (e.g., verbose=1)
 #                 withcern   (e.g., withcern=1  expects to find CERN_LIB)
-#$Revision: 1.5 $
+#$Revision: 1.6 $
 #------------------------------------------------------------------------------
 ifndef ROOTSYS
 $(error *** Please set up Root)
@@ -576,8 +577,7 @@ def main():
 	for index in xrange(len(records)):
 		record = records[index]
 		if record == "": continue
-		
-		rtype, branchname, varname, count = split(record)
+		rtype, branchname, varname, count = split(record, '/')
 		count = atoi(count)
 		n = 1
 		# Take care of duplicate names

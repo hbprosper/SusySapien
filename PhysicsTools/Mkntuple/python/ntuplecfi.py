@@ -4,38 +4,49 @@
 import FWCore.ParameterSet.Config as cms
 demo =\
 cms.EDAnalyzer("Mkntuple",
-               ntupleName = cms.untracked.string("ntuple.root"),
-               analyzerName = cms.untracked.string("analyzer.cc"),
+               ntupleName = cms.untracked.string("ntuple_reco.root"),
+               analyzerName = cms.untracked.string("analyzer_reco.cc"),
 
                buffers =
                cms.untracked.
                vstring(
-	'edmEvent',
+	'edmEventAddon',
     'HcalNoiseSummary',
+	'recoHcalNoiseRBXCaloTower',
     'recoCaloJet',
     'recoCaloMET',
     'recoCaloMET1',
     'recoHcalNoiseRBX',
     'recoVertex',
-	'triggerBits'
+	'edmTriggerResultsAddon'
     ),
-               edmEvent =
+               edmEventAddon =
                cms.untracked.
                vstring(
-    'edmEvent',
+    'edmEventAddon',
     #---------------------------------------------------------------------
-    '   int   id().run()',
-	'   int   id().event()',
+    '   int   isRealData()',
+    '   int   run()',
+	'   int   event()',
 	'   int   luminosityBlock()',
 	'   int   bunchCrossing()'
     ),			   
                HcalNoiseSummary =
                cms.untracked.
                vstring(
-    'HcalNoiseSummary                hcalnoise',
+    'HcalNoiseSummary                hcalnoise                         1',
     #---------------------------------------------------------------------
     '   bool   passHighLevelNoiseFilter()',
     '   bool   passLooseNoiseFilter()'
+    ),
+               recoHcalNoiseRBXCaloTower =
+               cms.untracked.
+               vstring(
+    'recoHcalNoiseRBXCaloTower      hcalnoise                       1000',
+    #---------------------------------------------------------------------
+    '   int    ieta()',
+	'   int    iphi()',
+	'   double hadEnergy()'
     ),
                recoCaloJet =
                cms.untracked.
@@ -88,15 +99,15 @@ cms.EDAnalyzer("Mkntuple",
     ' double   y()',
     ' double   z()'
     ),
-               triggerBits =
+               edmTriggerResultsAddon =
                cms.untracked.
                vstring(
-    "triggerBits                     TriggerResults::HLT                1",
+    "edmTriggerResultsAddon          TriggerResults::HLT               1",
     #---------------------------------------------------------------------
     '   bool   value("HLT_Jet15U")   Jet15U',
 	'   bool   value("HLT_Jet30U")   Jet30U',
 	'   bool   value("HLT_Jet50U")   Jet50U',
-	'   bool   value("HLT_L1Jet6U")   L1Jet6U'	
+	'   bool   value("HLT_L1Jet6U")  L1Jet6U'	
     )			   			   
-			   
                )
+	 

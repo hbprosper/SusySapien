@@ -25,6 +25,7 @@ public:
   ~Aclass() {}
   void say() { std::cout << "I'm an Aclass thing" << std::endl; } 
   void set(double x)  { val = x; }
+  double avalue;
   double value(){return val; }
 private:
   double val;

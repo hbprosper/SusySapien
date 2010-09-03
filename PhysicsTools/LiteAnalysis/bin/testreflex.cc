@@ -19,7 +19,7 @@
 
 #include "FWCore/FWLite/interface/AutoLibraryLoader.h"
 #include "PhysicsTools/LiteAnalysis/interface/ATest.h"
-#include "PhysicsTools/LiteAnalysis/interface/kit.h"
+#include "PhysicsTools/LiteAnalysis/interface/Method.h"
 //-----------------------------------------------------------------------------
 using namespace std;
 using namespace Reflex;
@@ -44,32 +44,45 @@ main(int argc, char** argv)
   Aclass a;
   Bclass b;
   ATest  c(a, b);
-  int debug = 1;
+  void* address = (void*)(&c);
 
   vector<string> mname;
   mname.push_back("ptrToA()->value()");
   mname.push_back("refToA().value()");
   mname.push_back("toA().value()");
+  mname.push_back("avalue");
+  mname.push_back("ptrToA()->avalue");
 
-  vector<kit::Method> method;
-  for(int i=0; i < 3; i++)
+  vector<Method> method;
+  for(int i=0; i < (int)mname.size(); i++)
     {
-      method.push_back( kit::Method("ATest", mname[i], debug) );
+      method.push_back( Method("ATest", mname[i]) );
     }
 
-  for(int i=0; i < 100; i++)
+  for(int i=0; i < 1000; i++)
     {
       cout << endl << i 
-           << " -----------------------------------------" << endl;
+           << " -----------------------------------------"   << endl;
       c.refToA().set(random.Uniform(10));
 
-      cout << mname[0] << " = " <<
-        c.ptrToA()->value() << "\tdirect " << endl;
+      cout << "direct - " 
+           << mname.front() 
+           << "\t= " << c.ptrToA()->value() << endl;
 
- 
-      for(int i=0; i < 3; i++)
+      c.avalue = random.Uniform(100);
+      cout << "direct - " 
+           << mname[mname.size()-2]  
+           << "\t= " << c.avalue   << endl;
+
+      c.ptrToA()->avalue = random.Uniform(100);
+      cout << "direct - " 
+           << mname.back()  << "\t= " 
+           << c.ptrToA()->avalue  << endl;
+
+      for(int i=0; i < (int)mname.size(); i++)
         {
-          cout << " method( " << mname[i] << " ) = " << method[i](&c) << endl;
+          cout << " Method - " << mname[i] 
+               << "\t= " << method[i](address) << endl;
         }
     }
 
