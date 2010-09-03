@@ -11,7 +11,7 @@
 //                                   - add TriggerResultsAddon
 //                                   - add GenParticleAddon
 //              Thu Sep 02, 2010 HBP - move HelpFor to separate file
-//$Revision: 1.9 $
+//$Revision: 1.10 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -50,9 +50,9 @@ namespace reco
     ///
     int   pdgId() const;
     ///
-    int   status() const
+    int   status() const;
     ///
-    double   energy() const;;
+    double   energy() const;
     ///
     double   pt() const;
     ///
