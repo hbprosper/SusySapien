@@ -19,6 +19,7 @@
 
 #include "FWCore/FWLite/interface/AutoLibraryLoader.h"
 #include "PhysicsTools/LiteAnalysis/interface/ATest.h"
+#include "PhysicsTools/LiteAnalysis/interface/FunctionMember.h"
 #include "PhysicsTools/LiteAnalysis/interface/Method.h"
 //-----------------------------------------------------------------------------
 using namespace std;
@@ -53,10 +54,10 @@ main(int argc, char** argv)
   mname.push_back("avalue");
   mname.push_back("ptrToA()->avalue");
 
-  vector<Method> method;
+  vector<FunctionMember> method;
   for(int i=0; i < (int)mname.size(); i++)
     {
-      method.push_back( Method("ATest", mname[i]) );
+      method.push_back( FunctionMember("ATest", mname[i]) );
     }
 
   for(int i=0; i < 1000; i++)
@@ -81,7 +82,7 @@ main(int argc, char** argv)
 
       for(int i=0; i < (int)mname.size(); i++)
         {
-          cout << " Method - " << mname[i] 
+          cout << " FunctionMember - " << mname[i] 
                << "\t= " << method[i](address) << endl;
         }
     }
