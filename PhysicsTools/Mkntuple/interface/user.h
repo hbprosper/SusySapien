@@ -11,7 +11,7 @@
 //                                   - add TriggerResultsAddon
 //                                   - add GenParticleAddon
 //              Thu Sep 02, 2010 HBP - move HelpFor to separate file
-//$Revision: 1.10 $
+//$Revision: 1.11 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -174,6 +174,12 @@ public:
   triggerBits();
   virtual ~triggerBits();
 };
+
+// ----------------------------------------------------------------------------
+// utilities
+// ----------------------------------------------------------------------------
+/// return buffer getByLabel
+std::string bufferLabel(std::string buffername);
 
 #endif
 

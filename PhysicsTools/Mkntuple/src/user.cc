@@ -6,13 +6,14 @@
 // Updated:     Mon Mar 08, 2010 Sezen & HBP - add triggerBits class
 //              Tue Aug 24, 2010 HBP - add HcalNoiseRBXHelper
 //              Thu Sep 02, 2010 HBP - update to new version of HelperFor
-//$Revision: 1.8 $
+//$Revision: 1.9 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
 #include <map>
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 #include "PhysicsTools/Mkntuple/interface/CurrentEvent.h"
+#include "PhysicsTools/Mkntuple/interface/Configuration.h"
 #include "DataFormats/Common/interface/TriggerResults.h"
 #include "FWCore/Common/interface/TriggerNames.h"
 #include "FWCore/Framework/interface/Event.h"
@@ -334,3 +335,27 @@ GParticle::~GParticle() {}
 
 triggerBits::triggerBits() : TriggerResultsAddon() {}
 triggerBits::~triggerBits() {}
+//-----------------------------------------------------------------------------
+// Utilities
+//-----------------------------------------------------------------------------
+string
+bufferLabel(string buffername)
+{
+  const edm::ParameterSet* config = Configuration::instance().get();
+  if ( config == 0 )
+    throw cms::Exception("InvalidPointer", "bufferLabel, config = 0");
+
+  vector<string> vrecords = config->
+    getUntrackedParameter<vector<string> >(buffername);
+
+  string label("");
+  if ( vrecords.size() == 0 ) return label;
+
+  string record = vrecords[0];
+  vector<string> field;              
+  kit::split(record, field);
+  if ( field.size() < 2 ) return label;
+
+  label = field[1];
+  return label;
+}
