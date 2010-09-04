@@ -5,7 +5,7 @@
 # Updated: 12-Mar-2010 HBP - fix appending of .root
 #          08-Jun-2010 HBP - add creation of selector.h
 #          02-Sep-2010 HBP - fix variables.txt record splitting bug
-#$Revision: 1.6 $
+#$Revision: 1.7 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -22,6 +22,14 @@ TREESTREAM_HPP = "%s/interface/treestream.hpp" % PACKAGE
 TREESTREAM_CPP = "%s/src/treestream.cpp" % PACKAGE
 MKNTUPLE= "%s/src/PhysicsTools/Mkntuple" % os.environ["CMSSW_BASE"]
 SELECTEDOBJECTMAP_H = "%s/interface/SelectedObjectMap.h" % MKNTUPLE
+
+# Get author's name
+getauthor = re.compile(r'(?<=[0-9]:)[A-Z]+.+?(?=:/)')
+record = strip(os.popen("getent passwd $USER").read())
+if record != "":
+	AUTHOR = getauthor.findall(record)[0]
+else:
+	AUTHOR = "Shakepeare's ghost"
 
 # Make sure that we can find treestream etc.
 
@@ -61,7 +69,8 @@ TEMPLATE_H =\
 // File:        %(name)s.h
 // Description: Analyzer header for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
-// $Revision: 1.6 $
+// Author:      %(author)s
+// $Revision: 1.7 $
 //-----------------------------------------------------------------------------
 
 // -- System
@@ -238,7 +247,8 @@ TEMPLATE_CC =\
 // File:        %(name)s.cc
 // Description: Analyzer for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
-// $Revision: 1.6 $
+// Author:      %(author)s
+// $Revision: 1.7 $
 //-----------------------------------------------------------------------------
 #include "%(name)s.h"
 
@@ -300,7 +310,8 @@ SLTEMPLATE=\
 // File:        selector.h
 // Description: selector template
 // Created:     %(time)s by mkntanalyzer.py
-// $Revision: 1.6 $
+// Author:      %(author)s
+// $Revision: 1.7 $
 //-----------------------------------------------------------------------------
 #include <map>
 #include <string>
@@ -366,7 +377,8 @@ PYTEMPLATE =\
 #  File:        %(name)s
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
-#  $Revision: 1.6 $
+#  Author:      %(author)s
+#  $Revision: 1.7 $
 # -----------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
@@ -452,7 +464,7 @@ main()
 
 MAKEFILE = '''#------------------------------------------------------------------------------
 # Description: Makefile to build executable %(filename)s
-# Created: %(time)s by mkanalyzer.py
+# Created:     %(time)s by mkanalyzer.py
 #
 #               available switches:
 #
@@ -462,7 +474,8 @@ MAKEFILE = '''#-----------------------------------------------------------------
 #                 optflag
 #                 verbose    (e.g., verbose=1)
 #                 withcern   (e.g., withcern=1  expects to find CERN_LIB)
-#$Revision: 1.6 $
+# Author:      %(author)s
+#$Revision: 1.7 $
 #------------------------------------------------------------------------------
 ifndef ROOTSYS
 $(error *** Please set up Root)
@@ -669,7 +682,10 @@ def main():
 			 'NAME': upper(filename),
 			 'time': ctime(time()),
 			 'vardecl': join("", declare, "\n"),
-			 'selection': join("  ", select, "\n")}
+			 'selection': join("  ", select, "\n"),
+			 'author': AUTHOR
+			 }
+	
 	record = TEMPLATE_H % names
 	open(outfilename,"w").write(record)
 
@@ -683,7 +699,9 @@ def main():
 	names = {'vardecl': join("", declare, "\n"),
 			 'class':   join("", records, ""),
 			 'time':    ctime(time()),
-			 'varimpl': join("  ", varimpl, "\n")}
+			 'varimpl': join("  ", varimpl, "\n"),
+			 'author': AUTHOR
+			 }
 	record = SLTEMPLATE % names
 	open("selector.h","w").write(record)
 	
@@ -693,7 +711,9 @@ def main():
 	outfilename = "%s/%s.py" % (filename, filename)
 	names = {'name': outfilename,
 			 'time': ctime(time()),
-			 'selection': s}
+			 'selection': s,
+			 'author': AUTHOR
+			 }
 	record = PYTEMPLATE % names
 	open(outfilename,"w").write(record)
 	os.system("chmod +x %s" % outfilename)

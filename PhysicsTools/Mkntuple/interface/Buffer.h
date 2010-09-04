@@ -21,7 +21,7 @@
 //                   Fri Aug 27 HBP - on second thoughts...go back to a
 //                                    UserBuffer class!
 //
-// $Id: Buffer.h,v 1.15 2010/08/29 23:17:34 prosper Exp $
+// $Id: Buffer.h,v 1.16 2010/09/03 01:54:13 prosper Exp $
 //
 //
 // If using Python, include its header first to avoid annoying compiler
@@ -165,10 +165,15 @@ void initBuffer(otreestream& out,
   // to and from vectors ourselves.
 
   // If we have a vector variable, create a counter variable for it.
-  // Root calls this a "leaf counter".
+  // Root calls this a "leaf counter". 
+  //
+  // There is one exception however: if a helper class for a collection object,
+  // say a collection of pat::Jets, maps these objects to a single instance of
+  // each variable, for example to HT, we shall assume that the n-tuple 
+  // variable is to be a simple non-vector type.
 
   std::string counter("");
-  if ( !singleton )
+  if ( !singleton && count > 1 )
     {
       // Add leaf counter to tree
       counter = "n" + prefix;        
@@ -222,7 +227,7 @@ void initBuffer(otreestream& out,
           << maxcount 
           << std::endl;
         
-      if ( !singleton ) name += "[" + counter + "]";
+      if ( !singleton && count > 1 ) name += "[" + counter + "]";
       
       variables.push_back(Variable<Y>(name, 
                                       maxcount,

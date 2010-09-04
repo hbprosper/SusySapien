@@ -2,11 +2,13 @@
 #------------------------------------------------------------------------------
 # Create the skeleton of a user plugin
 # Created: 27-Aug-2010 Harrison B. Prosper
-#$Revision: 1.1 $
+#$Revision: 1.2 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
 from time import *
+from glob import glob
+from getopt     import getopt, GetoptError
 from PhysicsTools.LiteAnalysis.boostlib import nameonly
 #------------------------------------------------------------------------------
 if not os.environ.has_key("CMSSW_RELEASE_BASE"):
@@ -19,6 +21,14 @@ if not os.environ.has_key("CMSSW_BASE"):
 	sys.exit(0)
 LOCALBASE = "%s/src" % os.environ['CMSSW_BASE']
 PWD = os.path.realpath(os.environ['PWD'])
+
+# Get author's name
+getauthor = re.compile(r'(?<=[0-9]:)[A-Z]+.+?(?=:/)')
+record = strip(os.popen("getent passwd $USER").read())
+if record != "":
+	AUTHOR = getauthor.findall(record)[0]
+else:
+	AUTHOR = "Shakepeare's ghost"
 #------------------------------------------------------------------------------
 # Determine project directory
 project = split(replace(PWD, LOCALBASE + "/", ""), '/')
@@ -48,12 +58,17 @@ if not os.path.exists(INCDIR):
 #------------------------------------------------------------------------------
 # Load classmap.py
 #------------------------------------------------------------------------------
-cmd = 'find %s/PhysicsTools/Mkntuple -name "classmap.py"' % LOCALBASE
+# First try local release
+cmd = 'find %s/%s/%s -name "classmap.py"' % (LOCALBASE, PACKAGE, SUBPACKAGE)
 t = map(strip, os.popen(cmd).readlines())
 if len(t) == 0:
-	print "\n\t** unable to locate classmap.py"\
+	# try Mkntuple
+	cmd = 'find %s/PhysicsTools/Mkntuple -name "classmap.py"' % LOCALBASE
+	t = map(strip, os.popen(cmd).readlines())
+	if len(t) == 0:
+		print "\n\t** unable to locate classmap.py"\
 		  "\t** try running mkclassmap.py to create it"
-	sys.exit(0)
+		sys.exit(0)
 
 mapfile = t[0]
 try:
@@ -65,13 +80,18 @@ except:
 namespace = re.compile(r'^[a-zA-Z]+::')
 doublecolon = re.compile(r'::')
 #------------------------------------------------------------------------------
+shortOptions = "u"
 def usage():
 	print '''
 Usage:
-	mkuserplugin.py <CMSSW class-name> s|c [post-fix, default=Helper]
+	mkuserplugin.py [options] <CMSSW class> s|c [postfix, default=Helper]
 
 	s = singleton  (zero or one  object  per event)
 	c = collection (zero or more objects per event)
+
+	options
+	-u    undo effect of most recent call to mkuserplugin.py
+	      This option does not need the other arguments
 	'''
 	sys.exit(0)
 #------------------------------------------------------------------------------
@@ -83,14 +103,14 @@ def wrpluginheader(names):
 // Sub-Package: %(subpackage)s
 // Description: Mkntuple helper class for %(classname)s
 // Created:     %(time)s
-// Author:      
-//$Revision: 1.1 $
+// Author:      %(author)s      
+//$Revision: 1.2 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
 #include <vector>
 #include <map>
-#include "PhysicsTools/Mkntuple/interface/Helper.h"
+#include "PhysicsTools/Mkntuple/interface/HelperFor.h"
 %(header)s
 //-----------------------------------------------------------------------------
 // Note: The following variables are automatically defined and available to
@@ -155,14 +175,21 @@ namespace %(namespace)s
   };
 }
 #endif
-'''	
-	filename = "%(incdir)s/%(name)s.h" % names
+'''
+	filename = "%(incdir)s/%(filename)s.h" % names
 	if names['namespace'] == '':
 		record = template_header + template_nonamespace
 	else:
 		record = template_header + template_withnamespace
 	record = record % names
 
+	if os.path.exists(filename):
+		redofile = "%(incdir)s/.redo.%(filename)s.h" % names
+		os.system("cp %s %s" % (filename, redofile))
+	else:
+		undofile = "%(incdir)s/.undo.%(filename)s.h" % names
+		open(undofile,'w').write('\n')
+		
 	out  = open(filename, "w")
 	out.write(record)
 	out.close()
@@ -173,8 +200,8 @@ def wrplugincode(names):
 // Sub-Package: %(subpackage)s
 // Description: Mkntuple helper class for %(classname)s
 // Created:     %(time)s
-// Author:      
-//$Revision: 1.1 $
+// Author:      %(author)s      
+//$Revision: 1.2 $
 //-----------------------------------------------------------------------------
 #include "%(package)s/%(subpackage)s/interface/%(filename)s.h"
 //-----------------------------------------------------------------------------
@@ -206,7 +233,15 @@ using namespace std;
 //}
 ''' % names
 
+	
 	filename = "%(srcdir)s/%(filename)s.cc" % names
+	if os.path.exists(filename):
+		redofile = "%(srcdir)s/.redo.%(filename)s.cc" % names
+		os.system("cp %s %s" % (filename, redofile))
+	else:
+		undofile = "%(srcdir)s/.undo.%(filename)s.cc" % names
+		open(undofile,'w').write('\n')
+		
 	out  = open(filename, "w")
 	out.write(template)
 	out.close()
@@ -214,7 +249,8 @@ using namespace std;
 def wrplugin(names):	
 	template = '''// ----------------------------------------------------------------------------
 // Created: %(time)s by mkuserplugin.py
-//$Revision: 1.1 $
+// Author:      %(author)s      
+//$Revision: 1.2 $
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/Buffer.h"
 #include "%(package)s/%(subpackage)s/interface/%(filename)s.h"
@@ -223,21 +259,110 @@ typedef UserBuffer<%(classname)s, %(fullname)s, %(ctype)s>
 DEFINE_EDM_PLUGIN(BufferFactory, %(buffername)s_t,
                   "%(buffername)s");\n''' % names
 
+	undofile = "%(plugindir)s/.undo.userplugin_%(filename)s.cc" % names
+	open(undofile,'w').write('\n')
+	
 	filename = "%(plugindir)s/userplugin_%(filename)s.cc" % names
 	out  = open(filename, "w")
 	out.write(template)
 	out.close()
 #------------------------------------------------------------------------------
+def undo():
+	names = {}
+	names['subpackage'] = SUBPACKAGE
+	names['plugindir']  = PLUGINDIR
+	names['srcdir']     = SRCDIR
+	names['incdir']     = INCDIR
+
+	# undo userplugin
+	t = glob("%(plugindir)s/.undo.userplugin_*.cc" % names)
+	if len(t) > 0:
+		undofile = replace(t[0], '.undo.', '')
+		print "delete %s" % undofile
+		os.system('rm -rf %s; rm -rf %s' % (undofile, t[0]))
+
+	# redo plugins/BuildFile
+	t = glob("%(plugindir)s/.redo.BuildFile" % names)
+	if len(t) > 0:
+		redofile = replace(t[0], '.redo.', '')
+		print "restore %s" % redofile
+		os.system('mv %s %s' % (t[0], redofile))
+
+	# redo src/classes.h
+	t = glob("%(srcdir)s/.redo.classes.h" % names)
+	if len(t) > 0:
+		redofile = replace(t[0], '.redo.', '')
+		print "restore %s" % redofile
+		os.system('mv %s %s' % (t[0], redofile))
+
+	# redo src/classes_def.xml
+	t = glob("%(srcdir)s/.redo.classes_def.xml" % names)
+	if len(t) > 0:
+		redofile = replace(t[0], '.redo.', '')
+		print "restore %s" % redofile
+		os.system('mv %s %s' % (t[0], redofile))
+				
+	# undo user plugin source
+	t = glob("%(srcdir)s/.undo.*.cc" % names)
+	if len(t) > 0:
+		undofile = replace(t[0], '.undo.', '')
+		print "delete %s" % undofile
+		os.system('rm -rf %s; rm -rf %s' % (undofile, t[0]))
+
+	# redo user plugin source
+	t = glob("%(srcdir)s/.redo.*.cc" % names)
+	if len(t) > 0:
+		redofile = replace(t[0], '.redo.', '')
+		print "restore %s" % redofile
+		os.system('mv %s %s' % (t[0], redofile))
+
+	# undo user plugin header
+	t = glob("%(incdir)s/.undo.*.h" % names)
+	if len(t) > 0:
+		undofile = replace(t[0], '.undo.', '')
+		print "delete %s" % undofile
+		os.system('rm -rf %s; rm -rf %s' % (undofile, t[0]))
+
+	# redo user plugin header
+	t = glob("%(incdir)s/.redo.*.h" % names)
+	if len(t) > 0:
+		redofile = replace(t[0], '.redo.', '')
+		print "restore %s" % redofile
+		os.system('mv %s %s' % (t[0], redofile))
+
+	sys.exit(0)
+#------------------------------------------------------------------------------
 def main():
+	# Decode command line
 	argv = sys.argv[1:]
+	try:
+		opts, vars = getopt(argv, shortOptions)
+	except GetoptError, m:
+		print
+		print m
+		usage()
+
+	for option, value in opts:
+		if option == "-H":
+			usage()
+		elif option == "-u":
+			undo()
+
+	# No options, check other arguments
 	argc = len(argv)
 	if argc < 2:
 		usage()
 
 	classname = argv[0]
 	ctype = argv[1]
+	if len(ctype) != 1:
+		usage()
+
+	if not ctype in ['s','c']:
+		usage()
+	
 	if argc > 2:
-		postfix = argv[1]
+		postfix = argv[2]
 	else:
 		postfix = "Helper"
 
@@ -312,7 +437,7 @@ def main():
 	names['plugindir']  = PLUGINDIR
 	names['srcdir']     = SRCDIR
 	names['incdir']     = INCDIR
-
+	names['author']     = AUTHOR
 	#------------------------------------------------------------------------
 	wrpluginheader(names)
 	wrplugincode(names)
@@ -323,7 +448,10 @@ def main():
 	#------------------------------------------------------------------------
 	updated = False
 	buildfile = "%s/BuildFile" % PLUGINDIR
-	if not os.path.exists(buildfile):
+	redofile  = "%s/.redo.BuildFile" % PLUGINDIR
+	if os.path.exists(buildfile):
+		os.system("cp %s %s" % (buildfile, redofile))
+	else:
 		updated = True
 		out = open(buildfile, 'w')
 		record = '''<use name=PhysicsTools/LiteAnalysis>
@@ -341,6 +469,7 @@ def main():
 		out.write(record)
 		out.close()
 
+		
 	pkg = joinfields(split(header, '/')[:2],'/')
 	record = open(buildfile).read()
 	
@@ -370,11 +499,14 @@ def main():
 	#------------------------------------------------------------------------
 	updated = False
 	classesfile = "%s/classes.h" % SRCDIR
+	redofile = "%s/.redo.classes.h" % SRCDIR
 	
-	if not os.path.exists(classesfile):
+	if os.path.exists(classesfile):
+		os.system("cp %s %s" % (classesfile, redofile))
+	else:
 		updated = True
 		out = open(classesfile, 'w')
-		record ='''//$Revision: 1.1 $
+		record ='''//$Revision: 1.2 $
 //--------------------------------------------------------------------''' % \
 		names
 		out.write(record)
@@ -406,7 +538,7 @@ def main():
 		
 	gettemplates = re.compile("(?<={)[^}]+", re.M)
 	rectemps     = gettemplates.findall(record)[0]
-	template = "HelpFor<%(classname)s>" % names
+	template = "HelperFor<%(classname)s>" % names
 	if find(rectemps, template) < 0:
 		updated = True
 		newrec = "  %s t_%s;\n}" % (template,
@@ -422,7 +554,10 @@ def main():
 	#------------------------------------------------------------------------
 	updated = False
 	classesfile = "%s/classes_def.xml" % SRCDIR
-	if not os.path.exists(classesfile):
+	redofile = "%s/.redo.classes_def.xml" % SRCDIR
+	if os.path.exists(classesfile):
+		os.system("cp %s %s" % (classesfile, redofile))
+	else:
 		updated = True
 		out = open(classesfile, 'w')
 		record ='''<lcgdict>

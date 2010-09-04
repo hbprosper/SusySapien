@@ -3,13 +3,14 @@
 # File:        mkclassmap.py
 # Description: Create a map of classnames to headers
 # Created:     26-Aug-2010 Harrison B. Prosper
-#$Revision: 1.6 $
+#$Revision: 1.1 $
 #---------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
 from string import *
 from time import *
-from getopt import getopt
+from glob import glob
+from getopt     import getopt, GetoptError
 #---------------------------------------------------------------------------
 # Constants
 #---------------------------------------------------------------------------
@@ -23,23 +24,77 @@ if not os.environ.has_key("CMSSW_BASE"):
 	sys,exit(0)
 	
 MAXCONSTRUCT=5000
+
+shortOptions = "Hu:"
+
 USAGE='''
 Usage:
-  mkclassmap.py [project-area,
-                default = $CMSSW_RELEASE_BASE/src/DataFormats,
-				          $CMSSW_RELEASE_BASE/src/SimDataFormats,
-						  $CMSSW_BASE/src/PhysicsTools/Mkntuple]
+  mkclassmap.py [options] [sub-package1 [sub-package2...]]
+
+  options
+  -u<sub-package-path>   Update classmap by scanning given sub-package-path
+
+  example:
+      mkclassmap.py -u$CMSSW_BASE/src/MyArea/MyAnalysis
+
+  default sub-packages:
+                DataFormats/* 
+				SimDataFormats/*
+				PhysicsTools/Mkntuple
 '''
 def usage():
 	print USAGE
 	sys.exit(0)
 
-CURDIR    = os.path.basename(os.environ["PWD"])
+PWD = os.path.realpath(os.environ['PWD'])
 BASE      = "%s/src" % os.environ["CMSSW_RELEASE_BASE"]
 LOCALBASE = "%s/src" % os.environ["CMSSW_BASE"]
 VERSION   = os.environ["CMSSW_VERSION"]
-CLASSMAPFILE = '%s/PhysicsTools/Mkntuple/python/classmap.py' % LOCALBASE
+#------------------------------------------------------------------------------
+# Determine project directory
+project = split(replace(PWD, LOCALBASE + "/", ""), '/')
+if len(project) < 2:
+	print "\t**Please run mkuserplugins in your subpackage directory"
+	sys.exit(0)
 
+PACKAGE, SUBPACKAGE = project[:2]
+PROJECTBASE = "%s/%s/%s"   % (LOCALBASE, PACKAGE, SUBPACKAGE)
+PYTHONDIR   = "%s/python"   % PROJECTBASE  
+#------------------------------------------------------------------------------
+# Decode command line
+argv = sys.argv[1:]
+try:
+	opts, pkgs = getopt(argv, shortOptions)
+except GetoptError, m:
+	print
+	print m
+	usage()
+
+Update = False
+PKGBASE = "%s/" % BASE # default: scan $CMSSW_RELEASE_BASE
+CLASSMAPFILE = '%s/classmap.py' % PYTHONDIR
+
+for option, value in opts:
+	if option == "-H":
+		usage()
+		
+	elif option == "-u":
+		Update = True
+		pkgs = split(value)
+		if os.path.exists(CLASSMAPFILE):
+			execfile(CLASSMAPFILE)
+			PKGBASE = ""
+		else:
+			Update = False
+			PKGBASE = LOCALBASE
+			pkgs = [PACKAGE]
+			
+if len(pkgs) > 0:
+	PACKAGELIST = pkgs
+else:
+	PACKAGELIST = ["DataFormats",
+				   "SimDataFormats"]
+#------------------------------------------------------------------------------
 DEBUG=0
 if DEBUG > 0:
 	OUTDEBUG = open("debug.h","w")
@@ -55,11 +110,9 @@ PLACEHOLDERS =['namespace',
 			   'inlineclass',
 			   'inlinestructclass']
 WEIRD        = "<|<@&@>|>"
-
 # Load needed libraries
 from PhysicsTools.LiteAnalysis.AutoLoader import *
 gSystem.Load("libPhysicsToolsMkntuple")
-
 #---------------------------------------------------------------------------
 # Exceptions
 #---------------------------------------------------------------------------
@@ -558,32 +611,33 @@ def getClassname(record):
 #============================================================================
 def main():
 	
-	print "mkclassmap.py $Revision: $\n"
+	print "mkclassmap.py $Revision: 1.1 $\n"
 
-	# decode command line
-	
-	argv = sys.argv[1:]
-	if len(argv) > 0:
-		packagelist = argv
-	else:
-		packagelist = ["DataFormats",
-					   "SimDataFormats"]
 
+	packagelist = PACKAGELIST
 	filelist = []
-	for package in packagelist:
-
-		cmd = "ls -1 %s/%s/" % (BASE, package)
-
-		subsystems = map(strip, os.popen(cmd).readlines())
-
-		for subsystem in subsystems:
-			if skipsubsystem.match(subsystem) != None: continue
-
-			file = "%s/%s/%s/interface/*.h" % (BASE, package, subsystem)
-			cmd  = "find %s" % file
-			print "\tscan package: %s/%s" % (package, subsystem)
-			hlist = map(strip, os.popen(cmd).readlines())
+	if Update:
+		for package in packagelist:
+			print "\tscan area: %s" % package
+			file = "%s/interface/*.h" % package
+			hlist = glob(file)
+			hlist.sort()
 			filelist += hlist
+	else:
+		for package in packagelist:
+			cmd = "ls -1 %s/%s/" % (PKGBASE, package)
+			subsystems = map(strip, os.popen(cmd).readlines())
+
+			for subsystem in subsystems:
+				dirpath = "%s/%s/%s" % (PKGBASE, package, subsystem)
+				if not os.path.isdir(dirpath): continue
+				if skipsubsystem.match(subsystem) != None: continue
+
+				print "\tscan sub-package: %s/%s" % (package, subsystem)
+				file = "%s/interface/*.h" % dirpath
+				hlist = glob(file)
+				hlist.sort()
+				filelist += hlist
 
 		# Add user.h
 
@@ -602,13 +656,13 @@ def main():
 		filelist.append(file)
 
 		# Add Run.h
-
+		
 		file = "%s/%s/%s/interface/Run.h" % \
 			   (BASE,
 				"FWCore",
 				"Framework")
 		filelist.append(file)			
-
+		
 	# Filter headers
 
 	filelist = filter(lambda x: skipheader.search(x) == None, filelist)
@@ -616,7 +670,8 @@ def main():
 	#-------------------------------------------------
 	# Loop over header files to be scanned
 	#-------------------------------------------------
-	
+
+	print
 	recs = []
 	count = 0
 	for index, file in enumerate(filelist):
@@ -664,12 +719,16 @@ def main():
 			elif group in ["endclass", "endstructclass"]:
 				
 				fullname = joinfields(names, "::")
-				recs.append("'%s': '%s'" % (fullname, header))
+
+				if Update:
+					ClassToHeaderMap[fullname] = header
+				else:
+					recs.append("'%s': '%s'" % (fullname, header))
 
 				# For now ignore uninstantiated templates
 				
 				if find(fullname, '<') > -1:
-					print "\t\t** skip class %s\n" % fullname 
+					#print "\t\t** skip class %s\n" % fullname 
 					continue
 
 				count += 1
@@ -682,15 +741,25 @@ def main():
 				names.append(classname)
 
 	# Write out class to header map
+	
 
+	if Update:
+		print "updating classmap.py..."
+		recs = []
+		keys = ClassToHeaderMap.keys()
+		keys.sort()
+		for fullname in keys:
+			recs.append("'%s': '%s'" % (fullname, ClassToHeaderMap[fullname]))
+
+	record = joinfields(recs,',\n')		
 	outfile = CLASSMAPFILE
 	out = open(outfile,'w')
-	out.write('# VERSION: %s\n' % VERSION)
+	out.write('# Created: %s\n' % ctime(time()))
+	out.write('# Version: %s\n' % VERSION)
+	out.write('#$Revision:$\n')
 	out.write("ClassToHeaderMap = {\\\n")
-	record = joinfields(recs,',\n')
 	out.write(record+'\n')
 	out.write("}\n")
-#---------------------------------------------------------------------------
 #---------------------------------------------------------------------------
 main()
 
