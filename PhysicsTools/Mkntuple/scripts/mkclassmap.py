@@ -3,7 +3,7 @@
 # File:        mkclassmap.py
 # Description: Create a map of classnames to headers
 # Created:     26-Aug-2010 Harrison B. Prosper
-#$Revision: 1.1 $
+#$Revision: 1.2 $
 #---------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
@@ -40,6 +40,9 @@ Usage:
   default sub-packages:
                 DataFormats/* 
 				SimDataFormats/*
+				FWCore/Framework
+				FWCore/Utilities
+				FWCore/Common
 				PhysicsTools/Mkntuple
 '''
 def usage():
@@ -54,7 +57,7 @@ VERSION   = os.environ["CMSSW_VERSION"]
 # Determine project directory
 project = split(replace(PWD, LOCALBASE + "/", ""), '/')
 if len(project) < 2:
-	print "\t**Please run mkuserplugins in your subpackage directory"
+	print "\t**Please run mkclassmap.py in your subpackage directory"
 	sys.exit(0)
 
 PACKAGE, SUBPACKAGE = project[:2]
@@ -73,6 +76,7 @@ except GetoptError, m:
 Update = False
 PKGBASE = "%s/" % BASE # default: scan $CMSSW_RELEASE_BASE
 CLASSMAPFILE = '%s/classmap.py' % PYTHONDIR
+subpkgs = []
 
 for option, value in opts:
 	if option == "-H":
@@ -80,20 +84,24 @@ for option, value in opts:
 		
 	elif option == "-u":
 		Update = True
-		pkgs = split(value)
+		subpkgs = split(value)
 		if os.path.exists(CLASSMAPFILE):
 			execfile(CLASSMAPFILE)
 			PKGBASE = ""
 		else:
 			Update = False
 			PKGBASE = LOCALBASE
-			pkgs = [PACKAGE]
+			subpkgs = ["%s/%s", (PACKAGE, SUBPACKAGE)]
 			
-if len(pkgs) > 0:
-	PACKAGELIST = pkgs
+if len(subpkgs) > 0:
+	SUBPACKAGELIST = subpkgs
 else:
-	PACKAGELIST = ["DataFormats",
-				   "SimDataFormats"]
+	SUBPACKAGELIST = ["DataFormats/*",
+					  "SimDataFormats/*",
+					  "FWCore/Framework",
+					  "FWCore/Common",
+					  "FWCore/Utilities"
+					  ]
 #------------------------------------------------------------------------------
 DEBUG=0
 if DEBUG > 0:
@@ -111,8 +119,8 @@ PLACEHOLDERS =['namespace',
 			   'inlinestructclass']
 WEIRD        = "<|<@&@>|>"
 # Load needed libraries
-from PhysicsTools.LiteAnalysis.AutoLoader import *
-gSystem.Load("libPhysicsToolsMkntuple")
+#from PhysicsTools.LiteAnalysis.AutoLoader import *
+#gSystem.Load("libPhysicsToolsMkntuple")
 #---------------------------------------------------------------------------
 # Exceptions
 #---------------------------------------------------------------------------
@@ -167,12 +175,8 @@ struct       = '(?P<struct>^[ \t]*struct'   \
 # subsystems to ignore
 
 skipsubsystem = re.compile('Alignment|'\
-						   'CLHEP|'\
-						   'Common|'\
-						   'FWLite|'\
 						   'Geometry|'\
 						   'Histograms|'\
-						   'Math|'\
 						   'Provenance|'\
 						   'Road|'\
 						   'StdDict|'\
@@ -184,8 +188,6 @@ skipsubsystem = re.compile('Alignment|'\
 skipheader = re.compile('(classes|Fwd|print).h$')
 
 leadingblanks= re.compile('(?P<leadingblanks>(^[ \t]*\n)+)',re.M)
-
-fixresop     = re.compile('(?<=\w) *:: *(?=\w)',re.M)
 
 # Return class preambles (that is, classs <name>.... {)
 
@@ -206,36 +208,13 @@ classtitle = re.compile('%s?'\
 
 classtype  = re.compile('(?P<classtype>\\b(class|struct)\\b)',re.M)
 
-# To extract template parameters
-
-templatepar = re.compile('\w[^<]*<(?P<par>[^>]*)>')
-
 # Return string containing base classes
 
 basenames = re.compile('(?P<basenames>' \
 					   '\s*(?<!:):(?!:)\s*(public|private|protected)?[^\{]+)')
 
-forward      = '(?P<forward>^([ \t]*template\s*<[^\n]*>\s*)?\s*' \
-			   'class[ \t]+[a-zA-Z_]\w*[ \t]*;[ \t]*\n)'
-
-forwardname  = '^([ \t]*template\s*<[^\n]*>\s*)?\s*' \
-			   'class[ \t]+(?P<name>\w+)[ \t]*;[ \t]*'
-
 findInlineComments      = re.compile('[ \t]*//[^\n]*|[ \t]*/[*].*(?=\*/)\*/')
-findEndClassSpace       = re.compile("\}\s*;",re.M)
-findQualSpace           = re.compile("(?<=\))\s*(?=[a-zA-Z])",re.M)
-findSemiColon           = re.compile('(?P<end>;(?![ \t]*(/[*]|//)))', re.M)
-findForwards            = re.compile(forward,re.M)
-getclassname= re.compile(r"\bclass[ \t]+(?P<name>\w+)[ \t]*;",re.M)
-
-# Create command to scrub header of constructs that could cause mkclassmap
-# to fail
-SCRUB = ['ClassDef',
-		 'Q_OBJECT',
-		 'R__EXTERN']
-STRIP = map(lambda x: "\\b%s\\b" % x, SCRUB)
-cmd = '^\s*using [^\n]+;|' + joinfields(STRIP,"|") + '[^\n]*\n'
-scrub = re.compile(cmd, re.M)
+getclassname = re.compile(r"\bclass[ \t]+(?P<name>\w+)[ \t]*;",re.M)
 #===========================================================================
 # Functions
 #===========================================================================
@@ -254,13 +233,6 @@ def debug(code,records,hasTitle=1):
 				records = []        
 		for record in records:
 			OUTDEBUG.write(rstrip(record)+"\n")
-
-def forwardName(record):
-	m = findForwardname.search(record)
-	if m <> None:
-		return m.group()
-	else:
-		return ""
 	
 def stripBlanklines(record):
     """
@@ -271,41 +243,86 @@ def stripBlanklines(record):
         record = record[m.end():]
     return rstrip(record)
 #---------------------------------------------------------------------------
-# Use CPP to clean-up header before parsing
+# Use (homegrown) CPP to clean-up header before parsing
 #---------------------------------------------------------------------------
-def cpp(record, items):
-	debug(1,['CPP'])
+cpp_namespace = '^ *namespace +[a-zA-Z]+\s*{'
+cpp_tclassname = '^ *template +<[^>]+>\s*class +\w+\s*\w*\s*[^{;]+{'
+cpp_classname = '^ *class +\w+\s*\w*\s*[^{;]+{'
 
-	open('.header.h','w').write(record+'\n')
-	# No linenumbers
-	# c++
-	# Don't search system headers
-	# Discard comments
-	command = "(cpp -P -xc++ -nostdinc -nostdinc++" \
-			  " .header.h > .cpp) >& .log"
-	os.system(command)
-	record = open(".cpp").read()
-	# ---------------------------------------------------    
-	# Get rid of some weird affectations
-	# ---------------------------------------------------    
-	record = replace(record," ;", ";")
-	record = replace(record,"( ", "(")
-	record = replace(record," )", ")")
-	record = replace(record,"public :",   "public:")
-	record = replace(record,"protected :","protected:")
-	record = replace(record,"private :",  "private:")
-	record = replace(record,"public:",   "public:\n")
-	record = replace(record,"protected:","protected:\n")
-	record = replace(record,"private:",  "private:\n")
-	record = fixresop.sub("::", record)
-	record = findEndClassSpace.sub("};",record)
-	record = findQualSpace.sub(" ",record)
-	record = findSemiColon.sub(";\n",record)
-	record = scrub.sub("", record)
-	
-	# Add a \n after "{". Should be harmless, but easy way to take
-	# care of things like: namespace { class YaaHoo; }
-	record = replace(record,'{','{\n')
+cpp_tstructname = '^ *template +<[^>]+>\s*struct +\w+\s*\w*\s*[^{;]+{'
+cpp_structname = '^ *struct +\w+\s*\w*\s*[^{;]+{'
+
+cpp_leftbrace = '{'
+cpp_rightbrace = '};|}'
+
+cpp_stripbodies = re.compile('(?<={|})\s*{\s*};?', re.M)
+
+cpp_regex = joinfields([cpp_namespace,
+						cpp_tclassname,
+						cpp_classname,
+						cpp_tstructname,
+						cpp_structname,
+						cpp_leftbrace,
+						cpp_rightbrace],'|')
+cpp_search= re.compile(cpp_regex, re.M)
+
+# Find different comment styles
+
+# C++-style
+scomment2    = '(?P<scomment2>(^[ \t]*///(?!/)[^\n]*\n))'
+scomment3    = '(?P<scomment3>(^[ \t]*//(?!/)[^\n]*\n)+)'
+
+# C-style
+ccomment     = '(?P<ccomment>^[ \t]*/[*].+?(?=[*]/)[*]/(?! \)))'
+
+# Doxygen-style
+ocomment     = '(?P<ocomment>^[ \t]*///[^\n]+?\n[ \t]*/[*][*].+?(?=[*]/)[*]/)'
+
+groups = (ocomment,scomment3,scomment2,ccomment)
+format = (len(groups)-1)*'%s|'+'%s'
+cpp_stripcomments = re.compile(format % groups,re.M+re.S)
+cpp_stripinlinecomments = re.compile('//.*\n|/\*\*.*\*/\n', re.M)
+cpp_stripbodies   = re.compile('(?<={|})\s*{\s*};?', re.M)
+cpp_stripincludes = re.compile('^#include .*\s*', re.M)
+cpp_stripstrings  = re.compile('"[^"]+"\s*', re.M)
+
+cpp_findweird   = re.compile('(class|struct) +(?P<weird>\w+\s+)\w+')
+
+def cpp(record, items):
+	record = cpp_stripcomments.sub("", record)
+	record = replace(record, "\\\"","")
+	record = cpp_stripinlinecomments.sub("", record)
+	record = cpp_stripincludes.sub("",record)
+	record = cpp_stripstrings.sub("", record)
+	results = map(lambda x: strip(replace(x,'\n',' ')),
+				  cpp_search.findall(record))
+	record = ''
+	col = 0
+	previous = ''
+	for result in results:
+		if find(result, 'class') > -1 or find(result, 'struct') > -1:
+			m = cpp_findweird.search(result)
+			if m != None:
+				weird = m.group('weird')
+				result = replace(result, weird, '')
+						
+		if find(result, '{') > -1:
+			if previous == '{':
+				col += 1
+			previous = '{'
+		elif find(result, '}') > -1:
+			if previous == '}':
+				col -= 1
+			previous = "}"
+		tab = '  '*col
+		record += "%s%s\n" % (tab, result)
+	newrecord = ''
+	count = 0
+	while (newrecord != record) and (count < 10):
+		if newrecord != '': record = newrecord
+		newrecord = cpp_stripbodies.sub("", record)
+		count += 1
+	record = newrecord
 	return record
 #---------------------------------------------------------------------------
 # Class to write out stuff in XML...kinda obvious huh!
@@ -357,7 +374,7 @@ def findComponents(regex, record, leftDelim, rightDelim,
 			n += 1
 			if n > MAXCONSTRUCT:
 				str = "\tcan't find the end of construct .. go boil your head!"
-				print str
+				#print str
 				raise ImConfused, str
 
 			# Search for nearest left or right delimeter
@@ -398,6 +415,26 @@ def findClasses(record):
 def namespaceNames(record):
 	return findComponents(namespaces,record,'{','}')
 #---------------------------------------------------------------------------
+bodies      = re.compile('(?P<body>\{)',re.M)
+def findBodies(record):
+	return findComponents(bodies,record,'{','}',0)
+
+def parseFunctionBodies(record, items):
+	bodybnds = findBodies(record)
+	skip = len(bodybnds)*[0]
+	for i, (str, group, start, left, right, end) in enumerate(bodybnds):
+		for j, (s, g, a, l, r, b) in enumerate(bodybnds):
+			if (start < a) and (b < end):
+				skip[j] = 1
+	tokens = []
+	for i, (str, group, start, left, right, end) in enumerate(bodybnds):
+		if skip[i]: continue
+		tokens.append(('{}',start,end))
+		#debug(2,[str,78*'-'],0)
+	if len(tokens) > 0:
+		record = splice(record, tokens)
+	return record
+#---------------------------------------------------------------------------
 # Find all strings that satisfy given regular expression.
 #---------------------------------------------------------------------------
 def findAll(regex,s):
@@ -426,9 +463,7 @@ def findAllSame(regex,s):
 # Parse header and try to identify fully scoped class names
 #===========================================================================
 def parseHeader(file):
-
 	record = strip(open(file).read())
-
 	# ---------------------------------------------------
 	# Clean up with CPP
 	# ---------------------------------------------------
@@ -436,26 +471,26 @@ def parseHeader(file):
 	record = cpp(record, items)
 
 	# ---------------------------------------------------
-	# Find forward declarations and replace them
-	# in record
-	# ---------------------------------------------------
-	record = parseForwards(record, items)
-
-	# ---------------------------------------------------
 	# Find namespace preambles and ends and replace them.
 	# Since these could be nested we need to order the
 	# identified constructs before replacing them in
 	# record
-	# ---------------------------------------------------    
-	record = parseNamespaceBoundaries(record, items)
-
+	# ---------------------------------------------------
+	try:
+		record = parseNamespaceBoundaries(record, items)
+	except:
+		return ('',{})
+	
 	# ---------------------------------------------------    
 	# Find class preambles and ends and replace with
 	# placeholders. Like namespaces, make sure we sort
 	# them in case we have nested classes.
 	# ---------------------------------------------------    
 	oldrecord = record
-	record = parseClassBoundaries(record, items)
+	try:
+		record = parseClassBoundaries(record, items)
+	except:
+		return ('', {})
 	if record == '': record = oldrecord
 	return (record, items)
 #---------------------------------------------------------------------------
@@ -488,18 +523,6 @@ def groupcmp(x, y):
 		return 1
 	else:
 		return 0
-#--------------------------------------------------------        
-def parseForwards(record, items):
-	allforwards = findAll(findForwards, record)
-	tokens = []
-	for i, (str, group, start, end) in enumerate(allforwards):
-		str = stripBlanklines(rstrip(str))
-		placeholder = placeHolder("forward", i)
-		items[placeholder] = strip(str)
-		tokens.append((placeholder,start,end))
-	if len(tokens) > 0:            
-		record = splice(record, tokens)
-	return record
 #--------------------------------------------------------
 # Find namespace preambles and ends and replace them.
 # Since these could be nested we need to order the
@@ -611,29 +634,34 @@ def getClassname(record):
 #============================================================================
 def main():
 	
-	print "mkclassmap.py $Revision: 1.1 $\n"
+	print "mkclassmap.py $Revision: 1.2 $\n"
 
-
-	packagelist = PACKAGELIST
+	subpackagelist = SUBPACKAGELIST
 	filelist = []
 	if Update:
-		for package in packagelist:
-			print "\tscan area: %s" % package
-			file = "%s/interface/*.h" % package
+		for subpackage in subpackagelist:
+			print "scan sub-package: %s" % subpackage
+			file = "%s/interface/*.h" % subpackage
 			hlist = glob(file)
 			hlist.sort()
 			filelist += hlist
 	else:
-		for package in packagelist:
-			cmd = "ls -1 %s/%s/" % (PKGBASE, package)
-			subsystems = map(strip, os.popen(cmd).readlines())
+
+		for subpackage in subpackagelist:
+			package, t = split(subpackage,'/')
+			
+			if subpackage[-1] == "*":
+				cmd = "%s/%s" % (PKGBASE, subpackage)
+				subsystems = filter(lambda x: os.path.isdir(x), glob(cmd))
+				subsystems = map(lambda x: split(x, '/').pop(), subsystems)
+			else:
+				subsystems = [split(subpackage, '/').pop()]
 
 			for subsystem in subsystems:
 				dirpath = "%s/%s/%s" % (PKGBASE, package, subsystem)
-				if not os.path.isdir(dirpath): continue
 				if skipsubsystem.match(subsystem) != None: continue
 
-				print "\tscan sub-package: %s/%s" % (package, subsystem)
+				print "scan sub-package: %s/%s" % (package, subsystem)
 				file = "%s/interface/*.h" % dirpath
 				hlist = glob(file)
 				hlist.sort()
@@ -647,22 +675,6 @@ def main():
 				"Mkntuple")
 		filelist.append(file)
 
-		# Add Event.h
-
-		file = "%s/%s/%s/interface/Event.h" % \
-			   (BASE,
-				"FWCore",
-				"Framework")
-		filelist.append(file)
-
-		# Add Run.h
-		
-		file = "%s/%s/%s/interface/Run.h" % \
-			   (BASE,
-				"FWCore",
-				"Framework")
-		filelist.append(file)			
-		
 	# Filter headers
 
 	filelist = filter(lambda x: skipheader.search(x) == None, filelist)
@@ -670,24 +682,19 @@ def main():
 	#-------------------------------------------------
 	# Loop over header files to be scanned
 	#-------------------------------------------------
-
-	print
-	recs = []
+	cmap = {}
 	count = 0
 	for index, file in enumerate(filelist):
-
-		# Create full pathname to header
-		
-		if file[0:8] in ["DataForm",
-						 "SimDataF"]: file = BASE + file
 		if not os.path.exists(file):
 			print "** file %s not found" % file
 			continue
+		
 		file = os.path.abspath(file)
 		
 		# Scan header and parse it for classes
 		
 		record, items = parseHeader(file)
+		if record == '': continue
 		records = splitHeader(record)
 		if len(records) == 0: continue
 
@@ -720,16 +727,21 @@ def main():
 				
 				fullname = joinfields(names, "::")
 
+				# Check for uninstantiated templates
+
+				if find(fullname, '<') > -1:
+					tplate = True
+					key = split(fullname, '<')[0]
+				else:
+					tplate = False
+					key = fullname
+					
 				if Update:
+					ClassToHeaderMap[key] = header
 					ClassToHeaderMap[fullname] = header
 				else:
-					recs.append("'%s': '%s'" % (fullname, header))
-
-				# For now ignore uninstantiated templates
-				
-				if find(fullname, '<') > -1:
-					#print "\t\t** skip class %s\n" % fullname 
-					continue
+					cmap[key] = header
+					cmap[fullname] = header
 
 				count += 1
 				print "%5d\t%s" % (count, fullname)
@@ -741,22 +753,28 @@ def main():
 				names.append(classname)
 
 	# Write out class to header map
-	
 
+	recs = []
 	if Update:
 		print "updating classmap.py..."
-		recs = []
 		keys = ClassToHeaderMap.keys()
 		keys.sort()
 		for fullname in keys:
 			recs.append("'%s': '%s'" % (fullname, ClassToHeaderMap[fullname]))
+	else:
+		print "creating classmap.py..."
+		keys = cmap.keys()
+		keys.sort()
+		recs = []
+		for fullname in keys:
+			recs.append("'%s': '%s'" % (fullname, cmap[fullname]))		
 
 	record = joinfields(recs,',\n')		
 	outfile = CLASSMAPFILE
 	out = open(outfile,'w')
 	out.write('# Created: %s\n' % ctime(time()))
 	out.write('# Version: %s\n' % VERSION)
-	out.write('#$Revision:$\n')
+	out.write('#$Revision: 1.2 $\n')
 	out.write("ClassToHeaderMap = {\\\n")
 	out.write(record+'\n')
 	out.write("}\n")
