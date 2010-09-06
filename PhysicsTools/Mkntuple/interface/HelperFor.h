@@ -5,7 +5,7 @@
 // Sub-Package: Mkntuple
 // Description: Base class for helpers
 // Created:     Aug, 2010 Harrison B. Prosper
-//$Revision:$
+//$Revision: 1.1 $
 //-----------------------------------------------------------------------------
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
@@ -55,21 +55,6 @@ public:
   ///
   int count;
 };
-
-// std::string
-// bufferLabel(std::string buffername)
-// {
-//       const edm::ParameterSet* congig = Configuration::instance().get();
-//       vector<string> vrecords = config->
-//          getUntrackedParameter<vector<string> >(buffername);
-//       if ( vrecords.size() == 0 ) return string("");
-//       string record = vrecords[0];
-//       vector<string> field;              
-//       kit::split(record, field);
-
-//       if ( field.size() < 2 ) return string("");
-//       return field[1];
-// }
 
 #endif
 

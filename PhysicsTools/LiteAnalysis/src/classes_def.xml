@@ -29,7 +29,7 @@
    <class name="otreestream"/>
    <class name="kit::MatchedPair"/>
    <class name="kit::PtThing"/>
-   <class name="Method"/>
+   <class name="FunctionMember"/>
    <class name="ClassMembers"/>
 
    <class name="ATest"/>

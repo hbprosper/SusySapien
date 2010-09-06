@@ -9,31 +9,31 @@ from sys    import exit
 from glob   import glob
 from time   import *
 from string import *
-from PhysicsTools.LiteAnalysis.boostlib import nameonly, readMethods
+from PhysicsTools.LiteAnalysis.boostlib import \
+	 nameonly,\
+	 readMethods,\
+	 cmsswProject
 #-----------------------------------------------------------------------------
-if not os.environ.has_key("CMSSW_RELEASE_BASE"):
-	print "\t** Please setup a CMSSW release"
+PACKAGE, SUBPACKAGE, LOCALBASE, BASE, VERSION = cmsswProject()
+if PACKAGE == None:
+	print "Please run me in the test directory of your sub-package"
 	sys.exit(0)
-
-if not os.environ.has_key("CMSSW_BASE"):
-	print "\t** Please setup a CMSSW release"
-	sys.exit(0)
-
-if not os.environ.has_key("CMSSW_VERSION"):
-	print "\t** Please setup a CMSSW release"
-	sys.exit(0)
-
-BASE      = os.environ["PWD"]
-LOCALBASE = "%s/src/"  % os.environ["CMSSW_BASE"]
+	
+print "Package:     %s" % PACKAGE
+print "Sub-package: %s" % SUBPACKAGE
 #------------------------------------------------------------------------------
 # Load classmap.py
-
-cmd = 'find %s/PhysicsTools/Mkntuple -name "classmap.py"' % LOCALBASE
+# First try local release
+cmd = 'find %s%s/%s -name "classmap.py"' % (LOCALBASE, PACKAGE, SUBPACKAGE)
 t = map(strip, os.popen(cmd).readlines())
 if len(t) == 0:
-	print "\n\t** unable to locate classmap.py"\
+	# try Mkntuple
+	cmd = 'find %sPhysicsTools/Mkntuple -name "classmap.py"' % LOCALBASE
+	t = map(strip, os.popen(cmd).readlines())
+	if len(t) == 0:
+		print "\n\t** unable to locate classmap.py"\
 		  "\t** try running mkclassmap.py to create it"
-	sys.exit(0)
+		sys.exit(0)
 CLASSMAPFILE = t[0]
 try:
 	execfile(CLASSMAPFILE)
@@ -49,23 +49,17 @@ Usage:
 	sys.exit(0)
 #------------------------------------------------------------------------------
 retype = re.compile(r'float|double|int|unsigned|bool|\bsize_t\b')
-stripnamespace = re.compile(r'\w+::')
+striparg   = re.compile(r'\bconst |\w+::|\&')
 stripcolon = re.compile(r':')
 striptemplatepars = re.compile(r'\<.*\>')
 stripconst = re.compile(r'\bconst ')
-striparg   = re.compile(r'\bconst |\w+::|\&')
-stripptr   = re.compile(r'\*$')
-methodname = re.compile(r"^.*\(.*\)(?= const)")
-retype = re.compile(r'float|double|int|unsigned|bool|\bsize_t\b')
 simpletype=re.compile(r'void|float|double|int|unsigned|bool|\bsize_t\b|string')
-striprtype = re.compile(r'\W+::|\bconst |\*$|&$|Ref$')
 striprtypeless = re.compile(r'\bconst |\*$|&$|Ref$')
-stripname = re.compile(r'[ ,\<\>:*&]')
 skipmethod= re.compile(r'clone')
 
 DEBUG3 = 0
 #----------------------------------------------------------------------------
-def expandMethod(filename, methlist):
+def expandMethod(filename, fname1, delim, methlist):
 
 	header, classname, basenames, methodlist = readMethods(filename)
 
@@ -73,22 +67,39 @@ def expandMethod(filename, methlist):
 
 	for rtype, name, atype, record in methodlist:
 
-		if DEBUG3 > 3: print "\t\texpandMethod RTYPE( %s, %s )" % (rtype, name)
-		
+		if DEBUG3 > 3: print "\texpandMethod RTYPE( %s, %s )" % (rtype, name)
+
+		# Take care not to overwrite these variables
+
+		if DEBUG3 > 2:
+			print "\tRTYPE( %s ) METHOD( %s ) ARG( %s )" % \
+				  (rtype, name, atype)
+
+		# Keep methods/datamembers that return simple types
+
 		if rtype == "void": continue
-		if atype != "void": continue
 		if retype.match(rtype) == None: continue
-		
-		if DEBUG3 > 2: print "\t\texpandMethod RTYPE( %s, %s, %s )" % \
-		   (rtype, name, atype)
-		
-		# We have a simple return type
-		methlist.append((rtype, name))
+		if skipmethod.match(name) != None: continue		
+			
+		# atype = None for data members
+		if atype == None:
+			# data member
+			fname2 = name
+		else:
+			# function member
+			arg = striparg.sub("", atype)
+			if simpletype.match(arg) == None: continue
+			if ( atype == "void" ):
+				fname2 = "%s()"   % name
+			else:
+				fname2 = "%s(%s)" % (name, atype)
+
+		# ok, this looks like a good method or data member
+		method = "%12s  %s%s%s" % (rtype, fname1, delim, fname2)
+		if DEBUG3 > 0: print "\t\tCOMPOUND METHOD( %s )" % strip(method)
+		methlist.append(method)
 #----------------------------------------------------------------------------
 def mkmethodlist(filename):
-
-	names = {}
-	tab = "//              "
 
 	header, classname, basenames, methodlist = readMethods(filename)
 	if DEBUG3 > 0:
@@ -101,11 +112,11 @@ def mkmethodlist(filename):
 			print "\tskipping template class: %s" % classname
 		return 0
 		
-	# Ok now, process methods
-
-	simplemethods = []
-	compoundmethods = []
-
+	# ------------------------------------------------------------
+	# Process simple methods
+	# ------------------------------------------------------------
+	compoundmethodlist = []	
+	methods = []
 	for rtype, name, atype, record in methodlist:
 
 		# Take are not to overwrite these variables
@@ -115,94 +126,81 @@ def mkmethodlist(filename):
 				  (rtype, name, atype)
 
 		# Skip some methods
-		
+		if rtype == "void": continue		
 		if skipmethod.match(name) != None: continue
+
+		# atype = None for data members
+		if atype == None:
+			# data member
+			fname1 = name
+		else:
+			# function member
+			arg = striparg.sub("", atype)
+			if simpletype.match(arg) == None: continue
+			if ( atype == "void" ):
+				fname1 = "%s()"   % name
+			else:
+				fname1 = "%s(%s)" % (name, atype)
+
+		# Check for pointer or edm::Ref
+		ispointer = rtype[-1]  == "*"
+		isRef     = rtype[-3:] == "Ref"
+		if ispointer or isRef:
+			delim = '->'
+		else:
+			delim = '.'
+
+		# check return type
 		
-		if rtype == "void": continue
-		arg = striparg.sub("", atype)
-
-		if simpletype.match(arg) == None: continue
-
-		if ( atype == "void" ):
-			fname1 = "%s()"   % name
+		if retype.match(rtype) == None:
+			# compound method
+			compoundmethodlist.append((rtype, fname1, delim))
 		else:
-			fname1 = "%s(%s)" % (name, atype)
-			
-		if retype.match(rtype) != None:
-
-			method = [fname1, rtype]
-
+			# simple return type
+			method = "%12s  %s" % (rtype, fname1)
+			methods.append(method)
+	  	
 			if DEBUG3 > 0:
-				print "\t\tSIMPLE( %s )" % method
-			
-			simplemethods.append([fname1, rtype])
+				print "\t\tSIMPLE METHOD( %s )" % method
 
-		else:
-			
-			# expand complex return type
+	# ------------------------------------------------------------
+	# Process compound methods
+	# ------------------------------------------------------------
+	if DEBUG3 > 0:
+		print "\n\tPROCESS COMPLEX RETURN TYPES\n"
 
-			cname = striprtypeless.sub("", rtype)
+	for rtype, fname1, delim in compoundmethodlist:
+
+		# Get header for this class from ClassToHeaderMap
+		cname = striprtypeless.sub("", rtype)
+		if not ClassToHeaderMap.has_key(cname):
+			if DEBUG3 > 2:
+				print "\t\t** header for class %s NOT found" % cname
+			continue
+
+		# get file that lists this class's methods and data members
+		headerfile = ClassToHeaderMap[cname]
+		filestem = replace(headerfile, 'interface/', '')
+		filestem = split(filestem, '.h')[0]
+		filestem = replace(filestem, '/', '.')
+		cname  = split(cname,'::').pop()
+		txtfilename = "txt/%s.%s.txt" % (filestem, cname)
+		if not os.path.exists(txtfilename):
 			if DEBUG3 > 0:
-				print "\t\t\tCOMPLEX"
+				print "\t\t*** file %s NOT found" % txtfilename
+			continue
 
-			# Get header for this class from ClassToHeaderMap
+		if DEBUG3 > 1:
+			print "\t\tTXT FILE( %s )" % txtfilename
 
-			if not ClassToHeaderMap.has_key(cname):
-				if DEBUG3 > 2:
-					print "\t\t** header for class %s NOT found" % cname
-				continue
-			
-			headerfile = ClassToHeaderMap[cname]
-			filestem = replace(headerfile, 'interface/', '')
-			filestem = split(filestem, '.h')[0]
-			filestem = replace(filestem, '/', '.')
-			cname  = split(cname,'::').pop()
-			txtfilename = "%s/txt/%s.%s.txt" % (BASE, filestem, cname)
-
-			if not os.path.exists(txtfilename):
-				if DEBUG3 > 0:
-					print "\t\t*** file %s NOT found" % txtfilename
-				continue
-
-			if DEBUG3 > 0:
-				print "\t\t\t\tRETURN TYPE( %s )" % cname
-				
-			# txt file exists, so proceed 
-			methlist = []
-			expandMethod(txtfilename, methlist)
-			if len(methlist) == 0: continue
-
-			ispointer = rtype[-1] == "*"
-			isRef     = rtype[-3:] == "Ref"
-			
-			for rtype, fname in methlist:
-
-				fname = "%s()" % fname # Assume void for now
-				
-				method = None
-				if ispointer or isRef:
-					method = [fname1, "->", fname, rtype]
-				else:
-					method = [fname1, ".", fname, rtype]
-				compoundmethods.append(method)
-
-				if DEBUG3 > 0:
-					print "\tCOMPOUND METHOD( %s )" % method
+		expandMethod(txtfilename, fname1, delim, methods)
 					
-	simplemethods.sort()
-	simplemethods = map(lambda x: "%12s  %s" % (x[1],x[0]), simplemethods)
-	compoundmethods.sort()
-	compoundmethods = map(lambda x: "%12s  %s%s%s" % (x[3],x[0],x[1],x[2]),
-						  compoundmethods)
-		
-	# Write a summary document for this class
+	if len(methods) == 0: return 0
 	
-	methods = simplemethods + compoundmethods
-
-	if len(methods) < 1: return 0
-
 	print "processed: %s\t%d" % (classname, len(methods))
 
+	# Write a summary document for this class
+	
 	str = '%s\n' % joinfields(methods,'\n')
 	classname = stripcolon.sub("", classname)
 	headerfilename   = striptemplatepars.sub("", classname)
@@ -210,6 +208,11 @@ def mkmethodlist(filename):
 	return len(methods)
 #----------------------------------------------------------------------------
 def main():
+	if not os.path.exists("txt"):
+		print "*** txt directory not found."\
+			  "\n*** try running mkdocs.py to create it"
+		sys.exit(0)
+		
 	filelist = sys.argv[1:]
 	if len(filelist) == 0:
 		filelist = glob("txt/*.txt")

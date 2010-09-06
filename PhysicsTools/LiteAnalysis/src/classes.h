@@ -15,7 +15,7 @@
 #include "PhysicsTools/LiteAnalysis/interface/Bayespack.hpp"
 #include "PhysicsTools/LiteAnalysis/interface/Slurper.hpp"
 #include "PhysicsTools/LiteAnalysis/interface/ATest.h"
-#include "PhysicsTools/LiteAnalysis/interface/Method.h"
+#include "PhysicsTools/LiteAnalysis/interface/FunctionMember.h"
 #include "PhysicsTools/LiteAnalysis/interface/ClassMembers.h"
 //-----------------------------------------------------------------------------
 #include "TLorentzVector.h"

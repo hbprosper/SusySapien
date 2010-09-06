@@ -3,7 +3,7 @@
 # File: mkdoc.py
 # Description: Create documentation of classes.
 # Created: 11-Dec-2009 HBP, (during CERN visit)
-#$Revision: 1.2 $
+#$Revision: 1.3 $
 #------------------------------------------------------------------------------
 import os, sys, glob
 from string import *
@@ -66,7 +66,7 @@ def main():
 	for index, file in enumerate(files):
 		if file == "index": continue
 		if find(file, "_") > -1: continue
-		print "%5d\t%s" % (index, file)
+		print "%5d\t%s" % (index+1, file)
 		
 		rec = os.popen("grep Methods %s/%s.html" % (DIR, file)).read()
 		if rec == "": continue

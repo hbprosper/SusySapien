@@ -53,38 +53,102 @@ main(int argc, char** argv)
   mname.push_back("toA().value()");
   mname.push_back("avalue");
   mname.push_back("ptrToA()->avalue");
+  mname.push_back("ptrToB->value()");
 
-  vector<FunctionMember> method;
+  vector<FunctionMember> method1;
+  vector<Method<ATest> > method2;
+
   for(int i=0; i < (int)mname.size(); i++)
     {
-      method.push_back( FunctionMember("ATest", mname[i]) );
+      method1.push_back( FunctionMember("ATest", mname[i]) );
+      method2.push_back( Method<ATest>(mname[i]) );
     }
+
+  char record[256];
 
   for(int i=0; i < 1000; i++)
     {
       cout << endl << i 
-           << " -----------------------------------------"   << endl;
-      c.refToA().set(random.Uniform(10));
+           << " ------------------------------------------------"   << endl;
+      //--------------------------------------------------------------------
+      c.ptrToA()->set(random.Uniform(100));
+      sprintf(record, "Direct         - %-20s\t= %10.4f", 
+              mname[0].c_str(), c.ptrToA()->value());
+      cout << record << endl;
 
-      cout << "direct - " 
-           << mname.front() 
-           << "\t= " << c.ptrToA()->value() << endl;
+      sprintf(record, "FunctionMember - %-20s\t= %10.4f", 
+              mname[0].c_str(), method1[0](address)); 
+      cout << record << endl;
 
+      sprintf(record, "Method         - %-20s\t= %10.4f", 
+              mname[0].c_str(), method2[0]((const ATest)c)); 
+      cout << record << endl;
+      cout << endl;
+      //--------------------------------------------------------------------
+      c.refToA().set(random.Uniform(100));
+      sprintf(record, "Direct         - %-20s\t= %10.4f", 
+              mname[1].c_str(), c.refToA().value());
+      cout << record << endl;
+
+      sprintf(record, "FunctionMember - %-20s\t= %10.4f", 
+              mname[1].c_str(), method1[1](address)); 
+      cout << record << endl;
+
+      sprintf(record, "Method         - %-20s\t= %10.4f", 
+              mname[1].c_str(), method2[1]((const ATest)c)); 
+      cout << record << endl;
+      cout << endl;
+      //--------------------------------------------------------------------
+      a.set(random.Uniform(100));
+      sprintf(record, "Direct         - %-20s\t= %10.4f", 
+              mname[2].c_str(), c.toA().value());
+      cout << record << endl;
+      sprintf(record, "FunctionMember - %-20s\t= %10.4f", 
+              mname[2].c_str(), method1[2](address)); 
+      cout << record << endl;
+
+      sprintf(record, "Method         - %-20s\t= %10.4f", 
+              mname[2].c_str(), method2[2]((const ATest)c)); 
+      cout << record << endl;
+      cout << endl;
+      //--------------------------------------------------------------------
       c.avalue = random.Uniform(100);
-      cout << "direct - " 
-           << mname[mname.size()-2]  
-           << "\t= " << c.avalue   << endl;
+      sprintf(record, "Direct         - %-20s\t= %10.4f", 
+              mname[3].c_str(), c.avalue);
+      cout << record << endl;
+      sprintf(record, "FunctionMember - %-20s\t= %10.4f", 
+              mname[3].c_str(), method1[3](address)); 
+      cout << record << endl;
 
+      sprintf(record, "Method         - %-20s\t= %10.4f", 
+              mname[3].c_str(), method2[3]((const ATest)c)); 
+      cout << record << endl;
+      cout << endl;
+      //--------------------------------------------------------------------
       c.ptrToA()->avalue = random.Uniform(100);
-      cout << "direct - " 
-           << mname.back()  << "\t= " 
-           << c.ptrToA()->avalue  << endl;
+      sprintf(record, "Direct         - %-20s\t= %10.4f", 
+              mname[4].c_str(), c.ptrToA()->avalue);
+      cout << record << endl;
+      sprintf(record, "FunctionMember - %-20s\t= %10.4f", 
+              mname[4].c_str(), method1[4](address)); 
+      cout << record << endl;
 
-      for(int i=0; i < (int)mname.size(); i++)
-        {
-          cout << " FunctionMember - " << mname[i] 
-               << "\t= " << method[i](address) << endl;
-        }
+      sprintf(record, "Method         - %-20s\t= %10.4f", 
+              mname[4].c_str(), method2[4]((const ATest)c)); 
+      cout << record << endl;
+      cout << endl;
+      //--------------------------------------------------------------------
+      c.ptrToB->set(random.Uniform(100));
+      sprintf(record, "Direct         - %-20s\t= %10.4f", 
+              mname[5].c_str(), c.ptrToB->value());
+      cout << record << endl;
+      sprintf(record, "FunctionMember - %-20s\t= %10.4f", 
+              mname[5].c_str(), method1[5](address)); 
+      cout << record << endl;
+
+      sprintf(record, "Method         - %-20s\t= %10.4f", 
+              mname[5].c_str(), method2[5]((const ATest)c)); 
+      cout << record << endl;
     }
 
   return 0;

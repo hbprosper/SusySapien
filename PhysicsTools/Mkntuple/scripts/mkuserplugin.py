@@ -2,41 +2,20 @@
 #------------------------------------------------------------------------------
 # Create the skeleton of a user plugin
 # Created: 27-Aug-2010 Harrison B. Prosper
-#$Revision: 1.2 $
+#$Revision: 1.3 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
 from time import *
 from glob import glob
 from getopt     import getopt, GetoptError
-from PhysicsTools.LiteAnalysis.boostlib import nameonly
+from PhysicsTools.LiteAnalysis.boostlib import nameonly, cmsswProject
 #------------------------------------------------------------------------------
-if not os.environ.has_key("CMSSW_RELEASE_BASE"):
-	print "\t**you must first set up CMSSW"
+PACKAGE, SUBPACKAGE, LOCALBASE, BASE, VERSION = cmsswProject()
+if PACKAGE == None:
+	print "Please run me in your sub-package directory"
 	sys.exit(0)
-BASE = "%s/src" % os.environ['CMSSW_RELEASE_BASE']
-
-if not os.environ.has_key("CMSSW_BASE"):
-	print "\t**you must first set up CMSSW"
-	sys.exit(0)
-LOCALBASE = "%s/src" % os.environ['CMSSW_BASE']
-PWD = os.path.realpath(os.environ['PWD'])
-
-# Get author's name
-getauthor = re.compile(r'(?<=[0-9]:)[A-Z]+.+?(?=:/)')
-record = strip(os.popen("getent passwd $USER").read())
-if record != "":
-	AUTHOR = getauthor.findall(record)[0]
-else:
-	AUTHOR = "Shakepeare's ghost"
 #------------------------------------------------------------------------------
-# Determine project directory
-project = split(replace(PWD, LOCALBASE + "/", ""), '/')
-if len(project) < 2:
-	print "\t**Please run mkuserplugins in your subpackage directory"
-	sys.exit(0)
-
-PACKAGE, SUBPACKAGE = project[:2]
 print "Package:     %s" % PACKAGE
 print "Sub-package: %s" % SUBPACKAGE
 
@@ -44,6 +23,13 @@ PROJECTBASE = "%s/%s/%s"   % (LOCALBASE, PACKAGE, SUBPACKAGE)
 PLUGINDIR = "%s/plugins"   % PROJECTBASE  
 SRCDIR    = "%s/src"       % PROJECTBASE
 INCDIR    = "%s/interface" % PROJECTBASE
+# Get author's name
+getauthor = re.compile(r'(?<=[0-9]:)[A-Z]+.+?(?=:/)')
+record = strip(os.popen("getent passwd $USER").read())
+if record != "":
+	AUTHOR = getauthor.findall(record)[0]
+else:
+	AUTHOR = "Shakepeare's ghost"
 #------------------------------------------------------------------------------
 # Make sure these directories exist
 if not os.path.exists(PLUGINDIR):
@@ -104,7 +90,7 @@ def wrpluginheader(names):
 // Description: Mkntuple helper class for %(classname)s
 // Created:     %(time)s
 // Author:      %(author)s      
-//$Revision: 1.2 $
+//$Revision: 1.3 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -201,7 +187,7 @@ def wrplugincode(names):
 // Description: Mkntuple helper class for %(classname)s
 // Created:     %(time)s
 // Author:      %(author)s      
-//$Revision: 1.2 $
+//$Revision: 1.3 $
 //-----------------------------------------------------------------------------
 #include "%(package)s/%(subpackage)s/interface/%(filename)s.h"
 //-----------------------------------------------------------------------------
@@ -250,7 +236,7 @@ def wrplugin(names):
 	template = '''// ----------------------------------------------------------------------------
 // Created: %(time)s by mkuserplugin.py
 // Author:      %(author)s      
-//$Revision: 1.2 $
+//$Revision: 1.3 $
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/Buffer.h"
 #include "%(package)s/%(subpackage)s/interface/%(filename)s.h"
@@ -506,7 +492,7 @@ def main():
 	else:
 		updated = True
 		out = open(classesfile, 'w')
-		record ='''//$Revision: 1.2 $
+		record ='''//$Revision: 1.3 $
 //--------------------------------------------------------------------''' % \
 		names
 		out.write(record)

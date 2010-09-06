@@ -37,7 +37,8 @@ public:
   Bclass() : val(24) {}
   ~Bclass() {}
   void say() { std::cout << "I'm a Bclass thing" << std::endl; } 
-  double value(int x){val += x; return val;}
+  void set(double x) {val = x;}
+  double value(){return val;}
 
 private:
   double val;
@@ -77,6 +78,7 @@ public:
 
   ATest(Aclass& a, Bclass& b)
     : ATestBase(),
+      ptrToB(&b),
       a_(&a),
       b_(b),
       count_(0)
@@ -89,6 +91,8 @@ public:
   Aclass* ptrToA() const { return a_; }
   Aclass& refToA() const { return *a_; }
   Aclass  toA()    const { return *a_; }
+
+  Bclass* ptrToB;
 
   Bclass& getB() 
   {

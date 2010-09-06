@@ -6,7 +6,7 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
-// $Id: Method.h,v 1.4 2010/03/10 13:29:58 prosper Exp $
+// $Id: MethodT.h,v 1.1 2010/09/03 04:56:58 prosper Exp $
 //
 // If using Python, include its header first to avoid annoying compiler
 // complaints.
@@ -163,7 +163,7 @@ struct MethodT
       + "/" + expression_;
   }
 
-  double operator()(const T& t) const 
+  double operator()(const T& t)
   {
     using namespace ROOT::Reflex;
 

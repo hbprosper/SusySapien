@@ -15,7 +15,7 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Wed Jun 20 19:53:47 EDT 2007
 //         Updated:  Sat Oct 25 2008 - make matchInDeltaR saner
-// $Id: kit.cc,v 1.8 2010/09/02 02:26:20 prosper Exp $
+// $Id: kit.cc,v 1.9 2010/09/03 01:54:13 prosper Exp $
 //
 //
 //-----------------------------------------------------------------------------
@@ -672,6 +672,11 @@ kit::datamemberValue(string& classname, void* address, string& membername)
   // Model datamember and get value
   Object value = object.Get(membername);
   raddr  = value.Address();
+
+  // If this is a pointer, then return address of object pointed to
+  Type atype = value.TypeOf();
+  if ( atype.IsPointer() || atype.IsReference() ) 
+    raddr = *static_cast<void**>(raddr);
 
   return raddr;
 }

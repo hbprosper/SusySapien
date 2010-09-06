@@ -5,7 +5,7 @@
 # Updated: 12-Mar-2010 HBP - fix appending of .root
 #          08-Jun-2010 HBP - add creation of selector.h
 #          02-Sep-2010 HBP - fix variables.txt record splitting bug
-#$Revision: 1.7 $
+#$Revision: 1.8 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -70,7 +70,7 @@ TEMPLATE_H =\
 // Description: Analyzer header for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.7 $
+// $Revision: 1.8 $
 //-----------------------------------------------------------------------------
 
 // -- System
@@ -248,7 +248,7 @@ TEMPLATE_CC =\
 // Description: Analyzer for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.7 $
+// $Revision: 1.8 $
 //-----------------------------------------------------------------------------
 #include "%(name)s.h"
 
@@ -311,7 +311,7 @@ SLTEMPLATE=\
 // Description: selector template
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.7 $
+// $Revision: 1.8 $
 //-----------------------------------------------------------------------------
 #include <map>
 #include <string>
@@ -378,7 +378,7 @@ PYTEMPLATE =\
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
 #  Author:      %(author)s
-#  $Revision: 1.7 $
+#  $Revision: 1.8 $
 # -----------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
@@ -475,7 +475,7 @@ MAKEFILE = '''#-----------------------------------------------------------------
 #                 verbose    (e.g., verbose=1)
 #                 withcern   (e.g., withcern=1  expects to find CERN_LIB)
 # Author:      %(author)s
-#$Revision: 1.7 $
+#$Revision: 1.8 $
 #------------------------------------------------------------------------------
 ifndef ROOTSYS
 $(error *** Please set up Root)
@@ -669,11 +669,16 @@ def main():
 	os.system(cmd)
 
 	# Create Makefile
-	record = MAKEFILE % {'time': ctime(time()),
-						 'filename': filename,
-						 'percent': '%'}
-	open("%s/Makefile" % filename, "w").write(record)
+
+	names = {'name': filename,
+			 'filename': filename,
+			 'time': ctime(time()),
+			 'author': AUTHOR,
+			 'percent': '%'
+			 }
 	
+	record = MAKEFILE % names
+	open("%s/Makefile" % filename, "w").write(record)	
 
 	# Create C++ code
 	
@@ -685,7 +690,7 @@ def main():
 			 'selection': join("  ", select, "\n"),
 			 'author': AUTHOR
 			 }
-	
+
 	record = TEMPLATE_H % names
 	open(outfilename,"w").write(record)
 

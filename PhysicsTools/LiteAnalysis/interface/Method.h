@@ -27,10 +27,10 @@ public:
     
   ///
   Method(std::string methodexpression)
-    : FunctionMember(boost::python::type_id<T>().name(), methodexpresion),
-      methodexpr_(methodexpression)
+    : FunctionMember(boost::python::type_id<T>().name(), methodexpression),
+      methodexpression_(methodexpression) {}
 
-  virtual ~Method();
+  virtual ~Method() {}
 
   std::string name() const
   {
@@ -38,9 +38,14 @@ public:
       + std::string("::") + methodexpression_;
   }
 
-  double operator()(const T& o) const 
+  double operator()(const T& object)
   {
-    return (*this)((void*)(&o));
+    void* address = (void*)(&object);
+    void* raddr = invoke(address);
+    if ( raddr == 0 ) 
+      return 0;
+    else
+      return *static_cast<double*>(raddr); 
   }
 private:
   std::string methodexpression_;
