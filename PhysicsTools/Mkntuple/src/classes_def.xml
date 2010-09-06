@@ -4,14 +4,14 @@
  <class name="triggerBits"/>
 
  <class name="HelperFor<reco::GenParticle>"/>
- <class name="reco::GenParticleAddon"/>
+ <class name="reco::GenParticleHelper"/>
 
- <class name="HelperFor<reco::HcalNoiseRBXCaloTower>"/>
+ <class name="HelperFor<reco::HcalNoiseRBX>"/>
  <class name="reco::HcalNoiseRBXCaloTower"/>
 
- <class name="HelperFor<edm::TriggerResultsAddon>"/>
- <class name="edm::TriggerResultsAddon"/>
+ <class name="HelperFor<edm::TriggerResults>"/>
+ <class name="edm::TriggerResultsHelper"/>
 
- <class name="HelperFor<edm::EventAddon>"/>
- <class name="edm::EventAddon"/>
+ <class name="HelperFor<edm::Event>"/>
+ <class name="edm::EventHelper"/>
 </lcgdict>

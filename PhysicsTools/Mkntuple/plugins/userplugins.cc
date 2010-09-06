@@ -6,16 +6,16 @@
 // Updated:     Mon Mar 08, 2010 Sezen & HBP - add triggerBits class
 //              Thu Apr 08, 2010 Sezen & HBP - add GParticle class
 //              Thu Aug 25, 2010 HBP - rename classes
-//$Revision: 1.7 $
+//$Revision: 1.8 $
 //-----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/user.h"
 #include "PhysicsTools/Mkntuple/interface/Buffer.h"
-#include "PhysicsTools/Mkntuple/interface/BufferEventAddon.h"
+#include "PhysicsTools/Mkntuple/interface/BufferEventHelper.h"
 //-----------------------------------------------------------------------------
 typedef UserBuffer<reco::GenParticle, 
-                   reco::GenParticleAddon, false> recoGenParticleAddon_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoGenParticleAddon_t, 
-                  "recoGenParticleAddon");
+                   reco::GenParticleHelper, false> recoGenParticleHelper_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoGenParticleHelper_t, 
+                  "recoGenParticleHelper");
 
 typedef UserBuffer<reco::HcalNoiseRBX, 
                    reco::HcalNoiseRBXCaloTower, false> 
@@ -24,12 +24,12 @@ DEFINE_EDM_PLUGIN(BufferFactory, recoHcalNoiseRBXCaloTower_t,
                   "recoHcalNoiseRBXCaloTower");
 
 typedef UserBuffer<edm::TriggerResults, 
-                   edm::TriggerResultsAddon, true> edmTriggerResultsAddon_t;
-DEFINE_EDM_PLUGIN(BufferFactory, edmTriggerResultsAddon_t, 
-                  "edmTriggerResultsAddon");
+                   edm::TriggerResultsHelper, true> edmTriggerResultsHelper_t;
+DEFINE_EDM_PLUGIN(BufferFactory, edmTriggerResultsHelper_t, 
+                  "edmTriggerResultsHelper");
 
-typedef UserBuffer<edm::Event, edm::EventAddon, true> edmEventAddon_t;
-DEFINE_EDM_PLUGIN(BufferFactory, edmEventAddon_t, "edmEventAddon");
+typedef UserBuffer<edm::Event, edm::EventHelper, true> edmEventHelper_t;
+DEFINE_EDM_PLUGIN(BufferFactory, edmEventHelper_t, "edmEventHelper");
 
 // Synomyms:
 

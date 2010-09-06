@@ -5,7 +5,7 @@
 // Sub-Package: Mkntuple
 // Description: Base class for helpers
 // Created:     Aug, 2010 Harrison B. Prosper
-//$Revision: 1.1 $
+//$Revision: 1.2 $
 //-----------------------------------------------------------------------------
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
@@ -18,22 +18,23 @@ class HelperFor
 {
 public:
   HelperFor() : config(Configuration::instance().get()),
-                event(0), 
-                object(0), 
-                index(0), 
-                count(1) 
+                event(0),   // pointer to current event
+                object(0),  // pointer to current helped object
+                number(0),  // index of current helped object (dumb pointer)
+                index(0),   // index of current helper object (dump pointer)
+                count(1)    // number of instances returned by helper
   {}
 
   virtual ~HelperFor() {}
 
   void cacheEvent() { event = CurrentEvent::instance().get(); }
-  void cacheObject(const X& o) { object = &o; count = 1; }
+  void cacheObject(const X& o, int n=0) { object = &o; number = n; count = 1; }
 
   /// return number of items per cached object
   int size() const { return count; }
 
   /// set index of item to be retrieved.
-  void set(int ind) { index = ind; }
+  void set(int n) { index = n; }
 
   // ---------------- can be overridden
 
@@ -44,15 +45,17 @@ public:
   virtual void analyzeObject() {}
 
   // ---------------- available to user
-  ///
+  /// Pointer to ParameterSet initialized from config file.
   const edm::ParameterSet* config;
-  ///
+  /// Pointer to event.
   const edm::Event* event;
-  ///
+  /// Pointer to current (helped) object
   const X* object;
-  ///
+  /// Ordinal value of current (helped) object (with count starting at zero).
+  int number;
+  /// Index of current helper object, which could differ from number.
   int index;
-  ///
+  /// 
   int count;
 };
 

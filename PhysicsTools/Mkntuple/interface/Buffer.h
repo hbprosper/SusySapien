@@ -21,7 +21,7 @@
 //                   Fri Aug 27 HBP - on second thoughts...go back to a
 //                                    UserBuffer class!
 //
-// $Id: Buffer.h,v 1.16 2010/09/03 01:54:13 prosper Exp $
+// $Id: Buffer.h,v 1.17 2010/09/04 02:49:27 prosper Exp $
 //
 //
 // If using Python, include its header first to avoid annoying compiler
@@ -649,8 +649,8 @@ struct UserBuffer  : public BufferThing
         
         for(int j=0; j < objectcount; j++)
           {
-            // cache object in helper
-            helper_.cacheObject((*handle)[j]);
+            // cache object in helper along with its ordinal value
+            helper_.cacheObject((*handle)[j], j);
 
             // Perform (optional) user object-level analysis
             helper_.analyzeObject();

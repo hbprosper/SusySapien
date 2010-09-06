@@ -8,10 +8,10 @@
 // Updated:     Mon Mar 08, 2010 Sezen & HBP - add triggerBits class
 //              Thu Apr 08, 2010 Sezen & HBP - add GParticle class
 //              Tue Aug 24, 2010 HBP - add HcalNoiseRBXCaloTower
-//                                   - add TriggerResultsAddon
-//                                   - add GenParticleAddon
+//                                   - add TriggerResultsHelper
+//                                   - add GenParticleHelper
 //              Thu Sep 02, 2010 HBP - move HelpFor to separate file
-//$Revision: 1.11 $
+//$Revision: 1.12 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -33,13 +33,13 @@ namespace reco
 {
   //---------------------------------------------------------------------------
   /// A helper class for reco::GenParticle.
-  class GenParticleAddon : public HelperFor<reco::GenParticle>
+  class GenParticleHelper : public HelperFor<reco::GenParticle>
   {
   public:
     ///
-    GenParticleAddon();
+    GenParticleHelper();
 
-    virtual ~GenParticleAddon();
+    virtual ~GenParticleHelper();
 
     /// 
     virtual void analyzeEvent();
@@ -98,16 +98,18 @@ namespace reco
     int ieta() const;
 
     /// get the tower iphi
-    int iphi() const;
-    
+    int iphi() const;    
     /// 
     double hadEnergy() const;
+    ///
+    int number() const;
 
   private:
     std::vector<int> zside_;
     std::vector<int> ieta_;
     std::vector<int> iphi_;
     std::vector<double> hadEnergy_;
+    std::vector<int> number_;
   };
 }
 
@@ -115,13 +117,13 @@ namespace edm
 {
   //---------------------------------------------------------------------------
   /// Helper class for TriggerResults.
-  class TriggerResultsAddon : public HelperFor<edm::TriggerResults>
+  class TriggerResultsHelper : public HelperFor<edm::TriggerResults>
   {
   public:
     ///
-    TriggerResultsAddon();
+    TriggerResultsHelper();
     
-    virtual ~TriggerResultsAddon();
+    virtual ~TriggerResultsHelper();
     
     ///
     bool value(std::string tname) const;
@@ -131,13 +133,13 @@ namespace edm
   };
   //---------------------------------------------------------------------------
   /// Helper class for edm::Event.
-  class EventAddon : public HelperFor<edm::Event>
+  class EventHelper : public HelperFor<edm::Event>
   {
   public:
     ///
-    EventAddon();    
+    EventHelper();    
     
-    virtual ~EventAddon();
+    virtual ~EventHelper();
     
     ///
     int run() const;
@@ -161,14 +163,14 @@ namespace edm
 // ----------------------------------------------------------------------------
 // Synonyms
 // ----------------------------------------------------------------------------
-class GParticle : public reco::GenParticleAddon
+class GParticle : public reco::GenParticleHelper
 {
 public:
   GParticle();
   virtual ~GParticle();
 };
 
-class triggerBits : public edm::TriggerResultsAddon
+class triggerBits : public edm::TriggerResultsHelper
 {
 public:
   triggerBits();

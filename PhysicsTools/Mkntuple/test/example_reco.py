@@ -1,4 +1,4 @@
-#$Revision: 1.1 $ example.py
+#$Revision: 1.2 $ example.py
 #------------------------------------------------------------------------------
 import FWCore.ParameterSet.Config as cms
 
@@ -26,7 +26,7 @@ cms.EDAnalyzer("Mkntuple",
                buffers =
                cms.untracked.
                vstring(
-	'edmEventAddon',
+	'edmEventHelper',
     'HcalNoiseSummary',
 	'recoHcalNoiseRBXCaloTower',
     'recoCaloJet',
@@ -34,12 +34,12 @@ cms.EDAnalyzer("Mkntuple",
     'recoCaloMET1',
     'recoHcalNoiseRBX',
     'recoVertex',
-	'edmTriggerResultsAddon'
+	'edmTriggerResultsHelper'
     ),
-               edmEventAddon =
+               edmEventHelper =
                cms.untracked.
                vstring(
-    'edmEventAddon',
+    'edmEventHelper',
     #---------------------------------------------------------------------
     '   int   isRealData()',
     '   int   run()',
@@ -62,7 +62,8 @@ cms.EDAnalyzer("Mkntuple",
     #---------------------------------------------------------------------
     '   int    ieta()',
 	'   int    iphi()',
-	'   double hadEnergy()'
+	'   double hadEnergy()',
+	'   int    number()'
     ),
                recoCaloJet =
                cms.untracked.
@@ -115,10 +116,10 @@ cms.EDAnalyzer("Mkntuple",
     ' double   y()',
     ' double   z()'
     ),
-               edmTriggerResultsAddon =
+               edmTriggerResultsHelper =
                cms.untracked.
                vstring(
-    "edmTriggerResultsAddon          TriggerResults::HLT               1",
+    "edmTriggerResultsHelper          TriggerResults::HLT               1",
     #---------------------------------------------------------------------
     '   bool   value("HLT_Jet15U")   Jet15U',
 	'   bool   value("HLT_Jet30U")   Jet30U',

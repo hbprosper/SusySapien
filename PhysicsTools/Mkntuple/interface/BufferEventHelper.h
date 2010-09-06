@@ -1,11 +1,11 @@
-#ifndef BUFFEREVENTADDON_H
-#define BUFFEREVENTADDON_H
+#ifndef BUFFEREVENTHELPER_H
+#define BUFFEREVENTHELPER_H
 //-----------------------------------------------------------------------------
 // Package:     PhysicsTools
 // Sub-Package: Mkntuple
-// Description: Specialized buffer for edm::EventAddon
+// Description: Specialized buffer for edm::EventHelper
 // Created:     Thu Aug 26, 2010 Harrison B. Prosper
-//$Revision: 1.5 $
+//$Revision: 1.6 $
 //-----------------------------------------------------------------------------
 #include "FWCore/Framework/interface/Event.h"
 #include "PhysicsTools/Mkntuple/interface/HelperFor.h"
@@ -14,7 +14,7 @@
 ///
 template <>
 struct UserBuffer<edm::Event, 
-                  edm::EventAddon, true>  : public BufferThing
+                  edm::EventHelper, true>  : public BufferThing
 {
   ///
   UserBuffer() 
@@ -31,7 +31,7 @@ struct UserBuffer<edm::Event,
       message_(""),
       debug_(0)
   {
-    std::cout << "Specialized Buffer created for edm::EventAddon" << std::endl;
+    std::cout << "Specialized Buffer created for edm::EventHelper" << std::endl;
   }
 
   ///
@@ -63,7 +63,7 @@ struct UserBuffer<edm::Event,
     debug_   = debug;
     count_   = 1;
 
-    initBuffer<edm::EventAddon>(out,
+    initBuffer<edm::EventHelper>(out,
                                 label_,
                                 label1_,
                                 label2_,
@@ -85,16 +85,15 @@ struct UserBuffer<edm::Event,
       std::cout << BLACK
                 << "Begin (specialized) UserBuffer::fill\n\t" 
                 << RED 
-                << "X: edm::EventAddon"
+                << "X: edm::EventHelper"
                 << BLACK
                 << std::endl;
     count_ = 1;
     message_ = "";
 
-
     helper_.cacheObject(event);
 
-    callMethods(0, (const edm::EventAddon)helper_, variables_, debug_);  
+    callMethods(0, (const edm::EventHelper)helper_, variables_, debug_);  
 
     if ( debug_ > 0 ) std::cout << BLACK
                                 << "End UserBuffer::fill" 
@@ -104,7 +103,7 @@ struct UserBuffer<edm::Event,
 
   std::string& message() { return message_; }
 
-  std::string name() { return std::string("edm::EventAddon"); }
+  std::string name() { return std::string("edm::EventHelper"); }
 
   /// Shrink buffer size using specified array of indices.
   void shrink(std::vector<int>& index) {}
@@ -117,14 +116,14 @@ private:
   std::string  prefix_;
   BufferType buffertype_;
   std::vector<VariableDescriptor> var_;
-  std::vector<Variable<edm::EventAddon> > variables_;
+  std::vector<Variable<edm::EventHelper> > variables_;
   int  maxcount_;
   int  count_;
   bool singleton_;
   std::string message_;
   int  debug_;
 
-  edm::EventAddon helper_;
+  edm::EventHelper helper_;
 };
 
 #endif

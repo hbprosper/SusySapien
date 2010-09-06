@@ -1,4 +1,4 @@
-#$Revision: 1.4 $ example.py
+#$Revision: 1.5 $ example.py
 #------------------------------------------------------------------------------
 import FWCore.ParameterSet.Config as cms
 
@@ -30,13 +30,13 @@ cms.EDAnalyzer("Mkntuple",
 			   # vstring "buffers" contains the name "recoBeamSpot", the code
 			   # expects a vstring block of that name to exist.
 			   # However, the names within a vstring block, for example,
-			   # edmEventAddon, must correspond to a Buffer plugin.
+			   # edmEventHelper, must correspond to a Buffer plugin.
 			   # (See plugins.cc and userplugins.cc in the plugins dir.)
 			   #----------------------------------------------------------
                buffers =
                cms.untracked.
                vstring(
-	'edmEventAddon',
+	'edmEventHelper',
 	'GenEventInfoProduct',
     'GenRunInfoProduct',
     'recoBeamSpot',
@@ -44,8 +44,8 @@ cms.EDAnalyzer("Mkntuple",
     'patMuon',
  	'patElectron',
 	'recoGenParticle',
- 	'recoGenParticleAddon',
- 	'edmTriggerResultsAddon'
+ 	'recoGenParticleHelper',
+ 	'edmTriggerResultsHelper'
     ),
 			   #----------------------------------------------------------
 			   # Format of 1st line:
@@ -54,10 +54,10 @@ cms.EDAnalyzer("Mkntuple",
 			   # Format of subsequent lines:
 			   #   [return-type] method [alias]
 			   #----------------------------------------------------------
-               edmEventAddon =
+               edmEventHelper =
                cms.untracked.
                vstring(
-    'edmEventAddon                  info',
+    'edmEventHelper                  info',
     #---------------------------------------------------------------------
 	'   bool  isRealData()',
     '   int   run()',
@@ -153,20 +153,20 @@ cms.EDAnalyzer("Mkntuple",
     " double   phi()",
     " double   mass()"
 	),
-			   recoGenParticleAddon =
+			   recoGenParticleHelper =
                cms.untracked.
                vstring(
-    "recoGenParticleAddon           genParticles                    4000",
+    "recoGenParticleHelper           genParticles                    4000",
     #---------------------------------------------------------------------
 	"    int   firstMother()",
 	"    int   lastMother()",
 	"    int   firstDaughter()",
 	"    int   lastDaughter()"
     ),
-               edmTriggerResultsAddon =
+               edmTriggerResultsHelper =
                cms.untracked.
                vstring(
-    "edmTriggerResultsAddon         TriggerResults                     1",
+    "edmTriggerResultsHelper         TriggerResults                     1",
     #---------------------------------------------------------------------
     '   bool   value("HLT_L1Jet15")',
 	'   bool   value("HLT_Jet30")',

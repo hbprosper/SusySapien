@@ -6,7 +6,7 @@
 // Updated:     Mon Mar 08, 2010 Sezen & HBP - add triggerBits class
 //              Tue Aug 24, 2010 HBP - add HcalNoiseRBXHelper
 //              Thu Sep 02, 2010 HBP - update to new version of HelperFor
-//$Revision: 1.9 $
+//$Revision: 1.10 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -26,17 +26,17 @@ using namespace std;
 //-----------------------------------------------------------------------------
 // This is called once per job
 // Important: remember to initialize base class
-GenParticleAddon::GenParticleAddon() : HelperFor<reco::GenParticle>() {}
+GenParticleHelper::GenParticleHelper() : HelperFor<reco::GenParticle>() {}
 
 // Called once per event
 void
-GenParticleAddon::analyzeEvent()
+GenParticleHelper::analyzeEvent()
 {
   // Initialize string representation/position map
   
   if ( event == 0 )
     throw edm::Exception(edm::errors::Configuration,
-                         "\nGenParticleAddon - " 
+                         "\nGenParticleHelper - " 
                          "event pointer is ZERO");
   
   // Get genparticles:
@@ -45,7 +45,7 @@ GenParticleAddon::analyzeEvent()
   event->getByLabel("genParticles", handle);
   if (!handle.isValid())
     throw edm::Exception(edm::errors::Configuration,
-                         "\nGenParticleAddon - " 
+                         "\nGenParticleHelper - " 
                          "GenParticle handle is invalid");
 
   // Write a unique string for each genparticle
@@ -72,11 +72,11 @@ GenParticleAddon::analyzeEvent()
 }
 
 void 
-GenParticleAddon::analyzeObject()
+GenParticleHelper::analyzeObject()
 {
   if ( object == 0 )
     throw edm::Exception(edm::errors::Configuration,
-                         "\nGenParticleAddon - " 
+                         "\nGenParticleHelper - " 
                          "object pointer is ZERO");
 
   // save only status = 3 particles
@@ -131,19 +131,19 @@ GenParticleAddon::analyzeObject()
     }
 }
 
-GenParticleAddon::~GenParticleAddon() {}
+GenParticleHelper::~GenParticleHelper() {}
 
-int      GenParticleAddon::charge() const { return object->charge(); }
-int      GenParticleAddon::pdgId()  const { return object->pdgId(); }
-int      GenParticleAddon::status() const { return object->status(); }
-double   GenParticleAddon::energy() const { return object->energy(); }
-double   GenParticleAddon::pt()     const { return object->pt(); }
-double   GenParticleAddon::eta()    const { return object->eta(); }
-double   GenParticleAddon::phi()    const { return object->phi(); }
-double   GenParticleAddon::mass()   const { return object->mass(); }
+int      GenParticleHelper::charge() const { return object->charge(); }
+int      GenParticleHelper::pdgId()  const { return object->pdgId(); }
+int      GenParticleHelper::status() const { return object->status(); }
+double   GenParticleHelper::energy() const { return object->energy(); }
+double   GenParticleHelper::pt()     const { return object->pt(); }
+double   GenParticleHelper::eta()    const { return object->eta(); }
+double   GenParticleHelper::phi()    const { return object->phi(); }
+double   GenParticleHelper::mass()   const { return object->mass(); }
 
 int 
-GenParticleAddon::firstMother() const
+GenParticleHelper::firstMother() const
 {
   if ( mothers_.size() > 0 )
     return mothers_.front();
@@ -152,7 +152,7 @@ GenParticleAddon::firstMother() const
 }
 
 int 
-GenParticleAddon::lastMother() const
+GenParticleHelper::lastMother() const
 {
   if ( mothers_.size() > 0 )
     return mothers_.back();
@@ -161,7 +161,7 @@ GenParticleAddon::lastMother() const
 }
 
 int 
-GenParticleAddon::firstDaughter() const
+GenParticleHelper::firstDaughter() const
 {
   if ( daughters_.size() > 0 )
     return daughters_.front();
@@ -170,7 +170,7 @@ GenParticleAddon::firstDaughter() const
 }
 
 int 
-GenParticleAddon::lastDaughter() const
+GenParticleHelper::lastDaughter() const
 {
   if ( daughters_.size() > 0 )
     return daughters_.back();
@@ -181,29 +181,29 @@ GenParticleAddon::lastDaughter() const
 //-----------------------------------------------------------------------------
 // TriggerResults helper
 //-----------------------------------------------------------------------------
-bool TriggerResultsAddon::first=true;
+bool TriggerResultsHelper::first=true;
 
-TriggerResultsAddon::TriggerResultsAddon() : HelperFor<edm::TriggerResults>()
+TriggerResultsHelper::TriggerResultsHelper() : HelperFor<edm::TriggerResults>()
 {}
     
-TriggerResultsAddon::~TriggerResultsAddon() {}
+TriggerResultsHelper::~TriggerResultsHelper() {}
 
 ///
 bool 
-TriggerResultsAddon::value(std::string name) const
+TriggerResultsHelper::value(std::string name) const
 {
   if ( event == 0 )
     throw edm::Exception(edm::errors::Configuration,
-                         "\nTriggerResultsAddon - " 
+                         "\nTriggerResultsHelper - " 
                          "event pointer is ZERO");
   
   // NB: use a reference to avoid expensive copying
   const edm::TriggerNames& tnames = event->triggerNames(*object);
 
   // Write out trigger names upon first call
-  if ( TriggerResultsAddon::first )
+  if ( TriggerResultsHelper::first )
     {
-      TriggerResultsAddon::first = false;
+      TriggerResultsHelper::first = false;
       ofstream fout("triggerNames.txt");
       fout << std::endl << "Bit" << "\t" "Trigger Name" << std::endl;
       for(unsigned  bit=0; bit < tnames.size(); bit++)
@@ -217,7 +217,7 @@ TriggerResultsAddon::value(std::string name) const
   // If trigger does not exist, crash and burn!
   if ( bit == tnames.size() )
     throw edm::Exception(edm::errors::Configuration,
-                         "\nTriggerResultsAddon - " 
+                         "\nTriggerResultsHelper - " 
                          "trigger \"" + name + "\" NOT FOUND");
   else
     return object->accept(bit);
@@ -228,33 +228,33 @@ TriggerResultsAddon::value(std::string name) const
 // Event helper
 //-----------------------------------------------------------------------------
 ///
-EventAddon::EventAddon() : HelperFor<edm::Event>() {}
+EventHelper::EventHelper() : HelperFor<edm::Event>() {}
     
-EventAddon::~EventAddon() {}
+EventHelper::~EventHelper() {}
 
 ///
-int EventAddon::run() const { return object->id().run(); }
+int EventHelper::run() const { return object->id().run(); }
 
 ///
-int EventAddon::event() const { return object->id().event(); }
+int EventHelper::event() const { return object->id().event(); }
 
 ///
-int EventAddon::luminosityBlock() const { return object->luminosityBlock(); }
+int EventHelper::luminosityBlock() const { return object->luminosityBlock(); }
 
 ///
-int EventAddon::bunchCrossing() const { return object->bunchCrossing(); }
+int EventHelper::bunchCrossing() const { return object->bunchCrossing(); }
 
 ///
-int EventAddon::orbitNumber() const { return object->orbitNumber(); }
+int EventHelper::orbitNumber() const { return object->orbitNumber(); }
 
 ///
-bool EventAddon::isRealData() const { return object->isRealData(); }
+bool EventHelper::isRealData() const { return object->isRealData(); }
 
 ///
-unsigned int EventAddon::unixTime() const {return object->time().unixTime();}
+unsigned int EventHelper::unixTime() const {return object->time().unixTime();}
 
 ///
-unsigned int EventAddon::nanosecondOffset() const 
+unsigned int EventHelper::nanosecondOffset() const 
 { return object->time().nanosecondOffset(); }
 
 //-----------------------------------------------------------------------------
@@ -279,6 +279,7 @@ HcalNoiseRBXCaloTower::analyzeObject()
           ieta_.push_back(towers[tower]->id().ieta());
           iphi_.push_back(towers[tower]->id().iphi());
           hadEnergy_.push_back(towers[tower]->hadEnergy());
+          number_.push_back(number); // dumb pointer to helped object
         }
     }
   // Important: Remember to update count
@@ -327,13 +328,23 @@ HcalNoiseRBXCaloTower::hadEnergy() const
     return -9999;
 }
 
+///
+int 
+HcalNoiseRBXCaloTower::number() const
+{
+  if ( index < (int)number_.size() ) 
+    return number_[index];
+  else
+    return -9999;
+}
+
 //-----------------------------------------------------------------------------
 // Synonyms:
 //-----------------------------------------------------------------------------
-GParticle::GParticle() : GenParticleAddon() {}
+GParticle::GParticle() : GenParticleHelper() {}
 GParticle::~GParticle() {}
 
-triggerBits::triggerBits() : TriggerResultsAddon() {}
+triggerBits::triggerBits() : TriggerResultsHelper() {}
 triggerBits::~triggerBits() {}
 //-----------------------------------------------------------------------------
 // Utilities
