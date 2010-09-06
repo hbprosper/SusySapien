@@ -6,7 +6,7 @@
 // Updated:     Mon Mar 08, 2010 Sezen & HBP - add triggerBits class
 //              Tue Aug 24, 2010 HBP - add HcalNoiseRBXHelper
 //              Thu Sep 02, 2010 HBP - update to new version of HelperFor
-//$Revision: 1.10 $
+//$Revision: 1.11 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -279,7 +279,7 @@ HcalNoiseRBXCaloTower::analyzeObject()
           ieta_.push_back(towers[tower]->id().ieta());
           iphi_.push_back(towers[tower]->id().iphi());
           hadEnergy_.push_back(towers[tower]->hadEnergy());
-          number_.push_back(number); // dumb pointer to helped object
+          number_.push_back(oindex); // dumb pointer to helped object
         }
     }
   // Important: Remember to update count

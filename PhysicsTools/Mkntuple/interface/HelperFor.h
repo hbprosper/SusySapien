@@ -5,7 +5,7 @@
 // Sub-Package: Mkntuple
 // Description: Base class for helpers
 // Created:     Aug, 2010 Harrison B. Prosper
-//$Revision: 1.2 $
+//$Revision: 1.3 $
 //-----------------------------------------------------------------------------
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
@@ -20,7 +20,7 @@ public:
   HelperFor() : config(Configuration::instance().get()),
                 event(0),   // pointer to current event
                 object(0),  // pointer to current helped object
-                number(0),  // index of current helped object (dumb pointer)
+                oindex(0),  // index of current helped object (dumb pointer)
                 index(0),   // index of current helper object (dump pointer)
                 count(1)    // number of instances returned by helper
   {}
@@ -28,7 +28,7 @@ public:
   virtual ~HelperFor() {}
 
   void cacheEvent() { event = CurrentEvent::instance().get(); }
-  void cacheObject(const X& o, int n=0) { object = &o; number = n; count = 1; }
+  void cacheObject(const X& o, int n=0) { object = &o; oindex = n; count = 1; }
 
   /// return number of items per cached object
   int size() const { return count; }
@@ -51,9 +51,9 @@ public:
   const edm::Event* event;
   /// Pointer to current (helped) object
   const X* object;
-  /// Ordinal value of current (helped) object (with count starting at zero).
-  int number;
-  /// Index of current helper object, which could differ from number.
+  /// Index of current (helped) object (with count starting at zero).
+  int oindex;
+  /// Index of current helper object, which could differ from oindex..
   int index;
   /// 
   int count;
