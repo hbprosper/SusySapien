@@ -1,0 +1,28 @@
+\form#0:$[a, b]$
+\form#1:$\mbox{power} = \frac{1}{2}\int_0^1 |f(x|1) - f(x|0)| \, dx$
+\form#2:$f(x|1)$
+\form#3:$f(x|0)$
+\form#4:$\mbox{divergence} = min(D(p|q), D(q|p)) $
+\form#5:$\kappa(q|p) = \int p(x) ln p(x) / q(x) dx $
+\form#6:$q(x)$
+\form#7:$p(x)$
+\form#8:$x = (p_t, \eta, \phi)$
+\form#9:$N$
+\form#10:\[ f(X) = (1/N) \sum_{i=1}^N K(X,Y_i), \]
+\form#11:$K(X,Y)$
+\form#12:$Y_i$
+\form#13:$X$
+\form#14:$\delta(X-Y)$
+\form#15:\[ f(X) = \int K(X,Y) p(Y) dY = \int \delta(X-Y) p(Y) dY = p(X). \]
+\form#16:\[ K(X,Y) = \prod_j^D \mbox{Gaussian}(x_j, y_j, h_j), \]
+\form#17:\[ X = (x_1,...x_D, \;\;\; Y = (y_1,...y_D), \]
+\form#18:\[ \mbox{Gaussian}(x, y, h) = \exp(-(x-y)^2/2 h^2)/h\sqrt(2 \pi). \]
+\form#19:$h$
+\form#20:$D$
+\form#21:\[ p(h|x) = p(x|h) \pi(h), \]
+\form#22:$p(x|h)$
+\form#23:$\pi(h)$
+\form#24:$[0,scale \times h]$
+\form#25:\[ h = \sigma \left[\frac{4}{(D+2)N}\right]^{1/(D+4)}, \]
+\form#26:$\sigma$
+\form#27:$|Delta R = \sqrt{\Delta\phi^2+\Delta\eta^2}$

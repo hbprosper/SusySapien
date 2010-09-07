@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # Create the skeleton of a user sub-pacakge
 # Created: 03-Sep-2010 Harrison B. Prosper
-#$Revision:$
+#$Revision: 1.1 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -71,6 +71,7 @@ def main():
 	grep "<use name" $CMSSW_BASE/src/%(mkntuple)s/plugins/BuildFile > plugins/BuildFile
 	echo "<use name=%(pkg)s/%(subpkg)s>" >> plugins/BuildFile
 	mkdir -p src
+	mkdir -p test
 	''' % names
 	os.system(cmd)
 #------------------------------------------------------------------------------

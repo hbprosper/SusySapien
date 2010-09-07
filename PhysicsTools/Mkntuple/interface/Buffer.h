@@ -21,7 +21,7 @@
 //                   Fri Aug 27 HBP - on second thoughts...go back to a
 //                                    UserBuffer class!
 //
-// $Id: Buffer.h,v 1.17 2010/09/04 02:49:27 prosper Exp $
+// $Id: Buffer.h,v 1.18 2010/09/06 20:15:15 prosper Exp $
 //
 //
 // If using Python, include its header first to avoid annoying compiler
@@ -598,9 +598,8 @@ struct UserBuffer  : public BufferThing
 
     // Create helper.
     // A helper provides the following methods in addition to its accessors:
-    // 1. void cache(object-to-be-helped) 
-    // 2. int  size() const       number of items/cached object
-    // 3. void set(int index)     set index of items to be returned
+    // 1. void analyzeEvent()
+    // 2. void analyzeObject()
 
     // Cache event in helper (using CurrentEvent::instance().get())
     helper_.cacheEvent();
@@ -620,12 +619,15 @@ struct UserBuffer  : public BufferThing
         
         // OK handle is valid, so extract data for all variables. 
 
-        // cache object in helper
+        // cache object in helper, along with its ordinal index - oindex -
+        // set to 0 and set the count to its default value of 1.
+        // NB: the helper could change "count" in analyzeObject()
         helper_.cacheObject(*handle);
 
         // Perform (optional) user object-level analysis
         helper_.analyzeObject();
 
+         // Note: size returns the value of the internal variable count
         int k = 0;
         while ( (k < helper_.size()) && (count_ < maxcount_) )
           {
@@ -649,12 +651,14 @@ struct UserBuffer  : public BufferThing
         
         for(int j=0; j < objectcount; j++)
           {
-            // cache object in helper along with its ordinal value
+            // cache object in helper, along with its ordinal index - oindex -
+            // set to "j" and set the count to its default value of 1
             helper_.cacheObject((*handle)[j], j);
 
             // Perform (optional) user object-level analysis
             helper_.analyzeObject();
 
+            // Note: size returns the value of the internal variable count
             int k = 0;
             while ( (k < helper_.size()) && (count_ < maxcount_) )
               {

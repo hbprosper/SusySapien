@@ -5,7 +5,7 @@
 // Sub-Package: Mkntuple
 // Description: Base class for helpers
 // Created:     Aug, 2010 Harrison B. Prosper
-//$Revision: 1.3 $
+//$Revision: 1.4 $
 //-----------------------------------------------------------------------------
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
@@ -26,9 +26,15 @@ public:
   {}
 
   virtual ~HelperFor() {}
-
+  ///
   void cacheEvent() { event = CurrentEvent::instance().get(); }
-  void cacheObject(const X& o, int n=0) { object = &o; oindex = n; count = 1; }
+  ///
+  void cacheObject(const X& o, int n=0) 
+  { 
+    object = &o; 
+    oindex = n; 
+    count  = 1; 
+  }
 
   /// return number of items per cached object
   int size() const { return count; }

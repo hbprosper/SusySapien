@@ -6,7 +6,7 @@
 // Updated:     Mon Mar 08, 2010 Sezen & HBP - add triggerBits class
 //              Tue Aug 24, 2010 HBP - add HcalNoiseRBXHelper
 //              Thu Sep 02, 2010 HBP - update to new version of HelperFor
-//$Revision: 1.11 $
+//$Revision: 1.12 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -33,7 +33,6 @@ void
 GenParticleHelper::analyzeEvent()
 {
   // Initialize string representation/position map
-  
   if ( event == 0 )
     throw edm::Exception(edm::errors::Configuration,
                          "\nGenParticleHelper - " 

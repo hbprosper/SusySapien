@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # Create the skeleton of a user plugin
 # Created: 27-Aug-2010 Harrison B. Prosper
-#$Revision: 1.3 $
+#$Revision: 1.4 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -90,7 +90,7 @@ def wrpluginheader(names):
 // Description: Mkntuple helper class for %(classname)s
 // Created:     %(time)s
 // Author:      %(author)s      
-//$Revision: 1.3 $
+//$Revision: 1.4 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -101,10 +101,15 @@ def wrpluginheader(names):
 //-----------------------------------------------------------------------------
 // Note: The following variables are automatically defined and available to
 //       all methods:
-//         1. config          pointer to configuration object
+//         1. config          pointer to ParameterSet object
 //         2. event           pointer to the current event
 //         3. object          pointer to the current object
-//         4. count           count per object (default = 1)
+//         4. oindex          index of current object
+//         5. index           index of item(s) returned by helper 
+//         6. count           count per object (default = 1)
+//       Items 1-6 are initialized by Mkntuple. The count can be changed from
+//       its default value of 1 by the helper. However, items 1-5 should not
+//       be changed.
 //-----------------------------------------------------------------------------
 '''
 	template_nonamespace = '''
@@ -117,10 +122,10 @@ public:
 
   virtual ~(name)s();
 
-  // Uncomment if this class does some event-level analysis
+  // Uncomment if helper class does some event-level analysis
   // virtual void analyzeEvent();
 
-  // Uncomment if this class does some object-level analysis
+  // Uncomment if helper class does some object-level analysis
   // virtual void analyzeObject();
   
   // -- Access Methods
@@ -187,7 +192,7 @@ def wrplugincode(names):
 // Description: Mkntuple helper class for %(classname)s
 // Created:     %(time)s
 // Author:      %(author)s      
-//$Revision: 1.3 $
+//$Revision: 1.4 $
 //-----------------------------------------------------------------------------
 #include "%(package)s/%(subpackage)s/interface/%(filename)s.h"
 //-----------------------------------------------------------------------------
@@ -236,7 +241,7 @@ def wrplugin(names):
 	template = '''// ----------------------------------------------------------------------------
 // Created: %(time)s by mkuserplugin.py
 // Author:      %(author)s      
-//$Revision: 1.3 $
+//$Revision: 1.4 $
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/Buffer.h"
 #include "%(package)s/%(subpackage)s/interface/%(filename)s.h"
@@ -492,7 +497,7 @@ def main():
 	else:
 		updated = True
 		out = open(classesfile, 'w')
-		record ='''//$Revision: 1.3 $
+		record ='''//$Revision: 1.4 $
 //--------------------------------------------------------------------''' % \
 		names
 		out.write(record)

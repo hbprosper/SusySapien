@@ -1,0 +1,23 @@
+/**	\mainpage
+
+	\section	intro	Introduction
+
+<b>LiteAnalysis</b> is a sub-package of <b>PhysicsTools</b> that contains many
+utilities that may be useful in analysis programs. In particular, it contains
+tools that are used by the sub-package <b>Mkntuple</b>.
+
+	\version	v3_6_3
+	\date		December, 2009
+	\author		Harrison B. Prosper
+                <p>
+Department of Physics, Florida State University<br>
+
+email: harry@hep.fsu.edu, Harrison.Prosper@cern.ch
+*/
+
+
+
+
+
+
+
