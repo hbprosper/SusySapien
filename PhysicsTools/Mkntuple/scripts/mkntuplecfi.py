@@ -7,8 +7,9 @@
 #              12-Feb-2010 HBP - Change to single quotes
 #              06-Jun-2010 HBP - always highlight selected methods when a class
 #                          is selected
+#              08-Sep-2010 HBP - adapt to extended listing in methods files
 #-----------------------------------------------------------------------------
-#$Revision: 1.13 $
+#$Revision: 1.14 $
 #-----------------------------------------------------------------------------
 import sys, os, re, platform
 from ROOT import *
@@ -32,7 +33,7 @@ if not os.environ.has_key("CMSSW_BASE"):
 	sys.exit(0)
 
 BASE = os.environ["PWD"]
-REVISION="$Revision: 1.13 $"
+REVISION="$Revision: 1.14 $"
 rev = split(REVISION)[1]
 VERSION        = \
 """
@@ -112,61 +113,29 @@ def isVector(name):
 	return find(name, "vector<") > -1
 
 def sortMethods(methods):
-	meths = []
-	for x in methods:
-		if x == "": continue
-		m = getmethod.findall(x)[0]
-		n = split(m, '(')[0]
-		cmd = '.+(?=\s%s)' % n
-		getrtype = re.compile(cmd)
-		r = getrtype.findall(x)[0]
-		meths.append((m, r))
-	meths.sort()
-
 	# Standard methods
-	methods = []	
-	for m, r in meths:
-		if stmethods.match(m) == None: continue
-		t = max(8, len(r))
-		if t > 8:
-			record = "%s  %s" % (r, m)
-		else:
-			record = "%8s  %s" % (r, m)
-		methods.append(record)
-
+	meths = []
+	for m in methods:
+		if stmethods.search(m) == None: continue
+		meths.append(m)
+		
 	# Iso methods
-	for m, r in meths:
-		if isomethods.match(m) == None: continue
-		t = max(8, len(r))
-		if t > 8:
-			record = "%s  %s" % (r, m)
-		else:
-			record = "%8s  %s" % (r, m)
-		methods.append(record)
+	for m in methods:
+		if isomethods.search(m) == None: continue
+		meths.append(m)
 
 	# is methods
-	for m, r in meths:
-		if ismethods.match(m) == None: continue
-		t = max(8, len(r))
-		if t > 8:
-			record = "%s  %s" % (r, m)
-		else:
-			record = "%8s  %s" % (r, m)
-		methods.append(record)
-
-	# the rest
-	for m, r in meths:
-		if stmethods.match(m)  != None: continue
-		if isomethods.match(m) != None: continue
-		if ismethods.match(m)  != None: continue
+	for m in methods:
+		if ismethods.search(m) == None: continue
+		meths.append(m)
 		
-		t = max(8, len(r))
-		if t > 8:
-			record = "%s  %s" % (r, m)
-		else:
-			record = "%8s  %s" % (r, m)
-		methods.append(record)
-	return methods
+	# the rest
+	for m in methods:
+		if stmethods.search(m)  != None: continue
+		if isomethods.search(m) != None: continue
+		if ismethods.search(m)  != None: continue
+		meths.append(m)
+	return meths
 #-----------------------------------------------------------------------------
 # GUI widget Layouts
 #-----------------------------------------------------------------------------
@@ -632,8 +601,6 @@ class Gui:
 			return
 		self.statusBar.SetText("Done!", 0)
 
-		open(CFI_LIS,"w").writelines(joinfields(records,'\n'))
-		
 		# Creat a map to keep track of selections
 		
 		self.cmap = {}

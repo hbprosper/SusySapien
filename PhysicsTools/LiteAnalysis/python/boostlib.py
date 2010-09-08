@@ -3,7 +3,7 @@
 # Description: A collection of boostutil utilities. Most have been culled
 #              from either xml2boost.py or header2xml.
 # Created: 19-May-2006 Harrison B. Prosper
-#$Revision: 1.7 $
+#$Revision: 1.8 $
 #---------------------------------------------------------------------------
 import os, sys, re, posixpath, shelve
 from ROOT import *
@@ -1622,8 +1622,21 @@ def cmsswProject():
 	# Determine project directory
 	project = replace(PWD, LOCALBASE, '')
 	project = split(project, '/')
-	if len(project) > 1:
-		PACKAGE, SUBPACKAGE = project[:2]
+	if len(project) > 0:
+		PACKAGE = project[0]
+		SUBPACKAGE = None
+	elif len(project) > 1:
+		PACKAGE, SUBPACKAGE = project[0:2]
 	else:
 		PACKAGE, SUBPACKAGE = [None, None]
 	return (PACKAGE, SUBPACKAGE, LOCALBASE, BASE, VERSION)
+#------------------------------------------------------------------------------
+# Get author's name
+def getauthor():
+	regex  = re.compile(r'(?<=[0-9]:)[A-Z]+.+?(?=:/)')
+	record = strip(os.popen("getent passwd $USER").read())
+	author = "Shakepeare's ghost"
+	if record != "":
+		t = regex.findall(record)
+		if len(t) > 0: author = t[0]
+	return author

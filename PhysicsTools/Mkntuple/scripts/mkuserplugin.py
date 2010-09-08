@@ -2,14 +2,17 @@
 #------------------------------------------------------------------------------
 # Create the skeleton of a user plugin
 # Created: 27-Aug-2010 Harrison B. Prosper
-#$Revision: 1.4 $
+#$Revision: 1.5 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
 from time import *
 from glob import glob
 from getopt     import getopt, GetoptError
-from PhysicsTools.LiteAnalysis.boostlib import nameonly, cmsswProject
+from PhysicsTools.LiteAnalysis.boostlib import \
+	 nameonly, \
+	 cmsswProject, \
+	 getauthor
 #------------------------------------------------------------------------------
 PACKAGE, SUBPACKAGE, LOCALBASE, BASE, VERSION = cmsswProject()
 if PACKAGE == None:
@@ -23,13 +26,7 @@ PROJECTBASE = "%s/%s/%s"   % (LOCALBASE, PACKAGE, SUBPACKAGE)
 PLUGINDIR = "%s/plugins"   % PROJECTBASE  
 SRCDIR    = "%s/src"       % PROJECTBASE
 INCDIR    = "%s/interface" % PROJECTBASE
-# Get author's name
-getauthor = re.compile(r'(?<=[0-9]:)[A-Z]+.+?(?=:/)')
-record = strip(os.popen("getent passwd $USER").read())
-if record != "":
-	AUTHOR = getauthor.findall(record)[0]
-else:
-	AUTHOR = "Shakepeare's ghost"
+AUTHOR    = getauthor()
 #------------------------------------------------------------------------------
 # Make sure these directories exist
 if not os.path.exists(PLUGINDIR):
@@ -90,7 +87,7 @@ def wrpluginheader(names):
 // Description: Mkntuple helper class for %(classname)s
 // Created:     %(time)s
 // Author:      %(author)s      
-//$Revision: 1.4 $
+//$Revision: 1.5 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -192,7 +189,7 @@ def wrplugincode(names):
 // Description: Mkntuple helper class for %(classname)s
 // Created:     %(time)s
 // Author:      %(author)s      
-//$Revision: 1.4 $
+//$Revision: 1.5 $
 //-----------------------------------------------------------------------------
 #include "%(package)s/%(subpackage)s/interface/%(filename)s.h"
 //-----------------------------------------------------------------------------
@@ -241,7 +238,7 @@ def wrplugin(names):
 	template = '''// ----------------------------------------------------------------------------
 // Created: %(time)s by mkuserplugin.py
 // Author:      %(author)s      
-//$Revision: 1.4 $
+//$Revision: 1.5 $
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/Buffer.h"
 #include "%(package)s/%(subpackage)s/interface/%(filename)s.h"
@@ -497,7 +494,7 @@ def main():
 	else:
 		updated = True
 		out = open(classesfile, 'w')
-		record ='''//$Revision: 1.4 $
+		record ='''//$Revision: 1.5 $
 //--------------------------------------------------------------------''' % \
 		names
 		out.write(record)

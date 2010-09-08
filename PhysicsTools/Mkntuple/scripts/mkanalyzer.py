@@ -5,13 +5,13 @@
 # Updated: 12-Mar-2010 HBP - fix appending of .root
 #          08-Jun-2010 HBP - add creation of selector.h
 #          02-Sep-2010 HBP - fix variables.txt record splitting bug
-#$Revision: 1.8 $
+#$Revision: 1.9 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
 from time import *
 from glob import glob
-from PhysicsTools.LiteAnalysis.boostlib import nameonly
+from PhysicsTools.LiteAnalysis.boostlib import nameonly, getauthor
 #------------------------------------------------------------------------------
 if not os.environ.has_key("CMSSW_BASE"):
 	print "\t**you must first set up CMSSW"
@@ -22,14 +22,8 @@ TREESTREAM_HPP = "%s/interface/treestream.hpp" % PACKAGE
 TREESTREAM_CPP = "%s/src/treestream.cpp" % PACKAGE
 MKNTUPLE= "%s/src/PhysicsTools/Mkntuple" % os.environ["CMSSW_BASE"]
 SELECTEDOBJECTMAP_H = "%s/interface/SelectedObjectMap.h" % MKNTUPLE
+AUTHOR = getauthor()
 
-# Get author's name
-getauthor = re.compile(r'(?<=[0-9]:)[A-Z]+.+?(?=:/)')
-record = strip(os.popen("getent passwd $USER").read())
-if record != "":
-	AUTHOR = getauthor.findall(record)[0]
-else:
-	AUTHOR = "Shakepeare's ghost"
 
 # Make sure that we can find treestream etc.
 
@@ -70,7 +64,7 @@ TEMPLATE_H =\
 // Description: Analyzer header for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.8 $
+// $Revision: 1.9 $
 //-----------------------------------------------------------------------------
 
 // -- System
@@ -248,7 +242,7 @@ TEMPLATE_CC =\
 // Description: Analyzer for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.8 $
+// $Revision: 1.9 $
 //-----------------------------------------------------------------------------
 #include "%(name)s.h"
 
@@ -311,7 +305,7 @@ SLTEMPLATE=\
 // Description: selector template
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.8 $
+// $Revision: 1.9 $
 //-----------------------------------------------------------------------------
 #include <map>
 #include <string>
@@ -378,7 +372,7 @@ PYTEMPLATE =\
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
 #  Author:      %(author)s
-#  $Revision: 1.8 $
+#  $Revision: 1.9 $
 # -----------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
@@ -475,7 +469,7 @@ MAKEFILE = '''#-----------------------------------------------------------------
 #                 verbose    (e.g., verbose=1)
 #                 withcern   (e.g., withcern=1  expects to find CERN_LIB)
 # Author:      %(author)s
-#$Revision: 1.8 $
+#$Revision: 1.9 $
 #------------------------------------------------------------------------------
 ifndef ROOTSYS
 $(error *** Please set up Root)

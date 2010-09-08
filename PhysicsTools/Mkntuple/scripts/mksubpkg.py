@@ -2,40 +2,20 @@
 #------------------------------------------------------------------------------
 # Create the skeleton of a user sub-pacakge
 # Created: 03-Sep-2010 Harrison B. Prosper
-#$Revision: 1.1 $
+#$Revision: 1.2 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
 from time import *
-from PhysicsTools.LiteAnalysis.boostlib import nameonly
+from PhysicsTools.LiteAnalysis.boostlib import nameonly, getauthor
 #------------------------------------------------------------------------------
-if not os.environ.has_key("CMSSW_RELEASE_BASE"):
-	print "\t**you must first set up CMSSW"
+PACKAGE, SUBPACKAGE, LOCALBASE, BASE, VERSION = cmsswProject()
+if PACKAGE == None:
+	print "Please run mkdocs.py in your package directory"
 	sys.exit(0)
-BASE = "%s/src" % os.environ['CMSSW_RELEASE_BASE']
-
-if not os.environ.has_key("CMSSW_BASE"):
-	print "\t**you must first set up CMSSW"
-	sys.exit(0)
-LOCALBASE = "%s/src" % os.environ['CMSSW_BASE']
-PWD = os.path.realpath(os.environ['PWD'])
-
-# Get author's name
-getauthor = re.compile(r'(?<=[0-9]:)[A-Z]+.+?(?=:/)')
-record = strip(os.popen("getent passwd $USER").read())
-if record != "":
-	AUTHOR = getauthor.findall(record)[0]
-else:
-	AUTHOR = "Shakepeare's ghost"
-#------------------------------------------------------------------------------
-# Determine package directory
-project = split(replace(PWD, LOCALBASE + "/", ""), '/')
-if len(project) < 1:
-	print "\t**Please run mksubpkg.py in your package directory"
-	sys.exit(0)
-
-PACKAGE = project[0]
+	
 print "Package:     %s" % PACKAGE
+AUTHOR = getauthor()
 #------------------------------------------------------------------------------
 def usage():
 	print '''
