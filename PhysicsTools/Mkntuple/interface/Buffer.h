@@ -20,8 +20,9 @@
 //                              added BufferAddon, BufferHelper
 //                   Fri Aug 27 HBP - on second thoughts...go back to a
 //                                    UserBuffer class!
+//                   Wed Sep 08 HBP - fix array test
 //
-// $Id: Buffer.h,v 1.18 2010/09/06 20:15:15 prosper Exp $
+// $Id: Buffer.h,v 1.19 2010/09/07 02:38:05 prosper Exp $
 //
 //
 // If using Python, include its header first to avoid annoying compiler
@@ -170,10 +171,12 @@ void initBuffer(otreestream& out,
   // There is one exception however: if a helper class for a collection object,
   // say a collection of pat::Jets, maps these objects to a single instance of
   // each variable, for example to HT, we shall assume that the n-tuple 
-  // variable is to be a simple non-vector type.
+  // variable is to be a simple non-array type.
+
+  bool isArray = !singleton && maxcount > 1; 
 
   std::string counter("");
-  if ( !singleton && count > 1 )
+  if ( isArray )
     {
       // Add leaf counter to tree
       counter = "n" + prefix;        
@@ -227,7 +230,7 @@ void initBuffer(otreestream& out,
           << maxcount 
           << std::endl;
         
-      if ( !singleton && count > 1 ) name += "[" + counter + "]";
+      if ( isArray ) name += "[" + counter + "]";
       
       variables.push_back(Variable<Y>(name, 
                                       maxcount,
