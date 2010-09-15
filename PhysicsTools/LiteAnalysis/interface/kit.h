@@ -19,9 +19,9 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Fri Apr 04 2008
-// $Id: kit.h,v 1.7 2010/09/02 02:26:20 prosper Exp $
+// $Id: kit.h,v 1.8 2010/09/03 01:54:12 prosper Exp $
 //
-//$Revision: 1.7 $
+//$Revision: 1.8 $
 //-----------------------------------------------------------------------------
 #include <iostream>
 #include <fstream>
@@ -346,6 +346,14 @@ struct kit
   static
   std::vector<MatchedPair>  deltaR(std::vector<PtThing>& v1, 
                                    std::vector<PtThing>& v2);
+
+  ///
+  static
+  std::vector<MatchedPair>  deltaR(std::vector<double>& eta1,
+                                   std::vector<double>& phi1, 
+                                   std::vector<double>& eta2,
+                                   std::vector<double>& phi2,
+                                   bool omit=false);
 
   template <class T>
   static

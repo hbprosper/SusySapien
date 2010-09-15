@@ -2,12 +2,13 @@
 #------------------------------------------------------------------------------
 # Create the skeleton of a user sub-pacakge
 # Created: 03-Sep-2010 Harrison B. Prosper
-#$Revision: 1.2 $
+#$Revision: 1.3 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
 from time import *
-from PhysicsTools.LiteAnalysis.boostlib import nameonly, getauthor
+from PhysicsTools.LiteAnalysis.boostlib import \
+	 nameonly, getauthor, cmsswProject
 #------------------------------------------------------------------------------
 PACKAGE, SUBPACKAGE, LOCALBASE, BASE, VERSION = cmsswProject()
 if PACKAGE == None:
@@ -52,6 +53,9 @@ def main():
 	echo "<use name=%(pkg)s/%(subpkg)s>" >> plugins/BuildFile
 	mkdir -p src
 	mkdir -p test
+	mkdir -p bin
+	sed -e "s/plugins_t/ataduseless/g" $CMSSW_BASE/src/%(mkntuple)s/bin/BuildFile  > bin/BuildFile
+ 	echo "int main(int argc, char** argv) {return 0;}" > bin/ataduseless.cc
 	''' % names
 	os.system(cmd)
 #------------------------------------------------------------------------------

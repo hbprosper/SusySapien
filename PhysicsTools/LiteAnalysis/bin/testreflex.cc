@@ -45,7 +45,6 @@ main(int argc, char** argv)
   Aclass a;
   Bclass b;
   ATest  c(a, b);
-  void* address = (void*)(&c);
 
   vector<string> mname;
   mname.push_back("ptrToA()->value()");
@@ -55,13 +54,11 @@ main(int argc, char** argv)
   mname.push_back("ptrToA()->avalue");
   mname.push_back("ptrToB->value()");
 
-  vector<FunctionMember> method1;
-  vector<Method<ATest> > method2;
+  vector<Method<ATest> > method;
 
   for(int i=0; i < (int)mname.size(); i++)
     {
-      method1.push_back( FunctionMember("ATest", mname[i]) );
-      method2.push_back( Method<ATest>(mname[i]) );
+      method.push_back( Method<ATest>(mname[i]) );
     }
 
   char record[256];
@@ -76,12 +73,8 @@ main(int argc, char** argv)
               mname[0].c_str(), c.ptrToA()->value());
       cout << record << endl;
 
-      sprintf(record, "FunctionMember - %-20s\t= %10.4f", 
-              mname[0].c_str(), method1[0](address)); 
-      cout << record << endl;
-
       sprintf(record, "Method         - %-20s\t= %10.4f", 
-              mname[0].c_str(), method2[0]((const ATest)c)); 
+              mname[0].c_str(), method[0](c)); 
       cout << record << endl;
       cout << endl;
       //--------------------------------------------------------------------
@@ -90,12 +83,8 @@ main(int argc, char** argv)
               mname[1].c_str(), c.refToA().value());
       cout << record << endl;
 
-      sprintf(record, "FunctionMember - %-20s\t= %10.4f", 
-              mname[1].c_str(), method1[1](address)); 
-      cout << record << endl;
-
       sprintf(record, "Method         - %-20s\t= %10.4f", 
-              mname[1].c_str(), method2[1]((const ATest)c)); 
+              mname[1].c_str(), method[1]((const ATest)c)); 
       cout << record << endl;
       cout << endl;
       //--------------------------------------------------------------------
@@ -103,12 +92,9 @@ main(int argc, char** argv)
       sprintf(record, "Direct         - %-20s\t= %10.4f", 
               mname[2].c_str(), c.toA().value());
       cout << record << endl;
-      sprintf(record, "FunctionMember - %-20s\t= %10.4f", 
-              mname[2].c_str(), method1[2](address)); 
-      cout << record << endl;
 
       sprintf(record, "Method         - %-20s\t= %10.4f", 
-              mname[2].c_str(), method2[2]((const ATest)c)); 
+              mname[2].c_str(), method[2](c)); 
       cout << record << endl;
       cout << endl;
       //--------------------------------------------------------------------
@@ -116,12 +102,9 @@ main(int argc, char** argv)
       sprintf(record, "Direct         - %-20s\t= %10.4f", 
               mname[3].c_str(), c.avalue);
       cout << record << endl;
-      sprintf(record, "FunctionMember - %-20s\t= %10.4f", 
-              mname[3].c_str(), method1[3](address)); 
-      cout << record << endl;
 
       sprintf(record, "Method         - %-20s\t= %10.4f", 
-              mname[3].c_str(), method2[3]((const ATest)c)); 
+              mname[3].c_str(), method[3]((const ATest)c)); 
       cout << record << endl;
       cout << endl;
       //--------------------------------------------------------------------
@@ -129,12 +112,9 @@ main(int argc, char** argv)
       sprintf(record, "Direct         - %-20s\t= %10.4f", 
               mname[4].c_str(), c.ptrToA()->avalue);
       cout << record << endl;
-      sprintf(record, "FunctionMember - %-20s\t= %10.4f", 
-              mname[4].c_str(), method1[4](address)); 
-      cout << record << endl;
 
       sprintf(record, "Method         - %-20s\t= %10.4f", 
-              mname[4].c_str(), method2[4]((const ATest)c)); 
+              mname[4].c_str(), method[4](c)); 
       cout << record << endl;
       cout << endl;
       //--------------------------------------------------------------------
@@ -142,12 +122,9 @@ main(int argc, char** argv)
       sprintf(record, "Direct         - %-20s\t= %10.4f", 
               mname[5].c_str(), c.ptrToB->value());
       cout << record << endl;
-      sprintf(record, "FunctionMember - %-20s\t= %10.4f", 
-              mname[5].c_str(), method1[5](address)); 
-      cout << record << endl;
 
       sprintf(record, "Method         - %-20s\t= %10.4f", 
-              mname[5].c_str(), method2[5]((const ATest)c)); 
+              mname[5].c_str(), method[5]((const ATest)c)); 
       cout << record << endl;
     }
 

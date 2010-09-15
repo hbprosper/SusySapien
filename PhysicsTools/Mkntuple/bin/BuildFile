@@ -25,7 +25,7 @@
 <use name=rootmath>
 <use name=f77compiler>
 
-<bin name=testbufplugins file=plugins_t.cc></bin>
+<bin name=plugins_t file=plugins_t.cc></bin>
 
 
 

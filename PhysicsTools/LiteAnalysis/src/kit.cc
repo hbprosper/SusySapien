@@ -15,7 +15,7 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Wed Jun 20 19:53:47 EDT 2007
 //         Updated:  Sat Oct 25 2008 - make matchInDeltaR saner
-// $Id: kit.cc,v 1.9 2010/09/03 01:54:13 prosper Exp $
+// $Id: kit.cc,v 1.10 2010/09/06 05:28:48 prosper Exp $
 //
 //
 //-----------------------------------------------------------------------------
@@ -130,6 +130,39 @@ kit::deltaR(std::vector<PtThing>& v1,
           vp[j].first = i;
           vp[j].second = j;
           vp[j].distance = v1[i].deltaR(v2[j]);
+        }
+      std::sort(vp.begin(), vp.end());
+      mp[i].first = i;
+      mp[i].second = vp[0].second;
+      mp[i].distance = vp[0].distance;
+    }
+  return mp;
+}
+
+std::vector<kit::MatchedPair>
+kit::deltaR(std::vector<double>& eta1,
+            std::vector<double>& phi1,
+            std::vector<double>& eta2,
+            std::vector<double>& phi2,
+            bool omit)
+{
+  if ( eta1.size() == 0 ) return vector<kit::MatchedPair>();
+  if ( eta2.size() == 0 ) return vector<kit::MatchedPair>();
+  if ( eta1.size() != phi1.size() ) return vector<kit::MatchedPair>();
+  if ( eta2.size() != phi2.size() ) return vector<kit::MatchedPair>();
+
+  vector<kit::MatchedPair> mp(eta1.size(), kit::MatchedPair());
+  vector<kit::MatchedPair> vp(eta2.size(), kit::MatchedPair());
+
+  for(unsigned i=0; i < eta1.size(); i++)
+    {
+      for(unsigned j=0; j < eta2.size(); j++)
+        {
+          if ( omit && ( i == j ) ) continue;
+            
+          vp[j].first = i;
+          vp[j].second = j;
+          vp[j].distance = kit::deltaR(eta1[i], phi1[i], eta2[j], phi2[j]);
         }
       std::sort(vp.begin(), vp.end());
       mp[i].first = i;

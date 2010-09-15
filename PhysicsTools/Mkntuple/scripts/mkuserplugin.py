@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # Create the skeleton of a user plugin
 # Created: 27-Aug-2010 Harrison B. Prosper
-#$Revision: 1.5 $
+#$Revision: 1.6 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -16,6 +16,9 @@ from PhysicsTools.LiteAnalysis.boostlib import \
 #------------------------------------------------------------------------------
 PACKAGE, SUBPACKAGE, LOCALBASE, BASE, VERSION = cmsswProject()
 if PACKAGE == None:
+	print "Please run me in your sub-package directory"
+	sys.exit(0)
+if SUBPACKAGE == None:
 	print "Please run me in your sub-package directory"
 	sys.exit(0)
 #------------------------------------------------------------------------------
@@ -87,7 +90,7 @@ def wrpluginheader(names):
 // Description: Mkntuple helper class for %(classname)s
 // Created:     %(time)s
 // Author:      %(author)s      
-//$Revision: 1.5 $
+//$Revision: 1.6 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -189,7 +192,7 @@ def wrplugincode(names):
 // Description: Mkntuple helper class for %(classname)s
 // Created:     %(time)s
 // Author:      %(author)s      
-//$Revision: 1.5 $
+//$Revision: 1.6 $
 //-----------------------------------------------------------------------------
 #include "%(package)s/%(subpackage)s/interface/%(filename)s.h"
 //-----------------------------------------------------------------------------
@@ -238,7 +241,7 @@ def wrplugin(names):
 	template = '''// ----------------------------------------------------------------------------
 // Created: %(time)s by mkuserplugin.py
 // Author:      %(author)s      
-//$Revision: 1.5 $
+//$Revision: 1.6 $
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/Buffer.h"
 #include "%(package)s/%(subpackage)s/interface/%(filename)s.h"
@@ -494,12 +497,12 @@ def main():
 	else:
 		updated = True
 		out = open(classesfile, 'w')
-		record ='''//$Revision: 1.5 $
+		record ='''//$Revision: 1.6 $
 //--------------------------------------------------------------------''' % \
 		names
 		out.write(record)
 		out.close()
-
+		os.system("cp %s %s" % (classesfile, redofile))
 
 	record = open(classesfile).read()
 
@@ -553,6 +556,7 @@ def main():
 		'''
 		out.write(record)
 		out.close()
+		os.system("cp %s %s" % (classesfile, redofile))
 		
 	record = open(classesfile).read()
 	if find(record, fullname) < 0:

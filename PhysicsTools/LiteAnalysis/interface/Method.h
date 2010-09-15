@@ -7,7 +7,7 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
-// $Id: Method.h,v 1.5 2010/09/03 01:54:12 prosper Exp $
+// $Id: Method.h,v 1.7 2010/09/06 05:28:48 prosper Exp $
 //
 // If using Python, include its header first to avoid annoying compiler
 // complaints.
@@ -39,6 +39,16 @@ public:
   }
 
   double operator()(const T& object)
+  {
+    void* address = (void*)(&object);
+    void* raddr = invoke(address);
+    if ( raddr == 0 ) 
+      return 0;
+    else
+      return *static_cast<double*>(raddr); 
+  }
+
+  double operator()(T& object)
   {
     void* address = (void*)(&object);
     void* raddr = invoke(address);

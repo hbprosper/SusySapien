@@ -3,7 +3,7 @@
 # Description: A collection of boostutil utilities. Most have been culled
 #              from either xml2boost.py or header2xml.
 # Created: 19-May-2006 Harrison B. Prosper
-#$Revision: 1.8 $
+#$Revision: 1.9 $
 #---------------------------------------------------------------------------
 import os, sys, re, posixpath, shelve
 from ROOT import *
@@ -1622,13 +1622,15 @@ def cmsswProject():
 	# Determine project directory
 	project = replace(PWD, LOCALBASE, '')
 	project = split(project, '/')
-	if len(project) > 0:
+
+	np = len(project)	
+	if   np == 0:
+		PACKAGE, SUBPACKAGE = [None, None]
+	elif np == 1:
 		PACKAGE = project[0]
 		SUBPACKAGE = None
-	elif len(project) > 1:
+	elif np >  1:
 		PACKAGE, SUBPACKAGE = project[0:2]
-	else:
-		PACKAGE, SUBPACKAGE = [None, None]
 	return (PACKAGE, SUBPACKAGE, LOCALBASE, BASE, VERSION)
 #------------------------------------------------------------------------------
 # Get author's name

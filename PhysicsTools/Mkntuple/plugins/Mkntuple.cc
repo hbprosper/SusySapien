@@ -46,7 +46,7 @@
 //         Updated:  Sun Jan 17 HBP - add log file
 //                   Sun Jun 06 HBP - add variables.txt file
 //
-// $Id: Mkntuple.cc,v 1.15 2010/08/29 23:17:34 prosper Exp $
+// $Id: Mkntuple.cc,v 1.16 2010/09/03 01:54:14 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -55,13 +55,8 @@
 #include <cassert>
 #include <time.h>
 #include <stdlib.h>
- 
-#include "PhysicsTools/LiteAnalysis/interface/treestream.hpp"
-#include "PhysicsTools/LiteAnalysis/interface/kit.h"
-#include "PhysicsTools/Mkntuple/interface/pluginfactory.h"
-#include "PhysicsTools/Mkntuple/interface/CurrentEvent.h"
-#include "PhysicsTools/Mkntuple/interface/Configuration.h"
-#include "PhysicsTools/Mkntuple/interface/SelectedObjectMap.h"
+
+#include "FWCore/Utilities/interface/Exception.h"
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/EDAnalyzer.h"
 #include "FWCore/Framework/interface/Event.h"
@@ -69,6 +64,14 @@
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/FWLite/interface/AutoLibraryLoader.h"
+ 
+#include "PhysicsTools/LiteAnalysis/interface/treestream.hpp"
+#include "PhysicsTools/LiteAnalysis/interface/kit.h"
+#include "PhysicsTools/Mkntuple/interface/pluginfactory.h"
+#include "PhysicsTools/Mkntuple/interface/CurrentEvent.h"
+#include "PhysicsTools/Mkntuple/interface/Configuration.h"
+#include "PhysicsTools/Mkntuple/interface/SelectedObjectMap.h"
+
 #include "TROOT.h"
 #include "TSystem.h"
 
@@ -110,7 +113,7 @@ private:
 Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   : output(otreestream(iConfig.getUntrackedParameter<string>("ntupleName"), 
                        "Events", 
-                       "made by Mkntuple $Revision: 1.15 $")),
+                       "made by Mkntuple $Revision: 1.16 $")),
     event_(0),
     logfilename_("Mkntuple.log"),
     log_(new std::ofstream(logfilename_.c_str())),
@@ -135,38 +138,41 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   // Get name of optional selector
   try
     {
-      selectorname_ = iConfig.getUntrackedParameter<string>("selectorName");
-
-      // Try to load associated shared library
-
-      // First find shared lib
-      char cmd[1024];
-      sprintf(cmd, "find %s*.so", selectorname_.c_str());      
-      string shlib = kit::shell(string(cmd));
-      if ( TString(shlib).Contains("No such file") )
-        // Have a tantrum!
-        throw edm::Exception(edm::errors::Configuration,
-                             "cfg error: "
-                             "cannot find shared library\n\t\t" +
-                             selectorname_ + string("*.so")); 
-
-      // Found shared library, so try to load it
-      if ( gSystem->Load(shlib.c_str()) != 0 )
-        // Scream loudly!
-        throw edm::Exception(edm::errors::Configuration,
-                             "cfg error: "
-                             "unable to load selector shared library\n\t\t" +
-                             shlib);
-
-      // Create command to execute selector
-      sprintf(cmd, "*keep = %s();", selectorname_.c_str());
-      selectorcmd_ = string(cmd);
-
-      cout << endl << "Loaded selector library: " << shlib << endl << endl;
+      selectorname_ = kit::nameonly(iConfig.
+                                    getUntrackedParameter<string>
+                                    ("selectorName"));
     }
   catch (...)
     {
       selectorname_ = "";
+    }
+
+  if ( selectorname_ != "" )
+    {
+      // Try to load associated shared library
+
+      // First find shared lib
+      string filestem = selectorname_ + string("*.so");
+      string cmd = string("find ") + filestem;
+      string shlib = kit::shell(cmd);
+      if ( shlib == "" )
+        {
+          string errmess = string("\tfind ") + filestem + string(" failed");
+          // Have a tantrum!
+          throw cms::Exception("FileNotFound", errmess);
+        }
+ 
+      // Found shared library, so try to load it
+      if ( gSystem->Load(shlib.c_str()) != 0 )
+        // Scream loudly!
+        throw cms::Exception("LoadFailed",
+                             "\tunable to load selector shared library\n\t\t" +
+                             shlib);
+
+      // Create command to execute selector
+
+      selectorcmd_ = string("*keep = ") + selectorname_ + string("();");
+      cout << endl << "Loaded selector library: " << shlib << endl << endl;
     }
 
   if ( getenv("DEBUGMKNTUPLE") > 0 )
