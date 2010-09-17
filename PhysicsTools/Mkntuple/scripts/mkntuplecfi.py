@@ -9,7 +9,7 @@
 #                          is selected
 #              08-Sep-2010 HBP - adapt to extended listing in methods files
 #-----------------------------------------------------------------------------
-#$Revision: 1.15 $
+#$Revision: 1.16 $
 #-----------------------------------------------------------------------------
 import sys, os, re, platform
 from ROOT import *
@@ -39,7 +39,7 @@ if not os.environ.has_key("CMSSW_BASE"):
 	sys.exit(0)
 
 BASE = os.environ["PWD"]
-REVISION="$Revision: 1.15 $"
+REVISION="$Revision: 1.16 $"
 rev = split(REVISION)[1]
 VERSION        = \
 """
@@ -314,7 +314,7 @@ class Gui:
 
 		self.methodDir  = METHODDIR
 		self.openDir    = opendir   # Initial directory for open file dialog
-		self.saveDir    = PYDIR     # Initial directory for save file dialog
+		self.saveDir    = opendir   # Initial directory for save file dialog
 		self.iconDir    = ICONDIR				 
 		self.connection = []        # List of Signal/Slot connections
 
