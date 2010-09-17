@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # Create the skeleton of a user sub-pacakge
 # Created: 03-Sep-2010 Harrison B. Prosper
-#$Revision: 1.4 $
+#$Revision: 1.5 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -42,6 +42,7 @@ def main():
 	names = {}
 	names['pkg']    = PACKAGE
 	names['subpkg'] = SUBPACKAGE
+	names['prog']   = lower(PACKAGE) + lower(SUBPACKAGE)
 	names['author'] = AUTHOR
 	names['mkntuple'] = 'PhysicsTools/Mkntuple'
 	names['lib'] = 'PhysicsToolsMkntuple'
@@ -59,8 +60,8 @@ def main():
 	mkdir -p test
 	sed -e "s/PhysicsTools.Mkntuple/%(pkg)s.%(subpkg)s/g" $CMSSW_BASE/src/%(mkntuple)s/test/config.py  > test/config.py
 	mkdir -p bin
-	sed -e "s/plugins_t/ataduseless/g" $CMSSW_BASE/src/%(mkntuple)s/bin/BuildFile  > bin/BuildFile
- 	echo "int main(int argc, char** argv) {return 0;}" > bin/ataduseless.cc
+	sed -e "s/plugins_t/%(prog)s/g" $CMSSW_BASE/src/%(mkntuple)s/bin/BuildFile  > bin/BuildFile
+ 	echo "int main(int argc, char** argv) {return 0;}" > bin/%(prog)s.cc
 	''' % names
 	os.system(cmd)
 #------------------------------------------------------------------------------
