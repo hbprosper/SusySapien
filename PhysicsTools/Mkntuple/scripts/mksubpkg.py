@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # Create the skeleton of a user sub-pacakge
 # Created: 03-Sep-2010 Harrison B. Prosper
-#$Revision: 1.3 $
+#$Revision: 1.4 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -12,7 +12,11 @@ from PhysicsTools.LiteAnalysis.boostlib import \
 #------------------------------------------------------------------------------
 PACKAGE, SUBPACKAGE, LOCALBASE, BASE, VERSION = cmsswProject()
 if PACKAGE == None:
-	print "Please run mkdocs.py in your package directory"
+	print "*** First create a <package> directory in src:"
+	print "      mkdir <package>"
+	print "    Then:"
+	print "      cd <package>"
+	print "      mkdocs.py <sub-package-name>"
 	sys.exit(0)
 	
 print "Package:     %s" % PACKAGE
@@ -53,6 +57,7 @@ def main():
 	echo "<use name=%(pkg)s/%(subpkg)s>" >> plugins/BuildFile
 	mkdir -p src
 	mkdir -p test
+	sed -e "s/PhysicsTools.Mkntuple/%(pkg)s.%(subpkg)s/g" $CMSSW_BASE/src/%(mkntuple)s/test/config.py  > test/config.py
 	mkdir -p bin
 	sed -e "s/plugins_t/ataduseless/g" $CMSSW_BASE/src/%(mkntuple)s/bin/BuildFile  > bin/BuildFile
  	echo "int main(int argc, char** argv) {return 0;}" > bin/ataduseless.cc

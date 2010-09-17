@@ -3,7 +3,6 @@
 # File: unweight.py
 # Description: Create unweighted events from weighted ones.
 # Created: 19-Dec-2005 Harrison B. Prosper
-# $Revision: 1.2 $
 #------------------------------------------------------------------------------
 import os, sys
 from string import *
@@ -39,22 +38,22 @@ if argc < 3:
     print "Usage:\n\tpython unweight.py <infile> <outfile> <count>"
     sys.exit(0)
 
-inpfile = argv[:-2]
-outfile = argv[-2]
-count   = atoi(argv[-1])
+inpfile = argv[0]
+outfile = argv[1]
+count   = atoi(argv[2])
 
-for file in inpfile:
-    if not os.path.exists(file):
-        print "Can't find %s" % file
-        sys.exit(0)
+if not os.path.exists(inpfile):
+    print "Can't find %s" % inpfile
+    sys.exit(0)
 
 #------------------------------------------------------------------------------
 # Read input file
 #------------------------------------------------------------------------------
-print "Read input file: %s" % inpfile[0]
-inprec = map(lambda x: rstrip(x), open(inpfile[0]).readlines())
+print "Read input file: %s" % inpfile
+inprec = map(lambda x: rstrip(x), open(inpfile).readlines())
 header = inprec[0]
 inprec = inprec[1:]
+
 #------------------------------------------------------------------------------
 # Determine which field is the weight
 #------------------------------------------------------------------------------
@@ -70,9 +69,6 @@ if which < 0:
     print "Weight field not found"
     sys.exit(0)
 
-for file in inpfile[1:]:
-    print "Read input file: %s" % file
-    inprec += map(lambda x: rstrip(x), open(file).readlines())[1:]
 #------------------------------------------------------------------------------
 # Sum weights
 #------------------------------------------------------------------------------
@@ -87,7 +83,7 @@ for i in xrange(1,len(inprec)):
     wcdf[i] = wcdf[i-1] + w
 
 sumw = wcdf[-1]
-print "Weight sum: %10.3e" % sumw
+print "Weight sum: ", sumw
 
 #------------------------------------------------------------------------------
 # Select events according to weight
@@ -111,3 +107,5 @@ shuffle(records)
 records = [header] + records
 records = map(lambda x: x + '\n', records)
 open(outfile,"w").writelines(records)
+
+

@@ -15,23 +15,37 @@ from math import *
 #------------------------------------------------------------------------------
 USAGE = '''
 Usage:
-   mktrain <options> <BNN-name>
+   mktrain.py <options> <BNN-name>
 
    options:
-         -h   print this
-         -t   training file  [train.dat]
-         -v   variables text file [use all variables in training file]
-         -N   number of events per sig/bkg sample [min(5000, all)]
-         -H   number of hidden nodes [20]
-         -I   number of iterations [300]
+		 -h   print this
+		 -m   model type (b=binary or r=real) [b]
+		 -N   number of training events [min(5000, all)]
+		 -H   number of hidden nodes [20]
+		 -I   number of iterations [300]
+
+
+   mktrain.py needs two input files:
+   
+   1. <BNN-name>.dat              file containing training data
+   2. <BNN-name>.var              file containing names of variables
+                                  offsets and scale factors        
+		 
+   In the training file, all columns except the last must be input variables
+   and the last column must be the targets. The first row should be a header
+   of column names.
 '''
-SHORTOPTIONS = 'hs:b:v:N:H:I:'
+SHORTOPTIONS = 'hm:N:H:I:'
 COUNT = 5000
 ITERATIONS = 300
 HIDDEN= 20
 
-template = '''
-# Created: %(time)s
+template = '''#------------------------------------------------------------------------------
+# Description: This file contains the commands to run the BNN training.
+#              Note: the data-spec format assumes that all inputs in the
+#                    training file are used and the last column is the
+#                    target.
+# Created: %(time)s by mktrain.py
 #------------------------------------------------------------------------------
 %(varlist)s
 #------------------------------------------------------------------------------
@@ -39,11 +53,9 @@ echo "File: %(name)s"
 
 net-spec	%(name)s.bin %(I)d %(H)d 1 / - 0.05:0.5 0.05:0.5 - x0.05:0.5 - 100
 
-model-spec	%(name)s.bin binary
+model-spec	%(name)s.bin %(modeltype)s
 
-data-spec	%(name)s.bin %(I)s 1 2 / \\
-%(datafile)s@2:%(count)d%(cols)s %(datafile)s@2:%(count)d,%(target)s \\
-%(datafile)s@2:%(count)d%(cols)s %(datafile)s@2:%(count)d,%(target)s
+data-spec	%(name)s.bin %(I)s %(datatype)s / %(datafile)s@2:%(count)d . %(datafile)s@2:%(count)d .
 
 net-gen		%(name)s.bin fix 0.5
 
@@ -64,188 +76,157 @@ time net-mc	%(name)s.bin %(iter)s
 echo ""
 echo "Use"
 echo "   netwrite -n 100 %(name)s.bin"
-echo "to create the BNN function %(name)s.cpp"
+echo "to create the BNN function %(name)s.cpp using the last 100 points"
 '''
 
 #------------------------------------------------------------------------------
 def error(message):
-    print "** %s" % message
-    sys.exit(0)
+	print "** %s" % message
+	sys.exit(0)
 
 def usage():
-    print USAGE
-    sys.exit(0)
-    
+	print USAGE
+	sys.exit(0)
+
 def nameonly(x):
-    return os.path.splitext(os.path.basename(x))[0]
+	return os.path.splitext(os.path.basename(x))[0]
 #------------------------------------------------------------------------------
 def readData(datafile, varfile, count):
 
-    print "\nReading training file: %s" % datafile
-    records= map(lambda x: rstrip(x), open(datafile).readlines())
-    header = records[0]
-    records= records[1:]
+	print "\nReading training file: %s" % datafile
+	records= map(lambda x: rstrip(x), open(datafile).readlines())
+	header = records[0]
+	records= records[1:]
 
-    # Make sure we don't ask for more than the number of
-    # events per file
-    
-    count = min(count, len(records))
-    records = records[:count]
-    #---------------------------------------------------
-    # Convert data to float
-    #---------------------------------------------------
-    data = map(lambda row:
-               map(atof, split(row)), records)
+	# Make sure we don't ask for more than the number of
+	# events per file
 
-    #---------------------------------------------------
-    # Get column names from header and create name to
-    # index map
-    #---------------------------------------------------
-    colnames = split(header)
-    colmap = {}
-    for index in range(len(colnames)):
-        name = colnames[index]
-        colmap[name] = index + 1
+	count = min(count, len(records))
+	records = records[:count]
+	#---------------------------------------------------
+	# Convert data to float
+	#---------------------------------------------------
+	data = map(lambda row:
+			   map(atof, split(row)), records)
 
-    # Get variable names, means and sigmas
-    
-    vars = map(split, open(varfile).readlines())
-    mean = []
-    sigma= []
-    for index, (name, m, s) in enumerate(vars):
-        if name != colnames[index]:
-            error("The order of variables in %s does not match\n\tthat in %s"\
-                  % (datafile, varfile))
-        mean.append(atof(m))
-        sigma.append(atof(s))
-    return (colnames, colmap, data, mean, sigma)
+	colnames = split(header)
+
+	# Get variable names, means and sigmas
+
+	vars = map(split, open(varfile).readlines())
+	offset = []
+	scale  = []
+	for index, x in enumerate(vars):
+		if len(x) != 3: continue
+		name, m, s = x
+		if name != colnames[index]:
+			error("The order of variables in %s does not match\n\tthat in %s"\
+				  % (datafile, varfile))
+		offset.append(atof(m))
+		scale.append(atof(s))
+	return (colnames, data, offset, scale)
 #------------------------------------------------------------------------------
 # MAIN Program
 #------------------------------------------------------------------------------
 def main():
-    
-    #---------------------------------------------------
-    # Decode command line using getopt module
-    #---------------------------------------------------
-    try:
-        options, inputs = getopt(sys.argv[1:], SHORTOPTIONS)
-    except GetoptError, m:
-        print
-        print m
-        usage()
 
-    # Make sure we have a network name
+	#---------------------------------------------------
+	# Decode command line using getopt module
+	#---------------------------------------------------
+	try:
+		options, inputs = getopt(sys.argv[1:], SHORTOPTIONS)
+	except GetoptError, m:
+		print
+		print m
+		usage()
 
-    if len(inputs) == 0: usage()
+	# Make sure we have a network name
 
-    # Name of BNN
-    
-    bnnname = inputs[0]
-    
-    # Set defaults, then parse input line
+	if len(inputs) == 0: usage()
 
-    trainfile = 'train.dat'
-    varfile = ''
-    count   = COUNT
-    hidden  = HIDDEN
-    iterations = ITERATIONS
-    
-    for option, value in options:
-        if option == "-h":
-            usage()
+	# Name of BNN
 
-        elif option == "-t":
-            trainfile = value
-            
-        elif option == "-v":
-            varfile = value
-            
-        elif option == "-N":
-            count = atoi(value)
+	bnnname = inputs[0]
+	trainfile = "%s.dat" % bnnname
 
-        elif option == "-H":
-            hidden = atoi(value)            
+	# Set defaults, then parse input line
 
-        elif option == "-I":
-            iterations = atoi(value)
+	binaryModel = True
 
-    #---------------------------------------------------
-    # Check that input files exist
-    #---------------------------------------------------
-    trainvarfile = nameonly(trainfile)+".var"
-    if not os.path.exists(trainfile): error("Can't find %s" % trainfile)
-    if not os.path.exists(trainvarfile): error("Can't find %s" % trainvarfile)
+	varfile = ''
+	count   = COUNT
+	hidden  = HIDDEN
+	iterations = ITERATIONS
 
-    #---------------------------------------------------
-    # Mix signal and background events
-    #---------------------------------------------------
-    colnames, colmap, data, mean, sigma = readData(trainfile,
-                                                   trainvarfile,
-                                                   count)
-    ndata = len(data)
-    
-    #---------------------------------------------------
-    # Get list of BNN input variables
-    #---------------------------------------------------
-    if varfile == '':
-        # Use all variables in input files
-        var = colnames
-    else:
-        # Use variables given in variables file
-        if not os.path.exists(varfile): error("Can't find %s" % varfile)
-        var = map(strip, open(varfile).readlines())
-    # Skip any blank lines
-    var = filter(lambda x: x != "", var)
-    nvar = len(var)
-    
-    #---------------------------------------------------
-    # Write <BNN>.sh file
-    #---------------------------------------------------
-    varstr = '#\t' + joinfields(var,'\n#\t')
+	for option, value in options:
+		if option == "-h":
+			usage()
 
-    names = {}
-    names['name'] = bnnname
-    names['datafile'] = trainfile
-    names['time'] = ctime(time())
-    names['count']= count+1
-    names['I'] = nvar
-    names['H'] = hidden
-    names['iter'] = iterations
-    names['varlist']  = varstr
+		elif option == "-m":
+			binaryModel = value == "b"
 
-    print "\nInput variables for BNN %s" % bnnname
-    colstr = ""
-    for name in var:
-        if not colmap.has_key(name): error("Can't find variable %s" % name)
-        print "\t%s" % name
-        col = colmap[name]
-        colstr += ",%d" % col
-    names['cols'] = colstr
-    
-    if not colmap.has_key("target"):
-        error("Can't find variable target")
-    names['target'] = "%d" % colmap["target"]
+		elif option == "-N":
+			count = atoi(value)
 
-    record = template % names
+		elif option == "-H":
+			hidden = atoi(value)            
 
-    shfile = "%(name)s.sh" % names
-    print "Write %s" % shfile
-    open(shfile, "w").write(record)
+		elif option == "-I":
+			iterations = atoi(value)
 
-    #---------------------------------------------------
-    # Write means and sigmas of input variables
-    # to variables file
-    #---------------------------------------------------
-    vfile = "%(name)s.var" % names
-    print "Write %s" % vfile
-    out = open(vfile,"w")
-        
-    for name in var:
-        index = colmap[name]-1
-        if sigma[index] == 0: error("variable %s has zero variance" % name)
-        
-        record = "%-16s\t%10.3e\t%10.3e\n" % (name, mean[index], sigma[index])
-        out.write(record)
-    out.close()
+	#---------------------------------------------------
+	# Check that input files exist
+	#---------------------------------------------------
+	trainvarfile = nameonly(trainfile)+".var"
+	if not os.path.exists(trainfile): error("Can't find %s" % trainfile)
+	if not os.path.exists(trainvarfile): error("Can't find %s" % trainvarfile)
+
+	#---------------------------------------------------
+	# Mix signal and background events
+	#---------------------------------------------------
+	colnames, data, offset, scale = readData(trainfile,
+											 trainvarfile,
+											 count)
+	ndata = len(data)
+	#---------------------------------------------------
+	# Use all variables in input files except "target",
+	# which should be the last column
+	#---------------------------------------------------
+	var = colnames[:-1]
+	nvar = len(var)
+
+	print "\nInput variables for BNN %s" % bnnname
+	varlist = ""
+	for i, name in enumerate(var):
+		print "\t%s" % name
+		index  = i+1
+		varlist += "#\t%d\t%s\n" % (index, name) 
+	varlist = varlist[:-1]
+	
+	#---------------------------------------------------
+	# Write <BNN>.sh file
+	#---------------------------------------------------
+
+	names = {}
+	names['name'] = bnnname
+	names['varlist'] = varlist
+	names['datafile'] = trainfile
+	names['time'] = ctime(time())
+	names['count']= count+1
+	names['I'] = nvar
+	names['H'] = hidden
+	names['iter'] = iterations
+	if binaryModel:
+		names['modeltype'] = "binary"
+		names['datatype']  = "1 2"
+	else:
+		names['modeltype'] = "real"
+		names['datatype']  = "1"
+
+	record = template % names
+
+	shfile = "%(name)s.sh" % names
+	print "Write %s" % shfile
+	open(shfile, "w").write(record)
 #------------------------------------------------------------------------------
 main()

@@ -9,12 +9,18 @@
 #                          is selected
 #              08-Sep-2010 HBP - adapt to extended listing in methods files
 #-----------------------------------------------------------------------------
-#$Revision: 1.14 $
+#$Revision: 1.15 $
 #-----------------------------------------------------------------------------
 import sys, os, re, platform
 from ROOT import *
-from string import split
-#-----------------------------------------------------------------------------
+from string import split, strip
+from PhysicsTools.LiteAnalysis.boostlib import cmsswProject
+#------------------------------------------------------------------------------
+PACKAGE, SUBPACKAGE, LOCALBASE, BASE, VERSION = cmsswProject()
+PYDIR = '%s%s/%s/python' % (LOCALBASE, PACKAGE, SUBPACKAGE)
+if not os.path.exists(PYDIR):
+	PYDIR = "."
+
 def usage():
 	print """
 Usage:
@@ -33,7 +39,7 @@ if not os.environ.has_key("CMSSW_BASE"):
 	sys.exit(0)
 
 BASE = os.environ["PWD"]
-REVISION="$Revision: 1.14 $"
+REVISION="$Revision: 1.15 $"
 rev = split(REVISION)[1]
 VERSION        = \
 """
@@ -301,15 +307,16 @@ P_COLOR = (LIGHTYELLOW, LIGHTGREEN)
 
 class Gui:
 	"""
-	gui = Gui(title, iniDir)
+	gui = Gui(title, OpenDir)
 	"""
 
-	def __init__(self, name, inidir):
+	def __init__(self, name, opendir):
 
 		self.methodDir  = METHODDIR
-		self.iniDir     = inidir            # Initial directory for file dialog
+		self.openDir    = opendir   # Initial directory for open file dialog
+		self.saveDir    = PYDIR     # Initial directory for save file dialog
 		self.iconDir    = ICONDIR				 
-		self.connection = []                # List of Signal/Slot connections
+		self.connection = []        # List of Signal/Slot connections
 
 		#-------------------------------------------------------------------
 		# Create main frame
@@ -485,7 +492,7 @@ class Gui:
 			self.hframe[id] = TGHorizontalFrame(self.pages[id], 1, 1)
 			self.pages[id].AddFrame(self.hframe[id], TOP_X_Y)
 
-			# Create a labeled list box for by creating a vertical frame,
+			# Create a labeled list box by creating a vertical frame,
 			# inserting it into the horizontal frame, and then inserting the
 			# label followed by the listbox into the vertical frame
 			
@@ -604,7 +611,8 @@ class Gui:
 		# Creat a map to keep track of selections
 		
 		self.cmap = {}
-		
+		self.previousID = -1
+			
 		for record in records:
 			label = getlabel.findall(record)[0]
 			cname = getclass.findall(record)[0]
@@ -770,16 +778,39 @@ class Gui:
 		
 		pageNumber = self.noteBook.GetCurrent()
 		cname = self.classBox[pageNumber].GetEntry(id).GetText().Data()
-		self.cmap[cname]['selected'] = True
-		
 		SelectedPage = pageNumber == P_SELECTED
 		
+		self.methodBox[pageNumber].RemoveAll()
+		self.labelBox[pageNumber].RemoveAll()
+
+		methods = self.cmap[cname]['methods']
+		labels= self.cmap[cname]['labels']
+		
+		# Check if previously highlighted
+		
+		if not SelectedPage:
+			if self.previousID == id:
+				self.previousID = -1
+
+				self.cmap[cname]['selected'] = False
+
+				for index, name in enumerate(methods.keys()):
+					self.cmap[cname]['methods'][name] = False
+
+				for index, name in enumerate(labels.keys()):
+					self.cmap[cname]['labels'][name] = False
+
+				self.classBox[pageNumber].Select(id, kFALSE)
+				self.methodBox[pageNumber].Layout()
+				self.labelBox[pageNumber].Layout()
+				return
+			self.previousID = id
+
+		self.cmap[cname]['selected'] = True
+	
 		# List methods
 		
-		methods = self.cmap[cname]['methods']
 		names   = self.cmap[cname]['sortedmethods']
-
-		self.methodBox[pageNumber].RemoveAll()
 		for index, name in enumerate(names):
 			if SelectedPage:
 				if not methods[name]: continue
@@ -793,10 +824,9 @@ class Gui:
 
 		# List getByLabels
 		
-		labels= self.cmap[cname]['labels']
 		names = labels.keys()
 		names.sort()
-		self.labelBox[pageNumber].RemoveAll()
+
 		for index, name in enumerate(names):
 			if SelectedPage:
 				if not labels[name]: continue
@@ -856,7 +886,7 @@ class Gui:
 
 		cid   = self.classBox[pageNumber].GetSelected()
 		if cid < 0: return
-		
+
 		# Select all methods
 
 		cname = self.classBox[pageNumber].GetEntry(cid).GetText().Data()
@@ -867,8 +897,6 @@ class Gui:
 			self.cmap[cname]['methods'][name] = True
 			self.methodBox[pageNumber].Select(id)
 		self.methodBox[pageNumber].Layout()
-
-
 #---------------------------------------------------------------------------
 	def unselect(self):
 
@@ -895,10 +923,10 @@ class Gui:
 		fdialog = TFileDialog(self.window,
 							  self.main,
 							  kFDOpen,
-							  self.iniDir)
+							  self.openDir)
 
 		filename = fdialog.Filename()
-		self.iniDir  = fdialog.IniDir()
+		self.openDir  = fdialog.IniDir()
 		if isRootFile.search(filename) == None:
 			THelpDialog(self.window,
 						"Warning",
@@ -1047,11 +1075,10 @@ class Gui:
 		fdialog = TFileDialog(self.window,
 							  self.main,
 							  kFDSave,
-							  self.iniDir,
+							  self.saveDir,
 							  CFI_PY)
 
-
-		self.iniDir  = fdialog.IniDir()
+		self.saveDir = fdialog.IniDir()
 		filename = fdialog.Filename()
 		
 		self.statusBar.SetText("Saving to file", 0)
@@ -1151,11 +1178,10 @@ class Gui:
 #------------------------------------------------------------------------------
 def main():
 	if len(ARGV) > 0:
-		inidir = ARGV[0]
+		opendir = ARGV[0]
 	else:
-		inidir = "."
-
-	gui = Gui("mkntuplecfi", inidir)
+		opendir = "."
+	gui = Gui("mkntuplecfi", opendir)
 	gui.Run()
 #------------------------------------------------------------------------------
 main()

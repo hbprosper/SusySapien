@@ -9,7 +9,7 @@
 */
 // Created: Summer-2008 Harrison B. Prosper
 //-----------------------------------------------------------------------------
-//$Revision: 1.2 $
+//$Revision: 1.3 $
 
 #include "PhysicsTools/LiteAnalysis/interface/root.h"
 #include <TRootHelpDialog.h>
@@ -81,10 +81,25 @@ TFileDialog::TFileDialog(const TGWindow* window,
         file_info.fFilename = inifilename;
       }
 
-    const char* filetypes[] = {"Root files", "*.root",
-                               "All files",  "*",
+    vector<string> ftypes;
+    if ( dlg_type == kFDOpen )
+      {
+        ftypes.push_back("Root files");
+        ftypes.push_back("*.root");
+        ftypes.push_back("All files");
+        ftypes.push_back("*");
+      }
+    else
+      {
+        ftypes.push_back("All files");
+        ftypes.push_back("*");
+        ftypes.push_back("Root files");
+        ftypes.push_back("*.root");
+      }
+    const char* filetypes[] = {ftypes[0].c_str(), ftypes[1].c_str(),
+                               ftypes[2].c_str(), ftypes[3].c_str(),
                                0,            0};
-
+    
     file_info.fFileTypes = filetypes;
 
     new TGFileDialog(window, main, dlg_type, &file_info);
