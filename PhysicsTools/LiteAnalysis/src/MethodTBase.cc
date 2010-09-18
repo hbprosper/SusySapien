@@ -21,7 +21,7 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
-// $Id: MethodTBase.cc,v 1.1 2010/09/18 21:01:08 prosper Exp $
+// $Id: MethodTBase.cc,v 1.2 2010/09/18 21:22:53 prosper Exp $
 //
 // If using Python, include its header first to avoid annoying compiler
 // complaints.
@@ -43,6 +43,7 @@
 #include "TROOT.h"
 // ---------------------------------------------------------------------------
 using namespace ROOT::Reflex;
+using namespace std;
 
 bool isCompoundMethod(std::string expression, std::string& delim)
 {
@@ -71,7 +72,9 @@ MethodTBase::MethodTBase(std::string classname,
       expression2_(""),
       compoundMethod_(false),
       checkReturn_(false),
-      checkisNull_(false)
+      checkisNull_(false),
+      setboolAddress_("bool* yes = (bool*)0x%x"),
+      setdoubleAddress_("double* x = (double*)0x%x")
 {
   if ( getenv("DEBUGMETHOD") > 0 )
     debug_ = atoi(getenv("DEBUGMETHOD"));
@@ -139,18 +142,17 @@ MethodTBase::MethodTBase(std::string classname,
               checkReturn_ = true;
               checkisNull_ = true;
               // Command to call isNull()
-              sprintf(cmd, "kit::set(o->%s.isNull(), x)", 
-                      expression1_.c_str());
+              sprintf(cmd, "o->%s.isNull()", expression1_.c_str());
             }
           else
             {
               sprintf(cmd, "%s", "");
             }
         }
-      callMethod1_ = std::string(cmd);
-      
-      sprintf(cmd, "kit::set(o->%s, x)", expression_.c_str());
-      compoundCall_ = std::string(cmd);
+
+      callMethod1_ = std::string(cmd);      
+      sprintf(cmd, "*x = o->%s", expression_.c_str());
+      callCompoundMethod_ = std::string(cmd);
     }
   else
     {
@@ -221,23 +223,28 @@ double MethodTBase::invoke(ROOT::Reflex::Object& object, void* address)
           if ( checkisNull_ )
             {
               if ( debug_ > 0 )
-                //DB
-                std::cout << "   call isNull(): " 
-                          << std::endl;
+                {
+                  //DB
+                  std::cout << "   call isNull():" << endl
+                            << RED
+                            << "\t\t"
+                            << callMethod1_
+                            << BLACK
+                            << std::endl;
+                  gROOT->ProcessLine(callMethod1_.c_str());
+                }
 
-              bool valid=false;
-              gROOT->ProcessLine(Form("bool* x = (bool*)0x%x", &valid));
-              gROOT->ProcessLineFast(callMethod1_.c_str());
+              bool isNull =(bool)gROOT->ProcessLineFast(callMethod1_.c_str());
               
               if ( debug_ > 0 )
                 //DB
                 std::cout << "        return: " 
                           << GREEN 
-                          << valid
+                          << isNull
                           << BLACK
                           << std::endl;
 
-              if ( !valid ) return 0;
+              if ( isNull ) return 0;
             }
           else
             {
@@ -250,18 +257,25 @@ double MethodTBase::invoke(ROOT::Reflex::Object& object, void* address)
       // We have a valid pointer, so proceed
 
       double x = 0;
-      gROOT->ProcessLine(Form("double* x = (double*)0x%x", &x));
+      gROOT->ProcessLine(Form(setdoubleAddress_.c_str(), &x));
       
       if ( debug_ > 0 )
-        //DB
-        std::cout << "     callCompound: " 
-                  << RED 
-                  << compoundCall_
-                  << BLACK
-                  << std::endl;
+        {
+          //DB
+          std::cout << "     callCompound:" << endl 
+                    << RED 
+                    << "\t\t"
+                    << setdoubleAddress_ << endl
+                    << "\t\t"
+                    << callCompoundMethod_
+                    << BLACK
+                    << std::endl;
+          gROOT->ProcessLine(callCompoundMethod_.c_str());
+        }
+
       try
         {
-          gROOT->ProcessLineFast(compoundCall_.c_str());
+          gROOT->ProcessLineFast(callCompoundMethod_.c_str());
         }
       catch (...)
         {}

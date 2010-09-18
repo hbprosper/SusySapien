@@ -57,9 +57,11 @@ private:
   bool checkReturn_;
   bool checkisNull_;
 
+  std::string setboolAddress_;
+  std::string setdoubleAddress_;
   std::string setAddress_;
   std::string callMethod1_;
-  std::string compoundCall_;
+  std::string callCompoundMethod_;
 
   int debug_;
 };
