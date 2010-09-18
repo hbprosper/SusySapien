@@ -8,8 +8,9 @@
 #              06-Jun-2010 HBP - always highlight selected methods when a class
 #                          is selected
 #              08-Sep-2010 HBP - adapt to extended listing in methods files
+#              18-Sep-2010 HBP - improve find
 #-----------------------------------------------------------------------------
-#$Revision: 1.16 $
+#$Revision: 1.17 $
 #-----------------------------------------------------------------------------
 import sys, os, re, platform
 from ROOT import *
@@ -39,7 +40,7 @@ if not os.environ.has_key("CMSSW_BASE"):
 	sys.exit(0)
 
 BASE = os.environ["PWD"]
-REVISION="$Revision: 1.16 $"
+REVISION="$Revision: 1.17 $"
 rev = split(REVISION)[1]
 VERSION        = \
 """
@@ -102,9 +103,9 @@ getlabel  = re.compile(r'.+(?=\_\_)|.+(?=\_)')
 
 getmethod = re.compile(r'[a-zA-Z][^\s]*[(].*[)]')
 
-stmethods = re.compile(r'energy|et|pt|eta|phi'\
-					   '|px|py|pz|p\('\
-					   '|charge')
+stmethods = re.compile(r' (energy|et|pt|eta|phi'\
+					   '|px|py|pz|p'\
+					   '|charge)[(]')
 
 isomethods= re.compile(r'.+Iso')
 
@@ -125,21 +126,9 @@ def sortMethods(methods):
 		if stmethods.search(m) == None: continue
 		meths.append(m)
 		
-	# Iso methods
-	for m in methods:
-		if isomethods.search(m) == None: continue
-		meths.append(m)
-
-	# is methods
-	for m in methods:
-		if ismethods.search(m) == None: continue
-		meths.append(m)
-		
 	# the rest
 	for m in methods:
 		if stmethods.search(m)  != None: continue
-		if isomethods.search(m) != None: continue
-		if ismethods.search(m)  != None: continue
 		meths.append(m)
 	return meths
 #-----------------------------------------------------------------------------
@@ -948,7 +937,13 @@ class Gui:
 		cid   = self.classBox[pageNumber].GetSelected()
 		if cid < 0: return
 
-		searchstr = lower(self.findBox.GetText())
+		origstr  = self.findBox.GetText()
+		searchstr = lower(origstr)
+		searchstr = replace(searchstr,'(','[(]')
+		searchstr = replace(searchstr,')','[)]')
+		searchstr = replace(searchstr,'->','[-][>]')
+		searchstr = replace(searchstr,'*','.*')
+		
 		findit = re.compile(searchstr)		
 		cname = self.classBox[pageNumber].GetEntry(cid).GetText().Data()
 		nentries = len(self.cmap[cname]['methods'])
@@ -966,7 +961,7 @@ class Gui:
 			self.findcurrentPos = 0
 			THelpDialog(self.window,
 						"Warning",
-						"Method %s not found!" % searchstr, 230, 30)
+						"Method %s not found!" % origstr, 250, 40)
 						
 		self.methodBox[pageNumber].Layout()
 		
