@@ -6,7 +6,7 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
-// $Id: MethodT.h,v 1.2 2010/09/06 05:28:48 prosper Exp $
+// $Id: MethodTBase.h,v 1.1 2010/09/18 21:01:08 prosper Exp $
 //
 //-----------------------------------------------------------------------------
 #include <string>
@@ -32,9 +32,9 @@ public:
   MethodTBase();
   
   ///
-  MethodTBase(const std::string classname, 
-              const std::string expression,
-              reco::parser::ExpressionPtr& exprPtr);
+  MethodTBase(std::string classname, 
+              std::string expression,
+              reco::parser::ExpressionPtr exprPtr);
 
   ~MethodTBase();
 
@@ -42,7 +42,7 @@ public:
   std::string name() const;
 
   ///
-  double operator()(ROOT::Reflex::Object& o, void* address);
+  double invoke(ROOT::Reflex::Object& o, void* address);
   
 private:
   std::string classname_;

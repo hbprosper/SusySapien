@@ -21,7 +21,7 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
-// $Id: MethodT.h,v 1.2 2010/09/06 05:28:48 prosper Exp $
+// $Id: MethodTBase.cc,v 1.1 2010/09/18 21:01:08 prosper Exp $
 //
 // If using Python, include its header first to avoid annoying compiler
 // complaints.
@@ -59,9 +59,11 @@ bool isCompoundMethod(std::string expression, std::string& delim)
 
 MethodTBase::MethodTBase() {}
   
-MethodTBase::MethodTBase(const std::string classname, 
-                         const std::string expression,
-                         reco::parser::ExpressionPtr& expr)
+MethodTBase::~MethodTBase() {}
+
+MethodTBase::MethodTBase(std::string classname, 
+                         std::string expression,
+                         reco::parser::ExpressionPtr expr)
     : classname_(classname),
       expression_(expression),
       expr1_(expr),
@@ -174,7 +176,7 @@ std::string MethodTBase::name() const
   return classname_ + "::" + expression_;
 }
 
-double MethodTBase::operator()(ROOT::Reflex::Object& object, void* address)
+double MethodTBase::invoke(ROOT::Reflex::Object& object, void* address)
 {
   if ( !compoundMethod_ )
     {
