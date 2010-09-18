@@ -3,7 +3,8 @@
 # Description: A collection of boostutil utilities. Most have been culled
 #              from either xml2boost.py or header2xml.
 # Created: 19-May-2006 Harrison B. Prosper
-#$Revision: 1.10 $
+#          18-Sep-2010 HBP use updated version of convert2Html
+#$Revision: 1.11 $
 #---------------------------------------------------------------------------
 import os, sys, re, posixpath, shelve
 from ROOT import *
@@ -12,12 +13,16 @@ from elementtree.ElementTree import ElementTree
 from xml.parsers.expat import ExpatError
 #---------------------------------------------------------------------------
 WEIRD        = "<|<@&@>|>"
-TAB          = 4
+AMPERSAND    = '&amp;'
 LT           = '&lt;'
 GT           = '&gt;'
-AMP          = '&amp;'
-QUOT         = '&quot;'
-APOS         = '&apos;'
+TILDE        = '&atilde;'
+TAB          = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+NEWLINE      = '<br>'
+SPACE        = "&nbsp;"
+QUOTE        = '&quot;'
+APOSTROPHE   = '&apos;'
+NULL         = ""
 #---------------------------------------------------------------------------
 ALPHA  = re.compile(r'[A-Z]')
 findlb = re.compile(r'\(',re.M)
@@ -454,19 +459,30 @@ def stripBlanklines(record):
 # Tidy up identifiers
 #---------------------------------------------------------------------------
 def convert2html(record):
-    record = replace(record,'&',AMP)    
-    record = replace(record,'<',LT)
-    record = replace(record,'>',GT)
-    record = replace(record,'"',QUOT)
-    record = replace(record,'\0', "")
-    return record
+        record = replace(record,'&', AMPERSAND)
+        record = replace(record,'<', LT)
+        record = replace(record,'>', GT)
+        record = replace(record,'~', TILDE)
+        record = replace(record,"\t",TAB)
+        record = replace(record,"\n",NEWLINE)
+        record = replace(record," ", SPACE)
+		record = replace(record,'"', QUOTE)
+		record = replace(record,"'", APOSTROPHE)
+		record = replace(record,'\0',NULL)
+        return record
 #---------------------------------------------------------------------------
-def convertFromHtml(record):
-    record = replace(record, AMP,'&')    
-    record = replace(record, LT, '<')
-    record = replace(record, GT, '>')
-    record = replace(record, QUOT, '"')
-    return record
+def convertFromhtml(record):
+        record = replace(record, AMPERSAND,'&')
+        record = replace(record, LT,'<')
+        record = replace(record, GT,'>')
+        record = replace(record, TILDE, '~')
+        record = replace(record, TAB,"\t")
+        record = replace(record, NEWLINE, "\n")
+        record = replace(record, SPACE, " ")
+		record = replace(record, QUOTE, '"')
+		record = replace(record, APOSTROPHE, "'")
+		#record = replace(record, NULL, '\0')
+        return record
 #---------------------------------------------------------------------------
 def standardizeName(name):
     # Do more intelligently later!
