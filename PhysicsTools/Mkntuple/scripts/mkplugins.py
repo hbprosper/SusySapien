@@ -3,7 +3,7 @@
 # create plugins.cc
 # Created: 05-Jan-2010 Harrison B. Prosper
 # Updated: 15-Feb-2010 HBP - run mkclasslist.py if needed
-#$Revision: 1.10 $
+#$Revision: 1.11 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -78,9 +78,10 @@ names = {'time': ctime(time())}
 out  = open("plugins.cc","w")
 record = '''// ----------------------------------------------------------------------------
 // Created: %(time)s by mkplugins.py
-// $Revision: 1.10 $
+// $Revision: 1.11 $
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/Buffer.h"
+#include "PhysicsTools/Mkntuple/interface/pluginfactory.h"
 '''
 out.write(record % names)
 

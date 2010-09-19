@@ -19,9 +19,9 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Fri Apr 04 2008
-// $Id: kit.h,v 1.8 2010/09/03 01:54:12 prosper Exp $
+// $Id: kit.h,v 1.9 2010/09/15 13:46:46 prosper Exp $
 //
-//$Revision: 1.8 $
+//$Revision: 1.9 $
 //-----------------------------------------------------------------------------
 #include <iostream>
 #include <fstream>
@@ -210,9 +210,11 @@ struct kit
   private:
     std::map<std::string, int> _var;
   };
- 
 
+  // ------------------------------------------------------------------------ 
+  // Reflex utilities
   // ------------------------------------------------------------------------
+
   ///
   struct ValueThing
   {
@@ -241,6 +243,10 @@ struct kit
 
   ///
   static
+  bool           isCompoundMethod(std::string expression, std::string& delim);
+
+  ///
+  static
   void           getScopes(std::string classname, 
                            std::vector<std::string>& names, 
                            int depth=0);
@@ -249,7 +255,6 @@ struct kit
   Reflex::Member getMethod(std::string classname,
                            std::string methodname,
                            std::string args=std::string("(void)"));
-
 
   ///
   static
@@ -262,6 +267,15 @@ struct kit
   ///
   static
   bool           returnsPointer(Reflex::Member& method);
+
+  ///
+  static
+  Reflex::Member getReturnedObjectMethod(Reflex::Member& method,
+                                         std::string name);
+
+  ///
+  static
+  Reflex::Member getisAvailable(Reflex::Member& method);
 
   ///
   static

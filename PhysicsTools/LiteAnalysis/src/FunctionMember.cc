@@ -15,7 +15,7 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Wed Jun 20 19:53:47 EDT 2007
 //         Updated:  Sat Oct 25 2008 - make matchInDeltaR saner
-// $Id: Method.cc,v 1.1 2010/09/03 01:54:13 prosper Exp $
+// $Id: FunctionMember.cc,v 1.1 2010/09/06 05:43:07 prosper Exp $
 //
 //
 //-----------------------------------------------------------------------------
@@ -26,6 +26,7 @@
 #include <stdlib.h>
 //-----------------------------------------------------------------------------
 #include "FWCore/Utilities/interface/Exception.h"
+#include "FWCore/MessageLogger/interface/MessageLogger.h"
 #include "PhysicsTools/LiteAnalysis/interface/FunctionMember.h"
 //-----------------------------------------------------------------------------
 using namespace std;
@@ -66,33 +67,27 @@ FunctionMember::FunctionMember(std::string classname,
     debug_ = 0;
   
   if ( debug_ > 0 )
-    cout << "FunctionMember - classname<" << classname << ">\n" 
-         << "         method   <" << methodrecord << ">" << endl;
+    cout << "FunctionMember - classname<" << classname1_ << ">\n" 
+         << "         method   <" << methodrecord_ << ">" << endl;
 
-  if ( classname == "" ) 
+  if ( classname1_ == "" ) 
     throw cms::Exception("InvalidClassname")
       << "null classname " << endl;
 
-  // method could be of the form
-  // y = method1(...)->method2(...) or
-  // y = method1(...).method2(...)
-  // y = method1(...).datamember
-  // y = datamember.method2(...)
-  // y = datamember->method2(...)
-  boost::regex expr("(?<=[)a-zA-Z_0-9]) *([-][>]|[.]) *(?=[a-zA-Z])");
-  boost::smatch what;
-  simplemethod_ = !boost::regex_search(methodrecord, what, expr);
+  // check for compound method
+  string delim("");
+  bool compoundmethod = kit::isCompoundMethod(methodrecord_, delim);
+  simplemethod_ = ! compoundmethod;
 
   // If method is compound, split it into its components
-  methodrecord1_ = methodrecord;
+  methodrecord1_ = methodrecord_;
   methodrecord2_ = "";
-  if ( !simplemethod_ )
+  if ( compoundmethod )
     {
-      string delim(what[0]);
       if ( debug_ > 0 )
         cout << "       - delimeter( " << delim << " )" << endl;
 
-      kit::bisplit(methodrecord, methodrecord1_, methodrecord2_, delim);
+      kit::bisplit(methodrecord_, methodrecord1_, methodrecord2_, delim);
     }
 
   if ( debug_ > 0 )
@@ -214,11 +209,15 @@ FunctionMember::FunctionMember(std::string classname,
   if ( datamember2_ ) return;
 
   // Check if this is a CMSSW "smart" pointer, which are annoying: we
-  // first need to call isNull() to check for a null pointer.
+  // first need to call isAvailable() to make sure that the collection 
+  // containing the object is available. If it is, we then call isNull() to 
+  // check for a null pointer.
+  //
   // Then we need to call get() to return the address of the object
   // pointer to by the smart pointer. If the address is not null,
   // we can then call the method of the returned object. 
   
+  isavailablemethod_ = kit::getisAvailable(method1_);
   isnullmethod_ = kit::getisNull(method1_);
   smartpointer_ = kit::memberValid(isnullmethod_);
 
@@ -270,7 +269,7 @@ FunctionMember::invoke(void* address)
   else
     raddr = kit::invokeMethod(method1_, address, args1_, deallocate);
 
-  // Remember address of returned object since we may have to
+  // Remember address "raddr" of returned object since we may have to
   // deallocate space reserved for it by invokeMethod
 
   void* address1 = raddr;
@@ -287,7 +286,7 @@ FunctionMember::invoke(void* address)
       if ( raddr == 0 )
         {
           // shouldn't happen!
-          throw cms::Exception("nullReturn") 
+          throw cms::Exception("NullReturn") 
             << " from method " << methodrecord_ << endl;
         }
     }
@@ -302,33 +301,63 @@ FunctionMember::invoke(void* address)
       // check if this is a smart pointer because, if it is, we have
       // to do some more processing...sigh!
 
+      bool available = true;
+
       if ( smartpointer_ )
         {
           if ( debug_ > 0 )
             cout << "FunctionMember::invoke - smart pointer " << endl;
 
-          // this is a smart pointer, so call its isNull() method
+          // this is a smart pointer, so call its isAvailable() method and
+          // if it returns true, call its isNull() method
           // and check whether it returns true or false.
-          void* addr = kit::invokeMethod(isnullmethod_, raddr);
-          bool isnull = *static_cast<bool*>(addr);
-          if ( isnull )
+          void* addr = kit::invokeMethod(isavailablemethod_, raddr);
+          available = *static_cast<bool*>(addr);
+          if ( available )
             {
-              // The object pointed to presumably does not exist
-              // so return a null pointer
-              raddr = 0;
+              // The collection is available, so check the smart pointer's
+              // isNull() method
+              addr = kit::invokeMethod(isnullmethod_, raddr);
+              bool null = *static_cast<bool*>(addr);
+              if ( null )
+                {
+                  // The object pointed to presumably does not exist
+                  // so return a null pointer
+                  raddr = 0;
+                }
+              else
+                {
+                  // we have a valid pointer to an object, so call the 
+                  // smart pointer's get() method to  get the address of 
+                  // object it points to ...
+                  raddr = kit::invokeMethod(getmethod_, raddr);
+                }
             }
           else
             {
-              // we have a valid pointer to an object, so call the 
-              // smart pointer's get() method to  get the address of 
-              // object it points to ...
-              raddr = kit::invokeMethod(getmethod_, raddr);
+              // The collection is not available, so return a null pointer
+              raddr = 0;
             }
         }
 
-      // call second method on object returned by first method
+      // if the pointer is valid, call second method on object returned 
+      // by first method
 
-      if ( raddr != 0 )
+      if ( raddr == 0 )
+        {
+          if ( ! smartpointer_ )
+            edm::LogWarning("NullPointer") 
+              << "\t" << classname1_ << "::" << methodrecord_;
+
+          else if ( ! available )
+            edm::LogWarning("CollectionNotFound") 
+              << "\t" << classname1_ << "::" << methodrecord_;
+
+          else
+            edm::LogWarning("NullSmartPointer") 
+              << "\t" << classname1_ << "::" << methodrecord_;
+        }
+      else
         {
           if ( datamember2_ )
             raddr = kit::datamemberValue(classname2_, raddr, methodrecord2_);

@@ -6,7 +6,7 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
-// $Id: Method.h,v 1.5 2010/09/03 01:54:12 prosper Exp $
+// $Id: FunctionMember.h,v 1.1 2010/09/04 22:18:56 prosper Exp $
 //
 // If using Python, include its header first to avoid annoying compiler
 // complaints.
@@ -70,6 +70,7 @@ private:
   bool datamember1_;
   bool datamember2_;
 
+  Reflex::Member isavailablemethod_;
   Reflex::Member isnullmethod_;
   Reflex::Member getmethod_;
 };

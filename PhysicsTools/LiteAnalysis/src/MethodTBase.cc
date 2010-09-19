@@ -21,7 +21,7 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
-// $Id: MethodTBase.cc,v 1.2 2010/09/18 21:22:53 prosper Exp $
+// $Id: MethodTBase.cc,v 1.3 2010/09/18 23:17:24 prosper Exp $
 //
 // If using Python, include its header first to avoid annoying compiler
 // complaints.
@@ -35,6 +35,7 @@
 #include <cassert>
 #include <stdlib.h>
 
+#include "FWCore/MessageLogger/interface/MessageLogger.h"
 #include "CommonTools/Utils/src/ExpressionPtr.h"
 #include "CommonTools/Utils/src/ExpressionBase.h"
 #include "CommonTools/Utils/interface/expressionParser.h"
@@ -44,19 +45,6 @@
 // ---------------------------------------------------------------------------
 using namespace ROOT::Reflex;
 using namespace std;
-
-bool isCompoundMethod(std::string expression, std::string& delim)
-{
-  // method could be of the form
-  // y = method1(...)->method2(...) or
-  // y = method1(...).method2(...) or
-  // y = method1(..).variable
-  boost::regex expr("(?<=[)]) *([-][>]|[.]) *(?=[a-zA-Z])");
-  boost::smatch what;
-  bool yes = boost::regex_search(expression, what, expr);
-  if ( yes ) delim = what[0];
-  return yes;
-}
 
 MethodTBase::MethodTBase() {}
   
@@ -73,8 +61,10 @@ MethodTBase::MethodTBase(std::string classname,
       compoundMethod_(false),
       checkReturn_(false),
       checkisNull_(false),
-      setboolAddress_("bool* yes = (bool*)0x%x"),
-      setdoubleAddress_("double* x = (double*)0x%x")
+      callisAvailable_(""),
+      callisNull_(""),
+      setReturnAddress_("double* x = (double*)0x%x"),
+      setObjectAddress_("")
 {
   if ( getenv("DEBUGMETHOD") > 0 )
     debug_ = atoi(getenv("DEBUGMETHOD"));
@@ -86,7 +76,7 @@ MethodTBase::MethodTBase(std::string classname,
               << BLUE << expression_ <<  BLACK << " )" << std::endl;
   
   std::string delim("");
-  compoundMethod_ = isCompoundMethod(expression_, delim);
+  compoundMethod_ = kit::isCompoundMethod(expression_, delim);
   
   // If method is compound, use CINT to evaluate it
   // otherwise use the expression parser
@@ -124,7 +114,7 @@ MethodTBase::MethodTBase(std::string classname,
       // Command to set address of object
       sprintf(cmd, "gROOT->Reset(); %s* o = (%s*)0x%s", 
               classname_.c_str(), classname_.c_str(), "%x");
-      setAddress_ = std::string(cmd);
+      setObjectAddress_ = std::string(cmd);
       
       // Check return type 
       if ( kit::returnsPointer(method) )
@@ -141,8 +131,12 @@ MethodTBase::MethodTBase(std::string classname,
             {
               checkReturn_ = true;
               checkisNull_ = true;
-              // Command to call isNull()
+ 
+              sprintf(cmd, "o->%s.isAvailable()", expression1_.c_str());
+              callisAvailable_ = std::string(cmd);
+
               sprintf(cmd, "o->%s.isNull()", expression1_.c_str());
+              callisNull_ = std::string(cmd);
             }
           else
             {
@@ -209,14 +203,14 @@ double MethodTBase::invoke(ROOT::Reflex::Object& object, void* address)
                   << expression_
                   << BLACK
                   << std::endl
-                  << " setAddress: " 
+                  << " setObjectAddress: " 
                   << RED 
-                  << setAddress_
+                  << setObjectAddress_
                   << BLACK
                   << std::endl;
       
       // Initialize pointer to address of object
-      gROOT->ProcessLine(Form(setAddress_.c_str(), address));
+      gROOT->ProcessLine(Form(setObjectAddress_.c_str(), address));
       
       if ( checkReturn_ )
         {          
@@ -225,39 +219,71 @@ double MethodTBase::invoke(ROOT::Reflex::Object& object, void* address)
               if ( debug_ > 0 )
                 {
                   //DB
+                  std::cout << "   call isAvailable():" << endl
+                            << RED
+                            << "\t\t"
+                            << callisAvailable_
+                            << BLACK
+                            << std::endl;
+                  gROOT->ProcessLine(callisAvailable_.c_str());
+                }
+
+              // check if collection is available
+              bool available =(bool)gROOT->ProcessLineFast(callisAvailable_.
+                                                             c_str());
+              if ( ! available )
+                {
+                  edm::LogWarning("CollectionNotFound") 
+                    << "\t" << classname_ << "::" << expression_;
+                  return 0;
+                }
+
+              if ( debug_ > 0 )
+                {
+                  //DB
                   std::cout << "   call isNull():" << endl
                             << RED
                             << "\t\t"
-                            << callMethod1_
+                            << callisNull_
                             << BLACK
                             << std::endl;
-                  gROOT->ProcessLine(callMethod1_.c_str());
+                  gROOT->ProcessLine(callisNull_.c_str());
                 }
 
-              bool isNull =(bool)gROOT->ProcessLineFast(callMethod1_.c_str());
+              bool null =(bool)gROOT->ProcessLineFast(callisNull_.c_str());
               
               if ( debug_ > 0 )
                 //DB
                 std::cout << "        return: " 
                           << GREEN 
-                          << isNull
+                          << null
                           << BLACK
                           << std::endl;
 
-              if ( isNull ) return 0;
+              if ( null )
+                {
+                  edm::LogWarning("NullSmartPointer") 
+                    << "\t" << classname_ << "::" << expression_;
+                  return 0;
+                }
             }
           else
             {
               void* y = 0;
               y = (void*)gROOT->ProcessLineFast(callMethod1_.c_str());
-              if ( y == 0 ) return 0;
+              if ( y == 0 ) 
+                {
+                  edm::LogWarning("NullPointer") 
+                    << "\t" << classname_ << "::" << expression_;
+                  return 0;
+                }
             }
         }
       
       // We have a valid pointer, so proceed
 
       double x = 0;
-      gROOT->ProcessLine(Form(setdoubleAddress_.c_str(), &x));
+      gROOT->ProcessLine(Form(setReturnAddress_.c_str(), &x));
       
       if ( debug_ > 0 )
         {
@@ -265,7 +291,7 @@ double MethodTBase::invoke(ROOT::Reflex::Object& object, void* address)
           std::cout << "     callCompound:" << endl 
                     << RED 
                     << "\t\t"
-                    << setdoubleAddress_ << endl
+                    << setReturnAddress_ << endl
                     << "\t\t"
                     << callCompoundMethod_
                     << BLACK

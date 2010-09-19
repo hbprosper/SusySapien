@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # Create the skeleton of a user plugin
 # Created: 27-Aug-2010 Harrison B. Prosper
-#$Revision: 1.6 $
+#$Revision: 1.7 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -90,7 +90,7 @@ def wrpluginheader(names):
 // Description: Mkntuple helper class for %(classname)s
 // Created:     %(time)s
 // Author:      %(author)s      
-//$Revision: 1.6 $
+//$Revision: 1.7 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -192,7 +192,7 @@ def wrplugincode(names):
 // Description: Mkntuple helper class for %(classname)s
 // Created:     %(time)s
 // Author:      %(author)s      
-//$Revision: 1.6 $
+//$Revision: 1.7 $
 //-----------------------------------------------------------------------------
 #include "%(package)s/%(subpackage)s/interface/%(filename)s.h"
 //-----------------------------------------------------------------------------
@@ -241,9 +241,10 @@ def wrplugin(names):
 	template = '''// ----------------------------------------------------------------------------
 // Created: %(time)s by mkuserplugin.py
 // Author:      %(author)s      
-//$Revision: 1.6 $
+//$Revision: 1.7 $
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/Buffer.h"
+#include "PhysicsTools/Mkntuple/interface/pluginfactory.h"
 #include "%(package)s/%(subpackage)s/interface/%(filename)s.h"
 typedef UserBuffer<%(classname)s, %(fullname)s, %(ctype)s>
 %(buffername)s_t;
@@ -497,7 +498,7 @@ def main():
 	else:
 		updated = True
 		out = open(classesfile, 'w')
-		record ='''//$Revision: 1.6 $
+		record ='''//$Revision: 1.7 $
 //--------------------------------------------------------------------''' % \
 		names
 		out.write(record)

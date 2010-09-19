@@ -7,7 +7,7 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
-// $Id: MethodT.h,v 1.3 2010/09/18 21:01:08 prosper Exp $
+// $Id: MethodT.h,v 1.4 2010/09/18 21:22:52 prosper Exp $
 //
 //-----------------------------------------------------------------------------
 // If using Python, include its header first to avoid annoying compiler
@@ -20,6 +20,7 @@
 #include "CommonTools/Utils/interface/expressionParser.h"
 #include "FWCore/Utilities/interface/Exception.h"
 #include "PhysicsTools/LiteAnalysis/interface/MethodTBase.h"
+#include "PhysicsTools/LiteAnalysis/interface/kit.h"
 #include "Reflex/Object.h"
 #include "Reflex/Type.h"
 //-----------------------------------------------------------------------------
@@ -28,7 +29,7 @@ reco::parser::ExpressionPtr parserPtr(std::string expression)
 {
   std::string delim("");
   reco::parser::ExpressionPtr ptr;
-  if ( !isCompoundMethod(expression, delim) )
+  if ( !kit::isCompoundMethod(expression, delim) )
     if( !reco::parser::expressionParser<T>(expression, ptr) ) 
       {
         std::string message("Since I'm a cyber ignoramous, "

@@ -3,7 +3,7 @@
 # File:        mkclassmap.py
 # Description: Create a map of classnames to headers
 # Created:     26-Aug-2010 Harrison B. Prosper
-#$Revision: 1.3 $
+#$Revision: 1.4 $
 #---------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
@@ -45,6 +45,9 @@ Usage:
                 DataFormats/* 
 				SimDataFormats/*
 				FWCore/Framework
+				FWCore/FWLite
+				FWCore/MessageLogger
+				FWCore/ParameterSet
 				FWCore/Utilities
 				FWCore/Common
 				PhysicsTools/LiteAnalysis
@@ -91,6 +94,9 @@ else:
 					  "FWCore/Framework",
 					  "FWCore/Common",
 					  "FWCore/Utilities",
+					  "FWCore/FWLite",
+					  "FWCore/MessageLogger",
+					  "FWCore/ParameterSet",
 					  "PhysicsTools/Mkntuple",
 					  "PhysicsTools/LiteAnalysis"
 					  ]
@@ -109,12 +115,30 @@ skipsubsystem = re.compile('Alignment|'\
 						   'Wrapped')
 
 skipheader = re.compile('(classes|Fwd|print).h$')
+stripnamespace = re.compile('^[a-zA-Z]+::')
+#----------------------------------------------------------------------------
+def addToMap(fullkey, key, header, cmap):
+	if cmap.has_key(fullkey):
+		fullkey2 = "%s*" % fullkey
+		if not cmap.has_key(fullkey2):
+			cmap[fullkey2] = [cmap[fullkey]]
+		cmap[fullkey2].append(header)
+	else:
+		cmap[fullkey] = header
+
+	if cmap.has_key(key):
+		key2 = "%s*" % key
+		if not cmap.has_key(key2):
+			cmap[key2] = [cmap[key]]
+		cmap[key2].append(header)
+	else:
+		cmap[key] = header
 #============================================================================
 # Main Program
 #============================================================================
 def main():
 	
-	print "mkclassmap.py $Revision: 1.3 $\n"
+	print "mkclassmap.py $Revision: 1.4 $\n"
 
 	subpackagelist = SUBPACKAGELIST
 	filelist = []
@@ -207,24 +231,24 @@ def main():
 				
 				fullname = joinfields(names, "::")
 
-				# Check for uninstantiated templates
+				# Check for uninstantiated templates and
+				# create keys
 
 				if find(fullname, '<') > -1:
 					tplate = True
-					key = split(fullname, '<')[0]
+					fullkey = split(fullname, '<')[0]
 				else:
 					tplate = False
-					key = fullname
-					
+					fullkey = fullname					
+				key = stripnamespace.sub("", fullkey)
+				
 				if Update:
-					ClassToHeaderMap[key] = header
-					ClassToHeaderMap[fullname] = header
+					addToMap(fullkey, key, header, ClassToHeaderMap)
 				else:
-					cmap[key] = header
-					cmap[fullname] = header
+					addToMap(fullkey, key, header, cmap)
 
 				count += 1
-				print "%5d\t%s" % (count, fullname)
+				print "%5d\t%s" % (count, fullkey)
 								
 				names.pop()
 				
@@ -234,27 +258,29 @@ def main():
 
 	# Write out class to header map
 
-	recs = []
 	if Update:
 		print "updating classmap.py..."
-		keys = ClassToHeaderMap.keys()
-		keys.sort()
-		for fullname in keys:
-			recs.append("'%s': '%s'" % (fullname, ClassToHeaderMap[fullname]))
+		hmap = ClassToHeaderMap
 	else:
 		print "creating classmap.py..."
-		keys = cmap.keys()
-		keys.sort()
-		recs = []
-		for fullname in keys:
-			recs.append("'%s': '%s'" % (fullname, cmap[fullname]))		
+		hmap = cmap
+
+	recs = []
+	keys = hmap.keys()
+	keys.sort()
+	for key in keys:
+		value = hmap[key]
+		if type(value) == type(""):
+			recs.append("'%s': '%s'" % (key, value))
+		else:
+			recs.append("'%s': %s"   % (key, value))
 
 	record = joinfields(recs,',\n')		
 	outfile = CLASSMAPFILE
 	out = open(outfile,'w')
 	out.write('# Created: %s\n' % ctime(time()))
 	out.write('# Version: %s\n' % VERSION)
-	out.write('#$Revision: 1.3 $\n')
+	out.write('#$Revision: 1.4 $\n')
 	out.write("ClassToHeaderMap = {\\\n")
 	out.write(record+'\n')
 	out.write("}\n")

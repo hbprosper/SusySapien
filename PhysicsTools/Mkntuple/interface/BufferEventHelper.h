@@ -3,13 +3,11 @@
 //-----------------------------------------------------------------------------
 // Package:     PhysicsTools
 // Sub-Package: Mkntuple
-// Description: Specialized buffer for edm::EventHelper
+// Description: Specialized buffer for edm::Event
 // Created:     Thu Aug 26, 2010 Harrison B. Prosper
-//$Revision: 1.6 $
+//$Revision: 1.1 $
 //-----------------------------------------------------------------------------
-#include "FWCore/Framework/interface/Event.h"
-#include "PhysicsTools/Mkntuple/interface/HelperFor.h"
-#include "PhysicsTools/Mkntuple/interface/Buffer.h"
+#include "PhysicsTools/Mkntuple/interface/UserBuffer.h"
 //-----------------------------------------------------------------------------
 ///
 template <>
@@ -31,7 +29,8 @@ struct UserBuffer<edm::Event,
       message_(""),
       debug_(0)
   {
-    std::cout << "Specialized Buffer created for edm::EventHelper" << std::endl;
+    std::cout << "Specialized Buffer created for edm::EventHelper" 
+              << std::endl;
   }
 
   ///

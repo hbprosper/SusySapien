@@ -6,7 +6,7 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
-// $Id: MethodTBase.h,v 1.1 2010/09/18 21:01:08 prosper Exp $
+// $Id: MethodTBase.h,v 1.3 2010/09/18 23:17:24 prosper Exp $
 //
 //-----------------------------------------------------------------------------
 #include <string>
@@ -14,8 +14,6 @@
 #include "Reflex/Type.h"
 #include "Reflex/Object.h"
 //-----------------------------------------------------------------------------
-///
-bool isCompoundMethod(std::string expression, std::string& delim);
 
 /** Model function members, that is, methods.
     This is the base class of the template class MethodT. The functions that 
@@ -56,10 +54,11 @@ private:
   bool compoundMethod_;
   bool checkReturn_;
   bool checkisNull_;
+  std::string callisAvailable_;
+  std::string callisNull_;
 
-  std::string setboolAddress_;
-  std::string setdoubleAddress_;
-  std::string setAddress_;
+  std::string setReturnAddress_;
+  std::string setObjectAddress_;
   std::string callMethod1_;
   std::string callCompoundMethod_;
 

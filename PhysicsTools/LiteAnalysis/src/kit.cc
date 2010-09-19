@@ -15,7 +15,7 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Wed Jun 20 19:53:47 EDT 2007
 //         Updated:  Sat Oct 25 2008 - make matchInDeltaR saner
-// $Id: kit.cc,v 1.10 2010/09/06 05:28:48 prosper Exp $
+// $Id: kit.cc,v 1.11 2010/09/15 13:46:46 prosper Exp $
 //
 //
 //-----------------------------------------------------------------------------
@@ -340,6 +340,22 @@ string vsqueeze(string& str)
 // ---------------------------------------------------------------------------
 // Reflex stuff
 // ---------------------------------------------------------------------------
+
+bool 
+kit::isCompoundMethod(std::string expression, std::string& delim)
+{
+  // method could be of the form
+  // y = method1(...)->method2(...) or
+  // y = method1(...).method2(...)
+  // y = method1(...).datamember
+  // y = datamember.method2(...)
+  // y = datamember->method2(...)
+  boost::regex expr("(?<=[)a-zA-Z_0-9]) *([-][>]|[.]) *(?=[a-zA-Z])");
+  boost::smatch what;
+  bool yes = boost::regex_search(expression, what, expr);
+  if ( yes ) delim = what[0];
+  return yes;
+}
 
 void 
 kit::getScopes(std::string classname, 
@@ -740,10 +756,22 @@ kit::returnsPointer(Member& method)
 }
 
 Member
-kit::getisNull(Member& method)
+kit::getReturnedObjectMethod(Member& method, std::string name)
 {
   string rname = kit::returnType(method);
-  return kit::getMethod(rname, "isNull");
+  return kit::getMethod(rname, name);
+}
+
+Member
+kit::getisAvailable(Member& method)
+{
+  return getReturnedObjectMethod(method, "isAvailable");
+}
+
+Member
+kit::getisNull(Member& method)
+{
+  return getReturnedObjectMethod(method, "isNull");
 }
 
 
