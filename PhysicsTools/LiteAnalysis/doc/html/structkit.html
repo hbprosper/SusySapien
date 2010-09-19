@@ -67,11 +67,14 @@
  }</td></tr>
 <tr><td colspan="2"><h2>Static Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structkit.html#a7e780885497a4c0844dbb0e12250d530">set</a> (double y, double *x)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structkit.html#a0fa7047d151f1330085cc5f66f67d713">isCompoundMethod</a> (std::string expression, std::string &amp;delim)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structkit.html#a93af508153f3710c05dbeec3cf92f618">getScopes</a> (std::string classname, std::vector&lt; std::string &gt; &amp;names, int depth=0)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static Reflex::Member&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structkit.html#a9bdca191abf69c423f831ab61ecb3899">getMethod</a> (std::string classname, std::string methodname, std::string args=std::string(&quot;(void)&quot;))</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static Reflex::Member&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structkit.html#a82d87f96eee23b3995d8007b6e8a1e14">getDataMember</a> (std::string classname, std::string membername)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structkit.html#a0a3d38d84ab526886babbd0eff230160">memberValid</a> (Reflex::Member &amp;member)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structkit.html#ad86a6d38e45578bcdb43044bc641e933">returnsPointer</a> (Reflex::Member &amp;method)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static Reflex::Member&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structkit.html#a1c9555b808d7a8f5cd3e2fb754515f5c">getReturnedObjectMethod</a> (Reflex::Member &amp;method, std::string name)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static Reflex::Member&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structkit.html#a842386494edf7066c744f5688b587a74">getisAvailable</a> (Reflex::Member &amp;method)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static Reflex::Member&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structkit.html#a91d0a4f3aca27fb4d4fbd324edf00822">getisNull</a> (Reflex::Member &amp;method)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structkit.html#a82bc70cc116e3ed88e53cada6e5ef2b9">decodeArguments</a> (std::string args, std::string &amp;argsregex, std::vector&lt; <a class="el" href="structkit_1_1_value_thing.html">kit::ValueThing</a> * &gt; &amp;values)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static Reflex::Member&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structkit.html#a021ceaa80286d4e036168bfd56c7661e">decodeMethod</a> (std::string classname, std::string methodrecord, std::vector&lt; <a class="el" href="structkit_1_1_value_thing.html">kit::ValueThing</a> * &gt; &amp;values, std::vector&lt; void * &gt; &amp;args)</td></tr>
@@ -84,6 +87,7 @@
 <tr><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="structkit_1_1_matched_pair.html">MatchedPair</a> &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structkit.html#a807f0670958fa74722eeae390039893b">deltaR</a> (std::vector&lt; TLorentzVector &gt; &amp;v1, std::vector&lt; TLorentzVector &gt; &amp;v2)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="structkit_1_1_matched_pair.html">MatchedPair</a> &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structkit.html#adbfc207942d98e725fdfc825cd91d41c">deltaR</a> (std::vector&lt; math::XYZVector &gt; &amp;v1, std::vector&lt; math::XYZVector &gt; &amp;v2)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="structkit_1_1_matched_pair.html">MatchedPair</a> &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structkit.html#aacf82f08d50ed2fc7589511c81b34f95">deltaR</a> (std::vector&lt; <a class="el" href="structkit_1_1_pt_thing.html">PtThing</a> &gt; &amp;v1, std::vector&lt; <a class="el" href="structkit_1_1_pt_thing.html">PtThing</a> &gt; &amp;v2)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="structkit_1_1_matched_pair.html">MatchedPair</a> &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structkit.html#a7af826474ef6ab3af61656bc1853fa32">deltaR</a> (std::vector&lt; double &gt; &amp;eta1, std::vector&lt; double &gt; &amp;phi1, std::vector&lt; double &gt; &amp;eta2, std::vector&lt; double &gt; &amp;phi2, bool omit=false)</td></tr>
 <tr><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr><td class="memTemplItemLeft" align="right" valign="top">static void&nbsp;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structkit.html#a61865659de1d0ee7c2dca6e16f879d2c">sort</a> (std::vector&lt; T &gt; &amp;v)</td></tr>
 <tr><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
@@ -537,6 +541,51 @@
 
 </div>
 </div>
+<a class="anchor" id="a7af826474ef6ab3af61656bc1853fa32"></a><!-- doxytag: member="kit::deltaR" ref="a7af826474ef6ab3af61656bc1853fa32" args="(std::vector&lt; double &gt; &amp;eta1, std::vector&lt; double &gt; &amp;phi1, std::vector&lt; double &gt; &amp;eta2, std::vector&lt; double &gt; &amp;phi2, bool omit=false)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static std::vector&lt;<a class="el" href="structkit_1_1_matched_pair.html">MatchedPair</a>&gt; kit::deltaR </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; double &gt; &amp;&nbsp;</td>
+          <td class="paramname"> <em>eta1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; double &gt; &amp;&nbsp;</td>
+          <td class="paramname"> <em>phi1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; double &gt; &amp;&nbsp;</td>
+          <td class="paramname"> <em>eta2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; double &gt; &amp;&nbsp;</td>
+          <td class="paramname"> <em>phi2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&nbsp;</td>
+          <td class="paramname"> <em>omit</em> = <code>false</code></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="aacf82f08d50ed2fc7589511c81b34f95"></a><!-- doxytag: member="kit::deltaR" ref="aacf82f08d50ed2fc7589511c81b34f95" args="(std::vector&lt; PtThing &gt; &amp;v1, std::vector&lt; PtThing &gt; &amp;v2)" -->
 <div class="memitem">
 <div class="memproto">
@@ -783,6 +832,24 @@
 
 </div>
 </div>
+<a class="anchor" id="a842386494edf7066c744f5688b587a74"></a><!-- doxytag: member="kit::getisAvailable" ref="a842386494edf7066c744f5688b587a74" args="(Reflex::Member &amp;method)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Reflex::Member kit::getisAvailable </td>
+          <td>(</td>
+          <td class="paramtype">Reflex::Member &amp;&nbsp;</td>
+          <td class="paramname"> <em>method</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a91d0a4f3aca27fb4d4fbd324edf00822"></a><!-- doxytag: member="kit::getisNull" ref="a91d0a4f3aca27fb4d4fbd324edf00822" args="(Reflex::Member &amp;method)" -->
 <div class="memitem">
 <div class="memproto">
@@ -822,6 +889,33 @@
           <td></td>
           <td class="paramtype">std::string&nbsp;</td>
           <td class="paramname"> <em>args</em> = <code>std::string(&quot;(void)&quot;)</code></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a1c9555b808d7a8f5cd3e2fb754515f5c"></a><!-- doxytag: member="kit::getReturnedObjectMethod" ref="a1c9555b808d7a8f5cd3e2fb754515f5c" args="(Reflex::Member &amp;method, std::string name)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Reflex::Member kit::getReturnedObjectMethod </td>
+          <td>(</td>
+          <td class="paramtype">Reflex::Member &amp;&nbsp;</td>
+          <td class="paramname"> <em>method</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&nbsp;</td>
+          <td class="paramname"> <em>name</em></td><td>&nbsp;</td>
         </tr>
         <tr>
           <td></td>
@@ -1187,6 +1281,33 @@ template&lt;class T &gt; </div>
           <td></td>
           <td class="paramtype">bool&nbsp;</td>
           <td class="paramname"> <em>deallocate</em> = <code>false</code></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a0fa7047d151f1330085cc5f66f67d713"></a><!-- doxytag: member="kit::isCompoundMethod" ref="a0fa7047d151f1330085cc5f66f67d713" args="(std::string expression, std::string &amp;delim)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool kit::isCompoundMethod </td>
+          <td>(</td>
+          <td class="paramtype">std::string&nbsp;</td>
+          <td class="paramname"> <em>expression</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string &amp;&nbsp;</td>
+          <td class="paramname"> <em>delim</em></td><td>&nbsp;</td>
         </tr>
         <tr>
           <td></td>
@@ -2478,7 +2599,7 @@ template&lt;class T &gt; </div>
 </div>
 </div>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Mon Sep 6 22:22:51 2010 for PhysicsToolsLiteAnalysis by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Sun Sep 19 13:15:02 2010 for PhysicsToolsLiteAnalysis by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

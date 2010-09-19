@@ -26,7 +26,82 @@ typedef std::vector<std::vector<double> > vvdouble;
 #include "TObject.h"
 #endif
 
-/// Fit Poisson/Gamma model to data
+/** Fit Poisson/gamma model to data.
+    The data consists of a sequence of \f$i = 1 \ldots M\f$ counts 
+    \f$D_i\f$ (i.e., a histogram),
+    presumed to arise from a mixture of sources, say \f$t\bar{t}\f$,
+    \f$W + jets\f$, and \f$QCD\f$ events. The goal is to find the yield of
+    each source, given \f$j = 1 \ldots N\f$ sequences of counts 
+    \f$A_{ji}\f$ that describe the ``shapes" of the \f$N\f$ sources.
+    In other words, given a data histogram \f$D\f$ and \f$N\f$ histograms 
+    \f$A_j = A_{j1}, \ldots, A_{jM}\f$, one for each source \f$j\f$, 
+    we want to find the yield of each. This class solves the
+    problem using a Bayesian approach \ref bayes1 "[1]".
+<p>
+    <b>Model</b>
+    <p>
+    - <i>Likelihood</i> - The likelihood function is assumed to be given by
+    \f[ 
+    p(D|p, a) = \prod_{i=1}^M\prod_{j=1}^N \mbox{Poisson}(D_i|d_i),
+    \f]
+    where
+    <br>
+    \f$ d_i = \sum_{j=1}^N \, p_j \,  a_{ji},  \, \, \, i=1 \ldots M.\f$
+    <br>
+    The unknown parameters \f$p_j\f$ and \f$a_{ji}\f$ are 
+    the source ``strengths" and
+    expected source counts, respectively.
+    <p>
+    - <i>Prior</i> - The prior is factorized as follows 
+    \f$
+    \pi(p, a) = \pi(a|p) \, \pi(p)
+    \f$ and 
+    \f$\pi(a|p)\f$ is assumed to be a product of gamma densities:
+    \f[ p(a|p) = \prod_{i=1}^M\prod_{j=1}^N 
+    \mbox{gamma}(a_{ji}|A_{ji}+1, 1),
+    \f]
+    where
+    \f[
+    \mbox{gamma}(x|\alpha,\beta) = 
+    \beta^{\alpha} x^{\alpha-1} e^{-\beta x} / \Gamma(\alpha).
+    \f]
+    <p>
+    - <i>Posterior</i> - The posterior density of the source ``strengths" is
+    given by 
+    \f[
+    p(p|D) = p(D|p) \, \pi(p) \, / \, \int p(D|p) \, \pi(p) \, dp,
+    \f]
+    where the marginal likelihood \f$p(D|p)\f$, that is, \f$p(D|p, a)\f$
+    integrated with respect to the nuisance parameters \f$a_{ji}\f$,
+    is given in Ref.\ref bayes1 "[1]".
+    
+    The form of the prior follows from the assumption that each count 
+    \f$A_{ji}\f$ is associated with a Poisson distribution and that the
+    the magnitude of the count \f$A_{ji}\f$ is such that the 
+    likelihood dominates
+    the prior. When that assumption is not justified, a reasonable 
+    procedure is to use
+    Jeffreys prior\ref bayes2 "[2]",
+which leads to the replacement of
+    \f$A_{ji}\f$ with \f$A_{ji}-1/2\f$. For most practical applications, 
+    however, this will not make much of a difference.
+    <p>
+    <b>Example</b>
+
+<p>
+<b>References</b>
+<br>
+\anchor bayes1 [1] P.C. Bhat, H.B. Prosper, and 
+S.S. Snyder, <i>Bayesian analysis of multisource data</i>, 
+Phys. Lett. B<b>407</b>:73-78, 1997, 
+<a href="http://lss.fnal.gov/archive/test-preprint/fermilab-pub-96-397.shtml">
+FERMILAB-PUB-96-397</a>.
+<br>
+\anchor bayes2 [2] L. Demortier, S. Jain, and H.B. Prosper,
+    <i>Reference priors for high energy physics</i>, 
+    Phys. Rev. D<b>82</b>:034002, 2010, 
+<a href="http://arxiv.org/pdf/1002.1111">e-Print: arXiv:1002.1111</a>.
+ */
 class PoissonGammaFit
 {
  public: 

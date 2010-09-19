@@ -41,7 +41,7 @@
 //          13-Aug-2005 Tidy up
 //          11-Aug-2007 Add ls() method as a proxy for print
 //          06-Jun-2010 Add store and save (commt = store + save)
-//$Revision: 1.7 $
+//$Revision: 1.8 $
 //----------------------------------------------------------------------------
 #include <vector>
 #include <string>
@@ -393,7 +393,7 @@ class otreestream
       can have the form
       <name>[<countername>], e.g., JetEt[numberJet] if it is of variable
       length. Of course, the variable <i>numberJet</i> must be stored also! 
-      For a variable of fixed length use <name>[<fixedcount>], e.g., 
+      For a variable of fixed length use e.g., 
       JetEt[10].
   */
   void   add(std::string namen, std::vector<double>& data, char iotype='D');

@@ -28,9 +28,6 @@
 </div>
 <div class="contents">
 <h1>PoissonGammaFit Class Reference</h1><!-- doxytag: class="PoissonGammaFit" -->
-<p>Fit Poisson/Gamma model to data.  
-<a href="#_details">More...</a></p>
-
 <p><code>#include &lt;<a class="el" href="_poisson_gamma_fit_8hpp_source.html">PoissonGammaFit.hpp</a>&gt;</code></p>
 
 <p><a href="class_poisson_gamma_fit-members.html">List of all members.</a></p>
@@ -73,7 +70,35 @@
 <tr><td class="memItemLeft" align="right" valign="top">double&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_poisson_gamma_fit.html#a334d293eb21a4e5d09e390a7b754da4b">logLikelihood</a> (double *x)</td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
-<p>Fit Poisson/Gamma model to data. </p>
+<p>Fit Poisson/gamma model to data. The data consists of a sequence of <img class="formulaInl" alt="$i = 1 \ldots M$" src="form_28.png"/> counts <img class="formulaInl" alt="$D_i$" src="form_46.png"/> (i.e., a histogram), presumed to arise from a mixture of sources, say <img class="formulaInl" alt="$t\bar{t}$" src="form_30.png"/>, <img class="formulaInl" alt="$W + jets$" src="form_31.png"/>, and <img class="formulaInl" alt="$QCD$" src="form_32.png"/> events. The goal is to find the yield of each source, given <img class="formulaInl" alt="$j = 1 \ldots N$" src="form_43.png"/> sequences of counts <img class="formulaInl" alt="$A_{ji}$" src="form_48.png"/> that describe the ``shapes" of the <img class="formulaInl" alt="$N$" src="form_9.png"/> sources. In other words, given a data histogram <img class="formulaInl" alt="$D$" src="form_20.png"/> and <img class="formulaInl" alt="$N$" src="form_9.png"/> histograms <img class="formulaInl" alt="$A_j = A_{j1}, \ldots, A_{jM}$" src="form_44.png"/>, one for each source <img class="formulaInl" alt="$j$" src="form_45.png"/>, we want to find the yield of each. This class solves the problem using a Bayesian approach <a class="el" href="class_poisson_gamma_fit.html#bayes1">[1]</a>. </p>
+<p><b>Model</b> </p>
+<ul>
+<li><em>Likelihood</em> - The likelihood function is assumed to be given by <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ p(D|p, a) = \prod_{i=1}^M\prod_{j=1}^N \mbox{Poisson}(D_i|d_i), \]" src="form_63.png"/>
+</p>
+ where <br/>
+ <img class="formulaInl" alt="$ d_i = \sum_{j=1}^N \, p_j \, a_{ji}, \, \, \, i=1 \ldots M.$" src="form_50.png"/> <br/>
+ The unknown parameters <img class="formulaInl" alt="$p_j$" src="form_37.png"/> and <img class="formulaInl" alt="$a_{ji}$" src="form_38.png"/> are the source ``strengths" and expected source counts, respectively. </li>
+</ul>
+<ul>
+<li><em>Prior</em> - The prior is factorized as follows <img class="formulaInl" alt="$ \pi(p, a) = \pi(a|p) \, \pi(p) $" src="form_56.png"/> and <img class="formulaInl" alt="$\pi(a|p)$" src="form_40.png"/> is assumed to be a product of gamma densities: <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ p(a|p) = \prod_{i=1}^M\prod_{j=1}^N \mbox{gamma}(a_{ji}|A_{ji}+1, 1), \]" src="form_64.png"/>
+</p>
+ where <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mbox{gamma}(x|\alpha,\beta) = \beta^{\alpha} x^{\alpha-1} e^{-\beta x} / \Gamma(\alpha). \]" src="form_65.png"/>
+</p>
+ </li>
+</ul>
+<ul>
+<li><em>Posterior</em> - The posterior density of the source ``strengths" is given by <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ p(p|D) = p(D|p) \, \pi(p) \, / \, \int p(D|p) \, \pi(p) \, dp, \]" src="form_66.png"/>
+</p>
+ where the marginal likelihood <img class="formulaInl" alt="$p(D|p)$" src="form_58.png"/>, that is, <img class="formulaInl" alt="$p(D|p, a)$" src="form_62.png"/> integrated with respect to the nuisance parameters <img class="formulaInl" alt="$a_{ji}$" src="form_38.png"/>, is given in Ref.<a class="el" href="class_poisson_gamma_fit.html#bayes1">[1]</a>.</li>
+</ul>
+<p>The form of the prior follows from the assumption that each count <img class="formulaInl" alt="$A_{ji}$" src="form_48.png"/> is associated with a Poisson distribution and that the the magnitude of the count <img class="formulaInl" alt="$A_{ji}$" src="form_48.png"/> is such that the likelihood dominates the prior. When that assumption is not justified, a reasonable procedure is to use Jeffreys prior<a class="el" href="class_poisson_gamma_fit.html#bayes2">[2]</a>, which leads to the replacement of <img class="formulaInl" alt="$A_{ji}$" src="form_48.png"/> with <img class="formulaInl" alt="$A_{ji}-1/2$" src="form_54.png"/>. For most practical applications, however, this will not make much of a difference. </p>
+<p><b>References</b> <br/>
+ <a class="anchor" id="bayes1"></a> [1] P.C. Bhat, H.B. Prosper, and S.S. Snyder, <em>Bayesian analysis of multisource data</em>, Phys. Lett. B<b>407</b>:73-78, 1997, <a href="http://lss.fnal.gov/archive/test-preprint/fermilab-pub-96-397.shtml">FERMILAB-PUB-96-397</a>. <br/>
+ <a class="anchor" id="bayes2"></a> [2] L. Demortier, S. Jain, and H.B. Prosper, <em>Reference priors for high energy physics</em>, Phys. Rev. D<b>82</b>:034002, 2010, <a href="http://arxiv.org/pdf/1002.1111">e-Print: arXiv:1002.1111</a>. </p>
 <hr/><h2>Member Enumeration Documentation</h2>
 <a class="anchor" id="a32bf56e801839415e1d25c5b05e86b5c"></a><!-- doxytag: member="PoissonGammaFit::Status" ref="a32bf56e801839415e1d25c5b05e86b5c" args="" -->
 <div class="memitem">
@@ -373,7 +398,7 @@
 </div>
 </div>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Mon Sep 6 22:22:51 2010 for PhysicsToolsLiteAnalysis by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Sun Sep 19 13:15:02 2010 for PhysicsToolsLiteAnalysis by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

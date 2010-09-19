@@ -1,25 +1,24 @@
 Mkntuple													Harrison B. Prosper
 															Sun Feb 07 2010
 															Thu Aug 26 2010
-															$Revision: $
-
+															$Revision: 1.5$
 I	Setup
 ---------
 	1.	Set up a local release of CMSSW 
 	
-		scramv1 project CMSSW CMSSW_3_6_1
-		cd CMSSW_3_6_1/src
+		scramv1 project CMSSW CMSSW_3_8_3a
+		cd CMSSW_3_8_3/src
 		cmsenv
 
 	2.	Download PhysicsTools/LiteAnalysis and PhysicsTools/Mkntuple:
 
-		cvs co -r v3_6_1 -d PhysicsTools UserCode/SusySapien/PhysicsTools
+		cvs co -r v3_8_3a -d PhysicsTools UserCode/SusySapien/PhysicsTools
 
 	3.	Compile and link
 
-		cd PhysicsTools	
-		scramv1 b	
-
+		cd PhysicsTools
+	    scram b clean	
+		scram b	
 
 II 	Notes
 ---------
@@ -42,7 +41,7 @@ files supplied to mkclasslist.py, which creates classes.txt:
 
 		mkclasslist.py reco.root pat.root
  
-The classes listed classes.txt should be a subset of those listed in 
+The classes listed in classes.txt should be a subset of those listed in 
 classmap.py. The script mkplugins.py, which creates 
 
 		3.	PhysicsTools/Mkntuple/plugins/plugins.cc
@@ -54,8 +53,8 @@ associated header files.
 III	Notes
 ---------
 
-	The script mkdocs.py, which is executed by mkntuplecfi.py the first time it
-is run, creates files in the directories
+	The GUI mkntuplecfi.py is an aid in constructing configuration file
+fragments. The first time mkntuplecfi.py is run it creates the directories:
 
 		txt
 		html

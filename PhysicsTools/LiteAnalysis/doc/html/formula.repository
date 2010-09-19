@@ -26,3 +26,42 @@
 \form#25:\[ h = \sigma \left[\frac{4}{(D+2)N}\right]^{1/(D+4)}, \]
 \form#26:$\sigma$
 \form#27:$|Delta R = \sqrt{\Delta\phi^2+\Delta\eta^2}$
+\form#28:$i = 1 \ldots M$
+\form#29:$\{D_i\}$
+\form#30:$t\bar{t}$
+\form#31:$W + jets$
+\form#32:$QCD$
+\form#33:$j = 1 \lodts N$
+\form#34:$\{A_{ji}\}$
+\form#35:$ p(D|p, a) = \prod_{i=1}^M\prod_{j=1}^M \mbox{Poisson}(D_i|d_i),$
+\form#36:$ d_i = \sum_j \, p_j \, a_{ji}, \, \, \, i=1 \ldots M,\, \, \, j=1 \ldots N $
+\form#37:$p_j$
+\form#38:$a_{ji}$
+\form#39:$\pi(p, a) = \pi(a|p) \pi(p)$
+\form#40:$\pi(a|p)$
+\form#41:$ p(a|p) = \prod_{i=1}^M\prod_{j=1}^M \mbox{gamma}(a_{ji}|A_{ji}+1, 1),$
+\form#42:$\mbox{gamma}(x|\alpha,\beta) = \frac{\beta^{\alpha} x^{\alpha-1} e^{-\beta x}}{\Gamma(\alpha)}.$
+\form#43:$j = 1 \ldots N$
+\form#44:$A_j = A_{j1}, \ldots, A_{jM}$
+\form#45:$j$
+\form#46:$D_i$
+\form#47:$\mbox{gamma}(x|\alpha,\beta) = \beta^{\alpha} x^{\alpha-1} e^{-\beta x} / \Gamma(\alpha).$
+\form#48:$A_{ji}$
+\form#49:$ p(D|p, a) = \prod_{i=1}^M\prod_{j=1}^N \mbox{Poisson}(D_i|d_i),$
+\form#50:$ d_i = \sum_{j=1}^N \, p_j \, a_{ji}, \, \, \, i=1 \ldots M.$
+\form#51:$\pi(p, a) = \pi(a|p) \, \pi(p)$
+\form#52:$ p(a|p) = \prod_{i=1}^M\prod_{j=1}^N \mbox{gamma}(a_{ji}|A_{ji}+1, 1), $
+\form#53:$ \mbox{gamma}(x|\alpha,\beta) = \beta^{\alpha} x^{\alpha-1} e^{-\beta x} / \Gamma(\alpha). $
+\form#54:$A_{ji}-1/2$
+\form#55:$ p(D|p, a) = \prod_{i=1}^M\prod_{j=1}^N \mbox{Poisson}(D_i|d_i), $
+\form#56:$ \pi(p, a) = \pi(a|p) \, \pi(p) $
+\form#57:$ p(p|D) = p(D|p) \, \pi(p) /, / \, \int p(D|p) \, \pi(p) \, dp, $
+\form#58:$p(D|p)$
+\form#59:$ boo $
+\form#60:$ p(p|D) = p(D|p) \, \pi(p) \, / \, \int p(D|p) \, \pi(p) \, dp, $
+\form#61:\[ d_i = \sum_{j=1}^N \, p_j \, a_{ji}, \, \, \, i=1 \ldots M.\]
+\form#62:$p(D|p, a)$
+\form#63:\[ p(D|p, a) = \prod_{i=1}^M\prod_{j=1}^N \mbox{Poisson}(D_i|d_i), \]
+\form#64:\[ p(a|p) = \prod_{i=1}^M\prod_{j=1}^N \mbox{gamma}(a_{ji}|A_{ji}+1, 1), \]
+\form#65:\[ \mbox{gamma}(x|\alpha,\beta) = \beta^{\alpha} x^{\alpha-1} e^{-\beta x} / \Gamma(\alpha). \]
+\form#66:\[ p(p|D) = p(D|p) \, \pi(p) \, / \, \int p(D|p) \, \pi(p) \, dp, \]
