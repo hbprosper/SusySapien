@@ -19,9 +19,9 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Fri Apr 04 2008
-// $Id: kit.h,v 1.9 2010/09/15 13:46:46 prosper Exp $
+// $Id: kit.h,v 1.10 2010/09/19 14:09:53 prosper Exp $
 //
-//$Revision: 1.9 $
+//$Revision: 1.10 $
 //-----------------------------------------------------------------------------
 #include <iostream>
 #include <fstream>
@@ -585,7 +585,7 @@ struct kit
                                 float  xmax,
                                 int    color=kBlack,
                                 int    linestyle=1,
-                                int    linewidth=1);
+                                int    linewidth=2);
   
   ///
   static
@@ -600,7 +600,7 @@ struct kit
                                 float  ymax,
                                 int    color=kBlack,
                                 int    linestyle=1,
-                                int    linewidth=1);
+                                int    linewidth=2);
 
   ///
   static

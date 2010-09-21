@@ -15,7 +15,7 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Wed Jun 20 19:53:47 EDT 2007
 //         Updated:  Sat Oct 25 2008 - make matchInDeltaR saner
-// $Id: kit.cc,v 1.11 2010/09/15 13:46:46 prosper Exp $
+// $Id: kit.cc,v 1.12 2010/09/19 14:09:53 prosper Exp $
 //
 //
 //-----------------------------------------------------------------------------
@@ -1443,6 +1443,10 @@ kit::histogram(string hname,
   h->SetLineColor(color);
   h->SetLineStyle(lstyle);
   h->SetLineWidth(lwidth);
+ 
+  h->SetMarkerColor(kRed);
+  h->SetMarkerStyle(20);
+  h->SetMarkerSize(1.0);
  
   h->GetXaxis()->CenterTitle();
   h->GetXaxis()->SetTitle(xtitle.c_str());

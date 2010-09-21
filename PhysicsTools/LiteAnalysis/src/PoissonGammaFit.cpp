@@ -65,7 +65,7 @@ namespace
     return fitobject->logLikelihood(point);
   }
   const int MAXITER=10000;
-  const int MAXSRCS=4;
+  const int MAXSRCS=10;
 }
 
 //-----------------------------------------------------------------------------
