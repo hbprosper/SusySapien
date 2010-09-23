@@ -9,7 +9,7 @@
 #              08-Aug-2010 HBP, fix search of user.h in Mkntuple
 #              26-Aug02919 HBP, get list of potential classes from
 #                          python/classmap.py
-#$Revision: 1.7 $
+#$Revision: 1.8 $
 #---------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
@@ -180,10 +180,11 @@ def writeHTML(db, txtfilename):
 #============================================================================
 def main():
 
-	print "mkdocs.py $Revision: 1.7 $\n"
-
+	print "mkdocs.py $Revision: 1.8 $\n"
+	
 	fmap = {}
 	for file in ClassToHeaderMap.values():
+		if type(file) == type([]): continue
 		fmap[file] = 0
 	filelist = fmap.keys()
 	filelist.sort()
