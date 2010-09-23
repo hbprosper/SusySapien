@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # Create the skeleton of a user plugin
 # Created: 27-Aug-2010 Harrison B. Prosper
-#$Revision: 1.7 $
+#$Revision: 1.8 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -90,7 +90,7 @@ def wrpluginheader(names):
 // Description: Mkntuple helper class for %(classname)s
 // Created:     %(time)s
 // Author:      %(author)s      
-//$Revision: 1.7 $
+//$Revision: 1.8 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -192,7 +192,7 @@ def wrplugincode(names):
 // Description: Mkntuple helper class for %(classname)s
 // Created:     %(time)s
 // Author:      %(author)s      
-//$Revision: 1.7 $
+//$Revision: 1.8 $
 //-----------------------------------------------------------------------------
 #include "%(package)s/%(subpackage)s/interface/%(filename)s.h"
 //-----------------------------------------------------------------------------
@@ -241,9 +241,9 @@ def wrplugin(names):
 	template = '''// ----------------------------------------------------------------------------
 // Created: %(time)s by mkuserplugin.py
 // Author:      %(author)s      
-//$Revision: 1.7 $
+//$Revision: 1.8 $
 // ----------------------------------------------------------------------------
-#include "PhysicsTools/Mkntuple/interface/Buffer.h"
+#include "PhysicsTools/Mkntuple/interface/UserBuffer.h"
 #include "PhysicsTools/Mkntuple/interface/pluginfactory.h"
 #include "%(package)s/%(subpackage)s/interface/%(filename)s.h"
 typedef UserBuffer<%(classname)s, %(fullname)s, %(ctype)s>
@@ -364,9 +364,9 @@ def main():
 	else:
 		header = raw_input('Enter header for class "%s" starting at src: ' %
 						   classname)
-		if header == "":
-			sys.exit(0)
-
+		if header == "": sys.exit(0)
+	if type(header) == type([]): header = header[0]
+	
 	# Check that header exists
 	filename = "%s/%s" % (BASE, header)
 	if not os.path.exists(filename):
@@ -498,7 +498,7 @@ def main():
 	else:
 		updated = True
 		out = open(classesfile, 'w')
-		record ='''//$Revision: 1.7 $
+		record ='''//$Revision: 1.8 $
 //--------------------------------------------------------------------''' % \
 		names
 		out.write(record)

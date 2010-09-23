@@ -180,6 +180,8 @@ def mkmethodlist(filename):
 
 		# get file that lists this class's methods and data members
 		headerfile = ClassToHeaderMap[cname]
+		if type(headerfile) == type([]): headerfile = headerfile[0]
+		
 		filestem = replace(headerfile, 'interface/', '')
 		filestem = split(filestem, '.h')[0]
 		filestem = replace(filestem, '/', '.')
