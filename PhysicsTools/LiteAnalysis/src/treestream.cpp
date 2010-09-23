@@ -38,7 +38,7 @@
 //          30-Nov-2005 HBP fix counter loading bug
 //          31-Oct-2009 HBP allow use of regexes in branch names
 //                      fix looping bug so operator[] works for Python
-//$Revision: 1.7 $
+//$Revision: 1.8 $
 //----------------------------------------------------------------------------
 #ifdef PROJECT_NAME
 #include <boost/regex.hpp>
@@ -105,6 +105,10 @@ namespace
 
   void DBUG(string message, int level=1)
   {
+    if ( getenv("DEBUGTREESTREAM") > 0 )
+      DEBUGLEVEL = atoi(getenv("DEBUGTREESTREAM"));
+    else
+      DEBUGLEVEL = 0;
     if ( DEBUGLEVEL >= level ) cout << message << endl;
   }
 
@@ -684,6 +688,22 @@ itreestream::itreestream(string filename, int bufsize)
   _open(fname);
 }
 
+itreestream::itreestream(TTree* tree, int bufsize)
+  : _tree(tree),
+    _chain(0),
+    _statuscode(kSUCCESS),
+    _current(-1),
+    _entries(0),
+    _entry(0),
+    _index(0),
+    _buffer(vector<double>(bufsize)),
+    data(Data()),
+    selecteddata(SelectedData())
+{
+  vector<string> fname;
+  _open(fname);
+}
+
 itreestream::itreestream(vector<string>& fname, int bufsize)
   : _tree(0),
     _chain(0),
@@ -746,105 +766,108 @@ itreestream::_open(vector<string>& fname, string treename)
 
   _buffer.clear();
 
-
-  // ----------------------------------------
-  // Get list of files
-  // Format of filename:
-  // file1 file2 ..
-  // ----------------------------------------
-  filepath.clear();
-  for(int i=0; i < (int)fname.size(); i++)
+  // If tree pointer is zero, get tree from file
+  if ( _tree == 0 )
     {
-      glob_t g;
-      glob(fname[i].c_str(), GLOB_ERR | GLOB_NOCHECK, NULL, &g);
-      for (int i=0; i < (int)g.gl_pathc; i++)
-        filepath.push_back(g.gl_pathv[i]);
-      globfree(&g);
-    }
-  DBUG("itreestream::ctor - new TFile ", 2);
-  
-  // ----------------------------------------
-  // Open first file
-  // ----------------------------------------
-  TFile* file = new TFile(filepath[0].c_str());
-  if ( ! file || (file != 0 && ! file->IsOpen()) )
-    fatal("itreestream - unable to open file " + filepath[0]);
-  file->cd();
-  
-  
-  if ( treename == "" )
-    {      
       // ----------------------------------------
-      // No tree name was given. Here is the default
-      // action: If one of the trees is called 
-      // Events then use it and warn user. If not,
-      // use the first tree and warn user.
+      // Get list of files
+      // Format of filename:
+      // file1 file2 ..
       // ----------------------------------------
-      _tree = 0; // make sure to zero
-
-      TIter nextkey(file->GetListOfKeys());
-
-      while ( TKey* key = (TKey*)nextkey() )
+      filepath.clear();
+      for(int i=0; i < (int)fname.size(); i++)
         {
-          TObject* o = key->ReadObj();
-          if ( o->IsA()->InheritsFrom("TTree") )
+          glob_t g;
+          glob(fname[i].c_str(), GLOB_ERR | GLOB_NOCHECK, NULL, &g);
+          for (int i=0; i < (int)g.gl_pathc; i++)
+            filepath.push_back(g.gl_pathv[i]);
+          globfree(&g);
+        }
+      DBUG("itreestream::ctor - new TFile ", 2);
+  
+      // ----------------------------------------
+      // Open first file
+      // ----------------------------------------
+      TFile* file = new TFile(filepath[0].c_str());
+      if ( ! file || (file != 0 && ! file->IsOpen()) )
+        fatal("itreestream - unable to open file " + filepath[0]);
+      file->cd();
+      
+      if ( treename == "" )
+        {      
+          // ----------------------------------------
+          // No tree name was given. Here is the default
+          // action: If one of the trees is called 
+          // Events then use it and warn user. If not,
+          // use the first tree and warn user.
+          // ----------------------------------------
+          _tree = 0; // make sure to zero
+          
+          TIter nextkey(file->GetListOfKeys());
+          
+          while ( TKey* key = (TKey*)nextkey() )
             {
-              if ( _tree == 0 ) _tree = (TTree*)o; // Record first tree
-
-              if ( string(_tree->GetName()) == "Events" )
+              TObject* o = key->ReadObj();
+              if ( o->IsA()->InheritsFrom("TTree") )
                 {
-                  // Found a tree called Events, so use it
-                  _tree = (TTree*)o;
+                  if ( _tree == 0 ) _tree = (TTree*)o; // Record first tree
+                  
+                  if ( string(_tree->GetName()) == "Events" )
+                    {
+                      // Found a tree called Events, so use it
+                      _tree = (TTree*)o;
                   break;
+                    }
                 }
             }
+          if ( ! _tree )
+            fatal("itreestream - NO tree found in file " + filepath[0]);
+          
+          treename = string(_tree->GetName());
+          
+          cout << endl << "** NB. itreestream - using tree: " 
+               << treename << endl << endl;
         }
-      if ( ! _tree )
-        fatal("itreestream - NO tree found in file " + filepath[0]);
+      else
+        {
+          _tree = (TTree*)file->Get(treename.c_str());
+          if ( ! _tree )
+            fatal("itreestream - NO tree found in file " + filepath[0]);
+        }
       
-      treename = string(_tree->GetName());
+      string message("itreestream::ctor - treename: " + treename);
+      DBUG(message, 2);
 
-      cout << endl << "** NB. itreestream - using tree: " 
-           << treename << endl << endl;
-    }
-  else
-    {
-      _tree = (TTree*)file->Get(treename.c_str());
-      if ( ! _tree )
-        fatal("itreestream - NO tree found in file " + filepath[0]);
-    }
+      // Remember to close file. It will be re-opened as part of a
+      // chain.
+      
+      file->Close();
+      
+      DBUG("itreestream::ctor - after file->Close", 2);
+
+      // ----------------------------------------
+      // Create a chain of files
+      // ----------------------------------------
+      // WARNING: This might be slow for large chains. 
+      
+      DBUG("itreestream::ctor - new TChain", 2);
+      _chain = new TChain(treename.c_str());
+      if ( ! _chain ) fatal("itreestream - Unable to create chain");
+      
+      //_chain->SetMakeClass(1);
+
+      for(int i=0; i < (int)filepath.size(); i++) 
+        _chain->Add(filepath[i].c_str());
+
+      DBUG("itreestream::ctor - GetEntries", 2);
+      _entries = _chain->GetEntries();
+      
+      // ----------------------------------------
+      // Update tree pointer
+      // ----------------------------------------
+      _tree = _chain;  
   
-  string message("itreestream::ctor - treename: " + treename);
-  DBUG(message, 2);
-
-  // Remember to close file. It will be re-opened as part of a
-  // chain.
-
-  file->Close();
-
-  DBUG("itreestream::ctor - after file->Close", 2);
-
-  // ----------------------------------------
-  // Create a chain of files
-  // ----------------------------------------
-  // WARNING: This might be slow for large chains. 
-
-  DBUG("itreestream::ctor - new TChain", 2);
-  _chain = new TChain(treename.c_str());
-  if ( ! _chain ) fatal("itreestream - Unable to create chain");
-
-  //_chain->SetMakeClass(1);
-
-  for(int i=0; i < (int)filepath.size(); i++) _chain->Add(filepath[i].c_str());
-
-  DBUG("itreestream::ctor - GetEntries", 2);
-  _entries = _chain->GetEntries();
-
-  // ----------------------------------------
-  // Update tree pointer
-  // ----------------------------------------
-  _tree = _chain;  
-  
+    }
 
   // ----------------------------------------
   // Get all branches.
@@ -1138,24 +1161,40 @@ int
 itreestream::read(int entry)
 {
   _statuscode = kSUCCESS;
-  _entry = entry;
+  int localentry = 0;
 
-  if ( _chain == 0 ) fatal("chain pointer is zero");
+  // If entry is negative, we assume that the tree is already in
+  // memory
+  if ( entry > -1 )
+    {
+      _entry = entry;
+      if ( _chain == 0 ) fatal("chain pointer is zero");
 
-  // Load tree into memory
+      // Load tree into memory
 
-  int localentry = _chain->LoadTree(entry);
+      localentry = _chain->LoadTree(entry);
+      
+      if (localentry < 0) return localentry;
 
-  if (localentry < 0) return localentry;
+      if ( DEBUGLEVEL > 0 ) 
+        cout << "entry(" << entry << ")"
+             << "localentry(" << localentry << ")" << endl;
 
-  // Update pointers to tree, branches and leaves.
+      // Update pointers to tree, branches and leaves.
+      
+      if ( _chain->GetTreeNumber() != _current) _update();
+    }
+  else
+    {
+      localentry = _entry;
 
-  if ( _chain->GetTreeNumber() != _current) _update();
+      // Update pointers to tree, branches and leaves.
+      
+      if ( _tree->GetTreeNumber() != _current) _update();
 
-  if ( DEBUGLEVEL > 0 ) 
-    cout << "entry(" << entry << ")"
-         << "localentry(" << localentry << ")" << endl;
-
+      _entry++;
+    }
+     
   // Copy data into external buffers
 
   SelectedData::iterator it;
@@ -1418,7 +1457,10 @@ void
 itreestream::_update()
 {
   _statuscode = kSUCCESS; 
-  _current = _chain->GetTreeNumber();
+  if ( _chain != 0 ) 
+    _current = _chain->GetTreeNumber();
+  else
+    _current = _tree->GetTreeNumber();
 
   SelectedData::iterator it;
   for(it=selecteddata.begin(); it != selecteddata.end(); it++)

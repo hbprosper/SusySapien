@@ -15,13 +15,15 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Wed Jun 20 19:53:47 EDT 2007
 //         Updated:  Sat Oct 25 2008 - make matchInDeltaR saner
-// $Id: kit.cc,v 1.12 2010/09/19 14:09:53 prosper Exp $
+// $Id: kit.cc,v 1.13 2010/09/21 09:36:42 prosper Exp $
 //
 //
 //-----------------------------------------------------------------------------
+#ifdef PROJECT_NAME
 #include <Python.h>
 #include <boost/python.hpp>
 #include <boost/regex.hpp>
+#endif
 #include <sstream>
 #include <cassert>
 #include <string>
@@ -39,6 +41,7 @@
 #include "TIterator.h"
 #include "TFile.h"
 #include "TInterpreter.h"
+#ifdef PROJECT_NAME
 #include "CLHEP/Random/RandGamma.h"
 #include "HepMC/SimpleVector.h"
 #include "HepMC/GenVertex.h"
@@ -46,21 +49,26 @@
 #include "PhysicsTools/LiteAnalysis/interface/kit.h"
 #include "FWCore/FWLite/interface/AutoLibraryLoader.h"
 #include "FWCore/Utilities/interface/Exception.h"
+#else
+#include "kit.h"
+#endif
 //-----------------------------------------------------------------------------
 using namespace std;
+
+#ifdef PROJECT_NAME
 using namespace reco;
 using namespace ROOT::Reflex;
+#endif
 //-----------------------------------------------------------------------------
+#ifdef PROJECT_NAME
 extern "C"
 {
   void hepnam_(int&, char*, int);
 }
+#endif
 //----------------------------------------------------------------------------
 
 const int MAXDEPTH=10;
-
-void 
-kit::set(double y, double* x) {*x=y;}
 
 float
 kit::deltaPhi(float phi1, float phi2)
@@ -103,6 +111,7 @@ kit::deltaR(std::vector<TLorentzVector>& v1,
   return mp;
 }
 
+#ifdef PROJECT_NAME
 std::vector<kit::MatchedPair>
 kit::deltaR(std::vector<math::XYZVector>& p1,
             std::vector<math::XYZVector>& p2)
@@ -113,6 +122,7 @@ kit::deltaR(std::vector<math::XYZVector>& p1,
   for(unsigned j=0; j < p2.size();j++) v2.push_back(kit::lorentzVector(p2[j]));
   return kit::deltaR(v1, v2);
 }
+#endif
 
 std::vector<kit::MatchedPair>
 kit::deltaR(std::vector<PtThing>& v1,
@@ -172,11 +182,13 @@ kit::deltaR(std::vector<double>& eta1,
   return mp;
 }
 
+#ifdef PROJECT_NAME
 std::string 
 kit::particleName(reco::GenParticle& p) 
 {  
   return HepPID::particleName( p.pdgId() );
 }
+#endif
 
 // Extract name of a file without extension
 string 
@@ -278,7 +290,7 @@ kit::shell(string cmd)
   return result;
 }
 
-
+#ifdef PROJECT_NAME
 vector<string>
 kit::regex_findall(string& str, string expr)
 {
@@ -328,7 +340,6 @@ kit::regex_sub(string& str, string expr, string rstr)
   else
     return str;
 }
-
 
 
 string vsqueeze(string& str)
@@ -1083,7 +1094,6 @@ kit::tree(std::ostream& stream,
               depth);
 }
 
-
 std::string
 kit::tree(int    index,
           int    nhep,
@@ -1187,6 +1197,7 @@ kit::particleName(int id)
 {
   return HepPID::particleName(id);
 }
+#endif
 
 // ---------------------------------------------
 // Some histograms utilities
@@ -1205,6 +1216,8 @@ void
 kit::setStyle()
 {
   gROOT->SetStyle("Pub");
+  gStyle->SetPalette(1);
+
   TStyle* style = gROOT->GetStyle("Pub");
   style->SetFrameBorderMode(0);
   style->SetCanvasBorderSize(0);

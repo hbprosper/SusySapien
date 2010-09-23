@@ -19,9 +19,9 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Fri Apr 04 2008
-// $Id: kit.h,v 1.10 2010/09/19 14:09:53 prosper Exp $
+// $Id: kit.h,v 1.11 2010/09/21 09:36:42 prosper Exp $
 //
-//$Revision: 1.10 $
+//$Revision: 1.11 $
 //-----------------------------------------------------------------------------
 #include <iostream>
 #include <fstream>
@@ -31,12 +31,14 @@
 #include <algorithm>
 #include <stdio.h>
 //-----------------------------------------------------------------------------
+#ifdef PROJECT_NAME
 #include "DataFormats/Math/interface/Vector3D.h"
 #include "DataFormats/EgammaReco/interface/BasicCluster.h"
 #include "DataFormats/EgammaReco/interface/SuperCluster.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 #include "HepMC/GenEvent.h"
 #include "HepMC/GenParticle.h"
+#endif
 #include "TLorentzVector.h"
 #include "TDirectory.h"
 #include "TH1F.h"
@@ -46,9 +48,12 @@
 #include "TStyle.h"
 #include "TGraph.h"
 #include "TMath.h"
+
+#ifdef PROJECT_NAME
 #include "Reflex/Object.h"
 #include "Reflex/Base.h"
 #include "Reflex/Type.h"
+#endif
 //-----------------------------------------------------------------------------
 
 typedef std::vector<double>  vdouble;
@@ -72,11 +77,6 @@ namespace {
 
 struct kit
 {
-
-  static
-  ///
-  void set(double y, double* x);
-  
   ///
   struct MatchedPair
   {
@@ -211,6 +211,7 @@ struct kit
     std::map<std::string, int> _var;
   };
 
+#ifdef PROJECT_NAME
   // ------------------------------------------------------------------------ 
   // Reflex utilities
   // ------------------------------------------------------------------------
@@ -311,6 +312,7 @@ struct kit
   static
   std::string    returnType(Reflex::Member& method);
 
+#endif
   // ------------------------------------------------------------------------
 
   ///
@@ -354,10 +356,6 @@ struct kit
                                    std::vector<TLorentzVector>& v2);
   ///
   static
-  std::vector<MatchedPair>  deltaR(std::vector<math::XYZVector>& v1, 
-                                   std::vector<math::XYZVector>& v2);
-  ///
-  static
   std::vector<MatchedPair>  deltaR(std::vector<PtThing>& v1, 
                                    std::vector<PtThing>& v2);
 
@@ -383,6 +381,12 @@ struct kit
   {
     return d.find(var) != d.end();
   }
+#ifdef PROJECT_NAME
+
+  ///
+  static
+  std::vector<MatchedPair>  deltaR(std::vector<math::XYZVector>& v1, 
+                                   std::vector<math::XYZVector>& v2);
 
   ///
   static
@@ -391,10 +395,6 @@ struct kit
   ///
   static
   std::string      particleName(reco::GenParticle* p);
-
-  ///
-  static
-  std::string      particleName(int PDGID);
 
 
   ///
@@ -453,6 +453,27 @@ struct kit
                                  int maxdepth=10,
                                  int depth=0);
 
+
+ ///
+  static
+  std::vector<std::string>   regex_findall(std::string& str, 
+                                           std::string  regex);
+
+  ///
+  static
+  std::string                regex_search(std::string& str, 
+                                          std::string  regex);
+
+  ///
+  static
+  std::string                regex_sub(std::string& str, 
+                                       std::string  regex,
+                                       std::string  rstr);
+
+  ///
+  static
+  std::string      particleName(int PDGID);
+
   ///
   static
   void                      tree(std::ostream& os,
@@ -476,6 +497,8 @@ struct kit
                                  int printlevel=0, 
                                  int maxdepth=10, 
                                  int depth=0);
+
+#endif
 
   ///
   static
@@ -511,22 +534,6 @@ struct kit
   ///
   static
   std::string         shell(std::string cmd);
-
-  ///
-  static
-  std::vector<std::string>   regex_findall(std::string& str, 
-                                           std::string  regex);
-
-  ///
-  static
-  std::string                regex_search(std::string& str, 
-                                          std::string  regex);
-
-  ///
-  static
-  std::string                regex_sub(std::string& str, 
-                                       std::string  regex,
-                                       std::string  rstr);
 
   // -------------------
   // HISTOGRAM UTILITIES

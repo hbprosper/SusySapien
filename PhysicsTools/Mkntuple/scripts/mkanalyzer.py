@@ -5,7 +5,7 @@
 # Updated: 12-Mar-2010 HBP - fix appending of .root
 #          08-Jun-2010 HBP - add creation of selector.h
 #          02-Sep-2010 HBP - fix variables.txt record splitting bug
-#$Revision: 1.9 $
+#$Revision: 1.10 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -20,6 +20,8 @@ if not os.environ.has_key("CMSSW_BASE"):
 PACKAGE = "%s/src/PhysicsTools/LiteAnalysis" % os.environ["CMSSW_BASE"]
 TREESTREAM_HPP = "%s/interface/treestream.hpp" % PACKAGE
 TREESTREAM_CPP = "%s/src/treestream.cpp" % PACKAGE
+PDG_HPP = "%s/interface/pdg.h" % PACKAGE
+PDG_CPP = "%s/src/pdg.cc" % PACKAGE
 MKNTUPLE= "%s/src/PhysicsTools/Mkntuple" % os.environ["CMSSW_BASE"]
 SELECTEDOBJECTMAP_H = "%s/interface/SelectedObjectMap.h" % MKNTUPLE
 AUTHOR = getauthor()
@@ -64,7 +66,7 @@ TEMPLATE_H =\
 // Description: Analyzer header for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 //-----------------------------------------------------------------------------
 
 // -- System
@@ -83,10 +85,12 @@ TEMPLATE_H =\
 // --- CMSSW
 
 #include "PhysicsTools/LiteAnalysis/interface/treestream.hpp"
+#include "PhysicsTools/LiteAnalysis/interface/pdg.h"
 
 #else
 
 #include "treestream.hpp"
+#include "pdg.h"
 
 #endif
 
@@ -146,7 +150,8 @@ decodeCommandLine(int argc, char** argv,
   if ( argc > 2 ) 
     histfilename = std::string(argv[2]);// 2nd (optional) command line argument
   else
-    histfilename = std::string(argv[0]);// default: name of program
+    histfilename = std::string(argv[0])
+	+ std::string("_histograms"); // default: name of program
 
   // Make sure extension is ".root"
   histfilename = nameonly(histfilename);
@@ -176,6 +181,11 @@ saveHistograms(std::string histfilename,
 			   TFile* hfile=0,
 			   int depth=0)
 {
+
+  // Get list of objects in current directory
+  
+  TList* list = dir->GetList();
+  
   // Create output file
 
   if ( depth == 0 )
@@ -192,9 +202,8 @@ saveHistograms(std::string histfilename,
 
   // Loop over all histograms
 
-  TList* list = dir->GetList();
   TListIter* it = (TListIter*)list->MakeIterator();
-
+  
   while ( TObject* o = it->Next() )
     {
       dir->cd();
@@ -242,10 +251,14 @@ TEMPLATE_CC =\
 // Description: Analyzer for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 //-----------------------------------------------------------------------------
 #include "%(name)s.h"
-
+#ifdef PROJECT_NAME
+#include "PhysicsTools/LiteAnalysis/interface/pdg.h"
+#else
+#include "pdg.h"
+#endif
 using namespace std;
 //-----------------------------------------------------------------------------
 int main(int argc, char** argv)
@@ -305,7 +318,7 @@ SLTEMPLATE=\
 // Description: selector template
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 //-----------------------------------------------------------------------------
 #include <map>
 #include <string>
@@ -347,7 +360,7 @@ int leafcount(TLeaf* leaf)
 
 %(vardecl)s
 
-void initselector()
+void initSelector()
 {
   TTree* tree = (TTree*)gROOT->FindObject("Events");
   if ( ! tree )
@@ -365,20 +378,19 @@ void initselector()
 
 '''
 
-PYTEMPLATE =\
-'''#!/usr/bin/env python
-# -----------------------------------------------------------------------------
-#  File:        %(name)s
+PYTEMPLATELIB =\
+'''# -----------------------------------------------------------------------------
+#  File:        %(name)slib.py
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
 #  Author:      %(author)s
-#  $Revision: 1.9 $
+#  $Revision: 1.10 $
 # -----------------------------------------------------------------------------
-import os, sys, re
 from ROOT import *
 from time import sleep
 from string import *
 from PhysicsTools.LiteAnalysis.AutoLoader import *
+import os, sys, re
 # -----------------------------------------------------------------------------
 # -- Procedures and functions
 # -----------------------------------------------------------------------------
@@ -391,17 +403,19 @@ def decodeCommandLine():
 	if argc > 2: 
 		histfilename = argv[2] # 2nd (optional) command line argument
 	else:
-		histfilename = argv[0] # default: name of program
+		name = os.path.basename(argv[0])
+		name = split(name,'.')[0]
+		histfilename = name + "_histograms"
 
 	# Make sure extension is ".root"
 	histfilename = os.path.basename(histfilename)
 	histfilename = split(histfilename, ".")[0] + ".root"
 	return (filelist, histfilename)
-	
+# -----------------------------------------------------------------------------
 def error(message):
 	print "** error ** " + message
 	sys.exit(0)
-
+# -----------------------------------------------------------------------------
 #  Read ntuple filenames from file list
 
 def getFilenames(filelist):
@@ -415,43 +429,218 @@ def getFilenames(filelist):
 	for filename in filenames: v.push_back(filename)
 	return v
 # -----------------------------------------------------------------------------
+TEXTFONT = 62 # 42
+TEXTSIZE = 0.031
+#------------------------------------------------------------------------------
+CMSstyle = TStyle("CMSstyle","CMS Style");
+def setStyle():
+    
+    # For the canvas:
+    CMSstyle.SetCanvasBorderMode(0)
+    CMSstyle.SetCanvasColor(kWhite)
+    CMSstyle.SetCanvasDefH(500) #Height of canvas
+    CMSstyle.SetCanvasDefW(500) #Width of canvas
+    CMSstyle.SetCanvasDefX(0)   #Position on screen
+    CMSstyle.SetCanvasDefY(0)
+
+    # For the Pad:
+    CMSstyle.SetPadBorderMode(0)
+    CMSstyle.SetPadColor(kWhite)
+    CMSstyle.SetPadGridX(kFALSE)
+    CMSstyle.SetPadGridY(kTRUE)
+    CMSstyle.SetGridColor(kGreen)
+    CMSstyle.SetGridStyle(3)
+    CMSstyle.SetGridWidth(1)
+    
+    # For the frame:
+    CMSstyle.SetFrameBorderMode(0)
+    CMSstyle.SetFrameBorderSize(1)
+    CMSstyle.SetFrameFillColor(0)
+    CMSstyle.SetFrameFillStyle(0)
+    CMSstyle.SetFrameLineColor(1)
+    CMSstyle.SetFrameLineStyle(1)
+    CMSstyle.SetFrameLineWidth(1)
+    
+    # For the histo:
+    CMSstyle.SetHistLineColor(1)
+    CMSstyle.SetHistLineStyle(0)
+    CMSstyle.SetHistLineWidth(1)
+
+    CMSstyle.SetEndErrorSize(2)
+    CMSstyle.SetErrorX(0.)
+    
+    CMSstyle.SetMarkerSize(0.1)
+    CMSstyle.SetMarkerStyle(20)
+
+    #For the fit/function:
+    CMSstyle.SetOptFit(1)
+    CMSstyle.SetFitFormat("5.4g")
+    CMSstyle.SetFuncColor(2)
+    CMSstyle.SetFuncStyle(1)
+    CMSstyle.SetFuncWidth(1)
+
+    #For the date:
+    CMSstyle.SetOptDate(0)
+
+    # For the statistics box:
+    CMSstyle.SetOptFile(0)
+    CMSstyle.SetOptStat("")
+    # To display the mean and RMS:
+    #CMSstyle.SetOptStat("mr") 
+    CMSstyle.SetStatColor(kWhite)
+    CMSstyle.SetStatFont(TEXTFONT)
+    CMSstyle.SetStatFontSize(TEXTSIZE)
+    CMSstyle.SetStatTextColor(1)
+    CMSstyle.SetStatFormat("6.4g")
+    CMSstyle.SetStatBorderSize(1)
+    CMSstyle.SetStatH(0.2)
+    CMSstyle.SetStatW(0.3)
+    
+    ## # Margins:
+    CMSstyle.SetPadTopMargin(0.05)
+    CMSstyle.SetPadBottomMargin(0.16)
+    CMSstyle.SetPadLeftMargin(0.16)
+    CMSstyle.SetPadRightMargin(0.16)
+
+    # For the Global title:
+    CMSstyle.SetOptTitle(0)
+    CMSstyle.SetTitleFont(TEXTFONT)
+    CMSstyle.SetTitleColor(1)
+    CMSstyle.SetTitleTextColor(1)
+    CMSstyle.SetTitleFillColor(10)
+    CMSstyle.SetTitleFontSize(TEXTSIZE*1.1)
+
+    # For the axis titles:
+    CMSstyle.SetTitleColor(1, "XYZ")
+    CMSstyle.SetTitleFont(TEXTFONT, "XYZ")
+    CMSstyle.SetTitleSize(TEXTSIZE*1.2, "XYZ") # 0,05
+    CMSstyle.SetTitleXOffset(1.25) # 0.9
+    CMSstyle.SetTitleYOffset(1.25) # 1.25
+
+    # For the axis labels:
+    CMSstyle.SetLabelColor(1, "XYZ")
+    CMSstyle.SetLabelFont(TEXTFONT, "XYZ")
+    CMSstyle.SetLabelOffset(0.006, "XYZ")
+    CMSstyle.SetLabelSize(TEXTSIZE*1.2, "XYZ")
+
+    # For the axis:
+    CMSstyle.SetAxisColor(1, "XYZ")
+    CMSstyle.SetStripDecimals(kTRUE)
+    CMSstyle.SetTickLength(0.03, "XYZ")
+    CMSstyle.SetNdivisions(505, "XYZ")
+    # To get tick marks on the opposite side of the frame
+    CMSstyle.SetPadTickX(1)  
+    CMSstyle.SetPadTickY(1)
+
+    # Change for log plots:
+    CMSstyle.SetOptLogx(0)
+    CMSstyle.SetOptLogy(0)
+    CMSstyle.SetOptLogz(0)
+
+    # Postscript options:
+    CMSstyle.SetPaperSize(20.,20.)
+    CMSstyle.cd()
+#------------------------------------------------------------------------------
+def saveHistograms(histfilename, 
+				   hdir=gDirectory,
+				   hfile=0,
+				   depth=0):
+
+	hlist = hdir.GetList()
+	
+	# Create output file
+
+	if depth == 0:
+		print "Saving histograms to", histfilename
+		hfile = TFile(histfilename, "RECREATE")
+
+	# Important!
+	# Check recursion depth 
+	depth += 1
+	if depth > 100: error("saveHistograms is lost in trees!")
+
+	tab = 2*depth*' '
+
+	# Loop over all histograms
+
+	nentries = hlist.GetSize()
+	
+	for index in xrange(nentries):
+		o = hlist.At(index)
+		
+		if o.IsA().InheritsFrom("TDirectory"):
+			d = o
+			print tab + "BEGIN " + d.GetName()
+			saveHistograms(histfilename, d, hfile, depth)
+			print tab + "END " + d.GetName()
+
+		# Note: All histograms inherit from TH1
+		elif o.IsA().InheritsFrom("TH1"):
+			h = o
+			print tab + \
+				  "\\t" + o.ClassName() + \
+				  "\\t" + h.GetName() + \
+				  "\\t" + h.GetTitle()
+
+			hfile.cd()
+			h.Write("", TObject.kOverwrite)
+
+	hfile.Close()
+# -----------------------------------------------------------------------------
+#  Define variables to be read
+# -----------------------------------------------------------------------------
+filelist, histfilename = decodeCommandLine()
+	
+#  Get names of ntuple files to be processed and open chain of ntuples
+  
+filenames = getFilenames(filelist)
+stream = itreestream(filenames, "Events")
+if not stream.good(): error("unable to open ntuple file(s)")
+  
+%(selection)s
+'''
+
+PYTEMPLATE =\
+'''#!/usr/bin/env python
+# -----------------------------------------------------------------------------
+#  File:        %(name)s.py
+#  Description: Analyzer for ntuples created by Mkntuple
+#  Created:     %(time)s by mkntanalyzer.py
+#  Author:      %(author)s
+#  $Revision: 1.10 $
+# -----------------------------------------------------------------------------
+from ROOT import *
+from string import *
+from %(name)slib import *
+import os, sys, re
+# -----------------------------------------------------------------------------
+# -- Procedures and functions
+# -----------------------------------------------------------------------------
+
+
+# -----------------------------------------------------------------------------
 def main():
 
-	filelist, histfilename = decodeCommandLine()
-	
-	#  Get names of ntuple files to be processed and open chain of ntuples
-  
-	filenames = getFilenames(filelist)
-	stream = itreestream(filenames, "Events")
-	if not stream.good(): error("unable to open ntuple file(s)")
-  
-	#  Get number of events to be read
-  
-	nevents = stream.size();
-	print "Number of events:",nevents
-	
-	# -------------------------------------------------------------------------
-	#  Define variables to be read
-    # -------------------------------------------------------------------------
-%(selection)s
+	#  Get number of events
+	nevents = stream.size()
+	print "Number of events:", nevents
 
     # -------------------------------------------------------------------------
 	#  Book histograms etc.
 	# -------------------------------------------------------------------------
-	kit.setStyle()
+	setStyle()
 
 	# -------------------------------------------------------------------------
 	#  Loop over events
 	# -------------------------------------------------------------------------
-
 	for entry in xrange(nevents):
 		stream.read(entry)
 
-		#  Find SUSY...
+		#  Find SUSY already!
 	  
 	stream.close()
 
-	kit.saveHistograms(histfilename)
+	saveHistograms(histfilename)
 # -----------------------------------------------------------------------------
 main()
 '''
@@ -469,7 +658,7 @@ MAKEFILE = '''#-----------------------------------------------------------------
 #                 verbose    (e.g., verbose=1)
 #                 withcern   (e.g., withcern=1  expects to find CERN_LIB)
 # Author:      %(author)s
-#$Revision: 1.9 $
+#$Revision: 1.10 $
 #------------------------------------------------------------------------------
 ifndef ROOTSYS
 $(error *** Please set up Root)
@@ -662,6 +851,15 @@ def main():
 		   'cpp': TREESTREAM_CPP}
 	os.system(cmd)
 
+	cmd = '''
+	cp %(hpp)s %(dir)s
+	cp %(cpp)s %(dir)s
+	''' % {'dir': filename,
+		   'hpp': PDG_HPP,
+		   'cpp': PDG_CPP}
+	
+	os.system(cmd)
+
 	# Create Makefile
 
 	names = {'name': filename,
@@ -706,13 +904,18 @@ def main():
 	
 	# Create python code
 	
-	s = join("\t", pydeclare, "\n") + "\n" + join("\t", pyselect,"\n")
-	outfilename = "%s/%s.py" % (filename, filename)
-	names = {'name': outfilename,
+	s = join("", pydeclare, "\n") + "\n" + join("", pyselect,"\n")
+	outfilename = "%s/%slib.py" % (filename, filename)
+	names = {'name': filename,
 			 'time': ctime(time()),
 			 'selection': s,
-			 'author': AUTHOR
+			 'author': AUTHOR,
+			 'htab': "%s%s\\t%s\\t%s"
 			 }
+	record = PYTEMPLATELIB % names
+	open(outfilename,"w").write(record)
+
+	outfilename = "%s/%s.py" % (filename, filename)
 	record = PYTEMPLATE % names
 	open(outfilename,"w").write(record)
 	os.system("chmod +x %s" % outfilename)

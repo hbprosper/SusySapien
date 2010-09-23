@@ -2,6 +2,7 @@
 #include "PhysicsTools/LiteAnalysis/interface/Connection.hpp"
 #include "PhysicsTools/LiteAnalysis/interface/Slot.hpp"
 #include "PhysicsTools/LiteAnalysis/interface/kit.h"
+#include "PhysicsTools/LiteAnalysis/interface/pdg.h"
 #include "PhysicsTools/LiteAnalysis/interface/root.h"
 #include "PhysicsTools/LiteAnalysis/interface/treestream.hpp"
 #include "PhysicsTools/LiteAnalysis/interface/KDE.hpp"

@@ -10,11 +10,12 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Jun  8, 2010
 //
-// $Id: SelectedObjectMap.h,v 1.2 2010/04/21 02:22:43 prosper Exp $
+// $Id: SelectedObjectMap.h,v 1.1 2010/08/12 03:00:58 prosper Exp $
 
 #include <map>
 #include <string>
 #include <vector>
+#include "PhysicsTools/LiteAnalysis/interface/treestream.hpp"
 
 /// A singleton class to cache indices of objects to be written out.
 class SelectedObjectMap

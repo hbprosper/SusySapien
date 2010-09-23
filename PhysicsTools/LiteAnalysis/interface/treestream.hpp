@@ -41,7 +41,7 @@
 //          13-Aug-2005 Tidy up
 //          11-Aug-2007 Add ls() method as a proxy for print
 //          06-Jun-2010 Add store and save (commt = store + save)
-//$Revision: 1.8 $
+//$Revision: 1.9 $
 //----------------------------------------------------------------------------
 #include <vector>
 #include <string>
@@ -163,6 +163,8 @@ class itreestream
   ///
   itreestream(std::vector<std::string>& filenames, std::string treename,
               int bufsize=1000);
+
+  itreestream(TTree* tree, int bufsize=1000);
   
   ///
   virtual ~itreestream();
