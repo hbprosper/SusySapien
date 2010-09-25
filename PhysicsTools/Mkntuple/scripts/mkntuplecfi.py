@@ -10,7 +10,7 @@
 #              08-Sep-2010 HBP - adapt to extended listing in methods files
 #              18-Sep-2010 HBP - improve find
 #-----------------------------------------------------------------------------
-#$Revision: 1.18 $
+#$Revision: 1.19 $
 #-----------------------------------------------------------------------------
 import sys, os, re, platform
 from ROOT import *
@@ -40,7 +40,7 @@ if not os.environ.has_key("CMSSW_BASE"):
 	sys.exit(0)
 
 BASE = os.environ["PWD"]
-REVISION="$Revision: 1.18 $"
+REVISION="$Revision: 1.19 $"
 rev = split(REVISION)[1]
 VERSION        = \
 """
@@ -575,16 +575,20 @@ class Gui:
 
 		# List root file
 
-		cmd = '''
-		rlist.py %s Events
-		rlist.py %s Runs
-		''' % (filename, filename)
-
 		self.statusBar.SetText("Listing file ...", 0)
 		self.statusBar.SetText(filename, 1)
 
 		self.progTimer.Start()
-		record = os.popen(cmd).read()
+		
+		stream = itreestream(filename, "Events")
+		record = stream.str()
+		stream.close()
+
+		stream = itreestream(filename, "Runs")
+		record += stream.str()
+		stream.close()
+		
+		sleep(1)
 		self.progTimer.Stop()
 		self.progressBar.Reset()
 		

@@ -38,7 +38,7 @@
 //          30-Nov-2005 HBP fix counter loading bug
 //          31-Oct-2009 HBP allow use of regexes in branch names
 //                      fix looping bug so operator[] works for Python
-//$Revision: 1.9 $
+//$Revision: 1.1 $
 //----------------------------------------------------------------------------
 #ifdef PROJECT_NAME
 #include <boost/regex.hpp>
@@ -1249,9 +1249,10 @@ itreestream::filename() { return filepath[_current]; }
 TTree*
 itreestream::tree() { return _tree; }
 
-void
-itreestream::print(ostream& out)
+string
+itreestream::str()
 {
+  ostringstream out;
   out << "Tree Name          " << _tree->GetName()      << endl;
   out << "Number of entries  " << _tree->GetEntries()   << endl;
   out << endl;
@@ -1296,6 +1297,7 @@ itreestream::print(ostream& out)
         }
       out << record << endl;
     }
+  return out.str();
 }
 
 // ------------------------------------------------------------------------

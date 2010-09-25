@@ -43,7 +43,7 @@
 //          06-Jun-2010 Add store and save (commt = store + save)
 //          23-Sep-2010 Move from PhysicsTools/LiteAnalysis to 
 //                                PhysicsTools/Mkntuple
-//$Revision: 1.10 $
+//$Revision: 1.1 $
 //----------------------------------------------------------------------------
 #include <vector>
 #include <string>
@@ -289,8 +289,11 @@ class itreestream
   ///
   double get(std::string namen);
 
+  ///
+  std::string str();
+
   /// Print information about name/value pairs.
-  void   print(std::ostream& out);
+  void   print(std::ostream& out) { out << str(); }
 
   void   ls(std::ostream& out=std::cout) { print(out); }
 

@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # Create the skeleton of a user sub-pacakge
 # Created: 03-Sep-2010 Harrison B. Prosper
-#$Revision: 1.6 $
+#$Revision: 1.7 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -60,7 +60,7 @@ def main():
 	mkdir -p test
 	sed -e "s/PhysicsTools.Mkntuple/%(pkg)s.%(subpkg)s/g" $CMSSW_BASE/src/%(mkntuple)s/test/config.py  > test/config.py
 	mkdir -p bin
-	sed -e "s/plugins_t/%(prog)s/g" $CMSSW_BASE/src/%(mkntuple)s/bin/BuildFile  > bin/BuildFile
+	sed -e "s/plugins_t/%(prog)s/g" $CMSSW_BASE/src/%(mkntuple)s/bin/BuildFile   | egrep -v "test" > bin/BuildFile
  	echo "int main(int argc, char** argv) {return 0;}" > bin/%(prog)s.cc
 	''' % names
 	os.system(cmd)
