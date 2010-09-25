@@ -24,7 +24,7 @@
 //                   Wed Sep 08 HBP - fix array test
 //                   Sun Sep 19 HBP - re-organize code to minimize code  bloat
 //
-// $Id: Buffer.h,v 1.20 2010/09/08 21:07:53 prosper Exp $
+// $Id: Buffer.h,v 1.21 2010/09/19 14:09:53 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/BufferUtil.h"
@@ -137,11 +137,11 @@ struct Buffer  : public BufferThing
   bool fill(const edm::Event& event)
   {
     if ( debug_ > 0 ) 
-      std::cout << BLACK
+      std::cout << DEFAULT_COLOR
                 << "Begin Buffer::fill\n\t" 
-                << RED 
+                << BLUE 
                 << "X: " << boost::python::type_id<X>().name() << "\n\t"
-                << BLACK
+                << DEFAULT_COLOR
                 << std::endl;
 
     count_ = 0; // reset count, just in case we have to bail out
@@ -182,7 +182,7 @@ struct Buffer  : public BufferThing
         }
     
     if ( debug_ > 0 ) 
-      std::cout << BLACK << "End Buffer::fill " << std::endl; 
+      std::cout << DEFAULT_COLOR << "End Buffer::fill " << std::endl; 
     return true;
   }
   

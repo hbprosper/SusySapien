@@ -10,12 +10,12 @@
 #              08-Sep-2010 HBP - adapt to extended listing in methods files
 #              18-Sep-2010 HBP - improve find
 #-----------------------------------------------------------------------------
-#$Revision: 1.17 $
+#$Revision: 1.18 $
 #-----------------------------------------------------------------------------
 import sys, os, re, platform
 from ROOT import *
 from string import split, strip
-from PhysicsTools.LiteAnalysis.boostlib import cmsswProject
+from PhysicsTools.Mkntuple.Lib import cmsswProject
 #------------------------------------------------------------------------------
 PACKAGE, SUBPACKAGE, LOCALBASE, BASE, VERSION = cmsswProject()
 PYDIR = '%s%s/%s/python' % (LOCALBASE, PACKAGE, SUBPACKAGE)
@@ -40,7 +40,7 @@ if not os.environ.has_key("CMSSW_BASE"):
 	sys.exit(0)
 
 BASE = os.environ["PWD"]
-REVISION="$Revision: 1.17 $"
+REVISION="$Revision: 1.18 $"
 rev = split(REVISION)[1]
 VERSION        = \
 """
@@ -76,7 +76,7 @@ from string import *
 from time import *
 from glob import glob
 from array import array
-from PhysicsTools.LiteAnalysis.AutoLoader import *
+from PhysicsTools.Mkntuple.AutoLoader import *
 #-----------------------------------------------------------------------------
 
 WIDTH          = 750            # Width of GUI in pixels

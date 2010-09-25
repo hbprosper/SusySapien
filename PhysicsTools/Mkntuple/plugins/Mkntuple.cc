@@ -46,7 +46,7 @@
 //         Updated:  Sun Jan 17 HBP - add log file
 //                   Sun Jun 06 HBP - add variables.txt file
 //
-// $Id: Mkntuple.cc,v 1.16 2010/09/03 01:54:14 prosper Exp $
+// $Id: Mkntuple.cc,v 1.17 2010/09/15 13:46:48 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -65,8 +65,8 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/FWLite/interface/AutoLibraryLoader.h"
  
-#include "PhysicsTools/LiteAnalysis/interface/treestream.hpp"
-#include "PhysicsTools/LiteAnalysis/interface/kit.h"
+#include "PhysicsTools/Mkntuple/interface/treestream.h"
+#include "PhysicsTools/Mkntuple/interface/kit.h"
 #include "PhysicsTools/Mkntuple/interface/pluginfactory.h"
 #include "PhysicsTools/Mkntuple/interface/CurrentEvent.h"
 #include "PhysicsTools/Mkntuple/interface/Configuration.h"
@@ -113,7 +113,7 @@ private:
 Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   : output(otreestream(iConfig.getUntrackedParameter<string>("ntupleName"), 
                        "Events", 
-                       "made by Mkntuple $Revision: 1.16 $")),
+                       "made by Mkntuple $Revision: 1.17 $")),
     event_(0),
     logfilename_("Mkntuple.log"),
     log_(new std::ofstream(logfilename_.c_str())),
@@ -280,7 +280,7 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
           << " label("    
           << BLUE 
           << label 
-          << BLACK 
+          << DEFAULT_COLOR 
           << ")"
           << " maxcount(" << maxcount << ")"
           << " prefix("   << prefix << ")"

@@ -6,9 +6,9 @@
 // Updated:     Mon Mar 08, 2010 Sezen & HBP - add triggerBits class
 //              Thu Apr 08, 2010 Sezen & HBP - add GParticle class
 //              Thu Aug 25, 2010 HBP - rename classes
-//$Revision: 1.9 $
+//$Revision: 1.10 $
 //-----------------------------------------------------------------------------
-#include "PhysicsTools/Mkntuple/interface/Buffer.h"
+#include "PhysicsTools/Mkntuple/interface/UserBuffer.h"
 #include "PhysicsTools/Mkntuple/interface/pluginfactory.h"
 #include "PhysicsTools/Mkntuple/interface/user.h"
 #include "PhysicsTools/Mkntuple/interface/BufferEventHelper.h"

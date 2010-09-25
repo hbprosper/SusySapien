@@ -5,17 +5,17 @@
 //             SelectedObjectMap.h
 //
 //             A singleton object to make indices of selected objects 
-//             available to whoever needs it
+//             available to whomever needs it
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Jun  8, 2010
 //
-// $Id: SelectedObjectMap.h,v 1.1 2010/08/12 03:00:58 prosper Exp $
+// $Id: SelectedObjectMap.h,v 1.2 2010/09/23 09:10:24 prosper Exp $
 
 #include <map>
 #include <string>
 #include <vector>
-#include "PhysicsTools/LiteAnalysis/interface/treestream.hpp"
+#include "PhysicsTools/Mkntuple/interface/treestream.h"
 
 /// A singleton class to cache indices of objects to be written out.
 class SelectedObjectMap

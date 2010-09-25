@@ -3,12 +3,12 @@
 # create plugins.cc
 # Created: 05-Jan-2010 Harrison B. Prosper
 # Updated: 15-Feb-2010 HBP - run mkclasslist.py if needed
-#$Revision: 1.12 $
+#$Revision: 1.13 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
 from time import *
-from PhysicsTools.LiteAnalysis.boostlib import nameonly
+from PhysicsTools.Mkntuple.Lib import nameonly
 #------------------------------------------------------------------------------
 if not os.environ.has_key("CMSSW_BASE"):
 	print "\t**you must first set up CMSSW"
@@ -78,7 +78,7 @@ names = {'time': ctime(time())}
 out  = open("plugins.cc","w")
 record = '''// ----------------------------------------------------------------------------
 // Created: %(time)s by mkplugins.py
-// $Revision: 1.12 $
+// $Revision: 1.13 $
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/Buffer.h"
 #include "PhysicsTools/Mkntuple/interface/pluginfactory.h"

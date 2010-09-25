@@ -9,7 +9,7 @@
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Sep 19 HBP move some code from Buffer.h 
 //
-// $Id:$
+// $Id: BufferUtil.h,v 1.1 2010/09/19 14:09:53 prosper Exp $
 // ----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python/type_id.hpp>
@@ -24,9 +24,9 @@
 #include "FWCore/Framework/interface/Run.h"
 #include "SimDataFormats/GeneratorProducts/interface/GenRunInfoProduct.h"
 
-#include "PhysicsTools/LiteAnalysis/interface/treestream.hpp"
-#include "PhysicsTools/LiteAnalysis/interface/kit.h"
-#include "PhysicsTools/LiteAnalysis/interface/MethodT.h"
+#include "PhysicsTools/Mkntuple/interface/treestream.h"
+#include "PhysicsTools/Mkntuple/interface/colors.h"
+#include "PhysicsTools/Mkntuple/interface/MethodT.h"
 // ----------------------------------------------------------------------------
 
 struct VariableDescriptor
@@ -244,9 +244,7 @@ void callMethods(int j,
         }
       if ( debug > 0 ) 
         std::cout << "\t\t\tvalue = " 
-                  << BLUE 
                   << variables[i].value[j] 
-                  << BLACK 
                   << std::endl;
     }
 }

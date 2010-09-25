@@ -3,7 +3,7 @@
 # File:        mkclassmap.py
 # Description: Create a map of classnames to headers
 # Created:     26-Aug-2010 Harrison B. Prosper
-#$Revision: 1.4 $
+#$Revision: 1.5 $
 #---------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
@@ -11,7 +11,7 @@ from string import *
 from time import *
 from glob import glob
 from getopt     import getopt, GetoptError
-from PhysicsTools.LiteAnalysis.boostlib import \
+from PhysicsTools.Mkntuple.Lib import \
 	 parseHeader,\
 	 splitHeader,\
 	 stripBlanklines,\
@@ -50,7 +50,6 @@ Usage:
 				FWCore/ParameterSet
 				FWCore/Utilities
 				FWCore/Common
-				PhysicsTools/LiteAnalysis
 				PhysicsTools/Mkntuple
 '''
 def usage():
@@ -97,8 +96,7 @@ else:
 					  "FWCore/FWLite",
 					  "FWCore/MessageLogger",
 					  "FWCore/ParameterSet",
-					  "PhysicsTools/Mkntuple",
-					  "PhysicsTools/LiteAnalysis"
+					  "PhysicsTools/Mkntuple"
 					  ]
 #----------------------------------------------------------------------------
 # subsystems to ignore
@@ -138,7 +136,7 @@ def addToMap(fullkey, key, header, cmap):
 #============================================================================
 def main():
 	
-	print "mkclassmap.py $Revision: 1.4 $\n"
+	print "mkclassmap.py $Revision: 1.5 $\n"
 
 	subpackagelist = SUBPACKAGELIST
 	filelist = []
@@ -280,7 +278,7 @@ def main():
 	out = open(outfile,'w')
 	out.write('# Created: %s\n' % ctime(time()))
 	out.write('# Version: %s\n' % VERSION)
-	out.write('#$Revision: 1.4 $\n')
+	out.write('#$Revision: 1.5 $\n')
 	out.write("ClassToHeaderMap = {\\\n")
 	out.write(record+'\n')
 	out.write("}\n")

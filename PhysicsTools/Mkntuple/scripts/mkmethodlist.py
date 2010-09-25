@@ -9,7 +9,7 @@ from sys    import exit
 from glob   import glob
 from time   import *
 from string import *
-from PhysicsTools.LiteAnalysis.boostlib import \
+from PhysicsTools.Mkntuple.Lib import \
 	 nameonly,\
 	 readMethods,\
 	 cmsswProject

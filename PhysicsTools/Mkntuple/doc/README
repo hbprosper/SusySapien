@@ -1,24 +1,29 @@
 Mkntuple													Harrison B. Prosper
 															Sun Feb 07 2010
 															Thu Aug 26 2010
-															$Revision: 1.5$
+															Sat Aug 25 2010
+															$Revision: 1.6 $
 I	Setup
 ---------
+	In the following, "x" is a lower case letter greater than "d".
+
 	1.	Set up a local release of CMSSW 
 	
-		scramv1 project CMSSW CMSSW_3_8_3a
+		scram project CMSSW CMSSW_3_8_3x
 		cd CMSSW_3_8_3/src
 		cmsenv
 
+
 	2.	Download PhysicsTools/LiteAnalysis and PhysicsTools/Mkntuple:
 
-		cvs co -r v3_8_3a -d PhysicsTools UserCode/SusySapien/PhysicsTools
+		cvs co -r v3_8_3x -d PhysicsTools UserCode/SusySapien/PhysicsTools
 
 	3.	Compile and link
 
 		cd PhysicsTools
 	    scram b clean	
 		scram b	
+		cmsenv
 
 II 	Notes
 ---------

@@ -3,12 +3,12 @@
 # File: mkdoc.py
 # Description: Create documentation of classes.
 # Created: 11-Dec-2009 HBP, (during CERN visit)
-#$Revision: 1.3 $
+#$Revision: 1.4 $
 #------------------------------------------------------------------------------
 import os, sys, glob
 from string import *
 from time import *
-from PhysicsTools.LiteAnalysis.boostlib import nameonly
+from PhysicsTools.Mkntuple.Lib import nameonly
 #------------------------------------------------------------------------------
 TEMPLATE='''<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>

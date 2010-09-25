@@ -5,21 +5,21 @@
 # Updated: 12-Mar-2010 HBP - fix appending of .root
 #          08-Jun-2010 HBP - add creation of selector.h
 #          02-Sep-2010 HBP - fix variables.txt record splitting bug
-#$Revision: 1.10 $
+#$Revision: 1.11 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
 from time import *
 from glob import glob
-from PhysicsTools.LiteAnalysis.boostlib import nameonly, getauthor
+from PhysicsTools.Mkntuple.Lib import nameonly, getauthor
 #------------------------------------------------------------------------------
 if not os.environ.has_key("CMSSW_BASE"):
 	print "\t**you must first set up CMSSW"
 	sys.exit(0)
 
-PACKAGE = "%s/src/PhysicsTools/LiteAnalysis" % os.environ["CMSSW_BASE"]
-TREESTREAM_HPP = "%s/interface/treestream.hpp" % PACKAGE
-TREESTREAM_CPP = "%s/src/treestream.cpp" % PACKAGE
+PACKAGE = "%s/src/PhysicsTools/Mkntuple" % os.environ["CMSSW_BASE"]
+TREESTREAM_HPP = "%s/interface/treestream.h" % PACKAGE
+TREESTREAM_CPP = "%s/src/treestream.cc" % PACKAGE
 PDG_HPP = "%s/interface/pdg.h" % PACKAGE
 PDG_CPP = "%s/src/pdg.cc" % PACKAGE
 MKNTUPLE= "%s/src/PhysicsTools/Mkntuple" % os.environ["CMSSW_BASE"]
@@ -66,7 +66,7 @@ TEMPLATE_H =\
 // Description: Analyzer header for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.10 $
+// $Revision: 1.11 $
 //-----------------------------------------------------------------------------
 
 // -- System
@@ -84,12 +84,12 @@ TEMPLATE_H =\
 
 // --- CMSSW
 
-#include "PhysicsTools/LiteAnalysis/interface/treestream.hpp"
-#include "PhysicsTools/LiteAnalysis/interface/pdg.h"
+#include "PhysicsTools/Mkntuple/interface/treestream.h"
+#include "PhysicsTools/Mkntuple/interface/pdg.h"
 
 #else
 
-#include "treestream.hpp"
+#include "treestream.h"
 #include "pdg.h"
 
 #endif
@@ -251,11 +251,11 @@ TEMPLATE_CC =\
 // Description: Analyzer for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.10 $
+// $Revision: 1.11 $
 //-----------------------------------------------------------------------------
 #include "%(name)s.h"
 #ifdef PROJECT_NAME
-#include "PhysicsTools/LiteAnalysis/interface/pdg.h"
+#include "PhysicsTools/Mkntuple/interface/pdg.h"
 #else
 #include "pdg.h"
 #endif
@@ -318,7 +318,7 @@ SLTEMPLATE=\
 // Description: selector template
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.10 $
+// $Revision: 1.11 $
 //-----------------------------------------------------------------------------
 #include <map>
 #include <string>
@@ -384,12 +384,12 @@ PYTEMPLATELIB =\
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
 #  Author:      %(author)s
-#  $Revision: 1.10 $
+#  $Revision: 1.11 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from time import sleep
 from string import *
-from PhysicsTools.LiteAnalysis.AutoLoader import *
+from PhysicsTools.Mkntuple.AutoLoader import *
 import os, sys, re
 # -----------------------------------------------------------------------------
 # -- Procedures and functions
@@ -607,7 +607,7 @@ PYTEMPLATE =\
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
 #  Author:      %(author)s
-#  $Revision: 1.10 $
+#  $Revision: 1.11 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from string import *
@@ -658,7 +658,7 @@ MAKEFILE = '''#-----------------------------------------------------------------
 #                 verbose    (e.g., verbose=1)
 #                 withcern   (e.g., withcern=1  expects to find CERN_LIB)
 # Author:      %(author)s
-#$Revision: 1.10 $
+#$Revision: 1.11 $
 #------------------------------------------------------------------------------
 ifndef ROOTSYS
 $(error *** Please set up Root)

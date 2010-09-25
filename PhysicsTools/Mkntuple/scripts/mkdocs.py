@@ -9,14 +9,14 @@
 #              08-Aug-2010 HBP, fix search of user.h in Mkntuple
 #              26-Aug02919 HBP, get list of potential classes from
 #                          python/classmap.py
-#$Revision: 1.8 $
+#$Revision: 1.9 $
 #---------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
 from string import *
 from time import *
 from getopt import getopt
-from PhysicsTools.LiteAnalysis.boostlib import \
+from PhysicsTools.Mkntuple.Lib import \
 	 parseHeader,\
 	 splitHeader,\
 	 stripBlanklines,\
@@ -72,8 +72,8 @@ def usage():
 SHORTOPTIONS = 'hI:'
 #----------------------------------------------------------------------------
 # Load needed libraries
-from PhysicsTools.LiteAnalysis.AutoLoader import *
-gSystem.Load("libPhysicsToolsMkntuple")
+from PhysicsTools.Mkntuple.AutoLoader import *
+#gSystem.Load("libPhysicsToolsMkntuple")
 #----------------------------------------------------------------------------
 # Code to extract methods etc.
 #----------------------------------------------------------------------------
@@ -180,7 +180,7 @@ def writeHTML(db, txtfilename):
 #============================================================================
 def main():
 
-	print "mkdocs.py $Revision: 1.8 $\n"
+	print "mkdocs.py $Revision: 1.9 $\n"
 	
 	fmap = {}
 	for file in ClassToHeaderMap.values():

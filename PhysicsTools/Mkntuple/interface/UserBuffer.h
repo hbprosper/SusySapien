@@ -9,7 +9,7 @@
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Sep 19 HBP - copy from Buffer.h
 //
-// $Id: Buffer.h,v 1.20 2010/09/08 21:07:53 prosper Exp $
+// $Id: UserBuffer.h,v 1.1 2010/09/19 14:09:53 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/BufferUtil.h"
@@ -109,13 +109,12 @@ struct UserBuffer  : public BufferThing
   bool fill(const edm::Event& event)
   {
     if ( debug_ > 0 ) 
-      std::cout << BLACK
+      std::cout << DEFAULT_COLOR
                 << "Begin UserBuffer::fill\n\t" 
-                << RED 
+                << BLUE
                 << "X: " << boost::python::type_id<X>().name() << "\n\t"
-                << GREEN 
                 << "Y: " << boost::python::type_id<Y>().name()
-                << BLACK
+                << DEFAULT_COLOR
                 << std::endl;
     
     count_ = 0; // reset count, just in case we have to bail out
@@ -196,7 +195,7 @@ struct UserBuffer  : public BufferThing
       }
   
     if ( debug_ > 0 ) 
-      std::cout << BLACK << "End UserBuffer::fill " << std::endl; 
+      std::cout << DEFAULT_COLOR << "End UserBuffer::fill " << std::endl; 
     return true;
   }
   

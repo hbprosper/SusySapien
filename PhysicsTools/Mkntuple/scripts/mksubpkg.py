@@ -2,12 +2,12 @@
 #------------------------------------------------------------------------------
 # Create the skeleton of a user sub-pacakge
 # Created: 03-Sep-2010 Harrison B. Prosper
-#$Revision: 1.5 $
+#$Revision: 1.6 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
 from time import *
-from PhysicsTools.LiteAnalysis.boostlib import \
+from PhysicsTools.Mkntuple.Lib import \
 	 nameonly, getauthor, cmsswProject
 #------------------------------------------------------------------------------
 PACKAGE, SUBPACKAGE, LOCALBASE, BASE, VERSION = cmsswProject()

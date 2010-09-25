@@ -6,10 +6,13 @@
 // Updated:     Mon Mar 08, 2010 Sezen & HBP - add triggerBits class
 //              Tue Aug 24, 2010 HBP - add HcalNoiseRBXHelper
 //              Thu Sep 02, 2010 HBP - update to new version of HelperFor
-//$Revision: 1.12 $
+//$Revision: 1.13 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
+#include <sstream>
+#include <string>
+#include <vector>
 #include <map>
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 #include "PhysicsTools/Mkntuple/interface/CurrentEvent.h"
@@ -24,6 +27,20 @@ using namespace edm;
 using namespace reco;
 using namespace std;
 //-----------------------------------------------------------------------------
+namespace {
+  void split(string str, vector<string>& vstr)
+  {
+    vstr.clear();
+    istringstream stream(str);
+    while ( stream )
+      {
+        string str;
+        stream >> str;
+        if ( stream ) vstr.push_back(str);
+      }
+  }
+}
+
 // This is called once per job
 // Important: remember to initialize base class
 GenParticleHelper::GenParticleHelper() : HelperFor<reco::GenParticle>() {}
@@ -363,7 +380,7 @@ bufferLabel(string buffername)
 
   string record = vrecords[0];
   vector<string> field;              
-  kit::split(record, field);
+  split(record, field);
   if ( field.size() < 2 ) return label;
 
   label = field[1];

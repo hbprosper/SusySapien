@@ -1,4 +1,3 @@
-<use name=PhysicsTools/LiteAnalysis>
 <use name=PhysicsTools/Mkntuple>
 <use name=PhysicsTools/UtilAlgos>
 <use name=PhysicsTools/Utilities>
