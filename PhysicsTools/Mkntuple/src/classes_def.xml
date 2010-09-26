@@ -26,6 +26,7 @@
    <class name="kit::PtThing"/>
    <class name="FunctionMember"/>
    <class name="ClassMembers"/>
+   <class name="PoissonGammaFit"/>
 
    <class name="ATestBase"/>
    <class name="Aclass"/>

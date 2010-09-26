@@ -14,7 +14,7 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
-// $Id: FunctionMember.cc,v 1.2 2010/09/19 14:09:53 prosper Exp $
+// $Id: FunctionMember.cc,v 1.1 2010/09/25 21:35:01 prosper Exp $
 //-----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python.hpp>
@@ -122,6 +122,12 @@ FunctionMember::FunctionMember(std::string classname,
       fd.reference   = false;
       fd.smartpointer= false;
       fd.deallocate  = false;
+
+      // Memory is needed by Reflex to store the return values from functions.
+      // For simple types (called fundamental types by Reflex), the scratch
+      // area is sufficient. For objects, however, we need to reserve space on
+      // the heap if the object is returned by value. (See the end of this
+      // routine).
       fd.memory      = (void*)(&fd.scratch);
       
       // If method is compound, split in two and reset "expression"
@@ -165,8 +171,12 @@ FunctionMember::FunctionMember(std::string classname,
               << fd.expression << endl;
 
           // We have a valid data member. Get type
-          // Note: simple types can be returned 
-          // by value, pointer or reference.
+          // Note: allow for the possibility that values can 
+          // be returned by value, pointer or reference.
+          // 1. by value     - a copy of the object is returned
+          // 2. by pointer   - a variable (the pointer) containing the 
+          //                   address of the object is returned
+          // 3. by reference - the object itself is returned
 
           fd.returntype = fd.method.TypeOf();
           if ( fd.returntype.IsFundamental() )
@@ -178,12 +188,19 @@ FunctionMember::FunctionMember(std::string classname,
             fd.reference = true;
 
           // Get name of return type
-
+          // Note: for data members, the returntype variable
+          // isn't the final type in the sense that the type
+          // could still include the "*" or "&" appended to the
+          // type. However, for methods returntype is the final
+          // type.
+            
           retname = fd.returntype.Name(SCOPED+FINAL);
           if ( fd.pointer || fd.reference )
+            // remove "*" or "&" at end of name
             retname = retname.substr(0,retname.size()-1);
 
           // Fall on sword if we cannot get data member type name
+
           if ( retname == "" )
             throw cms::Exception("datamemberTypeFailure")
               << " can't get type for data member "
@@ -221,8 +238,8 @@ FunctionMember::FunctionMember(std::string classname,
               << fd.expression << endl;
 
           // We have a valid method so get a model of its return type
-          // Note: simple types can be returned 
-          // by value, pointer or reference.
+          // Note: again, allow for the possibility that the value can be
+          // returned by value, pointer or reference.
 
           int code=0;
           fd.returntype = rfx::returnType(fd.method, code);
@@ -358,18 +375,10 @@ FunctionMember::invoke(void* address)
     {
       FunctionDescriptor& fd = fd_[depth]; // NB: get an alias NOT a copy!
 
-      // The deallocate flag will be set to true by the invokeMethod routine 
-      // if the returned entity is an object returned by value. invokeMethod
-      // allocates space for such an object and informs its caller that
-      // it has done so by setting deallocate = true. If deallocate is true,
-      // then the allocated memory must be freed before we exit this routine.
-
-
       // classname   the parent class to which method/data member belongs
       // address     address of object whose method/data member is being called
       // method      object that models a method or a data member
       // args_       the arguments of the method to be called
-      // deallocate  true if memory has been allocated.
 
       if ( DBFunctionMember )
         cout << depth << "\tFunctionMember::invoke - " 
