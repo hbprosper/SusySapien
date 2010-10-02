@@ -1,4 +1,4 @@
-//$Revision: 1.6 $
+//$Revision: 1.7 $
 #include "PhysicsTools/Mkntuple/interface/Connection.h"
 #include "PhysicsTools/Mkntuple/interface/Slot.h"
 #include "PhysicsTools/Mkntuple/interface/pdg.h"
@@ -14,6 +14,7 @@
 #include "PhysicsTools/Mkntuple/interface/FunctionMember.h"
 #include "PhysicsTools/Mkntuple/interface/ClassMembers.h"
 #include "PhysicsTools/Mkntuple/interface/PoissonGammaFit.h"
+#include "PhysicsTools/Mkntuple/interface/RGS.h"
 //-----------------------------------------------------------------------------
 #include "TLorentzVector.h"
 #include "TH1F.h"

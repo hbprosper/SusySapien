@@ -52,6 +52,7 @@ main(int argc, char** argv)
   mname.push_back("avalue");
   mname.push_back("ptrToA()->avalue");
   mname.push_back("ptrToB->value()");
+  mname.push_back("say(\"Go boil your head!\")");
 
   boost::ptr_vector<Method<ATest> > method;
 
@@ -64,7 +65,7 @@ main(int argc, char** argv)
 
   char record[256];
 
-  for(int i=0; i < 1001; i++)
+  for(int i=0; i < 1; i++)
     {
       cout << endl << i 
            << " ------------------------------------------------"   << endl;
@@ -127,6 +128,14 @@ main(int argc, char** argv)
 
       sprintf(record, "Method         - %-20s\t= %10.4f", 
               mname[5].c_str(), method[5]((const ATest)c)); 
+      cout << record << endl;
+      //--------------------------------------------------------------------
+      sprintf(record, "Direct         - %-20s\t= %10.4f", 
+              mname[6].c_str(), c.say("Go boil your head!"));
+      cout << record << endl;
+
+      sprintf(record, "Method         - %-20s\t= %10.4f", 
+              mname[6].c_str(), method[6](c)); 
       cout << record << endl;
     }
 

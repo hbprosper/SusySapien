@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 #------------------------------------------------------------------------------
 # File: plotslha.py
-# Description: plot SUSY mass spectrum from an SLHA file
+# Description: plot SUSY mass spectrum or decays from an SLHA file
 # Created: 22 Sep 2010 Harrison B. Prosper & Sezen Sekmen
-#$Revision:$
+#$Revision: 1.1 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -11,7 +11,10 @@ from time import sleep
 from getopt import getopt, GetoptError
 from ROOT import *
 #------------------------------------------------------------------------------
-OPTIONS= 'dm:t:w:' # command line options
+OPTIONS= 'p:y:t:w:l' # command line options
+RED    ="\x1b[0;31;48m"
+DCOLOR ="\x1b[0m"	 # reset to default foreground color		 
+			 
 def usage():
 	print '''
 Usage
@@ -19,14 +22,18 @@ Usage
 	 
 	 options:
 
-	 -d                     plot decays [plot masses]
-	 -m <maximum mass>      maximum mass (for y-axis) [find automatically]
-	 -t "title"             title for plot [SUSY Mass Spectrum]
-	 -w <canvas-width>      canvas width in pixels [1000]
+	 -p PDGid             plot decays of given particle [plot masses]
+	 -y [ymin:]ymax       range for y-axis              [automatic]
+	 -l                   log(y) scale                  [linear]
+	 -t "title"           title for plot                [filename]
+	 -w canvas-width      canvas width in pixels        [1000]
 '''
 	sys.exit(0)
 #------------------------------------------------------------------------------
-LSCALE = 0.0138  # line length relative to x-range
+LSCALE = 0.0135  # line length relative to x-range
+LOGYMIN=-8.0     # minimum log10(y)
+WIDTH  = 1000    # Default canvas width
+HEIGHT = 500     # Default canvas height
 
 # Font code = 10 * fontnumber + precision with fontnumber 1..14
 # fontnumber= 1..14
@@ -34,9 +41,16 @@ LSCALE = 0.0138  # line length relative to x-range
 # precision = 1 scalable and rotatable hardware fonts
 # precision = 2 scalable and rotatable hardware fonts
 # precision = 3 scalable and rotatable hardware fonts. Text size in pixels. 
-TimesNewRomanBold = 32 
-Arial             = 42
-FSCALE = 0.04 # font size relative to x-range
+
+Arial             = 43
+FONTSIZE          = 18 # font size in pixels
+
+TimesNewRomanBold = 33
+LABEL_FONTSIZE    = 18
+FONTSCALE         = 0.0027
+
+TimesNewRoman2    = 12
+TITLE_FONTSIZE    = 0.048
 
 # Text alignment = 10 * horizontal + vertical
 # For horizontal alignment:
@@ -165,6 +179,155 @@ NAMES = {\
 for key in NAMES.keys():
 	NAMES[atoi(key)] = NAMES[key]
 #------------------------------------------------------------------------------
+def decodeCommandLine():
+	argv = sys.argv[1:]
+	if len(argv) < 1: usage()
+
+	try:
+		options, filenames = getopt(argv, OPTIONS)
+	except GetoptError, m:
+		print RED, "\n\t** %s" % m, DCOLOR
+		usage()
+		
+	if len(filenames) == 0: usage()
+	
+	filename = filenames[0]
+	if not os.path.exists(filename):
+		print "\t*** I can't find \n\t%s" % filename
+		sys.exit(0)
+
+	# Check for command line options
+
+	# Set defaults
+	pdgid  = None
+	title  = filename
+	width  = 1000 # pixels
+	ymin   = 0.0
+	ymax   =-1.0
+	setlogy   = False
+	automatic = True
+	squeeze   = True
+	
+	for option, value in options:
+		if option == '-t':
+			title = value
+			
+		elif option == '-p':
+			pdgid = atoi(value)
+			
+			if not NAMES.has_key(pdgid):
+				print "\t*** I'm a cyber ignoramous and don't understand"\
+					  "\n\t*** this PDG id: %d" % pdgid
+				sys.exit(0)
+				
+		elif option == '-y':
+
+			automatic = False
+			
+			try:
+				value = replace(value, ",",":") # perhaps a comma was used!
+				t = split(value,":")
+				if len(t) == 0:
+					print "\t*** I can't make sense of ( %s %s )" % \
+						  (option, value)
+					sys.exit(0)
+				if len(t) == 1:
+					ymin = 0.0
+					ymax = atof(value)
+				else:
+					ymin = atof(t[0])
+					ymax = atof(t[1])
+
+			except:
+				print "\t*** I can't make sense of sense of ( %s %s )" % \
+					  (option, value)
+				sys.exit(0)
+				
+		elif option == '-l':
+			setlogy = True
+			
+		elif option == '-s':
+			squeeze = True
+			
+		elif option == '-w':
+			try:
+				width = atoi(value)
+			except:
+				print "\t*** I can't make sense of width( %s )" % value
+				sys.exit(0)
+
+	extras = {'automatic': automatic,
+			  'setlogy'  : setlogy,
+			  'squeeze'  : squeeze,
+			  'pdgid'    : pdgid}
+	
+	return ((filename, title, width, ymin, ymax), extras)
+#-----------------------------------------------------------------------------
+def notDisplayed(pdgid, x, y, xmin, xmax, ymin, ymax):
+	missed = False
+	if x > 0.95 * xmax:
+		missed = True
+		message = RED +\
+				  "** how embarassing, "\
+				  "PDGid=%d, y=%e beyond x-max"+\
+				  DCOLOR
+		print message % (pdgid, y)
+
+	if (y < ymin) or (y > ymax):
+		missed = True
+		message = RED +\
+				  "** oops, "\
+				  "PDGid=%d, y=%e out of y-range"+\
+				  DCOLOR
+		print message % (pdgid, y)
+	return missed
+#-----------------------------------------------------------------------------
+def plotArea(extras, yymin, yymax, ymin, ymax):
+
+	if extras['automatic']:
+		print "\tymin and ymax set automatically"
+		
+		if extras['setlogy']:
+			if yymin <= 0:
+				yymin = 10**LOGYMIN
+				print "\n\t** setting ymin = %e\n" % yymin 
+				
+			if yymax <= 0:
+				print "\n\t** error *** ymax = %f...!!!\n" % yymax
+				sys.exit(0)
+
+			yymin1 = log10(yymin/10)
+			yymin  = log10(yymin)
+			yymax  = log10(yymax)
+			yymid  =(yymax + yymin)/2
+			yyhalf =(yymax - yymin)*0.65
+			yymin= yymid - yyhalf
+			if yymin < 0: yymin = yymin1
+			yymax= yymid + yyhalf
+			ymin = 10**yymin
+			ymax = 10**yymax
+		else:
+			yymidpt =(yymax + yymin)/2
+			yyhalfr =(yymax - yymin)*0.65
+			yymin   = yymidpt - yyhalfr
+			yymax   = yymidpt + yyhalfr
+			ymin = max(yymin, 0.0)
+			ymax = yymax
+	else:
+		if extras['setlogy']:
+			if ymin <= 0:
+				ymin = 10**LOGYMIN
+				print "\n\t** setting ymin = %e\n" % ymin 
+				
+			if ymax <= 0:
+				print "\n\t** error *** ymax = %f...!!!\n" % ymax
+				sys.exit(0)
+				
+	print "\tymin: %10.2e" % ymin
+	print "\tymax: %10.2e" % ymax
+	print
+	return (ymin, ymax)
+#------------------------------------------------------------------------------
 def setStyle():
    gStyle.SetOptTitle(0)
    gStyle.SetOptStat(0)
@@ -183,6 +346,9 @@ def setStyle():
 
    gStyle.SetTitleFont(Arial, "XY")
    gStyle.SetLabelFont(Arial, "XY")
+
+   gStyle.SetTitleSize(FONTSIZE, "XY")
+   gStyle.SetLabelSize(FONTSIZE, "XY")
 #------------------------------------------------------------------------------
 def makeHistogram(hname, xtitle, ytitle, nbin, xmin, xmax, ymin, ymax):	
    h = TH1F(hname, "", nbin, xmin, xmax)
@@ -203,79 +369,104 @@ def makeHistogram(hname, xtitle, ytitle, nbin, xmin, xmax, ymin, ymax):
    for x in xtitle: h.Fill(x, 1)
    return h
 #------------------------------------------------------------------------------
-def getMassBlock(records, maxmass):
+def getMassBlock(records, ymin, ymax, extras):
 	block = {}
 	token = "BLOCK MASS"	
 	ltoken= len(token)
 
 	found = False
-	findmaxmass = maxmass < 0
+	minmass = 1.e30
+	maxmass =-1.e30
 	for index, record in enumerate(records):
 		
+		# skip any other lines that start with a "#"
+		if record[0] == "#": continue
+		
 		# Loop until we find the block
+
+		record = upper(record) # make case insensitive
+		
 		if token == record[:ltoken]:
 			found = True
 			continue
 		if not found: continue
 
-		# we are in the block, so look for the terminal character
-		# which is a single "#" on a line
-		if record == "#": break
-
-		# skip any other lines that start with a "#"
-		if record[0] == "#": continue
-
+		# we are in the block, so look for either:
+		# a BLOCK or a DECAY section
 		field = split(record)
+		if len(field) > 0:
+			if field[0] in ["BLOCK", "DECAY"]: break
+
+		# field[0]: PDG id
+		# field[1]: mass
 		pdgid = atoi(field[0])
-		mass  = atof(field[1])
+		if pdgid in IGNORE: continue
+		
+		mass  = abs(atof(field[1]))
 		
 		if not NAMES.has_key(pdgid):
 			name = "UNK"
 			color= kBlack
 		else:
 			name, color  = NAMES[pdgid]
-		if findmaxmass:
-			if mass > maxmass: maxmass = mass
-
 		block[pdgid] = (mass, name, color)
-	return (block, maxmass)
+		if mass > maxmass: maxmass = mass
+		if mass < minmass: minmass = mass
+
+	print "\tMinimum mass: %10.2e" % minmass
+	print "\tMaximum mass: %10.2e" % maxmass
+	
+	ymin, ymax = plotArea(extras, minmass, maxmass, ymin, ymax)
+
+	return (block, ymin, ymax)
 #------------------------------------------------------------------------------
-def getDecayBlocks(records):
-	blocks= {}
-	token = "DECAY"	
-	ltoken= len(token)
+def getDecayBlock(records, ymin, ymax, extras):
+	block = []
+	pdgId = extras['pdgid']
+	token = 'DECAY %-d' % pdgId	# left justify number
 
+	minBF = 1.0
+	maxBF = 0.0
 	found = False
-	PDG = 0
 	for index, record in enumerate(records):
-		
-		# Loop until we find the block
-		if token == record[:ltoken]:
-			#print record
-			found = True
-			field = split(record)
-			PDG = atoi(field[1]) # particle id
-			if not NAMES.has_key(PDG):
-				name = "UNK"
-				color= kBlack
-			else:
-				name, color = NAMES[PDG]
-			blocks[PDG] = [(name, color)]
-			continue
-		if not found: continue
-
-		# we are in the block, so look for the terminal character
-		# which is a single "#" on a line. Then continue looking for
-		# the next decay block
-		if record == "#":
-			found = False
-			continue
 
 		# skip any other lines that start with a "#"
 		if record[0] == "#": continue
 
-		field = split(record)
+		# Loop until we find the block
+		record = upper(record) # make case insensitive
+		field  = split(record)
+		if len(field) > 1:
+			keyword = '%-s %-s' % (field[0], field[1]) # left justify
+		else:
+			keyword = ""
+			
+		if token == keyword:
+			print "\t%s" % strip(record)
+			found = True
+
+			name, color = NAMES[pdgId]
+			block.append(pdgId)
+			block.append(name)
+			block.append(color)
+			block.append([])
+			continue
+		
+		if not found: continue
+
+		# we are in the block, so look either for
+		# a BLOCK or a DECAY section
+
+		if len(field) > 0:
+			if field[0] in ["BLOCK", "DECAY"]:
+				break
+
 		BF  = atof(field[0]) # branching fraction
+		if BF <= 0.0:
+			print "\n\t** negative or zero BF - ignored!!!!\n"
+			print "\t** %s" % strip(record)
+			continue
+		
 		NDA = atoi(field[1]) # number of daughters
 		D   = []
 		for i in range(NDA):
@@ -302,11 +493,27 @@ def getDecayBlocks(records):
 							name = replace(name, "#pm", "+")
 						else:
 							name = replace(name, "#pm", "-")
+				elif key > 1000000:
+					if pdgid < 0:
+						name = name + "^{*}"						
 			D.append((pdgid, name, color))
-		blocks[PDG].append((D, BF))
-	return blocks
+			
+		block[-1].append((BF, D)) # add to last element of block
+		if BF > maxBF: maxBF = BF
+		if BF < minBF: minBF = BF
+
+	if maxBF < minBF:
+		print "\n\t*** No data for PDG id: %d ***\n" % pdgId
+		sys.exit(0)
+
+	print "\tMinimum BF: %10.2e" % minBF
+	print "\tMaximum BF: %10.2e" % maxBF
+	
+	ymin, ymax = plotArea(extras, minBF, maxBF, ymin, ymax)
+
+	return (block, ymin, ymax)
 #------------------------------------------------------------------------------
-def plotMasses(masses, output, maxmass, **kargs):
+def plotMasses(block, output, ymin, ymax, **kargs):
    """ Plot SUSY mass spectrum
    """
    # Decode keyword arguments
@@ -319,52 +526,73 @@ def plotMasses(masses, output, maxmass, **kargs):
    if kargs.has_key("width"):
 	   width = kargs['width']
    else:
-	   width = 1000
-   height = width / 2
+	   width = WIDTH
+   height = HEIGHT
 
+   if kargs.has_key("setlogy"):
+	   setlogy = kargs['setlogy']
+   else:
+	   setlogy = False
+
+   if kargs.has_key("squeeze"):
+	   squeeze = kargs['squeeze']
+   else:
+	   squeeze = False	   
+	   
    # Define plot area in user coordinates [xmin, xmax] x [ymin, ymax]
    
    xmin = 0.0;
    xmax = 1.0;
-   xrange = xmax-xmin;
-   ymin = 0.0;
-   ymax = maxmass;
+   xrange = xmax-xmin
    yrange = ymax-ymin
-   
-   # Scale font size relative to x-range
-   
-   fsize  = FSCALE * xrange
 
-   # Fix font size
+   # Map font size from pixels to plot coordinates
    
-   gStyle.SetTitleSize(fsize, "XY")
-   gStyle.SetLabelSize(fsize, "XY")
+   fsize  = FONTSCALE * LABEL_FONTSIZE * (float(WIDTH) / width) 
+   lsize  = 0.18*fsize
+   space  = 0.18*fsize   
+
+   # Determine how much x-space we need
+   
+   xoffset= lsize + space
+   items  = []
+   for pdgid in PDGID:
+	   if not block.has_key(pdgid): continue
+	   xoffset += lsize + 0.5*space
+	   xoffset += 5*space
+	   mass, name, color = block[pdgid]
+	   items.append((pdgid, mass, name, color))
+
+  # maybe we need to squeeze things a bit
+   if squeeze:
+	   xscale = 0.98 * xmax / xoffset
+   else:
+	   xscale = 1.0
+   lsize *= xscale
+   space *= xscale
 
    # Create canvas
    
    c = TCanvas('cm', "SUSY Mass Spectrum", 10, 10, width, height)
    c.SetGridy()
+   if setlogy: c.SetLogy()
 
    # Create histogram
 
    h = makeHistogram("hm",
-					 ['Purple Things',
-					  'Blue Things',
-					  'Red Things',
-					  'Green Things'],
+					 ['Higges',
+					  'Squarks',
+					  'Sleptons',
+					  'Gauginos'],
 					 "mass [GeV/c^{2}]",
 					 4, xmin, xmax, ymin, ymax)
  
-   # Scale line size relative to x-range
-   
-   lwidth = LSCALE * xrange
-
    # Plot title
    
    ptitle = TLatex()
    ptitle.SetTextAlign(ALIGN_LEFT_BOTTOM)
-   ptitle.SetTextFont(TimesNewRomanBold)
-   ptitle.SetTextSize(fsize)
+   ptitle.SetTextFont(TimesNewRoman2)
+   ptitle.SetTextSize(TITLE_FONTSIZE)
    ptitle.SetTextColor(kBlack)
 
    # Lines and labels
@@ -374,39 +602,39 @@ def plotMasses(masses, output, maxmass, **kargs):
    label = TLatex()
    label.SetTextAlign(ALIGN_LEFT_BOTTOM)
    label.SetTextFont(TimesNewRomanBold)
-   label.SetTextSize(fsize)
+   label.SetTextSize(LABEL_FONTSIZE)
 
    # Now plot
 
    c.cd()
    h.Draw()
-   ptitle.DrawLatex(0.05 * xrange, 0.92 * yrange, title)
+   if setlogy:
+	   xpos = 0.05 * xrange + xmin
+	   ypos = 10**(0.92 * log10(ymax/ymin) + log10(ymin))
+   else:
+	   xpos = 0.05 * xrange + xmin
+	   ypos = 0.92 * yrange
+   ptitle.DrawLatex(xpos, ypos, title)
    
-   space  = 0.1*lwidth
-   xstep  = lwidth + space + 0.6 * fsize
-   
-   column = 0
-   for pdgId in PDGID:
-	   if not masses.has_key(pdgId): continue
-	   if pdgId in IGNORE: continue
-		
-	   mass, name, colour = masses[pdgId]
-	   xoffset = lwidth + column * xstep
+   xoffset = lsize + 2*space
+   for pdgid, mass, name, colour in items:
+	   
+	   if notDisplayed(pdgid, xoffset, mass, xmin, xmax, ymin, ymax): continue
 		
 	   line.SetLineColor( colour )
-	   line.DrawLine( xoffset, mass, xoffset + lwidth, mass )
+	   line.DrawLine(xoffset, mass, xoffset + lsize, mass)
 
-	   label.SetTextColor( colour )
-	   label.DrawLatex(xoffset + lwidth + space, mass, name )
-	   
-	   column += 1 # increment column index
+	   xoffset += lsize + 0.5*space
+	   label.SetTextColor(colour)
+	   label.DrawLatex(xoffset, mass, name)
+	   xoffset += 5*space
 
    c.Update()
-   c.SaveAs( "%s.eps" % output )
-   c.SaveAs( "%s.gif" % output )
+   c.SaveAs( "%s_spectrum.eps" % output )
+   c.SaveAs( "%s_spectrum.gif" % output )
    return (c, h) # needed to prevent plot from vanishing!
 #------------------------------------------------------------------------------
-def plotDecays(decays, output, **kargs):
+def plotDecays(block, output, ymin, ymax, **kargs):
    """ Plot SUSY decays
    """
    # Decode keyword arguments
@@ -419,54 +647,93 @@ def plotDecays(decays, output, **kargs):
    if kargs.has_key("width"):
 	   width = kargs['width']
    else:
-	   width = 1000
-   height = width / 2
+	   width = WIDTH
+   height = HEIGHT
+   
+   if kargs.has_key("setlogy"):
+	   setlogy = kargs['setlogy']
+   else:
+	   setlogy = False
 
-   # Define plot area in user coordinates [xmin, xmax] x [ymin, ymax]
+   if kargs.has_key("squeeze"):
+	   squeeze = kargs['squeeze']
+   else:
+	   squeeze = False	   
+	   
+   # get particle name, color, daughters and branching fraction
+   # pname    - name of parent particle
+   # pcolor   - display color of parent particle
+   # BF       - branching fraction
+   # chains   - decay chains: [(pdgid, name, color),...]
+   
+   pdgId, pname, pcolor, decays = block
    
    xmin = 0.0;
    xmax = 1.0;
-   xrange = xmax-xmin;
-   ymin = 1.e-8;
-   ymax = 10.0;
+   xrange = xmax-xmin
    yrange = ymax-ymin
-   
-   # Scale font size relative to x-range
-   
-   fsize  = FSCALE * xrange
 
-   # Fix font size
+   # Map font size from pixels to plot coordinates
    
-   gStyle.SetTitleSize(fsize, "XY")
-   gStyle.SetLabelSize(fsize, "XY")
+   fsize  = FONTSCALE * LABEL_FONTSIZE * (float(WIDTH) / width) 
+   lsize  = 0.18*fsize
+   space  = 0.18*fsize
+
+   # Determine how much x-space we need
+   
+   items  = []
+   previousdecay = ""
+   xoffset= lsize + 3*space
+   for BF, D in decays:
+	   # Omit conjugate decays
+	   decay = ""
+	   conjdecay = ""
+	   for id, dname, dcolor in D:
+		   decay += "%d" % id
+		   conjdecay += "%d" % -id
+	   if conjdecay == previousdecay: continue
+	   previousdecay = decay
+
+	   items.append((BF, D))
+	   xoffset += lsize + space
+	   for id, dname, dcolor in D:		   
+		   # need a bit more space for boson characters
+		   if dname[0] in ['W']: xoffset += 2*space
+		   xoffset += 3*space
+	   xoffset += space
+
+   # maybe we need to squeeze things a bit
+   if squeeze:
+	   xscale = 0.98 * xmax / xoffset
+   else:
+	   xscale = 1.0
+   lsize *= xscale
+   space *= xscale
    
    # Create canvas
    
    c = TCanvas('cd', "SUSY Decays", 100, 100, width, height)
    c.SetGridy()
-   c.SetLogy()
+   if setlogy: c.SetLogy()
    
    # Create histogram
 
    h = makeHistogram("hd",
-					 ['Purple Things',
-					  'Blue Things',
-					  'Red Things',
-					  'Green Things'],
+					 ['Thing 1', 
+					  'Thing 2',
+					  'Thing 3',
+					  'Thing 4'],
 					 "Branching Fraction",
 					 4, xmin, xmax, ymin, ymax)
-
-   # Scale line size relative to x-range
+   canvascolor = gStyle.GetCanvasColor()
+   h.GetXaxis().SetLabelColor(canvascolor) # suppress display of x-labels
    
-   lwidth = LSCALE * xrange
-
    # Plot title
    
    ptitle = TLatex()
    ptitle.SetTextAlign(ALIGN_LEFT_BOTTOM)
    ptitle.SetTextFont(TimesNewRomanBold)
-   ptitle.SetTextSize(fsize)
-   ptitle.SetTextColor(kBlack)
+   ptitle.SetTextColor(pcolor)
 
    # Lines and labels
    line = TLine()
@@ -475,110 +742,49 @@ def plotDecays(decays, output, **kargs):
    label = TLatex()
    label.SetTextAlign(ALIGN_LEFT_BOTTOM)
    label.SetTextFont(TimesNewRomanBold)
-   label.SetTextSize(fsize)
+   label.SetTextSize(LABEL_FONTSIZE)
 
-   # Now plot
+   # Plot title
 
    c.cd()
    h.Draw()
-   ptitle.DrawLatex(0.05 * xrange, 0.92 * yrange, title)
-   
-   space  = 0.1*lwidth
-   xstep  = lwidth + space + 0.6 * fsize
+   title += "    %s decays" % pname
+   if setlogy:
+	   xpos = 0.05 * xrange + xmin
+	   ypos = 10**(0.92 * log10(ymax/ymin) + log10(ymin))
+   else:
+	   xpos = 0.05 * xrange + xmin
+	   ypos = 0.92 * yrange
+   ptitle.DrawLatex(xpos, ypos, title)
 
-   EOC = False
-   column = 0
-   for pdgId in PDGID:
-	   if not decays.has_key(pdgId): continue
-	   if pdgId in IGNORE: continue
+   # Plot items
 
-	   # get particle name, color, daughters and branching fraction
-
-	   inputs = decays[pdgId]
-	   name, color = inputs[0]
-	   inputs = inputs[1:]
+   xoffset = lsize + 3*space
+   for BF, D in items:
 	   
-	   for D, BF in inputs:
+	   pdgid, dname, color = D[0]
+	   if notDisplayed(pdgid, xoffset, BF, xmin, xmax, ymin, ymax): continue
+	   
+	   line.SetLineColor( pcolor )
+	   line.DrawLine( xoffset, BF, xoffset + lsize, BF )
 
-		   xoffset = lwidth + column * xstep
-		   if (xoffset + 5 * lwidth) > xmax:
-			   EOC = True
-			   break
-		   
-		   line.SetLineColor( color )
-		   line.DrawLine( xoffset, BF, xoffset + lwidth, BF )
+	   xoffset += lsize + space
+	   for id, dname, dcolor in D:		   
+		   label.SetTextColor( dcolor )
+		   label.DrawLatex(xoffset, BF, dname)
+		   # need a bit more space for boson characters
+		   if dname[0] in ['W']: xoffset += 2*space
+		   xoffset += 3*space
+	   xoffset += space
 
-		   xpos = xoffset + lwidth + space
-		   label.SetTextColor( color )
-		   label.DrawLatex(xpos, BF, "%s " % name)
-		   
-		   for id, dname, dcolor in D:
-			   label.SetTextColor( dcolor )
-			   xpos += 0.5*fsize				   
-			   label.DrawLatex(xpos, BF, dname)
-			   if dname[0] in ['W','Z','H']:
-				   xpos += 0.25*fsize
-
-			   column += 1 # increment column index
-	   if EOC: break
    c.Update()
-   c.SaveAs( "%s.eps" % output )
-   c.SaveAs( "%s.gif" % output )
+   c.SaveAs( "%s_%d_decay.eps" % (output, pdgId) )
+   c.SaveAs( "%s_%d_decay.gif" % (output, pdgId) )
    return (c, h) # needed to prevent plot from vanishing!
-#------------------------------------------------------------------------------
-def decodeCommandLine():
-	argv = sys.argv[1:]
-	if len(argv) < 1: usage()
-
-	try:
-		options, filenames = getopt(argv, OPTIONS)
-	except GetoptError, m:
-		print m
-		usage()
-	if len(filenames) == 0: usage()
-	
-	filename = filenames[0]
-	if not os.path.exists(filename):
-		print "Go boil your head because I can't find \n\t%s" % filename
-		sys.exit(0)
-
-	# Check for command line options
-
-	doMasses = True
-	title   = "SUSY"
-	width   = 1000 # pixels
-	maxmass =-1.0
-	fixmass = True
-	
-	for option, value in options:
-		if option == '-t':
-			title = value
-		elif option == '-d':
-			doMasses = False
-			print "\n\t** This is still experimental! ***\n"
-		elif option == '-m':
-			try:
-				maxmass = atof(value)
-				fixmass = False
-			except:
-				print "\t*** I can't make sense of maxmass( %s )" % value
-				sys.exit(0)
-		elif option == '-w':
-			try:
-				width = atoi(value)
-			except:
-				print "\t*** I can't make sense of width( %s )" % value
-				sys.exit(0)
-	if doMasses:
-		return (filename, title, width, maxmass, fixmass)
-	else:
-		return (filename, title, width)
 #------------------------------------------------------------------------------
 def main():
 
-	inputs = decodeCommandLine()
-
-	filename, atitle, awidth = inputs[:3]
+	(filename, atitle, awidth, ymin, ymax), extras = decodeCommandLine()
 
 	# Read SLHA file
 	records  = map(strip, open(filename).readlines())
@@ -590,22 +796,25 @@ def main():
 
 	setStyle()
 	
-	if len(inputs) > 3:
-		maxmass, fixmass = inputs[3:]
-		masses, maxmass = getMassBlock(records, maxmass)
-		if fixmass:
-			n = int(1.1 * maxmass/100)
-			maxmass = (n+1) * 100
-	
-		print "Maximum mass: %10.1f" % maxmass
+	if extras['pdgid'] == None:
+		block, ymin, ymax = getMassBlock(records, ymin, ymax, extras)
 
-		# Ok plot
-		c, h = plotMasses(masses, output, maxmass, title=atitle, width=awidth)
+		c,h = plotMasses(block, output, ymin, ymax,
+						 title=atitle, width=awidth,
+						 setlogy=extras['setlogy'],
+						 squeeze=true)
 	else:
-		decays = getDecayBlocks(records)
-		c, h = plotDecays(decays, output, title=atitle, width=awidth)
-	#sleep(5)
-	gApplication.Run()
+		block, ymin, ymax = getDecayBlock(records, ymin, ymax, extras)
+
+		c,h = plotDecays(block, output, ymin, ymax,
+						 title=atitle, width=awidth,
+						 setlogy=extras['setlogy'],
+						 squeeze=extras['squeeze'])
+
+	print "\n\twarning: ...I shall self-destruct in 5 seconds..."
+	sleep(5)
+	print "\tBoom!!\n"
+	#gApplication.Run()
 #------------------------------------------------------------------------------
 main()
 

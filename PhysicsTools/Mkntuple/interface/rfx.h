@@ -17,9 +17,9 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Fri Apr 04 2008
-// $Id: kit.h,v 1.12 2010/09/23 09:10:23 prosper Exp $
+// $Id: rfx.h,v 1.1 2010/09/25 21:34:55 prosper Exp $
 //
-//$Revision: 1.12 $
+//$Revision: 1.1 $
 //-----------------------------------------------------------------------------
 #include <iostream>
 #include <fstream>
@@ -37,6 +37,8 @@
 namespace {
   std::vector<void*> DEFARGS;
 }
+
+class FunctionDescriptor;
 
 struct rfx
 {
@@ -119,20 +121,16 @@ struct rfx
 
   ///
   static
-  Reflex::Member decodeMethod(std::string classname,
-                              std::string methodrecord,
-                              std::vector<rfx::ValueThing*>& values,
-                              std::vector<void*>& args);
+  void           decodeMethod(FunctionDescriptor& fd);
+
   ///
   static
   void*          datamemberValue(std::string& classname, void* address, 
                                  std::string& membername);
   ///
   static
-  void*          invokeMethod(Reflex::Member& method, 
-                              void* address, 
-                              void* memory,
-                              std::vector<void*>& args=DEFARGS);
+  void*          invokeMethod(FunctionDescriptor& fd, void* address); 
+
   ///
   static
   void           deallocateMemory(Reflex::Member& member, void* address);
@@ -173,6 +171,30 @@ struct rfx
   std::string              regex_sub(std::string& str, 
                                      std::string expr, 
                                      std::string rstr); 
+};
+
+ /// Describe attributes of a function or data member.
+struct FunctionDescriptor
+{
+  std::string        classname;          /// Name of parent class
+  std::string        expression;         /// Function expression
+  Reflex::Type       otype;              /// Object type
+  Reflex::Member     method;             /// Model of function
+  std::vector<rfx::ValueThing*>  values; /// Argument descriptors
+  std::vector<void*> args;               /// Arguments
+  
+  Reflex::Type              rtype;       /// Models return type
+  Reflex::EFUNDAMENTALTYPE  rcode;       /// Return type code
+  Reflex::Object            robject;     /// Models returned object
+  
+  bool               datamember;     /// True if this is a data member
+  bool               simple;         /// True if return type is simple
+  bool               pointer;        /// True if return type is a pointer
+  bool               reference;      /// True if return type is a reference
+    
+  bool               smartpointer;   /// True if return type is a smart pointer
+  bool               isAvailable;    /// True if this is isAvailable()
+  bool               isNull;         /// True if this is isAvailable()
 };
 
 

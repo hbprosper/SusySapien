@@ -41,3 +41,7 @@
 <flags EDM_PLUGIN=1>
 </library>
 
+<library file=TestMethod.cc name=TestMethod>
+<flags EDM_PLUGIN=1>
+</library>
+

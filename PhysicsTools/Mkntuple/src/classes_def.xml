@@ -27,6 +27,7 @@
    <class name="FunctionMember"/>
    <class name="ClassMembers"/>
    <class name="PoissonGammaFit"/>
+   <class name="RGS"/>
 
    <class name="ATestBase"/>
    <class name="Aclass"/>

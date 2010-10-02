@@ -15,7 +15,7 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Wed Jun 20 19:53:47 EDT 2007
 //         Updated:  Sat Oct 25 2008 - make matchInDeltaR saner
-// $Id: kit.cc,v 1.14 2010/09/23 09:10:24 prosper Exp $
+// $Id: kit.cc,v 1.1 2010/09/25 21:35:01 prosper Exp $
 //
 //
 //-----------------------------------------------------------------------------
@@ -1044,7 +1044,7 @@ kit::initpoissongammamc(vvdouble& a, // Counts  "A_ji"
     for (int k = 0; k < TOTAL; k++)
       for ( int j = 0; j < N; j++ )
         {
-          double q = (double)(a[j][i] + 1);
+          //double q = (double)(a[j][i] + 1);
           //YIELD.push_back(gslRan.Gamma(_y+0.5, 1.0/_b));
         }
 }

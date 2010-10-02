@@ -21,7 +21,7 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
-// $Id: MethodTBase.cc,v 1.4 2010/09/19 14:09:53 prosper Exp $
+// $Id: MethodTBase.cc,v 1.1 2010/09/25 21:35:01 prosper Exp $
 //
 // If using Python, include its header first to avoid annoying compiler
 // complaints.
@@ -110,16 +110,17 @@ MethodTBase::MethodTBase(std::string classname,
       // Get return type of 1st part of compound method
       // and determine if it is a pointer 
 
-      std::vector<rfx::ValueThing*> values;
-      std::vector<void*> args;
-      Reflex::Member method = rfx::decodeMethod(classname_,
-                                                expression1_,
-                                                values,
-                                                args);
-      if ( !rfx::memberValid(method) )
-        throw edm::Exception(edm::errors::Configuration,
-                             "I'm too stupid to decode \"" 
-                             + expression1_ + "\"\n");
+      FunctionDescriptor fd;
+      fd.classname = classname_;
+      fd.expression= expression1_; // part 1 of a possible compound method
+
+      rfx::decodeMethod(fd);
+
+      if ( !rfx::memberValid(fd.method) )
+        throw cms::Exception("memberValidFailure") 
+          << "I'm too stupid to decode \"" 
+          << fd.expression
+          << "\"\n" << endl;
       
       // buffer for commands
       char cmd[1024];
@@ -130,7 +131,7 @@ MethodTBase::MethodTBase(std::string classname,
       setObjectAddress_ = std::string(cmd);
       
       // Check return type 
-      if ( rfx::returnsPointer(method) )
+      if ( rfx::returnsPointer(fd.method) )
         {
           // Returns a simple pointer
           checkReturn_ = true;
@@ -139,7 +140,7 @@ MethodTBase::MethodTBase(std::string classname,
       else
         {
           // Check for return of objects with an isNull() method
-          Reflex::Member isNull = rfx::getisNull(method); 
+          Reflex::Member isNull = rfx::getisNull(fd.method); 
           if ( rfx::memberValid(isNull) )
             {
               checkReturn_ = true;

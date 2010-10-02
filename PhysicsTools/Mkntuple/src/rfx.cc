@@ -15,7 +15,7 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Wed Jun 20 19:53:47 EDT 2007
 //         Updated:  Sat Oct 25 2008 - make matchInDeltaR saner
-// $Id: kit.cc,v 1.14 2010/09/23 09:10:24 prosper Exp $
+// $Id: rfx.cc,v 1.1 2010/09/25 21:35:01 prosper Exp $
 //
 //
 //-----------------------------------------------------------------------------
@@ -47,10 +47,12 @@
 //-----------------------------------------------------------------------------
 using namespace std;
 using namespace ROOT::Reflex;
-//----------------------------------------------------------------------------
-static bool DBinvokeMethod = 
-  getenv("DBinvokeMethod")>0 ? (bool)getenv("DBinvokeMethod") : false; 
-  
+//-----------------------------------------------------------------------------
+#ifdef DEBUG
+static bool DBgetMethod = getenv("DBgetMethod") > 0 ? true : false; 
+static bool DBdecodeMethod = getenv("DBdecodeMethod") > 0 ? true : false; 
+#endif
+//-----------------------------------------------------------------------------
 string 
 rfx::strip(string line)
 {
@@ -197,17 +199,22 @@ rfx::getMethod(std::string classname,
   boost::regex expr(args);
   boost::smatch what;
 
-  //DB
-  //   cout << "getMethod - \n"
-  //        << "  classname<" << classname << ">\n"
-  //        << "    method<" << methodname << ">\n" 
-  //        << "      args<" << args << ">" 
-  //        << endl;
+#ifdef DEBUG
+  if ( DBgetMethod )
+    cout << "getMethod - \n"
+         << "  classname<" << classname << ">\n"
+         << "    method<" << methodname << ">\n" 
+         << "      args<" << args << ">" 
+         << endl;
+#endif
 
   for(unsigned i=0; i < names.size(); i++)
     {
-      //DB
-      //cout << i << "\tSCOPE( " << names[i] << " )" << endl;
+
+#ifdef DEBUG
+      if ( DBgetMethod )
+        cout << i << "\tSCOPE( " << names[i] << " )" << endl;
+#endif
 
       Type t = Type::ByName(names[i]); 
 
@@ -222,20 +229,28 @@ rfx::getMethod(std::string classname,
           // Check method name
           string name = m.Name();
 
-          //DB
-          //cout << "\t\t" << name << endl;
+#ifdef DEBUG
+          if ( DBgetMethod )
+            cout << "\t\tname: " << name << endl;
+#endif
           if ( methodname != name ) continue;
 
           // Now check signature
           string signature = m.TypeOf().Name(SCOPED);
-          //cout << "\t\t\t" << signature << endl;
-          //cout << "\t\t\t" << args << endl;
 
+#ifdef DEBUG
+          if ( DBgetMethod )
+            cout << "\t\t\tsignature: " << signature << endl
+                 << "\t\t\targuments: " << args << endl;
+#endif
           // May need to make this a bit more sophisticated
 
           if ( boost::regex_search(signature, what, expr) ) 
             {
-              //cout << "\t\t\t\t** matched **" << endl;
+#ifdef DEBUG
+              if ( DBgetMethod )
+                cout << "\t\t\t\t** matched **" << endl;
+#endif
               // We have a match
               return m;
             }
@@ -440,6 +455,7 @@ rfx::decodeArguments(std::string  args,
       switch (vartype[i])
         {
         case 0:
+          str = str.substr(1, str.size()-2); // remove quotes
           vars.push_back(new rfx::Value<string>(str));
           break;
 
@@ -467,92 +483,22 @@ rfx::decodeArguments(std::string  args,
 
 
 void*
-rfx::invokeMethod(Member& method, 
-                  void* address,
-                  void* memory, 
-                  vector<void*>& args)
+rfx::invokeMethod(FunctionDescriptor& fd, void* address)
 {
-  if ( DBinvokeMethod )
-    cout << "\t\tinvokeMethod - " 
-         << BLUE 
-         << method.Name()
-         << DEFAULT_COLOR
-         << endl;
-
   void* raddr=0;
-  Type dtype = method.DeclaringType();
-  if ( dtype.Name() == "" )
-    { 
-      cout << "** invokeMethod - declaring type not found! " << endl;
-      return raddr;
-    }
+  if ( address == 0 ) return raddr;
 
-  if ( DBinvokeMethod )
-    cout << "\t\tinvokeMethod - declaring type: " 
-         << BLUE 
-         << dtype.Name()
-         << DEFAULT_COLOR
-         << endl;
+  // Model instance of class
+  Object object(fd.otype, address);
 
-  if ( address == 0 )
-    { 
-      cout << "** invokeMethod - object address is zero " << endl;
-      return raddr;
-    }
+  // Call method on class instance
+  fd.method.Invoke(object, &fd.robject, fd.args);
 
-  if ( DBinvokeMethod )
-    cout << "\t\tinvokeMethod - address: " 
-         << RED 
-         << address
-         << DEFAULT_COLOR 
-         << endl;
+  // Get address of returned object
+  raddr = fd.robject.Address();
 
-  // Well...finally, do the deed!
-  Type   rtype = method.TypeOf().ReturnType().FinalType();
-  Object object(dtype, address);
-  Object returnedObject(rtype, memory);
-  method.Invoke(object, &returnedObject, args);
-  raddr = returnedObject.Address();
-
-  // Check for pointer, references, etc.
-  if ( rtype.IsPointer() || rtype.IsReference() )
-    {
-      raddr = *static_cast<void**>(raddr);
-      if ( DBinvokeMethod )
-        {
-          if ( rtype.IsPointer() )
-            cout << "\t\tinvokeMethod - returns " 
-                 << BLUE 
-                 << " by POINTER "
-                 << RED 
-                 << "(" << raddr << ")" 
-                 << DEFAULT_COLOR
-                 << endl;
-          else
-            cout << "\t\tinvokeMethod - returns " 
-                 << BLUE 
-                 << " by REFERENCE "
-                 << RED 
-                 << "(" << raddr << ")" 
-                 << DEFAULT_COLOR
-                 << endl;
-        }
-    }
-  else if ( rtype.IsClass() )
-    {
-      // The method returns by value, so memory contains the
-      // address of the returned object
-      raddr = memory;
-
-      if ( DBinvokeMethod )
-            cout << "\t\tinvokeMethod - returns " 
-                 << BLUE 
-                 << " by VALUE "
-                 << RED 
-                 << "(" << raddr << ")" 
-                 << DEFAULT_COLOR
-                 << endl;
-    }
+  // If this is a pointer or reference, return address of object pointed to
+  if ( fd.pointer || fd.reference ) raddr = *static_cast<void**>(raddr);
   return raddr;
 }
 
@@ -560,34 +506,21 @@ rfx::invokeMethod(Member& method,
 void*
 rfx::datamemberValue(string& classname, void* address, string& membername)
 {
-  //DB
-  //cout << "\t\tCALL datamemberValue: " 
-  //     << classname << "::" << membername << endl;
-
   void* raddr=0;
-  if ( address == 0 )
-    { 
-      //cout << "** invokeMethod - object address is zero " << endl;
-      return raddr;
-    }
-
-  Type thing;
-  Type ctype = thing.ByName(classname);
-  //DB
-  //cout << "\t\tdeclaring class: " << ctype.Name() << endl;
-
+  if ( address == 0 ) return raddr;
+  
   // Model instance of class
+  Type ctype = Type::ByName(classname);
   Object object(ctype, address);
 
-  // Model datamember and get value
+  // Model datamember and get address of its value
   Object value = object.Get(membername);
   raddr  = value.Address();
 
-  // If this is a pointer, then return address of object pointed to
+  // If this is a pointer or reference, return address of object pointed to
   Type atype = value.TypeOf();
   if ( atype.IsPointer() || atype.IsReference() ) 
     raddr = *static_cast<void**>(raddr);
-
   return raddr;
 }
 
@@ -657,15 +590,14 @@ rfx::getisNull(Member& method)
 }
 
 
-Member
-rfx::decodeMethod(std::string classname,
-                  std::string methodrecord,
-                  std::vector<ValueThing*>& values,
-                  std::vector<void*>& args)
+void
+rfx::decodeMethod(FunctionDescriptor& fd)
 {
-  //DB
-  //cout << "decodeMethod - classname( " << classname << " )" << endl;
-
+#ifdef DEBUG
+  if ( DBdecodeMethod )
+    cout << "decodeMethod - function( " << fd.expression << " )" << endl;
+#endif
+  
   // Regex to extract name of method
   boost::regex exprName("[a-zA-Z][a-zA-Z0-9]*(-[>])? *(?=[(])");
 
@@ -675,35 +607,42 @@ rfx::decodeMethod(std::string classname,
   boost::smatch what;
 
   // Extract name of method
-  if ( !boost::regex_search(methodrecord, what, exprName) )
+  if ( !boost::regex_search(fd.expression, what, exprName) )
     {
       throw cms::Exception("RegexFailure")
         << "Method - "
         << "unable to get name from: " 
-        << RED << methodrecord << DEFAULT_COLOR << endl;
+        << RED << fd.expression << DEFAULT_COLOR << endl;
     }
   string methodname = what[0];
   
-  //DB
-  //cout << "decodeMethod - name( " << methodname << " )" << endl;
-  
   // Extract arguments of method
-  if ( !boost::regex_search(methodrecord, what, exprArgs) )
+  if ( !boost::regex_search(fd.expression, what, exprArgs) )
     {
       throw cms::Exception("RegexFailure")
         << "Method - "
         << "unable to get arguments from: " 
-        << RED << methodrecord << DEFAULT_COLOR << endl;
+        << RED << fd.expression << DEFAULT_COLOR << endl;
     }
   string methodargs = what[0];
-  //DB
-  //cout << "decodeMethod - args( " << methodargs << " )" << endl;
+
+#ifdef DEBUG
+  if ( DBdecodeMethod )
+    cout << "decodeMethod - args( " << methodargs << " )" << endl;
+#endif
   
+//   int nparams = fd.method.FunctionParameterSize();
+//   for(int i=0; i < nparams; ++i)
+//     {
+//       string pname = fd.method.FunctionParameterNameAt(i);
+//       cout << "\tparam[" << i << "]:\t" << pname << endl; 
+//     }
+
   // Now get argument regex
   string argsregex("");
   rfx::decodeArguments(methodargs, 
                        argsregex,
-                       values);
+                       fd.values);
   if ( argsregex == "" )
     {
       throw cms::Exception("DecodeFailure")
@@ -711,23 +650,31 @@ rfx::decodeMethod(std::string classname,
         << "unable to decode arguments: " 
         << RED << methodargs << DEFAULT_COLOR << endl;
     }
-  //DB
-  //cout << "decodeMethod - argsregex( " << argsregex << ") " << endl;
-  
+
+#ifdef DEBUG
+  if ( DBdecodeMethod )
+    cout << "decodeMethod - argsregex( " << argsregex << ") " << endl;
+#endif
+
   // Search for method that matches both name and signature
-  Member method = rfx::getMethod(classname, methodname, argsregex);
-  if ( !rfx::memberValid(method) ) return method;
+  fd.method = rfx::getMethod(fd.classname, methodname, argsregex);
+  if ( !rfx::memberValid(fd.method) ) return;
 
   // We have a method, so get address of arguments and associated
   // values
-  for(unsigned i=0; i < values.size(); i++)
+  for(unsigned i=0; i < fd.values.size(); i++)
     {
-      void* addr = values[i]->address();
-      //DB
-      //cout << "decodeMethod arg[" << i << "]: " 
-      //     << addr << ": "
-      //     << values[i]->str() << endl;
-      args.push_back( addr );
+      void* addr = fd.values[i]->address();
+
+#ifdef DEBUG
+      if ( DBdecodeMethod )
+        cout << "decodeMethod arg[" << i << "]: " 
+             << addr << ": "
+             << fd.values[i]->str() << endl;
+#endif
+
+      fd.args.push_back( addr );
     }
-  return method;
+  return;
 }
+

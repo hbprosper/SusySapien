@@ -14,7 +14,7 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
-// $Id: FunctionMember.cc,v 1.1 2010/09/25 21:35:01 prosper Exp $
+// $Id: FunctionMember.cc,v 1.2 2010/09/26 20:05:57 prosper Exp $
 //-----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python.hpp>
@@ -31,9 +31,8 @@
 using namespace std;
 using namespace ROOT::Reflex;
 //-----------------------------------------------------------------------------
-static bool DBFunctionMember = 
-  getenv("DBFunctionMember")>0 ? (bool)getenv("DBFunctionMember") : false; 
-  
+static bool DBFunctionMember = getenv("DBFunctionMember")>0 ? true : false; 
+
 FunctionMember::FunctionMember()
   : classname_(""),
     expression_("")
@@ -46,16 +45,14 @@ FunctionMember::~FunctionMember()
     {
       FunctionDescriptor& fd = fd_[depth]; // NB: get an alias NOT a copy!
 
-      if ( fd.deallocate )
-        { 
-          if ( DBFunctionMember )
-            cout << "       - deallocate memory for: " 
-                 << BLUE 
-                 << fd.classname << "::" << fd.expression
-                 << DEFAULT_COLOR
-                 << endl;
-          fd.returntype.Deallocate(fd.memory);
-        }
+      if ( DBFunctionMember )
+        cout << "       - deallocate memory for: " 
+             << BLUE 
+             << fd.classname << "::" << fd.expression
+             << DEFAULT_COLOR
+             << endl;
+      fd.rtype.Deallocate(fd.robject.Address());
+
       for(unsigned j=0; j < fd.values.size(); ++j) delete fd.values[j];
     }
 }
@@ -69,8 +66,8 @@ FunctionMember::FunctionMember(std::string classname,
 {
   if ( DBFunctionMember )
     cout << endl 
-         << "FunctionMember - classname:  " << classname_  << endl
-         << "                 expression: " << expression_ << endl;
+         << "BEGIN FunctionMember - " 
+         << classname_ + "::" << expression_ << endl;
 
   if ( classname_ == "" ) 
     throw cms::Exception("InvalidClassname") << "null classname" << endl;
@@ -80,20 +77,23 @@ FunctionMember::FunctionMember(std::string classname,
 
   //--------------------------------------------------------------------------
   // Split method into its parts. Surely, even for CMS, a maximum 
-  // indirection depth of 5 is sufficient!
+  // indirection depth of 20 is sufficient!
   //--------------------------------------------------------------------------
-  int maxDepth = 5;
+  int maxDepth = 20;
+
+  // This flag has to be true at the end of this routine, otherwise something
+  // is wrong.
+
+  bool done = false;
 
   //--------------------------------------------------------------------------
-  // Now that we've split the thing up, complete the analysis of the method
   // Note:
-  // classname  - type of parent object
-  // expression - method/member of parent object to be invoked
-  // retname    - type of returned object or data member
+  // classname  - type name of parent object
+  // expression - method/datamember of parent object to be invoked
+  // retname    - type name of returned object or data member
   // fd         - a vector of function descriptors
   //--------------------------------------------------------------------------
 
-  string retname("");
   for(int depth=0; depth < maxDepth; ++depth)
     {
       if ( classname == "" )
@@ -102,37 +102,40 @@ FunctionMember::FunctionMember(std::string classname,
       if ( expression == "" )
         throw cms::Exception("InvalidExpression") << "null expression" << endl;
 
-     if ( DBFunctionMember )
-        cout << BLUE
-             << "       - allocate function descriptor " << depth 
-             << DEFAULT_COLOR << endl; 
-
       // Allocate a descriptor. We use the descriptor to cache everything 
       // that is needed to render the calling of the method as efficient 
       // as possible.
 
+      if ( DBFunctionMember )
+        cout << BLUE
+             << "       - allocate function descriptor " << depth
+             << DEFAULT_COLOR << endl; 
+      
       fd_.push_back( FunctionDescriptor() );
       FunctionDescriptor& fd = fd_[depth]; // NB: get an alias NOT a copy!
-
+      
+      string retname(""); // Name of returned type
       fd.classname   = classname;
-      fd.expression  = expression;      
+      fd.expression  = expression;
+      fd.otype       = Type::ByName(fd.classname); // Model parent object
+      if ( fd.otype.Name() == "" )
+        throw cms::Exception("NullClassName") 
+          << "FunctionMember sadly cannot find type of the object whose method"
+          << " is to be called"
+          << endl;
+      
       fd.datamember  = false;
       fd.simple      = false;
       fd.pointer     = false;
       fd.reference   = false;
       fd.smartpointer= false;
-      fd.deallocate  = false;
+      fd.isAvailable = false;
+      fd.isNull      = false;
 
-      // Memory is needed by Reflex to store the return values from functions.
-      // For simple types (called fundamental types by Reflex), the scratch
-      // area is sufficient. For objects, however, we need to reserve space on
-      // the heap if the object is returned by value. (See the end of this
-      // routine).
-      fd.memory      = (void*)(&fd.scratch);
-      
-      // If method is compound, split in two and reset "expression"
+      // If method is compound, split it in two and set "expression"
+      // to the first part and "expr2" to the remainder
 
-      string delim("");
+      string delim(""); // delimeter between expression and expr2
       string expr2("");
       if ( rfx::isCompoundMethod(expression, delim) ) 
         rfx::bisplit(expression, fd.expression, expr2, delim);
@@ -147,54 +150,62 @@ FunctionMember::FunctionMember(std::string classname,
   
       boost::regex dregex("^[a-zA-Z_]+[a-zA-Z0-9_:]*[(]");
       boost::smatch dmatch;
-      if ( ! boost::regex_search(fd.expression, dmatch, dregex) )
+
+      fd.datamember = ! boost::regex_search(fd.expression, dmatch, dregex);
+
+      if ( fd.datamember )    
         {
-          //---------------------------------
+          //-------------------------------------------------------------------
           // This seems to be a data member
-          //---------------------------------
+          //-------------------------------------------------------------------
           if ( DBFunctionMember )
             cout << "       - is " << RED << "data member" 
                  << DEFAULT_COLOR << endl;
 
-          fd.datamember = true;
-
-          // Get the ... well it's obvious isn't it?
+          // Get a model of it
 
           fd.method = rfx::getDataMember(fd.classname, fd.expression);
 
           // Fall on sword if we did not find a valid data member
 
           if ( !rfx::memberValid(fd.method) )
-            throw cms::Exception("decodeDataMemberFailure")
+            throw cms::Exception("getDataMemberFailure")
               << " can't decode data member: " 
               << fd.classname << "::" 
               << fd.expression << endl;
 
-          // We have a valid data member. Get type
-          // Note: allow for the possibility that values can 
-          // be returned by value, pointer or reference.
+          // We have a valid data member. Get type allowing for 
+          // the possibility that values can be returned 
+          // by value, pointer or reference.
           // 1. by value     - a copy of the object is returned
           // 2. by pointer   - a variable (the pointer) containing the 
           //                   address of the object is returned
           // 3. by reference - the object itself is returned
 
-          fd.returntype = fd.method.TypeOf();
-          if ( fd.returntype.IsFundamental() )
+          fd.rtype = fd.method.TypeOf();     // Model type of data member
+          if ( fd.rtype.IsFundamental() )
             fd.simple = true;
 
-          if ( fd.returntype.IsPointer() )
+          if ( fd.rtype.IsPointer() )
             fd.pointer = true;
-          else if ( fd.returntype.IsReference() )
+
+          else if ( fd.rtype.IsReference() )
             fd.reference = true;
 
-          // Get name of return type
-          // Note: for data members, the returntype variable
-          // isn't the final type in the sense that the type
+          // Get type name of data member
+          // Note: for data members, the rtype variable
+          // isn't the final type in the sense that it
           // could still include the "*" or "&" appended to the
-          // type. However, for methods returntype is the final
+          // type name. However, for methods rtype is the final
           // type.
             
-          retname = fd.returntype.Name(SCOPED+FINAL);
+          retname = fd.rtype.Name(SCOPED+FINAL);
+          if ( DBFunctionMember )
+            cout << "       - datamember type: " 
+                 << BLUE
+                 << retname
+                 << DEFAULT_COLOR << endl;
+
           if ( fd.pointer || fd.reference )
             // remove "*" or "&" at end of name
             retname = retname.substr(0,retname.size()-1);
@@ -208,28 +219,23 @@ FunctionMember::FunctionMember(std::string classname,
               << fd.expression << endl;
 
           if ( DBFunctionMember )
-            cout << "       - data member type: " 
+            cout << "       - datamember type (confirmation): " 
                  << retname << endl;
         }
       else
         {
-          //---------------------------------          
+          //-------------------------------------------------------------------
           // This seems to be a method
-          //---------------------------------
+          //-------------------------------------------------------------------
           if ( DBFunctionMember )
             cout << "       - is " << RED << "method " 
                  << DEFAULT_COLOR << endl;
           
-          fd.datamember = false;
+          // Decode method and return a Reflex model of it in fd.method
 
-          // Decode method and return a Reflex model of it
+          rfx::decodeMethod(fd);
 
-          fd.method = rfx::decodeMethod(fd.classname, 
-                                        fd.expression, 
-                                        fd.values, 
-                                        fd.args);
-
-          // Fall on sword if we did not find a valid method
+         // Fall on sword if we did not find a valid method
 
           if ( !rfx::memberValid(fd.method) )
             throw cms::Exception("decodeMethodFailure")
@@ -241,20 +247,15 @@ FunctionMember::FunctionMember(std::string classname,
           // Note: again, allow for the possibility that the value can be
           // returned by value, pointer or reference.
 
-          int code=0;
-          fd.returntype = rfx::returnType(fd.method, code);
-
-          if ( fd.returntype.IsFundamental() )
-            fd.simple = true;
-
-          if ( code == 2 )
-            fd.pointer = true;
-          else if ( code == 3 )
-            fd.reference = true;
+          fd.rtype   = fd.method.TypeOf().ReturnType().FinalType();
+          fd.simple  = fd.rtype.IsFundamental();
+          fd.pointer = fd.rtype.IsPointer();
+          fd.reference = fd.rtype.IsReference();
+          if ( fd.pointer ) fd.rtype = fd.rtype.ToType();
 
           // Get type name of returned object
 
-          retname = fd.returntype.Name(SCOPED+FINAL);
+          retname = fd.rtype.Name(SCOPED+FINAL);
           if ( retname == "" )
             throw cms::Exception("returnTypeFailure")
               << " can't get return type for method " 
@@ -263,287 +264,394 @@ FunctionMember::FunctionMember(std::string classname,
           if ( DBFunctionMember )
             cout << "       - return type: " << retname << endl;
 
-  
-          // Check for non-simple return types
+          // This could be an isAvailable method
 
-          if ( ! fd.simple )
-            {
-              //---------------------------------          
-              // We have a non-simple return type
-              //---------------------------------          
-              // Check if this is a CMSSW "smart" pointer. 
-              // If it is then (alas) we have a lot of work to do:
-              //
-              // 1. We first need to call isAvailable() to make sure that 
-              //    the collection containing the object is available. 
-              //
-              // 2. If the collection is available, we call isNull() 
-              //    to check for a null pointer.
-              //
-              // 3. If the collection is available and the the pointer is not
-              //    null, we need to call get() to return the address of 
-              //    the object referenced by the smart pointer.
-              //
-              // 4. Then we call the method of the returned object. 
-              //
-              // A truly smart pointer would handle 1 to 3 automatically
-              // and have the get() method return 0 if no object exists.
-              
-              fd.isNull = rfx::getisNull(fd.method);
-              if ( rfx::memberValid(fd.isNull) )
-                {
-                  fd.smartpointer = true;
-                  fd.isAvailable = rfx::getisAvailable(fd.method);
-                  
-                  if ( !rfx::memberValid(fd.isAvailable) )
-                    throw cms::Exception("decodeMethodFailure")
-                      << " can't find method: " 
-                      << fd.classname << "::isAvailable()" << endl;
+          boost::regex aregex("^isAvailable[(]");
+          boost::smatch amatch;
+          fd.isAvailable = boost::regex_search(fd.expression, amatch, aregex);
 
-                  if ( DBFunctionMember )
-                    cout << "FunctionMember - " << fd.method.Name() 
-                         << " returns a smart pointer" 
-                         << endl << "\t of type: " << retname << endl;
-                  
-                  // get its "get" method
-                  vector<rfx::ValueThing*> vals;
-                  std::vector<void*> args;
-                  fd.get = rfx::decodeMethod(retname, "get()", vals, args);
-                  
-                  if ( !rfx::memberValid(fd.get) )
-                    throw cms::Exception("decodeMethodFailure")
-                      << " can't find method: " 
-                      << fd.classname << "::get()" << endl;
-                }
-            }
+          // This method could be an isNull method
+
+          boost::regex nregex("^isNull[(]");
+          boost::smatch nmatch;
+          fd.isNull = boost::regex_search(fd.expression, nmatch, nregex);
         }
 
+      //-----------------------------------------------------------------------
+      // We have a valid method or data member. 
+      //-----------------------------------------------------------------------
+
+      // The return type or data member could be a smart pointer
+      if ( !fd.simple)
+        {
+          Member m = rfx::getisNull(fd.method);
+          fd.smartpointer = rfx::memberValid(m);
+        }
+
+      if ( fd.smartpointer )
+        {
+          // The data member or the return type is a smart pointer, so
+          // insert a call to isAvailable()
+
+          expr2 = string("isAvailable()") + delim + expr2;
+
+          if ( DBFunctionMember )
+            cout << "       - return type: " 
+                 << RED << "smart pointer" 
+                 << DEFAULT_COLOR << endl;
+        }
+      else if ( fd.isAvailable )
+        {
+          // This is an isAvailable method, so insert a call to isNull
+
+          retname = fd.classname; // same classname as current smart pointer
+          expr2 = string("isNull()") + delim + expr2;
+        }
+      else if ( fd.isNull )
+        {
+          // This is an isNull method, so insert a call to get
+
+          retname = fd.classname; // same classname as current smart pointer
+          expr2 = string("get()") + delim + expr2;
+        }
+
+      // Memory is needed by Reflex to store the return values from functions.
+      // We need to reserve the right amount of space for each the object
+      // returned, which could of course be a fundamental (that is, simple)
+      // type. We free all reserved memory in FunctionMember's destructor.
+
+      fd.robject = Object(fd.rtype, fd.rtype.Allocate());
+
+      // set return type code
+
+      fd.rcode = Tools::FundamentalType(fd.rtype);
       if ( DBFunctionMember )
-        {
-          cout << "       - is " << GREEN;
-          if ( fd.simple )
-            cout << "SIMPLE "; 
-          
-          if ( fd.pointer )
-            cout << "POINTER"; 
-          else if ( fd.reference )
-            cout << "REFERENCE";
-          cout << DEFAULT_COLOR << endl;                    
-        }
-    
-      // Allocate memory for objects returned by value
-
-      if ( !fd.simple )
-        {
-          if ( !fd.pointer )
-            {
-              if ( !fd.reference )
-                {
-                  if ( DBFunctionMember )
-                    cout << "       - allocate memory for: " 
-                         << BLUE 
-                         << fd.classname << "::" << fd.expression 
-                         << DEFAULT_COLOR 
-                         << endl;
-                  fd.memory = fd.returntype.Allocate();
-                  fd.deallocate = true;
-                }
-            }
-        }
+           cout << "       - return code: " 
+                 << RED << fd.rcode 
+                 << DEFAULT_COLOR << endl;
 
       // If the return type is simple, then we need to break out of this
-      // loop because the analysis of the method is complete.    
+      // loop because the analysis of the method is complete. However, if
+      // the method is either isAvailable or isNull we must continue.
+            
+      if ( fd.simple )
+        {
+          if ( !fd.isAvailable )
+            {
+              if ( !fd.isNull )
+                {
+                  // This FunctionMember should always arrive here!
+                  done = true;
+                  if ( DBFunctionMember )
+                    cout << "END FunctionMember - " 
+                         << classname_ + "::" << expression_ << endl << endl;
+                  break;
+                }
+            }
+        }
 
-      if ( fd.simple ) break;
-
-      // The return type is not simple, therefore, we need to invoke
-      // recursion: the 2nd part of the compound method becomes
-      // the expression on the next round and the return type becomes the
-      // next classname 
+      // The return type is not simple or the method is either isAvailable or
+      // isNull. We therefore, need to continue: the 2nd part of the compound 
+      // method becomes the expression on the next round and the return 
+      // type becomes the next classname.
+ 
       expression = expr2;
       classname  = retname;
     }
+
+  if ( ! done )
+    throw cms::Exception("FunctionMemberFailure")
+      << " **** I can't understand this method: " 
+      << classname_ << "::" << expression_ << endl
+      << " **** make sure it returns a simple type"
+      << endl;
 }
 
-void*
+double
 FunctionMember::invoke(void* address)
 {
+#ifdef DEBUG
+  if ( DBFunctionMember )
+    cout << "BEGIN FunctionMember::invoke" << endl;
+#endif
 
-  void* raddr = 0;
+  value_ = 0;
+  longvalue_ = 0;
+  void*  raddr = 0;
+
+  // Loop over each part of method
 
   for(unsigned int depth=0; depth < fd_.size(); ++depth)
     {
       FunctionDescriptor& fd = fd_[depth]; // NB: get an alias NOT a copy!
 
-      // classname   the parent class to which method/data member belongs
-      // address     address of object whose method/data member is being called
-      // method      object that models a method or a data member
-      // args_       the arguments of the method to be called
-
-      if ( DBFunctionMember )
-        cout << depth << "\tFunctionMember::invoke - " 
-             << fd.classname << "::" << fd.method.Name() 
-             << " address: " << address << endl;
-
-      if ( fd.datamember )
-        {
-          if ( DBFunctionMember )
-            cout << "\t\tFunctionMember::invoke - DATA MEMBER" << endl; 
-
-          raddr = rfx::datamemberValue(fd.classname, address, fd.expression);
-        }
-      else
-        {
-          if ( DBFunctionMember )
-            cout << "\t\tFunctionMember::invoke - FUNCTION MEMBER" << endl;
-
-          raddr = rfx::invokeMethod(fd.method, address, fd.memory, fd.args);
-        }
-      
-      // At some point, the return type should become simple
+      execute(fd, address, raddr, value_, longvalue_);
 
       if ( fd.simple )
         {
           //---------------------------------------
-          // Simple return type
+          // Fundamental return type
           //---------------------------------------
+          // This is a fundamental type returned from
+          // from either a regular method or:
+          // 1. a bool from the isAvailable() method of a smart pointer
+          // 2. a bool from the isNull() method of a smart pointer
+#ifdef DEBUG
           if ( DBFunctionMember )
+            cout << "\tFunctionMember::invoke - FUNCTION:     " 
+                 << BLUE << fd.method.Name() << DEFAULT_COLOR << endl
+                 << "\t                       - RETURN TYPE:  " 
+                 << RED << "FUNDAMENTAL" << DEFAULT_COLOR << endl
+                 << "\t                       - RETURN VALUE: "
+                 << RED
+                 << value_
+                 << DEFAULT_COLOR << endl;
+#endif
+          // This could be an isAvailable method. If so,
+          // check its return value
+
+          if ( fd.isAvailable )
             {
-              cout << "\t\t\tRETURN TYPE: " << RED << "SIMPLE"
-                   << DEFAULT_COLOR
-                   << endl;
-
-              cout << "\t\t\tVALUE:       "
-                   << RED
-                   << *static_cast<double*>(raddr)
-                   << DEFAULT_COLOR
-                   << "\t" << raddr << endl;
-            }
-
-          // If return type is simple and it is not a pointer
-          // its address cannot be null
-          if ( ! fd.pointer )
-            {
-              if ( raddr == 0 )
-                {
-                  // shouldn't happen!
-                  throw cms::Exception("NullReturn") 
-                    << " simple return type has a null address: " 
-                    << fd.classname << "::" << fd.expression << endl;
-                }
-            }
-        }
-      else
-        {
-          //---------------------------------------
-          // Non-simple return type
-          //---------------------------------------
- 
-          if ( DBFunctionMember )
-            cout << "\t\t\tRETURN TYPE: " << RED << "OBJECT"
-                 << DEFAULT_COLOR
-                 << endl;
-
-          // Check if this is a smart pointer because, if it is, we have
-          // to do a lot of work. A truly smart pointer would do this work
-          // for you.
-
-          bool available = true;
-
-          if ( fd.smartpointer )
-            {
-              if ( DBFunctionMember )
-                cout << "FunctionMember::invoke - smart pointer " << endl;
-
-              // This is a smart pointer, so call its isAvailable() method and
-              // if it returns true, call its isNull() method
-              // and check whether it returns true or false.
-
-              void* addr = rfx::invokeMethod(fd.isAvailable, raddr,
-                                             fd.memory);
-              available = *static_cast<bool*>(addr);
+              bool available = (bool)value_;
               if ( available )
                 {
-                  // The collection is available, so check the smart pointer's
-                  // isNull() method
-                  addr = rfx::invokeMethod(fd.isNull, raddr, fd.memory);
-                  bool null = *static_cast<bool*>(addr);
-                  if ( null )
-                    {
-                      // The object pointed to presumably does not exist
-                      // so return a null pointer
-                      raddr = 0;
-                    }
-                  else
-                    {
-                      // we have a valid pointer to an object, so call the 
-                      // smart pointer's get() method to  get the address of 
-                      // object it points to ...
-                      raddr = rfx::invokeMethod(fd.get, raddr, fd.memory);
-                    }
+#ifdef DEBUG
+                  if ( DBFunctionMember )
+                    cout << "\tFunctionMember::invoke - isAvailable returns: " 
+                         << RED << "TRUE" << DEFAULT_COLOR << endl;
+#endif
                 }
               else
                 {
                   // The collection is not available, so return a null pointer
-                  raddr = 0;
+                  edm::LogWarning("CollectionNotFound") << "\t" 
+                                                        << fd.classname 
+                                                        << "::" 
+                                                        << fd.expression 
+                                                        << endl;  
+                  value_ = 0;
+                  break; // break out of loop
                 }
             }
 
-          // Check validity of address
+          // This could be an isNull method. If so, check its return value
 
-          if ( raddr == 0 )
+          else if ( fd.isNull )
             {
-              if ( fd.pointer )
-                edm::LogWarning("NullPointer")
-                  << "\t" << fd.classname << "::" << fd.expression << endl; 
-
-              else if ( ! available )
-                edm::LogWarning("CollectionNotFound")
-                  << "\t" << fd.classname << "::" << fd.expression << endl;  
-              
-              else if ( fd.smartpointer )
-                edm::LogWarning("NullSmartPointer")
-                  << "\t" << fd.classname << "::" << fd.expression << endl;
-              break;
+              bool null = (bool)value_;
+              if ( null )
+                {
+                  // The collection is not available, so return a null pointer
+                  edm::LogWarning("NullSmartPointer") << "\t" 
+                                                      << fd.classname 
+                                                      << "::" 
+                                                      << fd.expression 
+                                                      << endl;  
+                  value_ = 0;
+                  break; // break out of loop
+                }
+              else
+                {
+#ifdef DEBUG
+                  if ( DBFunctionMember )
+                    cout << "\tFunctionMember::invoke - isNull returns: " 
+                         << RED << "FALSE" << DEFAULT_COLOR << endl;
+#endif
+                }
             }
         }
+      else 
+        {
+          //---------------------------------------
+          // Non-fundamental return type
+          //---------------------------------------
+#ifdef DEBUG
+          if ( DBFunctionMember )
+            cout << "\tFunctionMember::invoke - FUNCTION:       " 
+                 << BLUE << fd.method.Name() << DEFAULT_COLOR << endl
+                 << "\t                       - RETURN TYPE:    " 
+                 << RED << "NON-FUNDAMENTAL" << DEFAULT_COLOR << endl
+                 << "\t                       - RETURN ADDRESS: "
+                 << RED
+                 << raddr
+                 << DEFAULT_COLOR << endl;
+#endif
+          if ( fd.pointer )
+            {
+              if ( raddr == 0 )
+                {
+                  edm::LogWarning("NullPointer") << "\t" 
+                                                 << fd.classname 
+                                                 << "::" 
+                                                 << fd.expression 
+                                                 << endl; 
+                  value_ = 0;
+                  break; // break out of loop
+                }
+            }
 
-      // Now do recursion: the address of data member or returned object
-      // becomes the address of the object whose method is to be called
-      // next
-      address = raddr;
+          // Return address becomes object address in next call
+          address = raddr;
+        }
     }
+#ifdef DEBUG
+  if ( DBFunctionMember )
+    cout << "END FunctionMember::invoke" << endl << endl;
+#endif
+
+  raddr_ = raddr;
+  return value_;
+}
+
+void* 
+FunctionMember::raddress() { return raddr_; }
+
+void
+FunctionMember::execute(FunctionDescriptor& fd, 
+                        void*   address, 
+                        void*&  raddr,
+                        double& value,
+                        long double& longvalue)
+{
+  // classname   the parent class to which method/data member belongs
+  // address     address of object whose method/data member is being called
+  // method      object that models a method or a data member
+  // args_       the arguments of the method to be called
   
-  return raddr;
+  if ( fd.datamember )
+    raddr = rfx::datamemberValue(fd.classname, address, fd.expression);
+  else
+    raddr = rfx::invokeMethod(fd, address);
+
+  // If address is zero, bail out
+
+  if ( raddr == 0 ) return;
+
+  // If the function does not return a fundamental type then just return
+
+  if ( fd.rcode == kNOTFUNDAMENTAL ) return;
+
+  // Ok the function's return type is fundamental, so map it to a double
+  // or a long double
+
+  switch( fd.rcode )
+    {
+      // most common fundamental types
+    case kDOUBLE:
+      value = *static_cast<double*>(raddr);
+      longvalue = value;
+      break;
+	
+    case kFLOAT:
+      value = static_cast<double>(*static_cast<float*>(raddr));
+      longvalue = value;
+      break;
+      
+    case kINT:
+      value = static_cast<double>(*static_cast<int*>(raddr));
+      longvalue = value;
+      break;	  
+      
+    case kUNSIGNED_INT:
+      value = static_cast<double>(*static_cast<unsigned int*>(raddr));
+      longvalue = value;
+      break;	
+      
+    case kUNSIGNED_SHORT_INT:
+      value = static_cast<double>(*static_cast<unsigned short int*>(raddr));
+      longvalue = value;
+      break;
+      
+    case kBOOL:
+      value = static_cast<double>(*static_cast<bool*>(raddr));
+      longvalue = value;
+      break;	    
+
+    case kUNSIGNED_LONG_INT:
+      value = static_cast<double>(*static_cast<unsigned long int*>(raddr));
+      longvalue = value;
+      break;
+
+      // less common simple types
+
+    case kCHAR:
+      value = static_cast<double>(*static_cast<char*>(raddr));
+      longvalue = value;
+      break;
+      
+    case kSIGNED_CHAR:
+      value = static_cast<double>(*static_cast<unsigned char*>(raddr));
+      longvalue = value;
+      break;
+    
+    case kSHORT_INT:
+      value = static_cast<double>(*static_cast<short int*>(raddr));
+      longvalue = value;
+      break;	    
+    
+    case kLONG_INT:
+      value = static_cast<double>(*static_cast<long int*>(raddr));
+      longvalue = value;
+      break;
+    
+    case kUNSIGNED_CHAR:
+      value = static_cast<double>(*static_cast<unsigned char*>(raddr));
+      longvalue = value;
+      break;
+      
+      // long longs
+      
+    case kULONGLONG:
+      longvalue = static_cast<long double>
+        (*static_cast<unsigned long long*>(raddr));
+      break;
+    
+    case kLONG_DOUBLE:
+      longvalue = *static_cast<long double*>(raddr);
+      break;	
+    case kLONGLONG:
+      longvalue = static_cast<long double>(*static_cast<long long*>(raddr));
+      break;
+        
+    default:
+      // Should never get here!
+      edm::LogWarning("SHOULD_NEVER_GET_HERE") << "\t" 
+                                               << fd.classname 
+                                               << "::" 
+                                               << fd.expression 
+                                               << endl; 
+    }
+}
+
+long double
+FunctionMember::invokeLong(void* address) 
+{
+  invoke(address);
+  return longvalue_; 
 }
 
 double
-FunctionMember::operator()(void* address)
-{ 
-  void* raddr = invoke(address);
-  if ( raddr == 0 ) 
-    return 0;
-  else
-    return *static_cast<double*>(raddr); 
-}
+FunctionMember::operator()(void* address) { return invoke(address); }
 
 std::string
-FunctionMember::str()
+FunctionMember::str() const
 {
   ostringstream os;
 
+  os << classname_ << "::" << expression_ << endl;
+
   for(unsigned int depth=0; depth < fd_.size(); ++depth)
     {
-      FunctionDescriptor& fd = fd_[depth];
-      os << "DeclaringType : " << fd.method.DeclaringType().Name() << endl;
-      os << "   MethodName : " << fd.method.Name() << endl;
-      os << "     Signature: " << fd.method.TypeOf().Name(SCOPED) << endl;
+      const FunctionDescriptor& fd = fd_[depth];
+      os << "  " << depth << endl;
+      os << "\tclassname:  " << fd.classname << endl;
+      os << "\texpression: " << fd.expression << endl;
       if ( fd.values.size() > (unsigned)0 )
         {
-          os << "     ArgValues: " << endl;
+          os << "\t\tvalues: " << endl;
           for(unsigned i=0; i < fd.values.size(); i++)
             {
-              os << "         " 
+              os << "\t\t" 
                  << i 
                  << "  " << fd.args[i]
                  << ": " << fd.values[i]->str()  << endl;
@@ -555,9 +663,9 @@ FunctionMember::str()
 
 
 std::ostream&
-FunctionMember::operator<<(std::ostream& os)
+operator<<(std::ostream& os, const FunctionMember& o)
 {
-  os << str() << endl;
+  os << o.str();
   return os;
 }
 

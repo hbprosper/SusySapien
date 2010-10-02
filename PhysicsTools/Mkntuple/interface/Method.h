@@ -7,7 +7,7 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
-// $Id: Method.h,v 1.8 2010/09/15 13:46:46 prosper Exp $
+// $Id: Method.h,v 1.1 2010/09/25 21:34:54 prosper Exp $
 //
 // If using Python, include its header first to avoid annoying compiler
 // complaints.
@@ -39,15 +39,7 @@ public:
   std::string name() const { return name_; }
   
   ///
-  double operator()(const T& object)
-  {
-    void* address = (void*)(&object);
-    void* raddr = invoke(address);
-    if ( raddr == 0 ) 
-      return 0;
-    else
-      return *static_cast<double*>(raddr); 
-    }
+  double operator()(const T& object) {return invoke((void*)(&object)); }
   
   ///
   double operator()(T& object) { return (*this)((const T)(object)); }

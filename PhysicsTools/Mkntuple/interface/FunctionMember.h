@@ -9,39 +9,16 @@
 //           
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
-// $Id: FunctionMember.h,v 1.2 2010/09/19 14:09:53 prosper Exp $
+// $Id: FunctionMember.h,v 1.1 2010/09/25 21:34:54 prosper Exp $
 //
 //-----------------------------------------------------------------------------
 #include <vector>
 #include <string>
+#include <map>
 #include "Reflex/Member.h"
+#include "Reflex/Tools.h"
 #include "PhysicsTools/Mkntuple/interface/rfx.h"
 //-----------------------------------------------------------------------------
-/// Describe attributes of a function or data member.
-struct FunctionDescriptor
-{
-  std::string        classname;          /// Name of declaring class
-  std::string        expression;         /// Function expression
-  Reflex::Member     method;             /// Model of function
-  std::vector<rfx::ValueThing*>  values; /// Argument descriptors
-  std::vector<void*> args;               /// Arguments
-  Reflex::Type       returntype;         /// Function return type
-
-  Reflex::Object     scratch;        /// Memory for simple return types
-  void*              memory;         /// Memory for objects returned by value 
-  bool               deallocate;     /// True if we need to deallocate memory
-
-  bool               datamember;     /// True if this is a data member
-  bool               simple;         /// True if return type is simple
-  bool               pointer;        /// True if return type is a pointer
-  bool               reference;      /// True if return type is a reference
-  bool               smartpointer;   /// True if return type is a smart pointer
-
-  Reflex::Member     isAvailable;        /// Model isAvailable()
-  Reflex::Member     isNull;             /// Model isNull()
-  Reflex::Member     get;                /// Model get()
-};
-
 /** Model a function member (a method) or a data member of a C++ class.
     Given the fully scoped name of a class (that is, the name together with
     any namespaces) and the expression for a simple or compound method, this
@@ -88,9 +65,12 @@ public:
    
   /** Call the method.
       @param address - address of object for which the method is to be called
-      @return address of returned value
+      @return - value of method cast to a double
    */
-  void*  invoke(void* address);
+  double  invoke(void* address);
+
+  ///
+  long double invokeLong(void* address);
 
    /** Call the method.
       @param address - address of object for which the method is to be called
@@ -99,17 +79,29 @@ public:
   double operator()(void* address);
 
   /// String representation of decoded method.
-  std::string  str();
+  std::string  str() const;
 
   ///
-  std::ostream& operator<<(std::ostream& os);
+  void* raddress();
 
 private:
   std::string classname_;
   std::string expression_;
   std::vector<FunctionDescriptor> fd_;
-  int debug_;
+
+  void*        raddr_;
+  double       value_;
+  long double  longvalue_;
+
+  void execute(FunctionDescriptor& fd, 
+               void* address, 
+               void*& raddr,
+               double& value, 
+               long double& longvalue);
 };
+
+///
+std::ostream& operator<<(std::ostream& os, const FunctionMember& o);
 
 //-----------------------------------------------------------------------------
 // Test classes
@@ -201,6 +193,12 @@ public:
   Aclass* ptrToA() const { return a_; }
   Aclass& refToA() const { return *a_; }
   Aclass  toA()    const { return *a_; }
+
+  float say(std::string s) 
+  { 
+    std::cout << "ATest::say(): " << s << std::endl; 
+    return 42;
+  }
 
   Bclass* ptrToB;
 

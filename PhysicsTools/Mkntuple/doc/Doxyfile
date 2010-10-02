@@ -1,6 +1,6 @@
 #---------------------------------------------------------------------------
 # Project related configuration options
-#$Revision:$
+#$Revision: 1.1 $
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = PhysicsToolsMkntuple
@@ -135,9 +135,9 @@ EXCLUDE                =
 EXCLUDE_SYMLINKS       = NO
 EXCLUDE_PATTERNS       = 
 EXCLUDE_SYMBOLS        = 
-EXAMPLE_PATH           = 
+EXAMPLE_PATH           = examples 
 EXAMPLE_PATTERNS       = *.py *.C
-EXAMPLE_RECURSIVE      = NO
+EXAMPLE_RECURSIVE      = YES
 IMAGE_PATH             = 
 INPUT_FILTER           = 
 FILTER_PATTERNS        = 
