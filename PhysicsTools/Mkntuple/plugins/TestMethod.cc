@@ -5,8 +5,8 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Jan 17 HBP - add log file
-// $Id:$
-// $Revision:$
+// $Id: TestMethod.cc,v 1.1 2010/10/02 14:22:59 prosper Exp $
+// $Revision: 1.1 $
 //
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
@@ -20,6 +20,7 @@
  
 #include "PhysicsTools/Mkntuple/interface/Method.h"
 #include "PhysicsTools/Mkntuple/interface/MethodT.h"
+#include "PhysicsTools/Mkntuple/interface/CurrentEvent.h"
 
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/EDAnalyzer.h"
@@ -44,6 +45,8 @@
 using namespace std;
 using namespace edm;
 using namespace reco;
+
+static int event=0;
 
 class TestMethod : public edm::EDAnalyzer 
 {
@@ -87,7 +90,10 @@ TestMethod::analyze(const edm::Event& iEvent,
   double y = 0;
   double z = 0;
   string method("");
-  
+
+  event++;
+  CurrentEvent::instance().set(iEvent, event);
+
   { // Electrons
 
     label = config.getUntrackedParameter<string>("patElectronLabel");

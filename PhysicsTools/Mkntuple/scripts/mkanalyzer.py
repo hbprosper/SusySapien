@@ -7,7 +7,7 @@
 #          02-Sep-2010 HBP - fix variables.txt record splitting bug
 #          01-Oct-2010 HBP - add structs
 #          02-Oct-2010 HBP - add cloning
-#$Revision: 1.12 $
+#$Revision: 1.13 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -68,7 +68,7 @@ TEMPLATE_H =\
 // Description: Analyzer header for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.12 $
+// $Revision: 1.13 $
 //-----------------------------------------------------------------------------
 
 // -- System
@@ -98,12 +98,14 @@ TEMPLATE_H =\
 
 // -- Root
 
+#include "TROOT.h"
 #include "TApplication.h"
 #include "TDirectory.h"
 #include "TCanvas.h"
 #include "TFile.h"
 #include "TKey.h"
 #include "TH1F.h"
+#include "TH2F.h"
 //-----------------------------------------------------------------------------
 // -- Utilities
 //-----------------------------------------------------------------------------
@@ -147,30 +149,55 @@ struct skimFile
   skimFile(itreestream& stream, std::string filename)
    : filename_(filename),
 	 file_(new TFile(filename.c_str(), "recreate")),
-	 tree_(stream.tree()->CloneTree(0))
+	 tree_(stream.tree()->CloneTree(0)),
+	 b_weight_(0)
   {
 	std::cout << "events will be skimmed to file "
 			  << filename_ << std::endl;
+	file_->cd();
+	hist_ = new TH1F("counts", "", 1,0,1);
+	hist_->SetBit(TH1::kCanRebin);
+	hist_->SetStats(0);
   }
 
-  void keep()
+  void addEvent(double weight=-1)
   {
 	file_ = tree_->GetCurrentFile();
 	file_->cd();
+	
+	// dynamically add a weight branch to cloned tree
+	if ( weight > -1 )
+	  {
+	    if ( b_weight_ == 0 )
+		  {
+		    b_weight_ = tree_->Branch("eventWeight", &weight_,
+			                          "eventWeight/D");
+		  }
+	  }
 	tree_->Fill();
   }
 
+  void count(std::string cond)
+  {
+    hist_->Fill(cond.c_str(), 1);
+  }
+  
   void close()
   {
 	std::cout << "==> events skimmed to file " << filename_ << std::endl;
 	file_ = tree_->GetCurrentFile();
+	file_->cd();
 	file_->Write("", TObject::kOverwrite);
+	hist_->Write("", TObject::kOverwrite);
 	file_->Close();
   }
 
   std::string filename_;  
   TFile* file_;
   TTree* tree_;
+  TH1F*  hist_;
+  TBranch* b_weight_;
+  double     weight_;
 };
 
 struct commandLine
@@ -262,7 +289,8 @@ void selectVariables(itreestream& stream)
 }
 
 //-----------------------------------------------------------------------------
-// --- These structs can be filled by calling update() after stream.read(...)
+// --- These structs can be filled by calling fillObjects()
+// --- after the call to stream.read(...)
 //-----------------------------------------------------------------------------
 %(structdecl)s
 %(structimpl)s
@@ -276,14 +304,16 @@ TEMPLATE_CC =\
 // Description: Analyzer for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.12 $
+// $Revision: 1.13 $
 //-----------------------------------------------------------------------------
 #include "%(name)s.h"
+
 #ifdef PROJECT_NAME
 #include "PhysicsTools/Mkntuple/interface/pdg.h"
 #else
 #include "pdg.h"
 #endif
+
 using namespace std;
 //-----------------------------------------------------------------------------
 int main(int argc, char** argv)
@@ -326,31 +356,20 @@ int main(int argc, char** argv)
   // Loop over events
   //---------------------------------------------------------------------------
 
-  // Call this to open a skim file
-  //skimFile skim(stream, cmdline.skimfilename);
-
   for(int entry=0; entry < nevents; ++entry)
 	{
+	  // Read event into memory
 	  stream.read(entry);
-
-	  // Call this to update structs
-	  // update();
-
+	 
 	  // ---------------------
 	  // -- Event Selection --
 	  // ---------------------
 
 	  // if ( !SUSY ) continue;
-
-	  // Call this to send current event to skim file
-	  //skim.keep();
 	}
 
-  // Close all files, including skim file if one was created above
   stream.close();
   hfile.close();
-  //skim.close();
-
   return 0;
 }
 '''
@@ -363,7 +382,7 @@ SLTEMPLATE=\
 // Description: selector template
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.12 $
+// $Revision: 1.13 $
 //-----------------------------------------------------------------------------
 #include <map>
 #include <string>
@@ -383,7 +402,7 @@ SLTEMPLATE=\
 // Functions
 
 inline
-void keep(std::string name, int index)
+void keepObject(std::string name, int index)
 {
   SelectedObjectMap::instance().set(name, index);
 }
@@ -429,7 +448,7 @@ PYTEMPLATELIB =\
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
 #  Author:      %(author)s
-#  $Revision: 1.12 $
+#  $Revision: 1.13 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from time import sleep
@@ -445,16 +464,30 @@ class skimFile:
 		self.filename = filename
 		self.file = TFile(filename, "recreate")
 		self.tree = stream.tree().CloneTree(0)
+		self.hist = TH1F("counts", "", 1, 0, 1)
+		self.hist.SetBit(TH1.kCanRebin)
+		self.hist.SetStats(0)
+		self.b_weight = 0
 
-	def keep(self):
+	def addEvent(self, weight=-1.0):
 		self.file = self.tree.GetCurrentFile()
 		self.file.cd()
+		if weight > -1:
+			if self.b_weight == 0:
+				self.weight = Double()
+				self.b_weight = self.tree.Branch("eventWeight", self.weight,
+												 "eventWeight/D")
 		self.tree.Fill()
 
+	def count(self, cond):
+		self.hist.Fill(cond, 1)
+		
 	def close(self):
 		print "==> events skimmed to file", self.filename
 		self.file = self.tree.GetCurrentFile()
+		self.file.cd()
 		self.file.Write("", TObject.kOverwrite)
+		self.hist.Write("", TObject.kOverwrite)
 		self.file.Close()
 # -----------------------------------------------------------------------------
 class histogramFile:
@@ -653,7 +686,7 @@ PYTEMPLATE =\
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
 #  Author:      %(author)s
-#  $Revision: 1.12 $
+#  $Revision: 1.13 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from string import *
@@ -667,33 +700,28 @@ import os, sys, re
 # -----------------------------------------------------------------------------
 def main():
 
-	#  Get number of events
+	# Get number of events
 	nevents = stream.size()
 	print "Number of events:", nevents
 
-	# Call this if you want to skim events
-	#skim = skimFile(stream, skimfilename)
-
 	# -------------------------------------------------------------------------
-	#  Book histograms etc.
+	# Book histograms etc.
 	# -------------------------------------------------------------------------
 	setStyle()
 
 	hfile = histogramFile(cmdline.histfilename)
 
 	# -------------------------------------------------------------------------
-	#  Loop over events
+	# Loop over events
 	# -------------------------------------------------------------------------
 	for entry in xrange(nevents):
 		stream.read(entry)
 
 		# -- Event selection
 		#if not SUSY: continue
-		#skim.keep() # keep current event
 
 	stream.close()
 	hfile.close()
-	#skim.close() #  close skim file
 # -----------------------------------------------------------------------------
 main()
 '''
@@ -711,16 +739,32 @@ MAKEFILE = '''#-----------------------------------------------------------------
 #                 verbose    (e.g., verbose=1)
 #                 withcern   (e.g., withcern=1  expects to find CERN_LIB)
 # Author:      %(author)s
-#$Revision: 1.12 $
+#$Revision: 1.13 $
 #------------------------------------------------------------------------------
 ifndef ROOTSYS
 $(error *** Please set up Root)
 endif
 withroot:=1
 #------------------------------------------------------------------------------
+ifndef program
+# default program name
 program := %(filename)s
+endif
+
 cppsrcs	:= $(wildcard *.cpp)
 ccsrcs  := $(wildcard *.cc)
+
+# filter out all main programs except the one to be built
+# 1. search files for main(...) and write list of files to .main
+$(shell grep -H "main[(].*[)]" $(cppsrcs) $(ccsrcs)|cut -f1 -d: > .main)
+# 2. send list back to Makefile
+main	:= $(shell cat .main)
+# 3. remove subset of files (including the file to be built) from main
+main	:= $(filter-out $(program).cc $(program).cpp treestream.cc,$(main))
+# 4. remove the set main from the set of all files in the directory
+cppsrcs	:= $(filter-out $(main),$(cppsrcs))
+ccsrcs	:= $(filter-out $(main),$(ccsrcs))
+
 cppobjs	:= $(patsubst %(percent)s.cpp,tmp/%(percent)s.o,$(cppsrcs))
 ccobjs	:= $(patsubst %(percent)s.cc,tmp/%(percent)s.o,$(ccsrcs))
 objects	:= $(ccobjs) $(cppobjs)
@@ -824,100 +868,56 @@ def main():
 
 	records = map(strip, open(varfilename, "r").readlines())
 
+	# Create maps from object name to object type etc.
+	# But only group together variables that are meant to be
+	# together!
+
 	vars = {}
-	objmap = {}
+	vectormap = {}
+	
 	# skip first line
 	records = records[1:]
 	for index in xrange(len(records)):
 		record = records[index]
 		if record == "": continue
+		
 		rtype, branchname, varname, count = split(record, '/')
 
 		# Get object and "method" names
 		t = split(varname,'_')
-		objname = t[0]
-		metname = joinfields(t[1:],'_')
+		objname = t[0]                    # object name
+		fldname = joinfields(t[1:],'_')   # field name
 
-		count = atoi(count)
+		# Check for leaf counter flag (a "*")
+		t = split(count)
+		count = atoi(t[0])
+		iscounter = t[-1] == "*"
+		
 		n = 1
 		# Take care of duplicate names
 		if vars.has_key(varname):
 			# duplicate name; add a number to object name
-			n, r, b, c = vars[varname]
+			n, a, b, c, d = vars[varname]
 			n += 1
 			vars[varname][0] = n;
 
 			objname = "%s%d" % (objname, n)
-			if metname != '':
-				varname = "%s_%s" % (objname, metname)
+			if fldname != '':
+				varname = "%s_%s" % (objname, fldname)
 			else:
 				varname = objname
 
-		# update maps
-		vars[varname] = [1, rtype, branchname, count]
-		if not objmap.has_key(objname): objmap[objname] = []
-		objmap[objname].append((rtype, metname, count))
+		# update map for all variables
+		vars[varname] = [1, rtype, branchname, count, iscounter]
 
-	# Construct declarations etc.
+		# vector types must have the same object name and a max count > 1
+		if count > 1:
+			if not vectormap.has_key(objname): vectormap[objname] = []	
+			vectormap[objname].append((rtype, fldname, varname, count))
+	
 
-	# Create structs
-	keys = objmap.keys()
-	keys.sort()	
-	structdecl = []
-
-	structimpl = []
-
-	structimpl.append('void update()')
-	structimpl.append('{')
-
-	for objname in keys:
-		values = objmap[objname]
-		count = values[0][-1];
-		if count == 1: continue # ignore single variables
-
-		structimpl.append('')
-		structimpl.append('  %s.resize(n%s);' % (objname, objname))
-		structimpl.append('  for(int i=0; i < n%s; ++i)' % objname)
-		structimpl.append('    {')
-
-		structdecl.append('struct s_%s' % objname)
-		structdecl.append('{')
-		for rtype, metname, c in values:
-			# treat bools as ints
-			if rtype == "bool":
-				cast = '(bool)'
-			else:
-				cast = ''
-			structdecl.append('  %s\t%s;' % (rtype, metname))
-
-			structimpl.append('      %s[i].%s = %s%s_%s[i];' % (objname,
-																metname,
-																cast,
-																objname,
-																metname))
-		structdecl.append('};')
-		structdecl.append('')
-		structdecl.append('std::vector<s_%s> %s(%d);' % (objname,
-														 objname,
-														 count))
-		structdecl.append('')
-		structdecl.append('std::ostream& '\
-						  'operator<<(std::ostream& os, const s_%s& o)' % \
-						  objname)
-		structdecl.append('{')
-		structdecl.append('  char r[1024];')
-		structdecl.append('  os << "%s" << std::endl;' % objname)
-		for rtype, metname, c in values:
-			structdecl.append('  sprintf(r, "  %s: %s\\n", "%s", (double)o.%s); '\
-							  'os << r;' % ("%-32s", "%f", metname, metname))
-		structdecl.append('  return os;')
-		structdecl.append('}')
-		structdecl.append('')
-
-		structimpl.append('    }')	
-
-	structimpl.append('}')
-
+	# Declare all variables
+	
 	keys = vars.keys()
 	keys.sort()
 	pydeclare = []
@@ -928,9 +928,11 @@ def main():
 	varimpl.append('TLeaf* leaf=0;')
 	varimpl.append('int N=0;\n')
 	for varname in keys:
-		n, rtype, branchname, count = vars[varname]
+		n, rtype, branchname, count, iscounter = vars[varname]
 
-		# treat bools as ints
+		# If this is a counter variable with a name identical to that of a
+		# vector variable, ignore it
+		if iscounter and vectormap.has_key(varname): continue
 
 		if rtype == "bool": rtype = "int"
 
@@ -971,6 +973,65 @@ def main():
 		varimpl.append('')
 
 
+	# Create structs for vector variables
+	
+	keys = vectormap.keys()
+	keys.sort()	
+	structdecl = []
+	structimpl = []
+
+	structimpl.append('void fillObjects()')
+	structimpl.append('{')
+
+	for index, objname in enumerate(keys):
+		values = vectormap[objname]
+		varname= values[0][-2];
+		
+		structimpl.append('')
+		structimpl.append('  %s.resize(%s.size());' % (objname, varname))
+		structimpl.append('  for(unsigned int i=0; i < %s.size(); ++i)' % \
+						  varname)
+		structimpl.append('    {')
+
+		structdecl.append('struct %s_t' % objname)
+		structdecl.append('{')
+		for rtype, fldname, varname, count in values:
+			# treat bools as ints
+			if rtype == "bool":
+				cast = '(bool)'
+			else:
+				cast = ''
+
+			structdecl.append('  %s\t%s;' % (rtype, fldname))
+
+			structimpl.append('      %s[i].%s\t= %s%s[i];' % (objname,
+															  fldname,
+															  cast,
+															  varname))
+		structdecl.append('};')
+		structdecl.append('')
+		structdecl.append('std::vector<%s_t> %s(%d);' % (objname,
+														 objname,
+														 count))
+		structdecl.append('')
+		structdecl.append('std::ostream& '\
+						  'operator<<(std::ostream& os, const %s_t& o)' % \
+						  objname)
+		structdecl.append('{')
+		structdecl.append('  char r[1024];')
+		structdecl.append('  os << "%s" << std::endl;' % objname)
+		
+		for rtype, fldname, varname, count in values:
+			structdecl.append('  sprintf(r, "  %s: %s\\n", "%s",'\
+							  ' (double)o.%s); '\
+							  'os << r;' % ("%-32s", "%f", fldname, fldname))
+		structdecl.append('  return os;')
+		structdecl.append('}')
+		structdecl.append('')
+		
+		structimpl.append('    }')	
+	structimpl.append('}')  # end of fillObjects()
+	
 	# Write out files
 
 	# Put everything into a directory

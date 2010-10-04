@@ -17,9 +17,9 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Fri Apr 04 2008
-// $Id: rfx.h,v 1.1 2010/09/25 21:34:55 prosper Exp $
+// $Id: rfx.h,v 1.2 2010/10/02 14:22:59 prosper Exp $
 //
-//$Revision: 1.1 $
+//$Revision: 1.2 $
 //-----------------------------------------------------------------------------
 #include <iostream>
 #include <fstream>
@@ -186,6 +186,7 @@ struct FunctionDescriptor
   Reflex::Type              rtype;       /// Models return type
   Reflex::EFUNDAMENTALTYPE  rcode;       /// Return type code
   Reflex::Object            robject;     /// Models returned object
+  std::string               rname;       /// Name of return type
   
   bool               datamember;     /// True if this is a data member
   bool               simple;         /// True if return type is simple

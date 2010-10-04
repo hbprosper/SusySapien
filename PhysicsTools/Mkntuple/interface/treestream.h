@@ -43,7 +43,7 @@
 //          06-Jun-2010 Add store and save (commt = store + save)
 //          23-Sep-2010 Move from PhysicsTools/LiteAnalysis to 
 //                                PhysicsTools/Mkntuple
-//$Revision: 1.1 $
+//$Revision: 1.2 $
 //----------------------------------------------------------------------------
 #include <vector>
 #include <string>
@@ -66,16 +66,19 @@
 /// Model a name/value pair.
 struct Field
 {
-  Field() : srctype(' '),
-	    iotype(' '),
-	    isvector(false),
-	    iscounter(false),
-	    maxsize(0),
-	    branch(0),
-	    leaf(0),
-	    address(0),
-	    branchname(""),
-	    leafname("") {}
+  Field() 
+    : srctype(' '),
+      iotype(' '),
+      isvector(false),
+      iscounter(false),
+      maxsize(0),
+      branch(0),
+      leaf(0),
+      address(0),
+      branchname(""),
+      leafname(""),
+      fullname("")
+  {}
   
   virtual ~Field() {}
   
@@ -91,6 +94,7 @@ struct Field
   
   std::string branchname; /// Name of branch
   std::string leafname;   /// Name of T-leaf!
+  std::string fullname;   /// Full name of branch/T-leaf!
 };
 
 template <class T>
@@ -290,12 +294,10 @@ class itreestream
   double get(std::string namen);
 
   ///
-  std::string str();
+  std::string str() const;
 
   /// Print information about name/value pairs.
-  void   print(std::ostream& out) { out << str(); }
-
-  void   ls(std::ostream& out=std::cout) { print(out); }
+  void   ls(std::ostream& out=std::cout) { out << str(); }
 
 //   /// Proxy for read.
 //   int    operator[](int entry);
@@ -329,7 +331,7 @@ class itreestream
   void _getbranches(TBranch* branch, int depth);
   void _getleaf    (TBranch* branch, TLeaf* leaf=0);
   void _select     (std::string name, void* address, int maxsize, 
-		    char srctype, bool isvector=false);
+                    char srctype, bool isvector=false);
   void _update();
 
  public:
@@ -464,9 +466,10 @@ class otreestream
   std::vector<std::string>& names();
 
   ///
-  void   print(std::ostream& out);
+  std::string str() const;
 
-  void   ls() { print(std::cout); }
+  ///
+  void   ls(std::ostream& out=std::cout);
 
   ///
   TFile* file();
@@ -498,7 +501,7 @@ class otreestream
 
 };
 
-std::ostream& operator<<(std::ostream& os, itreestream& tuple);
-std::ostream& operator<<(std::ostream& os, otreestream& tuple);
+std::ostream& operator<<(std::ostream& os, const itreestream& tuple);
+std::ostream& operator<<(std::ostream& os, const otreestream& tuple);
 
 #endif

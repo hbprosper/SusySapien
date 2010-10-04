@@ -9,8 +9,11 @@
 #                          is selected
 #              08-Sep-2010 HBP - adapt to extended listing in methods files
 #              18-Sep-2010 HBP - improve find
+#              03-Oct-2010 HBP - add checkbox and migrate selection to
+#                          selected methods only if at least one method and
+#                          getbylabel is chosen.
 #-----------------------------------------------------------------------------
-#$Revision: 1.19 $
+#$Revision: 1.20 $
 #-----------------------------------------------------------------------------
 import sys, os, re, platform
 from ROOT import *
@@ -40,7 +43,7 @@ if not os.environ.has_key("CMSSW_BASE"):
 	sys.exit(0)
 
 BASE = os.environ["PWD"]
-REVISION="$Revision: 1.19 $"
+REVISION="$Revision: 1.20 $"
 rev = split(REVISION)[1]
 VERSION        = \
 """
@@ -213,8 +216,15 @@ HelpAbout = \
 HA_WIDTH  = 350
 HA_HEIGHT = 300
 
+BLACK       = root.Color("black")
+WHITE       = root.Color("white")
+
+RED         = root.Color("red")
+ORANGE      = root.Color("orange")
 YELLOW      = root.Color("yellow")
 GREEN       = root.Color("green")
+BLUE        = root.Color("blue")
+
 DARKRED     = root.Color("darkred")
 LIGHTYELLOW = root.Color("lightyellow")
 LIGHTGREEN  = root.Color("lightgreen")
@@ -317,7 +327,7 @@ class Gui:
 
 		self.window = gClient.GetRoot()
 		self.main = TGMainFrame(self.window, WIDTH, HEIGHT)
-
+		self.defaultColor = self.main.GetDefaultFrameBackground()
 		self.connection.append(Connection(self.main, "CloseWindow()",
 										  self,      "close"))
 
@@ -500,7 +510,7 @@ class Gui:
 			self.connection.append(Connection(self.classBox[id],
 											  "Selected(Int_t)",
 											  self,
-											  "classListBox"))
+											  "classListBox%d" % (id+1)))
 			
 			# Create a list box for methods
 
@@ -519,7 +529,7 @@ class Gui:
 			self.connection.append(Connection(self.methodBox[id],
 											  "Selected(Int_t)",
 											  self,
-											  "methodListBox"))
+											  "methodListBox%d" % (id+1)))
 
 			# Create a list box for getByLabel string
 
@@ -538,7 +548,7 @@ class Gui:
 			self.connection.append(Connection(self.labelBox[id],
 											  "Selected(Int_t)",
 											  self,
-											  "labelListBox"))
+											  "labelListBox%d" % (id+1)))
 		#-------------------------------------------------------------------
 		# Create a status bar, divided into two parts
 		#-------------------------------------------------------------------
@@ -682,7 +692,8 @@ class Gui:
 		tab = self.noteBook.GetTabTab(self.currentPage)
 		tab.ChangeBackground(P_COLOR[id])
 
-		# Disable delete menu item if this is the Selected Methods page
+		# return if this is the methods page
+		
 		
 		if id == P_METHODS: return
 		
@@ -709,6 +720,7 @@ class Gui:
 			if not self.cmap[entry]['selected']: continue
 
 			self.classBox[P_SELECTED].AddEntry(entry, index)
+
 			if entry != cname: continue
 
 			# The current class was selected in Selected Methods page
@@ -735,6 +747,7 @@ class Gui:
 			for ind, name in enumerate(names):
 				if not methods[name]: continue
 				self.methodBox[P_SELECTED].AddEntry(name, ind)
+				
 			self.methodBox[P_SELECTED].Layout()
 			
 		self.classBox[P_SELECTED].Layout()
@@ -767,51 +780,45 @@ class Gui:
 #---------------------------------------------------------------------------
 # Responds to: Selected(Int_t)
 
-	def classListBox(self, id):
-		
+	def classListBox1(self, id):	
 		pageNumber = self.noteBook.GetCurrent()
 		cname = self.classBox[pageNumber].GetEntry(id).GetText().Data()
-		SelectedPage = pageNumber == P_SELECTED
+		#D
+		#print "LIST BOX 1 (%s, %d)" % (cname, id)
 		
 		self.methodBox[pageNumber].RemoveAll()
 		self.labelBox[pageNumber].RemoveAll()
 
-		methods = self.cmap[cname]['methods']
-		labels= self.cmap[cname]['labels']
+		methods= self.cmap[cname]['methods']
+		labels = self.cmap[cname]['labels']
 		
 		# Check if previously highlighted
 		
-		if not SelectedPage:
-			if self.previousID == id:
-				self.previousID = -1
+		if self.previousID == id:
+			self.previousID = -1
+			self.cmap[cname]['selected'] = False
 
-				self.cmap[cname]['selected'] = False
+			for index, name in enumerate(methods.keys()):
+				self.cmap[cname]['methods'][name] = False
 
-				for index, name in enumerate(methods.keys()):
-					self.cmap[cname]['methods'][name] = False
+			for index, name in enumerate(labels.keys()):
+				self.cmap[cname]['labels'][name] = False
 
-				for index, name in enumerate(labels.keys()):
-					self.cmap[cname]['labels'][name] = False
-
-				self.classBox[pageNumber].Select(id, kFALSE)
-				self.methodBox[pageNumber].Layout()
-				self.labelBox[pageNumber].Layout()
-				return
-			self.previousID = id
-
-		self.cmap[cname]['selected'] = True
+			self.classBox[pageNumber].Select(id, kFALSE)
+			self.methodBox[pageNumber].Layout()
+			self.labelBox[pageNumber].Layout()
+			color = self.defaultColor
+			self.classBox[pageNumber].GetEntry(id).SetBackgroundColor(color)
+			return
+		
+		self.previousID = id
 	
 		# List methods
 		
 		names   = self.cmap[cname]['sortedmethods']
 		for index, name in enumerate(names):
-			if SelectedPage:
-				if not methods[name]: continue
 			self.methodBox[pageNumber].AddEntry(name, index)
-
-			# If this is the Methods page, highlight the selected
-			# methods
-			if not SelectedPage and self.cmap[cname]['methods'][name]:
+			if self.cmap[cname]['methods'][name]:
 				self.methodBox[pageNumber].Select(index)
 		self.methodBox[pageNumber].Layout()
 
@@ -819,30 +826,46 @@ class Gui:
 		
 		names = labels.keys()
 		names.sort()
-
 		for index, name in enumerate(names):
-			if SelectedPage:
-				if not labels[name]: continue
-			self.labelBox[pageNumber].AddEntry(name, index)
-			
-			# If this is the Methods page, highlight the selected
-			# getByLabels
-			if not SelectedPage and self.cmap[cname]['labels'][name]:
+			self.labelBox[pageNumber].AddEntry(name, index)			
+			if self.cmap[cname]['labels'][name]:
 				self.labelBox[pageNumber].Select(index)
 		self.labelBox[pageNumber].Layout()
+		
+# Responds to: Selected(Int_t)
+
+	def classListBox2(self, id):		
+		pageNumber = self.noteBook.GetCurrent()
+		cname = self.classBox[pageNumber].GetEntry(id).GetText().Data()
+		
+		self.methodBox[pageNumber].RemoveAll()
+		self.labelBox[pageNumber].RemoveAll()
+
+		methods = self.cmap[cname]['methods']
+		labels= self.cmap[cname]['labels']
+
+		self.cmap[cname]['selected'] = True
+	
+		# List methods
+		
+		names   = self.cmap[cname]['sortedmethods']
+		for index, name in enumerate(names):
+			if not methods[name]: continue
+			self.methodBox[pageNumber].AddEntry(name, index)
+		self.methodBox[pageNumber].Layout()
+
+		# List getByLabels
+		
+		names = labels.keys()
+		names.sort()
+		for index, name in enumerate(names):
+			if not labels[name]: continue
+			self.labelBox[pageNumber].AddEntry(name, index)
+		self.labelBox[pageNumber].Layout()		
 #---------------------------------------------------------------------------
-	def methodListBox(self, id):
-
-		#print "methodBox %d" % id	
-
+	def methodListBox1(self, id):
 		pageNumber = self.noteBook.GetCurrent()
 
-		# Disable method selection in Selected Methods page
-		
-		if pageNumber == P_SELECTED:
-			self.methodBox[pageNumber].Select(id, kFALSE)
-			return
-		
 		# This is the Methods page, so flag method as selected	
 			
 		cid   = self.classBox[pageNumber].GetSelected()
@@ -850,25 +873,79 @@ class Gui:
 		name  = self.methodBox[pageNumber].GetEntry(id).GetText().Data()
 		on    = self.cmap[cname]['methods'][name]
 		self.cmap[cname]['methods'][name] = not on
-#---------------------------------------------------------------------------
-	def labelListBox(self, id):
 
-		pageNumber = self.noteBook.GetCurrent()
-
-		# Disable label selection in Selected Methods page
+## 		##D
+## 		if self.cmap[cname]['methods'][name]:
+## 			print "\tMETHOD(%s) SELECTED" % name
+## 		else:
+## 			print "\tMETHOD(%s) DE-SELECTED" % name
+			
+		self.setSelectedClass(cname)
 		
-		if pageNumber == P_SELECTED:
-			self.labelBox[pageNumber].Select(id, kFALSE)
-			return
-
+	def methodListBox2(self, id):
+		pageNumber = self.noteBook.GetCurrent()
+		# Disable method selection in Selected Methods page
+		self.methodBox[pageNumber].Select(id, kFALSE)
+		return
+#---------------------------------------------------------------------------
+	def labelListBox1(self, id):
+		pageNumber = self.noteBook.GetCurrent()
+	
 		# This is the Methods page, so flag label as selected
 		
 		cid   = self.classBox[pageNumber].GetSelected()
 		cname = self.classBox[pageNumber].GetEntry(cid).GetText().Data()
 		name  = self.labelBox[pageNumber].GetEntry(id).GetText().Data()
-		status= self.cmap[cname]['labels'][name]
-		self.cmap[cname]['labels'][name] = not status
+		on    = self.cmap[cname]['labels'][name]
+		self.cmap[cname]['labels'][name] = not on
 
+## 		##D
+## 		if self.cmap[cname]['labels'][name]:
+## 			print "\tLABEL(%s) SELECTED" % name
+## 		else:
+## 			print "\tLABEL(%s) DE-SELECTED" % name
+			
+		self.setSelectedClass(cname)
+		
+	def labelListBox2(self, id):
+		pageNumber = self.noteBook.GetCurrent()
+		# Disable label selection in Selected Methods page		
+		self.labelBox[pageNumber].Select(id, kFALSE)
+		return
+#---------------------------------------------------------------------------
+	def setSelectedClass(self, cname):
+		# A class is selected if and only if at least one
+		# method and one label has been selected.
+
+		methodSelected = False
+		itemmap = self.cmap[cname]['methods']
+		for name in itemmap.keys():
+			if not itemmap[name]: continue
+			# a method has been selected
+## 			##D
+## 			print "\tMETHOD(%s) SELECTED" % name
+			methodSelected = True
+			break
+		
+		labelSelected = False
+		itemmap = self.cmap[cname]['labels']
+		for name in itemmap.keys():
+			if not itemmap[name]: continue
+			# a getByLabel has been selected
+## 			##D
+## 			print "\tLABEL(%s) SELECTED" % name
+			labelSelected = True
+			break
+		
+		self.cmap[cname]['selected'] = methodSelected and labelSelected
+		pageNumber = self.noteBook.GetCurrent()
+		cid = self.classBox[pageNumber].GetSelected()
+		if self.cmap[cname]['selected']:
+			self.classBox[pageNumber].GetEntry(cid).SetBackgroundColor(YELLOW)
+		else:
+			self.classBox[pageNumber].GetEntry(cid).SetBackgroundColor(WHITE)
+
+		self.classBox[pageNumber].Layout()
 #---------------------------------------------------------------------------
 	def select(self):
 

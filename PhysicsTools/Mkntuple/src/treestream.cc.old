@@ -65,7 +65,6 @@
 #include "TTree.h"
 #include "TClass.h"
 #include "TChain.h"
-#include "TString.h"
 
 #ifdef PROJECT_NAME
 #include "PhysicsTools/Mkntuple/interface/treestream.h"
@@ -87,7 +86,7 @@ const int kSUCCESS=0;
 const int kBADOPEN=1;
 const int kBADTREE=2;
 const int kBADBRANCH=3;
-int DEBUGLEVEL=0;
+int DEBUGLEVEL=2;
 
 // Make following visible only to this compilation unit.
 
@@ -108,8 +107,8 @@ namespace
 
   void DBUG(string message, int level=1)
   {
-    if ( getenv("DBtreestream") > 0 )
-      DEBUGLEVEL = atoi(getenv("DBtreestream"));
+    if ( getenv("DEBUGTREESTREAM") > 0 )
+      DEBUGLEVEL = atoi(getenv("DEBUGTREESTREAM"));
     else
       DEBUGLEVEL = 0;
     if ( DEBUGLEVEL >= level ) cout << message << endl;
@@ -505,7 +504,7 @@ namespace
       {
         vector<T>* d = reinterpret_cast<vector<T>*>(field->address);
         if ( d == 0 ) fatal("toexternal - reinterpret_cast failed" + 
-                            string(field->fullname));
+                            string(field->branch->GetName()));
         
         if ( (int)d->size() != count ) d->resize(count, 0);
         
@@ -769,8 +768,6 @@ itreestream::itreestream(vector<string>& fname, string treename, int bufsize)
 void
 itreestream::_open(vector<string>& fname, string treename)
 {
-  DBUG("itreestream::ctor - BEGIN", 1);
-
   // Clear internal buffer
 
   _buffer.clear();
@@ -879,11 +876,7 @@ itreestream::_open(vector<string>& fname, string treename)
     }
 
   // ----------------------------------------
-  // Get all branches and create a data
-  // structure (Field) for every leaf. For 
-  // leaves whose names differ from the branch, 
-  // use the syntax:
-  //    <branchname>.<leafname> 
+  // Get all branches.
   // ----------------------------------------
   TObjArray* array = _tree->GetListOfBranches();
   if ( ! array ) fatal("itreestream - Unable to GetListOfBranches");
@@ -963,8 +956,7 @@ itreestream::_getbranches(TBranch* branch, int depth)
         }
     }
   
-  // Check current branch for branches. For now, we assume branch names are
-  // unique.
+  // Check current branch for branches
 
   array = 0;
   array = branch->GetListOfBranches();
@@ -986,14 +978,13 @@ void
 itreestream::_getleaf(TBranch* branch, TLeaf* leaf)
 {
   if ( branch == 0 ) fatal("_getleaf - branch pointer zero");
-
-  //bool storeBranchname = leaf == 0;
+  bool storeBranchname = leaf == 0;
 
   if ( leaf == 0 )
     {
       TObjArray* array = branch->GetListOfLeaves();
       if ( array != 0 ) leaf = (TLeaf*)((*array)[0]);
-   }
+    }
   if ( leaf == 0 )
     fatal("getleaf - leaf pointer zero for\n"
 	  "\tbranch " + string(branch->GetName()));
@@ -1002,35 +993,20 @@ itreestream::_getleaf(TBranch* branch, TLeaf* leaf)
   v.address = 0;      // Set by caller
   v.srctype = 0;      // Set by caller
   v.maxsize = 0;      // Set by caller
-  v.isvector= false;  // Set by caller (true if external variable is a vector)
+  v.isvector= false;  // Set by caller
   v.branch  = branch;
   v.leaf    = leaf;
   v.branchname= branch->GetName();
   v.leafname  = leaf->GetName();
   v.iotype    = leaf->GetTypeName()[0];
   v.iscounter = false;
-
-  // If the branch contains a single leaf, it is sufficient
-  // to identify the leaf with the branch. Otherwise, create
-  // a name for each leaf within the branch.
-  if ( branch->GetListOfLeaves()->GetEntries() == 1 )
-    {
-      v.fullname  = v.branchname;
-      data[v.branchname] = v;
-    }
+  if ( storeBranchname )
+    data[v.branchname] = v;
   else
-    {
-      v.fullname  = v.branchname + "." + v.leafname;
-      data[v.fullname] = v;
-    }
-
-//   if ( storeBranchname )
-//     data[v.branchname] = v;
-//   else
-//     data[v.fullname] = v;
+    data[v.leafname] = v;
 
   if ( DEBUGLEVEL > 0 ) 
-    cout << "getleaf(" << v.fullname << ")" << endl;
+    cout << v.branchname << "\t\t" << v.leafname << endl;
 }
 
 // Shutdown stream
@@ -1194,7 +1170,7 @@ itreestream::read(int entry)
   int localentry = 0;
 
   // If entry is negative, we assume that the tree is already in
-  // memory, in which case we do nothing.
+  // memory
   if ( entry > -1 )
     {
       _entry = entry;
@@ -1249,7 +1225,7 @@ itreestream::read(int entry)
       readbranch(field, localentry);
     }
 
-  return localentry; // Return ordinal value within current tree.
+  return localentry; // Return ordinal value within tree.
 }
 
 int 
@@ -1280,54 +1256,53 @@ TTree*
 itreestream::tree() { return _tree; }
 
 string
-itreestream::str() const
+itreestream::str()
 {
-  if ( ! _tree ) return string("");
-
   ostringstream out;
   out << "Tree Name          " << _tree->GetName()      << endl;
   out << "Number of entries  " << _tree->GetEntries()   << endl;
   out << endl;
 
   int count = 0;
-  Data::const_iterator it;
-  for(it=data.begin(); it != data.end(); it++)
+
+  for (int i=0; i < (int)branchname.size(); i++)
     {
-      const Field& field = it->second;
+      if ( data.find(branchname[i]) == data.end() ) continue;
       count++;
+      
+      Field& field = data[branchname[i]];
 
       int maxcount=0;
       TLeaf* leafcounter = field.leaf->GetLeafCounter(maxcount);
-
-      string lfsym("");
-	  if (field.iscounter) lfsym = string(" *");
-
+	  
       char record[512];
       if ( leafcounter != 0 )
         {
           // This variable has a leaf counter
-          sprintf(record, "    %4d %s \t/ %s (%d)",
+          sprintf(record, "    %4d (%d) %s / %s / %s",
                   count,
-                  field.fullname.c_str(),
-                  field.leaf->GetTypeName(),
-                  leafcounter->GetMaximum());
+                  leafcounter->GetMaximum(),
+                  field.branch->GetName(),
+                  field.leaf->GetName(),
+                  field.leaf->GetTypeName());
         }
       else
         {
           // This variable does not have a leaf counter
           maxcount = field.leaf->GetLen();
           if ( maxcount > 1 )
-            sprintf(record, "%4d %s \t/ %s [%d]",
+            sprintf(record, "%4d %s / %s / %s[%d]",
                     count,
-                    field.fullname.c_str(),
+                    field.branch->GetName(),
+                    field.leaf->GetName(),
                     field.leaf->GetTypeName(), 
                     maxcount);
           else
-            sprintf(record, "%4d %s \t/ %s%s",
+            sprintf(record, "%4d %s / %s / %s",
                     count,
-                    field.fullname.c_str(),
-                    field.leaf->GetTypeName(),
-                    lfsym.c_str());
+                    field.branch->GetName(),
+                    field.leaf->GetName(),
+                    field.leaf->GetTypeName());
         }
       out << record << endl;
     }
@@ -1338,10 +1313,9 @@ itreestream::str() const
 // The following routine is used to specify the addresses into which data
 // are to be read, when reading a Root-file
 // Note 1: When itreestream is created a Field object is created for each 
-//         branch/leaf in the root-tuple. However, a branch is activated 
-//         only if the _select method has been called for that branch and
-//         leaf and, of course, only if the named branch/leaf (that is, 
-//         variable) exists.
+//         branch in the root-tuple. However, a branch is activated only if the
+//         _select method has been called for that branch and, of course, 
+//         if the named branch (that is, variable) exists.
 //
 // Note 2: The _select/read sequence does not use the internal buffers
 //         field.value, but loads data directly into the user's
@@ -1391,8 +1365,7 @@ itreestream::_select(string namen, void* address, int maxsize, char srctype,
       for(it=data.begin(); it != data.end(); it++)
         {
           Field& field = it->second;
-          string name = field.fullname;
-
+          string name  = string(field.branch->GetName());
           if ( DEBUGLEVEL > 0 )
             cout << "_select(" << nom << ")[" << name << "]" << endl;
 
@@ -1420,7 +1393,6 @@ itreestream::_select(string namen, void* address, int maxsize, char srctype,
     }
  #endif
  
-
   if ( DEBUGLEVEL > 0 )
     cout << "_select - NAMEN(" << namen << ")" << endl;
 
@@ -1505,13 +1477,13 @@ itreestream::_update()
       Field* field = it->second;
       if ( field == 0 )  fatal("update - zero field pointer");
 
-      TBranch* branch = _tree->GetBranch(field->branchname.c_str());
-      if ( branch == 0 ) fatal("update - pointer is zero for branch " 
-                               + field->branchname);
+      string name = field->branchname;
+      
+      TBranch* branch = _tree->GetBranch(name.c_str());
+      if ( branch == 0 ) fatal("update - pointer is zero for branch " + name);
 
       TLeaf* leaf = branch->GetLeaf(field->leafname.c_str());
-      if ( leaf == 0 ) fatal("update - pointer is zero for leaf "
-                             + field->leafname);
+      if ( leaf == 0 ) fatal(string("leaf ") + field->leafname + " not found");
 
       field->branch = branch;
       field->leaf   = leaf;
@@ -1519,13 +1491,12 @@ itreestream::_update()
       // We let Root handle vector types directly
       if ( field->iotype == 'v')
         {
-           _chain->SetBranchAddress(field->branchname.c_str(), 
+           _chain->SetBranchAddress(name.c_str(), 
                                     &field->address, 
                                     &field->branch);
         }
       else if ( field->maxsize < 1 )
-        fatal("_update - external buffer for " 
-              + field->fullname + " is of zero length!");
+        fatal("_update - external buffer for " + name + " is of zero length!");
      }
   DBUG("\tdone updating branch pointers", 1);
 }
@@ -1554,9 +1525,9 @@ itreestream::present(string name) { return data.find(name) != data.end(); }
 //   return ev; 
 // }
 
-std::ostream& operator<<(std::ostream& os, const itreestream& tuple)
+std::ostream& operator<<(std::ostream& os, itreestream& tuple)
 {
-  os << tuple.str();
+  tuple.print(os);
   return os;
 }
 
@@ -1942,20 +1913,12 @@ otreestream::file() { return _file; }
 TTree*
 otreestream::tree() { return _tree; }
 
-string 
-otreestream::str() const
+void
+otreestream::print(ostream& out)
 {
-  ostringstream out;
   out << "Tree Name          " << _tree->GetName()      << endl;
   out << "Number of entries  " << _tree->GetEntries()   << endl;
   out << "Number of branches " << _tree->GetNbranches() << endl;
-  return out.str();
-}
-
-void
-otreestream::ls(ostream& out)
-{
-  out << str();
 }
 
 // ------------------------------------------------------------------------
@@ -2054,9 +2017,9 @@ otreestream::_add(string namen, void* address, int maxsize,
   DBUG("_add: END");
 }
 
-std::ostream& operator<<(std::ostream& os, const otreestream& tuple)
+std::ostream& operator<<(std::ostream& os, otreestream& tuple)
 {
-  os << tuple.str();;
+  tuple.print(os);
   return os;
 }
 

@@ -5,7 +5,7 @@
 //  Updated: 05-Apr-2002 HBP tidy up
 //           17-May-2006 HBP use weightindex instead of a vector of weights
 //-----------------------------------------------------------------------------
-//$Revision: 1.2 $
+//$Revision: 1.1 $
 //-----------------------------------------------------------------------------
 #include <stdio.h>
 #include <cmath>
@@ -27,10 +27,10 @@ using namespace std;
 ClassImp(RGS)
 #endif
 
+string rgsversion() {return string("RGS - $Revision: 1.1 $");}
 
-  string rgsversion() {return string("RGS - $Revision: 1.2 $");}
-
-namespace {
+namespace 
+{
   void error(string message)
   {
     cerr << "RGS ** error *** " << message << endl;
@@ -51,6 +51,7 @@ namespace {
     return filename.substr(i+1,j-i-1);
   }
 }
+
 //---------------------------------------------------------------------------
 // Description: Read from a text file. For use in Root.
 // Created: 03-May-2005 Harrison B. Prosper
@@ -65,7 +66,7 @@ bool slurpTable(string filename,
   ifstream stream(filename.c_str());
   if ( ! stream.good() )
     { 
-      error("slurp_table - unable to open "+filename);
+      error("slurpTable - unable to open "+filename);
       return false;
     }
   
@@ -99,7 +100,7 @@ bool slurpTable(string filename,
             {
               double x;
               inp >> x;
-              data[nrow].push_back(x);
+              //data[nrow].push_back(x);
             }
           nrow++;
           if ( count <= 0 ) continue;

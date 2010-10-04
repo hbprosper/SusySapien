@@ -9,7 +9,7 @@
 //           
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
-// $Id: FunctionMember.h,v 1.1 2010/09/25 21:34:54 prosper Exp $
+// $Id: FunctionMember.h,v 1.2 2010/10/02 14:22:59 prosper Exp $
 //
 //-----------------------------------------------------------------------------
 #include <vector>
@@ -19,6 +19,8 @@
 #include "Reflex/Tools.h"
 #include "PhysicsTools/Mkntuple/interface/rfx.h"
 //-----------------------------------------------------------------------------
+typedef std::map<int, std::map<std::string, int> > RunToTypeMap;
+
 /** Model a function member (a method) or a data member of a C++ class.
     Given the fully scoped name of a class (that is, the name together with
     any namespaces) and the expression for a simple or compound method, this
@@ -84,6 +86,8 @@ public:
   ///
   void* raddress();
 
+  static RunToTypeMap donotcall;
+
 private:
   std::string classname_;
   std::string expression_;
@@ -98,6 +102,10 @@ private:
                void*& raddr,
                double& value, 
                long double& longvalue);
+
+  bool doNotCall(FunctionDescriptor& fd);
+  void updatedoNotCall(FunctionDescriptor& fd);
+
 };
 
 ///

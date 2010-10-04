@@ -14,7 +14,7 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
-// $Id: FunctionMember.cc,v 1.2 2010/09/26 20:05:57 prosper Exp $
+// $Id: FunctionMember.cc,v 1.3 2010/10/02 14:23:00 prosper Exp $
 //-----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python.hpp>
@@ -27,11 +27,14 @@
 #include "FWCore/MessageLogger/interface/MessageLogger.h"
 #include "PhysicsTools/Mkntuple/interface/FunctionMember.h"
 #include "PhysicsTools/Mkntuple/interface/colors.h"
+#include "PhysicsTools/Mkntuple/interface/CurrentEvent.h"
 //-----------------------------------------------------------------------------
 using namespace std;
 using namespace ROOT::Reflex;
 //-----------------------------------------------------------------------------
 static bool DBFunctionMember = getenv("DBFunctionMember")>0 ? true : false; 
+
+RunToTypeMap FunctionMember::donotcall = RunToTypeMap();
 
 FunctionMember::FunctionMember()
   : classname_(""),
@@ -199,7 +202,7 @@ FunctionMember::FunctionMember(std::string classname,
           // type name. However, for methods rtype is the final
           // type.
             
-          retname = fd.rtype.Name(SCOPED+FINAL);
+          fd.rname = fd.rtype.Name(SCOPED+FINAL);
           if ( DBFunctionMember )
             cout << "       - datamember type: " 
                  << BLUE
@@ -208,11 +211,11 @@ FunctionMember::FunctionMember(std::string classname,
 
           if ( fd.pointer || fd.reference )
             // remove "*" or "&" at end of name
-            retname = retname.substr(0,retname.size()-1);
+            fd.rname = fd.rname.substr(0, fd.rname.size()-1);
 
           // Fall on sword if we cannot get data member type name
 
-          if ( retname == "" )
+          if ( fd.rname == "" )
             throw cms::Exception("datamemberTypeFailure")
               << " can't get type for data member "
               << fd.classname << "::"
@@ -220,7 +223,7 @@ FunctionMember::FunctionMember(std::string classname,
 
           if ( DBFunctionMember )
             cout << "       - datamember type (confirmation): " 
-                 << retname << endl;
+                 << fd.rname << endl;
         }
       else
         {
@@ -255,14 +258,15 @@ FunctionMember::FunctionMember(std::string classname,
 
           // Get type name of returned object
 
-          retname = fd.rtype.Name(SCOPED+FINAL);
-          if ( retname == "" )
+          fd.rname = fd.rtype.Name(SCOPED+FINAL);
+          if ( fd.rname == "" )
             throw cms::Exception("returnTypeFailure")
               << " can't get return type for method " 
               << fd.method.Name() << endl;
 
+          
           if ( DBFunctionMember )
-            cout << "       - return type: " << retname << endl;
+            cout << "       - return type: " << fd.rname << endl;
 
           // This could be an isAvailable method
 
@@ -304,14 +308,14 @@ FunctionMember::FunctionMember(std::string classname,
         {
           // This is an isAvailable method, so insert a call to isNull
 
-          retname = fd.classname; // same classname as current smart pointer
+          fd.rname = fd.classname; // same classname as current smart pointer
           expr2 = string("isNull()") + delim + expr2;
         }
       else if ( fd.isNull )
         {
           // This is an isNull method, so insert a call to get
 
-          retname = fd.classname; // same classname as current smart pointer
+          fd.rname = fd.classname; // same classname as current smart pointer
           expr2 = string("get()") + delim + expr2;
         }
 
@@ -356,7 +360,7 @@ FunctionMember::FunctionMember(std::string classname,
       // type becomes the next classname.
  
       expression = expr2;
-      classname  = retname;
+      classname  = fd.rname;
     }
 
   if ( ! done )
@@ -365,6 +369,47 @@ FunctionMember::FunctionMember(std::string classname,
       << classname_ << "::" << expression_ << endl
       << " **** make sure it returns a simple type"
       << endl;
+}
+
+bool 
+FunctionMember::doNotCall(FunctionDescriptor& fd)
+{
+  const edm::Event* event = CurrentEvent::instance().get();
+  if ( event == 0 ) return false;
+  int run = event->id().run();
+  if ( FunctionMember::donotcall.find(run) != 
+       FunctionMember::donotcall.end() )
+    {
+      if ( FunctionMember::donotcall[run].find(fd.rname) !=
+           FunctionMember::donotcall[run].end() )
+
+        if ( DBFunctionMember )
+          cout << "==> Skipping method " 
+               << RED 
+               << fd.classname << "::" 
+               << fd.expression
+               << DEFAULT_COLOR
+               << endl;
+      return true;
+    }
+  return false;
+}
+
+void
+FunctionMember::updatedoNotCall(FunctionDescriptor& fd)
+{
+  const edm::Event* event = CurrentEvent::instance().get();
+  if ( event == 0 ) return;
+  int run = event->id().run();
+  if ( FunctionMember::donotcall.find(run) == 
+       FunctionMember::donotcall.end() )
+    {
+      FunctionMember::donotcall[run] = map<string, int>();
+    }
+  FunctionMember::donotcall[run][fd.rname] = 0;
+  if ( DBFunctionMember )
+    cout << "==> Adding " << RED << fd.rname << DEFAULT_COLOR 
+         << " to doNotCall list" << endl;
 }
 
 double
@@ -384,6 +429,22 @@ FunctionMember::invoke(void* address)
   for(unsigned int depth=0; depth < fd_.size(); ++depth)
     {
       FunctionDescriptor& fd = fd_[depth]; // NB: get an alias NOT a copy!
+
+      // Check the return type of current method. If it points to an object
+      // that is on the doNotCall list for the current run, then don't call
+      // this method. The assumption is that if a collection is missing
+      // it is missing for the entire run.
+
+      if ( fd.pointer || fd.smartpointer )
+        {
+          if ( doNotCall(fd) ) 
+            {
+              raddr = 0;
+              value_ = 0;
+              longvalue_ = 0;
+              break;
+            }
+        }
 
       execute(fd, address, raddr, value_, longvalue_);
 
@@ -430,6 +491,7 @@ FunctionMember::invoke(void* address)
                                                         << fd.expression 
                                                         << endl;  
                   value_ = 0;
+                  updatedoNotCall(fd);
                   break; // break out of loop
                 }
             }
