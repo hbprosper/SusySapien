@@ -7,7 +7,7 @@
 #          02-Sep-2010 HBP - fix variables.txt record splitting bug
 #          01-Oct-2010 HBP - add structs
 #          02-Oct-2010 HBP - add cloning
-#$Revision: 1.13 $
+#$Revision: 1.14 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -68,7 +68,7 @@ TEMPLATE_H =\
 // Description: Analyzer header for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.13 $
+// $Revision: 1.14 $
 //-----------------------------------------------------------------------------
 
 // -- System
@@ -304,7 +304,7 @@ TEMPLATE_CC =\
 // Description: Analyzer for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.13 $
+// $Revision: 1.14 $
 //-----------------------------------------------------------------------------
 #include "%(name)s.h"
 
@@ -382,7 +382,7 @@ SLTEMPLATE=\
 // Description: selector template
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.13 $
+// $Revision: 1.14 $
 //-----------------------------------------------------------------------------
 #include <map>
 #include <string>
@@ -448,7 +448,7 @@ PYTEMPLATELIB =\
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
 #  Author:      %(author)s
-#  $Revision: 1.13 $
+#  $Revision: 1.14 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from time import sleep
@@ -686,7 +686,7 @@ PYTEMPLATE =\
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
 #  Author:      %(author)s
-#  $Revision: 1.13 $
+#  $Revision: 1.14 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from string import *
@@ -739,7 +739,7 @@ MAKEFILE = '''#-----------------------------------------------------------------
 #                 verbose    (e.g., verbose=1)
 #                 withcern   (e.g., withcern=1  expects to find CERN_LIB)
 # Author:      %(author)s
-#$Revision: 1.13 $
+#$Revision: 1.14 $
 #------------------------------------------------------------------------------
 ifndef ROOTSYS
 $(error *** Please set up Root)
@@ -886,8 +886,11 @@ def main():
 		# Get object and "method" names
 		t = split(varname,'_')
 		objname = t[0]                    # object name
-		fldname = joinfields(t[1:],'_')   # field name
-
+		if len(t) > 1:
+			fldname = joinfields(t[1:],'_')   # field name
+		else:
+			fldname = ''
+			
 		# Check for leaf counter flag (a "*")
 		t = split(count)
 		count = atoi(t[0])
@@ -912,8 +915,9 @@ def main():
 
 		# vector types must have the same object name and a max count > 1
 		if count > 1:
-			if not vectormap.has_key(objname): vectormap[objname] = []	
-			vectormap[objname].append((rtype, fldname, varname, count))
+			if fldname != "":
+				if not vectormap.has_key(objname): vectormap[objname] = []	
+				vectormap[objname].append((rtype, fldname, varname, count))
 	
 
 	# Declare all variables
