@@ -9,7 +9,7 @@
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Sep 19 HBP move some code from Buffer.h 
 //
-// $Id: BufferUtil.h,v 1.1 2010/09/19 14:09:53 prosper Exp $
+// $Id: BufferUtil.h,v 1.2 2010/09/25 21:34:54 prosper Exp $
 // ----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python/type_id.hpp>
@@ -26,7 +26,11 @@
 
 #include "PhysicsTools/Mkntuple/interface/treestream.h"
 #include "PhysicsTools/Mkntuple/interface/colors.h"
+#ifdef USE_METHOD
+#include "PhysicsTools/Mkntuple/interface/Method.h"
+#else
 #include "PhysicsTools/Mkntuple/interface/MethodT.h"
+#endif
 // ----------------------------------------------------------------------------
 
 struct VariableDescriptor
@@ -116,13 +120,21 @@ struct Variable
     : name(namen),
       fname(f),
       value(std::vector<double>(count,0)),
+#ifdef USE_METHOD
+      function(Method<X>(f))
+#else
       function(MethodT<X>(f))
+#endif
   {}
 
   std::string         name;
   std::string         fname;
   std::vector<double> value;
+#ifdef USE_METHOD
+  Method<X>           function;
+#else
   MethodT<X>          function;
+#endif
 };
 // ----------------------------------------------------------------------------
 template <typename X>
@@ -176,6 +188,12 @@ bool getByLabel(const edm::Event& event,
                 std::string& message,
                 BufferType buffertype)
 { 
+  // If this is real data ignore generator labels
+  if ( label1 == std::string("generator") )
+    {
+      if ( event.isRealData() ) return true;
+    }
+
   // Try to do a getByLabel and fall on sword if it fails.
   try
     {

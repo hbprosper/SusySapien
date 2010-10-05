@@ -1,50 +1,23 @@
 #!/usr/bin/env python
 #------------------------------------------------------------------------------
-# Description: Create ntuple analyzer template
+# Description: Create ntuple analyzer using information supplied in a
+#              variables.txt file. (See mkvariables.py).
+#
 # Created: 06-Mar-2010 Harrison B. Prosper
 # Updated: 12-Mar-2010 HBP - fix appending of .root
 #          08-Jun-2010 HBP - add creation of selector.h
 #          02-Sep-2010 HBP - fix variables.txt record splitting bug
 #          01-Oct-2010 HBP - add structs
 #          02-Oct-2010 HBP - add cloning
-#$Revision: 1.14 $
+#$Revision: 1.15 $
 #------------------------------------------------------------------------------
-import os, sys, re
+import os, sys, re, posixpath
 from string import *
 from time import *
 from glob import glob
-from PhysicsTools.Mkntuple.Lib import nameonly, getauthor
 #------------------------------------------------------------------------------
-if not os.environ.has_key("CMSSW_BASE"):
-	print "\t**you must first set up CMSSW"
-	sys.exit(0)
-
-PACKAGE = "%s/src/PhysicsTools/Mkntuple" % os.environ["CMSSW_BASE"]
-TREESTREAM_HPP = "%s/interface/treestream.h" % PACKAGE
-TREESTREAM_CPP = "%s/src/treestream.cc" % PACKAGE
-PDG_HPP = "%s/interface/pdg.h" % PACKAGE
-PDG_CPP = "%s/src/pdg.cc" % PACKAGE
-MKNTUPLE= "%s/src/PhysicsTools/Mkntuple" % os.environ["CMSSW_BASE"]
-SELECTEDOBJECTMAP_H = "%s/interface/SelectedObjectMap.h" % MKNTUPLE
-AUTHOR = getauthor()
-
-
-# Make sure that we can find treestream etc.
-
-if not os.path.exists(TREESTREAM_HPP):
-	print "\n** error ** - file:\n\t%s\n\t\tNOT found!" % TREESTREAM_HPP
-	sys.exit(0)
-
-if not os.path.exists(TREESTREAM_CPP):
-	print "\n** error ** - file:\n\t%s\n\t\tNOT found!" % TREESTREAM_CPP
-	sys.exit(0)
-
-if not os.path.exists(SELECTEDOBJECTMAP_H):
-	print "\n** error ** - file:\n\t%s\n\t\tNOT found!" % SELECTEDOBJECTMAP_H
-	sys.exit(0)
-
 # Functions
-
+#------------------------------------------------------------------------------
 getvno = re.compile(r'[0-9]+$')
 
 def usage():
@@ -53,6 +26,9 @@ def usage():
 	   mkanalyzer.py <output-filename> [var-filename=variables.txt]
 	'''
 	sys.exit(0)
+	
+def nameonly(s):
+	return posixpath.splitext(posixpath.split(s)[1])[0]
 
 def join(left, a, right):
 	s = ""
@@ -60,6 +36,42 @@ def join(left, a, right):
 		s = s + "%s%s%s" % (left, x, right)
 	return s
 
+def getauthor():
+	regex  = re.compile(r'(?<=[0-9]:)[A-Z]+[a-zA-Z. ]+')
+	record = strip(os.popen("getent passwd $USER").read())
+	author = "Shakepeare's ghost"
+	if record != "":
+		t = regex.findall(record)
+		if len(t) > 0: author = t[0]
+	return author
+#------------------------------------------------------------------------------
+AUTHOR = getauthor()
+
+if os.environ.has_key("CMSSW_BASE"):
+	CMSSW_BASE = os.environ["CMSSW_BASE"]
+	PACKAGE = "%s/src/PhysicsTools/Mkntuple" % CMSSW_BASE
+	TREESTREAM_HPP = "%s/interface/treestream.h" % PACKAGE
+	TREESTREAM_CPP = "%s/src/treestream.cc" % PACKAGE
+	PDG_HPP = "%s/interface/pdg.h" % PACKAGE
+	PDG_CPP = "%s/src/pdg.cc" % PACKAGE
+else:
+	TREESTREAM_HPP = "treestream.h"
+	TREESTREAM_CPP = "treestream.cc"
+	PDG_HPP = "pdg.h"
+	PDG_CPP = "pdg.cc"
+
+# Make sure that we can find treestream etc.
+
+if not os.path.exists(TREESTREAM_HPP):
+	print "\n** error ** - required file:\n\t%s\n\t\tNOT found!" % \
+		  TREESTREAM_HPP
+	sys.exit(0)
+
+if not os.path.exists(TREESTREAM_CPP):
+	print "\n** error ** - required file:\n\t%s\n\t\tNOT found!" % \
+		  TREESTREAM_CPP
+	sys.exit(0)
+#------------------------------------------------------------------------------
 TEMPLATE_H =\
 '''#ifndef %(NAME)s_H
 #define %(NAME)s_H
@@ -68,7 +80,7 @@ TEMPLATE_H =\
 // Description: Analyzer header for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.14 $
+// $Revision: 1.15 $
 //-----------------------------------------------------------------------------
 
 // -- System
@@ -304,7 +316,7 @@ TEMPLATE_CC =\
 // Description: Analyzer for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.14 $
+// $Revision: 1.15 $
 //-----------------------------------------------------------------------------
 #include "%(name)s.h"
 
@@ -326,7 +338,7 @@ int main(int argc, char** argv)
   // Get names of ntuple files to be processed and open chain of ntuples
 
   vector<string> filenames = getFilenames(cmdline.filelist);
-  itreestream stream(filenames, "Events");
+  itreestream stream(filenames, "%(treename)s");
   if ( !stream.good() ) error("unable to open ntuple file(s)");
 
   // Get number of events to be read
@@ -374,81 +386,13 @@ int main(int argc, char** argv)
 }
 '''
 
-SLTEMPLATE=\
-'''#ifndef SELECTOR_H
-#define SELECTOR_H
-//-----------------------------------------------------------------------------
-// File:        selector.h
-// Description: selector template
-// Created:     %(time)s by mkntanalyzer.py
-// Author:      %(author)s
-// $Revision: 1.14 $
-//-----------------------------------------------------------------------------
-#include <map>
-#include <string>
-#include <vector>
-#include <cmath>
-#include <iostream>
-#include <stdlib.h>
-#include "TROOT.h"
-#include "TTree.h"
-#include "TLeaf.h"
-//-----------------------------------------------------------------------------
-
-// Classes
-
-%(class)s
-
-// Functions
-
-inline
-void keepObject(std::string name, int index)
-{
-  SelectedObjectMap::instance().set(name, index);
-}
-
-int leafcount(TLeaf* leaf)
-{
-  int count = 0;
-  TLeaf* leafcounter = leaf->GetLeafCounter(count);
-  if ( leafcounter != 0 )
-	// Variable length array
-	count = leafcounter->GetMaximum();
-  else
-	// Either fixed length array or a simple variable
-	count = leaf->GetLen();
-  return count;
-}
-
-// Variables
-
-%(vardecl)s
-
-void initSelector()
-{
-  TTree* tree = (TTree*)gROOT->FindObject("Events");
-  if ( ! tree )
-  {
-	std::cout << "** error ** selector, tree pointer is zero" << std::endl;
-	exit(0);
-  }
-
-  // Fill variables
-
-%(varimpl)s
-}
-
-#endif
-
-'''
-
 PYTEMPLATELIB =\
 '''# -----------------------------------------------------------------------------
 #  File:        %(name)slib.py
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
 #  Author:      %(author)s
-#  $Revision: 1.14 $
+#  $Revision: 1.15 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from time import sleep
@@ -673,7 +617,7 @@ cmdline = decodeCommandLine()
 #  Get names of ntuple files to be processed and open chain of ntuples
 
 filenames = getFilenames(cmdline.filelist)
-stream = itreestream(filenames, "Events")
+stream = itreestream(filenames, "%(treename)s")
 if not stream.good(): error("unable to open ntuple file(s)")
 
 %(selection)s
@@ -686,7 +630,7 @@ PYTEMPLATE =\
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
 #  Author:      %(author)s
-#  $Revision: 1.14 $
+#  $Revision: 1.15 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from string import *
@@ -739,7 +683,7 @@ MAKEFILE = '''#-----------------------------------------------------------------
 #                 verbose    (e.g., verbose=1)
 #                 withcern   (e.g., withcern=1  expects to find CERN_LIB)
 # Author:      %(author)s
-#$Revision: 1.14 $
+#$Revision: 1.15 $
 #------------------------------------------------------------------------------
 ifndef ROOTSYS
 $(error *** Please set up Root)
@@ -841,10 +785,46 @@ $(ccobjs)	: tmp/%(percent)s.o : %(percent)s.cc
 
 # Define clean up rule
 clean   	:
-	rm -rf $(objects) $(program)
+	rm -rf tmp/*.o $(program)
 '''
 
+README = '''$Revision:$
+Created: %(time)s
 
+    o To build the default program (%(name)s) do
+
+	  make
+
+    o To build another program in this directory do
+
+	  make program=<program-name>
+
+    example:
+
+	  make program=findSUSYalready
+
+
+    o To run the program, first create a text file (default name=filelist.txt)
+	containing a list of the ntuples to be analyzed, one filename per line.
+	Then do
+
+	  ./%(name)s
+
+	If you wish to specify a different file list, say datafile.list, do
+
+	  ./%(name)s datafile.list
+
+	If you wish to change the name of the histogram output file, say
+	datahist.root, do
+
+	   ./%(name)s datafile.list datahist.root
+
+
+For details, please refer to the documentation at:
+
+	https://twiki.cern.ch/twiki/bin/viewauth/CMS/TheNtupleMaker
+	
+'''
 #------------------------------------------------------------------------------
 def main():
 	print "\n\tmkanalyzer.py"
@@ -869,13 +849,19 @@ def main():
 	records = map(strip, open(varfilename, "r").readlines())
 
 	# Create maps from object name to object type etc.
-	# But only group together variables that are meant to be
+	# Group together variables that are meant to be
 	# together!
 
 	vars = {}
 	vectormap = {}
 	
-	# skip first line
+	# get tree name
+	t = split(records[0])
+	if lower(t[0]) == "tree:":
+		treename = t[1]
+	else:
+		treename = "Events"
+		
 	records = records[1:]
 	for index in xrange(len(records)):
 		record = records[index]
@@ -883,7 +869,7 @@ def main():
 		
 		rtype, branchname, varname, count = split(record, '/')
 
-		# Get object and "method" names
+		# Get object and field names
 		t = split(varname,'_')
 		objname = t[0]                    # object name
 		if len(t) > 1:
@@ -895,9 +881,9 @@ def main():
 		t = split(count)
 		count = atoi(t[0])
 		iscounter = t[-1] == "*"
-		
-		n = 1
+
 		# Take care of duplicate names
+		n = 1
 		if vars.has_key(varname):
 			# duplicate name; add a number to object name
 			n, a, b, c, d = vars[varname]
@@ -928,9 +914,7 @@ def main():
 	pyselect  = []
 	declare = []
 	select  = []
-	varimpl= []
-	varimpl.append('TLeaf* leaf=0;')
-	varimpl.append('int N=0;\n')
+
 	for varname in keys:
 		n, rtype, branchname, count, iscounter = vars[varname]
 
@@ -954,27 +938,6 @@ def main():
 							 (varname, rtype, count))
 		select.append('stream.select("%s", %s);' % (branchname, varname))
 		pyselect.append('stream.select("%s", %s)'  % (branchname, varname))
-
-		# Code for selector.h
-
-		varimpl.append('leaf = tree->GetLeaf("%s");' % branchname)
-		if count == 1:
-			if rtype != "double":
-				varimpl.append('%s = static_cast<%s>(leaf->GetValue());' % \
-							   (varname, rtype))
-			else:
-				varimpl.append('%s = leaf->GetValue();' % varname)
-		else:
-			varimpl.append('N    = min(leafcount(leaf), %d);' % count)
-			varimpl.append('%s.resize(N);' % varname)
-			varimpl.append('for(int i=0; i < N; ++i)')
-			if rtype != "double":
-				varimpl.append('  %s[i] = static_cast<%s>'\
-							   '(leaf->GetValue(i));' % (varname, rtype))
-			else:
-				varimpl.append('  %s[i] = leaf->GetValue(i);' % varname)
-
-		varimpl.append('')
 
 
 	# Create structs for vector variables
@@ -1039,6 +1002,7 @@ def main():
 	# Write out files
 
 	# Put everything into a directory
+	
 	cmd = '''
 	mkdir -p %(dir)s/tmp
 	cp %(hpp)s %(dir)s
@@ -1073,6 +1037,7 @@ def main():
 
 	outfilename = "%s/%s.h" % (filename, filename)
 	names = {'name': filename,
+			 'treename': treename,
 			 'NAME': upper(filename),
 			 'time': ctime(time()),
 			 'vardecl': join("", declare, "\n"),
@@ -1089,23 +1054,18 @@ def main():
 	record = TEMPLATE_CC % names
 	open(outfilename,"w").write(record)
 
-	# Create selector.h code
+	# Create README
 
-	records = open(SELECTEDOBJECTMAP_H).readlines()[2:-1]
-	names = {'vardecl': join("", declare, "\n"),
-			 'class':   join("", records, ""),
-			 'time':    ctime(time()),
-			 'varimpl': join("  ", varimpl, "\n"),
-			 'author': AUTHOR
-			 }
-	record = SLTEMPLATE % names
-	open("selector.h","w").write(record)
+	outfilename = "%s/README" % filename
+	record = README % names
+	open(outfilename,"w").write(record)
 
 	# Create python code
 
 	s = join("", pydeclare, "\n") + "\n" + join("", pyselect,"\n")
 	outfilename = "%s/%slib.py" % (filename, filename)
 	names = {'name': filename,
+			 'treename': treename,
 			 'time': ctime(time()),
 			 'selection': s,
 			 'author': AUTHOR,

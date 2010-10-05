@@ -43,7 +43,7 @@
 //          06-Jun-2010 Add store and save (commt = store + save)
 //          23-Sep-2010 Move from PhysicsTools/LiteAnalysis to 
 //                                PhysicsTools/Mkntuple
-//$Revision: 1.2 $
+//$Revision: 1.3 $
 //----------------------------------------------------------------------------
 #include <vector>
 #include <string>
@@ -304,6 +304,8 @@ class itreestream
 
   ///
   TTree* tree();
+
+  TFile* file();
 
  private:
 

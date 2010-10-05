@@ -40,7 +40,7 @@
 //                      fix looping bug so operator[] works for Python
 //          02-Oct-2010 HBP minor change to itreestream to handle vector types
 //                      directly.
-//$Revision: 1.2 $
+//$Revision: 1.3 $
 //----------------------------------------------------------------------------
 #ifdef PROJECT_NAME
 #include <boost/regex.hpp>
@@ -1278,6 +1278,9 @@ itreestream::filename() { return filepath[_current]; }
 
 TTree*
 itreestream::tree() { return _tree; }
+
+TFile*
+itreestream::file() { return ((TChain*)(_tree))->GetFile(); }
 
 string
 itreestream::str() const

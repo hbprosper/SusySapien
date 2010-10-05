@@ -46,7 +46,7 @@
 //         Updated:  Sun Jan 17 HBP - add log file
 //                   Sun Jun 06 HBP - add variables.txt file
 //
-// $Id: Mkntuple.cc,v 1.17 2010/09/15 13:46:48 prosper Exp $
+// $Id: Mkntuple.cc,v 1.18 2010/09/25 21:34:55 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -113,7 +113,7 @@ private:
 Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   : output(otreestream(iConfig.getUntrackedParameter<string>("ntupleName"), 
                        "Events", 
-                       "made by Mkntuple $Revision: 1.17 $")),
+                       "made by Mkntuple $Revision: 1.18 $")),
     event_(0),
     logfilename_("Mkntuple.log"),
     log_(new std::ofstream(logfilename_.c_str())),
@@ -175,8 +175,8 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
       cout << endl << "Loaded selector library: " << shlib << endl << endl;
     }
 
-  if ( getenv("DEBUGMKNTUPLE") > 0 )
-    DEBUG = atoi(getenv("DEBUGMKNTUPLE"));
+  if ( getenv("DBMkntuple") > 0 )
+    DEBUG = atoi(getenv("DBMkntuple"));
   else
     DEBUG = 0;
 
@@ -190,7 +190,7 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   // Write branches and variables to file
 
   ofstream vout("variables.txt");
-  vout << ct << endl;
+  vout << "tree: Events " << ct << endl;
   
   // Allocate buffers.
   //
@@ -240,7 +240,7 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
       string prefix = buffer;
       int maxcount=1;
 
-      // edmEVentAddon does not use getByLabel since it is just a 
+      // edmEventHelper does not use getByLabel since it is just a 
       // helper for edm::Event, so don't crash if there is no
       // getByLabel
 

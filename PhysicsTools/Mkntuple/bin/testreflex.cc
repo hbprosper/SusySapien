@@ -65,7 +65,7 @@ main(int argc, char** argv)
 
   char record[256];
 
-  for(int i=0; i < 1; i++)
+  for(int i=0; i < 1001; i++)
     {
       cout << endl << i 
            << " ------------------------------------------------"   << endl;
