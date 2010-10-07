@@ -11,7 +11,7 @@
 //                                   - add TriggerResultsHelper
 //                                   - add GenParticleHelper
 //              Thu Sep 02, 2010 HBP - move HelpFor to separate file
-//$Revision: 1.13 $
+//$Revision: 1.12 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -20,12 +20,64 @@
 #include "FWCore/Common/interface/TriggerNames.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
+
+#include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 #include "DataFormats/Common/interface/TriggerResults.h"
 #include "DataFormats/METReco/interface/HcalNoiseRBX.h"
+
+#include "PhysicsTools/Mkntuple/interface/CurrentEvent.h"
+#include "PhysicsTools/Mkntuple/interface/Configuration.h"
 #include "PhysicsTools/Mkntuple/interface/HelperFor.h"
 //-----------------------------------------------------------------------------
 namespace reco
 {
+  //---------------------------------------------------------------------------
+  /// A helper class for reco::GenParticle.
+  class GenParticleHelper : public HelperFor<reco::GenParticle>
+  {
+  public:
+    ///
+    GenParticleHelper();
+
+    virtual ~GenParticleHelper();
+
+    /// 
+    virtual void analyzeEvent();
+    /// 
+    virtual void analyzeObject();
+    ///
+    int   charge() const;
+    ///
+    int   pdgId() const;
+    ///
+    int   status() const;
+    ///
+    double   energy() const;
+    ///
+    double   pt() const;
+    ///
+    double   eta() const;
+    ///
+    double   phi() const;
+    ///
+    double   mass() const;
+    ///
+    int firstMother() const;
+    ///
+    int lastMother()  const;
+    ///
+    int firstDaughter() const;
+    ///
+    int lastDaughter()  const;
+    
+  private:
+    // Filled once per cached object
+    std::vector<int> mothers_;
+    std::vector<int> daughters_;
+
+    // Filled once per event
+    std::map<std::string, int> amap;
+  };
   //---------------------------------------------------------------------------
   /// Helper class for HcalNoisRBX that unpacks the associated CaloTowers.
   class HcalNoiseRBXCaloTower : public HelperFor<reco::HcalNoiseRBX>
@@ -109,8 +161,15 @@ namespace edm
 }
 
 // ----------------------------------------------------------------------------
-// Synonym:
+// Synonyms
 // ----------------------------------------------------------------------------
+class GParticle : public reco::GenParticleHelper
+{
+public:
+  GParticle();
+  virtual ~GParticle();
+};
+
 class triggerBits : public edm::TriggerResultsHelper
 {
 public:

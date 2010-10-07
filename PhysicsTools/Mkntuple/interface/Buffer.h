@@ -24,7 +24,7 @@
 //                   Wed Sep 08 HBP - fix array test
 //                   Sun Sep 19 HBP - re-organize code to minimize code  bloat
 //
-// $Id: Buffer.h,v 1.22 2010/09/25 21:34:54 prosper Exp $
+// $Id: Buffer.h,v 1.20 2010/09/08 21:07:53 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/BufferUtil.h"
@@ -65,7 +65,6 @@ struct Buffer  : public BufferThing
   ///
   Buffer() 
     : out_(0),
-      classname_(boost::python::type_id<X>().name()),
       label_(""),
       label1_(""),
       label2_(""),
@@ -127,8 +126,6 @@ struct Buffer  : public BufferThing
                   prefix_,
                   var_,
                   variables_,
-                  varnames_,
-                  varmap_,
                   count_,
                   singleton_,
                   maxcount_,
@@ -140,11 +137,11 @@ struct Buffer  : public BufferThing
   bool fill(const edm::Event& event)
   {
     if ( debug_ > 0 ) 
-      std::cout << DEFAULT_COLOR
+      std::cout << BLACK
                 << "Begin Buffer::fill\n\t" 
-                << BLUE 
+                << RED 
                 << "X: " << boost::python::type_id<X>().name() << "\n\t"
-                << DEFAULT_COLOR
+                << BLACK
                 << std::endl;
 
     count_ = 0; // reset count, just in case we have to bail out
@@ -185,7 +182,7 @@ struct Buffer  : public BufferThing
         }
     
     if ( debug_ > 0 ) 
-      std::cout << DEFAULT_COLOR << "End Buffer::fill " << std::endl; 
+      std::cout << BLACK << "End Buffer::fill " << std::endl; 
     return true;
   }
   
@@ -202,17 +199,6 @@ struct Buffer  : public BufferThing
         variables_[i].value[j] = variables_[i].value[index[j]];
   }
 
-  std::vector<double>* variable(std::string name)
-  {
-    if ( varmap_.find(name) == varmap_.end() ) return 0;
-    return &(variables_[varmap_[name]].value);
-  }
-
-  std::vector<std::string>& varnames()
-  {
-    return varnames_;
-  }
-
 private:
   otreestream* out_;
   std::string  classname_;
@@ -223,8 +209,6 @@ private:
   BufferType buffertype_;
   std::vector<VariableDescriptor> var_;
   std::vector<Variable<X> > variables_;
-  std::map<std::string, int> varmap_;
-  std::vector<std::string> varnames_;
   int  maxcount_;
   int  count_;
   bool singleton_;

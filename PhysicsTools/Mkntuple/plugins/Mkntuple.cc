@@ -46,7 +46,7 @@
 //         Updated:  Sun Jan 17 HBP - add log file
 //                   Sun Jun 06 HBP - add variables.txt file
 //
-// $Id: Mkntuple.cc,v 1.19 2010/10/05 11:22:47 prosper Exp $
+// $Id: Mkntuple.cc,v 1.16 2010/09/03 01:54:14 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -65,8 +65,8 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/FWLite/interface/AutoLibraryLoader.h"
  
-#include "PhysicsTools/Mkntuple/interface/treestream.h"
-#include "PhysicsTools/Mkntuple/interface/kit.h"
+#include "PhysicsTools/LiteAnalysis/interface/treestream.hpp"
+#include "PhysicsTools/LiteAnalysis/interface/kit.h"
 #include "PhysicsTools/Mkntuple/interface/pluginfactory.h"
 #include "PhysicsTools/Mkntuple/interface/CurrentEvent.h"
 #include "PhysicsTools/Mkntuple/interface/Configuration.h"
@@ -74,26 +74,15 @@
 
 #include "TROOT.h"
 #include "TSystem.h"
-#include "TMap.h"
-#include "TString.h"
-// ---------------------------------------------------------------------------
+
 using namespace std;
 
-// class Varvector : public TObject 
-// { 
-// public:
-//   Varvector(std::vector<double>* v) 
-//     : value(v) {} 
-//   ~Varvector() {}
-//   std::vector<double>* value;
-//   ClassDef(Varvector,0)
-// };
-// ---------------------------------------------------------------------------
 class Mkntuple : public edm::EDAnalyzer 
 {
 public:
   explicit Mkntuple(const edm::ParameterSet&);
   ~Mkntuple();
+
 
 private:
   virtual void beginJob();
@@ -109,11 +98,7 @@ private:
 
   // Object that models the allocated buffers, one per object to be read.
   std::vector<BufferThing*> buffers;
-
-  // addresses of buffers
   std::map<std::string, BufferThing*> buffermap;
-  std::map<std::string, std::vector<double>*> vars;
-  bool keep; // true if event is to be kept
 
   int DEBUG;
   int event_;
@@ -128,7 +113,7 @@ private:
 Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   : output(otreestream(iConfig.getUntrackedParameter<string>("ntupleName"), 
                        "Events", 
-                       "made by Mkntuple $Revision: 1.19 $")),
+                       "made by Mkntuple $Revision: 1.16 $")),
     event_(0),
     logfilename_("Mkntuple.log"),
     log_(new std::ofstream(logfilename_.c_str())),
@@ -168,7 +153,7 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
 
       // First find shared lib
       string filestem = selectorname_ + string("*.so");
-      string cmd = string("find . -name \"") + filestem + "\"";
+      string cmd = string("find ") + filestem;
       string shlib = kit::shell(cmd);
       if ( shlib == "" )
         {
@@ -176,30 +161,22 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
           // Have a tantrum!
           throw cms::Exception("FileNotFound", errmess);
         }
-
-      cout << "\t==> Set address of variable vars" << endl;
-      gROOT->ProcessLine(Form("map<string, vector<double>*>* vars"
-                              "=(map<string, vector<double>*>*)0x%x", &vars));
-
-      cout << "\t==> Set address of variable keep" << endl;
-      gROOT->ProcessLine(Form("bool* keep = (bool*)0x%x", &keep)); 
-      
+ 
       // Found shared library, so try to load it
       if ( gSystem->Load(shlib.c_str()) != 0 )
+        // Scream loudly!
         throw cms::Exception("LoadFailed",
                              "\tunable to load selector shared library\n\t\t" +
                              shlib);
 
       // Create command to execute selector
-      
-      selectorcmd_ = string("*keep = ") 
-        + selectorname_ + string("(*vars);");
-      cout << "\t==> Loaded selector library: " << shlib 
-           << endl << endl;
+
+      selectorcmd_ = string("*keep = ") + selectorname_ + string("();");
+      cout << endl << "Loaded selector library: " << shlib << endl << endl;
     }
 
-  if ( getenv("DBMkntuple") > 0 )
-    DEBUG = atoi(getenv("DBMkntuple"));
+  if ( getenv("DEBUGMKNTUPLE") > 0 )
+    DEBUG = atoi(getenv("DEBUGMKNTUPLE"));
   else
     DEBUG = 0;
 
@@ -210,11 +187,10 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   *log_ << "Created: " << ct << endl;
   log_->close();
 
-
   // Write branches and variables to file
 
   ofstream vout("variables.txt");
-  vout << "tree: Events " << ct << endl;
+  vout << ct << endl;
   
   // Allocate buffers.
   //
@@ -264,7 +240,7 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
       string prefix = buffer;
       int maxcount=1;
 
-      // edmEventHelper does not use getByLabel since it is just a 
+      // edmEVentAddon does not use getByLabel since it is just a 
       // helper for edm::Event, so don't crash if there is no
       // getByLabel
 
@@ -304,7 +280,7 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
           << " label("    
           << BLUE 
           << label 
-          << DEFAULT_COLOR 
+          << BLACK 
           << ")"
           << " maxcount(" << maxcount << ")"
           << " prefix("   << prefix << ")"
@@ -384,20 +360,10 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
       if ( DEBUG > 0 )
         cout << "  buffer: " << buffer << " created " << endl << endl;
 
-      // cache addresses of buffers
-      buffermap[prefix] = buffers.back();
 
-      // cache variable addresses
-      boost::regex getname("[^[]+");
-      boost::smatch m;
-      vector<string>& vnames = buffers.back()->varnames();
-      for(unsigned int iname=0; iname < vnames.size(); ++iname)
-        {
-          string fullname = vnames[iname];
-          boost::regex_search(fullname, m, getname);
-          string name = m[0];
-          vars[name] = buffers.back()->variable(name);
-        }
+      // cache buffer addresses in a map. Use prefix as a unique
+      // identifier for the buffer
+      buffermap[prefix] = buffers.back();
     }
   vout.close();
 
@@ -434,6 +400,10 @@ Mkntuple::analyze(const edm::Event& iEvent,
   for(unsigned i=0; i < buffers.size(); i++)
     if ( !buffers[i]->fill(iEvent) ) message += buffers[i]->message();
 
+  // Copy data to output buffers
+
+  output.store();
+
   // Check for error report from buffers
 
   if ( message != "" )
@@ -453,14 +423,10 @@ Mkntuple::analyze(const edm::Event& iEvent,
 
   if ( ! selectEvent(iEvent) ) return;
 
-  // Copy data to output buffers
-
-  output.store();
-
   // Event kept. Shrink buffers as needed. Shrinking is needed if only
   // certain objects of a given buffer have been selected.
 
-  //shrinkBuffers();
+  shrinkBuffers();
 
   output.save();
 }
@@ -468,14 +434,15 @@ Mkntuple::analyze(const edm::Event& iEvent,
 bool
 Mkntuple::selectEvent(const edm::Event& event)
 {
-  keep = true;
+  bool keep=true;
   if ( selectorcmd_ == "" ) return keep;
 
   // Clear selection buffer
   SelectedObjectMap::instance().clear();
 
   // Execute selector
-  
+
+  gROOT->ProcessLine(Form("bool* keep = (bool*)0x%x", &keep)); 
   gROOT->ProcessLineFast(selectorcmd_.c_str());
   if ( keep )
     cout << "\t\t** KEEP EVENT(" << event_ << ")"

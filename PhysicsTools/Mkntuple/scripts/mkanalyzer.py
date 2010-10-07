@@ -1,23 +1,48 @@
 #!/usr/bin/env python
 #------------------------------------------------------------------------------
-# Description: Create ntuple analyzer using information supplied in a
-#              variables.txt file. (See mkvariables.py).
-#
+# Description: Create ntuple analyzer template
 # Created: 06-Mar-2010 Harrison B. Prosper
 # Updated: 12-Mar-2010 HBP - fix appending of .root
 #          08-Jun-2010 HBP - add creation of selector.h
 #          02-Sep-2010 HBP - fix variables.txt record splitting bug
-#          01-Oct-2010 HBP - add structs
-#          02-Oct-2010 HBP - add cloning
-#$Revision: 1.15 $
+#$Revision: 1.10 $
 #------------------------------------------------------------------------------
-import os, sys, re, posixpath
+import os, sys, re
 from string import *
 from time import *
 from glob import glob
+from PhysicsTools.LiteAnalysis.boostlib import nameonly, getauthor
 #------------------------------------------------------------------------------
+if not os.environ.has_key("CMSSW_BASE"):
+	print "\t**you must first set up CMSSW"
+	sys.exit(0)
+
+PACKAGE = "%s/src/PhysicsTools/LiteAnalysis" % os.environ["CMSSW_BASE"]
+TREESTREAM_HPP = "%s/interface/treestream.hpp" % PACKAGE
+TREESTREAM_CPP = "%s/src/treestream.cpp" % PACKAGE
+PDG_HPP = "%s/interface/pdg.h" % PACKAGE
+PDG_CPP = "%s/src/pdg.cc" % PACKAGE
+MKNTUPLE= "%s/src/PhysicsTools/Mkntuple" % os.environ["CMSSW_BASE"]
+SELECTEDOBJECTMAP_H = "%s/interface/SelectedObjectMap.h" % MKNTUPLE
+AUTHOR = getauthor()
+
+
+# Make sure that we can find treestream etc.
+
+if not os.path.exists(TREESTREAM_HPP):
+	print "\n** error ** - file:\n\t%s\n\t\tNOT found!" % TREESTREAM_HPP
+	sys.exit(0)
+
+if not os.path.exists(TREESTREAM_CPP):
+	print "\n** error ** - file:\n\t%s\n\t\tNOT found!" % TREESTREAM_CPP
+	sys.exit(0)
+
+if not os.path.exists(SELECTEDOBJECTMAP_H):
+	print "\n** error ** - file:\n\t%s\n\t\tNOT found!" % SELECTEDOBJECTMAP_H
+	sys.exit(0)
+
 # Functions
-#------------------------------------------------------------------------------
+
 getvno = re.compile(r'[0-9]+$')
 
 def usage():
@@ -26,9 +51,6 @@ def usage():
 	   mkanalyzer.py <output-filename> [var-filename=variables.txt]
 	'''
 	sys.exit(0)
-	
-def nameonly(s):
-	return posixpath.splitext(posixpath.split(s)[1])[0]
 
 def join(left, a, right):
 	s = ""
@@ -36,42 +58,6 @@ def join(left, a, right):
 		s = s + "%s%s%s" % (left, x, right)
 	return s
 
-def getauthor():
-	regex  = re.compile(r'(?<=[0-9]:)[A-Z]+[a-zA-Z. ]+')
-	record = strip(os.popen("getent passwd $USER").read())
-	author = "Shakepeare's ghost"
-	if record != "":
-		t = regex.findall(record)
-		if len(t) > 0: author = t[0]
-	return author
-#------------------------------------------------------------------------------
-AUTHOR = getauthor()
-
-if os.environ.has_key("CMSSW_BASE"):
-	CMSSW_BASE = os.environ["CMSSW_BASE"]
-	PACKAGE = "%s/src/PhysicsTools/Mkntuple" % CMSSW_BASE
-	TREESTREAM_HPP = "%s/interface/treestream.h" % PACKAGE
-	TREESTREAM_CPP = "%s/src/treestream.cc" % PACKAGE
-	PDG_HPP = "%s/interface/pdg.h" % PACKAGE
-	PDG_CPP = "%s/src/pdg.cc" % PACKAGE
-else:
-	TREESTREAM_HPP = "treestream.h"
-	TREESTREAM_CPP = "treestream.cc"
-	PDG_HPP = "pdg.h"
-	PDG_CPP = "pdg.cc"
-
-# Make sure that we can find treestream etc.
-
-if not os.path.exists(TREESTREAM_HPP):
-	print "\n** error ** - required file:\n\t%s\n\t\tNOT found!" % \
-		  TREESTREAM_HPP
-	sys.exit(0)
-
-if not os.path.exists(TREESTREAM_CPP):
-	print "\n** error ** - required file:\n\t%s\n\t\tNOT found!" % \
-		  TREESTREAM_CPP
-	sys.exit(0)
-#------------------------------------------------------------------------------
 TEMPLATE_H =\
 '''#ifndef %(NAME)s_H
 #define %(NAME)s_H
@@ -80,7 +66,7 @@ TEMPLATE_H =\
 // Description: Analyzer header for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.15 $
+// $Revision: 1.10 $
 //-----------------------------------------------------------------------------
 
 // -- System
@@ -98,26 +84,24 @@ TEMPLATE_H =\
 
 // --- CMSSW
 
-#include "PhysicsTools/Mkntuple/interface/treestream.h"
-#include "PhysicsTools/Mkntuple/interface/pdg.h"
+#include "PhysicsTools/LiteAnalysis/interface/treestream.hpp"
+#include "PhysicsTools/LiteAnalysis/interface/pdg.h"
 
 #else
 
-#include "treestream.h"
+#include "treestream.hpp"
 #include "pdg.h"
 
 #endif
 
 // -- Root
 
-#include "TROOT.h"
 #include "TApplication.h"
 #include "TDirectory.h"
 #include "TCanvas.h"
 #include "TFile.h"
 #include "TKey.h"
 #include "TH1F.h"
-#include "TH2F.h"
 //-----------------------------------------------------------------------------
 // -- Utilities
 //-----------------------------------------------------------------------------
@@ -138,7 +122,7 @@ strip(std::string line)
 	  (line[n] == ' ' ) ||
 	  (line[n] == '\\n') ||
 	  (line[n] == '\\t')) && n < l) n++;
-
+  
   int m = l-1;
   while (((line[m] == 0)    ||
 	  (line[m] == ' ')  ||
@@ -155,120 +139,23 @@ nameonly(std::string filename)
   if ( j < 0 ) j = filename.size();
   return filename.substr(i+1,j-i-1);
 }
-//-----------------------------------------------------------------------------
-struct skimFile
-{
-  skimFile(itreestream& stream, std::string filename)
-   : filename_(filename),
-	 file_(new TFile(filename.c_str(), "recreate")),
-	 tree_(stream.tree()->CloneTree(0)),
-	 b_weight_(0)
-  {
-	std::cout << "events will be skimmed to file "
-			  << filename_ << std::endl;
-	file_->cd();
-	hist_ = new TH1F("counts", "", 1,0,1);
-	hist_->SetBit(TH1::kCanRebin);
-	hist_->SetStats(0);
-  }
-
-  void addEvent(double weight=-1)
-  {
-	file_ = tree_->GetCurrentFile();
-	file_->cd();
-	
-	// dynamically add a weight branch to cloned tree
-	if ( weight > -1 )
-	  {
-	    if ( b_weight_ == 0 )
-		  {
-		    b_weight_ = tree_->Branch("eventWeight", &weight_,
-			                          "eventWeight/D");
-		  }
-	  }
-	tree_->Fill();
-  }
-
-  void count(std::string cond)
-  {
-    hist_->Fill(cond.c_str(), 1);
-  }
-  
-  void close()
-  {
-	std::cout << "==> events skimmed to file " << filename_ << std::endl;
-	file_ = tree_->GetCurrentFile();
-	file_->cd();
-	file_->Write("", TObject::kOverwrite);
-	hist_->Write("", TObject::kOverwrite);
-	file_->Close();
-  }
-
-  std::string filename_;  
-  TFile* file_;
-  TTree* tree_;
-  TH1F*  hist_;
-  TBranch* b_weight_;
-  double     weight_;
-};
-
-struct commandLine
-{
-  std::string progname;
-  std::string filelist;
-  std::string histfilename;
-  std::string skimfilename;
-};
-
-struct histogramFile
-{
-  histogramFile(std::string histfilename)
-   : filename_(histfilename),
-	 file_(new TFile(filename_.c_str(), "recreate")) 
-  {}
-
-  void close()
-  {
-	std::cout << "==> histograms saved to file " << filename_ << std::endl;
-	file_->cd();
-	file_->Write("", TObject::kOverwrite);
-	file_->ls();
-	file_->Close();
-  }
-
-  std::string filename_;
-  TFile* file_;
-};
 
 void
-decodeCommandLine(int argc, char** argv, commandLine& cl)
+decodeCommandLine(int argc, char** argv, 
+                  std::string& filelist, std::string& histfilename)
 {
-  cl.progname = std::string(argv[0]);
+  filelist = std::string("filelist.txt");
+  if ( argc > 1 ) filelist = std::string(argv[1]);
 
-  // 1st (optional) argument
-  if ( argc > 1 )
-	cl.filelist = std::string(argv[1]);
-  else
-	cl.filelist = std::string("filelist.txt");
-
-  // 2nd (optional) command line argument
   if ( argc > 2 ) 
-	cl.histfilename = std::string(argv[2]);
+    histfilename = std::string(argv[2]);// 2nd (optional) command line argument
   else
-	cl.histfilename = cl.progname + std::string("_histograms");
-
-  // 3rd (optional) command line argument
-  if ( argc > 3 ) 
-	cl.skimfilename = std::string(argv[3]);
-  else
-	cl.skimfilename = cl.progname + std::string("_skim");
+    histfilename = std::string(argv[0])
+	+ std::string("_histograms"); // default: name of program
 
   // Make sure extension is ".root"
-  cl.histfilename = nameonly(cl.histfilename);
-  cl.histfilename += ".root";
-
-  cl.skimfilename = nameonly(cl.skimfilename);
-  cl.skimfilename += ".root";
+  histfilename = nameonly(histfilename);
+  histfilename += ".root";
 }
 
 // Read ntuple filenames from file list
@@ -280,32 +167,80 @@ getFilenames(std::string filelist)
   if ( !stream.good() ) error("unable to open file: " + filelist);
 
   // Get list of ntuple files to be processed
-
+  
   std::vector<std::string> v;
   std::string filename;
   while ( stream >> filename )
-	if ( strip(filename) != "" ) v.push_back(filename);
+    if ( strip(filename) != "" ) v.push_back(filename);
   return v;
 }
+
+void
+saveHistograms(std::string histfilename, 
+               TDirectory* dir=gDirectory,
+			   TFile* hfile=0,
+			   int depth=0)
+{
+
+  // Get list of objects in current directory
+  
+  TList* list = dir->GetList();
+  
+  // Create output file
+
+  if ( depth == 0 )
+    {
+      std::cout << "Saving histograms to " << histfilename << std::endl;
+      hfile = new TFile(histfilename.c_str(), "RECREATE");
+    }
+
+  // Important!
+  depth++;
+  // Check recursion depth 
+  if ( depth > 100 )error("saveHistograms is lost in trees!");
+  std::string tab(2*depth, ' ');
+
+  // Loop over all histograms
+
+  TListIter* it = (TListIter*)list->MakeIterator();
+  
+  while ( TObject* o = it->Next() )
+    {
+      dir->cd();
+      
+      if ( o->IsA()->InheritsFrom("TDirectory") )
+        {
+          TDirectory* d = (TDirectory*)o;
+          std::cout << tab << "BEGIN " << d->GetName() << std::endl;
+          saveHistograms(histfilename, d, hfile, depth);
+          std::cout << tab << "END " << d->GetName() << std::endl;
+        }
+      // Note: All histograms inherit from TH1
+      else if ( o->IsA()->InheritsFrom("TH1") )
+        {
+          TH1* h = (TH1*)o;
+          std::cout << tab  << o->ClassName() 
+                    << "\\t" << h->GetName()
+                    << "\\t" << h->GetTitle()
+                    << std::endl;
+          hfile->cd();
+          h->Write("", TObject::kOverwrite);
+        }
+    } // end of loop over keys
+
+  hfile->Close();
+  delete hfile;
+}
+  
 //-----------------------------------------------------------------------------
-// -- Declare variables to be read
+// Define variables to be read
 //-----------------------------------------------------------------------------
 %(vardecl)s
 
-//-----------------------------------------------------------------------------
-// -- Select variables to be read
-//-----------------------------------------------------------------------------
 void selectVariables(itreestream& stream)
 {
 %(selection)s
 }
-
-//-----------------------------------------------------------------------------
-// --- These structs can be filled by calling fillObjects()
-// --- after the call to stream.read(...)
-//-----------------------------------------------------------------------------
-%(structdecl)s
-%(structimpl)s
 
 #endif
 '''
@@ -316,40 +251,39 @@ TEMPLATE_CC =\
 // Description: Analyzer for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.15 $
+// $Revision: 1.10 $
 //-----------------------------------------------------------------------------
 #include "%(name)s.h"
-
 #ifdef PROJECT_NAME
-#include "PhysicsTools/Mkntuple/interface/pdg.h"
+#include "PhysicsTools/LiteAnalysis/interface/pdg.h"
 #else
 #include "pdg.h"
 #endif
-
 using namespace std;
 //-----------------------------------------------------------------------------
 int main(int argc, char** argv)
 {
   // Get file list and histogram filename from command line
 
-  commandLine cmdline;
-  decodeCommandLine(argc, argv, cmdline);
+  string filelist;
+  string histfilename;
+  decodeCommandLine(argc, argv, filelist, histfilename);
 
   // Get names of ntuple files to be processed and open chain of ntuples
-
-  vector<string> filenames = getFilenames(cmdline.filelist);
-  itreestream stream(filenames, "%(treename)s");
+  
+  vector<string> filenames = getFilenames(filelist);
+  itreestream stream(filenames, "Events");
   if ( !stream.good() ) error("unable to open ntuple file(s)");
-
+  
   // Get number of events to be read
-
+  
   int nevents = stream.size();
   cout << "Number of events: " << nevents << endl;
 
   // Select variables to be read
-
+  
   selectVariables(stream);
-
+  
   //---------------------------------------------------------------------------
   // Book histograms etc.
   //---------------------------------------------------------------------------
@@ -359,31 +293,89 @@ int main(int argc, char** argv)
 
   TApplication app("analyzer", &argc, argv);
 
-  histogramFile hfile(cmdline.histfilename);
-
-  // Histograms
-
-
   //---------------------------------------------------------------------------
   // Loop over events
   //---------------------------------------------------------------------------
 
   for(int entry=0; entry < nevents; ++entry)
-	{
-	  // Read event into memory
-	  stream.read(entry);
-	 
-	  // ---------------------
-	  // -- Event Selection --
-	  // ---------------------
-
-	  // if ( !SUSY ) continue;
-	}
-
+    {
+      stream.read(entry);
+	  // Find SUSY already!
+    }
   stream.close();
-  hfile.close();
+
+  saveHistograms(histfilename);
+  
   return 0;
 }
+'''
+
+SLTEMPLATE=\
+'''#ifndef SELECTOR_H
+#define SELECTOR_H
+//-----------------------------------------------------------------------------
+// File:        selector.h
+// Description: selector template
+// Created:     %(time)s by mkntanalyzer.py
+// Author:      %(author)s
+// $Revision: 1.10 $
+//-----------------------------------------------------------------------------
+#include <map>
+#include <string>
+#include <vector>
+#include <cmath>
+#include <iostream>
+#include <stdlib.h>
+#include "TROOT.h"
+#include "TTree.h"
+#include "TLeaf.h"
+//-----------------------------------------------------------------------------
+
+// Classes
+
+%(class)s
+
+// Functions
+
+inline
+void keep(std::string name, int index)
+{
+  SelectedObjectMap::instance().set(name, index);
+}
+
+int leafcount(TLeaf* leaf)
+{
+  int count = 0;
+  TLeaf* leafcounter = leaf->GetLeafCounter(count);
+  if ( leafcounter != 0 )
+    // Variable length array
+	count = leafcounter->GetMaximum();
+  else
+    // Either fixed length array or a simple variable
+	count = leaf->GetLen();
+  return count;
+}
+
+// Variables
+
+%(vardecl)s
+
+void initSelector()
+{
+  TTree* tree = (TTree*)gROOT->FindObject("Events");
+  if ( ! tree )
+  {
+    std::cout << "** error ** selector, tree pointer is zero" << std::endl;
+	exit(0);
+  }
+
+  // Fill variables
+  
+%(varimpl)s
+}
+
+#endif
+
 '''
 
 PYTEMPLATELIB =\
@@ -392,93 +384,33 @@ PYTEMPLATELIB =\
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
 #  Author:      %(author)s
-#  $Revision: 1.15 $
+#  $Revision: 1.10 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from time import sleep
 from string import *
-from PhysicsTools.Mkntuple.AutoLoader import *
+from PhysicsTools.LiteAnalysis.AutoLoader import *
 import os, sys, re
 # -----------------------------------------------------------------------------
-# -- Classes, procedures and functions
+# -- Procedures and functions
 # -----------------------------------------------------------------------------
-class skimFile:
-	def __init__(self, stream, filename):
-		print "events will be skimmed to file", filename
-		self.filename = filename
-		self.file = TFile(filename, "recreate")
-		self.tree = stream.tree().CloneTree(0)
-		self.hist = TH1F("counts", "", 1, 0, 1)
-		self.hist.SetBit(TH1.kCanRebin)
-		self.hist.SetStats(0)
-		self.b_weight = 0
-
-	def addEvent(self, weight=-1.0):
-		self.file = self.tree.GetCurrentFile()
-		self.file.cd()
-		if weight > -1:
-			if self.b_weight == 0:
-				self.weight = Double()
-				self.b_weight = self.tree.Branch("eventWeight", self.weight,
-												 "eventWeight/D")
-		self.tree.Fill()
-
-	def count(self, cond):
-		self.hist.Fill(cond, 1)
-		
-	def close(self):
-		print "==> events skimmed to file", self.filename
-		self.file = self.tree.GetCurrentFile()
-		self.file.cd()
-		self.file.Write("", TObject.kOverwrite)
-		self.hist.Write("", TObject.kOverwrite)
-		self.file.Close()
-# -----------------------------------------------------------------------------
-class histogramFile:
-	def __init__(self, histfilename):
-		self.filename = histfilename
-		self.file = TFile(self.filename, "recreate")
-
-	def close(self):
-		print "==> histograms saved to file", self.filename
-		self.file.cd()
-		self.file.Write("", TObject.kOverwrite)
-		self.file.ls()
-		self.file.Close()
-# -----------------------------------------------------------------------------
-class commandLine:
-	def __init__(self):
-		pass
-
 def decodeCommandLine():
 	argv = sys.argv
 	argc = len(argv)
-
-	cl = commandLine()
-	cl.progname = split(os.path.basename(argv[0]),'.')[0]
-
-	if argc > 1:
-		cl.filelist = argv[1]
-	else:
-		cl.filelist = "filelist.txt"
-
+	filelist = "filelist.txt"
+	if argc > 1: filelist = argv[1]
+	
 	if argc > 2: 
-		cl.histfilename = argv[2] # 2nd (optional) command line argument
+		histfilename = argv[2] # 2nd (optional) command line argument
 	else:
-		cl.histfilename = cl.progname + "_histograms"
-
-	if argc > 3:
-		cl.skimfilename = argv[3]
-	else:
-		cl.skimfilename = cl.progname + "_skim"
+		name = os.path.basename(argv[0])
+		name = split(name,'.')[0]
+		histfilename = name + "_histograms"
 
 	# Make sure extension is ".root"
-	cl.histfilename = os.path.basename(cl.histfilename)
-	cl.histfilename = split(cl.histfilename, ".")[0] + ".root"
-
-	cl.skimfilename = os.path.basename(cl.skimfilename)
-	cl.skimfilename = split(cl.skimfilename, ".")[0] + ".root"
-	return cl
+	histfilename = os.path.basename(histfilename)
+	histfilename = split(histfilename, ".")[0] + ".root"
+	return (filelist, histfilename)
 # -----------------------------------------------------------------------------
 def error(message):
 	print "** error ** " + message
@@ -489,7 +421,7 @@ def error(message):
 def getFilenames(filelist):
 	if not os.path.exists(filelist):
 		error("unable to open file: " + filelist)
-
+		
 	# Get ntuple file names
 	filenames = filter(lambda x: x != "",
 					   map(strip, open(filelist).readlines()))
@@ -497,129 +429,174 @@ def getFilenames(filelist):
 	for filename in filenames: v.push_back(filename)
 	return v
 # -----------------------------------------------------------------------------
-TEXTFONT = 42
+TEXTFONT = 62 # 42
 TEXTSIZE = 0.031
 #------------------------------------------------------------------------------
+CMSstyle = TStyle("CMSstyle","CMS Style");
 def setStyle():
-	gROOT.SetStyle("Pub")
-	style = gROOT.GetStyle("Pub")
+    
+    # For the canvas:
+    CMSstyle.SetCanvasBorderMode(0)
+    CMSstyle.SetCanvasColor(kWhite)
+    CMSstyle.SetCanvasDefH(500) #Height of canvas
+    CMSstyle.SetCanvasDefW(500) #Width of canvas
+    CMSstyle.SetCanvasDefX(0)   #Position on screen
+    CMSstyle.SetCanvasDefY(0)
 
-	# For the canvas
-	style.SetCanvasBorderMode(0)
-	style.SetCanvasColor(kWhite)
-	style.SetCanvasDefH(500)
-	style.SetCanvasDefW(500)
-	style.SetCanvasDefX(0)
-	style.SetCanvasDefY(0)
+    # For the Pad:
+    CMSstyle.SetPadBorderMode(0)
+    CMSstyle.SetPadColor(kWhite)
+    CMSstyle.SetPadGridX(kFALSE)
+    CMSstyle.SetPadGridY(kTRUE)
+    CMSstyle.SetGridColor(kGreen)
+    CMSstyle.SetGridStyle(3)
+    CMSstyle.SetGridWidth(1)
+    
+    # For the frame:
+    CMSstyle.SetFrameBorderMode(0)
+    CMSstyle.SetFrameBorderSize(1)
+    CMSstyle.SetFrameFillColor(0)
+    CMSstyle.SetFrameFillStyle(0)
+    CMSstyle.SetFrameLineColor(1)
+    CMSstyle.SetFrameLineStyle(1)
+    CMSstyle.SetFrameLineWidth(1)
+    
+    # For the histo:
+    CMSstyle.SetHistLineColor(1)
+    CMSstyle.SetHistLineStyle(0)
+    CMSstyle.SetHistLineWidth(1)
 
-	# For the pad
-	style.SetPadBorderMode(0)
-	style.SetPadColor(kWhite)
-	style.SetPadGridX(kFALSE)
-	style.SetPadGridY(kTRUE)
-	style.SetGridColor(kGreen)
-	style.SetGridStyle(3)
-	style.SetGridWidth(1)
+    CMSstyle.SetEndErrorSize(2)
+    CMSstyle.SetErrorX(0.)
+    
+    CMSstyle.SetMarkerSize(0.1)
+    CMSstyle.SetMarkerStyle(20)
 
-	# For the frame
-	style.SetFrameBorderMode(0)
-	style.SetFrameBorderSize(1)
-	style.SetFrameFillColor(0)
-	style.SetFrameFillStyle(0)
-	style.SetFrameLineColor(1)
-	style.SetFrameLineStyle(1)
-	style.SetFrameLineWidth(1)
+    #For the fit/function:
+    CMSstyle.SetOptFit(1)
+    CMSstyle.SetFitFormat("5.4g")
+    CMSstyle.SetFuncColor(2)
+    CMSstyle.SetFuncStyle(1)
+    CMSstyle.SetFuncWidth(1)
 
-	# For the histogram
-	style.SetHistLineColor(1)
-	style.SetHistLineStyle(0)
-	style.SetHistLineWidth(1)
-	style.SetEndErrorSize(2)
-	style.SetErrorX(0.)
-	style.SetMarkerSize(0.1)
-	style.SetMarkerStyle(20)
+    #For the date:
+    CMSstyle.SetOptDate(0)
 
-	# For the fit/function
-	style.SetOptFit(1)
-	style.SetFitFormat("5.4g")
-	style.SetFuncColor(2)
-	style.SetFuncStyle(1)
-	style.SetFuncWidth(1)
+    # For the statistics box:
+    CMSstyle.SetOptFile(0)
+    CMSstyle.SetOptStat("")
+    # To display the mean and RMS:
+    #CMSstyle.SetOptStat("mr") 
+    CMSstyle.SetStatColor(kWhite)
+    CMSstyle.SetStatFont(TEXTFONT)
+    CMSstyle.SetStatFontSize(TEXTSIZE)
+    CMSstyle.SetStatTextColor(1)
+    CMSstyle.SetStatFormat("6.4g")
+    CMSstyle.SetStatBorderSize(1)
+    CMSstyle.SetStatH(0.2)
+    CMSstyle.SetStatW(0.3)
+    
+    ## # Margins:
+    CMSstyle.SetPadTopMargin(0.05)
+    CMSstyle.SetPadBottomMargin(0.16)
+    CMSstyle.SetPadLeftMargin(0.16)
+    CMSstyle.SetPadRightMargin(0.16)
 
-	#For the date
-	style.SetOptDate(0)
+    # For the Global title:
+    CMSstyle.SetOptTitle(0)
+    CMSstyle.SetTitleFont(TEXTFONT)
+    CMSstyle.SetTitleColor(1)
+    CMSstyle.SetTitleTextColor(1)
+    CMSstyle.SetTitleFillColor(10)
+    CMSstyle.SetTitleFontSize(TEXTSIZE*1.1)
 
-	# For the statistics box
-	style.SetOptFile(0)
-	style.SetOptStat("")
-	# To display the mean and RMS
-	#style.SetOptStat("mr") 
-	style.SetStatColor(kWhite)
-	style.SetStatFont(TEXTFONT)
-	style.SetStatFontSize(TEXTSIZE)
-	style.SetStatTextColor(1)
-	style.SetStatFormat("6.4g")
-	style.SetStatBorderSize(1)
-	style.SetStatH(0.2)
-	style.SetStatW(0.3)
+    # For the axis titles:
+    CMSstyle.SetTitleColor(1, "XYZ")
+    CMSstyle.SetTitleFont(TEXTFONT, "XYZ")
+    CMSstyle.SetTitleSize(TEXTSIZE*1.2, "XYZ") # 0,05
+    CMSstyle.SetTitleXOffset(1.25) # 0.9
+    CMSstyle.SetTitleYOffset(1.25) # 1.25
 
-	# Margins
-	style.SetPadTopMargin(0.05)
-	style.SetPadBottomMargin(0.16)
-	style.SetPadLeftMargin(0.16)
-	style.SetPadRightMargin(0.16)
+    # For the axis labels:
+    CMSstyle.SetLabelColor(1, "XYZ")
+    CMSstyle.SetLabelFont(TEXTFONT, "XYZ")
+    CMSstyle.SetLabelOffset(0.006, "XYZ")
+    CMSstyle.SetLabelSize(TEXTSIZE*1.2, "XYZ")
 
-	# For the global title
-	style.SetOptTitle(0)
-	style.SetTitleFont(TEXTFONT)
-	style.SetTitleColor(1)
-	style.SetTitleTextColor(1)
-	style.SetTitleFillColor(10)
-	style.SetTitleFontSize(TEXTSIZE*1.1)
+    # For the axis:
+    CMSstyle.SetAxisColor(1, "XYZ")
+    CMSstyle.SetStripDecimals(kTRUE)
+    CMSstyle.SetTickLength(0.03, "XYZ")
+    CMSstyle.SetNdivisions(505, "XYZ")
+    # To get tick marks on the opposite side of the frame
+    CMSstyle.SetPadTickX(1)  
+    CMSstyle.SetPadTickY(1)
 
-	# For the axis titles
-	style.SetTitleColor(1, "XYZ")
-	style.SetTitleFont(TEXTFONT, "XYZ")
-	style.SetTitleSize(TEXTSIZE*1.2, "XYZ") # 0,05
-	style.SetTitleXOffset(1.25) # 0.9
-	style.SetTitleYOffset(1.25) # 1.25
+    # Change for log plots:
+    CMSstyle.SetOptLogx(0)
+    CMSstyle.SetOptLogy(0)
+    CMSstyle.SetOptLogz(0)
 
-	# For the axis labels
-	style.SetLabelColor(1, "XYZ")
-	style.SetLabelFont(TEXTFONT, "XYZ")
-	style.SetLabelOffset(0.006, "XYZ")
-	style.SetLabelSize(TEXTSIZE*1.2, "XYZ")
+    # Postscript options:
+    CMSstyle.SetPaperSize(20.,20.)
+    CMSstyle.cd()
+#------------------------------------------------------------------------------
+def saveHistograms(histfilename, 
+				   hdir=gDirectory,
+				   hfile=0,
+				   depth=0):
 
-	# For the axis
-	style.SetAxisColor(1, "XYZ")
-	style.SetStripDecimals(kTRUE)
-	style.SetTickLength(0.03, "XYZ")
-	style.SetNdivisions(505, "XYZ")
+	hlist = hdir.GetList()
+	
+	# Create output file
 
-	# To get tick marks on the opposite side of the frame
-	style.SetPadTickX(1)  
-	style.SetPadTickY(1)
+	if depth == 0:
+		print "Saving histograms to", histfilename
+		hfile = TFile(histfilename, "RECREATE")
 
-	# Change for log plots
-	style.SetOptLogx(0)
-	style.SetOptLogy(0)
-	style.SetOptLogz(0)
+	# Important!
+	# Check recursion depth 
+	depth += 1
+	if depth > 100: error("saveHistograms is lost in trees!")
 
-	# Postscript options
-	style.SetPaperSize(20.,20.)
+	tab = 2*depth*' '
 
-	style.cd()
+	# Loop over all histograms
+
+	nentries = hlist.GetSize()
+	
+	for index in xrange(nentries):
+		o = hlist.At(index)
+		
+		if o.IsA().InheritsFrom("TDirectory"):
+			d = o
+			print tab + "BEGIN " + d.GetName()
+			saveHistograms(histfilename, d, hfile, depth)
+			print tab + "END " + d.GetName()
+
+		# Note: All histograms inherit from TH1
+		elif o.IsA().InheritsFrom("TH1"):
+			h = o
+			print tab + \
+				  "\\t" + o.ClassName() + \
+				  "\\t" + h.GetName() + \
+				  "\\t" + h.GetTitle()
+
+			hfile.cd()
+			h.Write("", TObject.kOverwrite)
+
+	hfile.Close()
 # -----------------------------------------------------------------------------
 #  Define variables to be read
 # -----------------------------------------------------------------------------
-cmdline = decodeCommandLine()
-
+filelist, histfilename = decodeCommandLine()
+	
 #  Get names of ntuple files to be processed and open chain of ntuples
-
-filenames = getFilenames(cmdline.filelist)
-stream = itreestream(filenames, "%(treename)s")
+  
+filenames = getFilenames(filelist)
+stream = itreestream(filenames, "Events")
 if not stream.good(): error("unable to open ntuple file(s)")
-
+  
 %(selection)s
 '''
 
@@ -630,7 +607,7 @@ PYTEMPLATE =\
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
 #  Author:      %(author)s
-#  $Revision: 1.15 $
+#  $Revision: 1.10 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from string import *
@@ -644,28 +621,26 @@ import os, sys, re
 # -----------------------------------------------------------------------------
 def main():
 
-	# Get number of events
+	#  Get number of events
 	nevents = stream.size()
 	print "Number of events:", nevents
 
-	# -------------------------------------------------------------------------
-	# Book histograms etc.
+    # -------------------------------------------------------------------------
+	#  Book histograms etc.
 	# -------------------------------------------------------------------------
 	setStyle()
 
-	hfile = histogramFile(cmdline.histfilename)
-
 	# -------------------------------------------------------------------------
-	# Loop over events
+	#  Loop over events
 	# -------------------------------------------------------------------------
 	for entry in xrange(nevents):
 		stream.read(entry)
 
-		# -- Event selection
-		#if not SUSY: continue
-
+		#  Find SUSY already!
+	  
 	stream.close()
-	hfile.close()
+
+	saveHistograms(histfilename)
 # -----------------------------------------------------------------------------
 main()
 '''
@@ -676,39 +651,23 @@ MAKEFILE = '''#-----------------------------------------------------------------
 #
 #               available switches:
 #
-#                 debugflag  (e.g., debugflag=-ggdb [default])
+#                 debugflag  (e.g., debugflags=-g)
 #                 cppflags
 #                 cxxflags
 #                 optflag
 #                 verbose    (e.g., verbose=1)
 #                 withcern   (e.g., withcern=1  expects to find CERN_LIB)
 # Author:      %(author)s
-#$Revision: 1.15 $
+#$Revision: 1.10 $
 #------------------------------------------------------------------------------
 ifndef ROOTSYS
 $(error *** Please set up Root)
 endif
 withroot:=1
 #------------------------------------------------------------------------------
-ifndef program
-# default program name
 program := %(filename)s
-endif
-
 cppsrcs	:= $(wildcard *.cpp)
 ccsrcs  := $(wildcard *.cc)
-
-# filter out all main programs except the one to be built
-# 1. search files for main(...) and write list of files to .main
-$(shell grep -H "main[(].*[)]" $(cppsrcs) $(ccsrcs)|cut -f1 -d: > .main)
-# 2. send list back to Makefile
-main	:= $(shell cat .main)
-# 3. remove subset of files (including the file to be built) from main
-main	:= $(filter-out $(program).cc $(program).cpp treestream.cc,$(main))
-# 4. remove the set main from the set of all files in the directory
-cppsrcs	:= $(filter-out $(main),$(cppsrcs))
-ccsrcs	:= $(filter-out $(main),$(ccsrcs))
-
 cppobjs	:= $(patsubst %(percent)s.cpp,tmp/%(percent)s.o,$(cppsrcs))
 ccobjs	:= $(patsubst %(percent)s.cc,tmp/%(percent)s.o,$(ccsrcs))
 objects	:= $(ccobjs) $(cppobjs)
@@ -752,14 +711,10 @@ ifdef withroot
 endif
 #------------------------------------------------------------------------------
 # Switches/includes
-# debug flag is on by default
 #------------------------------------------------------------------------------
-debugflag:=-ggdb
-
 ifndef optflag
 	optflag:=-O2
 endif
-
 CPPFLAGS:= -I. $(rootcpp) $(cppflags)
 CXXFLAGS:= -c -pipe $(optflag) -fPIC -Wall $(cxxflags) $(debugflag)
 LDFLAGS	:= $(ldflags) $(debugflag)
@@ -785,52 +740,16 @@ $(ccobjs)	: tmp/%(percent)s.o : %(percent)s.cc
 
 # Define clean up rule
 clean   	:
-	rm -rf tmp/*.o $(program)
+	rm -rf $(objects) $(program)
 '''
 
-README = '''$Revision:$
-Created: %(time)s
 
-    o To build the default program (%(name)s) do
-
-	  make
-
-    o To build another program in this directory do
-
-	  make program=<program-name>
-
-    example:
-
-	  make program=findSUSYalready
-
-
-    o To run the program, first create a text file (default name=filelist.txt)
-	containing a list of the ntuples to be analyzed, one filename per line.
-	Then do
-
-	  ./%(name)s
-
-	If you wish to specify a different file list, say datafile.list, do
-
-	  ./%(name)s datafile.list
-
-	If you wish to change the name of the histogram output file, say
-	datahist.root, do
-
-	   ./%(name)s datafile.list datahist.root
-
-
-For details, please refer to the documentation at:
-
-	https://twiki.cern.ch/twiki/bin/viewauth/CMS/TheNtupleMaker
-	
-'''
 #------------------------------------------------------------------------------
 def main():
 	print "\n\tmkanalyzer.py"
 
 	# Decode command line
-
+	
 	argv = sys.argv[1:]
 	argc = len(argv)
 	if argc < 1: usage()
@@ -845,68 +764,28 @@ def main():
 		sys.exit(0)
 
 	# Read variable names
-
-	records = map(strip, open(varfilename, "r").readlines())
-
-	# Create maps from object name to object type etc.
-	# Group together variables that are meant to be
-	# together!
-
-	vars = {}
-	vectormap = {}
 	
-	# get tree name
-	t = split(records[0])
-	if lower(t[0]) == "tree:":
-		treename = t[1]
-	else:
-		treename = "Events"
-		
+	records = map(strip, open(varfilename, "r").readlines())
+	
+	vars = {}
+	# skip first line
 	records = records[1:]
 	for index in xrange(len(records)):
 		record = records[index]
 		if record == "": continue
-		
 		rtype, branchname, varname, count = split(record, '/')
-
-		# Get object and field names
-		t = split(varname,'_')
-		objname = t[0]                    # object name
-		if len(t) > 1:
-			fldname = joinfields(t[1:],'_')   # field name
-		else:
-			fldname = ''
-			
-		# Check for leaf counter flag (a "*")
-		t = split(count)
-		count = atoi(t[0])
-		iscounter = t[-1] == "*"
-
-		# Take care of duplicate names
+		count = atoi(count)
 		n = 1
+		# Take care of duplicate names
 		if vars.has_key(varname):
-			# duplicate name; add a number to object name
-			n, a, b, c, d = vars[varname]
+			# duplicate name; for now just postfix with an integer
+			n, r, b, c = vars[varname]
 			n += 1
 			vars[varname][0] = n;
+			varname = "%s%d" % (varname, n)
+		vars[varname] = [1, rtype, branchname, count]		
 
-			objname = "%s%d" % (objname, n)
-			if fldname != '':
-				varname = "%s_%s" % (objname, fldname)
-			else:
-				varname = objname
-
-		# update map for all variables
-		vars[varname] = [1, rtype, branchname, count, iscounter]
-
-		# vector types must have the same object name and a max count > 1
-		if count > 1:
-			if fldname != "":
-				if not vectormap.has_key(objname): vectormap[objname] = []	
-				vectormap[objname].append((rtype, fldname, varname, count))
-	
-
-	# Declare all variables
+	# Construct declarations etc.
 	
 	keys = vars.keys()
 	keys.sort()
@@ -914,16 +793,16 @@ def main():
 	pyselect  = []
 	declare = []
 	select  = []
-
+	varimpl= []
+	varimpl.append('TLeaf* leaf=0;')
+	varimpl.append('int N=0;\n')
 	for varname in keys:
-		n, rtype, branchname, count, iscounter = vars[varname]
+		n, rtype, branchname, count = vars[varname]
 
-		# If this is a counter variable with a name identical to that of a
-		# vector variable, ignore it
-		if iscounter and vectormap.has_key(varname): continue
-
+		# treat bools as ints
+		
 		if rtype == "bool": rtype = "int"
-
+		
 		if count == 1:
 			declare.append("%s\t%s;" % (rtype, varname))
 			if rtype in ["float", "double"]:
@@ -939,70 +818,30 @@ def main():
 		select.append('stream.select("%s", %s);' % (branchname, varname))
 		pyselect.append('stream.select("%s", %s)'  % (branchname, varname))
 
-
-	# Create structs for vector variables
-	
-	keys = vectormap.keys()
-	keys.sort()	
-	structdecl = []
-	structimpl = []
-
-	structimpl.append('void fillObjects()')
-	structimpl.append('{')
-
-	for index, objname in enumerate(keys):
-		values = vectormap[objname]
-		varname= values[0][-2];
+		# Code for selector.h
 		
-		structimpl.append('')
-		structimpl.append('  %s.resize(%s.size());' % (objname, varname))
-		structimpl.append('  for(unsigned int i=0; i < %s.size(); ++i)' % \
-						  varname)
-		structimpl.append('    {')
-
-		structdecl.append('struct %s_t' % objname)
-		structdecl.append('{')
-		for rtype, fldname, varname, count in values:
-			# treat bools as ints
-			if rtype == "bool":
-				cast = '(bool)'
+		varimpl.append('leaf = tree->GetLeaf("%s");' % branchname)
+		if count == 1:
+			if rtype != "double":
+				varimpl.append('%s = static_cast<%s>(leaf->GetValue());' % \
+							   (varname, rtype))
 			else:
-				cast = ''
+				varimpl.append('%s = leaf->GetValue();' % varname)
+		else:
+			varimpl.append('N    = min(leafcount(leaf), %d);' % count)
+			varimpl.append('%s.resize(N);' % varname)
+			varimpl.append('for(int i=0; i < N; ++i)')
+			if rtype != "double":
+				varimpl.append('  %s[i] = static_cast<%s>'\
+							   '(leaf->GetValue(i));' % (varname, rtype))
+			else:
+				varimpl.append('  %s[i] = leaf->GetValue(i);' % varname)
 
-			structdecl.append('  %s\t%s;' % (rtype, fldname))
-
-			structimpl.append('      %s[i].%s\t= %s%s[i];' % (objname,
-															  fldname,
-															  cast,
-															  varname))
-		structdecl.append('};')
-		structdecl.append('')
-		structdecl.append('std::vector<%s_t> %s(%d);' % (objname,
-														 objname,
-														 count))
-		structdecl.append('')
-		structdecl.append('std::ostream& '\
-						  'operator<<(std::ostream& os, const %s_t& o)' % \
-						  objname)
-		structdecl.append('{')
-		structdecl.append('  char r[1024];')
-		structdecl.append('  os << "%s" << std::endl;' % objname)
+		varimpl.append('')
 		
-		for rtype, fldname, varname, count in values:
-			structdecl.append('  sprintf(r, "  %s: %s\\n", "%s",'\
-							  ' (double)o.%s); '\
-							  'os << r;' % ("%-32s", "%f", fldname, fldname))
-		structdecl.append('  return os;')
-		structdecl.append('}')
-		structdecl.append('')
-		
-		structimpl.append('    }')	
-	structimpl.append('}')  # end of fillObjects()
-	
 	# Write out files
 
 	# Put everything into a directory
-	
 	cmd = '''
 	mkdir -p %(dir)s/tmp
 	cp %(hpp)s %(dir)s
@@ -1018,7 +857,7 @@ def main():
 	''' % {'dir': filename,
 		   'hpp': PDG_HPP,
 		   'cpp': PDG_CPP}
-
+	
 	os.system(cmd)
 
 	# Create Makefile
@@ -1029,22 +868,19 @@ def main():
 			 'author': AUTHOR,
 			 'percent': '%'
 			 }
-
+	
 	record = MAKEFILE % names
 	open("%s/Makefile" % filename, "w").write(record)	
 
 	# Create C++ code
-
+	
 	outfilename = "%s/%s.h" % (filename, filename)
 	names = {'name': filename,
-			 'treename': treename,
 			 'NAME': upper(filename),
 			 'time': ctime(time()),
 			 'vardecl': join("", declare, "\n"),
 			 'selection': join("  ", select, "\n"),
-			 'author': AUTHOR,
-			 'structdecl': join("", structdecl, "\n"),
-			 'structimpl': join("", structimpl, "\n")
+			 'author': AUTHOR
 			 }
 
 	record = TEMPLATE_H % names
@@ -1054,18 +890,23 @@ def main():
 	record = TEMPLATE_CC % names
 	open(outfilename,"w").write(record)
 
-	# Create README
+	# Create selector.h code
 
-	outfilename = "%s/README" % filename
-	record = README % names
-	open(outfilename,"w").write(record)
-
+	records = open(SELECTEDOBJECTMAP_H).readlines()[2:-1]
+	names = {'vardecl': join("", declare, "\n"),
+			 'class':   join("", records, ""),
+			 'time':    ctime(time()),
+			 'varimpl': join("  ", varimpl, "\n"),
+			 'author': AUTHOR
+			 }
+	record = SLTEMPLATE % names
+	open("selector.h","w").write(record)
+	
 	# Create python code
-
+	
 	s = join("", pydeclare, "\n") + "\n" + join("", pyselect,"\n")
 	outfilename = "%s/%slib.py" % (filename, filename)
 	names = {'name': filename,
-			 'treename': treename,
 			 'time': ctime(time()),
 			 'selection': s,
 			 'author': AUTHOR,

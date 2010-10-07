@@ -1,3 +1,4 @@
+<use name=PhysicsTools/LiteAnalysis>
 <use name=PhysicsTools/Mkntuple>
 <use name=PhysicsTools/UtilAlgos>
 <use name=PhysicsTools/Utilities>
@@ -25,7 +26,6 @@
 <use name=f77compiler>
 
 <bin name=plugins_t file=plugins_t.cc></bin>
-<bin name=testreflex file=testreflex.cc></bin>
 
 
 

@@ -9,7 +9,7 @@
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Sep 19 HBP move some code from Buffer.h 
 //
-// $Id: BufferUtil.h,v 1.3 2010/10/05 11:22:46 prosper Exp $
+// $Id:$
 // ----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python/type_id.hpp>
@@ -24,14 +24,11 @@
 #include "FWCore/Framework/interface/Run.h"
 #include "SimDataFormats/GeneratorProducts/interface/GenRunInfoProduct.h"
 
-#include "PhysicsTools/Mkntuple/interface/treestream.h"
-#include "PhysicsTools/Mkntuple/interface/colors.h"
-#ifdef USE_METHOD
-#include "PhysicsTools/Mkntuple/interface/Method.h"
-#else
-#include "PhysicsTools/Mkntuple/interface/MethodT.h"
-#endif
+#include "PhysicsTools/LiteAnalysis/interface/treestream.hpp"
+#include "PhysicsTools/LiteAnalysis/interface/kit.h"
+#include "PhysicsTools/LiteAnalysis/interface/MethodT.h"
 // ----------------------------------------------------------------------------
+
 struct VariableDescriptor
 {
   VariableDescriptor(std::string r, std::string m, std::string v)
@@ -71,10 +68,7 @@ struct BufferThing
   virtual std::string name()=0;
   ///
   virtual void shrink(std::vector<int>& index)=0;
-  ///
-  virtual std::vector<double>* variable(std::string name)=0;
-  ///
-  virtual std::vector<std::string>& varnames()=0;
+
 };
 
 ///
@@ -122,21 +116,13 @@ struct Variable
     : name(namen),
       fname(f),
       value(std::vector<double>(count,0)),
-#ifdef USE_METHOD
-      function(Method<X>(f))
-#else
       function(MethodT<X>(f))
-#endif
   {}
 
   std::string         name;
   std::string         fname;
   std::vector<double> value;
-#ifdef USE_METHOD
-  Method<X>           function;
-#else
   MethodT<X>          function;
-#endif
 };
 // ----------------------------------------------------------------------------
 template <typename X>
@@ -146,9 +132,7 @@ void initBuffer(otreestream& out,
                 std::string& label2,
                 std::string& prefix,
                 std::vector<VariableDescriptor>& var,
-                std::vector<Variable<X> >&  variables,
-                std::vector<std::string>&   varnames,
-                std::map<std::string, int>& varmap,
+                std::vector<Variable<X> >& variables,
                 int&  count,
                 bool  singleton,
                 int   maxcount,
@@ -170,16 +154,11 @@ void initBuffer(otreestream& out,
                    debug);
 
   // Create a variable object for each method
-  varnames.clear();
   for(unsigned i=0; i < var.size(); i++)
-    {
-      variables.push_back(Variable<X>(var[i].name, 
-                                      var[i].maxcount,
-                                      var[i].method));
-      varnames.push_back(var[i].name);
-      varmap[var[i].name] = i;
-    }
-
+    variables.push_back(Variable<X>(var[i].name, 
+                                    var[i].maxcount,
+                                    var[i].method));
+  
   // Add variables to output tree. This must be done after all
   // variables have been defined, because it is only then that their
   // addresses are guaranteed to be stable.
@@ -197,12 +176,6 @@ bool getByLabel(const edm::Event& event,
                 std::string& message,
                 BufferType buffertype)
 { 
-  // If this is real data ignore generator labels
-  if ( label1 == std::string("generator") )
-    {
-      if ( event.isRealData() ) return true;
-    }
-
   // Try to do a getByLabel and fall on sword if it fails.
   try
     {
@@ -271,7 +244,9 @@ void callMethods(int j,
         }
       if ( debug > 0 ) 
         std::cout << "\t\t\tvalue = " 
+                  << BLUE 
                   << variables[i].value[j] 
+                  << BLACK 
                   << std::endl;
     }
 }

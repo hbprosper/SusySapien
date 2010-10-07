@@ -3,7 +3,7 @@
 # File:        findhdr.py
 # Description: find header for given class using classmap.py
 # Created:     04-Sep-2010 Harrison B. Prosper
-#$Revision: 1.2 $
+#$Revision: 1.1 $
 #---------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
@@ -11,7 +11,7 @@ from string import *
 from time import *
 from glob import glob
 from getopt     import getopt, GetoptError
-from PhysicsTools.Mkntuple.Lib import cmsswProject
+from PhysicsTools.LiteAnalysis.boostlib import cmsswProject
 #---------------------------------------------------------------------------
 # Constants
 #-----------------------------------------------------------------------------

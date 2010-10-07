@@ -10,7 +10,7 @@ cms.EDAnalyzer("Mkntuple",
                buffers =
                cms.untracked.
                vstring(
-	'edmEvent',
+	'edmEventHelper',
     'HcalNoiseSummary',
 	'recoHcalNoiseRBXCaloTower',
     'recoCaloJet',
@@ -20,18 +20,16 @@ cms.EDAnalyzer("Mkntuple",
     'recoVertex',
 	'edmTriggerResultsHelper'
     ),
-               edmEvent =
+               edmEventHelper =
                cms.untracked.
                vstring(
-    'edmEvent',
+    'edmEventHelper',
     #---------------------------------------------------------------------
     '   int   isRealData()',
-    '   int   id().run()',
-	'   int   id().event()',
+    '   int   run()',
+	'   int   event()',
 	'   int   luminosityBlock()',
-	'   int   bunchCrossing()',
-	'   unsigned int time().unixTime()',
-	'   unsigned int time().nanosecondOffset()'
+	'   int   bunchCrossing()'
     ),			   
                HcalNoiseSummary =
                cms.untracked.

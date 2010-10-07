@@ -4,7 +4,7 @@
 // Created: 16-Feb-2010 Harrison B. Prosper
 //          Based on code written in 2005
 // Updated: 28-May-2010 HBP - add first and last mothers
-//$Revision: 1.3 $
+//$Revision: 1.1 $
 //----------------------------------------------------------------------------
 #include <cmath>
 #include <iostream>
@@ -16,7 +16,7 @@
 #include <map>
 #include "TLorentzVector.h"
 #include "PhysicsTools/Mkntuple/interface/GEvent.h"
-#include "PhysicsTools/Mkntuple/interface/kit.h"
+#include "PhysicsTools/LiteAnalysis/interface/kit.h"
 //----------------------------------------------------------------------------
 
 using namespace std;
@@ -26,6 +26,7 @@ using namespace std;
 namespace {
 
   const int MAXDEPTH=99;
+  const int DEBUG=0;
 
   struct PID
   {

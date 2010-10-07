@@ -1,3 +1,4 @@
+<use name=PhysicsTools/LiteAnalysis>
 <use name=PhysicsTools/Mkntuple>
 <use name=PhysicsTools/UtilAlgos>
 <use name=PhysicsTools/Utilities>
@@ -38,10 +39,6 @@
 </library>
 
 <library file=Mkntuple.cc name=Mkntuple>
-<flags EDM_PLUGIN=1>
-</library>
-
-<library file=TestMethod.cc name=TestMethod>
 <flags EDM_PLUGIN=1>
 </library>
 

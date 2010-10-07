@@ -9,7 +9,7 @@
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Sep 19 HBP - copy from Buffer.h
 //
-// $Id: UserBuffer.h,v 1.2 2010/09/25 21:34:55 prosper Exp $
+// $Id: Buffer.h,v 1.20 2010/09/08 21:07:53 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/BufferUtil.h"
@@ -98,8 +98,6 @@ struct UserBuffer  : public BufferThing
                   prefix_,
                   var_,
                   variables_,
-                  varnames_,
-                  varmap_,
                   count_,
                   singleton_,
                   maxcount_,
@@ -111,12 +109,13 @@ struct UserBuffer  : public BufferThing
   bool fill(const edm::Event& event)
   {
     if ( debug_ > 0 ) 
-      std::cout << DEFAULT_COLOR
+      std::cout << BLACK
                 << "Begin UserBuffer::fill\n\t" 
-                << BLUE
+                << RED 
                 << "X: " << boost::python::type_id<X>().name() << "\n\t"
+                << GREEN 
                 << "Y: " << boost::python::type_id<Y>().name()
-                << DEFAULT_COLOR
+                << BLACK
                 << std::endl;
     
     count_ = 0; // reset count, just in case we have to bail out
@@ -127,8 +126,8 @@ struct UserBuffer  : public BufferThing
     // 1. void analyzeEvent()
     // 2. void analyzeObject()
 
-    // Cache event in helper
-    helper_.cacheEvent(event);
+    // Cache event in helper (using CurrentEvent::instance().get())
+    helper_.cacheEvent();
  
     // Perform (optional) user event-level analysis
     helper_.analyzeEvent();
@@ -197,7 +196,7 @@ struct UserBuffer  : public BufferThing
       }
   
     if ( debug_ > 0 ) 
-      std::cout << DEFAULT_COLOR << "End UserBuffer::fill " << std::endl; 
+      std::cout << BLACK << "End UserBuffer::fill " << std::endl; 
     return true;
   }
   
@@ -214,17 +213,6 @@ struct UserBuffer  : public BufferThing
         variables_[i].value[j] = variables_[i].value[index[j]];
   }
 
-  std::vector<double>* variable(std::string name)
-  {
-    if ( varmap_.find(name) == varmap_.end() ) return 0;
-    return &(variables_[varmap_[name]].value);
-  }
-
-  std::vector<std::string>& varnames()
-  {
-    return varnames_;
-  }
-
 private:
   otreestream* out_;
   std::string  classname_;  
@@ -235,8 +223,6 @@ private:
   BufferType buffertype_;
   std::vector<VariableDescriptor> var_;
   std::vector<Variable<Y> > variables_;
-  std::map<std::string, int> varmap_;
-  std::vector<std::string> varnames_;
   int  maxcount_;
   int  count_;
   bool singleton_;

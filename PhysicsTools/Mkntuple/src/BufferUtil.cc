@@ -5,7 +5,7 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Sep 19 HBP move initBuffer from Buffer.h
-// $Id: BufferUtil.cc,v 1.2 2010/09/25 21:34:57 prosper Exp $
+// $Id:$
 //-----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python/type_id.hpp>
@@ -13,8 +13,8 @@
 #include <iostream>
 #include <string>
 #include "FWCore/Framework/interface/Event.h"
-#include "PhysicsTools/Mkntuple/interface/kit.h"
-#include "PhysicsTools/Mkntuple/interface/treestream.h"
+#include "PhysicsTools/LiteAnalysis/interface/kit.h"
+#include "PhysicsTools/LiteAnalysis/interface/treestream.hpp"
 #include "PhysicsTools/Mkntuple/interface/pluginfactory.h"
 #include "PhysicsTools/Mkntuple/interface/BufferUtil.h"
 //-----------------------------------------------------------------------------
@@ -116,7 +116,7 @@ void initializeBuffer(otreestream& out,
       log << "int/" 
           << counter << "/"
           << "n"+objectname << "/"
-          << 1 << " *" 
+          << 1 
           << std::endl;
     }
   

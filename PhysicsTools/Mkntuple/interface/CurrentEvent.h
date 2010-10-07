@@ -9,13 +9,9 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Mon Mar  8, 2010
 //
-// $Id: CurrentEvent.h,v 1.3 2010/08/08 16:26:06 prosper Exp $
+// $Id: CurrentEvent.h,v 1.2 2010/04/21 02:22:43 prosper Exp $
 
-#include <map>
-#include <vector>
-#include <string>
 #include "FWCore/Framework/interface/Event.h"
-#include "PhysicsTools/Mkntuple/interface/BufferUtil.h"
 
 /// A singleton class to cache event.
 class CurrentEvent
@@ -42,7 +38,7 @@ public:
   int count() const { return count_; }
 
 private:
-  CurrentEvent() {}        // prevent explicit creation
+  CurrentEvent() {}                              // prevent explicit creation
   ~CurrentEvent() {}                  
   CurrentEvent(const CurrentEvent&);             // prevent copy
   CurrentEvent& operator=(const CurrentEvent&);  // prevent assignment

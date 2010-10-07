@@ -2,14 +2,14 @@
 #------------------------------------------------------------------------------
 # Create the skeleton of a user plugin
 # Created: 27-Aug-2010 Harrison B. Prosper
-#$Revision: 1.9 $
+#$Revision: 1.8 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
 from time import *
 from glob import glob
 from getopt     import getopt, GetoptError
-from PhysicsTools.Mkntuple.Lib import \
+from PhysicsTools.LiteAnalysis.boostlib import \
 	 nameonly, \
 	 cmsswProject, \
 	 getauthor
@@ -90,7 +90,7 @@ def wrpluginheader(names):
 // Description: Mkntuple helper class for %(classname)s
 // Created:     %(time)s
 // Author:      %(author)s      
-//$Revision: 1.9 $
+//$Revision: 1.8 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -192,7 +192,7 @@ def wrplugincode(names):
 // Description: Mkntuple helper class for %(classname)s
 // Created:     %(time)s
 // Author:      %(author)s      
-//$Revision: 1.9 $
+//$Revision: 1.8 $
 //-----------------------------------------------------------------------------
 #include "%(package)s/%(subpackage)s/interface/%(filename)s.h"
 //-----------------------------------------------------------------------------
@@ -241,7 +241,7 @@ def wrplugin(names):
 	template = '''// ----------------------------------------------------------------------------
 // Created: %(time)s by mkuserplugin.py
 // Author:      %(author)s      
-//$Revision: 1.9 $
+//$Revision: 1.8 $
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/UserBuffer.h"
 #include "PhysicsTools/Mkntuple/interface/pluginfactory.h"
@@ -446,7 +446,8 @@ def main():
 	else:
 		updated = True
 		out = open(buildfile, 'w')
-		record = '''<use name=PhysicsTools/Mkntuple>
+		record = '''<use name=PhysicsTools/LiteAnalysis>
+<use name=PhysicsTools/Mkntuple>
 <use name=FWCore/FWLite>
 <use name=FWCore/PluginManager>
 
@@ -497,7 +498,7 @@ def main():
 	else:
 		updated = True
 		out = open(classesfile, 'w')
-		record ='''//$Revision: 1.9 $
+		record ='''//$Revision: 1.8 $
 //--------------------------------------------------------------------''' % \
 		names
 		out.write(record)

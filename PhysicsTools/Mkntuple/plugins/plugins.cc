@@ -1,6 +1,6 @@
 // ----------------------------------------------------------------------------
-// Created: Tue Oct  5 09:26:34 2010 by mkplugins.py
-// $Revision: 1.14 $
+// Created: Sun Aug 29 19:12:37 2010 by mkplugins.py
+// $Revision: 1.7 $
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/Buffer.h"
 #include "PhysicsTools/Mkntuple/interface/pluginfactory.h"
@@ -85,10 +85,30 @@ typedef Buffer<TrajectorySeed, false> TrajectorySeed_t;
 DEFINE_EDM_PLUGIN(BufferFactory, TrajectorySeed_t,
                   "TrajectorySeed");
 
-#include "FWCore/MessageLogger/interface/ErrorSummaryEntry.h"
-typedef Buffer<edm::ErrorSummaryEntry, false> edmErrorSummaryEntry_t;
-DEFINE_EDM_PLUGIN(BufferFactory, edmErrorSummaryEntry_t,
-                  "edmErrorSummaryEntry");
+#include "DataFormats/L1Trigger/interface/L1EmParticle.h"
+typedef Buffer<l1extra::L1EmParticle, false> l1extraL1EmParticle_t;
+DEFINE_EDM_PLUGIN(BufferFactory, l1extraL1EmParticle_t,
+                  "l1extraL1EmParticle");
+
+#include "DataFormats/L1Trigger/interface/L1EtMissParticle.h"
+typedef Buffer<l1extra::L1EtMissParticle, false> l1extraL1EtMissParticle_t;
+DEFINE_EDM_PLUGIN(BufferFactory, l1extraL1EtMissParticle_t,
+                  "l1extraL1EtMissParticle");
+
+#include "DataFormats/L1Trigger/interface/L1HFRings.h"
+typedef Buffer<l1extra::L1HFRings, false> l1extraL1HFRings_t;
+DEFINE_EDM_PLUGIN(BufferFactory, l1extraL1HFRings_t,
+                  "l1extraL1HFRings");
+
+#include "DataFormats/L1Trigger/interface/L1JetParticle.h"
+typedef Buffer<l1extra::L1JetParticle, false> l1extraL1JetParticle_t;
+DEFINE_EDM_PLUGIN(BufferFactory, l1extraL1JetParticle_t,
+                  "l1extraL1JetParticle");
+
+#include "DataFormats/L1Trigger/interface/L1MuonParticle.h"
+typedef Buffer<l1extra::L1MuonParticle, false> l1extraL1MuonParticle_t;
+DEFINE_EDM_PLUGIN(BufferFactory, l1extraL1MuonParticle_t,
+                  "l1extraL1MuonParticle");
 
 #include "DataFormats/PatCandidates/interface/Electron.h"
 typedef Buffer<pat::Electron, false> patElectron_t;
@@ -425,16 +445,6 @@ typedef Buffer<L1GlobalTriggerReadoutRecord, true> L1GlobalTriggerReadoutRecord_
 DEFINE_EDM_PLUGIN(BufferFactory, L1GlobalTriggerReadoutRecord_t,
                   "L1GlobalTriggerReadoutRecord");
 
-#include "DataFormats/Common/interface/ConditionsInEdm.h"
-typedef Buffer<edm::ConditionsInEventBlock, true> edmConditionsInEventBlock_t;
-DEFINE_EDM_PLUGIN(BufferFactory, edmConditionsInEventBlock_t,
-                  "edmConditionsInEventBlock");
-
-#include "DataFormats/Common/interface/TriggerResults.h"
-typedef Buffer<edm::TriggerResults, true> edmTriggerResults_t;
-DEFINE_EDM_PLUGIN(BufferFactory, edmTriggerResults_t,
-                  "edmTriggerResults");
-
 #include "DataFormats/PatCandidates/interface/TriggerEvent.h"
 typedef Buffer<pat::TriggerEvent, true> patTriggerEvent_t;
 DEFINE_EDM_PLUGIN(BufferFactory, patTriggerEvent_t,
@@ -484,3 +494,4 @@ DEFINE_EDM_PLUGIN(BufferFactory, recoPFTauDiscriminator_t,
 typedef Buffer<trigger::TriggerEvent, true> triggerTriggerEvent_t;
 DEFINE_EDM_PLUGIN(BufferFactory, triggerTriggerEvent_t,
                   "triggerTriggerEvent");
+

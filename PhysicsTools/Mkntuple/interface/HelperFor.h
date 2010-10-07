@@ -5,10 +5,11 @@
 // Sub-Package: Mkntuple
 // Description: Base class for helpers
 // Created:     Aug, 2010 Harrison B. Prosper
-//$Revision: 1.5 $
+//$Revision: 1.4 $
 //-----------------------------------------------------------------------------
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
+#include "PhysicsTools/Mkntuple/interface/CurrentEvent.h"
 #include "PhysicsTools/Mkntuple/interface/Configuration.h"
 //-----------------------------------------------------------------------------
 /// Base class for helpers.
@@ -20,14 +21,13 @@ public:
                 event(0),   // pointer to current event
                 object(0),  // pointer to current helped object
                 oindex(0),  // index of current helped object (dumb pointer)
-                index(0),   // index of current helper object (dumb pointer)
+                index(0),   // index of current helper object (dump pointer)
                 count(1)    // number of instances returned by helper
   {}
 
   virtual ~HelperFor() {}
   ///
-  void cacheEvent(const edm::Event& e) { event = &e; }
-
+  void cacheEvent() { event = CurrentEvent::instance().get(); }
   ///
   void cacheObject(const X& o, int n=0) 
   { 
