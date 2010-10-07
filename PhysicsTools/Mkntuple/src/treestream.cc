@@ -40,7 +40,7 @@
 //                      fix looping bug so operator[] works for Python
 //          02-Oct-2010 HBP minor change to itreestream to handle vector types
 //                      directly.
-//$Revision: 1.3 $
+//$Revision: 1.4 $
 //----------------------------------------------------------------------------
 #ifdef PROJECT_NAME
 #include <boost/regex.hpp>
@@ -675,7 +675,12 @@ itreestream::itreestream()
     _statuscode(kSUCCESS),
     _current(-1),
     _entries(0),
-    _entry(0)
+    _entry(0),
+    _index(0),
+    _buffer(vector<double>(1000)),
+    data(Data()),
+    selecteddata(SelectedData()),
+    _delete(true)
 {}
 
 itreestream::itreestream(string filename, int bufsize)
@@ -688,26 +693,11 @@ itreestream::itreestream(string filename, int bufsize)
     _index(0),
     _buffer(vector<double>(bufsize)),
     data(Data()),
-    selecteddata(SelectedData())
+    selecteddata(SelectedData()),
+    _delete(true)
 {
   vector<string> fname;
   split(filename, fname);
-  _open(fname);
-}
-
-itreestream::itreestream(TTree* tree, int bufsize)
-  : _tree(tree),
-    _chain(0),
-    _statuscode(kSUCCESS),
-    _current(-1),
-    _entries(0),
-    _entry(0),
-    _index(0),
-    _buffer(vector<double>(bufsize)),
-    data(Data()),
-    selecteddata(SelectedData())
-{
-  vector<string> fname;
   _open(fname);
 }
 
@@ -721,7 +711,8 @@ itreestream::itreestream(vector<string>& fname, int bufsize)
     _index(0),
     _buffer(vector<double>(bufsize)),
     data(Data()),
-    selecteddata(SelectedData())
+    selecteddata(SelectedData()),
+    _delete(true)
 {
   _open(fname);
 }
@@ -736,7 +727,8 @@ itreestream::itreestream(string filename, string treename, int bufsize)
     _index(0),
     _buffer(vector<double>(bufsize)),
     data(Data()),
-    selecteddata(SelectedData())
+    selecteddata(SelectedData()),
+    _delete(true)
 {
   vector<string> fname;
   split(filename, fname);
@@ -753,9 +745,19 @@ itreestream::itreestream(vector<string>& fname, string treename, int bufsize)
     _index(0),
     _buffer(vector<double>(bufsize)),
     data(Data()),
-    selecteddata(SelectedData())
+    selecteddata(SelectedData()),
+    _delete(true)
 {
   _open(fname, treename);
+}
+
+void
+itreestream::init(TTree* tree)
+{
+  _delete = false;
+  _tree = tree;
+  vector<string> fname;
+  _open(fname);
 }
 
 // ------------------------------------------------------------------------
@@ -875,7 +877,6 @@ itreestream::_open(vector<string>& fname, string treename)
       // Update tree pointer
       // ----------------------------------------
       _tree = _chain;  
-  
     }
 
   // ----------------------------------------
@@ -1042,7 +1043,7 @@ itreestream::close()
   
   if ( _tree == 0 ) return;
   DBUG("itreestream::close file",3);
-   delete  _tree;
+  if ( _delete ) delete  _tree;
   _tree = 0;
 }
 
@@ -1309,7 +1310,7 @@ itreestream::str() const
       if ( leafcounter != 0 )
         {
           // This variable has a leaf counter
-          sprintf(record, "    %4d %s \t/ %s (%d)",
+          sprintf(record, "    %4d %s / %s (%d)\n",
                   count,
                   field.fullname.c_str(),
                   field.leaf->GetTypeName(),
@@ -1320,19 +1321,19 @@ itreestream::str() const
           // This variable does not have a leaf counter
           maxcount = field.leaf->GetLen();
           if ( maxcount > 1 )
-            sprintf(record, "%4d %s \t/ %s [%d]",
+            sprintf(record, "%4d %s / %s [%d]\n",
                     count,
                     field.fullname.c_str(),
                     field.leaf->GetTypeName(), 
                     maxcount);
           else
-            sprintf(record, "%4d %s \t/ %s%s",
+            sprintf(record, "%4d %s / %s%s\n",
                     count,
                     field.fullname.c_str(),
                     field.leaf->GetTypeName(),
                     lfsym.c_str());
         }
-      out << record << endl;
+      out << record;
     }
   return out.str();
 }
@@ -1936,7 +1937,7 @@ otreestream::entries() { return _entries; }
 int 
 otreestream::size()    { return _entries; }
 
-vector<string>&
+vector<string>
 otreestream::names() { return branchname; }
 
 TFile*

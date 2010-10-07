@@ -3,9 +3,9 @@
 # Description: Create ntuple selector.h file
 # Created: 06-Mar-2010 Harrison B. Prosper
 # Updated: 05-Oct-2010 HBP - clean up
-#$Revision: 1.15 $
+#$Revision: 1.1 $
 #------------------------------------------------------------------------------
-import os, sys, re
+import os, sys, re, posixpath
 from string import *
 from time import *
 from glob import glob
@@ -17,7 +17,7 @@ getvno = re.compile(r'[0-9]+$')
 def usage():
 	print '''
 	Usage:
-	   mkselector.py <output-filename> [var-filename=variables.txt]
+	   mkselector.py <output-filename> [variables.txt]
 	'''
 	sys.exit(0)
 	
@@ -44,98 +44,131 @@ AUTHOR = getauthor()
 if os.environ.has_key("CMSSW_BASE"):
 	CMSSW_BASE = os.environ["CMSSW_BASE"]
 	PACKAGE = "%s/src/PhysicsTools/Mkntuple" % CMSSW_BASE
-	TREESTREAM_HPP = "%s/interface/treestream.h" % PACKAGE
-	TREESTREAM_CPP = "%s/src/treestream.cc" % PACKAGE
-	PDG_HPP = "%s/interface/pdg.h" % PACKAGE
-	PDG_CPP = "%s/src/pdg.cc" % PACKAGE
-	SELECTED_H = "%s/interface/SelectedObjectMap.h" % PACKAGE
+	VARMAP  = "%s/interface/VariableMap.h" % PACKAGE
+	SELECTED= "%s/interface/SelectedObjectMap.h" % PACKAGE
 else:
-	TREESTREAM_HPP = "treestream.h"
-	TREESTREAM_CPP = "treestream.cc"
-	PDG_HPP = "pdg.h"
-	PDG_CPP = "pdg.cc"
-	SELECTED_H = "SelectedObjectMap.h"
+	VARMAP  = "VariableMap.h" % PACKAGE
+	SELECTED= "SelectedObjectMap.h" % PACKAGE
 	
 # Make sure that we can find treestream etc.
 
-if not os.path.exists(TREESTREAM_HPP):
-	print "\n** error ** - required file:\n\t%s\n\t\tNOT found!" % \
-		  TREESTREAM_HPP
-	sys.exit(0)
-
-if not os.path.exists(TREESTREAM_CPP):
-	print "\n** error ** - required file:\n\t%s\n\t\tNOT found!" % \
-		  TREESTREAM_CPP
+if not os.path.exists(VARMAP):
+	print "\n** error ** - required file:\n\t%s\n\t\tNOT found!" % VARMAP
 	sys.exit(0)
 #------------------------------------------------------------------------------
-SLTEMPLATE=\
-'''#ifndef SELECTOR_H
-#define SELECTOR_H
+# For later
+TMP=\
+	  '''
+// Classes
+%(class)s
+
+// Functions
+inline
+void keepObject(std::string name, int index)
+{
+  SelectedObjectMap::instance().set(name, index);
+}
+	  '''
+HEADER=\
+'''#ifndef %(NAME)s_H
+#define %(NAME)s_H
 //-----------------------------------------------------------------------------
-// File:        selector.h
-// Description: selector template
+// File:        %(name)s.h
+// Description: event selector
 // Created:     %(time)s by mkselector.py
 // Author:      %(author)s
-// $Revision: 1.15 $
+// $Revision: 1.1 $
 //-----------------------------------------------------------------------------
 #include <map>
 #include <string>
 #include <vector>
 #include <cmath>
 #include <iostream>
+#include <algorithm>
+#include <cassert>
 #include <stdlib.h>
 #include "TROOT.h"
 #include "TTree.h"
-#include "TLeaf.h"
-//-----------------------------------------------------------------------------
-
-// Classes
-
-%(class)s
-
-// Functions
-
-inline
-void keepObject(std::string name, int index)
-{
-  SelectedObjectMap::instance().set(name, index);
-}
-
+#include "TMap.h"
 //-----------------------------------------------------------------------------
 // -- Declare variables to be initialized every event
 //-----------------------------------------------------------------------------
-%(vardecl)s
-
+%(decl)s
 //-----------------------------------------------------------------------------
-static bool firstCall=true;
-void initSelector()
-{  
-  if ( firstCall )
-    {
-	  firstCall = false;
-	  TTree* tree = (TTree*)gROOT->FindObject("Events");
-	  if ( tree == 0 )
-	    {
-		  std::cout << "\t** initSelector error ** cannot find tree Events"
-		            << std::endl;
-		  exit(0);
-		}
-		
-      static itreestream stream(tree);     		
-
-%(selection)s
-    }
-  stream.read(-1);
+void initializeEvent(TMap& vars)
+{
+  std::vector<double>* v=0;
+  
+%(impl)s
 }
-//-----------------------------------------------------------------------------
-// --- These structs can be filled by calling fillObjects()
-// --- after the call to initSelector()
-//-----------------------------------------------------------------------------
-%(structdecl)s
-%(structimpl)s
-
 #endif
 '''
+
+MACRO=\
+		  '''//-----------------------------------------------------------------------------
+// File:        %(name)s.C
+// Description: event selector
+// Created:     %(time)s by mkselector.py
+// Author:      %(author)s
+// $Revision: 1.1 $
+//-----------------------------------------------------------------------------
+#include "%(name)s.h"
+//-----------------------------------------------------------------------------
+bool %(name)s(TMap& vars)
+{
+  initializeEvent(vars);
+
+  // perform selection
+  // if ( miserable-event ) return false;
+  return true;
+}
+'''
+COMPILE=\
+		  '''#!/usr/bin/env python
+import os, sys
+from ROOT import *
+#------------------------------------------------------------------------------
+if os.environ.has_key("CMSSW_BASE"):
+	rbase= os.environ["CMSSW_RELEASE_BASE"]
+	base = os.environ["CMSSW_BASE"]
+	arch = os.environ["SCRAM_ARCH"]
+	
+	incp = "-I" + base + "/src"
+	gSystem.AddIncludePath(incp)
+
+	incp = "-I" + rbase + "/src"
+	gSystem.AddIncludePath(incp)
+
+	libp = "-L" + base + "/lib/" + arch + " -lPhysicsToolsMkntuple" 
+	gSystem.AddLinkedLibs(libp)
+
+	libp = "-L" + rbase + "/lib/" + arch 
+	gSystem.AddLinkedLibs(libp)
+	
+	gROOT.ProcessLine(".L %(name)s.C+");
+'''
+COMPILE=\
+		  '''#!/usr/bin/env python
+import os, sys
+from ROOT import *
+#------------------------------------------------------------------------------
+if not os.environ.has_key("CMSSW_BASE"): sys.exit(0)
+print "rootcint"
+os.system("rootcint -f dict.cc -c  linkdef.h; "\
+          "mv dict.h tmp2.h)
+
+open("tmp1.h").write("#include <map>\n"\
+                     "#include <vector>\n"\
+					 "#include <string>\n")
+					 
+os.system("cat tmp1.txt tmp2.h > dict.h")
+print "compile"
+os.system("g++ -c dict.cc `root-config --cflags` -pipe -O2 -fPIC -Wall")
+os.system("g++ -c %(name)s.cc `root-config --cflags` -pipe -O2 -fPIC -Wall")
+pirnt "link"
+os.system("g++ -shared dict.o %(name)s.o "\
+          "`root-config --libs` -o lib%(name)s.so")
+		  '''
 #------------------------------------------------------------------------------
 def main():
 	print "\n\tmkselector.py"
@@ -201,22 +234,21 @@ def main():
 			else:
 				varname = objname
 
-		# update map for all variables
-		vars[varname] = [1, rtype, branchname, count, iscounter]
-
 		# vector types must have the same object name and a max count > 1
 		if count > 1:
 			if fldname != "":
 				if not vectormap.has_key(objname): vectormap[objname] = []	
 				vectormap[objname].append((rtype, fldname, varname, count))
-	
+				
+		# update map for all variables
+		vars[varname] = [1, rtype, branchname, count, iscounter]	
 
 	# Declare all variables
 	
 	keys = vars.keys()
 	keys.sort()
-	declare = []
-	select  = []
+	decl = []
+	impl = []
 
 	for varname in keys:
 		n, rtype, branchname, count, iscounter = vars[varname]
@@ -228,90 +260,48 @@ def main():
 		if rtype == "bool": rtype = "int"
 
 		if count == 1:
-			declare.append("%s\t%s;" % (rtype, varname))
+			decl.append("%s\t%s;" % (rtype, varname))
+			impl.append('  v = ((Varvector*)(vars.GetValue("%s")))->value;' \
+						% branchname)
+			impl.append('  assert(v);')
+			impl.append('  %s = (*v)[0];' % varname)
+
 		else:
 			# this is a vector
-			declare.append("std::vector<%s>\t%s(%d,0);" % \
-						   (rtype, varname, count))
-		select.append('stream.select("%s", %s);' % (branchname, varname))
+			decl.append("std::vector<%s>\t%s(%d,0);" % \
+						(rtype, varname, count)) 		
+			
+			impl.append('  v = ((Varvector*)(vars.GetValue("%s")))->value;' \
+						% branchname)
+			impl.append('  assert(v);')
+			impl.append('  %s.resize(v->size());' % varname)
+			impl.append('  copy(v->begin(), v->end(), %s.begin());' % varname)
+			impl.append('')
+			
+	# Create C++ codes
 
-	# Create structs for vector variables
-	
-	keys = vectormap.keys()
-	keys.sort()	
-	structdecl = []
-	structimpl = []
-
-	structimpl.append('void fillObjects()')
-	structimpl.append('{')
-
-	for index, objname in enumerate(keys):
-		values = vectormap[objname]
-		varname= values[0][-2];
-		
-		structimpl.append('')
-		structimpl.append('  %s.resize(%s.size());' % (objname, varname))
-		structimpl.append('  for(unsigned int i=0; i < %s.size(); ++i)' % \
-						  varname)
-		structimpl.append('    {')
-
-		structdecl.append('struct %s_t' % objname)
-		structdecl.append('{')
-		for rtype, fldname, varname, count in values:
-			# treat bools as ints
-			if rtype == "bool":
-				cast = '(bool)'
-			else:
-				cast = ''
-
-			structdecl.append('  %s\t%s;' % (rtype, fldname))
-
-			structimpl.append('      %s[i].%s\t= %s%s[i];' % (objname,
-															  fldname,
-															  cast,
-															  varname))
-		structdecl.append('};')
-		structdecl.append('')
-		structdecl.append('std::vector<%s_t> %s(%d);' % (objname,
-														 objname,
-														 count))
-		structdecl.append('')
-		structdecl.append('std::ostream& '\
-						  'operator<<(std::ostream& os, const %s_t& o)' % \
-						  objname)
-		structdecl.append('{')
-		structdecl.append('  char r[1024];')
-		structdecl.append('  os << "%s" << std::endl;' % objname)
-		
-		for rtype, fldname, varname, count in values:
-			structdecl.append('  sprintf(r, "  %s: %s\\n", "%s",'\
-							  ' (double)o.%s); '\
-							  'os << r;' % ("%-32s", "%f", fldname, fldname))
-		structdecl.append('  return os;')
-		structdecl.append('}')
-		structdecl.append('')
-		
-		structimpl.append('    }')	
-	structimpl.append('}')  # end of fillObjects()
-	
-	# Write out files
-
-	# Create C++ code
-	records = open(SELECTED_H).readlines()[2:-1]
-	
-	outfilename = "selector.h"
-	names = {'name': filename,
-			 'NAME': upper(filename),
-			 'time': ctime(time()),
+	names = {'name'  : filename,
+			 'NAME'  : upper(filename),
+			 'time'  : ctime(time()),
 			 'class' : join("", records, ""),
-			 'vardecl': join("", declare, "\n"),
-			 'selection': join("     ", select, "\n"),
+			 'decl'  : join("", decl, "\n"),
+			 'impl'  : join("", impl, "\n"),
 			 'author': AUTHOR,
-			 'structdecl': join("", structdecl, "\n"),
-			 'structimpl': join("", structimpl, "\n")
+			 's': '%s',
 			 }
-	record = SLTEMPLATE % names
+
+	record = HEADER % names
+	outfilename = "%(name)s.h" % names
 	open(outfilename, "w").write(record)
+
+	record = MACRO % names
+	outfilename = "%(name)s.C" % names
+	open(outfilename, "w").write(record)
+
+## 	record = COMPILE % names
+## 	outfilename = "compile_%(name)s.py" % names
+## 	open(outfilename, "w").write(record)
+## 	os.system("chmod +x compile_%(name)s.py" % names)
 
 	print "\tdone!"
 #------------------------------------------------------------------------------

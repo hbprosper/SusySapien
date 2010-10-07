@@ -9,31 +9,30 @@
    <class name="std::map<std::string, std::vector<float>* >"/>
    <class name="std::map<std::string, std::vector<float> >"/>
    <class name="std::map<std::string, std::vector<double> >"/>
+   <class name="std::map<std::string, std::vector<double>* >"/>
 
    <class name="CanvasScribe"/>
    <class name="HistogramCache"/>
    <class name="Connection"/>
    <class name="Slot"/>
    <class name="kit"/>
+   <class name="kit::MatchedPair"/>
+   <class name="kit::PtThing"/>
    <class name="pdg"/>
    <class name="rfx"/>
    <class name="root"/>
    <class name="TFileDialog"/>
    <class name="THelpDialog"/>
-   <class name="itreestream"/>
-   <class name="otreestream"/>
-   <class name="kit::MatchedPair"/>
-   <class name="kit::PtThing"/>
    <class name="FunctionMember"/>
    <class name="ClassMembers"/>
    <class name="PoissonGammaFit"/>
+   <class name="itreestream"/>
+   <class name="otreestream"/>
    <class name="RGS"/>
-
    <class name="ATestBase"/>
    <class name="Aclass"/>
    <class name="Bclass"/>
    <class name="ATest"/>
-
    <class name="GEvent"/>
    <class name="GParticle"/>
    <class name="triggerBits"/>
@@ -49,4 +48,5 @@
 
  <class name="HelperFor<edm::Event>"/>
  <class name="edm::EventHelper"/>
+ 
 </lcgdict>

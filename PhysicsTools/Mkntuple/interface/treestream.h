@@ -43,7 +43,7 @@
 //          06-Jun-2010 Add store and save (commt = store + save)
 //          23-Sep-2010 Move from PhysicsTools/LiteAnalysis to 
 //                                PhysicsTools/Mkntuple
-//$Revision: 1.3 $
+//$Revision: 1.4 $
 //----------------------------------------------------------------------------
 #include <vector>
 #include <string>
@@ -170,10 +170,11 @@ class itreestream
   itreestream(std::vector<std::string>& filenames, std::string treename,
               int bufsize=1000);
 
-  itreestream(TTree* tree, int bufsize=1000);
-  
   ///
   virtual ~itreestream();
+
+  ///
+  void   init(TTree*);
 
   /// True if all is well.
   bool   good();
@@ -336,6 +337,8 @@ class itreestream
                     char srctype, bool isvector=false);
   void _update();
 
+  bool _delete;
+
  public:
 
 #ifdef __WITH_CINT__
@@ -465,7 +468,7 @@ class otreestream
   std::string  title();
 
   ///
-  std::vector<std::string>& names();
+  std::vector<std::string> names();
 
   ///
   std::string str() const;

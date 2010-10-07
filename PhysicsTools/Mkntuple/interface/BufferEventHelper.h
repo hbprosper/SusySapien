@@ -5,7 +5,7 @@
 // Sub-Package: Mkntuple
 // Description: Specialized buffer for edm::Event
 // Created:     Thu Aug 26, 2010 Harrison B. Prosper
-//$Revision: 1.2 $
+//$Revision: 1.3 $
 //-----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/UserBuffer.h"
 //-----------------------------------------------------------------------------
@@ -63,17 +63,19 @@ struct UserBuffer<edm::Event,
     count_   = 1;
 
     initBuffer<edm::EventHelper>(out,
-                                label_,
-                                label1_,
-                                label2_,
-                                prefix_,
-                                var_,
-                                variables_,
-                                count_,
-                                singleton_,
-                                maxcount_,
-                                log,
-                                debug_);
+                                 label_,
+                                 label1_,
+                                 label2_,
+                                 prefix_,
+                                 var_,
+                                 variables_,
+                                 varnames_,
+                                 varmap_,
+                                 count_,
+                                 singleton_,
+                                 maxcount_,
+                                 log,
+                                 debug_);
   }
   
   /** Fill buffer.
@@ -106,6 +108,17 @@ struct UserBuffer<edm::Event,
   /// Shrink buffer size using specified array of indices.
   void shrink(std::vector<int>& index) {}
 
+  std::vector<double>* variable(std::string name)
+  {
+    if ( varmap_.find(name) == varmap_.end() ) return 0;
+    return &(variables_[varmap_[name]].value);
+  }
+
+  std::vector<std::string>& varnames()
+  {
+    return varnames_;
+  }
+
 private:
   otreestream* out_;  
   std::string  label_;
@@ -115,6 +128,8 @@ private:
   BufferType buffertype_;
   std::vector<VariableDescriptor> var_;
   std::vector<Variable<edm::EventHelper> > variables_;
+  std::map<std::string, int> varmap_;
+  std::vector<std::string> varnames_;
   int  maxcount_;
   int  count_;
   bool singleton_;

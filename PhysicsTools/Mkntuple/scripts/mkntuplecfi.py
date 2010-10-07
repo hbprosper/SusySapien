@@ -13,11 +13,14 @@
 #                          selected methods only if at least one method and
 #                          getbylabel is chosen.
 #-----------------------------------------------------------------------------
-#$Revision: 1.20 $
+#$Revision: 1.21 $
 #-----------------------------------------------------------------------------
 import sys, os, re, platform
+from string import *
+from time import *
+from glob import glob
+from array import array
 from ROOT import *
-from string import split, strip
 from PhysicsTools.Mkntuple.Lib import cmsswProject
 #------------------------------------------------------------------------------
 PACKAGE, SUBPACKAGE, LOCALBASE, BASE, VERSION = cmsswProject()
@@ -43,7 +46,7 @@ if not os.environ.has_key("CMSSW_BASE"):
 	sys.exit(0)
 
 BASE = os.environ["PWD"]
-REVISION="$Revision: 1.20 $"
+REVISION="$Revision: 1.21 $"
 rev = split(REVISION)[1]
 VERSION        = \
 """
@@ -75,10 +78,6 @@ if not os.path.exists(METHODDIR):
 
 print VERSION
 #-----------------------------------------------------------------------------
-from string import *
-from time import *
-from glob import glob
-from array import array
 from PhysicsTools.Mkntuple.AutoLoader import *
 #-----------------------------------------------------------------------------
 
@@ -96,7 +95,7 @@ CFI_PY   = "%s.py"  % CFI_NAME
 #-----------------------------------------------------------------------------
 
 # Extract branches ending in
-getbranch = re.compile(r'(?<=\_).+\. / .+$',re.M)
+getbranch = re.compile(r'(?<=\_).+\.edm::EDProduct +/ +.+$',re.M)
 
 # Extract class name from branch name
 getclass  = re.compile(r'(?<=Wrapper\<).+(?=\>)')
@@ -589,7 +588,7 @@ class Gui:
 		self.statusBar.SetText(filename, 1)
 
 		self.progTimer.Start()
-		
+
 		stream = itreestream(filename, "Events")
 		record = stream.str()
 		stream.close()
@@ -605,6 +604,7 @@ class Gui:
 		# Get branches
 
 		records = getbranch.findall(record)
+
 		if len(records) == 0:
 			self.statusBar.SetText("** Error", 0)
 			self.statusBar.SetText("No branches found", 1)
@@ -807,8 +807,7 @@ class Gui:
 			self.classBox[pageNumber].Select(id, kFALSE)
 			self.methodBox[pageNumber].Layout()
 			self.labelBox[pageNumber].Layout()
-			color = self.defaultColor
-			self.classBox[pageNumber].GetEntry(id).SetBackgroundColor(color)
+			self.classBox[pageNumber].GetEntry(id).SetBackgroundColor(WHITE)
 			return
 		
 		self.previousID = id

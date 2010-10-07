@@ -9,7 +9,7 @@
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Sep 19 HBP - copy from Buffer.h
 //
-// $Id: UserBuffer.h,v 1.1 2010/09/19 14:09:53 prosper Exp $
+// $Id: UserBuffer.h,v 1.2 2010/09/25 21:34:55 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/BufferUtil.h"
@@ -98,6 +98,8 @@ struct UserBuffer  : public BufferThing
                   prefix_,
                   var_,
                   variables_,
+                  varnames_,
+                  varmap_,
                   count_,
                   singleton_,
                   maxcount_,
@@ -125,8 +127,8 @@ struct UserBuffer  : public BufferThing
     // 1. void analyzeEvent()
     // 2. void analyzeObject()
 
-    // Cache event in helper (using CurrentEvent::instance().get())
-    helper_.cacheEvent();
+    // Cache event in helper
+    helper_.cacheEvent(event);
  
     // Perform (optional) user event-level analysis
     helper_.analyzeEvent();
@@ -212,6 +214,17 @@ struct UserBuffer  : public BufferThing
         variables_[i].value[j] = variables_[i].value[index[j]];
   }
 
+  std::vector<double>* variable(std::string name)
+  {
+    if ( varmap_.find(name) == varmap_.end() ) return 0;
+    return &(variables_[varmap_[name]].value);
+  }
+
+  std::vector<std::string>& varnames()
+  {
+    return varnames_;
+  }
+
 private:
   otreestream* out_;
   std::string  classname_;  
@@ -222,6 +235,8 @@ private:
   BufferType buffertype_;
   std::vector<VariableDescriptor> var_;
   std::vector<Variable<Y> > variables_;
+  std::map<std::string, int> varmap_;
+  std::vector<std::string> varnames_;
   int  maxcount_;
   int  count_;
   bool singleton_;

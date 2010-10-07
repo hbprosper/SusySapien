@@ -9,7 +9,7 @@
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Sep 19 HBP move some code from Buffer.h 
 //
-// $Id: BufferUtil.h,v 1.2 2010/09/25 21:34:54 prosper Exp $
+// $Id: BufferUtil.h,v 1.3 2010/10/05 11:22:46 prosper Exp $
 // ----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python/type_id.hpp>
@@ -32,7 +32,6 @@
 #include "PhysicsTools/Mkntuple/interface/MethodT.h"
 #endif
 // ----------------------------------------------------------------------------
-
 struct VariableDescriptor
 {
   VariableDescriptor(std::string r, std::string m, std::string v)
@@ -72,7 +71,10 @@ struct BufferThing
   virtual std::string name()=0;
   ///
   virtual void shrink(std::vector<int>& index)=0;
-
+  ///
+  virtual std::vector<double>* variable(std::string name)=0;
+  ///
+  virtual std::vector<std::string>& varnames()=0;
 };
 
 ///
@@ -144,7 +146,9 @@ void initBuffer(otreestream& out,
                 std::string& label2,
                 std::string& prefix,
                 std::vector<VariableDescriptor>& var,
-                std::vector<Variable<X> >& variables,
+                std::vector<Variable<X> >&  variables,
+                std::vector<std::string>&   varnames,
+                std::map<std::string, int>& varmap,
                 int&  count,
                 bool  singleton,
                 int   maxcount,
@@ -166,11 +170,16 @@ void initBuffer(otreestream& out,
                    debug);
 
   // Create a variable object for each method
+  varnames.clear();
   for(unsigned i=0; i < var.size(); i++)
-    variables.push_back(Variable<X>(var[i].name, 
-                                    var[i].maxcount,
-                                    var[i].method));
-  
+    {
+      variables.push_back(Variable<X>(var[i].name, 
+                                      var[i].maxcount,
+                                      var[i].method));
+      varnames.push_back(var[i].name);
+      varmap[var[i].name] = i;
+    }
+
   // Add variables to output tree. This must be done after all
   // variables have been defined, because it is only then that their
   // addresses are guaranteed to be stable.
