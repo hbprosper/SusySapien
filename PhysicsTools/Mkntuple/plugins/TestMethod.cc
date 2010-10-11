@@ -5,8 +5,8 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Jan 17 HBP - add log file
-// $Id: TestMethod.cc,v 1.1 2010/10/02 14:22:59 prosper Exp $
-// $Revision: 1.1 $
+// $Id: TestMethod.cc,v 1.2 2010/10/04 22:45:45 prosper Exp $
+// $Revision: 1.2 $
 //
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
@@ -46,8 +46,6 @@ using namespace std;
 using namespace edm;
 using namespace reco;
 
-static int event=0;
-
 class TestMethod : public edm::EDAnalyzer 
 {
 public:
@@ -61,6 +59,7 @@ private:
 
   std::string label;
   const edm::ParameterSet config;
+  int count;
 };
 
 
@@ -91,8 +90,7 @@ TestMethod::analyze(const edm::Event& iEvent,
   double z = 0;
   string method("");
 
-  event++;
-  CurrentEvent::instance().set(iEvent, event);
+  CurrentEvent::instance().set(iEvent, iSetup);
 
   { // Electrons
 

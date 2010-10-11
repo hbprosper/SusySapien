@@ -45,3 +45,6 @@
 <flags EDM_PLUGIN=1>
 </library>
 
+<library file=userplugin_L1GlobalTriggerReadoutRecordHelper.cc name=userplugin_L1GlobalTriggerReadoutRecordHelper>
+<flags EDM_PLUGIN=1>
+</library>

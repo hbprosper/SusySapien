@@ -14,7 +14,7 @@
 #  Created:     Mon Oct  4, 2010
 #  Author:      Harrison B. Prosper
 #  Email:       harry@hep.fsu.edu, Harrison.Prosper@cern.ch
-# $Revision:$
+# $Revision: 1.2 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from time import *
@@ -93,18 +93,21 @@ def main():
 			maxcount = 1
 		elif len(x) == 5:
 			a, branch, c, btype, maxcount = x
-			maxcount = 2 * atoi(maxcount[1:-1])
+			maxcount = 2 * atoi(maxcount[1:-1]) # double up...just in case!
 		else:
 			print "\t**hmmm...not sure what to do with:\n\t%s\n\tchoi!" % x
 			sys.exit(0)
 
-		# get type in C++ form (not, e.g.,  Double_t)
+		# get branch type in C++ form (not, e.g.,  Double_t)
 		btype = replace(lower(btype), "_t", "")
 		vtype = getvtype.findall(btype)
 		if len(vtype) == 1:
-			maxcount = 200   # default maximum count for vector types
 			btype = vtype[0] # vector type
-		
+
+		# fix a few types
+		if btype[:-2] in ["32", "64"]:
+			btype = btype[:-2]
+			
 		# If this is leaf counter, add " *" to end of record
 		if iscounter:
 			lc = " *"

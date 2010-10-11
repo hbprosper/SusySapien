@@ -46,7 +46,7 @@
 //         Updated:  Sun Jan 17 HBP - add log file
 //                   Sun Jun 06 HBP - add variables.txt file
 //
-// $Id: Mkntuple.cc,v 1.19 2010/10/05 11:22:47 prosper Exp $
+// $Id: Mkntuple.cc,v 1.20 2010/10/07 21:31:48 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -76,18 +76,9 @@
 #include "TSystem.h"
 #include "TMap.h"
 #include "TString.h"
+#include "TInterpreter.h"
 // ---------------------------------------------------------------------------
 using namespace std;
-
-// class Varvector : public TObject 
-// { 
-// public:
-//   Varvector(std::vector<double>* v) 
-//     : value(v) {} 
-//   ~Varvector() {}
-//   std::vector<double>* value;
-//   ClassDef(Varvector,0)
-// };
 // ---------------------------------------------------------------------------
 class Mkntuple : public edm::EDAnalyzer 
 {
@@ -112,15 +103,17 @@ private:
 
   // addresses of buffers
   std::map<std::string, BufferThing*> buffermap;
-  std::map<std::string, std::vector<double>*> vars;
+  std::map<std::string, countvalue>   vars;
   bool keep; // true if event is to be kept
 
   int DEBUG;
-  int event_;
+
   std::string logfilename_;
   std::ofstream* log_;
   std::string analyzername_;
   std::string selectorname_;
+  std::string varscmd_;
+  std::string boolcmd_;
   std::string selectorcmd_;
 };
 
@@ -128,16 +121,41 @@ private:
 Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   : output(otreestream(iConfig.getUntrackedParameter<string>("ntupleName"), 
                        "Events", 
-                       "made by Mkntuple $Revision: 1.19 $")),
-    event_(0),
+                       "created by Mkntuple $Revision: 1.20 $")),
     logfilename_("Mkntuple.log"),
     log_(new std::ofstream(logfilename_.c_str())),
     selectorname_(""),
+    varscmd_(""),
+    boolcmd_(""),
     selectorcmd_("")
 {
   cout << "\nBEGIN Mkntuple" << endl;
 
+  // --------------------------------------------------------------------------
+  // Add a provenance tree to ntuple
+  // --------------------------------------------------------------------------
+  TFile* file = output.file();
+  TTree* tree = new TTree("Provenance", "created by Mkntuple $Revision:$");
+  string cmsver = kit::strip(kit::shell("echo $CMSSW_VERSION"));
+  tree->Branch("CMSSW_VERSION", (void*)(cmsver.c_str()), "version/C");
+
+  time_t tt = time(0);
+  string ct(ctime(&tt));
+  tree->Branch("date", (void*)(ct.c_str()), "date/C");
+
+  string hostname = kit::strip(kit::shell("echo $HOSTNAME"));
+  tree->Branch("hostname", (void*)(hostname.c_str()), "hostname/C");
+
+  string username = kit::strip(kit::shell("echo $USER"));
+  tree->Branch("username", (void*)(hostname.c_str()), "username/C");
+
+  // Ok, fill this branch
+  file->cd();
+  tree->Fill();
+  
+  // --------------------------------------------------------------------------
   // Cache config
+  
   Configuration::instance().set(iConfig);
 
   // Get optional analyzer name
@@ -162,12 +180,13 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
       selectorname_ = "";
     }
 
+  // --------------------------------------------------------------------------
   if ( selectorname_ != "" )
     {
       // Try to load associated shared library
 
       // First find shared lib
-      string filestem = selectorname_ + string("*.so");
+      string filestem = string("*") + selectorname_ + string("*.so");
       string cmd = string("find . -name \"") + filestem + "\"";
       string shlib = kit::shell(cmd);
       if ( shlib == "" )
@@ -177,25 +196,20 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
           throw cms::Exception("FileNotFound", errmess);
         }
 
-      cout << "\t==> Set address of variable vars" << endl;
-      gROOT->ProcessLine(Form("map<string, vector<double>*>* vars"
-                              "=(map<string, vector<double>*>*)0x%x", &vars));
-
-      cout << "\t==> Set address of variable keep" << endl;
-      gROOT->ProcessLine(Form("bool* keep = (bool*)0x%x", &keep)); 
-      
       // Found shared library, so try to load it
-      if ( gSystem->Load(shlib.c_str()) != 0 )
-        throw cms::Exception("LoadFailed",
-                             "\tunable to load selector shared library\n\t\t" +
-                             shlib);
 
-      // Create command to execute selector
+      cout << "\t==> Load library " << shlib << endl;
       
-      selectorcmd_ = string("*keep = ") 
-        + selectorname_ + string("(*vars);");
-      cout << "\t==> Loaded selector library: " << shlib 
-           << endl << endl;
+      if ( gSystem->Load(shlib.c_str()) != 0 )
+         throw cms::Exception("LoadFailed",
+                              "\tfor shared library\n\t\t" + shlib);
+
+      // Create commands to execute selector using CINT
+
+      varscmd_ = string("map<string,countvalue>* vars="
+                      "(map<string,countvalue>*)0x%x");
+      boolcmd_ = string("bool* keep = (bool*)0x%x"); 
+      selectorcmd_ = string("*keep = ") + selectorname_ + string("(*vars);");
     }
 
   if ( getenv("DBMkntuple") > 0 )
@@ -205,12 +219,10 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
 
   // Write to log file
 
-  time_t tt = time(0);
-  string ct(ctime(&tt));
   *log_ << "Created: " << ct << endl;
   log_->close();
 
-
+  // --------------------------------------------------------------------------
   // Write branches and variables to file
 
   ofstream vout("variables.txt");
@@ -371,37 +383,44 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
           
       buffers.push_back( BufferFactory::get()->create(buffer) );
       if (buffers.back() == 0)
-        throw edm::Exception(edm::errors::Configuration,
-                             "plugin error: "
-                             "unable to create buffer " + buffer + 
-                             "\n\t...let all the evil "
-                             "that lurks in the mud hatch out\n");
+        throw cms::Exception("PluginLoadFailure")
+          << "\taaargh!...let all the evil "
+          << "that lurks in the mud hatch out\n"
+          << "\tI'm unable to create buffer " + buffer; 
 
       // ... and initialize it
       buffers.back()->init(output, label, prefix, var, maxcount, 
                            vout, DEBUG);
 
-      if ( DEBUG > 0 )
-        cout << "  buffer: " << buffer << " created " << endl << endl;
-
       // cache addresses of buffers
       buffermap[prefix] = buffers.back();
 
-      // cache variable addresses
-      boost::regex getname("[^[]+");
-      boost::smatch m;
-      vector<string>& vnames = buffers.back()->varnames();
-      for(unsigned int iname=0; iname < vnames.size(); ++iname)
-        {
-          string fullname = vnames[iname];
-          boost::regex_search(fullname, m, getname);
-          string name = m[0];
-          vars[name] = buffers.back()->variable(name);
-        }
+      if ( DEBUG > 0 )
+        cout << "  buffer: " << buffer << " created " << endl << endl;
     }
   vout.close();
 
+  // Cache variable addresses for each buffer
+
+  int index=0;
+  cout << endl << endl << " BEGIN Branches " << endl;
+  for(unsigned int i=0; i < buffers.size(); ++i)
+    {
+      vector<string>& vnames = buffers[i]->varnames();
+      cout << i+1 << "\t" << vnames.size() << endl;
+      for(unsigned int ii=0; ii < vnames.size(); ++ii)
+        {
+          string name = vnames[ii];
+          vars[name] = buffers[i]->variable(name);
+          index++;
+          cout << "  " 
+               << index << "\t" << name << endl;
+        }
+    }
+  cout << " END Branches" << endl;
+
   // Create ntuple analyzer template if requested
+
   if ( analyzername_ != "" )
     kit::shell("mkanalyzer.py " + analyzername_ + " variables.txt");
 
@@ -425,8 +444,8 @@ Mkntuple::analyze(const edm::Event& iEvent,
                   const edm::EventSetup& iSetup)
 {
   // Cache current event
-  event_++;
-  CurrentEvent::instance().set(iEvent, event_);
+
+  CurrentEvent::instance().set(iEvent, iSetup);
 
   // Loop over allocated buffers and for each call its fill method
   
@@ -443,7 +462,9 @@ Mkntuple::analyze(const edm::Event& iEvent,
       
       log_->open(logfilename_.c_str(), ios::app);
       *log_ << endl
-            << "REPORT " << event_ << "\t" << ct << endl 
+            << "REPORT RUN: " 
+            << iEvent.id().run() << "\tEvent: " << iEvent.id().event() 
+            << "\t" << ct << endl 
             << message << endl
             << "END" << endl;
       log_->close();
@@ -476,16 +497,19 @@ Mkntuple::selectEvent(const edm::Event& event)
 
   // Execute selector
   
+  gROOT->ProcessLine(Form(varscmd_.c_str(), &vars));
+  gROOT->ProcessLine(Form(boolcmd_.c_str(), &keep)); 
   gROOT->ProcessLineFast(selectorcmd_.c_str());
+
   if ( keep )
-    cout << "\t\t** KEEP EVENT(" << event_ << ")"
-         << "\tRun: " << event.id().run() 
-         << "\tEvent: " << event.id().event()
+    cout << "\t\t** KEEP EVENT(" 
+         << "Run: " << event.id().run() 
+         << "\tEvent: " << event.id().event() << ")"
          << endl;
   else
-    cout << "\t\t** SKIP EVENT(" << event_ << ")"
-         << "\tRun: " << event.id().run() 
-         << "\tEvent: " << event.id().event()
+    cout << "\t\t** SKIP EVENT("
+         << "Run: " << event.id().run() 
+         << "\tEvent: " << event.id().event() << ")"
          << endl;
 
   return keep;

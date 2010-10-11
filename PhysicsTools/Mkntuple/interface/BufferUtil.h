@@ -9,10 +9,11 @@
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Sep 19 HBP move some code from Buffer.h 
 //
-// $Id: BufferUtil.h,v 1.3 2010/10/05 11:22:46 prosper Exp $
+// $Id: BufferUtil.h,v 1.4 2010/10/07 21:31:48 prosper Exp $
 // ----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python/type_id.hpp>
+#include <boost/ptr_container/ptr_vector.hpp>
 #include <boost/regex.hpp>
 #include <iostream>
 #include <sstream>
@@ -22,14 +23,16 @@
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/Run.h"
+#include "FWCore/MessageLogger/interface/MessageLogger.h"
 #include "SimDataFormats/GeneratorProducts/interface/GenRunInfoProduct.h"
 
 #include "PhysicsTools/Mkntuple/interface/treestream.h"
 #include "PhysicsTools/Mkntuple/interface/colors.h"
-#ifdef USE_METHOD
-#include "PhysicsTools/Mkntuple/interface/Method.h"
-#else
+
+#ifdef USE_INTERPRETER
 #include "PhysicsTools/Mkntuple/interface/MethodT.h"
+#else
+#include "PhysicsTools/Mkntuple/interface/Method.h"
 #endif
 // ----------------------------------------------------------------------------
 struct VariableDescriptor
@@ -47,6 +50,12 @@ struct VariableDescriptor
   std::string varname;
   std::string name;
   int maxcount;
+};
+
+struct countvalue
+{
+  int* count;
+  double* value;
 };
 
 /// Abstract base class for Buffer objects.
@@ -72,9 +81,13 @@ struct BufferThing
   ///
   virtual void shrink(std::vector<int>& index)=0;
   ///
-  virtual std::vector<double>* variable(std::string name)=0;
+  virtual countvalue& variable(std::string name)=0;
   ///
   virtual std::vector<std::string>& varnames()=0;
+  ///
+  virtual int maxcount()=0;
+  ///
+  virtual int count()=0;
 };
 
 ///
@@ -122,20 +135,22 @@ struct Variable
     : name(namen),
       fname(f),
       value(std::vector<double>(count,0)),
-#ifdef USE_METHOD
-      function(Method<X>(f))
-#else
+
+#ifdef USE_INTERPRETER
       function(MethodT<X>(f))
+#else
+      function(Method<X>(f))
 #endif
   {}
 
   std::string         name;
   std::string         fname;
   std::vector<double> value;
-#ifdef USE_METHOD
-  Method<X>           function;
-#else
+
+#ifdef USE_INTERPRETER
   MethodT<X>          function;
+#else
+  Method<X>           function;
 #endif
 };
 // ----------------------------------------------------------------------------
@@ -146,9 +161,9 @@ void initBuffer(otreestream& out,
                 std::string& label2,
                 std::string& prefix,
                 std::vector<VariableDescriptor>& var,
-                std::vector<Variable<X> >&  variables,
+                boost::ptr_vector<Variable<X> >&  variables,
                 std::vector<std::string>&   varnames,
-                std::map<std::string, int>& varmap,
+                std::map<std::string, countvalue>& varmap,
                 int&  count,
                 bool  singleton,
                 int   maxcount,
@@ -169,23 +184,51 @@ void initBuffer(otreestream& out,
                    log,
                    debug);
 
-  // Create a variable object for each method
-  varnames.clear();
-  for(unsigned i=0; i < var.size(); i++)
-    {
-      variables.push_back(Variable<X>(var[i].name, 
-                                      var[i].maxcount,
-                                      var[i].method));
-      varnames.push_back(var[i].name);
-      varmap[var[i].name] = i;
-    }
+  // Create a variable object for each method. We use a boot::ptr_vector
+  // rather than a vector because a push_back on the latter can trigger
+  // calls to the destructor of the pushed object. We don't want this to
+  // happen for Variables<X> because it would cause the destructor of
+  // FunctionMember to be called thereby deallocating memory at the wrong
+  // time.
 
-  // Add variables to output tree. This must be done after all
+  variables.clear();
+  for(unsigned i=0; i < var.size(); i++)
+    variables.push_back(new Variable<X>(var[i].name, 
+                                        var[i].maxcount,
+                                        var[i].method));
+  
+  // Now add variables to output tree. This must be done after all
   // variables have been defined, because it is only then that their
   // addresses are guaranteed to be stable.
-  
-  for(unsigned i=0; i < var.size(); i++)
-    out.add(variables[i].name, variables[i].value);
+
+  // Also cache variable name and address
+
+  // We can use vectors for the following because an inadvertent call
+  // to a destructor is innocuous.
+
+  boost::regex getname("[^[]+");
+  varnames.clear();
+  varmap.clear();
+  for(unsigned i=0; i < variables.size(); i++)
+    {
+      std::string fullname = variables[i].name;
+      out.add(fullname, variables[i].value);
+
+      boost::smatch m;
+      boost::regex_search(fullname, m, getname);
+      std::string name = m[0];
+      varnames.push_back(name);
+
+      countvalue v;
+      v.count = &count;
+      v.value = &(variables[i].value[0]);
+      varmap[name] = v;
+    }
+
+  countvalue v; 
+  v.count = 0;
+  v.value = 0;
+  varmap["NONE"] = v;
 }
 
 /// Function to handle getByLabel.
@@ -234,12 +277,12 @@ bool getByLabel(const edm::Event& event,
   
   if ( !handle.isValid() )
     {
-      // Ok, throw up!
-      std::string m("\nBuffer::fill - getByLabel failed on ");
+      // Ok, throw up badly!
+      std::string m("\n\t...you blocks you stones you worse than"
+                    " senseless things!\n");
+      m += std::string("\n\tBuffer::fill - getByLabel failed on ");
       m += boost::python::type_id<X>().name();
       m += std::string(" with label ") + label1 + std::string(" ") + label2;
-      m += std::string("\n\t...you blocks you stones you worse than"
-                       " senseless things!\n");
       throw edm::Exception(edm::errors::Configuration, m);
     }
   return true;
@@ -250,7 +293,7 @@ bool getByLabel(const edm::Event& event,
 template <typename X, typename Y>
 void callMethods(int j, 
                  const X& object, 
-                 std::vector<Variable<Y> >& variables, 
+                 boost::ptr_vector<Variable<Y> >& variables, 
                  int debug)
 {
   for(unsigned i=0; i < variables.size(); i++)
@@ -264,10 +307,14 @@ void callMethods(int j,
         }
       catch (cms::Exception& e)
         {
-          throw cms::Exception("BufferFillFailure",
-                               "failed on call to \"" + 
-                               variables[i].fname+"\"\n" +
-                               "thou lump of foul deformity...", e);
+          edm::LogWarning("MethodCallFailure") 
+            << RED 
+            << variables[i].function.name()
+            << DEFAULT_COLOR 
+            << std::endl
+            << e.explainSelf()
+            << std::endl;
+          variables[i].value[j] = 0;
         }
       if ( debug > 0 ) 
         std::cout << "\t\t\tvalue = " 

@@ -1,4 +1,4 @@
-//$Revision: 1.8 $
+//$Revision: 1.9 $
 #include "PhysicsTools/Mkntuple/interface/Connection.h"
 #include "PhysicsTools/Mkntuple/interface/Slot.h"
 #include "PhysicsTools/Mkntuple/interface/pdg.h"
@@ -23,6 +23,8 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include "PhysicsTools/Mkntuple/interface/L1GlobalTriggerReadoutRecordHelper.h"
+
 //-----------------------------------------------------------------------------
 
 // Need explicit instantiations of template classes and functions
@@ -45,5 +47,6 @@ namespace {
   HelperFor<reco::HcalNoiseRBX> h2;
   HelperFor<edm::TriggerResults> h3;
   HelperFor<edm::Event> h4;
+  HelperFor<L1GlobalTriggerReadoutRecord> t_L1GlobalTriggerReadoutRecordHelper;
 }
 

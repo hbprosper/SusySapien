@@ -5,7 +5,7 @@
 // Sub-Package: Mkntuple
 // Description: Specialized buffer for edm::Event
 // Created:     Thu Aug 26, 2010 Harrison B. Prosper
-//$Revision: 1.3 $
+//$Revision: 1.4 $
 //-----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/UserBuffer.h"
 //-----------------------------------------------------------------------------
@@ -108,16 +108,21 @@ struct UserBuffer<edm::Event,
   /// Shrink buffer size using specified array of indices.
   void shrink(std::vector<int>& index) {}
 
-  std::vector<double>* variable(std::string name)
+  countvalue& variable(std::string name)
   {
-    if ( varmap_.find(name) == varmap_.end() ) return 0;
-    return &(variables_[varmap_[name]].value);
+    if ( varmap_.find(name) != varmap_.end() ) 
+      return varmap_[name];
+    else
+      return varmap_["NONE"];
   }
 
   std::vector<std::string>& varnames()
   {
     return varnames_;
   }
+
+  int count() { return count_; }
+  int maxcount() { return maxcount_; }
 
 private:
   otreestream* out_;  
@@ -127,9 +132,9 @@ private:
   std::string  prefix_;
   BufferType buffertype_;
   std::vector<VariableDescriptor> var_;
-  std::vector<Variable<edm::EventHelper> > variables_;
-  std::map<std::string, int> varmap_;
+  boost::ptr_vector<Variable<edm::EventHelper> > variables_;
   std::vector<std::string> varnames_;
+  std::map<std::string, countvalue> varmap_;
   int  maxcount_;
   int  count_;
   bool singleton_;

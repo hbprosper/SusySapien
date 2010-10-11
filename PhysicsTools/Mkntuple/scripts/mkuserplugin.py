@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # Create the skeleton of a user plugin
 # Created: 27-Aug-2010 Harrison B. Prosper
-#$Revision: 1.9 $
+#$Revision: 1.10 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -90,7 +90,7 @@ def wrpluginheader(names):
 // Description: Mkntuple helper class for %(classname)s
 // Created:     %(time)s
 // Author:      %(author)s      
-//$Revision: 1.9 $
+//$Revision: 1.10 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -120,7 +120,7 @@ public:
   ///
   %(name)s();
 
-  virtual ~(name)s();
+  virtual ~%(name)s();
 
   // Uncomment if helper class does some event-level analysis
   // virtual void analyzeEvent();
@@ -148,7 +148,7 @@ namespace %(namespace)s
 	///
 	%(name)s();
 
-	virtual ~%(name)s();
+	virtual ~%(name)s();//////
 
 	// Uncomment if this class does some event-level analysis
 	// virtual void analyzeEvent();
@@ -192,7 +192,7 @@ def wrplugincode(names):
 // Description: Mkntuple helper class for %(classname)s
 // Created:     %(time)s
 // Author:      %(author)s      
-//$Revision: 1.9 $
+//$Revision: 1.10 $
 //-----------------------------------------------------------------------------
 #include "%(package)s/%(subpackage)s/interface/%(filename)s.h"
 //-----------------------------------------------------------------------------
@@ -241,7 +241,7 @@ def wrplugin(names):
 	template = '''// ----------------------------------------------------------------------------
 // Created: %(time)s by mkuserplugin.py
 // Author:      %(author)s      
-//$Revision: 1.9 $
+//$Revision: 1.10 $
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/UserBuffer.h"
 #include "PhysicsTools/Mkntuple/interface/pluginfactory.h"
@@ -497,7 +497,7 @@ def main():
 	else:
 		updated = True
 		out = open(classesfile, 'w')
-		record ='''//$Revision: 1.9 $
+		record ='''//$Revision: 1.10 $
 //--------------------------------------------------------------------''' % \
 		names
 		out.write(record)

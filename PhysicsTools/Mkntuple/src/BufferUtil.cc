@@ -5,7 +5,7 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Sep 19 HBP move initBuffer from Buffer.h
-// $Id: BufferUtil.cc,v 1.2 2010/09/25 21:34:57 prosper Exp $
+// $Id: BufferUtil.cc,v 1.3 2010/10/05 11:22:49 prosper Exp $
 //-----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python/type_id.hpp>
@@ -34,7 +34,13 @@ void initializeBuffer(otreestream& out,
                       int   debug)
 {
   // Define regular expressions to check for compound methods; i.e., methods
-  // of the form y = a()->b() or a().b(), or a().b
+  // of the form 
+  // 1. y = a()->b()
+  // 2. y = a().b()
+  // 3. y = a().b 
+  // 4. y = a()->b 
+  // 5. y = a.b()
+  // 6. y = a->b()
 
   boost::regex stripargs("[(].*?[)]");
   boost::regex stripme("-[>]|[.]|\"|[(]|[)]");

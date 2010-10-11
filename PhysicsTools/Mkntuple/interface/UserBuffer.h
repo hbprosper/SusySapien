@@ -9,7 +9,7 @@
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Sep 19 HBP - copy from Buffer.h
 //
-// $Id: UserBuffer.h,v 1.2 2010/09/25 21:34:55 prosper Exp $
+// $Id: UserBuffer.h,v 1.3 2010/10/07 21:31:48 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/BufferUtil.h"
@@ -214,16 +214,21 @@ struct UserBuffer  : public BufferThing
         variables_[i].value[j] = variables_[i].value[index[j]];
   }
 
-  std::vector<double>* variable(std::string name)
+  countvalue& variable(std::string name)
   {
-    if ( varmap_.find(name) == varmap_.end() ) return 0;
-    return &(variables_[varmap_[name]].value);
+    if ( varmap_.find(name) != varmap_.end() ) 
+      return varmap_[name];
+    else
+      return varmap_["NONE"];
   }
 
   std::vector<std::string>& varnames()
   {
     return varnames_;
   }
+
+  int count() { return count_; }
+  int maxcount() { return maxcount_; }
 
 private:
   otreestream* out_;
@@ -234,9 +239,9 @@ private:
   std::string  prefix_;
   BufferType buffertype_;
   std::vector<VariableDescriptor> var_;
-  std::vector<Variable<Y> > variables_;
-  std::map<std::string, int> varmap_;
+  boost::ptr_vector<Variable<Y> > variables_;
   std::vector<std::string> varnames_;
+  std::map<std::string, countvalue> varmap_;
   int  maxcount_;
   int  count_;
   bool singleton_;

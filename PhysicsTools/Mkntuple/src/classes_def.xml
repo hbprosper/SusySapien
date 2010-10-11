@@ -49,4 +49,6 @@
  <class name="HelperFor<edm::Event>"/>
  <class name="edm::EventHelper"/>
  
+ <class name="HelperFor<L1GlobalTriggerReadoutRecord>"/>
+ <class name="L1GlobalTriggerReadoutRecordHelper"/>
 </lcgdict>

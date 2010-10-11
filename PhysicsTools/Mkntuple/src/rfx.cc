@@ -15,7 +15,7 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Wed Jun 20 19:53:47 EDT 2007
 //         Updated:  Sat Oct 25 2008 - make matchInDeltaR saner
-// $Id: rfx.cc,v 1.1 2010/09/25 21:35:01 prosper Exp $
+// $Id: rfx.cc,v 1.2 2010/10/02 14:23:00 prosper Exp $
 //
 //
 //-----------------------------------------------------------------------------
@@ -48,10 +48,9 @@
 using namespace std;
 using namespace ROOT::Reflex;
 //-----------------------------------------------------------------------------
-#ifdef DEBUG
 static bool DBgetMethod = getenv("DBgetMethod") > 0 ? true : false; 
 static bool DBdecodeMethod = getenv("DBdecodeMethod") > 0 ? true : false; 
-#endif
+static bool DBdecodeArguments = getenv("DBdecodeArguments") > 0 ? true :false; 
 //-----------------------------------------------------------------------------
 string 
 rfx::strip(string line)
@@ -199,22 +198,18 @@ rfx::getMethod(std::string classname,
   boost::regex expr(args);
   boost::smatch what;
 
-#ifdef DEBUG
   if ( DBgetMethod )
     cout << "getMethod - \n"
          << "  classname<" << classname << ">\n"
          << "    method<" << methodname << ">\n" 
          << "      args<" << args << ">" 
          << endl;
-#endif
 
   for(unsigned i=0; i < names.size(); i++)
     {
 
-#ifdef DEBUG
       if ( DBgetMethod )
         cout << i << "\tSCOPE( " << names[i] << " )" << endl;
-#endif
 
       Type t = Type::ByName(names[i]); 
 
@@ -229,28 +224,25 @@ rfx::getMethod(std::string classname,
           // Check method name
           string name = m.Name();
 
-#ifdef DEBUG
           if ( DBgetMethod )
             cout << "\t\tname: " << name << endl;
-#endif
+
           if ( methodname != name ) continue;
 
           // Now check signature
           string signature = m.TypeOf().Name(SCOPED);
 
-#ifdef DEBUG
           if ( DBgetMethod )
             cout << "\t\t\tsignature: " << signature << endl
                  << "\t\t\targuments: " << args << endl;
-#endif
+
           // May need to make this a bit more sophisticated
 
           if ( boost::regex_search(signature, what, expr) ) 
             {
-#ifdef DEBUG
               if ( DBgetMethod )
                 cout << "\t\t\t\t** matched **" << endl;
-#endif
+
               // We have a match
               return m;
             }
@@ -345,7 +337,8 @@ rfx::decodeArguments(std::string  args,
                      std::vector<rfx::ValueThing*>& vars)
 {
   //DB
-  //cout << "decodeArguments - ARGS(" << args << ")" << endl;
+  if ( DBdecodeArguments )
+    cout << "decodeArguments - ARGS(" << args << ")" << endl;
 
   // Split string into argument fields
 
@@ -414,7 +407,8 @@ rfx::decodeArguments(std::string  args,
     {
       string str = rfx::strip(arglist[i]);
       //DB
-      //cout << "\targ(" << str << ")" << endl;
+      if ( DBdecodeArguments )
+        cout << "\targ(" << str << ")" << endl;
 
       if ( str == "" ) // Check for void
         {
@@ -426,7 +420,8 @@ rfx::decodeArguments(std::string  args,
           for(unsigned j=0; j < expr.size(); j++)
             {
               //DB
-              //cout << "\texpr(" << expr[j] << ")" << endl;
+              if ( DBdecodeArguments )
+                cout << "\texpr(" << expr[j] << ")" << endl;
               if ( boost::regex_search(str, what, expr[j]) )
                 {
                   vartype[i] = j;
@@ -444,7 +439,8 @@ rfx::decodeArguments(std::string  args,
       delim = ", ";
 
       //DB
-      //cout << "\ttype: " << vartype[i] << endl;
+      if ( DBdecodeArguments )
+        cout << "\ttype: " << vartype[i] << endl;
 
       string s;
       double d;
@@ -593,10 +589,8 @@ rfx::getisNull(Member& method)
 void
 rfx::decodeMethod(FunctionDescriptor& fd)
 {
-#ifdef DEBUG
   if ( DBdecodeMethod )
     cout << "decodeMethod - function( " << fd.expression << " )" << endl;
-#endif
   
   // Regex to extract name of method
   boost::regex exprName("[a-zA-Z][a-zA-Z0-9]*(-[>])? *(?=[(])");
@@ -626,17 +620,15 @@ rfx::decodeMethod(FunctionDescriptor& fd)
     }
   string methodargs = what[0];
 
-#ifdef DEBUG
   if ( DBdecodeMethod )
     cout << "decodeMethod - args( " << methodargs << " )" << endl;
-#endif
   
-//   int nparams = fd.method.FunctionParameterSize();
-//   for(int i=0; i < nparams; ++i)
-//     {
-//       string pname = fd.method.FunctionParameterNameAt(i);
-//       cout << "\tparam[" << i << "]:\t" << pname << endl; 
-//     }
+  int nparams = fd.method.FunctionParameterSize();
+  for(int i=0; i < nparams; ++i)
+    {
+      string pname = fd.method.FunctionParameterNameAt(i);
+      cout << "\tparam[" << i << "]:\t" << pname << endl; 
+    }
 
   // Now get argument regex
   string argsregex("");
@@ -651,14 +643,18 @@ rfx::decodeMethod(FunctionDescriptor& fd)
         << RED << methodargs << DEFAULT_COLOR << endl;
     }
 
-#ifdef DEBUG
   if ( DBdecodeMethod )
     cout << "decodeMethod - argsregex( " << argsregex << ") " << endl;
-#endif
 
   // Search for method that matches both name and signature
   fd.method = rfx::getMethod(fd.classname, methodname, argsregex);
-  if ( !rfx::memberValid(fd.method) ) return;
+  if ( !rfx::memberValid(fd.method) )
+    {
+      throw cms::Exception("decodMethodeFailure")
+        << "\tgetMethod is unable to find a matching method with the "
+        << "\tregex "
+        << RED << argsregex << DEFAULT_COLOR << endl;
+    }
 
   // We have a method, so get address of arguments and associated
   // values
@@ -666,13 +662,10 @@ rfx::decodeMethod(FunctionDescriptor& fd)
     {
       void* addr = fd.values[i]->address();
 
-#ifdef DEBUG
       if ( DBdecodeMethod )
         cout << "decodeMethod arg[" << i << "]: " 
              << addr << ": "
              << fd.values[i]->str() << endl;
-#endif
-
       fd.args.push_back( addr );
     }
   return;

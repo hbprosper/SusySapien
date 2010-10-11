@@ -14,7 +14,7 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
-// $Id: FunctionMember.cc,v 1.3 2010/10/02 14:23:00 prosper Exp $
+// $Id: FunctionMember.cc,v 1.4 2010/10/04 22:45:48 prosper Exp $
 //-----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python.hpp>
@@ -33,6 +33,7 @@ using namespace std;
 using namespace ROOT::Reflex;
 //-----------------------------------------------------------------------------
 static bool DBFunctionMember = getenv("DBFunctionMember")>0 ? true : false; 
+static bool FirstCallToFM=true;
 
 RunToTypeMap FunctionMember::donotcall = RunToTypeMap();
 
@@ -67,6 +68,13 @@ FunctionMember::FunctionMember(std::string classname,
   : classname_(classname),
     expression_(expression)
 {
+  if ( FirstCallToFM )
+    {
+      FirstCallToFM = false;
+      cout << endl << "\t==> Using FunctionMember to call methods <=="
+           << endl << endl;
+    }
+
   if ( DBFunctionMember )
     cout << endl 
          << "BEGIN FunctionMember - " 
@@ -320,7 +328,7 @@ FunctionMember::FunctionMember(std::string classname,
         }
 
       // Memory is needed by Reflex to store the return values from functions.
-      // We need to reserve the right amount of space for each the object
+      // We need to reserve the right amount of space for each object
       // returned, which could of course be a fundamental (that is, simple)
       // type. We free all reserved memory in FunctionMember's destructor.
 
@@ -454,7 +462,7 @@ FunctionMember::invoke(void* address)
           // Fundamental return type
           //---------------------------------------
           // This is a fundamental type returned from
-          // from either a regular method or:
+          // either a regular method or:
           // 1. a bool from the isAvailable() method of a smart pointer
           // 2. a bool from the isNull() method of a smart pointer
 #ifdef DEBUG
@@ -580,6 +588,14 @@ FunctionMember::execute(FunctionDescriptor& fd,
   // method      object that models a method or a data member
   // args_       the arguments of the method to be called
   
+  
+#ifdef DEBUG
+      if ( DBFunctionMember )
+        cout << "\tFunctionMember::execute: " 
+             << fd.classname << "::" 
+             << fd.expression << endl;
+#endif
+
   if ( fd.datamember )
     raddr = rfx::datamemberValue(fd.classname, address, fd.expression);
   else

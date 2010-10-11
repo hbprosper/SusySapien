@@ -6,7 +6,7 @@
 // Updated:     Mon Mar 08, 2010 Sezen & HBP - add triggerBits class
 //              Tue Aug 24, 2010 HBP - add HcalNoiseRBXHelper
 //              Thu Sep 02, 2010 HBP - update to new version of HelperFor
-//$Revision: 1.14 $
+//$Revision: 1.15 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -128,6 +128,13 @@ HcalNoiseRBXCaloTower::HcalNoiseRBXCaloTower()
 void
 HcalNoiseRBXCaloTower::analyzeObject()
 {
+  // NB: remember to clear!
+  zside_.clear();
+  ieta_.clear();
+  iphi_.clear();
+  hadEnergy_.clear();
+  number_.clear();
+
   // loop over HPDs for given RBX
   for(std::vector<HcalNoiseHPD>::const_iterator 
         hpd = object->HPDsBegin(); hpd != object->HPDsEnd(); hpd++)

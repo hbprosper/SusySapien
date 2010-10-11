@@ -24,7 +24,7 @@
 //                   Wed Sep 08 HBP - fix array test
 //                   Sun Sep 19 HBP - re-organize code to minimize code  bloat
 //
-// $Id: Buffer.h,v 1.22 2010/09/25 21:34:54 prosper Exp $
+// $Id: Buffer.h,v 1.23 2010/10/07 21:31:48 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/BufferUtil.h"
@@ -202,16 +202,21 @@ struct Buffer  : public BufferThing
         variables_[i].value[j] = variables_[i].value[index[j]];
   }
 
-  std::vector<double>* variable(std::string name)
+  countvalue& variable(std::string name)
   {
-    if ( varmap_.find(name) == varmap_.end() ) return 0;
-    return &(variables_[varmap_[name]].value);
+    if ( varmap_.find(name) != varmap_.end() ) 
+      return varmap_[name];
+    else
+      return varmap_["NONE"];
   }
 
   std::vector<std::string>& varnames()
   {
     return varnames_;
   }
+
+  int count() { return count_; }
+  int maxcount() { return maxcount_; }
 
 private:
   otreestream* out_;
@@ -222,9 +227,140 @@ private:
   std::string  prefix_;
   BufferType buffertype_;
   std::vector<VariableDescriptor> var_;
-  std::vector<Variable<X> > variables_;
-  std::map<std::string, int> varmap_;
+  boost::ptr_vector<Variable<X> > variables_;
   std::vector<std::string> varnames_;
+  std::map<std::string, countvalue> varmap_;
+  int  maxcount_;
+  int  count_;
+  bool singleton_;
+  std::string message_;
+  int  debug_;
+};
+
+template <>
+struct Buffer<edm::Event, true>  : public BufferThing
+{
+  ///
+  Buffer() 
+    : out_(0),
+      classname_("edm::Event"),
+      label_(""),
+      label1_(""),
+      label2_(""),
+      prefix_(""),
+      buffertype_(DEFAULT),
+      var_(std::vector<VariableDescriptor>()),
+      maxcount_(0),
+      count_(0),
+      singleton_(true),
+      message_(""),
+      debug_(0)
+  {
+    std::cout << "Buffer created for objects of type: " 
+              << name()
+              << std::endl;
+  }
+
+  ///
+  virtual ~Buffer() {}
+
+  /** Initialize buffer.
+      @param out - output ntuple file.
+      @param label - getByLabel
+      @param prefix - prefix for variable names (and internal name of buffer)
+      @param var - variable descriptors
+      @param maxcount - maximum count for this buffer
+      @param log - log file
+   */
+  void
+  init(otreestream& out,
+       std::string  label, 
+       std::string  prefix,
+       std::vector<VariableDescriptor>& var,
+       int maxcount,
+       std::ofstream& log,
+       int debug=0)
+  {
+    out_    = &out;
+    label_  = label;
+    prefix_ = prefix;
+    var_    = var;
+    maxcount_ = maxcount;
+    debug_  = debug;
+
+    initBuffer<edm::Event>(out,
+                           label_,
+                           label1_,
+                           label2_,
+                           prefix_,
+                           var_,
+                           variables_,
+                           varnames_,
+                           varmap_,
+                           count_,
+                           singleton_,
+                           maxcount_,
+                           log,
+                           debug_);
+  }
+  
+  /// Fill buffer.
+  bool fill(const edm::Event& event)
+  {
+    if ( debug_ > 0 ) 
+      std::cout << DEFAULT_COLOR
+                << "Begin Buffer::fill\n\t" 
+                << BLUE 
+                << "X: edm::Event\n\t"
+                << DEFAULT_COLOR
+                << std::endl;
+
+    count_ = 0; // reset count, just in case we have to bail out
+    message_ = "";
+
+    callMethods(0, event, variables_, debug_);
+
+    if ( debug_ > 0 ) 
+      std::cout << DEFAULT_COLOR << "End Buffer::fill " << std::endl; 
+    return true;
+  }
+  
+  std::string& message() { return message_; }
+
+  std::string name() { return classname_; }
+
+  /// Shrink buffer size using specified array of indices.
+  void shrink(std::vector<int>& index)
+  {}
+
+  countvalue& variable(std::string name)
+  {
+    if ( varmap_.find(name) != varmap_.end() )
+      return varmap_[name];
+    else
+      return varmap_["NONE"];
+  }
+
+  std::vector<std::string>& varnames()
+  {
+    return varnames_;
+  }
+
+  int count() { return count_; }
+  int maxcount() { return maxcount_; }
+
+private:
+  otreestream* out_;
+  std::string  classname_;
+  std::string  label_;
+  std::string  label1_;
+  std::string  label2_;
+  std::string  prefix_;
+  BufferType buffertype_;
+  std::vector<VariableDescriptor> var_;
+  boost::ptr_vector<Variable<edm::Event> > variables_;
+  std::vector<std::string> varnames_;
+  std::map<std::string, countvalue> varmap_;
   int  maxcount_;
   int  count_;
   bool singleton_;

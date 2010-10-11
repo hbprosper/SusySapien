@@ -9,7 +9,7 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Mon Mar  8, 2010
 //
-// $Id: CurrentEvent.h,v 1.3 2010/08/08 16:26:06 prosper Exp $
+// $Id: CurrentEvent.h,v 1.4 2010/10/07 21:31:48 prosper Exp $
 
 #include <map>
 #include <vector>
@@ -29,17 +29,17 @@ public:
   }
 
   ///
-  void set(const edm::Event& event, int count) 
+  void set(const edm::Event& event, const edm::EventSetup& setup) 
   { 
     event_ = &event;
-    count_ = count;
+    setup_ = &setup;
   }
 
   ///
   const edm::Event* get() const { return event_; }
 
   ///
-  int count() const { return count_; }
+  const edm::EventSetup* getsetup() const { return setup_; }
 
 private:
   CurrentEvent() {}        // prevent explicit creation
@@ -48,7 +48,7 @@ private:
   CurrentEvent& operator=(const CurrentEvent&);  // prevent assignment
   
   const edm::Event* event_;
-  int count_;
+  const edm::EventSetup* setup_;
 };
 
 #endif

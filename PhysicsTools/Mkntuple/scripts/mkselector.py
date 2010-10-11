@@ -3,7 +3,7 @@
 # Description: Create ntuple selector.h file
 # Created: 06-Mar-2010 Harrison B. Prosper
 # Updated: 05-Oct-2010 HBP - clean up
-#$Revision: 1.1 $
+#$Revision: 1.2 $
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
 from string import *
@@ -44,17 +44,13 @@ AUTHOR = getauthor()
 if os.environ.has_key("CMSSW_BASE"):
 	CMSSW_BASE = os.environ["CMSSW_BASE"]
 	PACKAGE = "%s/src/PhysicsTools/Mkntuple" % CMSSW_BASE
-	VARMAP  = "%s/interface/VariableMap.h" % PACKAGE
 	SELECTED= "%s/interface/SelectedObjectMap.h" % PACKAGE
 else:
-	VARMAP  = "VariableMap.h" % PACKAGE
 	SELECTED= "SelectedObjectMap.h" % PACKAGE
 	
-# Make sure that we can find treestream etc.
-
-if not os.path.exists(VARMAP):
-	print "\n** error ** - required file:\n\t%s\n\t\tNOT found!" % VARMAP
-	sys.exit(0)
+## if not os.path.exists(SELECTED):
+## 	print "\n** error ** - required file:\n\t%s\n\t\tNOT found!" % SELECTED
+## 	sys.exit(0)
 #------------------------------------------------------------------------------
 # For later
 TMP=\
@@ -77,7 +73,7 @@ HEADER=\
 // Description: event selector
 // Created:     %(time)s by mkselector.py
 // Author:      %(author)s
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 //-----------------------------------------------------------------------------
 #include <map>
 #include <string>
@@ -89,15 +85,22 @@ HEADER=\
 #include <stdlib.h>
 #include "TROOT.h"
 #include "TTree.h"
-#include "TMap.h"
 //-----------------------------------------------------------------------------
 // -- Declare variables to be initialized every event
 //-----------------------------------------------------------------------------
 %(decl)s
 //-----------------------------------------------------------------------------
-void initializeEvent(TMap& vars)
+struct countvalue
 {
-  std::vector<double>* v=0;
+  int*    count;
+  double* value;
+};
+typedef std::map<std::string, countvalue> mapvars;
+
+void initializeEvent(mapvars& vars)
+{
+  countvalue v;
+  int count=0;
   
 %(impl)s
 }
@@ -106,20 +109,23 @@ void initializeEvent(TMap& vars)
 
 MACRO=\
 		  '''//-----------------------------------------------------------------------------
-// File:        %(name)s.C
+// File:        %(name)s.cc
 // Description: event selector
 // Created:     %(time)s by mkselector.py
 // Author:      %(author)s
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 //-----------------------------------------------------------------------------
 #include "%(name)s.h"
 //-----------------------------------------------------------------------------
-bool %(name)s(TMap& vars)
+using namespace std;
+
+bool %(name)s(mapvars& vars)
 {
   initializeEvent(vars);
 
   // perform selection
   // if ( miserable-event ) return false;
+  
   return true;
 }
 '''
@@ -148,27 +154,85 @@ if os.environ.has_key("CMSSW_BASE"):
 	gROOT.ProcessLine(".L %(name)s.C+");
 '''
 COMPILE=\
-		  '''#!/usr/bin/env python
-import os, sys
-from ROOT import *
+		  '''#------------------------------------------------------------------------------
+# Created: %(time)s
 #------------------------------------------------------------------------------
-if not os.environ.has_key("CMSSW_BASE"): sys.exit(0)
-print "rootcint"
-os.system("rootcint -f dict.cc -c  linkdef.h; "\
-          "mv dict.h tmp2.h)
+name	:= %(name)s
+AT		:= @
+#------------------------------------------------------------------------------
+CINT	:= rootcint
+CXX		:= g++
+LDSHARED:= g++
+#------------------------------------------------------------------------------
+DEBUG	:= -ggdb
+CPPFLAGS:= -I. $(shell root-config --cflags)    
+CXXFLAGS:= $(DEBUG) -pipe -O2 -fPIC -Wall
+LDFLAGS := -shared 
+#------------------------------------------------------------------------------
+LIBS	:= $(shell root-config --glibs)
+#------------------------------------------------------------------------------
+linkdef	:= linkdef.h
+header  := header.h
+cintsrc	:= dict.cc
+cintobj	:= dict.o
 
-open("tmp1.h").write("#include <map>\n"\
-                     "#include <vector>\n"\
-					 "#include <string>\n")
-					 
-os.system("cat tmp1.txt tmp2.h > dict.h")
-print "compile"
-os.system("g++ -c dict.cc `root-config --cflags` -pipe -O2 -fPIC -Wall")
-os.system("g++ -c %(name)s.cc `root-config --cflags` -pipe -O2 -fPIC -Wall")
-pirnt "link"
-os.system("g++ -shared dict.o %(name)s.o "\
-          "`root-config --libs` -o lib%(name)s.so")
-		  '''
+cppsrc 	:= $(name).cc
+cppobj  := $(name).o
+
+objects	:= $(cintobj) $(cppobj) 
+library	:= lib$(name).so
+$(shell rm -rf header.h linkdef.h)
+#-----------------------------------------------------------------------
+lib:	$(library)
+
+$(library)	: $(objects)
+	@echo "---> Linking $@"
+	$(AT)$(LDSHARED) $(LDFLAGS) $+ $(LIBS) -o $@
+	@rm -rf dict.* $(objects)
+
+$(cppobj)	: $(cppsrc)
+	@echo "---> Compiling `basename $<`" 
+	$(AT)$(CXX)	$(CXXFLAGS) $(CPPFLAGS) -c $<
+
+$(cintobj)	: $(cintsrc)
+	@echo "---> Compiling `basename $<`"
+	$(AT)$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $<
+
+$(cintsrc) : $(header) $(linkdef)
+	@echo "---> Generating dictionary `basename $@`"
+	$(AT)$(CINT) -f $@ -c $(CPPFLAGS) $+
+
+$(header)	: $(linkdef)
+	@echo "---> Creating $(header)"
+	@echo -e "#ifndef HEADER_H"  >  $(header)
+	@echo -e "#define HEADER_H" >>	$(header)
+	@echo -e "#include <map>" >>	$(header)
+	@echo -e "#include <string>" >>	$(header)
+	@echo -e "#include <vector>" >>	$(header)
+	@echo -e "struct countvalue { int* count; double* value; };" >> $(header)
+	@echo -e "bool selector(std::map<std::string, countvalue>&);" \
+	>> $(header)
+	@echo -e \"#endif" >> $(header)
+
+$(linkdef)	:
+	@echo "---> Creating $(linkdef)"
+	@echo -e "#include <map>"  >	$(linkdef)
+	@echo -e "#include <string>" >>	$(linkdef)
+	@echo -e "#include <vector>" >>	$(linkdef)
+	@echo -e "#include <$(header)>" >> $(linkdef)
+	@echo -e "#ifdef __CINT__" >> $(linkdef)
+	@echo -e "#pragma link off all globals;" >> $(linkdef)
+	@echo -e "#pragma link off all classes;" >> $(linkdef)
+	@echo -e "#pragma link off all functions;" >> $(linkdef)
+	@echo -e "#pragma link C++ class countvalue+;" >> $(linkdef)
+	@echo -e "#pragma link C++ class map<string, countvalue>+;" \
+	>> $(linkdef)
+	@echo -e "#pragma link C++ function selector;" >> $(linkdef)
+	@echo -e "#endif" >> $(linkdef)
+
+clean   :
+	@rm -rf dict.* $(header) $(linkdef) $(objects)  $(library)
+'''
 #------------------------------------------------------------------------------
 def main():
 	print "\n\tmkselector.py"
@@ -253,29 +317,26 @@ def main():
 	for varname in keys:
 		n, rtype, branchname, count, iscounter = vars[varname]
 
-		# If this is a counter variable with a name identical to that of a
-		# vector variable, ignore it
-		if iscounter and vectormap.has_key(varname): continue
+		# If this is a counter variable ignore it
+		if iscounter: continue
 
 		if rtype == "bool": rtype = "int"
 
 		if count == 1:
 			decl.append("%s\t%s;" % (rtype, varname))
-			impl.append('  v = ((Varvector*)(vars.GetValue("%s")))->value;' \
-						% branchname)
-			impl.append('  assert(v);')
-			impl.append('  %s = (*v)[0];' % varname)
+			impl.append('  v = vars["%s"];' % branchname)
+			impl.append('  assert(v.value!=0);')
+			impl.append('  %s = *(v.value);' % varname)
+			impl.append('')
 
 		else:
 			# this is a vector
-			decl.append("std::vector<%s>\t%s(%d,0);" % \
-						(rtype, varname, count)) 		
-			
-			impl.append('  v = ((Varvector*)(vars.GetValue("%s")))->value;' \
-						% branchname)
-			impl.append('  assert(v);')
-			impl.append('  %s.resize(v->size());' % varname)
-			impl.append('  copy(v->begin(), v->end(), %s.begin());' % varname)
+			decl.append("std::vector<%s>\t%s(%d,0);" %(rtype, varname, count))
+			impl.append('  v = vars["%s"];' % branchname)
+			impl.append('  assert(v.value!=0); assert(v.count!=0);')
+			impl.append('  count = *(v.count);')
+			impl.append('  %s.resize(count);' % varname)
+			impl.append('  copy(v.value, v.value+count, %s.begin());'% varname)
 			impl.append('')
 			
 	# Create C++ codes
@@ -285,7 +346,7 @@ def main():
 			 'time'  : ctime(time()),
 			 'class' : join("", records, ""),
 			 'decl'  : join("", decl, "\n"),
-			 'impl'  : join("", impl, "\n"),
+			 'impl'  : rstrip(join("", impl, "\n")),
 			 'author': AUTHOR,
 			 's': '%s',
 			 }
@@ -295,13 +356,12 @@ def main():
 	open(outfilename, "w").write(record)
 
 	record = MACRO % names
-	outfilename = "%(name)s.C" % names
+	outfilename = "%(name)s.cc" % names
 	open(outfilename, "w").write(record)
 
-## 	record = COMPILE % names
-## 	outfilename = "compile_%(name)s.py" % names
-## 	open(outfilename, "w").write(record)
-## 	os.system("chmod +x compile_%(name)s.py" % names)
+	record = COMPILE % names
+	outfilename = "%(name)s.mk" % names
+	open(outfilename, "w").write(record)
 
 	print "\tdone!"
 #------------------------------------------------------------------------------

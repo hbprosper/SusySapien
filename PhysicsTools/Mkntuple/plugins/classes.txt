@@ -1,4 +1,3 @@
-S CrossingFramePlaybackInfoExtended
 S GenEventInfoProduct
 S GenRunInfoProduct
 S HcalNoiseSummary
@@ -10,11 +9,9 @@ S edm::AssociationMap<edm::OneToOne<vector<reco::Track>,vector<reco::Track>,unsi
 S edm::AssociationVector<edm::RefToBaseProd<reco::Jet>,vector<edm::RefVector<vector<reco::Track>,reco::Track,edm::refhelper::FindUsingAdvance<vector<reco::Track>,reco::Track> > >,edm::RefToBase<reco::Jet>,unsigned int,edm::helper::AssociationIdenticalKeyReference>
 S edm::AssociationVector<edm::RefToBaseProd<reco::Jet>,vector<float>,edm::RefToBase<reco::Jet>,unsigned int,edm::helper::AssociationIdenticalKeyReference>
 S edm::AssociationVector<edm::RefToBaseProd<reco::Jet>,vector<reco::JetExtendedAssociation::JetExtendedData>,edm::RefToBase<reco::Jet>,unsigned int,edm::helper::AssociationIdenticalKeyReference>
-S edm::DetSetVector<RPCDigiSimLink>
-S edm::DetSetVector<StripDigiSimLink>
-S edm::HepMCProduct
+S edm::ConditionsInEventBlock
+S edm::Event
 S edm::OwnVector<TrackingRecHit,edm::ClonePolicy<TrackingRecHit> >
-S edm::OwnVector<reco::BaseTagInfo,edm::ClonePolicy<reco::BaseTagInfo> >
 S edm::RangeMap<CSCDetId,edm::OwnVector<CSCRecHit2D,edm::ClonePolicy<CSCRecHit2D> >,edm::ClonePolicy<CSCRecHit2D> >
 S edm::RangeMap<CSCDetId,edm::OwnVector<CSCSegment,edm::ClonePolicy<CSCSegment> >,edm::ClonePolicy<CSCSegment> >
 S edm::RangeMap<DTChamberId,edm::OwnVector<DTRecSegment4D,edm::ClonePolicy<DTRecSegment4D> >,edm::ClonePolicy<DTRecSegment4D> >
@@ -22,6 +19,7 @@ S edm::RangeMap<DTLayerId,edm::OwnVector<DTRecHit1DPair,edm::ClonePolicy<DTRecHi
 S edm::RangeMap<RPCDetId,edm::OwnVector<RPCRecHit,edm::ClonePolicy<RPCRecHit> >,edm::ClonePolicy<RPCRecHit> >
 S edm::TriggerResults
 S edm::ValueMap<bool>
+S edm::ValueMap<edm::Ref<vector<reco::PreId>,reco::PreId,edm::refhelper::FindUsingAdvance<vector<reco::PreId>,reco::PreId> > >
 S edm::ValueMap<edm::Ref<vector<reco::SuperCluster>,reco::SuperCluster,edm::refhelper::FindUsingAdvance<vector<reco::SuperCluster>,reco::SuperCluster> > >
 S edm::ValueMap<float>
 S edm::ValueMap<reco::DeDxData>
@@ -41,7 +39,6 @@ S reco::HcalHaloData
 S reco::PFTauDiscriminator
 S trigger::TriggerEvent
 C vector<BeamSpotOnline>
-C vector<CaloTower>
 C vector<DcsStatus>
 C vector<L1AcceptBunchCrossing>
 C vector<L1GctEmCand>
@@ -56,21 +53,18 @@ C vector<L1GctJetCounts>
 C vector<L1TriggerScalers>
 C vector<Level1TriggerScalers>
 C vector<LumiScalers>
-C vector<PCaloHit>
-C vector<PSimHit>
-C vector<RandomEngineState>
-C vector<SimTrack>
-C vector<SimVertex>
 C vector<TrajectorySeed>
-C vector<int>
+C vector<edm::ErrorSummaryEntry>
 C vector<l1extra::L1EmParticle>
 C vector<l1extra::L1EtMissParticle>
 C vector<l1extra::L1HFRings>
 C vector<l1extra::L1JetParticle>
 C vector<l1extra::L1MuonParticle>
 C vector<pat::Electron>
+C vector<pat::Hemisphere>
 C vector<pat::Jet>
 C vector<pat::MET>
+C vector<pat::MHT>
 C vector<pat::Muon>
 C vector<pat::Photon>
 C vector<pat::Tau>
@@ -95,6 +89,7 @@ C vector<reco::GsfTrack>
 C vector<reco::GsfTrackExtra>
 C vector<reco::HFEMClusterShape>
 C vector<reco::HcalNoiseRBX>
+C vector<reco::JPTJet>
 C vector<reco::MET>
 C vector<reco::Muon>
 C vector<reco::PFBlock>
@@ -102,10 +97,12 @@ C vector<reco::PFCandidate>
 C vector<reco::PFCluster>
 C vector<reco::PFJet>
 C vector<reco::PFMET>
+C vector<reco::PFRecHit>
 C vector<reco::PFTau>
 C vector<reco::PFTauTagInfo>
 C vector<reco::Photon>
 C vector<reco::PhotonCore>
+C vector<reco::PreId>
 C vector<reco::PreshowerCluster>
 C vector<reco::PreshowerClusterShape>
 C vector<reco::RecoChargedRefCandidate>
@@ -115,6 +112,7 @@ C vector<reco::SoftLeptonTagInfo>
 C vector<reco::SuperCluster>
 C vector<reco::Track>
 C vector<reco::TrackExtra>
+C vector<reco::TrackExtrapolation>
 C vector<reco::TrackIPTagInfo>
 C vector<reco::TrackJet>
 C vector<reco::Vertex>
