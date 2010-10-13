@@ -46,7 +46,7 @@
 //         Updated:  Sun Jan 17 HBP - add log file
 //                   Sun Jun 06 HBP - add variables.txt file
 //
-// $Id: Mkntuple.cc,v 1.21 2010/10/11 02:15:31 prosper Exp $
+// $Id: Mkntuple.cc,v 1.22 2010/10/11 14:06:53 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -76,7 +76,6 @@
 #include "TSystem.h"
 #include "TMap.h"
 #include "TString.h"
-#include "TInterpreter.h"
 // ---------------------------------------------------------------------------
 using namespace std;
 // ---------------------------------------------------------------------------
@@ -121,7 +120,7 @@ private:
 Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   : output(otreestream(iConfig.getUntrackedParameter<string>("ntupleName"), 
                        "Events", 
-                       "created by Mkntuple $Revision: 1.21 $")),
+                       "created by Mkntuple $Revision: 1.22 $")),
     logfilename_("Mkntuple.log"),
     log_(new std::ofstream(logfilename_.c_str())),
     selectorname_(""),
@@ -135,7 +134,7 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   // Add a provenance tree to ntuple
   // --------------------------------------------------------------------------
   TFile* file = output.file();
-  TTree* tree = new TTree("Provenance","created by Mkntuple $Revision: 1.21$");
+  TTree* tree = new TTree("Provenance","created by Mkntuple $Revision: 1.22 $");
   string cmsver = kit::strip(kit::shell("echo $CMSSW_VERSION"));
   tree->Branch("cmssw_version", (void*)(cmsver.c_str()), "cmssw_version/C");
 

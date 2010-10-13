@@ -14,7 +14,7 @@
 #  Created:     Mon Oct  4, 2010
 #  Author:      Harrison B. Prosper
 #  Email:       harry@hep.fsu.edu, Harrison.Prosper@cern.ch
-# $Revision: 1.2 $
+# $Revision: 1.3 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from time import *
@@ -103,6 +103,7 @@ def main():
 		vtype = getvtype.findall(btype)
 		if len(vtype) == 1:
 			btype = vtype[0] # vector type
+			maxcount = 200   # default maximum count for vectors
 
 		# fix a few types
 		if btype[:-2] in ["32", "64"]:

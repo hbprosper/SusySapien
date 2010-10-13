@@ -9,7 +9,7 @@
 #          02-Sep-2010 HBP - fix variables.txt record splitting bug
 #          01-Oct-2010 HBP - add structs
 #          02-Oct-2010 HBP - add cloning
-#$Revision: 1.15 $
+#$Revision: 1.16 $
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
 from string import *
@@ -23,7 +23,7 @@ getvno = re.compile(r'[0-9]+$')
 def usage():
 	print '''
 	Usage:
-	   mkanalyzer.py <output-filename> [var-filename=variables.txt]
+	   mkanalyzer.py <analyzer-name> [var-filename=variables.txt]
 	'''
 	sys.exit(0)
 	
@@ -80,7 +80,7 @@ TEMPLATE_H =\
 // Description: Analyzer header for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.15 $
+// $Revision: 1.16 $
 //-----------------------------------------------------------------------------
 
 // -- System
@@ -316,7 +316,7 @@ TEMPLATE_CC =\
 // Description: Analyzer for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.15 $
+// $Revision: 1.16 $
 //-----------------------------------------------------------------------------
 #include "%(name)s.h"
 
@@ -392,7 +392,7 @@ PYTEMPLATELIB =\
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
 #  Author:      %(author)s
-#  $Revision: 1.15 $
+#  $Revision: 1.16 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from time import sleep
@@ -630,7 +630,7 @@ PYTEMPLATE =\
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
 #  Author:      %(author)s
-#  $Revision: 1.15 $
+#  $Revision: 1.16 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from string import *
@@ -683,7 +683,7 @@ MAKEFILE = '''#-----------------------------------------------------------------
 #                 verbose    (e.g., verbose=1)
 #                 withcern   (e.g., withcern=1  expects to find CERN_LIB)
 # Author:      %(author)s
-#$Revision: 1.15 $
+#$Revision: 1.16 $
 #------------------------------------------------------------------------------
 ifndef ROOTSYS
 $(error *** Please set up Root)
@@ -788,7 +788,7 @@ clean   	:
 	rm -rf tmp/*.o $(program)
 '''
 
-README = '''$Revision:$
+README = '''$Revision: 1.16 $
 Created: %(time)s
 
     o To build the default program (%(name)s) do

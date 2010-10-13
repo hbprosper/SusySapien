@@ -9,7 +9,7 @@
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Sep 19 HBP move some code from Buffer.h 
 //
-// $Id: BufferUtil.h,v 1.4 2010/10/07 21:31:48 prosper Exp $
+// $Id: BufferUtil.h,v 1.5 2010/10/11 02:15:30 prosper Exp $
 // ----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python/type_id.hpp>
@@ -184,11 +184,12 @@ void initBuffer(otreestream& out,
                    log,
                    debug);
 
-  // Create a variable object for each method. We use a boot::ptr_vector
+  // Create a variable object for each method. We use a boost::ptr_vector
   // rather than a vector because a push_back on the latter can trigger
   // calls to the destructor of the pushed object. We don't want this to
-  // happen for Variables<X> because it would cause the destructor of
-  // FunctionMember to be called thereby deallocating memory at the wrong
+  // happen for Variable<X> because it contains an object of type 
+  // FunctionMember. A call to Variable<X>'s destructor will trigger a call
+  // to the FunctionMember destructer, thereby deallocating memory at the wrong
   // time.
 
   variables.clear();
@@ -199,9 +200,9 @@ void initBuffer(otreestream& out,
   
   // Now add variables to output tree. This must be done after all
   // variables have been defined, because it is only then that their
-  // addresses are guaranteed to be stable.
+  // addresses are guaranteed to be stable. (See above comment.)
 
-  // Also cache variable name and address
+  // Also cache variable names and addresses
 
   // We can use vectors for the following because an inadvertent call
   // to a destructor is innocuous.
@@ -240,10 +241,16 @@ bool getByLabel(const edm::Event& event,
                 std::string& message,
                 BufferType buffertype)
 { 
-  // If this is real data ignore generator labels
-  if ( label1 == std::string("generator") )
+  // If this is real data ignore generator objects
+  if ( event.isRealData() )
     {
-      if ( event.isRealData() ) return true;
+      if ( label1 == std::string("generator") )    return true;
+      if ( label1 == std::string("genParticles") ) return true;
+      if ( label1 == std::string("genJets") )      return true;
+
+      if ( label2 == std::string("generator") )    return true;
+      if ( label2 == std::string("genParticles") ) return true;
+      if ( label2 == std::string("genJets") )      return true;
     }
 
   // Try to do a getByLabel and fall on sword if it fails.

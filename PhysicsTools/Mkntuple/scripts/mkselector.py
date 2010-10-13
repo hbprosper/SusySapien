@@ -3,7 +3,7 @@
 # Description: Create ntuple selector.h file
 # Created: 06-Mar-2010 Harrison B. Prosper
 # Updated: 05-Oct-2010 HBP - clean up
-#$Revision: 1.2 $
+#$Revision: 1.3 $
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
 from string import *
@@ -17,7 +17,7 @@ getvno = re.compile(r'[0-9]+$')
 def usage():
 	print '''
 	Usage:
-	   mkselector.py <output-filename> [variables.txt]
+	   mkselector.py <selector-name> [variables.txt]
 	'''
 	sys.exit(0)
 	
@@ -73,7 +73,7 @@ HEADER=\
 // Description: event selector
 // Created:     %(time)s by mkselector.py
 // Author:      %(author)s
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 //-----------------------------------------------------------------------------
 #include <map>
 #include <string>
@@ -104,6 +104,14 @@ void initializeEvent(mapvars& vars)
   
 %(impl)s
 }
+
+//-----------------------------------------------------------------------------
+// --- These structs can be filled by calling fillObjects()
+// --- after the call to initializeEvents(...)
+//-----------------------------------------------------------------------------
+%(structdecl)s
+%(structimpl)s
+
 #endif
 '''
 
@@ -113,7 +121,7 @@ MACRO=\
 // Description: event selector
 // Created:     %(time)s by mkselector.py
 // Author:      %(author)s
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 //-----------------------------------------------------------------------------
 #include "%(name)s.h"
 //-----------------------------------------------------------------------------
@@ -188,7 +196,7 @@ lib:	$(library)
 $(library)	: $(objects)
 	@echo "---> Linking $@"
 	$(AT)$(LDSHARED) $(LDFLAGS) $+ $(LIBS) -o $@
-	@rm -rf dict.* $(objects)
+	@rm -rf $(cintsrc) $(objects) $(linkdef) $(header)
 
 $(cppobj)	: $(cppsrc)
 	@echo "---> Compiling `basename $<`" 
@@ -338,6 +346,67 @@ def main():
 			impl.append('  %s.resize(count);' % varname)
 			impl.append('  copy(v.value, v.value+count, %s.begin());'% varname)
 			impl.append('')
+
+
+	# Create structs for vector variables
+	
+	keys = vectormap.keys()
+	keys.sort()	
+	structdecl = []
+	structimpl = []
+
+	structimpl.append('void fillObjects()')
+	structimpl.append('{')
+
+	for index, objname in enumerate(keys):
+		values = vectormap[objname]
+		varname= values[0][-2];
+		
+		structimpl.append('')
+		structimpl.append('  %s.resize(%s.size());' % (objname, varname))
+		structimpl.append('  for(unsigned int i=0; i < %s.size(); ++i)' % \
+						  varname)
+		structimpl.append('    {')
+
+		structdecl.append('struct %s_t' % objname)
+		structdecl.append('{')
+		for rtype, fldname, varname, count in values:
+			# treat bools as ints
+			if rtype == "bool":
+				cast = '(bool)'
+			else:
+				cast = ''
+
+			structdecl.append('  %s\t%s;' % (rtype, fldname))
+
+			structimpl.append('      %s[i].%s\t= %s%s[i];' % (objname,
+															  fldname,
+															  cast,
+															  varname))
+		structdecl.append('};')
+		structdecl.append('')
+		structdecl.append('std::vector<%s_t> %s(%d);' % (objname,
+														 objname,
+														 count))
+		structdecl.append('')
+		structdecl.append('std::ostream& '\
+						  'operator<<(std::ostream& os, const %s_t& o)' % \
+						  objname)
+		structdecl.append('{')
+		structdecl.append('  char r[1024];')
+		structdecl.append('  os << "%s" << std::endl;' % objname)
+		
+		for rtype, fldname, varname, count in values:
+			structdecl.append('  sprintf(r, "  %s: %s\\n", "%s",'\
+							  ' (double)o.%s); '\
+							  'os << r;' % ("%-32s", "%f", fldname, fldname))
+		structdecl.append('  return os;')
+		structdecl.append('}')
+		structdecl.append('')
+		
+		structimpl.append('    }')	
+	structimpl.append('}')  # end of fillObjects()
+	
 			
 	# Create C++ codes
 
@@ -349,6 +418,8 @@ def main():
 			 'impl'  : rstrip(join("", impl, "\n")),
 			 'author': AUTHOR,
 			 's': '%s',
+			 'structdecl': join("", structdecl, "\n"),
+			 'structimpl': join("", structimpl, "\n")			 
 			 }
 
 	record = HEADER % names
