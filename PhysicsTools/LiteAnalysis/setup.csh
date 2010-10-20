@@ -1,2 +1,0 @@
-setenv PYTHON_PROJECTS $CMSSW_BASE/src/PhysicsTools/LiteAnalysis
-setenv PYTHONPATH $PYTHON_PROJECTS/python:$PYTHONPATH
