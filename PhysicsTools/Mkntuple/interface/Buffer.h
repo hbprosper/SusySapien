@@ -24,7 +24,7 @@
 //                   Wed Sep 08 HBP - fix array test
 //                   Sun Sep 19 HBP - re-organize code to minimize code  bloat
 //
-// $Id: Buffer.h,v 1.23 2010/10/07 21:31:48 prosper Exp $
+// $Id: Buffer.h,v 1.24 2010/10/11 02:15:30 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/BufferUtil.h"
@@ -149,6 +149,18 @@ struct Buffer  : public BufferThing
 
     count_ = 0; // reset count, just in case we have to bail out
     message_ = "";
+
+  // If this is real data ignore generator objects
+  if ( event.isRealData() )
+    {
+      if ( label1_ == std::string("generator") )    return true;
+      if ( label1_ == std::string("genParticles") ) return true;
+      if ( label1_ == std::string("genJets") )      return true;
+
+      if ( label2_ == std::string("generator") )    return true;
+      if ( label2_ == std::string("genParticles") ) return true;
+      if ( label2_ == std::string("genJets") )      return true;
+    }
 
     // Note: We use the handle edm::Handle<X> for singletons and
     //       the handle edm::Handle< View<X> > for collections.

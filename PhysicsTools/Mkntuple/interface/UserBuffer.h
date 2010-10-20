@@ -9,7 +9,7 @@
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Sep 19 HBP - copy from Buffer.h
 //
-// $Id: UserBuffer.h,v 1.3 2010/10/07 21:31:48 prosper Exp $
+// $Id: UserBuffer.h,v 1.4 2010/10/11 02:15:31 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/BufferUtil.h"
@@ -121,6 +121,18 @@ struct UserBuffer  : public BufferThing
     
     count_ = 0; // reset count, just in case we have to bail out
     message_ = "";
+
+  // If this is real data ignore generator objects
+  if ( event.isRealData() )
+    {
+      if ( label1_ == std::string("generator") )    return true;
+      if ( label1_ == std::string("genParticles") ) return true;
+      if ( label1_ == std::string("genJets") )      return true;
+
+      if ( label2_ == std::string("generator") )    return true;
+      if ( label2_ == std::string("genParticles") ) return true;
+      if ( label2_ == std::string("genJets") )      return true;
+    }
 
     // Create helper.
     // A helper provides the following methods in addition to its accessors:

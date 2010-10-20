@@ -9,7 +9,7 @@
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Sep 19 HBP move some code from Buffer.h 
 //
-// $Id: BufferUtil.h,v 1.5 2010/10/11 02:15:30 prosper Exp $
+// $Id: BufferUtil.h,v 1.6 2010/10/13 13:25:10 prosper Exp $
 // ----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python/type_id.hpp>
@@ -241,18 +241,6 @@ bool getByLabel(const edm::Event& event,
                 std::string& message,
                 BufferType buffertype)
 { 
-  // If this is real data ignore generator objects
-  if ( event.isRealData() )
-    {
-      if ( label1 == std::string("generator") )    return true;
-      if ( label1 == std::string("genParticles") ) return true;
-      if ( label1 == std::string("genJets") )      return true;
-
-      if ( label2 == std::string("generator") )    return true;
-      if ( label2 == std::string("genParticles") ) return true;
-      if ( label2 == std::string("genJets") )      return true;
-    }
-
   // Try to do a getByLabel and fall on sword if it fails.
   try
     {
