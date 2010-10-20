@@ -14,7 +14,8 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
-// $Id: FunctionMember.cc,v 1.5 2010/10/11 02:15:31 prosper Exp $
+//                   Wed Oct 20 HBP - go back to logging all warnings
+// $Id: FunctionMember.cc,v 1.6 2010/10/20 03:37:24 prosper Exp $
 //-----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python.hpp>
@@ -438,21 +439,21 @@ FunctionMember::invoke(void* address)
     {
       FunctionDescriptor& fd = fd_[depth]; // NB: get an alias NOT a copy!
 
-      // Check the return type of current method. If it points to an object
-      // that is on the doNotCall list for the current run, then don't call
-      // this method. The assumption is that if a collection is missing
-      // it is missing for the entire run.
+//       // Check the return type of current method. If it points to an object
+//       // that is on the doNotCall list for the current run, then don't call
+//       // this method. The assumption is that if a collection is missing
+//       // it is missing for the entire run.
 
-      if ( fd.pointer || fd.smartpointer )
-        {
-          if ( doNotCall(fd) ) 
-            {
-              raddr = 0;
-              value_ = 0;
-              longvalue_ = 0;
-              break;
-            }
-        }
+//       if ( fd.pointer || fd.smartpointer )
+//         {
+//           if ( doNotCall(fd) ) 
+//             {
+//               raddr = 0;
+//               value_ = 0;
+//               longvalue_ = 0;
+//               break;
+//             }
+//         }
 
       execute(fd, address, raddr, value_, longvalue_);
 
@@ -499,7 +500,7 @@ FunctionMember::invoke(void* address)
                                                         << expression_ 
                                                         << endl;  
                   value_ = 0;
-                  updatedoNotCall(fd);
+                  //updatedoNotCall(fd);
                   break; // break out of loop
                 }
             }
