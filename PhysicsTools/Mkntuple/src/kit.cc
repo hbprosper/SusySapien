@@ -15,7 +15,7 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Wed Jun 20 19:53:47 EDT 2007
 //         Updated:  Sat Oct 25 2008 - make matchInDeltaR saner
-// $Id: kit.cc,v 1.1 2010/09/25 21:35:01 prosper Exp $
+// $Id: kit.cc,v 1.2 2010/10/02 14:23:00 prosper Exp $
 //
 //
 //-----------------------------------------------------------------------------
@@ -445,6 +445,26 @@ kit::saveHistograms(string histfilename,
                << endl;
           hfile->cd();
           h->Write("", TObject::kOverwrite);
+        }
+      else if ( o->IsA()->InheritsFrom("TCanvas") )
+        {
+          TCanvas* c = (TCanvas*)o;
+          cout << tab << o->ClassName() 
+               << "\t" << c->GetName()
+               << "\t" << c->GetTitle()
+               << endl;
+          hfile->cd();
+          c->Write("", TObject::kOverwrite);
+        }
+      else if ( o->IsA()->InheritsFrom("TGraph") )
+        {
+          TGraph* g = (TGraph*)o;
+          cout << tab << o->ClassName() 
+               << "\t" << g->GetName()
+               << "\t" << g->GetTitle()
+               << endl;
+          hfile->cd();
+          g->Write("", TObject::kOverwrite);
         }
     } // end of loop over keys
 

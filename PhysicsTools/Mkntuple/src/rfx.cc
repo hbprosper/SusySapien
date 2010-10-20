@@ -15,7 +15,7 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Wed Jun 20 19:53:47 EDT 2007
 //         Updated:  Sat Oct 25 2008 - make matchInDeltaR saner
-// $Id: rfx.cc,v 1.2 2010/10/02 14:23:00 prosper Exp $
+// $Id: rfx.cc,v 1.3 2010/10/11 02:15:31 prosper Exp $
 //
 //
 //-----------------------------------------------------------------------------
@@ -593,10 +593,10 @@ rfx::decodeMethod(FunctionDescriptor& fd)
     cout << "decodeMethod - function( " << fd.expression << " )" << endl;
   
   // Regex to extract name of method
-  boost::regex exprName("[a-zA-Z][a-zA-Z0-9]*(-[>])? *(?=[(])");
+  boost::regex exprName("[a-zA-Z][a-zA-Z0-9_]*(-[>])? *(?=[(])");
 
   // Regex to extract arguments
-  boost::regex exprArgs("(?<=[a-zA-Z0-9>]) *[(].*[)]");
+  boost::regex exprArgs("(?<=[a-zA-Z0-9>_]) *[(].*[)]");
   
   boost::smatch what;
 

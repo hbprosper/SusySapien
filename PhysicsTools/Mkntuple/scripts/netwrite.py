@@ -14,6 +14,7 @@
 #          21-Dec-2007 HBP Add -H to write header file if desired
 #          15-May-2010 HBP Change format of floats - use more precision
 #          17-Sep-2010 HBP handle abs(..) variables
+#          18-Oct-2010 HBP remove ";" from end of namespace
 #$Revison:$
 #------------------------------------------------------------------------------
 import os, sys
@@ -265,7 +266,7 @@ class NetWriter:
 		nnwrite(1,0,nodes,inp,"",out, outfunc)
 
 		out.write('    return x20;\n')
-		out.write('  }\n}; // End anonymous namespace\n\n')
+		out.write('  }\n} // End anonymous namespace\n\n')
 
 		out.write('//' + 77*'-' + '\n')
 		out.write('// Compute average over networks. '\
@@ -325,8 +326,8 @@ class NetWriter:
 			out.write('  std::vector<double> in(ninputs);\n')
 			for index, (namen, mean, sigma) in enumerate(var):
 				if namen[0]=="|": namen = "abs(%s)" % namen[1:-1]
-				out.write('  in[%d] = (%s - mean[%d]) / sigma[%d];\n' % \
-						  (index, namen, index, index))
+				out.write('  in[%d] = %s;\n' % \
+						  (index, namen))
 			out.write('  return %s(in, first, last);\n}\n' % name)
 		else:
 			print "\t** Warning: since the number of input variables > 30"\
