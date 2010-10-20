@@ -14,7 +14,7 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
-// $Id: FunctionMember.cc,v 1.4 2010/10/04 22:45:48 prosper Exp $
+// $Id: FunctionMember.cc,v 1.5 2010/10/11 02:15:31 prosper Exp $
 //-----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python.hpp>
@@ -394,8 +394,8 @@ FunctionMember::doNotCall(FunctionDescriptor& fd)
         if ( DBFunctionMember )
           cout << "==> Skipping method " 
                << RED 
-               << fd.classname << "::" 
-               << fd.expression
+               << classname_ << "::" 
+               << expression_
                << DEFAULT_COLOR
                << endl;
       return true;
@@ -494,9 +494,9 @@ FunctionMember::invoke(void* address)
                 {
                   // The collection is not available, so return a null pointer
                   edm::LogWarning("CollectionNotFound") << "\t" 
-                                                        << fd.classname 
+                                                        << classname_ 
                                                         << "::" 
-                                                        << fd.expression 
+                                                        << expression_ 
                                                         << endl;  
                   value_ = 0;
                   updatedoNotCall(fd);
@@ -513,9 +513,9 @@ FunctionMember::invoke(void* address)
                 {
                   // The collection is not available, so return a null pointer
                   edm::LogWarning("NullSmartPointer") << "\t" 
-                                                      << fd.classname 
+                                                      << classname_ 
                                                       << "::" 
-                                                      << fd.expression 
+                                                      << expression_ 
                                                       << endl;  
                   value_ = 0;
                   break; // break out of loop
@@ -551,9 +551,9 @@ FunctionMember::invoke(void* address)
               if ( raddr == 0 )
                 {
                   edm::LogWarning("NullPointer") << "\t" 
-                                                 << fd.classname 
+                                                 << classname_ 
                                                  << "::" 
-                                                 << fd.expression 
+                                                 << expression_ 
                                                  << endl; 
                   value_ = 0;
                   break; // break out of loop
