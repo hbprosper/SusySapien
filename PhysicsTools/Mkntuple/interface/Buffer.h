@@ -24,7 +24,7 @@
 //                   Wed Sep 08 HBP - fix array test
 //                   Sun Sep 19 HBP - re-organize code to minimize code  bloat
 //
-// $Id: Buffer.h,v 1.24 2010/10/11 02:15:30 prosper Exp $
+// $Id: Buffer.h,v 1.25 2010/10/20 03:18:19 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/BufferUtil.h"
@@ -137,7 +137,7 @@ struct Buffer  : public BufferThing
   }
   
   /// Fill buffer.
-  bool fill(const edm::Event& event)
+  bool fill(const edm::Event& event, const edm::EventSetup& eventsetup)
   {
     if ( debug_ > 0 ) 
       std::cout << DEFAULT_COLOR
@@ -317,7 +317,7 @@ struct Buffer<edm::Event, true>  : public BufferThing
   }
   
   /// Fill buffer.
-  bool fill(const edm::Event& event)
+  bool fill(const edm::Event& event, const edm::EventSetup& eventsetup)
   {
     if ( debug_ > 0 ) 
       std::cout << DEFAULT_COLOR

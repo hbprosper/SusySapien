@@ -9,7 +9,7 @@
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Sep 19 HBP move some code from Buffer.h 
 //
-// $Id: BufferUtil.h,v 1.6 2010/10/13 13:25:10 prosper Exp $
+// $Id: BufferUtil.h,v 1.7 2010/10/20 03:18:19 prosper Exp $
 // ----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python/type_id.hpp>
@@ -73,7 +73,7 @@ struct BufferThing
                     int debug=0)=0;
   
   /// Call requested methods of selected objects and fill buffer.
-  virtual bool fill(const edm::Event& event)=0;
+  virtual bool fill(const edm::Event& event, const edm::EventSetup& esetup)=0;
   ///
   virtual std::string& message()=0;
   ///

@@ -15,7 +15,7 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Wed Jun 20 19:53:47 EDT 2007
 //         Updated:  Sat Oct 25 2008 - make matchInDeltaR saner
-// $Id: rfx.cc,v 1.3 2010/10/11 02:15:31 prosper Exp $
+// $Id: rfx.cc,v 1.4 2010/10/20 02:56:11 prosper Exp $
 //
 //
 //-----------------------------------------------------------------------------
@@ -233,10 +233,10 @@ rfx::getMethod(std::string classname,
           string signature = m.TypeOf().Name(SCOPED);
 
           if ( DBgetMethod )
-            cout << "\t\t\tsignature: " << signature << endl
-                 << "\t\t\targuments: " << args << endl;
-
-          // May need to make this a bit more sophisticated
+            cout << "\t\t\tsignature: " 
+                 << RED << signature 
+                 << DEFAULT_COLOR << endl
+                 << "\t\t\targsregex: " << args << endl;
 
           if ( boost::regex_search(signature, what, expr) ) 
             {
@@ -245,6 +245,32 @@ rfx::getMethod(std::string classname,
 
               // We have a match
               return m;
+            }
+          else
+            {
+              // The number of required arguments may be zero.
+              // If it is try to match the signature (void)
+              int nargs = m.FunctionParameterSize(true);
+              if ( nargs == 0 )
+                {
+                  if ( DBgetMethod )
+                    cout << "\t\t\t#required: " 
+                         << RED << 0 
+                         << DEFAULT_COLOR << endl;
+
+                  signature = string("(void)");
+                  if ( boost::regex_search(signature, what, expr) ) 
+                    {
+                      if ( DBgetMethod )
+                        cout << RED 
+                             << "\t\t\t\t** matched **"
+                             << DEFAULT_COLOR
+                             << endl;
+                      
+                      // We have a match
+                      return m;
+                    }
+                }
             }
         }
     }
@@ -474,7 +500,7 @@ rfx::decodeArguments(std::string  args,
           break;
         };
     }
-  if ( argsregex != "" ) argsregex += "[)]";
+  //if ( argsregex != "" ) argsregex += "[)]";
 }
 
 
@@ -615,7 +641,7 @@ rfx::decodeMethod(FunctionDescriptor& fd)
     {
       throw cms::Exception("RegexFailure")
         << "Method - "
-        << "unable to get arguments from: " 
+        << "unable to decode arguments in method:\n\t" 
         << RED << fd.expression << DEFAULT_COLOR << endl;
     }
   string methodargs = what[0];
@@ -651,9 +677,14 @@ rfx::decodeMethod(FunctionDescriptor& fd)
   if ( !rfx::memberValid(fd.method) )
     {
       throw cms::Exception("decodMethodeFailure")
-        << "\tgetMethod is unable to find a matching method with the "
-        << "\tregex "
-        << RED << argsregex << DEFAULT_COLOR << endl;
+        << "\tgetMethod is unable to find a method that matches the"
+        << "\n\tregular expression\n\t"
+        << RED 
+        << methodname 
+        << argsregex 
+        << DEFAULT_COLOR
+        << "\n\tin class: " << BLUE << fd.classname << DEFAULT_COLOR
+        << endl;
     }
 
   // We have a method, so get address of arguments and associated

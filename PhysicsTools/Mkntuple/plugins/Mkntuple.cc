@@ -45,8 +45,9 @@
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Jan 17 HBP - add log file
 //                   Sun Jun 06 HBP - add variables.txt file
+//                   Sun Nov 07 HBP - add event setup to fill
 //
-// $Id: Mkntuple.cc,v 1.22 2010/10/11 14:06:53 prosper Exp $
+// $Id: Mkntuple.cc,v 1.23 2010/10/13 13:25:10 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -120,7 +121,7 @@ private:
 Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   : output(otreestream(iConfig.getUntrackedParameter<string>("ntupleName"), 
                        "Events", 
-                       "created by Mkntuple $Revision: 1.22 $")),
+                       "created by Mkntuple $Revision: 1.23 $")),
     logfilename_("Mkntuple.log"),
     log_(new std::ofstream(logfilename_.c_str())),
     selectorname_(""),
@@ -134,7 +135,7 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   // Add a provenance tree to ntuple
   // --------------------------------------------------------------------------
   TFile* file = output.file();
-  TTree* tree = new TTree("Provenance","created by Mkntuple $Revision: 1.22 $");
+  TTree* tree = new TTree("Provenance","created by Mkntuple $Revision: 1.23 $");
   string cmsver = kit::strip(kit::shell("echo $CMSSW_VERSION"));
   tree->Branch("cmssw_version", (void*)(cmsver.c_str()), "cmssw_version/C");
 
@@ -153,8 +154,7 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   tree->Fill();
 
   // --------------------------------------------------------------------------
-  // Cache config
-  
+  // Cache configuration 
   Configuration::instance().set(iConfig);
 
   // Get optional analyzer name
@@ -254,7 +254,7 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
       vector<string> bufferrecords = iConfig.
         getUntrackedParameter<vector<string> >(vrecords[ii]);
 
-      // Decode first record, which should
+      // Decode first record which should
       // contain the buffer name, getByLabel and max count, with
       // the exception of buffer edmEvent, which requires only the
       // first field
@@ -450,7 +450,7 @@ Mkntuple::analyze(const edm::Event& iEvent,
   
   string message("");  
   for(unsigned i=0; i < buffers.size(); i++)
-    if ( !buffers[i]->fill(iEvent) ) message += buffers[i]->message();
+    if ( !buffers[i]->fill(iEvent, iSetup) ) message += buffers[i]->message();
 
   // Check for error report from buffers
 

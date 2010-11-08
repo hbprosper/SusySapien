@@ -5,7 +5,7 @@
 // Sub-Package: Mkntuple
 // Description: Specialized buffer for edm::Event
 // Created:     Thu Aug 26, 2010 Harrison B. Prosper
-//$Revision: 1.4 $
+//$Revision: 1.5 $
 //-----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/UserBuffer.h"
 //-----------------------------------------------------------------------------
@@ -80,7 +80,7 @@ struct UserBuffer<edm::Event,
   
   /** Fill buffer.
    */
-  bool fill(const edm::Event& event)
+  bool fill(const edm::Event& event, const edm::EventSetup& eventsetup)
   {
     if ( debug_ > 0 ) 
       std::cout << DEFAULT_COLOR

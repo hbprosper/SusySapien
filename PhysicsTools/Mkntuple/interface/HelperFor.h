@@ -5,7 +5,7 @@
 // Sub-Package: Mkntuple
 // Description: Base class for helpers
 // Created:     Aug, 2010 Harrison B. Prosper
-//$Revision: 1.5 $
+//$Revision: 1.6 $
 //-----------------------------------------------------------------------------
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
@@ -17,16 +17,21 @@ class HelperFor
 {
 public:
   HelperFor() : config(Configuration::instance().get()),
-                event(0),   // pointer to current event
-                object(0),  // pointer to current helped object
-                oindex(0),  // index of current helped object (dumb pointer)
-                index(0),   // index of current helper object (dumb pointer)
-                count(1)    // number of instances returned by helper
+                event(0),      // pointer to current event
+                eventsetup(0), // pointer to current event setup
+                object(0),     // pointer to current helped object
+                oindex(0),     // index of current helped object (dumb pointer)
+                index(0),      // index of current helper object (dumb pointer)
+                count(1)       // number of instances returned by helper
   {}
 
   virtual ~HelperFor() {}
   ///
-  void cacheEvent(const edm::Event& e) { event = &e; }
+  void cacheEvent(const edm::Event& e, const edm::EventSetup& s) 
+  { 
+    event = &e;
+    eventsetup = &s;
+  }
 
   ///
   void cacheObject(const X& o, int n=0) 
@@ -53,14 +58,22 @@ public:
   // ---------------- available to user
   /// Pointer to ParameterSet initialized from config file.
   const edm::ParameterSet* config;
+
   /// Pointer to event.
   const edm::Event* event;
+
+  /// Pointer to event.
+  const edm::EventSetup* eventsetup;
+
   /// Pointer to current (helped) object
   const X* object;
+
   /// Index of current (helped) object (with count starting at zero).
   int oindex;
+
   /// Index of current helper object, which could differ from oindex..
   int index;
+
   /// 
   int count;
 };

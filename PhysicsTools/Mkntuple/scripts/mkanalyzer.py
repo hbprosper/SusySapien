@@ -9,7 +9,7 @@
 #          02-Sep-2010 HBP - fix variables.txt record splitting bug
 #          01-Oct-2010 HBP - add structs
 #          02-Oct-2010 HBP - add cloning
-#$Revision: 1.16 $
+#$Revision: 1.17 $
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
 from string import *
@@ -80,7 +80,7 @@ TEMPLATE_H =\
 // Description: Analyzer header for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.16 $
+// $Revision: 1.17 $
 //-----------------------------------------------------------------------------
 
 // -- System
@@ -172,19 +172,16 @@ struct skimFile
 	hist_->SetStats(0);
   }
 
-  void addEvent(double weight=-1)
+  void addEvent(double weight=1)
   {
-	file_ = tree_->GetCurrentFile();
+    weight_ = weight;
+	file_   = tree_->GetCurrentFile();
 	file_->cd();
 	
 	// dynamically add a weight branch to cloned tree
-	if ( weight > -1 )
-	  {
-	    if ( b_weight_ == 0 )
-		  {
-		    b_weight_ = tree_->Branch("eventWeight", &weight_,
-			                          "eventWeight/D");
-		  }
+	if ( b_weight_ == 0 )
+      {
+	    b_weight_ = tree_->Branch("eventWeight", &weight_, "eventWeight/D");
 	  }
 	tree_->Fill();
   }
@@ -316,7 +313,7 @@ TEMPLATE_CC =\
 // Description: Analyzer for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.16 $
+// $Revision: 1.17 $
 //-----------------------------------------------------------------------------
 #include "%(name)s.h"
 
@@ -392,7 +389,7 @@ PYTEMPLATELIB =\
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
 #  Author:      %(author)s
-#  $Revision: 1.16 $
+#  $Revision: 1.17 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from time import sleep
@@ -630,7 +627,7 @@ PYTEMPLATE =\
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
 #  Author:      %(author)s
-#  $Revision: 1.16 $
+#  $Revision: 1.17 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from string import *
@@ -683,7 +680,7 @@ MAKEFILE = '''#-----------------------------------------------------------------
 #                 verbose    (e.g., verbose=1)
 #                 withcern   (e.g., withcern=1  expects to find CERN_LIB)
 # Author:      %(author)s
-#$Revision: 1.16 $
+#$Revision: 1.17 $
 #------------------------------------------------------------------------------
 ifndef ROOTSYS
 $(error *** Please set up Root)
@@ -788,7 +785,7 @@ clean   	:
 	rm -rf tmp/*.o $(program)
 '''
 
-README = '''$Revision: 1.16 $
+README = '''$Revision: 1.17 $
 Created: %(time)s
 
     o To build the default program (%(name)s) do

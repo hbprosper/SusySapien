@@ -9,7 +9,7 @@
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Sep 19 HBP - copy from Buffer.h
 //
-// $Id: UserBuffer.h,v 1.4 2010/10/11 02:15:31 prosper Exp $
+// $Id: UserBuffer.h,v 1.5 2010/10/20 03:18:19 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/BufferUtil.h"
@@ -108,7 +108,7 @@ struct UserBuffer  : public BufferThing
   }
   
   /// Fill buffer.
-  bool fill(const edm::Event& event)
+  bool fill(const edm::Event& event, const edm::EventSetup& eventsetup)
   {
     if ( debug_ > 0 ) 
       std::cout << DEFAULT_COLOR
@@ -121,30 +121,30 @@ struct UserBuffer  : public BufferThing
     
     count_ = 0; // reset count, just in case we have to bail out
     message_ = "";
-
-  // If this is real data ignore generator objects
-  if ( event.isRealData() )
-    {
-      if ( label1_ == std::string("generator") )    return true;
-      if ( label1_ == std::string("genParticles") ) return true;
-      if ( label1_ == std::string("genJets") )      return true;
-
-      if ( label2_ == std::string("generator") )    return true;
-      if ( label2_ == std::string("genParticles") ) return true;
-      if ( label2_ == std::string("genJets") )      return true;
-    }
-
+    
+    // If this is real data ignore generator objects
+    if ( event.isRealData() )
+      {
+        if ( label1_ == std::string("generator") )    return true;
+        if ( label1_ == std::string("genParticles") ) return true;
+        if ( label1_ == std::string("genJets") )      return true;
+        
+        if ( label2_ == std::string("generator") )    return true;
+        if ( label2_ == std::string("genParticles") ) return true;
+        if ( label2_ == std::string("genJets") )      return true;
+      }
+    
     // Create helper.
     // A helper provides the following methods in addition to its accessors:
     // 1. void analyzeEvent()
     // 2. void analyzeObject()
-
-    // Cache event in helper
-    helper_.cacheEvent(event);
- 
+    
+    // Cache event and eventsetup in helper
+    helper_.cacheEvent(event, eventsetup);
+    
     // Perform (optional) user event-level analysis
     helper_.analyzeEvent();
-
+    
     // Note: We use the handle edm::Handle<X> for singletons and
     //       the handle edm::Handle< View<X> > for collections.
     
@@ -156,16 +156,16 @@ struct UserBuffer  : public BufferThing
           return false;
         
         // OK handle is valid, so extract data for all variables. 
-
+        
         // cache object in helper, along with its ordinal index - oindex -
         // set to 0 and set the count to its default value of 1.
         // NB: the helper could change "count" in analyzeObject()
         helper_.cacheObject(*handle);
-
+        
         // Perform (optional) user object-level analysis
         helper_.analyzeObject();
-
-         // Note: size returns the value of the internal variable count
+        
+        // Note: size returns the value of the internal variable count
         int k = 0;
         while ( (k < helper_.size()) && (count_ < maxcount_) )
           {
@@ -192,10 +192,10 @@ struct UserBuffer  : public BufferThing
             // cache object in helper, along with its ordinal index - oindex -
             // set to "j" and set the count to its default value of 1
             helper_.cacheObject((*handle)[j], j);
-
+            
             // Perform (optional) user object-level analysis
             helper_.analyzeObject();
-
+            
             // Note: size returns the value of the internal variable count
             int k = 0;
             while ( (k < helper_.size()) && (count_ < maxcount_) )
@@ -207,7 +207,7 @@ struct UserBuffer  : public BufferThing
               }
           }
       }
-  
+    
     if ( debug_ > 0 ) 
       std::cout << DEFAULT_COLOR << "End UserBuffer::fill " << std::endl; 
     return true;

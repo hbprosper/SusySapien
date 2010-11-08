@@ -19,9 +19,9 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Fri Apr 04 2008
-// $Id: kit.h,v 1.12 2010/09/23 09:10:23 prosper Exp $
+// $Id: kit.h,v 1.1 2010/09/25 21:34:55 prosper Exp $
 //
-//$Revision: 1.12 $
+//$Revision: 1.1 $
 //-----------------------------------------------------------------------------
 #include <iostream>
 #include <fstream>
@@ -128,18 +128,20 @@ struct kit
   
   /**
      Model a count as a function object. 
-     Each time the (function) object is 
+     Each time the object is 
      called, the count is incremented for the given string. The object is
      self-initializing; that is, there is no need for an explicit zeroing of
-     the count.
+     the count. However, if you want the counts to be listed in a particular
+     order, you can call the object, before you enter the event loop, for 
+     each cut name but using a weight=0.
      <p>
      \code
      Usage:
      
      Count count;
      : :
-     // increment count
-     count("Selected Muon");
+     // increment count (weight=1 is the default)
+     count("Selected Muon", weight);
      
      // To display the counts at the end, do
      : :
@@ -150,39 +152,53 @@ struct kit
   {
   public:
     ///
-    Count() : _var(std::map<std::string, int>()) {}
+    Count() : _count(std::map<std::string, double>()),
+              _name(std::vector<std::string>()),
+              _hist(TH1F("counts", "",1,0,1)) 
+    {
+      _hist.SetBit(TH1::kCanRebin);
+      _hist.SetStats(0);
+    }
 
     ///
     ~Count(){}
 
     ///
-    int operator()(std::string var) 
+    void operator()(std::string name, double weight=1) 
     {
-      if ( _var.find(var) == _var.end() ) _var[var] = 0;
-      _var[var]++;
-      return _var[var];
+      if ( _count.find(name) == _count.end() )
+        { 
+          _count[name] = 0;
+          _name.push_back(name);
+        }
+      _count[name] += weight;
+      _hist.Fill(name.c_str(), weight);
     }
-    
+   
+    TH1F* hist() { return &_hist; }
+
     /// List counts (default = list to screen).
     void ls(std::ostream& os = std::cout)
     {
-      int index = 0;
-      for(std::map<std::string, int>::iterator 
-            it = _var.begin(); it != _var.end(); it++)
+      for(unsigned int i=0; i < _name.size(); ++i)
         {
-          index++;
-          std::string var = it->first + 
+          
+          std::string name = _name[i];
+          double count  = _count[name];
+          std::string rec = name + 
             "   .......................................................";
-          int count  = it->second;
-          var = var.substr(0,40);
+
+          rec = rec.substr(0,40);
           char record[80];
-          sprintf(record,"%5d %-40s %10d", index, var.c_str(), count);
+          sprintf(record,"%5d %-40s %10f", i+1, rec.c_str(), count);
           os << record << std::endl;
         }
     }
     
   private:
-    std::map<std::string, int> _var;
+    std::map<std::string, double> _count;
+    std::vector<std::string> _name;
+    TH1F _hist;
   };
 
   // ------------------------------------------------------------------------

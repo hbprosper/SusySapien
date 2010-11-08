@@ -15,7 +15,7 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Wed Jun 20 19:53:47 EDT 2007
 //         Updated:  Sat Oct 25 2008 - make matchInDeltaR saner
-// $Id: kit.cc,v 1.2 2010/10/02 14:23:00 prosper Exp $
+// $Id: kit.cc,v 1.3 2010/10/20 02:56:11 prosper Exp $
 //
 //
 //-----------------------------------------------------------------------------
@@ -55,6 +55,9 @@ using namespace std;
 //----------------------------------------------------------------------------
 
 const int MAXDEPTH=10;
+
+static vector<TCanvas*> CANVAS;
+static vector<TH1*> HIST;
 
 float
 kit::deltaPhi(float phi1, float phi2)
