@@ -26,6 +26,7 @@
 
 <bin name=plugins_t file=plugins_t.cc></bin>
 <bin name=testreflex file=testreflex.cc></bin>
+<bin name=testtreestream file=testtreestream.cc></bin>
 
 
 

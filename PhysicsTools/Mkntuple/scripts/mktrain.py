@@ -5,6 +5,8 @@
 # Created: 06-Dec-2005 Harrison B. Prosper
 # Updated: 20-Oct-2006 HBP & Daekwang Kau
 #          02-Apr-2008 HBP some minor fixes for Serban
+#          11-Nov-2010 HBP fix sh script when -mr is specified
+#$Revision:$
 #------------------------------------------------------------------------------
 import os, sys
 from string import *
@@ -21,8 +23,8 @@ Usage:
 		 -h   print this
 		 -m   model type (b=binary or r=real) [b]
 		 -N   number of training events [min(5000, all)]
-		 -H   number of hidden nodes [20]
-		 -I   number of iterations [300]
+		 -H   number of hidden nodes [15]
+		 -I   number of iterations [250]
 
 
    mktrain.py needs two input files:
@@ -37,8 +39,8 @@ Usage:
 '''
 SHORTOPTIONS = 'hm:N:H:I:'
 COUNT = 5000
-ITERATIONS = 300
-HIDDEN= 20
+ITERATIONS = 250
+HIDDEN= 15
 
 template = '''#------------------------------------------------------------------------------
 # Description: This file contains the commands to run the BNN training.
@@ -63,8 +65,7 @@ mc-spec		%(name)s.bin repeat 20 heatbath hybrid 100:10 0.2
 
 net-mc		%(name)s.bin 1
 
-mc-spec %(name)s.bin \\
-repeat 20 sample-sigmas heatbath 0.95 hybrid 100:10 0.2 negate
+mc-spec %(name)s.bin repeat 20 sample-sigmas heatbath 0.95 hybrid 100:10 0.2
 
 echo "Start chain"
 echo "Use"
@@ -75,7 +76,7 @@ time net-mc	%(name)s.bin %(iter)s
 
 echo ""
 echo "Use"
-echo "   netwrite -n 100 %(name)s.bin"
+echo "   netwrite.py -n 100 %(name)s.bin"
 echo "to create the BNN function %(name)s.cpp using the last 100 points"
 '''
 
@@ -220,7 +221,7 @@ def main():
 		names['modeltype'] = "binary"
 		names['datatype']  = "1 2"
 	else:
-		names['modeltype'] = "real"
+		names['modeltype'] = "real 0.05:0.5"
 		names['datatype']  = "1"
 
 	record = template % names

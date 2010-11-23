@@ -14,7 +14,9 @@
 #  Created:     Mon Oct  4, 2010
 #  Author:      Harrison B. Prosper
 #  Email:       harry@hep.fsu.edu, Harrison.Prosper@cern.ch
-# $Revision: 1.3 $
+#  Fixes:       15-Nov-2010 HBP make sure buffers have a count of at least 1
+#               22-Nov-2010 HBP allow multiple trees
+# $Revision: 1.4 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from time import *
@@ -23,7 +25,7 @@ import os, sys, re
 # -----------------------------------------------------------------------------
 def usage():
 	print '''
-mkvariables.py <ntuple-filename> <tree-name> 
+mkvariables.py <ntuple-filename> <tree-name> [<tree-name2...]
 	'''
 	sys.exit(0)
 	
@@ -55,7 +57,7 @@ getvtype = re.compile('(?<=vector[<]).+(?=[>])')
 def main():
 
 	# 2nd argument is the TTree name
-	treename = argv[1]
+	treename = joinfields(argv[1:], ' ') # Can have more than one tree
 	stream = itreestream(filename, treename)
 	if not stream.good():
 		print "\t** hmmmm...something amiss here!"
@@ -66,11 +68,16 @@ def main():
 	# write out variables.txt after scanning ntuple listing
 	print
 	print "==> file: %s" % filename
-	print "==> tree: %s" % treename
+
+	tname = split(treename)
+	for name in tname:
+		print "==> tree: %s" % name
 	print "==> output: variables.txt"
 
 	out = open("variables.txt", "w")
-	out.write("tree: %s\t%s\n" % (treename, ctime(time())))
+	out.write("tree: %s\t%s\n" % (tname[0], ctime(time())))
+	for name in tname[1:]:
+		out.write("tree: %s\n" % name)
 	out.write("\n")
 
 	# get ntuple listing
@@ -93,7 +100,7 @@ def main():
 			maxcount = 1
 		elif len(x) == 5:
 			a, branch, c, btype, maxcount = x
-			maxcount = 2 * atoi(maxcount[1:-1]) # double up...just in case!
+			maxcount = 1 + 2 * atoi(maxcount[1:-1]) # double up...just in case!
 		else:
 			print "\t**hmmm...not sure what to do with:\n\t%s\n\tchoi!" % x
 			sys.exit(0)
@@ -103,7 +110,7 @@ def main():
 		vtype = getvtype.findall(btype)
 		if len(vtype) == 1:
 			btype = vtype[0] # vector type
-			maxcount = 200   # default maximum count for vectors
+			maxcount = 100   # default maximum count for vectors
 
 		# fix a few types
 		if btype[:-2] in ["32", "64"]:

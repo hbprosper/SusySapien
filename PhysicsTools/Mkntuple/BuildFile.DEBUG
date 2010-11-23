@@ -28,22 +28,19 @@
 <use name=DataFormats/TrajectorySeed>
 <use name=DataFormats/VertexReco>
 
+<use name=L1Trigger/GlobalTriggerAnalyzer>
 <use name=PhysicsTools/PatUtils>
 <use name=PhysicsTools/UtilAlgos>
-
 <use name=CommonTools/Utils>
 
 <use name=boost_python>
 <use name=boost_regex>
-
 <use name=hepmc>
 <use name=heppdt>
 <use name=clhep>
-
 <use name=rootrflx>
 <use name=rootminuit>
 <use name=rootmath>
-
 <use name=f77compiler>
 
 <lib name=Gui>

@@ -46,6 +46,8 @@
 <lib name=Gui>
 <lib name=Postscript>
 
+<flags CXXFLAGS="-ggdb -DDEBUG">
+
 <export>
    <lib name=PhysicsToolsMkntuple>
 </export>

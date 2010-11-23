@@ -3,6 +3,7 @@
    <class name="std::vector<TLorentzVector>"/>
    <class name="std::vector<std::vector<double> >"/>
    <class name="std::vector<TH1F*>"/>
+   <class name="std::vector<TH1*>"/>
    <class name="std::vector<kit::MatchedPair>"/>
    <class name="std::vector<kit::PtThing>"/>
    <class name="std::vector<bool>"/>
@@ -29,6 +30,10 @@
    <class name="itreestream"/>
    <class name="otreestream"/>
    <class name="RGS"/>
+   <class name="KDE"/>
+   <class name="jetnet::NN"/>
+   <class name="AdBayes"/>
+   <class name="Bayespack"/>
    <class name="ATestBase"/>
    <class name="Aclass"/>
    <class name="Bclass"/>

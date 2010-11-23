@@ -1,4 +1,4 @@
-//$Revision: 1.9 $
+//$Revision: 1.10 $
 #include "PhysicsTools/Mkntuple/interface/Connection.h"
 #include "PhysicsTools/Mkntuple/interface/Slot.h"
 #include "PhysicsTools/Mkntuple/interface/pdg.h"
@@ -16,6 +16,10 @@
 #include "PhysicsTools/Mkntuple/interface/ClassMembers.h"
 #include "PhysicsTools/Mkntuple/interface/PoissonGammaFit.h"
 #include "PhysicsTools/Mkntuple/interface/RGS.h"
+#include "PhysicsTools/Mkntuple/interface/jetnet.h"
+#include "PhysicsTools/Mkntuple/interface/KDE.h"
+#include "PhysicsTools/Mkntuple/interface/AdBayes.h"
+#include "PhysicsTools/Mkntuple/interface/Bayespack.h"
 //-----------------------------------------------------------------------------
 #include "TLorentzVector.h"
 #include "TH1F.h"

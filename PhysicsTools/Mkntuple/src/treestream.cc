@@ -40,7 +40,8 @@
 //                      fix looping bug so operator[] works for Python
 //          02-Oct-2010 HBP minor change to itreestream to handle vector types
 //                      directly.
-//$Revision: 1.4 $
+//          22-Nov-2010 HBP allow reading of multiple trees
+//$Revision: 1.5 $
 //----------------------------------------------------------------------------
 #ifdef PROJECT_NAME
 #include <boost/regex.hpp>
@@ -66,6 +67,9 @@
 #include "TClass.h"
 #include "TChain.h"
 #include "TString.h"
+#include "TList.h"
+#include "TIterator.h"
+#include "TFriendElement.h"
 
 #ifdef PROJECT_NAME
 #include "PhysicsTools/Mkntuple/interface/treestream.h"
@@ -698,7 +702,8 @@ itreestream::itreestream(string filename, int bufsize)
 {
   vector<string> fname;
   split(filename, fname);
-  _open(fname);
+  vector<string> tname;
+  _open(fname, tname);
 }
 
 itreestream::itreestream(vector<string>& fname, int bufsize)
@@ -714,7 +719,8 @@ itreestream::itreestream(vector<string>& fname, int bufsize)
     selecteddata(SelectedData()),
     _delete(true)
 {
-  _open(fname);
+  vector<string> tname;
+  _open(fname, tname);
 }
 
 itreestream::itreestream(string filename, string treename, int bufsize)
@@ -732,7 +738,9 @@ itreestream::itreestream(string filename, string treename, int bufsize)
 {
   vector<string> fname;
   split(filename, fname);
-  _open(fname, treename);
+  vector<string> tname;
+  split(treename, tname);
+  _open(fname, tname);
 }
 
 itreestream::itreestream(vector<string>& fname, string treename, int bufsize)
@@ -748,7 +756,9 @@ itreestream::itreestream(vector<string>& fname, string treename, int bufsize)
     selecteddata(SelectedData()),
     _delete(true)
 {
-  _open(fname, treename);
+  vector<string> tname;
+  split(treename, tname);
+  _open(fname, tname);
 }
 
 void
@@ -757,7 +767,8 @@ itreestream::init(TTree* tree)
   _delete = false;
   _tree = tree;
   vector<string> fname;
-  _open(fname);
+  vector<string> tname;
+  _open(fname, tname);
 }
 
 // ------------------------------------------------------------------------
@@ -769,13 +780,16 @@ itreestream::init(TTree* tree)
 // 3. Create a chain
 // ------------------------------------------------------------------------
 void
-itreestream::_open(vector<string>& fname, string treename)
+itreestream::_open(vector<string>& fname, vector<string>& tname)
 {
   DBUG("itreestream::ctor - BEGIN", 1);
 
   // Clear internal buffer
 
   _buffer.clear();
+
+  string treename("");
+  if ( tname.size() > 0 ) treename = tname[0];
 
   // If tree pointer is zero, get tree from file
   if ( _tree == 0 )
@@ -827,7 +841,7 @@ itreestream::_open(vector<string>& fname, string treename)
                     {
                       // Found a tree called Events, so use it
                       _tree = (TTree*)o;
-                  break;
+                      break;
                     }
                 }
             }
@@ -864,11 +878,25 @@ itreestream::_open(vector<string>& fname, string treename)
       DBUG("itreestream::ctor - new TChain", 2);
       _chain = new TChain(treename.c_str());
       if ( ! _chain ) fatal("itreestream - Unable to create chain");
-      
-      //_chain->SetMakeClass(1);
 
-      for(int i=0; i < (int)filepath.size(); i++) 
-        _chain->Add(filepath[i].c_str());
+      _chainlist.push_back(_chain);
+      // ----------------------------------------
+      // Add possible friends
+      // ----------------------------------------
+      for(unsigned int i=1; i < tname.size(); i++)
+        {
+          DBUG("itreestream::ctor - AddFriend " + tname[i], 2);
+          _chainlist.push_back(new TChain(tname[i].c_str()));
+          _chain->AddFriend(_chainlist.back());
+        }
+  
+      for(int i=0; i < (int)filepath.size(); i++)
+        {
+          for(unsigned int k=0; k < _chainlist.size(); k++)
+            {
+              _chainlist[k]->Add(filepath[i].c_str());
+            }
+        }
 
       DBUG("itreestream::ctor - GetEntries", 2);
       _entries = _chain->GetEntries();
@@ -876,7 +904,8 @@ itreestream::_open(vector<string>& fname, string treename)
       // ----------------------------------------
       // Update tree pointer
       // ----------------------------------------
-      _tree = _chain;  
+      _tree = _chain; 
+
     }
 
   // ----------------------------------------
@@ -886,21 +915,31 @@ itreestream::_open(vector<string>& fname, string treename)
   // use the syntax:
   //    <branchname>.<leafname> 
   // ----------------------------------------
-  TObjArray* array = _tree->GetListOfBranches();
-  if ( ! array ) fatal("itreestream - Unable to GetListOfBranches");
-
-  int nitems = array->GetEntries();
-
-  if ( DEBUGLEVEL > 1 )
+  
+  for(unsigned int k=0; k < _chainlist.size(); k++)
     {
-      char message[80]; sprintf(message, "Number of branches: %d", nitems);
-      cout << message << endl;
-    }
+      TChain* chain = _chainlist[k];
+      TObjArray* array = chain->GetListOfBranches();
+      if ( !array ) fatal("itreestream::ctor - "
+                          "Unable to GetListOfBranches for " +
+                          string(chain->GetName()));
 
-  for (int i = 0; i < nitems; i++)
-    {
-      TBranch* branch = (TBranch*)((*array)[i]);      
-      _getbranches(branch, 0);
+      int nitems = array->GetEntries();
+
+      if ( DEBUGLEVEL > 1 )
+        {
+          char message[80];
+          sprintf(message, "Number of branches in tree %s: %d", 
+                  string(chain->GetName()).c_str(), nitems);
+          cout << message << endl;
+        }
+
+      for (int i = 0; i < nitems; i++)
+        {
+          TBranch* branch = (TBranch*)((*array)[i]);      
+          _getbranches(branch, 0);
+        }
+
     }
 
   // ----------------------------------------
@@ -917,9 +956,9 @@ itreestream::_open(vector<string>& fname, string treename)
     }
 
   if ( DEBUGLEVEL > 0 ) 
-    cout << "itreestream - DATA.COUNT(" << data.size() << ")" << endl;
+    cout << "itreestream::ctor - DATA.COUNT(" << data.size() << ")" << endl;
 
-  DBUG("itreestream - exit OK", 1);
+  DBUG("itreestream::ctor - exit OK", 1);
 }
 
 itreestream::~itreestream()

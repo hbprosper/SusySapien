@@ -43,7 +43,9 @@
 //          06-Jun-2010 Add store and save (commt = store + save)
 //          23-Sep-2010 Move from PhysicsTools/LiteAnalysis to 
 //                                PhysicsTools/Mkntuple
-//$Revision: 1.4 $
+//          22-Nov-2010 Allow reading of multiple trees using friend
+//                      mechanism
+//$Revision: 1.5 $
 //----------------------------------------------------------------------------
 #include <vector>
 #include <string>
@@ -161,10 +163,10 @@ class itreestream
   itreestream(std::string filename, int bufsize=1000);
 
   ///
-  itreestream(std::vector<std::string>& filenames, int bufsize=1000);
+  itreestream(std::string filename, std::string treename, int bufsize=1000);
 
   ///
-  itreestream(std::string filename, std::string treename, int bufsize=1000);
+  itreestream(std::vector<std::string>& filenames, int bufsize=1000);
 
   ///
   itreestream(std::vector<std::string>& filenames, std::string treename,
@@ -330,7 +332,10 @@ class itreestream
   std::vector<int>          branchtab;
   std::vector<std::string>  filepath;
 
-  void _open(std::vector<std::string>& filenames, std::string treename="");
+  std::vector<TChain*> _chainlist;
+
+  void _open(std::vector<std::string>& filenames, 
+             std::vector<std::string>& treenames);
   void _getbranches(TBranch* branch, int depth);
   void _getleaf    (TBranch* branch, TLeaf* leaf=0);
   void _select     (std::string name, void* address, int maxsize, 

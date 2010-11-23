@@ -9,7 +9,7 @@
 #          02-Sep-2010 HBP - fix variables.txt record splitting bug
 #          01-Oct-2010 HBP - add structs
 #          02-Oct-2010 HBP - add cloning
-#$Revision: 1.17 $
+#$Revision: 1.18 $
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
 from string import *
@@ -80,7 +80,7 @@ TEMPLATE_H =\
 // Description: Analyzer header for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.17 $
+// $Revision: 1.18 $
 //-----------------------------------------------------------------------------
 
 // -- System
@@ -313,7 +313,7 @@ TEMPLATE_CC =\
 // Description: Analyzer for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.17 $
+// $Revision: 1.18 $
 //-----------------------------------------------------------------------------
 #include "%(name)s.h"
 
@@ -389,7 +389,7 @@ PYTEMPLATELIB =\
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
 #  Author:      %(author)s
-#  $Revision: 1.17 $
+#  $Revision: 1.18 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from time import sleep
@@ -627,7 +627,7 @@ PYTEMPLATE =\
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
 #  Author:      %(author)s
-#  $Revision: 1.17 $
+#  $Revision: 1.18 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from string import *
@@ -680,7 +680,7 @@ MAKEFILE = '''#-----------------------------------------------------------------
 #                 verbose    (e.g., verbose=1)
 #                 withcern   (e.g., withcern=1  expects to find CERN_LIB)
 # Author:      %(author)s
-#$Revision: 1.17 $
+#$Revision: 1.18 $
 #------------------------------------------------------------------------------
 ifndef ROOTSYS
 $(error *** Please set up Root)
@@ -785,7 +785,7 @@ clean   	:
 	rm -rf tmp/*.o $(program)
 '''
 
-README = '''$Revision: 1.17 $
+README = '''$Revision: 1.18 $
 Created: %(time)s
 
     o To build the default program (%(name)s) do
@@ -852,19 +852,35 @@ def main():
 	vars = {}
 	vectormap = {}
 	
-	# get tree name
+	# get tree name(s)
 	t = split(records[0])
 	if lower(t[0]) == "tree:":
 		treename = t[1]
 	else:
 		treename = "Events"
-		
-	records = records[1:]
+	start = 1
+	for record in records[1:]:
+		record = strip(record)
+		if record == "": break
+		t = split(record)
+		if lower(t[0]) == "tree:":
+			treename += " %s" % t[1]
+			start += 1
+
+   	# Done with header, so loop over branch names
+	records = records[start:]
+	
 	for index in xrange(len(records)):
 		record = records[index]
 		if record == "": continue
 		
 		rtype, branchname, varname, count = split(record, '/')
+		if rtype == "bool":
+			rtype = "int"
+		elif rtype == "long64":
+			rtype = "long"
+		elif rtype == "int32":
+			rtype = "int"
 
 		# Get object and field names
 		t = split(varname,'_')
@@ -919,7 +935,12 @@ def main():
 		# vector variable, ignore it
 		if iscounter and vectormap.has_key(varname): continue
 
-		if rtype == "bool": rtype = "int"
+		if rtype == "bool":
+			rtype = "int"
+		elif rtype == "long64":
+			rtype = "long"
+		elif rtype == "int32":
+			rtype = "int"
 
 		if count == 1:
 			declare.append("%s\t%s;" % (rtype, varname))
@@ -957,7 +978,7 @@ def main():
 						  varname)
 		structimpl.append('    {')
 
-		structdecl.append('struct %s_t' % objname)
+		structdecl.append('struct %s_s' % objname)
 		structdecl.append('{')
 		for rtype, fldname, varname, count in values:
 			# treat bools as ints
@@ -974,12 +995,12 @@ def main():
 															  varname))
 		structdecl.append('};')
 		structdecl.append('')
-		structdecl.append('std::vector<%s_t> %s(%d);' % (objname,
+		structdecl.append('std::vector<%s_s> %s(%d);' % (objname,
 														 objname,
 														 count))
 		structdecl.append('')
 		structdecl.append('std::ostream& '\
-						  'operator<<(std::ostream& os, const %s_t& o)' % \
+						  'operator<<(std::ostream& os, const %s_s& o)' % \
 						  objname)
 		structdecl.append('{')
 		structdecl.append('  char r[1024];')
