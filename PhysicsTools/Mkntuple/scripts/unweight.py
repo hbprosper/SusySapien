@@ -105,7 +105,9 @@ for i in xrange(count):
 #------------------------------------------------------------------------------
 shuffle(records)
 records = [header] + records
-records = map(lambda x: x + '\n', records)
+recs = map(split, records)
+format = ' %11s'*len(recs[0]) + "\n"
+records = map(lambda x: format % tuple(x), recs)
 open(outfile,"w").writelines(records)
 
 
