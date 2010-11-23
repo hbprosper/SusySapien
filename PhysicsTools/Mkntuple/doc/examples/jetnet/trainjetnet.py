@@ -28,8 +28,8 @@ Usage:
   ./trainjetnet.py <options> <net-name>
 
   options:
-	   -b   background file name [%(bkgfile)s]
-	   -s   signal file name [%(sigfile)s]
+	   -B   background file name [%(bkgfile)s]
+	   -S   signal file name [%(sigfile)s]
 	   -H   number of hidden nodes [%(hidden)s]
 	   -E   number of training epochs [%(nepoch)s]
 	   -P   number of training patterns/file [%(ntrain)s]
@@ -44,7 +44,7 @@ Usage:
 	   'nepoch'  : NEPOCH,
 	   'ntrain'  : NTRAIN}
 
-shortOptions = 'b:s:H:E:P:'
+shortOptions = 'B:S:H:E:P:'
 
 KPLOT  = 5
 NBIN   = 50
@@ -61,6 +61,7 @@ if len(sys.argv) < 2: usage()
 from PhysicsTools.Mkntuple.AutoLoader import *
 #-----------------------------------------------------------------------------
 def readData(filename):
+	print "reading data from %s..." % filename
 	records = map(split, open(filename).readlines())
 	header  = records[0]
 	records = records[1:]
@@ -184,20 +185,20 @@ class Plot:
 def main():
 
 	# Check for command line options
-	
+	argv = sys.argv[1:]
 	try:
-		options, names = getopt(sys.argv, shortOptions)
+		options, names = getopt(argv, shortOptions)
 	except GetoptError, m:
 		print m
 		usage()
 		
-	if len(names) < 2: usage()
-	netname = names[1]
+	if len(names) == 0: usage()
+	netname = names[0]
 	varfile = "%s.vars" % netname
 	if not os.path.exists(varfile): error("Can't find %s" % varfile)
 
 	# Set defaults
-
+	
 	sigfile = SIGFILE
 	bkgfile = BKGFILE
 	nhidden = NHIDDEN
@@ -205,12 +206,10 @@ def main():
 	ntrain  = NTRAIN
 	
 	for option, value in options:
-		if   option == '-b':
+		if   option == '-B':
 			bkgfile = value
-			if not os.path.exists(bkgfile): error("Can't find %s" % bkgfile)
-		elif option == '-s':
-			sigfile = value
-			if not os.path.exists(sigfile): error("Can't find %s" % sigfile)
+		elif option == '-S':
+			sigfile = value			
 		elif option == '-H':
 			nhidden = atoi(value)
 		elif option == '-E':
@@ -218,6 +217,8 @@ def main():
 		elif option == '-P':
 			ntrain = atoi(value)
 
+	if not os.path.exists(bkgfile): error("Can't find %s" % bkgfile)
+	if not os.path.exists(sigfile): error("Can't find %s" % sigfile)
 	#-----------------------------------------------------------------------
 	# Set up plots
 
