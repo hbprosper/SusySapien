@@ -4,7 +4,7 @@
 // File:    RGS.h
 // Purpose: Implement Random Grid Search algorithm to find optimal cuts.
 // Created: 18-Aug-2000 Harrison B. Prosper, Chandigarh, India
-//$Revision: 1.2 $
+//$Revision: 1.1 $
 //////////////////////////////////////////////////////////////////////////////
 #ifdef __WITH_CINT__
 #include "TObject.h"
@@ -106,6 +106,9 @@ public:
 
   /// Return values for data given data file and event.
   vdouble&  data(int dataindex, int event);
+
+  /// Save counts and cuts to a Root tree (RGS)
+  void      save(std::string filename, double lumi=1);
   
 private:
 

@@ -106,6 +106,9 @@ public:
 
   /// Return values for data given data file and event.
   vdouble&  data(int dataindex, int event);
+
+  /// Save counts and cuts to a Root tree (RGS)
+  void      save(std::string filename, double lumi=1);
   
 private:
 

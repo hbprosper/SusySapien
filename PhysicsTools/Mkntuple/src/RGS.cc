@@ -4,8 +4,9 @@
 //  Created: 18-Aug-2000 Harrison B. Prosper, Chandigarh, India
 //  Updated: 05-Apr-2002 HBP tidy up
 //           17-May-2006 HBP use weightindex instead of a vector of weights
+//           02-Dec-2010 HBP add save method
 //-----------------------------------------------------------------------------
-//$Revision: 1.1 $
+//$Revision: 1.2 $
 //-----------------------------------------------------------------------------
 #include <stdio.h>
 #include <cmath>
@@ -21,13 +22,16 @@
 #include "RGS.h"
 #endif
 
+#include "TFile.h"
+#include "TTree.h"
+
 using namespace std;
 
 #ifdef __WITH_CINT__
 ClassImp(RGS)
 #endif
 
-string rgsversion() {return string("RGS - $Revision: 1.1 $");}
+string rgsversion() {return string("RGS - $Revision: 1.2 $");}
 
 namespace 
 {
@@ -445,6 +449,49 @@ RGS::data(int index, int event)
       return vdNULL;
     }
   return _searchdata[index][event]; 
+}
+
+void
+RGS::save(string filename, double lumi)
+{
+
+  TFile file(filename.c_str(), "recreate"); 
+  TTree tree("RGS", "RGS $Revision:$");
+
+  vector<string> cvar = cutvars();
+  vector<double> cut(cvar.size());
+  vector<double> count(_counts.size());
+
+  for(unsigned int i=0; i < cvar.size(); i++)
+    {
+      char fmt[40];
+      sprintf(fmt, "%s/D", cvar[i].c_str() );
+      tree.Branch(cvar[i].c_str(), &cut[i], fmt); 
+    }
+  for(unsigned int i=0; i < count.size(); i++)
+    {
+      char fmt[40];
+      char name[40];
+      sprintf(name, "count%d", i);
+      sprintf(fmt, "count%d/D", i);
+      tree.Branch(name, &count[i], fmt);
+    }
+
+  for (unsigned int cutset=0; cutset < _cutdata.size(); cutset++)
+    {
+      for(unsigned i=0; i < cvar.size(); i++)
+        cut[i] = _cutdata[cutset][_index[i]];
+
+      for(unsigned int i=0; i < count.size(); i++)
+        count[i] = _counts[i][cutset]*lumi;
+      
+      file.cd();
+      tree.Fill();
+    }
+  file.cd();
+  tree.Write();
+  file.Write();
+  file.Close();
 }
 
 //--------------------------------

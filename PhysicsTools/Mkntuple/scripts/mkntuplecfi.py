@@ -12,8 +12,10 @@
 #              03-Oct-2010 HBP - add checkbox and migrate selection to
 #                          selected methods only if at least one method and
 #                          getbylabel is chosen.
+#              02-Dec-2010 HBP - something in Pat changed (of course!) in 3_8_7
+#                                requiring a different getbranch regex...sigh!
 #-----------------------------------------------------------------------------
-#$Revision: 1.21 $
+#$Revision: 1.22 $
 #-----------------------------------------------------------------------------
 import sys, os, re, platform
 from string import *
@@ -46,7 +48,7 @@ if not os.environ.has_key("CMSSW_BASE"):
 	sys.exit(0)
 
 BASE = os.environ["PWD"]
-REVISION="$Revision: 1.21 $"
+REVISION="$Revision: 1.22 $"
 rev = split(REVISION)[1]
 VERSION        = \
 """
@@ -95,7 +97,8 @@ CFI_PY   = "%s.py"  % CFI_NAME
 #-----------------------------------------------------------------------------
 
 # Extract branches ending in
-getbranch = re.compile(r'(?<=\_).+\.edm::EDProduct +/ +.+$',re.M)
+#getbranch = re.compile(r'(?<=\_).+\.edm::EDProduct +/ +.+$',re.M)
+getbranch = re.compile(r'(?<=\_).+\. +/ +edm::Wrapper.+$',re.M)
 
 # Extract class name from branch name
 getclass  = re.compile(r'(?<=Wrapper\<).+(?=\>)')
@@ -592,7 +595,7 @@ class Gui:
 		stream = itreestream(filename, "Events")
 		record = stream.str()
 		stream.close()
-
+		
 		stream = itreestream(filename, "Runs")
 		record += stream.str()
 		stream.close()
@@ -604,7 +607,7 @@ class Gui:
 		# Get branches
 
 		records = getbranch.findall(record)
-
+		
 		if len(records) == 0:
 			self.statusBar.SetText("** Error", 0)
 			self.statusBar.SetText("No branches found", 1)
