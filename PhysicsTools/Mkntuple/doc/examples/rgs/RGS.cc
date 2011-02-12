@@ -1,10 +1,9 @@
 //-----------------------------------------------------------------------------
 //  File:    RGS.cc
-//  Purpose: Implement a version of RGS suitable for use in Python.
+//  Purpose: Implements a version of rgsearch suitable for use in Python.
 //  Created: 18-Aug-2000 Harrison B. Prosper, Chandigarh, India
 //  Updated: 05-Apr-2002 HBP tidy up
 //           17-May-2006 HBP use weightindex instead of a vector of weights
-//           02-Dec-2010 HBP add save method
 //-----------------------------------------------------------------------------
 //$Revision: 1.2 $
 //-----------------------------------------------------------------------------
@@ -31,67 +30,66 @@ using namespace std;
 ClassImp(RGS)
 #endif
 
+
 string rgsversion() {return string("RGS - $Revision: 1.2 $");}
 
-namespace 
+void error(string message)
 {
-  void error(string message)
-  {
-    cerr << "RGS ** error *** " << message << endl;
-  }
-  
-  bool inString(string strg, string str)
-  {
-    int j = strg.find(str,0);
-    return (j>-1) && (j<(int)strg.size());
-  }
-  
-  // Extract name of a file without extension
-  string nameonly(string filename)
-  {
-    int i = filename.rfind("/");
-    int j = filename.rfind(".");
-    if ( j < 0 ) j = filename.size();
-    return filename.substr(i+1,j-i-1);
-  }
+  cerr << "read ** error *** " << message << endl;
 }
 
-//---------------------------------------------------------------------------
+bool inString(string strg, string str)
+{
+  int j = strg.find(str,0);
+  return (j>-1) && (j<(int)strg.size());
+}
+
+// Extract name of a file without extension
+string nameonly(string filename)
+{
+  int i = filename.rfind("/");
+  int j = filename.rfind(".");
+  if ( j < 0 ) j = filename.size();
+  return filename.substr(i+1,j-i-1);
+}
+
+//----------------------------------------------------------------------------
 // Description: Read from a text file. For use in Root.
 // Created: 03-May-2005 Harrison B. Prosper
-//---------------------------------------------------------------------------
-bool slurpTable(string filename,
-                vector<string>& header, 
-                vector<vector<double> >& data,
-                int start,
-                int count,
-                bool extend)
+//----------------------------------------------------------------------------
+
+bool slurp_table(string filename,
+                 vector<string>& header, 
+                 vector<vector<double> >& data,
+                 int start,
+                 int count,
+                 bool extend)
 {
   ifstream stream(filename.c_str());
   if ( ! stream.good() )
     { 
-      error("slurpTable - unable to open "+filename);
+      error("slurp_table - unable to open "+filename);
       return false;
     }
-  
+
   // Read header
-  
+
   string line;
   getline(stream, line, '\n');
   istringstream inp(line);
-  
+
   header.clear();
   while ( inp >> line ) header.push_back(line);
-  
+
   // Skip the first "start" lines
-  
+
   int n=0;
   for(int i=0; i < start; i++)
     {
       n++;
       if ( !getline(stream, line, '\n') ) break;
     }
-  
+
   // Read "count" rows if count > 0, otherwise read all lines
 
   if ( extend )
@@ -104,7 +102,7 @@ bool slurpTable(string filename,
             {
               double x;
               inp >> x;
-              //data[nrow].push_back(x);
+              data[nrow].push_back(x);
             }
           nrow++;
           if ( count <= 0 ) continue;
@@ -130,7 +128,8 @@ bool slurpTable(string filename,
   stream.close();
   return true;
 }
-            
+
+
 //-----------------------------
 // CONSTRUCTORS
 //-----------------------------
@@ -185,9 +184,9 @@ RGS::add(string filename,
   _status = 0;
 
   vector<string> var;
-  if ( ! slurpTable(filename, var, _searchdata.back(), start, numrows) )
+  if ( ! slurp_table(filename, var, _searchdata.back(), start, numrows) )
     {
-      error(string("unable to read file ") + filename);
+      cout << "**Error** unable to read file " << filename << endl;
       _status = -1;
       return;
     }
@@ -197,7 +196,7 @@ RGS::add(string filename,
       if ( weightname == var[i] )
         {
           _weightindex.back() = i;
-          cout << "RGS will weight events with the variable "
+          cout << "\tRGS will weight events with the variable "
                << weightname
                << " in column " << i << endl;
           break;
@@ -220,15 +219,15 @@ RGS::add(vector<string>&   filename,
   for(int ifile=0; ifile < (int)filename.size(); ifile++)
     {
       vector<string> var;
-      if ( ! slurpTable(filename[ifile], var, _searchdata.back(), 
+      if ( ! slurp_table(filename[ifile], var, _searchdata.back(), 
                          start, numrows, extend) )
         {
-          error(string("unable to read file ") + filename[ifile]);
+          cout << "**Error** unable to read file " << filename[ifile] << endl;
           _status = -1;
           return;
         }
       extend = true;
-      
+
       for(int i = 0; i < (int)var.size(); i++)
         {
           if ( weightname == var[i] ) _weightindex.back() = index;
@@ -249,17 +248,16 @@ void RGS::run(vstring&  cutvar,        // Variables defining cuts
   // Make sure len of cutvar and cutdir are the same
   if ( cutvar.size() < cutdir.size() )
     {
-      error("RGS::run ** length(cutvar) < Length(cutdir)");
+      cout << "** Error-RGS::run ** Length(cutvar) < Length(cutdir)" << endl;
       exit(1);
     }
-  
-  // Adjust sizes of buffers
-  
+
+
   _totals.resize(_searchdata.size(),0.0);
   _counts.resize(_searchdata.size(),vdouble());
   for (int i = 0; i < (int)_counts.size(); i++)
     _counts[i].resize(_cutdata.size(), 0.0);
-  
+
   // Decode cut
   /////////////
   int code = -1;
@@ -278,15 +276,18 @@ void RGS::run(vstring&  cutvar,        // Variables defining cuts
         _index.push_back(_varmap[cutvar[i]]); // Pointer map into data
       else
         {
-          error(string("cut variable ") + cutvar[i] + string(" NOT found"));
+          cout << "** cut variable " << cutvar[i] << " NOT found" << endl;
           exit(0);
         }
+      
+      cout << i << "\t" << _index.back() << "\t" 
+           << cutvar[i] << "\t" << cutdir[i] << " cut code " << code << endl;
+      
     } 
-  
+
   // Loop over files to be processed
   //////////////////////////////////
-  
-  
+
   for (int file = 0; file < (int)_searchdata.size(); file++)
     {
       int  weightindex = _weightindex[file];
@@ -294,7 +295,7 @@ void RGS::run(vstring&  cutvar,        // Variables defining cuts
 
       cout << "\tProcessing dataset: " << _searchname[file] 
            << "\twith " << sdata.size() << " rows" << endl;
-      
+
       if ( nprint > 0 )
         {
           cout << "\tApply cuts: " << endl;
@@ -304,9 +305,9 @@ void RGS::run(vstring&  cutvar,        // Variables defining cuts
       
       // Check whether to use event weighting
       ///////////////////////////////////////
-      
+
       bool useEventWeight = weightindex > -1;
-      
+
       // Loop over cut sets (points)
       //////////////////////////////
       
@@ -336,27 +337,32 @@ void RGS::run(vstring&  cutvar,        // Variables defining cuts
                     case GT:
                       passed = x > xcut;
                       break;
-                  
+                      
                     case LT:
                       passed = x < xcut;
                       break;
-		      
+                      
                     case ABSGT:
                       passed = abs(x) > abs(xcut);
                       break;
-                  
+                      
                     case ABSLT:
                       passed = abs(x) < abs(xcut);
                       break;
-                  
+                      
                     default:
                       passed = true;
                       break;
                     }
-
+                  
                   // If any cut fails, there is no point continuing.
                   // So break out of loop
-                  if ( !passed ) break;
+                  if ( !passed )
+                    {
+                      //cout << "FAILED: " << cutvar[cut] << "(" << x << ") "
+                      //     << cutdir[cut] << " " << xcut << endl; 
+                      break;
+                    }
                 }
           
               // Keep a running sum of events that pass all cuts
@@ -364,13 +370,56 @@ void RGS::run(vstring&  cutvar,        // Variables defining cuts
 
               float weight = 1.0;
               if ( useEventWeight ) weight = weight * sdata[row][weightindex];
-
+              
               if ( cutset == 0 ) _totals[file] += weight;
           
               if ( passed ) _counts[file][cutset] += weight;
             }
         }
     }
+}
+
+TFile*
+RGS::save(string filename, double lumi)
+{
+
+  TFile* file = new TFile(filename.c_str(), "recreate"); 
+  TTree* tree = new TTree("RGS", "RGS");
+
+  vector<string> cvar = cutvars();
+  vector<double> cut(cvar.size());
+  vector<double> count(_counts.size());
+
+  for(unsigned int i=0; i < cvar.size(); i++)
+    {
+      char fmt[40];
+      sprintf(fmt, "%s/D", cvar[i].c_str() );
+      tree->Branch(cvar[i].c_str(), &cut[i], fmt); 
+    }
+  for(unsigned int i=0; i < count.size(); i++)
+    {
+      char fmt[40];
+      char name[40];
+      sprintf(name, "count%d", i);
+      sprintf(fmt, "count%d/D", i);
+      tree->Branch(name, &count[i], fmt);
+    }
+
+  for (unsigned int cutset=0; cutset < _cutdata.size(); cutset++)
+    {
+      for(unsigned i=0; i < cvar.size(); i++)
+        cut[i] = _cutdata[cutset][_index[i]];
+
+      for(unsigned int i=0; i < count.size(); i++)
+        count[i] = _counts[i][cutset]*lumi;
+      
+      file->cd();
+      tree->Fill();
+    }
+  file->cd();
+  tree->AutoSave("SaveSelf");
+  //file->Write("", TObject::kOverwrite);
+  return file;
 }
 
 double
@@ -451,49 +500,6 @@ RGS::data(int index, int event)
   return _searchdata[index][event]; 
 }
 
-void
-RGS::save(string filename, double lumi)
-{
-
-  TFile file(filename.c_str(), "recreate"); 
-  TTree tree("RGS", "RGS $Revision:$");
-
-  vector<string> cvar = cutvars();
-  vector<double> cut(cvar.size());
-  vector<double> count(_counts.size());
-
-  for(unsigned int i=0; i < cvar.size(); i++)
-    {
-      char fmt[40];
-      sprintf(fmt, "%s/D", cvar[i].c_str() );
-      tree.Branch(cvar[i].c_str(), &cut[i], fmt); 
-    }
-  for(unsigned int i=0; i < count.size(); i++)
-    {
-      char fmt[40];
-      char name[40];
-      sprintf(name, "count%d", i);
-      sprintf(fmt, "count%d/D", i);
-      tree.Branch(name, &count[i], fmt);
-    }
-
-  for (unsigned int cutset=0; cutset < _cutdata.size(); cutset++)
-    {
-      for(unsigned i=0; i < cvar.size(); i++)
-        cut[i] = _cutdata[cutset][_index[i]];
-
-      for(unsigned int i=0; i < count.size(); i++)
-        count[i] = _counts[i][cutset]*lumi;
-      
-      file.cd();
-      tree.Fill();
-    }
-  file.cd();
-  tree.Write();
-  file.Write();
-  file.Close();
-}
-
 //--------------------------------
 // PRIVATE METHODS
 //--------------------------------
@@ -517,7 +523,7 @@ RGS::_init(vstring& filenames, int start, int numrows)
   for(int ifile=0; ifile < (int)filenames.size(); ifile++)
     {
       vector<string> var;
-      if ( ! slurpTable(filenames[ifile], 
+      if ( ! slurp_table(filenames[ifile], 
                          var, _cutdata, start, numrows, extend) )
         {
           cout << "**Error** unable to read file " << filenames[ifile] << endl;

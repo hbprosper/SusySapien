@@ -16,7 +16,8 @@
 #  Email:       harry@hep.fsu.edu, Harrison.Prosper@cern.ch
 #  Fixes:       15-Nov-2010 HBP make sure buffers have a count of at least 1
 #               22-Nov-2010 HBP allow multiple trees
-# $Revision: 1.4 $
+#               11-Jan-2011 HBP shorten genparticlehelper variable
+# $Revision: 1.5 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from time import *
@@ -53,6 +54,10 @@ except:
 # -----------------------------------------------------------------------------
 # extract vector type from vector<type>
 getvtype = re.compile('(?<=vector[<]).+(?=[>])')
+patname  = re.compile('(?<=pat)[a-z]+[1-9]*')
+reconame = re.compile('(?<=reco)[a-z]+[1-9]*')
+genname  = re.compile('^(gen[a-z]+|edm[a-z]+)')
+countname= re.compile('(?<=^n)(pat|reco)')
 # -----------------------------------------------------------------------------
 def main():
 
@@ -81,6 +86,8 @@ def main():
 	out.write("\n")
 
 	# get ntuple listing
+	dupname = {} # to keep track of duplicate names
+	
 	records = map(split, split(stream.str(),'\n'))
 	for x in records:
 
@@ -115,6 +122,12 @@ def main():
 		# fix a few types
 		if btype[:-2] in ["32", "64"]:
 			btype = btype[:-2]
+		elif btype == "bool":
+			btype = "int"
+		elif btype == "uchar":
+			btype = "int"
+		elif btype == "uint":
+			btype = "int"
 			
 		# If this is leaf counter, add " *" to end of record
 		if iscounter:
@@ -123,7 +136,38 @@ def main():
 			lc = ""
 
 		# make a name for yourself
-		name = replace(branch, '.', '_')
+		# but take care of duplicate names
+		t = split(branch, '.')
+		bname = t[0]
+		if len(t) > 1:
+			t[0] = lower(t[0])			
+			a = patname.findall(t[0])
+			if len(a) == 0:
+				a = reconame.findall(t[0])
+				if len(a) == 0:
+					a = genname.findall(t[0])
+			if len(a) != 0:
+				t[0] = a[0]
+		else:
+			if len(countname.findall(t[0])) > 0:
+				t[0] = split(lower(countname.sub("", t[0])),'_')[0]
+		t[0] = replace(t[0], 'helper', '')
+
+		# check for duplicate names
+		key = t[0]
+		if not dupname.has_key(key):
+			dupname[key] = [bname, 0]			
+		if dupname[key][0] != bname:
+			a, n = dupname[key]
+			n += 1
+			dupname[key] = [bname, n]
+			
+		if dupname[key][1] > 0:
+			t[0] = "%s%d" % (t[0], dupname[key][1])
+			
+		name = joinfields(t, '_')
+		#print "%s\t%s" % (t[0], bname)
+
 		# write out info for current branch/leaf
 		record = "%s/%s/%s/%d %s\n" % (btype, branch, name, maxcount, lc)
 		out.write(record)

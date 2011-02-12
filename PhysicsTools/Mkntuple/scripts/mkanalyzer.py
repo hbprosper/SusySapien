@@ -9,7 +9,8 @@
 #          02-Sep-2010 HBP - fix variables.txt record splitting bug
 #          01-Oct-2010 HBP - add structs
 #          02-Oct-2010 HBP - add cloning
-#$Revision: 1.18 $
+#          10-Jan-2011 HBP - merge histFile and skimFile into outputFile
+#$Revision: 1.19 $
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
 from string import *
@@ -80,7 +81,7 @@ TEMPLATE_H =\
 // Description: Analyzer header for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.18 $
+// $Revision: 1.19 $
 //-----------------------------------------------------------------------------
 
 // -- System
@@ -156,13 +157,29 @@ nameonly(std::string filename)
   return filename.substr(i+1,j-i-1);
 }
 //-----------------------------------------------------------------------------
-struct skimFile
+struct outputFile
 {
-  skimFile(itreestream& stream, std::string filename)
+  outputFile(std::string filename)
+   : filename_(filename),
+	 file_(new TFile(filename_.c_str(), "recreate")),
+	 tree_(0),
+	 b_weight_(0),
+	 entry_(0),
+	 SAVECOUNT_(50000)
+  {
+	file_->cd();
+	hist_ = new TH1F("counts", "", 1,0,1);
+	hist_->SetBit(TH1::kCanRebin);
+	hist_->SetStats(0);
+  }
+
+  outputFile(std::string filename, itreestream& stream, int savecount=50000) 
    : filename_(filename),
 	 file_(new TFile(filename.c_str(), "recreate")),
 	 tree_(stream.tree()->CloneTree(0)),
-	 b_weight_(0)
+	 b_weight_(tree_->Branch("eventWeight", &weight_, "eventWeight/D")),
+	 entry_(0),
+	 SAVECOUNT_(savecount)
   {
 	std::cout << "events will be skimmed to file "
 			  << filename_ << std::endl;
@@ -174,16 +191,16 @@ struct skimFile
 
   void addEvent(double weight=1)
   {
+    if ( tree_ == 0 ) return;
+	
     weight_ = weight;
 	file_   = tree_->GetCurrentFile();
 	file_->cd();
-	
-	// dynamically add a weight branch to cloned tree
-	if ( b_weight_ == 0 )
-      {
-	    b_weight_ = tree_->Branch("eventWeight", &weight_, "eventWeight/D");
-	  }
 	tree_->Fill();
+
+	entry_++;
+	if ( entry_ %(percent)s SAVECOUNT_ == 0 )
+	  tree_->AutoSave("SaveSelf");
   }
 
   void count(std::string cond)
@@ -193,11 +210,15 @@ struct skimFile
   
   void close()
   {
-	std::cout << "==> events skimmed to file " << filename_ << std::endl;
-	file_ = tree_->GetCurrentFile();
+  	std::cout << "==> histograms saved to file " << filename_ << std::endl;
+    if ( tree_ != 0 )
+	  {
+	    std::cout << "==> events skimmed to file " << filename_ << std::endl;
+	    file_ = tree_->GetCurrentFile();
+	  }
 	file_->cd();
 	file_->Write("", TObject::kOverwrite);
-	hist_->Write("", TObject::kOverwrite);
+	file_->ls();
 	file_->Close();
   }
 
@@ -207,35 +228,17 @@ struct skimFile
   TH1F*  hist_;
   TBranch* b_weight_;
   double     weight_;
+  int    entry_;
+  int    SAVECOUNT_;
 };
 
 struct commandLine
 {
   std::string progname;
   std::string filelist;
-  std::string histfilename;
-  std::string skimfilename;
+  std::string outputfilename;
 };
 
-struct histogramFile
-{
-  histogramFile(std::string histfilename)
-   : filename_(histfilename),
-	 file_(new TFile(filename_.c_str(), "recreate")) 
-  {}
-
-  void close()
-  {
-	std::cout << "==> histograms saved to file " << filename_ << std::endl;
-	file_->cd();
-	file_->Write("", TObject::kOverwrite);
-	file_->ls();
-	file_->Close();
-  }
-
-  std::string filename_;
-  TFile* file_;
-};
 
 void
 decodeCommandLine(int argc, char** argv, commandLine& cl)
@@ -250,22 +253,13 @@ decodeCommandLine(int argc, char** argv, commandLine& cl)
 
   // 2nd (optional) command line argument
   if ( argc > 2 ) 
-	cl.histfilename = std::string(argv[2]);
+	cl.outputfilename = std::string(argv[2]);
   else
-	cl.histfilename = cl.progname + std::string("_histograms");
-
-  // 3rd (optional) command line argument
-  if ( argc > 3 ) 
-	cl.skimfilename = std::string(argv[3]);
-  else
-	cl.skimfilename = cl.progname + std::string("_skim");
+	cl.outputfilename = cl.progname + std::string("_histograms");
 
   // Make sure extension is ".root"
-  cl.histfilename = nameonly(cl.histfilename);
-  cl.histfilename += ".root";
-
-  cl.skimfilename = nameonly(cl.skimfilename);
-  cl.skimfilename += ".root";
+  cl.outputfilename = nameonly(cl.outputfilename);
+  cl.outputfilename += ".root";
 }
 
 // Read ntuple filenames from file list
@@ -313,7 +307,7 @@ TEMPLATE_CC =\
 // Description: Analyzer for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.18 $
+// $Revision: 1.19 $
 //-----------------------------------------------------------------------------
 #include "%(name)s.h"
 
@@ -356,9 +350,9 @@ int main(int argc, char** argv)
 
   TApplication app("analyzer", &argc, argv);
 
-  histogramFile hfile(cmdline.histfilename);
+  outputFile ofile(cmdline.outputfilename);
 
-  // Histograms
+  // Declare histograms
 
 
   //---------------------------------------------------------------------------
@@ -378,7 +372,7 @@ int main(int argc, char** argv)
 	}
 
   stream.close();
-  hfile.close();
+  ofile.close();
   return 0;
 }
 '''
@@ -389,55 +383,61 @@ PYTEMPLATELIB =\
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
 #  Author:      %(author)s
-#  $Revision: 1.18 $
+#  $Revision: 1.19 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from time import sleep
 from string import *
-from PhysicsTools.Mkntuple.AutoLoader import *
+#from PhysicsTools.Mkntuple.AutoLoader import *
 import os, sys, re
 # -----------------------------------------------------------------------------
 # -- Classes, procedures and functions
 # -----------------------------------------------------------------------------
-class skimFile:
-	def __init__(self, stream, filename):
-		print "events will be skimmed to file", filename
+class outputFile:
+
+	def __init__(self, filename, stream=None, savecount=50000):
+		if stream != None:
+		    print "events will be skimmed to file", filename
+		    self.tree = stream.tree().CloneTree(0)
+			self.weight = Double()
+			self.b_weight = self.tree.Branch("eventWeight", self.weight,
+											 "eventWeight/D")
+			self.SAVECOUNT = savecount
+		else:
+			self.tree = None
+			self.b_weight = None
+
+		self.entry = 0
+			
 		self.filename = filename
 		self.file = TFile(filename, "recreate")
-		self.tree = stream.tree().CloneTree(0)
+
 		self.hist = TH1F("counts", "", 1, 0, 1)
 		self.hist.SetBit(TH1.kCanRebin)
 		self.hist.SetStats(0)
+
 		self.b_weight = 0
 
-	def addEvent(self, weight=-1.0):
+	def addEvent(self, weight=1.0):
+		if self.tree == None: return
+		
 		self.file = self.tree.GetCurrentFile()
 		self.file.cd()
-		if weight > -1:
-			if self.b_weight == 0:
-				self.weight = Double()
-				self.b_weight = self.tree.Branch("eventWeight", self.weight,
-												 "eventWeight/D")
 		self.tree.Fill()
 
+		self.entry += 1		
+		if self.entry %(percent)s self.SAVECOUNT == 0:
+			self.tree.AutoSave("SaveSelf")
+				
 	def count(self, cond):
 		self.hist.Fill(cond, 1)
 		
 	def close(self):
-		print "==> events skimmed to file", self.filename
-		self.file = self.tree.GetCurrentFile()
-		self.file.cd()
-		self.file.Write("", TObject.kOverwrite)
-		self.hist.Write("", TObject.kOverwrite)
-		self.file.Close()
-# -----------------------------------------------------------------------------
-class histogramFile:
-	def __init__(self, histfilename):
-		self.filename = histfilename
-		self.file = TFile(self.filename, "recreate")
-
-	def close(self):
 		print "==> histograms saved to file", self.filename
+		if self.tree != None:			
+			print "==> events skimmed to file", self.filename
+			self.file = self.tree.GetCurrentFile()
+			
 		self.file.cd()
 		self.file.Write("", TObject.kOverwrite)
 		self.file.ls()
@@ -460,21 +460,14 @@ def decodeCommandLine():
 		cl.filelist = "filelist.txt"
 
 	if argc > 2: 
-		cl.histfilename = argv[2] # 2nd (optional) command line argument
+		cl.outputfilename = argv[2] # 2nd (optional) command line argument
 	else:
-		cl.histfilename = cl.progname + "_histograms"
-
-	if argc > 3:
-		cl.skimfilename = argv[3]
-	else:
-		cl.skimfilename = cl.progname + "_skim"
+		cl.outputfilename = cl.progname + "_histograms"
 
 	# Make sure extension is ".root"
-	cl.histfilename = os.path.basename(cl.histfilename)
-	cl.histfilename = split(cl.histfilename, ".")[0] + ".root"
+	cl.outputfilename = os.path.basename(cl.outputfilename)
+	cl.outputfilename = split(cl.outputfilename, ".")[0] + ".root"
 
-	cl.skimfilename = os.path.basename(cl.skimfilename)
-	cl.skimfilename = split(cl.skimfilename, ".")[0] + ".root"
 	return cl
 # -----------------------------------------------------------------------------
 def error(message):
@@ -627,7 +620,7 @@ PYTEMPLATE =\
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
 #  Author:      %(author)s
-#  $Revision: 1.18 $
+#  $Revision: 1.19 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from string import *
@@ -650,7 +643,7 @@ def main():
 	# -------------------------------------------------------------------------
 	setStyle()
 
-	hfile = histogramFile(cmdline.histfilename)
+	ofile = outputFile(cmdline.outputfilename)
 
 	# -------------------------------------------------------------------------
 	# Loop over events
@@ -662,7 +655,7 @@ def main():
 		#if not SUSY: continue
 
 	stream.close()
-	hfile.close()
+	ofile.close()
 # -----------------------------------------------------------------------------
 main()
 '''
@@ -680,7 +673,7 @@ MAKEFILE = '''#-----------------------------------------------------------------
 #                 verbose    (e.g., verbose=1)
 #                 withcern   (e.g., withcern=1  expects to find CERN_LIB)
 # Author:      %(author)s
-#$Revision: 1.18 $
+#$Revision: 1.19 $
 #------------------------------------------------------------------------------
 ifndef ROOTSYS
 $(error *** Please set up Root)
@@ -785,7 +778,7 @@ clean   	:
 	rm -rf tmp/*.o $(program)
 '''
 
-README = '''$Revision: 1.18 $
+README = '''$Revision: 1.19 $
 Created: %(time)s
 
     o To build the default program (%(name)s) do
@@ -811,7 +804,7 @@ Created: %(time)s
 
 	  ./%(name)s datafile.list
 
-	If you wish to change the name of the histogram output file, say
+	If you wish to change the name of the root output file, say
 	datahist.root, do
 
 	   ./%(name)s datafile.list datahist.root
@@ -822,6 +815,14 @@ For details, please refer to the documentation at:
 	https://twiki.cern.ch/twiki/bin/viewauth/CMS/TheNtupleMaker
 	
 '''
+#------------------------------------------------------------------------------
+def cmp(x, y):
+	if len(y) < len(x):
+		return -1
+	elif len(y) == len(x):
+		return 0
+	else:
+		return 1
 #------------------------------------------------------------------------------
 def main():
 	print "\n\tmkanalyzer.py"
@@ -868,8 +869,69 @@ def main():
 			start += 1
 
    	# Done with header, so loop over branch names
+	# and try to determine which fields should form structs
+	# The basic algorithm is to find the longest common prefixes
 	records = records[start:]
+
+	varnames = []  # Complete list of variables
+	for index in xrange(len(records)):
+		record = records[index]
+		if record == "": continue
+
+		# split record into its fields
+		# varname = variable name as determined by mkvariables.py
+		
+		rtype, branchname, varname, count = split(record, '/')
+		varnames.append(varname)
+	varnames.sort()
+
+	# Determine list structs
+	previous = split(varnames[0],'_')
+	namen = []
+	index = 1
+	while index < len(varnames):
+		current = split(varnames[index],'_')
+		n = len(current)
+		i = 1
+		currentname = ''
+		while i <= n:
+			if current[:i] == previous[:i]:
+				currentname = joinfields(current[:i], '_')
+			else:
+				break
+			i += 1
+		if currentname != '':
+			namen.append(currentname)
+		previous = current
+		index += 1
+
+	# prune list of names
+	namemap = {}
+	for i, name in enumerate(namen[1:-1]):
+		j = i + 1
+		if name != namen[j-1]:
+			if name != namen[j+1]:
+				continue
+		if not namemap.has_key(name):
+			namemap[name] = 0
+		namemap[name] += 1
+
+	# make search string for struct names
+	keys = namemap.keys()
+	keys.sort(cmp)
+## 	for key in keys:
+## 		print key
+	#sys.exit(0)
+	cmd = joinfields(keys,'|')
+	strname = re.compile(cmd)
+
+
+	# Loop over branch names
 	
+	# If a variable name matches a struct name, this will generate a
+	# multiply defined error. One of the names must be altered. Let's
+	# take this to be the variable name.
+
 	for index in xrange(len(records)):
 		record = records[index]
 		if record == "": continue
@@ -881,15 +943,30 @@ def main():
 			rtype = "long"
 		elif rtype == "int32":
 			rtype = "int"
+		elif rtype == "uchar":
+			rtype = "int"
+		elif rtype == "uint":
+			rtype = "int"			
 
-		# Get object and field names
-		t = split(varname,'_')
-		objname = t[0]                    # object name
-		if len(t) > 1:
-			fldname = joinfields(t[1:],'_')   # field name
-		else:
-			fldname = ''
+		# Check varname
+		if namemap.has_key(varname):
+			print "\t**warning: multiply defined name, %s; changing " % varname
+			print "\t           varname to %s1" % varname
+			varname = "%s1" % varname
 			
+		# Get object and field names
+		t = strname.findall(varname)
+		if len(t) > 0:
+			objname = t[0]
+			fldname = replace(varname, '%s_' % objname, '')
+		else:
+			objname = ''
+			fldname = ''
+
+## 		#DD
+## 		if objname != '':
+## 			print "%s.%s" % (objname, fldname)
+		
 		# Check for leaf counter flag (a "*")
 		t = split(count)
 		count = atoi(t[0])
@@ -915,9 +992,13 @@ def main():
 		# vector types must have the same object name and a max count > 1
 		if count > 1:
 			if fldname != "":
+
+				# Make sure fldname is valid			
+				if fldname[0] in ['0','1','2','3','4','5','6','7','8','9']:
+					fldname = 'f%s' % fldname
+		
 				if not vectormap.has_key(objname): vectormap[objname] = []	
 				vectormap[objname].append((rtype, fldname, varname, count))
-	
 
 	# Declare all variables
 	
@@ -934,13 +1015,6 @@ def main():
 		# If this is a counter variable with a name identical to that of a
 		# vector variable, ignore it
 		if iscounter and vectormap.has_key(varname): continue
-
-		if rtype == "bool":
-			rtype = "int"
-		elif rtype == "long64":
-			rtype = "long"
-		elif rtype == "int32":
-			rtype = "int"
 
 		if count == 1:
 			declare.append("%s\t%s;" % (rtype, varname))
@@ -986,7 +1060,7 @@ def main():
 				cast = '(bool)'
 			else:
 				cast = ''
-
+			
 			structdecl.append('  %s\t%s;' % (rtype, fldname))
 
 			structimpl.append('      %s[i].%s\t= %s%s[i];' % (objname,
@@ -1054,16 +1128,16 @@ def main():
 	# Create C++ code
 
 	outfilename = "%s/%s.h" % (filename, filename)
-	names = {'name': filename,
-			 'treename': treename,
-			 'NAME': upper(filename),
+	names = {'NAME': upper(filename),
+			 'name': filename,
 			 'time': ctime(time()),
+			 'author': AUTHOR,
 			 'vardecl': join("", declare, "\n"),
 			 'selection': join("  ", select, "\n"),
-			 'author': AUTHOR,
 			 'structdecl': join("", structdecl, "\n"),
-			 'structimpl': join("", structimpl, "\n")
-			 }
+			 'structimpl': join("", structimpl, "\n"),
+			 'treename': treename,
+			 'percent': '%' }
 
 	record = TEMPLATE_H % names
 	open(outfilename,"w").write(record)
@@ -1084,6 +1158,7 @@ def main():
 	outfilename = "%s/%slib.py" % (filename, filename)
 	names = {'name': filename,
 			 'treename': treename,
+			 'percent': '%',
 			 'time': ctime(time()),
 			 'selection': s,
 			 'author': AUTHOR,

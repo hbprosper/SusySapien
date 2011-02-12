@@ -2,9 +2,9 @@
 #define RGS_H
 //////////////////////////////////////////////////////////////////////////////
 // File:    RGS.h
-// Purpose: Implement Random Grid Search algorithm to find optimal cuts.
+// Purpose: Declaration of RGS classes
 // Created: 18-Aug-2000 Harrison B. Prosper, Chandigarh, India
-//$Revision: 1.1 $
+//$Revision: 1.2 $
 //////////////////////////////////////////////////////////////////////////////
 #ifdef __WITH_CINT__
 #include "TObject.h"
@@ -15,6 +15,7 @@
 #include <map>
 #include <algorithm>
 #include <iomanip>
+#include "TFile.h"
 
 typedef std::vector<int>     vint;
 typedef std::vector<vint>    vvint;
@@ -40,12 +41,12 @@ typedef std::map< std::string, int >  varmap;
 static vdouble  vdNULL;
 
 
-bool slurpTable(std::string filename,
-                std::vector<std::string>& header, 
-                std::vector<std::vector<double> >& data,
-                int start=0,
-                int count=0,
-                bool extend=false);
+bool slurp_table(std::string filename,
+                 std::vector<std::string>& header, 
+                 std::vector<std::vector<double> >& data,
+                 int start=0,
+                 int count=0,
+                 bool extend=false);
 
 std::string rgsversion();
 ///
@@ -71,7 +72,7 @@ public:
             int start=0, 
             int numrows=0,       // Read all rows  
             std::string weightname="Weight");
-
+  
   /// Add one or more data files.
   void  add(std::vector<std::string>& datafilename,
             int start=0, 
@@ -104,11 +105,11 @@ public:
   /// Return number of events for specified data file.
   int       ndata(int dataindex);
 
-  /// Return values for data given data file and event.
+  /// Return values for data a given data file and event.
   vdouble&  data(int dataindex, int event);
 
-  /// Save counts and cuts to a Root tree (RGS)
-  void      save(std::string filename, double lumi=1);
+  /// Save counts to a root file
+  TFile*    save(std::string filename, double lumi=1);
   
 private:
 

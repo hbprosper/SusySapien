@@ -115,7 +115,7 @@ example()
 
   int nbins = 100;
   double bmax = 0.05;
-  double smax = 0.5;
+  double smax = 0.25;
 
   int nh = 5;
   TH2F* hrgs[5];
@@ -209,21 +209,20 @@ example()
     }
   out.close();
 
+  // Save results to a root file
+  TFile* rfile = rgs.save("rgs.root");
 
-  TFile* file = new TFile("rgshist.root","RECREATE");  
   crgs->cd();
   hrgs[0]->Draw();
   for(int j=1; j < nh; j++)
     {
       hrgs[j]->Draw("same");
-      hrgs[j]->Write();
+      hrgs[j]->Write("", TObject::kOverwrite);
     }
   crgs->Update();
   crgs->SaveAs(".gif");
   crgs->Write();
-  file->Close();
-  
-  gSystem->Sleep(10000);
+  gSystem->Sleep(5000);
   exit(0);
 }
 
