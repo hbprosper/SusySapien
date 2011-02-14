@@ -32,6 +32,7 @@
 //-----------------------------------------------------------------------------
 #include <iostream>
 #include <cmath>
+#include <stdlib.h>
 #ifdef PROJECT_NAME
 #include "PhysicsTools/Mkntuple/interface/PoissonGammaFit.h"
 #else
