@@ -1,0 +1,26 @@
+v4_1_2:	Feb. 17 2011
+--------------------
+	1. Merged histogramFile and skimFile into outputFile:
+
+	Call
+		outputFile(cmdline.outputfilename)
+
+	to write out histograms only and
+
+		outputFile(cmdline.outputfilename, stream)
+
+	to write out histograms and a tree containing skimmed events.
+
+
+	2. Added GenEventInfoProductHelper.
+
+	This returns 45 PDF weights per event
+		0	central value of PDFs
+		1..	shifted values (1 to 44 for GTEQ)
+
+	See genlevel.py in PhysicsTools/Mkntuple/python for example of usage.
+
+
+	3. Make mkvariables.py work on a larger class of simple ntuples
+
+

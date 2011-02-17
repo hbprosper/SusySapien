@@ -4,7 +4,7 @@
 // Description: Mkntuple helper class for GenEventInfoProduct
 // Created:     Wed Feb 16 01:43:26 2011
 // Author:      Harrison B. Prosper      
-//$Revision: 1.11 $
+//$Revision: 1.1 $
 //-----------------------------------------------------------------------------
 #include <stdlib.h>
 #include "PhysicsTools/Mkntuple/interface/GenEventInfoProductHelper.h"
@@ -103,7 +103,6 @@ void GenEventInfoProductHelper::analyzeObject()
 // -- Access Methods
 double GenEventInfoProductHelper::pdfweight()  const
 {
-  cout << "PDFWeight: " << index << "\t" << pdfweight_[index] << endl;
   if ( index <= npdfset_ )
     return  pdfweight_[index];
   else
