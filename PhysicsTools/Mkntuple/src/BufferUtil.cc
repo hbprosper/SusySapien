@@ -5,7 +5,8 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Sep 19 HBP move initBuffer from Buffer.h
-// $Id: BufferUtil.cc,v 1.3 2010/10/05 11:22:49 prosper Exp $
+//                   Thu Feb 17 HBP change definition of isArray (maxcount > 1)
+// $Id: BufferUtil.cc,v 1.4 2010/10/11 02:15:31 prosper Exp $
 //-----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python/type_id.hpp>
@@ -103,15 +104,15 @@ void initializeBuffer(otreestream& out,
   // to and from vectors ourselves.
 
   // If we have a vector variable, create a counter variable for it.
-  // Root calls this a "leaf counter". 
-  //
-  // There is one exception however: if a helper class for a collection object,
-  // say a collection of pat::Jets, maps these objects to a single instance of
-  // each variable, for example to HT, we shall assume that the n-tuple 
-  // variable is to be a simple non-array type.
+  // Root calls this a "leaf counter". A vector variable is generally a
+  // collection. However, a helper for a singleton object could expand
+  // into a vector variable. Likewise, a helper class for a collection object,
+  // say a collection of pat::Jets, could map these objects to a single 
+  // instance of each variable, for example to HT. If so, we shall assume 
+  // that the n-tuple variable is to be a simple non-array type.
 
-  bool isArray = !singleton && maxcount > 1; 
-
+  //bool isArray = !singleton && maxcount > 1; 
+  bool isArray = maxcount > 1; 
   std::string counter("");
   if ( isArray )
     {

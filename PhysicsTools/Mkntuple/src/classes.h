@@ -1,4 +1,4 @@
-//$Revision: 1.10 $
+//$Revision: 1.11 $
 #include "PhysicsTools/Mkntuple/interface/Connection.h"
 #include "PhysicsTools/Mkntuple/interface/Slot.h"
 #include "PhysicsTools/Mkntuple/interface/pdg.h"
@@ -28,6 +28,8 @@
 #include <string>
 #include <fstream>
 #include "PhysicsTools/Mkntuple/interface/L1GlobalTriggerReadoutRecordHelper.h"
+#include "PhysicsTools/Mkntuple/interface/GenEventInfoProductHelper.h"
+
 
 //-----------------------------------------------------------------------------
 
@@ -52,5 +54,6 @@ namespace {
   HelperFor<edm::TriggerResults> h3;
   HelperFor<edm::Event> h4;
   HelperFor<L1GlobalTriggerReadoutRecord> t_L1GlobalTriggerReadoutRecordHelper;
+  HelperFor<GenEventInfoProduct> t_GenEventInfoProductHelper;
 }
 

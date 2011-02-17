@@ -47,7 +47,7 @@
 //                   Sun Jun 06 HBP - add variables.txt file
 //                   Sun Nov 07 HBP - add event setup to fill
 //
-// $Id: Mkntuple.cc,v 1.23 2010/10/13 13:25:10 prosper Exp $
+// $Id: Mkntuple.cc,v 1.24 2010/11/08 11:00:36 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -65,7 +65,8 @@
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/FWLite/interface/AutoLibraryLoader.h"
- 
+#include "FWCore/MessageLogger/interface/MessageLogger.h"
+
 #include "PhysicsTools/Mkntuple/interface/treestream.h"
 #include "PhysicsTools/Mkntuple/interface/kit.h"
 #include "PhysicsTools/Mkntuple/interface/pluginfactory.h"
@@ -115,19 +116,32 @@ private:
   std::string varscmd_;
   std::string boolcmd_;
   std::string selectorcmd_;
+
+  int count_;
+  int imalivecount_;
+  int logger_;
+  bool haltlogger_;
+  
+  TTree* ptree_;
+  int inputCount_;
 };
 
 
 Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   : output(otreestream(iConfig.getUntrackedParameter<string>("ntupleName"), 
                        "Events", 
-                       "created by Mkntuple $Revision: 1.23 $")),
+                       "created by Mkntuple $Revision: 1.24 $")),
     logfilename_("Mkntuple.log"),
     log_(new std::ofstream(logfilename_.c_str())),
     selectorname_(""),
     varscmd_(""),
     boolcmd_(""),
-    selectorcmd_("")
+    selectorcmd_(""),
+    count_(0),
+    imalivecount_(1000),
+    logger_(0),
+    haltlogger_(false),
+    inputCount_(0)
 {
   cout << "\nBEGIN Mkntuple" << endl;
 
@@ -135,27 +149,46 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   // Add a provenance tree to ntuple
   // --------------------------------------------------------------------------
   TFile* file = output.file();
-  TTree* tree = new TTree("Provenance","created by Mkntuple $Revision: 1.23 $");
+  ptree_ = new TTree("Provenance","created by Mkntuple $Revision: 1.24 $");
   string cmsver = kit::strip(kit::shell("echo $CMSSW_VERSION"));
-  tree->Branch("cmssw_version", (void*)(cmsver.c_str()), "cmssw_version/C");
+  ptree_->Branch("cmssw_version", (void*)(cmsver.c_str()), "cmssw_version/C");
 
   time_t tt = time(0);
   string ct(ctime(&tt));
-  tree->Branch("date", (void*)(ct.c_str()), "date/C");
+  ptree_->Branch("date", (void*)(ct.c_str()), "date/C");
 
   string hostname = kit::strip(kit::shell("echo $HOSTNAME"));
-  tree->Branch("hostname", (void*)(hostname.c_str()), "hostname/C");
+  ptree_->Branch("hostname", (void*)(hostname.c_str()), "hostname/C");
 
   string username = kit::strip(kit::shell("echo $USER"));
-  tree->Branch("username", (void*)(username.c_str()), "username/C");
+  ptree_->Branch("username", (void*)(username.c_str()), "username/C");
+
+  ptree_->Branch("inputcount", &inputCount_, "inputcount/I");
 
   // Ok, fill this branch
   file->cd();
-  tree->Fill();
+  ptree_->Fill();
 
   // --------------------------------------------------------------------------
   // Cache configuration 
   Configuration::instance().set(iConfig);
+
+  // Get optional configuration parameters
+
+  try
+    {
+      imalivecount_ = iConfig.getUntrackedParameter<int>("imaliveCount");
+    }
+  catch (...)
+    {}
+
+  try
+    {
+      logger_ = iConfig.getUntrackedParameter<int>("loggerCount");
+      haltlogger_ = logger_ >= 0;
+    }
+  catch (...)
+    {}
 
   // Get optional analyzer name
   try
@@ -242,7 +275,7 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   vector<string> vrecords = iConfig.
     getUntrackedParameter<vector<string> >("buffers");
 
-  boost::regex getmethod("[a-zA-Z][^ ]*[(].*[)][^ ]*");
+  boost::regex getmethod("[a-zA-Z][^ ]*[(].*[)][^ ]*|[a-zA-Z]+$");
   boost::smatch matchmethod;
 
   for(unsigned ii=0; ii < vrecords.size(); ii++)
@@ -442,6 +475,25 @@ void
 Mkntuple::analyze(const edm::Event& iEvent, 
                   const edm::EventSetup& iSetup)
 {
+  count_++;
+  if ( count_ % imalivecount_ == 0 )
+    cout << "\t=> event count: " << count_ << endl;
+
+  // Ok, fill this branch
+  TFile* file = output.file();
+  inputCount_++;
+  file->cd();
+  ptree_->Fill();
+
+  if ( haltlogger_ )
+    {
+      if ( count_ >= logger_ )
+        {
+          haltlogger_ = false;
+          edm::HaltMessageLogging();
+        }
+    }
+
   // Cache current event
 
   CurrentEvent::instance().set(iEvent, iSetup);

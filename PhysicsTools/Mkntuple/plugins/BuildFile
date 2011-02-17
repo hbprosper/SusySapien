@@ -27,6 +27,7 @@
 <use name=rootrflx>
 <use name=rootminuit>
 <use name=rootmath>
+<use name=lhapdf>
 <use name=f77compiler>
 
 <library file=plugins.cc name=plugins>
@@ -46,5 +47,8 @@
 </library>
 
 <library file=userplugin_L1GlobalTriggerReadoutRecordHelper.cc name=userplugin_L1GlobalTriggerReadoutRecordHelper>
+<flags EDM_PLUGIN=1>
+</library>
+<library file=userplugin_GenEventInfoProductHelper.cc name=userplugin_GenEventInfoProductHelper>
 <flags EDM_PLUGIN=1>
 </library>

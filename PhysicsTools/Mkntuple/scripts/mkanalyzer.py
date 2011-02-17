@@ -10,7 +10,7 @@
 #          01-Oct-2010 HBP - add structs
 #          02-Oct-2010 HBP - add cloning
 #          10-Jan-2011 HBP - merge histFile and skimFile into outputFile
-#$Revision: 1.19 $
+#$Revision: 1.20 $
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
 from string import *
@@ -81,7 +81,7 @@ TEMPLATE_H =\
 // Description: Analyzer header for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.19 $
+// $Revision: 1.20 $
 //-----------------------------------------------------------------------------
 
 // -- System
@@ -203,9 +203,9 @@ struct outputFile
 	  tree_->AutoSave("SaveSelf");
   }
 
-  void count(std::string cond)
+  void count(std::string cond, int w=1)
   {
-    hist_->Fill(cond.c_str(), 1);
+    hist_->Fill(cond.c_str(), w);
   }
   
   void close()
@@ -307,7 +307,7 @@ TEMPLATE_CC =\
 // Description: Analyzer for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.19 $
+// $Revision: 1.20 $
 //-----------------------------------------------------------------------------
 #include "%(name)s.h"
 
@@ -383,7 +383,7 @@ PYTEMPLATELIB =\
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
 #  Author:      %(author)s
-#  $Revision: 1.19 $
+#  $Revision: 1.20 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from time import sleep
@@ -429,8 +429,8 @@ class outputFile:
 		if self.entry %(percent)s self.SAVECOUNT == 0:
 			self.tree.AutoSave("SaveSelf")
 				
-	def count(self, cond):
-		self.hist.Fill(cond, 1)
+	def count(self, cond, w=1):
+		self.hist.Fill(cond, w)
 		
 	def close(self):
 		print "==> histograms saved to file", self.filename
@@ -620,7 +620,7 @@ PYTEMPLATE =\
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
 #  Author:      %(author)s
-#  $Revision: 1.19 $
+#  $Revision: 1.20 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from string import *
@@ -673,7 +673,7 @@ MAKEFILE = '''#-----------------------------------------------------------------
 #                 verbose    (e.g., verbose=1)
 #                 withcern   (e.g., withcern=1  expects to find CERN_LIB)
 # Author:      %(author)s
-#$Revision: 1.19 $
+#$Revision: 1.20 $
 #------------------------------------------------------------------------------
 ifndef ROOTSYS
 $(error *** Please set up Root)
@@ -778,7 +778,7 @@ clean   	:
 	rm -rf tmp/*.o $(program)
 '''
 
-README = '''$Revision: 1.19 $
+README = '''$Revision: 1.20 $
 Created: %(time)s
 
     o To build the default program (%(name)s) do
