@@ -14,8 +14,10 @@
 //              D is a vector of M observed counts (that is, over M bins)
 //              p is a vector of N parameters (that is, over N sources)
 //              A is a vector of vectors of size N x M counts.
+//              f is a vector of vectors of size N x M scale factors.
 //
 // Created: 27-Jun-2005 Harrison B. Prosper
+//          19-Feb-2011 HBP add add(..)
 ///////////////////////////////////////////////////////////////////////////////
 #include <vector>
 
@@ -26,6 +28,11 @@ typedef std::vector<std::vector<double> > vvdouble;
 #include "TObject.h"
 #endif
 
+namespace {  
+  vdouble   vNULL;
+  vvdouble vvNULL;
+}
+
 /** Fit Poisson/gamma model to data.
     The data consists of a sequence of \f$i = 1 \ldots M\f$ counts 
     \f$D_i\f$ (i.e., a histogram),
@@ -35,7 +42,7 @@ typedef std::vector<std::vector<double> > vvdouble;
     \f$A_{ji}\f$ that describe the ``shapes" of the \f$N\f$ sources.
     In other words, given a data histogram \f$D\f$ and \f$N\f$ histograms 
     \f$A_j = A_{j1}, \ldots, A_{jM}\f$, one for each source \f$j\f$, 
-    we want to find the yield of each. This class solves the
+    we wish to find the yield of each. This class solves the
     problem using a Bayesian approach \ref bayes1 "[1]".
 <p>
     <b>Model</b>
@@ -84,9 +91,23 @@ typedef std::vector<std::vector<double> > vvdouble;
     Jeffreys prior\ref bayes2 "[2]",
 which leads to the replacement of
     \f$A_{ji}\f$ with \f$A_{ji}-1/2\f$. For most practical applications, 
-    however, this will not make much of a difference.
+    however, this will not make much of a difference. 
     <p>
-    <b>Example</b>
+    <b>Weighted histograms</b>
+    <p>
+    For weighted histograms, the Baysian fit requires the specification of
+    the uncertainty \f$\delta A_{ji}\f$ associatd with the estimate 
+    \f$A_{ji}\f$ since we can no longer assume the uncertainty is 
+    \f$\sqrt{a_{ji}}\f$. 
+    Internally, each count \f$A_{ji}\f$ is scaled by the  
+    factor
+    \f$f_{ji} = (A_{ji} / \delta A_{ji} )^2\f$ so that the 
+    relative uncertainty in
+    the effective bin count \f$A_{ji, eff} = f_{ji} A_{ji}\f$ matches 
+    \f$\delta A_{ji} / A_{ji}\f$. In the limit 
+    \f$f_{ji} \rightarrow \infty\f$, as 
+    expected, the marginal likelihood becomes the same as the likelihood with
+    \f$a_{ji}\f$ replaced by \f$A_{ji}\f$.
 
 <p>
 <b>References</b>
@@ -132,7 +153,7 @@ class PoissonGammaFit
   bool       good();
 
   /// Add a source
-  void       add(vdouble& source);
+  void       add(vdouble& A, vdouble& dA=vNULL);
 
   /// Execute the fit.
   bool       execute(std::vector<double>& guess);
@@ -166,12 +187,11 @@ class PoissonGammaFit
 
  private:
 
-  vvdouble _A;
   vdouble  _D;
+  vvdouble _A;
+  vvdouble _f;
   bool     _scale;
   int      _verbosity;
-
-  vvdouble _a;
   
   int      _N;
   int      _M;
@@ -195,7 +215,14 @@ class PoissonGammaFit
  public:
   ClassDef(PoissonGammaFit, 1)
 #endif
-
 };
+
+double 
+poissongamma(vdouble&   D,         // Observed counts
+             vdouble&	p,         // Weights "p_j" 
+             vvdouble&	A,         // Counts  "A_ji" for up to 10 sources
+             vvdouble&	f=vvNULL,  // Scale factors associated with counts
+             bool returnlog=false, // return log(P) if true
+             bool scale=true);     // Scale p_j if true  
 
 #endif

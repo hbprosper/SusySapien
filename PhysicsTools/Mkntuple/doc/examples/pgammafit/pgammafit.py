@@ -33,12 +33,14 @@ vdouble = vector("double")
 #------------------------------------------------------------------------------
 def unfoldContents(h):
 	c = vdouble()
+	e = vdouble()
 	for i in range(h.GetNbinsX()):
 		binx = i+1
 		for j in range(h.GetNbinsY()):
 			biny = j+1
 			c.push_back( h.GetBinContent(binx, biny) )
-	return c
+			e.push_back( h.GetBinError(binx, biny) )
+	return (c, e)
 
 def setContents(h, c):
 	for i in range(h.GetNbinsX()):
@@ -210,13 +212,13 @@ def main():
 	canvas.cd()
 	hdata.Draw("lego2")
 	canvas.Update()
-	sleep(1)
+	sleep(0.5)
 	
 	# Get data distribution. Since it is 2-d,
 	# unfold into a 1-d vector, D, create a 1-d histogram and plot it
 
 	# 1. Unfold 2-d histogram into a 1-D vector, D
-	D = unfoldContents(hdata)
+	D, dD = unfoldContents(hdata)
 
 	# 2. Create 1-d histogram
 	h1d = []
@@ -227,28 +229,30 @@ def main():
 	canvas.cd()
 	h1d[-1].Draw("EP")
 	canvas.Update()
-	sleep(1)
+	sleep(0.5)
 				
 	# Get distribution of sources, also unfold into 1-d vectors, A[j]
 
 	h = []
 	A = [] # vector<vector<double> >
+	dA= [] # vector<vector<double> >
 	for i, source in enumerate(sources):
 		h.append( hcache.histogram(hname[i]) ) # get histogram
 		canvas.cd()
 		h[-1].Draw("lego2")
 		canvas.Update()
-		sleep(1)
+		sleep(0.5)
 
-		A.append( unfoldContents(h[-1]) )
+		A.append(unfoldContents(h[-1]))
+
 		h1d.append( histogram("%s1d" % hname[i],
 							  hname[i], "", len(D), 0, len(D)) )
-		setContents(h1d[-1], A[i])
+		setContents(h1d[-1], A[i][0])
 		h1d[-1].SetFillColor(i+1)
 		canvas.cd()
 		h1d[-1].Draw()
 		canvas.Update()
-		sleep(1)
+		sleep(0.5)
 
 	# Construct a PoissonGamma object and fit...
 	
@@ -257,9 +261,9 @@ def main():
 	
 	print "Fit..."
 	pgfit = PoissonGammaFit(D)
-	for a in A:
-		pgfit.add(a) # add a source
-
+	for a, da in A:
+		pgfit.add(a, da) # add a source
+										  
 	# do fit
 	guess = vdouble(len(sources), total/3)
 	pgfit.execute(guess)

@@ -29,19 +29,19 @@
 //
 // Created:     27-Jun-2005 Harrison B. Prosper
 // Updated:     06-Feb-2006 HBP Adapt for use in Root
+//              19-Feb-2011 HBP generalize to handle weighted events
 //-----------------------------------------------------------------------------
 #include <iostream>
 #include <cmath>
 #include <stdlib.h>
-
 #ifdef PROJECT_NAME
 #include "PhysicsTools/Mkntuple/interface/PoissonGammaFit.h"
 #else
 #include "PoissonGammaFit.h"
 #endif
 
-#include <TMinuit.h>
-#include <TMatrix.h>
+#include "TMinuit.h"
+#include "TMatrix.h"
 
 #ifdef __WITH_CINT__
   ClassImp(PoissonGammaFit)
@@ -51,20 +51,9 @@ using namespace std;
 
 //-----------------------------------------------------------------------------
 
-typedef std::vector<float> vfloat;
-typedef std::vector<double> vdouble;
-
-double 
-poissongamma(vdouble&	p,    // Weights "p_j" 
-             vvdouble&	a,    // Counts  "A_ji" for up to 10 sources
-             vdouble&	d,    // Counts  "D_i" for data.
-             bool returnlog=false,  // return log(P) if true
-             bool scale=true);     // Scale p_j if true  
-
 static PoissonGammaFit* fitobject=0;
 namespace
 {
-
   void logLike(int&    npar, 
                double* grad, 
                double& fval,
@@ -82,7 +71,7 @@ namespace
     return fitobject->logLikelihood(point);
   }
   const int MAXITER=10000;
-  const int MAXSRCS=10;
+  const int MAXSRCS=6; // Maximum number of sources
 }
 
 //-----------------------------------------------------------------------------
@@ -90,7 +79,7 @@ namespace
 //-----------------------------------------------------------------------------
 PoissonGammaFit::PoissonGammaFit() {}
 
-PoissonGammaFit::PoissonGammaFit(vdouble&	D,  // Counts  "D_i" for data.
+PoissonGammaFit::PoissonGammaFit(vdouble& D,  // Counts  "D_i" for data.
                                  bool scale,
                                  int verbosity)
   : _D(D), _scale(scale), _verbosity(verbosity)
@@ -118,10 +107,26 @@ PoissonGammaFit::PoissonGammaFit(vdouble&	D,  // Counts  "D_i" for data.
 }
 
 void 
-PoissonGammaFit::add(vector<double>& source)
+PoissonGammaFit::add(vector<double>& A, vector<double>& dA)
 {
-  _A.push_back(source);
-  _a.push_back(source);
+  // Compute scale factors
+  vector<double> f(A.size(), 1); // default scale factor
+  if ( dA.size() == A.size() )
+    {
+      for(unsigned int i=0; i < A.size(); ++i)
+        {
+          double Aeff = A[i];
+          if ( dA[i] > 0 )
+            {
+              double y = A[i] / dA[i];
+              Aeff = y * y;
+            }
+          f[i] = Aeff / A[i];
+        }
+    }
+
+  _A.push_back(A);
+  _f.push_back(f);
 }
 
 bool
@@ -184,7 +189,7 @@ double
 PoissonGammaFit::logLikelihood(vdouble& p)
 {
   for(int i=0; i < _N; i++) if (p[i] < 0) return 0;
-  return poissongamma(p, _A, _D, true);
+  return poissongamma(_D, p, _A, _f, true);
 }
 
 double 
@@ -192,7 +197,7 @@ PoissonGammaFit::logLikelihood(double* point)
 {
   vdouble p(_N);
   copy(point, point+_N, p.begin());
-  return poissongamma(p, _A, _D, true);
+  return poissongamma(_D, p, _A, _f, true);
 }
 
 bool 
@@ -244,12 +249,12 @@ PoissonGammaFit::_findmode(vector<double>& guess)
     {
       char name[80]; sprintf(name,"x%d", i);
       if ( (int)guess.size() == _N )
-	{
-	  x    = guess[i];
-	  step = x / 1000;
-	  minx = 0;
-	  maxx = 10 * x;
-	}
+        {
+          x    = guess[i];
+          step = x / 1000;
+          minx = 0;
+          maxx = 10 * x;
+        }
       minuit.mnparm(i, name, x, step, minx, maxx, ierflag);
     }
 
@@ -305,7 +310,7 @@ PoissonGammaFit::_findmode(vector<double>& guess)
 
 ///////////////////////////////////////////////////////////////////////////////
 // File:	poissongamma.cc
-// Description:	x = poissongamma(p,a,d)
+// Description:	x = poissongamma(D,p,A,f)
 // 
 //              compute the marginal likelihood:
 //              a product of Poisson distributions
@@ -317,6 +322,7 @@ PoissonGammaFit::_findmode(vector<double>& guess)
 // 
 //              D_i  is count corresponding to true mean d_i
 //              A_ji is count corresponding to true mean a_ji
+//              f_ji is an optional scale factor associated with A_ji
 //
 //              D is a vector of M observed counts (that is, over M bins)
 //              p is a vector of N parameters (that is, over N sources)
@@ -343,43 +349,48 @@ PoissonGammaFit::_findmode(vector<double>& guess)
 //              11-Mar-2004 HBP add additional interfaces
 //              07-Jun-2005 HBP increase number of sources to 10! See warning
 //                          above.
+//              19-Feb-2011 HBP generalize to make use of user-supplied
+//                          scale factors. This is needed for weighted 
+//                          histograms. Reduce maximum number of sources to 6
 ///////////////////////////////////////////////////////////////////////////////
 
+const int MAXSRC = MAXSRCS;     // Maximum number of sources
 const int MAXBUF = 50000; // Maximum count per bin
-const int MAXSRC = 10;    // Maximum number of sources
 
 // Global variables to avoid memory allocation.
 
-static long double cs[MAXSRC][MAXBUF];
+static long double c[MAXSRC][MAXBUF];
 static double ns[MAXSRC];
-static double si[MAXSRC];
+static double s [MAXSRC];
 static double x [MAXSRC];
 static double y [MAXSRC];
 
 
 double 
-poissongamma(vdouble&	p,  // Weights "p_j" 
-             vvdouble&	a,  // Counts  "A_ji" for up to 10 sources
-             vdouble&	d,  // Counts  "D_i" for data.
-             bool returnlog,    // return log(P) if true
+poissongamma(vdouble&	D,   // Counts  "D_i" for data.
+             vdouble&	p,   // Weights "p_j" 
+             vvdouble&	A,   // Counts  "A_ji" for up to 10 sources
+             vvdouble&	f,   // scale factor for  "A_ji"
+             bool returnlog, // return log(P) if true
              bool scale)     // Scale p_j if true  
 {
   int N = p.size(); // Number of sources (N)
-  int M = d.size(); // Number of bins    (M)
+  int M = D.size(); // Number of bins    (M)
 
-  if ( a.size() != (unsigned int)N )
+  // Check inputs
+  if ( A.size() != (unsigned int)N )
     {
       std::cout << "**Error - poissongamma - mis-match in number of sources\n"
-                << "size(p): " << N << " differs from size(A) = " << a.size()
+                << "size(p): " << N << " differs from size(A) = " << A.size()
                 << std::endl;
       exit(0);
     }
 
-  if ( a[0].size() != (unsigned int)M )
+  if ( A[0].size() != (unsigned int)M )
     {
-      std::cout << "**Error - poissongamma - mis-match in number of sources\n"
-                << "size(d): " << M << " differs from size(A[0]) = " 
-                << a[0].size()
+      std::cout << "**Error - poissongamma - mis-match in number of binss\n"
+                << "size(D): " << M << " differs from size(A[0]) = " 
+                << A[0].size()
                 << std::endl;
       exit(0);
     }
@@ -390,26 +401,11 @@ poissongamma(vdouble&	p,  // Weights "p_j"
   
   // Get total counts per source
 
-  for ( int j = 0; j < N; j++ )
+  for (int j = 0; j < N; ++j)
     {
       ns[j] = 0;
-      for ( int i = 0; i < M; i++ ) ns[j] += a[j][i];
-    }
-
-  // Get data count
-
-  double nd = 0.0; 					
-  for ( int i = 0; i < M; i++ ) nd += d[i];
-
-  // Scale counts
-
-  for ( int j = 0; j < N; j++ )
-    {
-      if ( scale )
-        x[j] = p[j] / (ns[j]+M);
-      else
-        x[j] = p[j];
-      y[j] = x[j] / (1+x[j]);
+      for (int i = 0; i < M; ++i)
+        ns[j] += A[j][i];
     }
 
   // loop over the M terms of the product,
@@ -420,24 +416,45 @@ poissongamma(vdouble&	p,  // Weights "p_j"
     prob = 0.0;
   else
     prob = 1.0;
-  for ( int i = 0; i < M; i++)
+
+  for (int i = 0; i < M; ++i)
     {
-      double di = d[i];  // data count for bin i
-      int D = (int)di;
+      int Di = (int)D[i]; // data count for bin i
 
       // compute terms of sum from zero to D
-      
-      for ( int j = 0; j < N; j++ )
+
+      // first do zero...      
+      for (int j = 0; j < N; ++j)
         {
-          si[j]    = a[j][i];  // "A_ji"
-          cs[j][0] = pow(1+x[j],-(si[j]+1));
+          // Normalize sources to unit area so that
+          // x[i] becomes the actual source count.
+          if ( scale )
+            x[j] = p[j] / (ns[j]+M);
+          else
+            x[j] = p[j];
+          s[j] = A[j][i];
+
+          // Apply user supplied scale factor
+          // This is needed to take account of weighted histograms
+          if ( (int)f[j].size() == M )
+            {
+              if ( f[j][i] > 0 )
+                {
+                  x[j] /= f[j][i];
+                  s[j] *= f[j][i];  
+                }
+            }
+
+          y[j] = x[j] / (1 + x[j]);
+          c[j][0] = pow(1 + x[j], -(s[j] + 1));
         }
       
-      if ( D > 0 )
+      // ...then 1 to D
+      if ( Di > 0 )
         {
-          for ( int k = 1; k < D+1; k++ )
-            for ( int j = 0; j < N; j++ )
-              cs[j][k] = cs[j][k-1] * y[j] * (si[j]+k)/k;
+          for (int k = 1; k < Di+1; ++k)
+            for (int j = 0; j < N; ++j)
+              c[j][k] = c[j][k-1] * y[j] * (s[j] + k)/k;
         }
 
       // compute sum
@@ -446,138 +463,58 @@ poissongamma(vdouble&	p,  // Weights "p_j"
       switch (N)
         {
         case 2:
-          for (int j = 0; j < D+1; j++)
+          for (int j = 0; j < Di+1; ++j)
             sum += 
-              cs[0][j] *
-              cs[1][D-j];
+              c[0][j] *
+              c[1][Di-j];
           break;
 
         case 3:
-          for (int j = 0; j < D+1; j++)
-            for (int k = 0; k < D+1-j; k++)
+          for (int j = 0; j < Di+1; ++j)
+            for (int k = 0; k < Di+1-j; ++k)
               sum += 
-                cs[0][j] *
-                cs[1][k] *
-                cs[2][D-j-k];
+                c[0][j] *
+                c[1][k] *
+                c[2][Di-j-k];
           break;
 
         case 4:
-          for (int j = 0; j < D+1; j++)
-            for (int k = 0; k < D+1-j; k++)
-              for (int l = 0; l < D+1-j-k; l++)
+          for (int j = 0; j < Di+1; ++j)
+            for (int k = 0; k < Di+1-j; ++k)
+              for (int l = 0; l < Di+1-j-k; ++l)
                 sum += 
-                  cs[0][j] *
-                  cs[1][k] *
-                  cs[2][l] *
-                  cs[3][D-j-k-l];
+                  c[0][j] *
+                  c[1][k] *
+                  c[2][l] *
+                  c[3][Di-j-k-l];
           break;
 
         case 5:
-          for (int j = 0; j < D+1; j++)
-            for (int k = 0; k < D+1-j; k++)
-              for (int l = 0; l < D+1-j-k; l++)
-                for (int m = 0; m < D+1-j-k-l; m++)
+          for (int j = 0; j < Di+1; ++j)
+            for (int k = 0; k < Di+1-j; ++k)
+              for (int l = 0; l < Di+1-j-k; ++l)
+                for (int m = 0; m < Di+1-j-k-l; ++m)
                   sum += 
-                    cs[0][j] *
-                    cs[1][k] *
-                    cs[2][l] *
-                    cs[3][m] *
-                    cs[4][D-j-k-l-m];
+                    c[0][j] *
+                    c[1][k] *
+                    c[2][l] *
+                    c[3][m] *
+                    c[4][Di-j-k-l-m];
           break;
 
         case 6:
-          for (int j = 0; j < D+1; j++)
-            for (int k = 0; k < D+1-j; k++)
-              for (int l = 0; l < D+1-j-k; l++)
-                for (int m = 0; m < D+1-j-k-l; m++)
-                  for (int m1 = 0; m1 < D+1-j-k-l-m; m1++)
-                    sum += 
-                      cs[0][j] *
-                      cs[1][k] *
-                      cs[2][l] *
-                      cs[3][m] *
-                      cs[4][m1] *
-                      cs[5][D-j-k-l-m-m1];
-          break;
-
-        case 7:
-          for (int j = 0; j < D+1; j++)
-            for (int k = 0; k < D+1-j; k++)
-              for (int l = 0; l < D+1-j-k; l++)
-                for (int m = 0; m < D+1-j-k-l; m++)
-                  for (int m1 = 0; m1 < D+1-j-k-l-m; m1++)
-                    for (int m2 = 0; m2 < D+1-j-k-l-m-m1; m2++)
-                      sum += 
-                        cs[0][j] *
-                        cs[1][k] *
-                        cs[2][l] *
-                        cs[3][m] *
-                        cs[4][m1] *
-                        cs[5][m2] *
-                        cs[6][D-j-k-l-m-m1-m2];
-          break;
-
-        case 8:
-          for (int j = 0; j < D+1; j++)
-            for (int k = 0; k < D+1-j; k++)
-              for (int l = 0; l < D+1-j-k; l++)
-                for (int m = 0; m < D+1-j-k-l; m++)
-                  for (int m1 = 0; m1 < D+1-j-k-l-m; m1++)
-                    for (int m2 = 0; m2 < D+1-j-k-l-m-m1; m2++)
-                      for (int m3 = 0; m3 < D+1-j-k-l-m-m1-m2; m3++)
-                        sum += 
-                          cs[0][j] *
-                          cs[1][k] *
-                          cs[2][l] *
-                          cs[3][m] *
-                          cs[4][m1] *
-                          cs[5][m2] *
-                          cs[6][m3] *
-                          cs[7][D-j-k-l-m-m1-m2-m3];
-          break;
-
-        case 9:
-          for (int j = 0; j < D+1; j++)
-            for (int k = 0; k < D+1-j; k++)
-              for (int l = 0; l < D+1-j-k; l++)
-                for (int m = 0; m < D+1-j-k-l; m++)
-                  for (int m1 = 0; m1 < D+1-j-k-l-m; m1++)
-                    for (int m2 = 0; m2 < D+1-j-k-l-m-m1; m2++)
-                      for (int m3 = 0; m3 < D+1-j-k-l-m-m1-m2; m3++)
-                        for (int m4 = 0; m4 < D+1-j-k-l-m-m1-m2-m3; m4++)
-                          sum += 
-                            cs[0][j] *
-                            cs[1][k] *
-                            cs[2][l] *
-                            cs[3][m] *
-                            cs[4][m1] *
-                            cs[5][m2] *
-                            cs[6][m3] *
-                            cs[7][m4] *
-                            cs[8][D-j-k-l-m-m1-m2-m3-m4];
-          break;
-
-        case 10:
-          for (int j = 0; j < D+1; j++)
-            for (int k = 0; k < D+1-j; k++)
-              for (int l = 0; l < D+1-j-k; l++)
-                for (int m = 0; m < D+1-j-k-l; m++)
-                  for (int m1 = 0; m1 < D+1-j-k-l-m; m1++)
-                    for (int m2 = 0; m2 < D+1-j-k-l-m-m1; m2++)
-                      for (int m3 = 0; m3 < D+1-j-k-l-m-m1-m2; m3++)
-                        for (int m4 = 0; m4 < D+1-j-k-l-m-m1-m2-m3; m4++)
-                          for (int m5 = 0; m5 < D+1-j-k-l-m-m1-m2-m3-m4; m5++)
-                            sum += 
-                              cs[0][j] *
-                              cs[1][k] *
-                              cs[2][l] *
-                              cs[3][m] *
-                              cs[4][m1] *
-                              cs[5][m2] *
-                              cs[6][m3] *
-                              cs[7][m4] *
-                              cs[8][m5] *
-                              cs[9][D-j-k-l-m-m1-m2-m3-m4-m5];
+          for (int j = 0; j < Di+1; ++j)
+            for (int k = 0; k < Di+1-j; ++k)
+              for (int l = 0; l < Di+1-j-k; ++l)
+                for (int m = 0; m < Di+1-j-k-l; ++m)
+                  for (int n = 0; n < Di+1-j-k-l-m; ++n)
+                  sum += 
+                    c[0][j] *
+                    c[1][k] *
+                    c[2][l] *
+                    c[3][m] *
+                    c[4][n] *
+                    c[5][Di-j-k-l-m-n];
           break;
         };
       if ( returnlog )

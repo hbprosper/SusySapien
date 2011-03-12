@@ -17,7 +17,7 @@
 #  Fixes:       15-Nov-2010 HBP make sure buffers have a count of at least 1
 #               22-Nov-2010 HBP allow multiple trees
 #               11-Jan-2011 HBP shorten genparticlehelper variable
-# $Revision: 1.5 $
+# $Revision: 1.6 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from time import *
@@ -26,14 +26,14 @@ import os, sys, re
 # -----------------------------------------------------------------------------
 def usage():
 	print '''
-mkvariables.py <ntuple-filename> <tree-name> [<tree-name2...]
+mkvariables.py <ntuple-filename> [<tree-name> [<tree-name2...]]
 	'''
 	sys.exit(0)
 	
 # get command line arguments
 argv = sys.argv[1:]
 argc = len(argv)
-if argc < 2: usage()
+if argc < 1: usage()
 
 # get ntuple file name
 filename = argv[0]
@@ -62,8 +62,13 @@ countname= re.compile('(?<=^n)(pat|reco)')
 def main():
 
 	# 2nd argument is the TTree name
-	treename = joinfields(argv[1:], ' ') # Can have more than one tree
-	stream = itreestream(filename, treename)
+	if argc > 1:
+		treename = joinfields(argv[1:], ' ') # Can have more than one tree
+		stream = itreestream(filename, treename)
+	else:
+		stream = itreestream(filename)
+		treename = stream.tree().GetName()
+		
 	if not stream.good():
 		print "\t** hmmmm...something amiss here!"
 		sys.exit(0)

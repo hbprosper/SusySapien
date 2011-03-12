@@ -1,3 +1,9 @@
+$Revision:$
+
+v4_1_3: Mar. 12 2011
+--------------------
+	1. Fixed bug in mkanalyzer.py
+
 v4_1_2:	Feb. 17 2011
 --------------------
 	1. Merged histogramFile and skimFile into outputFile:

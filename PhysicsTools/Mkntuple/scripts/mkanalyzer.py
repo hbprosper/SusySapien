@@ -10,7 +10,8 @@
 #          01-Oct-2010 HBP - add structs
 #          02-Oct-2010 HBP - add cloning
 #          10-Jan-2011 HBP - merge histFile and skimFile into outputFile
-#$Revision: 1.20 $
+#          11-Mar-2011 HBP - fix naming bug
+#$Revision: 1.21 $
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
 from string import *
@@ -81,7 +82,7 @@ TEMPLATE_H =\
 // Description: Analyzer header for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.20 $
+// $Revision: 1.21 $
 //-----------------------------------------------------------------------------
 
 // -- System
@@ -217,7 +218,8 @@ struct outputFile
 	    file_ = tree_->GetCurrentFile();
 	  }
 	file_->cd();
-	file_->Write("", TObject::kOverwrite);
+	//file_->Write("", TObject::kOverwrite);
+	file_->Write();
 	file_->ls();
 	file_->Close();
   }
@@ -307,7 +309,7 @@ TEMPLATE_CC =\
 // Description: Analyzer for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.20 $
+// $Revision: 1.21 $
 //-----------------------------------------------------------------------------
 #include "%(name)s.h"
 
@@ -383,7 +385,7 @@ PYTEMPLATELIB =\
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
 #  Author:      %(author)s
-#  $Revision: 1.20 $
+#  $Revision: 1.21 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from time import sleep
@@ -439,7 +441,8 @@ class outputFile:
 			self.file = self.tree.GetCurrentFile()
 			
 		self.file.cd()
-		self.file.Write("", TObject.kOverwrite)
+		#self.file.Write("", TObject.kOverwrite)
+		self.file.Write()
 		self.file.ls()
 		self.file.Close()
 # -----------------------------------------------------------------------------
@@ -493,7 +496,8 @@ TEXTSIZE = 0.031
 def setStyle():
 	gROOT.SetStyle("Pub")
 	style = gROOT.GetStyle("Pub")
-
+	style.SetPalette(1)
+	
 	# For the canvas
 	style.SetCanvasBorderMode(0)
 	style.SetCanvasColor(kWhite)
@@ -620,7 +624,7 @@ PYTEMPLATE =\
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
 #  Author:      %(author)s
-#  $Revision: 1.20 $
+#  $Revision: 1.21 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from string import *
@@ -673,7 +677,7 @@ MAKEFILE = '''#-----------------------------------------------------------------
 #                 verbose    (e.g., verbose=1)
 #                 withcern   (e.g., withcern=1  expects to find CERN_LIB)
 # Author:      %(author)s
-#$Revision: 1.20 $
+#$Revision: 1.21 $
 #------------------------------------------------------------------------------
 ifndef ROOTSYS
 $(error *** Please set up Root)
@@ -778,7 +782,7 @@ clean   	:
 	rm -rf tmp/*.o $(program)
 '''
 
-README = '''$Revision: 1.20 $
+README = '''$Revision: 1.21 $
 Created: %(time)s
 
     o To build the default program (%(name)s) do
@@ -846,14 +850,8 @@ def main():
 
 	records = map(strip, open(varfilename, "r").readlines())
 
-	# Create maps from object name to object type etc.
-	# Group together variables that are meant to be
-	# together!
+	# Get tree name(s)
 
-	vars = {}
-	vectormap = {}
-	
-	# get tree name(s)
 	t = split(records[0])
 	if lower(t[0]) == "tree:":
 		treename = t[1]
@@ -869,11 +867,12 @@ def main():
 			start += 1
 
    	# Done with header, so loop over branch names
-	# and try to determine which fields should form structs
-	# The basic algorithm is to find the longest common prefixes
+	# and get list of potential struct names (first field of
+	# varname.
+	
 	records = records[start:]
-
-	varnames = []  # Complete list of variables
+	
+	stnamemap = {}
 	for index in xrange(len(records)):
 		record = records[index]
 		if record == "": continue
@@ -882,61 +881,29 @@ def main():
 		# varname = variable name as determined by mkvariables.py
 		
 		rtype, branchname, varname, count = split(record, '/')
-		varnames.append(varname)
-	varnames.sort()
-
-	# Determine list structs
-	previous = split(varnames[0],'_')
-	namen = []
-	index = 1
-	while index < len(varnames):
-		current = split(varnames[index],'_')
-		n = len(current)
-		i = 1
-		currentname = ''
-		while i <= n:
-			if current[:i] == previous[:i]:
-				currentname = joinfields(current[:i], '_')
-			else:
-				break
-			i += 1
-		if currentname != '':
-			namen.append(currentname)
-		previous = current
-		index += 1
-
-	# prune list of names
-	namemap = {}
-	for i, name in enumerate(namen[1:-1]):
-		j = i + 1
-		if name != namen[j-1]:
-			if name != namen[j+1]:
-				continue
-		if not namemap.has_key(name):
-			namemap[name] = 0
-		namemap[name] += 1
-
-	# make search string for struct names
-	keys = namemap.keys()
-	keys.sort(cmp)
-## 	for key in keys:
-## 		print key
-	#sys.exit(0)
-	cmd = joinfields(keys,'|')
-	strname = re.compile(cmd)
-
-
+		t = split(varname,'_')
+		if len(t) > 1: # Need at least two fields
+			key = t[0]
+			if not stnamemap.has_key(key): stnamemap[key] = 0
+			stnamemap[key] += 1
+	
 	# Loop over branch names
 	
 	# If a variable name matches a struct name, this will generate a
 	# multiply defined error. One of the names must be altered. Let's
 	# take this to be the variable name.
 
+	usednames = {}
+	vars = {}
+	vectormap = {}
+	
 	for index in xrange(len(records)):
 		record = records[index]
 		if record == "": continue
 		
 		rtype, branchname, varname, count = split(record, '/')
+
+		# Fix annoying types
 		if rtype == "bool":
 			rtype = "int"
 		elif rtype == "long64":
@@ -948,28 +915,42 @@ def main():
 		elif rtype == "uint":
 			rtype = "int"			
 
-		# Check varname
-		if namemap.has_key(varname):
+		# Check that varname is not the same as that of a potential
+		# struct
+		if stnamemap.has_key(varname):
 			print "\t**warning: multiply defined name, %s; changing " % varname
 			print "\t           varname to %s1" % varname
 			varname = "%s1" % varname
 			
 		# Get object and field names
-		t = strname.findall(varname)
+		objname = ''
+		fldname = ''
+		t = split(varname,'_')
 		if len(t) > 0:
-			objname = t[0]
-			fldname = replace(varname, '%s_' % objname, '')
-		else:
-			objname = ''
-			fldname = ''
 
-## 		#DD
-## 		if objname != '':
-## 			print "%s.%s" % (objname, fldname)
-		
+			# we have at least two fields in varname
+			
+			key = t[0]
+			if stnamemap.has_key(key):
+
+				# This branch potentially belongs to a struct.
+
+				objname = key
+				# Make sure the count for this branch matches that
+				# of existing struct
+				if not usednames.has_key(objname):
+					usednames[objname] = count;
+									
+				if usednames[objname] == count:
+					fldname = replace(varname, '%s_' % objname, '')
+				else:
+					objname = ''
+					fldname = ''
+
 		# Check for leaf counter flag (a "*")
+
 		t = split(count)
-		count = atoi(t[0])
+		count = atoi(t[0]) # Change type to an integer
 		iscounter = t[-1] == "*"
 
 		# Take care of duplicate names
@@ -992,14 +973,15 @@ def main():
 		# vector types must have the same object name and a max count > 1
 		if count > 1:
 			if fldname != "":
-
+				
 				# Make sure fldname is valid			
 				if fldname[0] in ['0','1','2','3','4','5','6','7','8','9']:
 					fldname = 'f%s' % fldname
 		
 				if not vectormap.has_key(objname): vectormap[objname] = []	
 				vectormap[objname].append((rtype, fldname, varname, count))
-
+				#print "%s.%s (%s)" % (objname, fldname, count)
+				
 	# Declare all variables
 	
 	keys = vars.keys()
@@ -1068,7 +1050,6 @@ def main():
 															  cast,
 															  varname))
 		structdecl.append('};')
-		structdecl.append('')
 		structdecl.append('std::vector<%s_s> %s(%d);' % (objname,
 														 objname,
 														 count))
@@ -1086,7 +1067,8 @@ def main():
 							  'os << r;' % ("%-32s", "%f", fldname, fldname))
 		structdecl.append('  return os;')
 		structdecl.append('}')
-		structdecl.append('')
+		structdecl.append('//-----------------------------------------'
+						  '------------------------------------')
 		
 		structimpl.append('    }')	
 	structimpl.append('}')  # end of fillObjects()
