@@ -11,7 +11,7 @@
 #          02-Oct-2010 HBP - add cloning
 #          10-Jan-2011 HBP - merge histFile and skimFile into outputFile
 #          11-Mar-2011 HBP - fix naming bug
-#$Revision: 1.21 $
+#$Revision: 1.22 $
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
 from string import *
@@ -25,7 +25,7 @@ getvno = re.compile(r'[0-9]+$')
 def usage():
 	print '''
 	Usage:
-	   mkanalyzer.py <analyzer-name> [var-filename=variables.txt]
+	   mkanalyzer.py <analyzer-name> [variables.txt]
 	'''
 	sys.exit(0)
 	
@@ -82,7 +82,7 @@ TEMPLATE_H =\
 // Description: Analyzer header for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.21 $
+// $Revision: 1.22 $
 //-----------------------------------------------------------------------------
 
 // -- System
@@ -309,7 +309,7 @@ TEMPLATE_CC =\
 // Description: Analyzer for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.21 $
+// $Revision: 1.22 $
 //-----------------------------------------------------------------------------
 #include "%(name)s.h"
 
@@ -385,7 +385,7 @@ PYTEMPLATELIB =\
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
 #  Author:      %(author)s
-#  $Revision: 1.21 $
+#  $Revision: 1.22 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from time import sleep
@@ -624,7 +624,7 @@ PYTEMPLATE =\
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
 #  Author:      %(author)s
-#  $Revision: 1.21 $
+#  $Revision: 1.22 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from string import *
@@ -677,7 +677,7 @@ MAKEFILE = '''#-----------------------------------------------------------------
 #                 verbose    (e.g., verbose=1)
 #                 withcern   (e.g., withcern=1  expects to find CERN_LIB)
 # Author:      %(author)s
-#$Revision: 1.21 $
+#$Revision: 1.22 $
 #------------------------------------------------------------------------------
 ifndef ROOTSYS
 $(error *** Please set up Root)
@@ -782,7 +782,7 @@ clean   	:
 	rm -rf tmp/*.o $(program)
 '''
 
-README = '''$Revision: 1.21 $
+README = '''$Revision: 1.22 $
 Created: %(time)s
 
     o To build the default program (%(name)s) do
@@ -914,7 +914,7 @@ def main():
 			rtype = "int"
 		elif rtype == "uint":
 			rtype = "int"			
-
+		
 		# Check that varname is not the same as that of a potential
 		# struct
 		if stnamemap.has_key(varname):
@@ -961,11 +961,11 @@ def main():
 			n += 1
 			vars[varname][0] = n;
 
-			objname = "%s%d" % (objname, n)
 			if fldname != '':
+				objname = "%s%d"  % (objname, n)
 				varname = "%s_%s" % (objname, fldname)
 			else:
-				varname = objname
+				varname = "%s%d" % (varname, n)
 
 		# update map for all variables
 		vars[varname] = [1, rtype, branchname, count, iscounter]

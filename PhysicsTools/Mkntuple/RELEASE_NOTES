@@ -1,8 +1,36 @@
-$Revision:$
+$Revision: 1.2 $
 
 v4_1_3: Mar. 12 2011
 --------------------
-	1. Fixed bug in mkanalyzer.py
+	1. Fixed variable naming bug in mkanalyzer.py
+	2. rename mkselector.py to mkusermacro.py
+
+	mkusermacro.py creates the template for a user-defined macro that is
+	designed to be called by TheNtupleMaker. It is created using an existing
+	variables.txt file. The macro can be used to add user-defined variables
+	to the ntuple and perform event selection. See the example in the template.
+
+	Example:
+
+		mkusermacro.py mymacro
+
+	creates
+		mymacro.cc
+		mymacro.h
+		mymacro.mk
+
+	which can be compiled and linked using
+
+		make -f mymacro.mk
+	
+	This creates libmymacro.so. To load this macro into TheNtupleMaker add
+	
+		macroName = cms.untracked.string("mymacro.cc"),
+
+	to 
+		cms.EDAnalyzer("Mkntuple",..
+	
+	
 
 v4_1_2:	Feb. 17 2011
 --------------------

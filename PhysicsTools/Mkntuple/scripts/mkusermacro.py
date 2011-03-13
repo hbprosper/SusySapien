@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 #------------------------------------------------------------------------------
+# File: mkusermacro.py
 # Description: Create ntuple selector.h file
 # Created: 06-Mar-2010 Harrison B. Prosper
 # Updated: 05-Oct-2010 HBP - clean up
-#$Revision: 1.3 $
+#          12-Mar-2011 HBP - give user option to add variables
+#$Revision: 1.4 $
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
 from string import *
@@ -17,7 +19,7 @@ getvno = re.compile(r'[0-9]+$')
 def usage():
 	print '''
 	Usage:
-	   mkselector.py <selector-name> [variables.txt]
+	   mkusermacro.py <usermacro-name> [variables.txt]
 	'''
 	sys.exit(0)
 	
@@ -70,10 +72,10 @@ HEADER=\
 #define %(NAME)s_H
 //-----------------------------------------------------------------------------
 // File:        %(name)s.h
-// Description: event selector
-// Created:     %(time)s by mkselector.py
+// Description: user macro called by Mkntuple
+// Created:     %(time)s by mkusermacro.py
 // Author:      %(author)s
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 //-----------------------------------------------------------------------------
 #include <map>
 #include <string>
@@ -95,9 +97,9 @@ struct countvalue
   int*    count;
   double* value;
 };
-typedef std::map<std::string, countvalue> mapvars;
+typedef std::map<std::string, countvalue> Vars;
 
-void initializeEvent(mapvars& vars)
+void initializeEvent(Vars& vars)
 {
   countvalue v;
   int count=0;
@@ -118,20 +120,39 @@ void initializeEvent(mapvars& vars)
 MACRO=\
 		  '''//-----------------------------------------------------------------------------
 // File:        %(name)s.cc
-// Description: event selector
-// Created:     %(time)s by mkselector.py
+// Description: user macro
+// Created:     %(time)s by mkusermacro.py
 // Author:      %(author)s
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 //-----------------------------------------------------------------------------
 #include "%(name)s.h"
 //-----------------------------------------------------------------------------
 using namespace std;
 
-bool %(name)s(mapvars& vars)
+// Declare all user-defined variables to be added to ntuple.
+// The variables should be declared static so that their values
+// and addresses do not change between calls to %(name)s(..)
+
+//static float HT=0;
+
+static bool firstEvent=true;
+
+bool %(name)s(Vars& vars, TTree& tree)
 {
+  if ( firstEvent )
+    {
+	  firstEvent = false;
+	  // do what needs to be done once per run
+	  // e.g. add a branch to the ntuple:
+	  // tree.Branch("HT", &HT, "HT/F");
+	}
   initializeEvent(vars);
 
-  // perform selection
+  // compute user-defined variables/do event selection
+  // e.g.:
+  // HT = 0;
+  // for(int i=0; i < njet; ++i) HT += jet_pt[i];
+  
   // if ( miserable-event ) return false;
   
   return true;
@@ -217,8 +238,9 @@ $(header)	: $(linkdef)
 	@echo -e "#include <map>" >>	$(header)
 	@echo -e "#include <string>" >>	$(header)
 	@echo -e "#include <vector>" >>	$(header)
+	@echo -e "#include <TTree.h>" >>	$(header)
 	@echo -e "struct countvalue { int* count; double* value; };" >> $(header)
-	@echo -e "bool selector(std::map<std::string, countvalue>&);" \
+	@echo -e "bool %(name)s(std::map<std::string, countvalue>&, TTree& tree);"\
 	>> $(header)
 	@echo -e \"#endif" >> $(header)
 
@@ -235,7 +257,7 @@ $(linkdef)	:
 	@echo -e "#pragma link C++ class countvalue+;" >> $(linkdef)
 	@echo -e "#pragma link C++ class map<string, countvalue>+;" \
 	>> $(linkdef)
-	@echo -e "#pragma link C++ function selector;" >> $(linkdef)
+	@echo -e "#pragma link C++ function %(name)s;" >> $(linkdef)
 	@echo -e "#endif" >> $(linkdef)
 
 clean   :
@@ -243,7 +265,7 @@ clean   :
 '''
 #------------------------------------------------------------------------------
 def main():
-	print "\n\tmkselector.py"
+	print "\n\tmkusermacro.py"
 
 	# Decode command line
 
@@ -268,53 +290,119 @@ def main():
 	# But only group together variables that are meant to be
 	# together!
 
+
+	# skip first line
+	records = records[1:]
+	stnamemap = {}
+	for index in xrange(len(records)):
+		record = records[index]
+		if record == "": continue
+
+		# split record into its fields
+		# varname = variable name as determined by mkvariables.py
+		
+		rtype, branchname, varname, count = split(record, '/')
+		t = split(varname,'_')
+		if len(t) > 1: # Need at least two fields
+			key = t[0]
+			if not stnamemap.has_key(key): stnamemap[key] = 0
+			stnamemap[key] += 1
+	
+	# Loop over branch names
+	
+	# If a variable name matches a struct name, this will generate a
+	# multiply defined error. One of the names must be altered. Let's
+	# take this to be the variable name.
+
+	usednames = {}
 	vars = {}
 	vectormap = {}
 	
-	# skip first line
-	records = records[1:]
 	for index in xrange(len(records)):
 		record = records[index]
 		if record == "": continue
 		
 		rtype, branchname, varname, count = split(record, '/')
 
-		# Get object and "method" names
-		t = split(varname,'_')
-		objname = t[0]                    # object name
-		if len(t) > 1:
-			fldname = joinfields(t[1:],'_')   # field name
-		else:
-			fldname = ''
+		# Fix annoying types
+		if rtype == "bool":
+			rtype = "int"
+		elif rtype == "long64":
+			rtype = "long"
+		elif rtype == "int32":
+			rtype = "int"
+		elif rtype == "uchar":
+			rtype = "int"
+		elif rtype == "uint":
+			rtype = "int"			
+
+		# Check that varname is not the same as that of a potential
+		# struct
+		if stnamemap.has_key(varname):
+			print "\t**warning: multiply defined name, %s; changing " % varname
+			print "\t           varname to %s1" % varname
+			varname = "%s1" % varname
 			
+		# Get object and field names
+		objname = ''
+		fldname = ''
+		t = split(varname,'_')
+		if len(t) > 0:
+
+			# we have at least two fields in varname
+			
+			key = t[0]
+			if stnamemap.has_key(key):
+
+				# This branch potentially belongs to a struct.
+
+				objname = key
+				# Make sure the count for this branch matches that
+				# of existing struct
+				if not usednames.has_key(objname):
+					usednames[objname] = count;
+									
+				if usednames[objname] == count:
+					fldname = replace(varname, '%s_' % objname, '')
+				else:
+					objname = ''
+					fldname = ''
+
 		# Check for leaf counter flag (a "*")
+
 		t = split(count)
-		count = atoi(t[0])
+		count = atoi(t[0]) # Change type to an integer
 		iscounter = t[-1] == "*"
-		
-		n = 1
+
 		# Take care of duplicate names
+		n = 1
 		if vars.has_key(varname):
 			# duplicate name; add a number to object name
 			n, a, b, c, d = vars[varname]
 			n += 1
 			vars[varname][0] = n;
 
-			objname = "%s%d" % (objname, n)
 			if fldname != '':
+				objname = "%s%d"  % (objname, n)
 				varname = "%s_%s" % (objname, fldname)
 			else:
-				varname = objname
+				varname = "%s%d" % (varname, n)
+
+		# update map for all variables
+		vars[varname] = [1, rtype, branchname, count, iscounter]
 
 		# vector types must have the same object name and a max count > 1
 		if count > 1:
 			if fldname != "":
+				
+				# Make sure fldname is valid			
+				if fldname[0] in ['0','1','2','3','4','5','6','7','8','9']:
+					fldname = 'f%s' % fldname
+		
 				if not vectormap.has_key(objname): vectormap[objname] = []	
 				vectormap[objname].append((rtype, fldname, varname, count))
-				
-		# update map for all variables
-		vars[varname] = [1, rtype, branchname, count, iscounter]	
-
+				#print "%s.%s (%s)" % (objname, fldname, count)
+	
 	# Declare all variables
 	
 	keys = vars.keys()
@@ -347,7 +435,6 @@ def main():
 			impl.append('  copy(v.value, v.value+count, %s.begin());'% varname)
 			impl.append('')
 
-
 	# Create structs for vector variables
 	
 	keys = vectormap.keys()
@@ -357,7 +444,6 @@ def main():
 
 	structimpl.append('void fillObjects()')
 	structimpl.append('{')
-
 	for index, objname in enumerate(keys):
 		values = vectormap[objname]
 		varname= values[0][-2];
@@ -368,7 +454,7 @@ def main():
 						  varname)
 		structimpl.append('    {')
 
-		structdecl.append('struct %s_t' % objname)
+		structdecl.append('struct %s_s' % objname)
 		structdecl.append('{')
 		for rtype, fldname, varname, count in values:
 			# treat bools as ints
@@ -376,7 +462,7 @@ def main():
 				cast = '(bool)'
 			else:
 				cast = ''
-
+			
 			structdecl.append('  %s\t%s;' % (rtype, fldname))
 
 			structimpl.append('      %s[i].%s\t= %s%s[i];' % (objname,
@@ -384,13 +470,12 @@ def main():
 															  cast,
 															  varname))
 		structdecl.append('};')
-		structdecl.append('')
-		structdecl.append('std::vector<%s_t> %s(%d);' % (objname,
+		structdecl.append('std::vector<%s_s> %s(%d);' % (objname,
 														 objname,
 														 count))
 		structdecl.append('')
 		structdecl.append('std::ostream& '\
-						  'operator<<(std::ostream& os, const %s_t& o)' % \
+						  'operator<<(std::ostream& os, const %s_s& o)' % \
 						  objname)
 		structdecl.append('{')
 		structdecl.append('  char r[1024];')
@@ -402,11 +487,11 @@ def main():
 							  'os << r;' % ("%-32s", "%f", fldname, fldname))
 		structdecl.append('  return os;')
 		structdecl.append('}')
-		structdecl.append('')
+		structdecl.append('//-----------------------------------------'
+						  '------------------------------------')
 		
 		structimpl.append('    }')	
 	structimpl.append('}')  # end of fillObjects()
-	
 			
 	# Create C++ codes
 
@@ -435,6 +520,8 @@ def main():
 	open(outfilename, "w").write(record)
 
 	print "\tdone!"
+	print "\n\tto compile and link the macro %(name)s\n\tdo" % names
+	print "\t\tmake -f %(name)s.mk\n" % names
 #------------------------------------------------------------------------------
 main()
 

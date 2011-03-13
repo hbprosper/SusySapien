@@ -46,8 +46,9 @@
 //         Updated:  Sun Jan 17 HBP - add log file
 //                   Sun Jun 06 HBP - add variables.txt file
 //                   Sun Nov 07 HBP - add event setup to fill
+//                   Sat Mar 12 2011 HBP - change selectorname to usermacroname
 //
-// $Id: Mkntuple.cc,v 1.24 2010/11/08 11:00:36 prosper Exp $
+// $Id: Mkntuple.cc,v 1.25 2011/02/17 05:58:11 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -104,6 +105,8 @@ private:
 
   // addresses of buffers
   std::map<std::string, BufferThing*> buffermap;
+
+  // map from variables to buffer location and count
   std::map<std::string, countvalue>   vars;
   bool keep; // true if event is to be kept
 
@@ -112,10 +115,11 @@ private:
   std::string logfilename_;
   std::ofstream* log_;
   std::string analyzername_;
-  std::string selectorname_;
+  std::string usermacroname_;
   std::string varscmd_;
   std::string boolcmd_;
-  std::string selectorcmd_;
+  std::string treecmd_;
+  std::string usermacrocmd_;
 
   int count_;
   int imalivecount_;
@@ -130,13 +134,13 @@ private:
 Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   : output(otreestream(iConfig.getUntrackedParameter<string>("ntupleName"), 
                        "Events", 
-                       "created by Mkntuple $Revision: 1.24 $")),
+                       "created by Mkntuple $Revision: 1.25 $")),
     logfilename_("Mkntuple.log"),
     log_(new std::ofstream(logfilename_.c_str())),
-    selectorname_(""),
+    usermacroname_(""),
     varscmd_(""),
     boolcmd_(""),
-    selectorcmd_(""),
+    usermacrocmd_(""),
     count_(0),
     imalivecount_(1000),
     logger_(0),
@@ -149,7 +153,7 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   // Add a provenance tree to ntuple
   // --------------------------------------------------------------------------
   TFile* file = output.file();
-  ptree_ = new TTree("Provenance","created by Mkntuple $Revision: 1.24 $");
+  ptree_ = new TTree("Provenance","created by Mkntuple $Revision: 1.25 $");
   string cmsver = kit::strip(kit::shell("echo $CMSSW_VERSION"));
   ptree_->Branch("cmssw_version", (void*)(cmsver.c_str()), "cmssw_version/C");
 
@@ -200,25 +204,25 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
       analyzername_ = "";
     }
 
-  // Get name of optional selector
+  // Get name of optional usermacro
   try
     {
-      selectorname_ = kit::nameonly(iConfig.
+      usermacroname_ = kit::nameonly(iConfig.
                                     getUntrackedParameter<string>
-                                    ("selectorName"));
+                                    ("macroName"));
     }
   catch (...)
     {
-      selectorname_ = "";
+      usermacroname_ = "";
     }
 
   // --------------------------------------------------------------------------
-  if ( selectorname_ != "" )
+  if ( usermacroname_ != "" )
     {
-      // Try to load associated shared library
+      // Try to load associated shared library 
 
       // First find shared lib
-      string filestem = string("*") + selectorname_ + string("*.so");
+      string filestem = string("*") + usermacroname_ + string("*.so");
       string cmd = string("find . -name \"") + filestem + "\"";
       string shlib = kit::shell(cmd);
       if ( shlib == "" )
@@ -230,18 +234,20 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
 
       // Found shared library, so try to load it
 
-      cout << "\t==> Load library " << shlib << endl;
+      cout << "\t==> Load usermacro library " << shlib << endl;
       
       if ( gSystem->Load(shlib.c_str()) != 0 )
          throw cms::Exception("LoadFailed",
                               "\tfor shared library\n\t\t" + shlib);
 
-      // Create commands to execute selector using CINT
+      // Create commands to execute usermacro using CINT
 
       varscmd_ = string("map<string,countvalue>* vars="
                       "(map<string,countvalue>*)0x%x");
       boolcmd_ = string("bool* keep = (bool*)0x%x"); 
-      selectorcmd_ = string("*keep = ") + selectorname_ + string("(*vars);");
+      treecmd_ = string("TTree* tree = (TTree*)0x%x"); 
+      usermacrocmd_ = string("*keep = ") 
+        + usermacroname_ + string("(*vars, *tree);");
     }
 
   if ( getenv("DBMkntuple") > 0 )
@@ -541,27 +547,33 @@ bool
 Mkntuple::selectEvent(const edm::Event& event)
 {
   keep = true;
-  if ( selectorcmd_ == "" ) return keep;
+  if ( usermacrocmd_ == "" ) return keep;
 
   // Clear selection buffer
   SelectedObjectMap::instance().clear();
 
-  // Execute selector
-  
-  gROOT->ProcessLine(Form(varscmd_.c_str(), &vars));
-  gROOT->ProcessLine(Form(boolcmd_.c_str(), &keep)); 
-  gROOT->ProcessLineFast(selectorcmd_.c_str());
+  // Execute usermacro (a compiled Root macro)
 
-  if ( keep )
-    cout << "\t\t** KEEP EVENT(" 
-         << "Run: " << event.id().run() 
-         << "\tEvent: " << event.id().event() << ")"
-         << endl;
-  else
-    cout << "\t\t** SKIP EVENT("
-         << "Run: " << event.id().run() 
-         << "\tEvent: " << event.id().event() << ")"
-         << endl;
+  TTree* tree = output.tree();
+
+  gROOT->ProcessLine(Form(varscmd_.c_str(), &vars));
+  gROOT->ProcessLine(Form(treecmd_.c_str(), tree));
+  gROOT->ProcessLine(Form(boolcmd_.c_str(), &keep)); 
+  gROOT->ProcessLineFast(usermacrocmd_.c_str());
+
+  if ( DEBUG )
+    {
+      if ( keep )
+        cout << "\t\t** KEEP EVENT(" 
+             << "Run: " << event.id().run() 
+             << "\tEvent: " << event.id().event() << ")"
+             << endl;
+      else
+        cout << "\t\t** SKIP EVENT("
+             << "Run: " << event.id().run() 
+             << "\tEvent: " << event.id().event() << ")"
+             << endl;
+    }
 
   return keep;
 }
@@ -569,7 +581,7 @@ Mkntuple::selectEvent(const edm::Event& event)
 void
 Mkntuple::shrinkBuffers()
 {
-  if ( selectorcmd_ == "" ) return;
+  if ( usermacrocmd_ == "" ) return;
 
   map<string, vector<int> >& smap = SelectedObjectMap::instance().get();
   map<string, vector<int> >::iterator iter = smap.begin();
