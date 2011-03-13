@@ -5,7 +5,7 @@
 # Created: 06-Mar-2010 Harrison B. Prosper
 # Updated: 05-Oct-2010 HBP - clean up
 #          12-Mar-2011 HBP - give user option to add variables
-#$Revision: 1.4 $
+#$Revision: 1.1 $
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
 from string import *
@@ -75,7 +75,7 @@ HEADER=\
 // Description: user macro called by Mkntuple
 // Created:     %(time)s by mkusermacro.py
 // Author:      %(author)s
-// $Revision: 1.4 $
+// $Revision: 1.1 $
 //-----------------------------------------------------------------------------
 #include <map>
 #include <string>
@@ -123,7 +123,7 @@ MACRO=\
 // Description: user macro
 // Created:     %(time)s by mkusermacro.py
 // Author:      %(author)s
-// $Revision: 1.4 $
+// $Revision: 1.1 $
 //-----------------------------------------------------------------------------
 #include "%(name)s.h"
 //-----------------------------------------------------------------------------
@@ -144,14 +144,14 @@ bool %(name)s(Vars& vars, TTree& tree)
 	  firstEvent = false;
 	  // do what needs to be done once per run
 	  // e.g. add a branch to the ntuple:
-	  // tree.Branch("HT", &HT, "HT/F");
+	  //tree.Branch("HT", &HT, "HT/F");
 	}
   initializeEvent(vars);
 
   // compute user-defined variables/do event selection
   // e.g.:
-  // HT = 0;
-  // for(int i=0; i < njet; ++i) HT += jet_pt[i];
+  //HT = 0;
+  //for(unsigned int i=0; i < jet_pt.size(); ++i) HT += jet_pt[i];
   
   // if ( miserable-event ) return false;
   

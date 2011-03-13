@@ -31,6 +31,8 @@ vdouble = vector("double")
 #------------------------------------------------------------------------------
 # Some Root utilities
 #------------------------------------------------------------------------------
+CSCALE = 1
+ESCALE = 1
 def unfoldContents(h):
 	c = vdouble()
 	e = vdouble()
@@ -38,8 +40,8 @@ def unfoldContents(h):
 		binx = i+1
 		for j in range(h.GetNbinsY()):
 			biny = j+1
-			c.push_back( h.GetBinContent(binx, biny) )
-			e.push_back( h.GetBinError(binx, biny) )
+			c.push_back( h.GetBinContent(binx, biny) * CSCALE )
+			e.push_back( h.GetBinError(binx, biny) * CSCALE/ESCALE )
 	return (c, e)
 
 def setContents(h, c):

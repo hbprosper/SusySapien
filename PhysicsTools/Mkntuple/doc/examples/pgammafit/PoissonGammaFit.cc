@@ -24,12 +24,11 @@
 //
 //              log(p(D|M,I)) ~ log(Lmax) + (N/2)*log(2*pi) 
 //                            + (1/2) log(det(Sigma))
-//              For large counts, it is better to set the exact flag to false.
-//              In this case, the calculations are done using MC integration.
 //
 // Created:     27-Jun-2005 Harrison B. Prosper
 // Updated:     06-Feb-2006 HBP Adapt for use in Root
 //              19-Feb-2011 HBP generalize to handle weighted events
+//$Revision:$
 //-----------------------------------------------------------------------------
 #include <iostream>
 #include <cmath>
