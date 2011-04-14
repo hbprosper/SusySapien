@@ -48,7 +48,7 @@
 //                   Sun Nov 07 HBP - add event setup to fill
 //                   Sat Mar 12 2011 HBP - change selectorname to usermacroname
 //
-// $Id: Mkntuple.cc,v 1.25 2011/02/17 05:58:11 prosper Exp $
+// $Id: Mkntuple.cc,v 1.26 2011/03/13 05:10:55 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -134,7 +134,7 @@ private:
 Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   : output(otreestream(iConfig.getUntrackedParameter<string>("ntupleName"), 
                        "Events", 
-                       "created by Mkntuple $Revision: 1.25 $")),
+                       "created by Mkntuple $Revision: 1.26 $")),
     logfilename_("Mkntuple.log"),
     log_(new std::ofstream(logfilename_.c_str())),
     usermacroname_(""),
@@ -153,7 +153,7 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   // Add a provenance tree to ntuple
   // --------------------------------------------------------------------------
   TFile* file = output.file();
-  ptree_ = new TTree("Provenance","created by Mkntuple $Revision: 1.25 $");
+  ptree_ = new TTree("Provenance","created by Mkntuple $Revision: 1.26 $");
   string cmsver = kit::strip(kit::shell("echo $CMSSW_VERSION"));
   ptree_->Branch("cmssw_version", (void*)(cmsver.c_str()), "cmssw_version/C");
 
@@ -481,6 +481,8 @@ void
 Mkntuple::analyze(const edm::Event& iEvent, 
                   const edm::EventSetup& iSetup)
 {
+  //cout << "===> iEvent.isRealData(" << iEvent.isRealData() << ")" << endl;
+
   count_++;
   if ( count_ % imalivecount_ == 0 )
     cout << "\t=> event count: " << count_ << endl;
@@ -495,6 +497,7 @@ Mkntuple::analyze(const edm::Event& iEvent,
     {
       if ( count_ >= logger_ )
         {
+          cout << endl << "\t==> Halting Message Logger <==" << endl << endl;
           haltlogger_ = false;
           edm::HaltMessageLogging();
         }

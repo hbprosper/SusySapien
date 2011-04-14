@@ -9,7 +9,7 @@
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Sep 19 HBP - copy from Buffer.h
 //
-// $Id: UserBuffer.h,v 1.5 2010/10/20 03:18:19 prosper Exp $
+// $Id: UserBuffer.h,v 1.6 2010/11/08 11:00:35 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/BufferUtil.h"
@@ -46,6 +46,7 @@ struct UserBuffer  : public BufferThing
   ///
   UserBuffer() 
     : out_(0),
+      classname_(boost::python::type_id<X>().name()),
       label_(""),
       label1_(""),
       label2_(""),
@@ -56,11 +57,19 @@ struct UserBuffer  : public BufferThing
       count_(0),
       singleton_(SINGLETON),
       message_(""),
-      debug_(0)
+      debug_(0),
+      skipme_(false)
   {
     std::cout << "Buffer created for objects of type: " 
               << name()
               << std::endl;
+
+    // We need to skip these classes, if we are running over real data
+    boost::regex getname("GenEvent|GenParticle|GenJet");
+    boost::smatch m;
+    skipme_ = boost::regex_search(classname_, m, getname);
+    std::cout << "\t==> class(" << classname_ 
+              << ")\t==> skipme_(" << skipme_ << ")" << std::endl;
   }
   
   ///
@@ -125,13 +134,18 @@ struct UserBuffer  : public BufferThing
     // If this is real data ignore generator objects
     if ( event.isRealData() )
       {
-        if ( label1_ == std::string("generator") )    return true;
-        if ( label1_ == std::string("genParticles") ) return true;
-        if ( label1_ == std::string("genJets") )      return true;
+        std::cout << "===> REAL DATA" << std::endl;
+        if ( skipme_ ) 
+          {
+            return true;
+          }
+//         if ( label1_ == std::string("generator") )    return true;
+//         if ( label1_ == std::string("genParticles") ) return true;
+//         if ( label1_ == std::string("genJets") )      return true;
         
-        if ( label2_ == std::string("generator") )    return true;
-        if ( label2_ == std::string("genParticles") ) return true;
-        if ( label2_ == std::string("genJets") )      return true;
+//         if ( label2_ == std::string("generator") )    return true;
+//         if ( label2_ == std::string("genParticles") ) return true;
+//         if ( label2_ == std::string("genJets") )      return true;
       }
     
     // Create helper.
@@ -259,6 +273,7 @@ private:
   bool singleton_;
   std::string message_;
   int  debug_;
+  bool skipme_; 
 
   // helper object
   Y helper_;

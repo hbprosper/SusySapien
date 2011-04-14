@@ -1,4 +1,12 @@
-$Revision: 1.2 $
+$Revision: 1.3 $
+
+
+v4_1_4: Apr. 14 2011
+--------------------
+	1. Fixed Slot - now uses unsigned long for addresses rather than 
+	unsigned int
+
+	2. Added new BuildFile formats
 
 v4_1_3: Mar. 12 2011
 --------------------

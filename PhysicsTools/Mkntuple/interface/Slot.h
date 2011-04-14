@@ -1,12 +1,13 @@
-#ifndef SLOT_HPP
-#define SLOT_HPP
+#ifndef SLOT_H
+#define SLOT_H
 /////////////////////////////////////////////////////////////////////////
-// File:    Slot.hpp
+// File:    Slot.h
 // Purpose: Model a Slot for use in Signal/Slot communication.
 // Created: Summer-2002 Harrison B. Prosper
 // Updated: 05-Jun-2008 HBP Adapt to CMS
+//          14-Apr-2011 HBP changed unsigned long
 /////////////////////////////////////////////////////////////////////////
-//$Revision: 1.3 $
+//$Revision: 1.1 $
 
 #include <string>
 #include <vector>
@@ -31,7 +32,7 @@ public:
 
   /**
    */
-  Slot(UInt_t object, const char *method);
+  Slot(unsigned long object, const char *method);
 
   /**
    */
@@ -48,8 +49,8 @@ public:
    */
   void handleSignal();
 
-  UInt_t      receiver() const {return _object;}
-  const char* method()   const {return _mstr.c_str();}
+  unsigned long  receiver() const {return _object;}
+  const char*    method()   const {return _mstr.c_str();}
 
  // Make this class known to Root
 

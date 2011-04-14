@@ -6,7 +6,7 @@
 // Updated:     Mon Mar 08, 2010 Sezen & HBP - add triggerBits class
 //              Tue Aug 24, 2010 HBP - add HcalNoiseRBXHelper
 //              Thu Sep 02, 2010 HBP - update to new version of HelperFor
-//$Revision: 1.16 $
+//$Revision: 1.17 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -116,7 +116,8 @@ unsigned int EventHelper::unixTime() const {return object->time().unixTime();}
 
 ///
 unsigned int EventHelper::nanosecondOffset() const 
-{ return object->time().nanosecondOffset(); }
+// Note: change to microsecondOffset for version 4_2_0
+{ return 0;} //object->time().nanosecondOffset(); }
 
 //-----------------------------------------------------------------------------
 // HcalNoiseRBX helper

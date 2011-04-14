@@ -24,7 +24,7 @@
 //                   Wed Sep 08 HBP - fix array test
 //                   Sun Sep 19 HBP - re-organize code to minimize code  bloat
 //
-// $Id: Buffer.h,v 1.25 2010/10/20 03:18:19 prosper Exp $
+// $Id: Buffer.h,v 1.26 2010/11/08 11:00:35 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/BufferUtil.h"
@@ -76,11 +76,19 @@ struct Buffer  : public BufferThing
       count_(0),
       singleton_(SINGLETON),
       message_(""),
-      debug_(0)
+      debug_(0),
+      skipme_(false)
   {
     std::cout << "Buffer created for objects of type: " 
               << name()
               << std::endl;
+
+    // We need to skip these classes, if we are running over real data
+    boost::regex getname("GenEvent|GenParticle|GenJet");
+    boost::smatch m;
+    skipme_ = boost::regex_search(classname_, m, getname);
+//     std::cout << "\t==> class(" << classname_ 
+//               << ")\t==> skipme_(" << skipme_ << ")" << std::endl;
   }
 
   ///
@@ -153,13 +161,21 @@ struct Buffer  : public BufferThing
   // If this is real data ignore generator objects
   if ( event.isRealData() )
     {
-      if ( label1_ == std::string("generator") )    return true;
-      if ( label1_ == std::string("genParticles") ) return true;
-      if ( label1_ == std::string("genJets") )      return true;
+      //std::cout << "===> REAL DATA" << std::endl;
+      if ( skipme_ ) return true;
+      
+//       if ( label1_ == std::string("generator") )    return true;
+//       if ( label1_ == std::string("genParticles") ) return true;
+//       if ( label1_ == std::string("genJets") )      return true;
+//       if ( label1_ == std::string("decaySubset") )  return true;
+//       if ( label1_ == std::string("initSubset") )   return true;
 
-      if ( label2_ == std::string("generator") )    return true;
-      if ( label2_ == std::string("genParticles") ) return true;
-      if ( label2_ == std::string("genJets") )      return true;
+//       if ( label2_ == std::string("generator") )    return true;
+//       if ( label2_ == std::string("genParticles") ) return true;
+//       if ( label2_ == std::string("genJets") )      return true;
+//       if ( label2_ == std::string("decaySubset") )  return true;
+//       if ( label2_ == std::string("initSubset") )   return true;
+
     }
 
     // Note: We use the handle edm::Handle<X> for singletons and
@@ -247,6 +263,7 @@ private:
   bool singleton_;
   std::string message_;
   int  debug_;
+  bool skipme_;
 };
 
 template <>

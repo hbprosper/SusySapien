@@ -1,12 +1,12 @@
-#ifndef CONNECTION_HPP
-#define CONNECTION_HPP
+#ifndef CONNECTION_H
+#define CONNECTION_H
 /////////////////////////////////////////////////////////////////////////
-// File:    Connection.hpp
+// File:    Connection.h
 // Purpose: Model a connection between a Signal and a Slot.
 // Created: 25-Aug-2002 Harrison B. Prosper
 // Updated: 05-Jun-2008 HBP Adapt to CMS 
 /////////////////////////////////////////////////////////////////////////
-//$Revision: 1.3 $
+//$Revision: 1.1 $
 
 #include <Python.h>
 #include "PhysicsTools/Mkntuple/interface/Slot.h"

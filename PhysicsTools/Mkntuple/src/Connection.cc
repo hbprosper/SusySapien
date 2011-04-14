@@ -4,7 +4,7 @@
 // Created: Summer-2002 Harrison B. Prosper
 // Updated: 05-Jun-2008 HBP Adapt to CMS
 ///////////////////////////////////////////////////////////////////////
-//$Revision: 1.2 $
+//$Revision: 1.1 $
 
 #include "PhysicsTools/Mkntuple/interface/Connection.h"
 #include <iostream>
@@ -13,11 +13,11 @@
 using namespace std;
 
 Connection::Connection(TQObject *sender,   const char *signal, 
-		       PyObject *receiver, const char *method)
+                       PyObject *receiver, const char *method)
   : _sender  (sender),
     _signal  (signal)
 {
-  _slot = new Slot((UInt_t)receiver, method);
+  _slot = new Slot((unsigned long)receiver, method);
 
   if ( noArgs(_signal) )
     TQObject::Connect(_sender, _signal.c_str(), 
