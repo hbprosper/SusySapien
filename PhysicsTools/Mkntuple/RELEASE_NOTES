@@ -1,5 +1,11 @@
-$Revision: 1.3 $
+$Revision: 1.4 $
 
+v4_1_5: Apr. 20 2011
+--------------------
+	1. Include GenRun* in the list of generator classes to be tested for
+	in Buffer.h and UserBuffer.h. If Gen classes are requested but the file
+	contains real data, the Gen classes are ignored. This way, exactly the
+	same ntuplecfi.py configuration fragment can be run on data and MC.
 
 v4_1_4: Apr. 14 2011
 --------------------

@@ -9,7 +9,7 @@
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Sep 19 HBP - copy from Buffer.h
 //
-// $Id: UserBuffer.h,v 1.6 2010/11/08 11:00:35 prosper Exp $
+// $Id: UserBuffer.h,v 1.7 2011/04/14 18:35:40 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/BufferUtil.h"
@@ -65,7 +65,7 @@ struct UserBuffer  : public BufferThing
               << std::endl;
 
     // We need to skip these classes, if we are running over real data
-    boost::regex getname("GenEvent|GenParticle|GenJet");
+    boost::regex getname("GenEvent|GenParticle|GenJet|GenRun");
     boost::smatch m;
     skipme_ = boost::regex_search(classname_, m, getname);
     std::cout << "\t==> class(" << classname_ 

@@ -23,8 +23,9 @@
 //                                    UserBuffer class!
 //                   Wed Sep 08 HBP - fix array test
 //                   Sun Sep 19 HBP - re-organize code to minimize code  bloat
+//                   Wed Apr 20 HBP - Add GenRun
 //
-// $Id: Buffer.h,v 1.26 2010/11/08 11:00:35 prosper Exp $
+// $Id: Buffer.h,v 1.27 2011/04/14 18:35:40 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/BufferUtil.h"
@@ -84,7 +85,7 @@ struct Buffer  : public BufferThing
               << std::endl;
 
     // We need to skip these classes, if we are running over real data
-    boost::regex getname("GenEvent|GenParticle|GenJet");
+    boost::regex getname("GenEvent|GenParticle|GenJet|GenRun");
     boost::smatch m;
     skipme_ = boost::regex_search(classname_, m, getname);
 //     std::cout << "\t==> class(" << classname_ 
