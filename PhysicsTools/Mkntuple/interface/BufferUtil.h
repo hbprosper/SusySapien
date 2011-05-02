@@ -7,9 +7,11 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
-//         Updated:  Sun Sep 19 HBP move some code from Buffer.h 
+//         Updated:  Sun Sep 19 HBP move some code from Buffer.h
+//                   Thu Apr 28 HBP for variables not found return
+//                   -9999
 //
-// $Id: BufferUtil.h,v 1.7 2010/10/20 03:18:19 prosper Exp $
+// $Id: BufferUtil.h,v 1.8 2010/11/08 11:00:35 prosper Exp $
 // ----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python/type_id.hpp>
@@ -24,16 +26,11 @@
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/Run.h"
 #include "FWCore/MessageLogger/interface/MessageLogger.h"
-#include "SimDataFormats/GeneratorProducts/interface/GenRunInfoProduct.h"
+//#include "SimDataFormats/GeneratorProducts/interface/GenRunInfoProduct.h"
 
 #include "PhysicsTools/Mkntuple/interface/treestream.h"
 #include "PhysicsTools/Mkntuple/interface/colors.h"
-
-#ifdef USE_INTERPRETER
-#include "PhysicsTools/Mkntuple/interface/MethodT.h"
-#else
 #include "PhysicsTools/Mkntuple/interface/Method.h"
-#endif
 // ----------------------------------------------------------------------------
 struct VariableDescriptor
 {
@@ -135,23 +132,13 @@ struct Variable
     : name(namen),
       fname(f),
       value(std::vector<double>(count,0)),
-
-#ifdef USE_INTERPRETER
-      function(MethodT<X>(f))
-#else
       function(Method<X>(f))
-#endif
   {}
 
   std::string         name;
   std::string         fname;
   std::vector<double> value;
-
-#ifdef USE_INTERPRETER
-  MethodT<X>          function;
-#else
   Method<X>           function;
-#endif
 };
 // ----------------------------------------------------------------------------
 template <typename X>
@@ -294,8 +281,12 @@ void callMethods(int j,
   for(unsigned i=0; i < variables.size(); i++)
     {
       if ( debug > 0 ) 
-        std::cout << "\t" << j << "\tcall: " 
+        std::cout << "\t" << j << "\tcall: "        
                   << variables[i].fname << std::endl;
+
+      // ====> This is where the call to a method occurs     <====
+      // ====> If a method fails, don't crash just complain  <====
+      // ====> and continue
       try
         {
           variables[i].value[j] = variables[i].function(object);
@@ -309,7 +300,7 @@ void callMethods(int j,
             << std::endl
             << e.explainSelf()
             << std::endl;
-          variables[i].value[j] = 0;
+          variables[i].value[j] = -9999; // return weird value
         }
       if ( debug > 0 ) 
         std::cout << "\t\t\tvalue = " 

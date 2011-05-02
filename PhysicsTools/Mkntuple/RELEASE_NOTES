@@ -1,4 +1,39 @@
-$Revision: 1.4 $
+$Revision: 1.5 $
+
+v4_1_6: Apr. 30 2011
+--------------------
+	1. Return -9999 for any method call that fails.
+
+	2. PoissonGammaFit now allows the fixing of yields. This has been tested
+	by Josh in the RA2b group. The optional use of weighted histograms has
+	been implemented: the add method now has two optional arguments:
+
+	add(source,			source counts 
+
+				optional arguments
+
+		fixed, 			true if the yield for this source is to be held fixed
+		dsource)  		source count uncertainties
+
+	Remember to get Root to return correct bin errors for weighted histograms,
+	be sure to call Sumw2() method for the histogram before filling it.
+
+	3. Changed the default save directory for the GUI to python. You will be
+	warned if a file with the same name exists in the directory.
+
+	4. Split plugins.cc into separate files, one per plugin. This was done to
+	permit the use of scram b -jN to compile where "N" is the number of jobs to
+	run in parallel. Typically, N is set to the number of machine cores 
+	available. 
+
+	5. TriggerResultsHelper now has an additional method:
+
+		unsigned int prescale(std::string)
+
+	which returns the prescale associated with the high-level trigger (HLT).
+	For MC files, the method returns 1. The prescale method uses code from
+	Josh, which uses the HLTConfigProvider. The prescale code has not been
+	tested.
 
 v4_1_5: Apr. 20 2011
 --------------------

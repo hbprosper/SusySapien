@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # Create the skeleton of a user plugin
 # Created: 27-Aug-2010 Harrison B. Prosper
-#$Revision: 1.10 $
+#$Revision: 1.11 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -72,11 +72,11 @@ def usage():
 Usage:
 	mkuserplugin.py [options] <CMSSW class> s|c [postfix, default=Helper]
 
-	s = singleton  (zero or one  object  per event)
+	s = singleton  (at most one  object  per event)
 	c = collection (zero or more objects per event)
 
 	options
-	-u    undo effect of most recent call to mkuserplugin.py
+	-u    undo effect of most recent call to mkuserplugin.py (experimental!)
 	      This option does not need the other arguments
 	'''
 	sys.exit(0)
@@ -90,7 +90,7 @@ def wrpluginheader(names):
 // Description: Mkntuple helper class for %(classname)s
 // Created:     %(time)s
 // Author:      %(author)s      
-//$Revision: 1.10 $
+//$Revision: 1.11 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -192,7 +192,7 @@ def wrplugincode(names):
 // Description: Mkntuple helper class for %(classname)s
 // Created:     %(time)s
 // Author:      %(author)s      
-//$Revision: 1.10 $
+//$Revision: 1.11 $
 //-----------------------------------------------------------------------------
 #include "%(package)s/%(subpackage)s/interface/%(filename)s.h"
 //-----------------------------------------------------------------------------
@@ -241,7 +241,7 @@ def wrplugin(names):
 	template = '''// ----------------------------------------------------------------------------
 // Created: %(time)s by mkuserplugin.py
 // Author:      %(author)s      
-//$Revision: 1.10 $
+//$Revision: 1.11 $
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/UserBuffer.h"
 #include "PhysicsTools/Mkntuple/interface/pluginfactory.h"
@@ -497,7 +497,7 @@ def main():
 	else:
 		updated = True
 		out = open(classesfile, 'w')
-		record ='''//$Revision: 1.10 $
+		record ='''//$Revision: 1.11 $
 //--------------------------------------------------------------------''' % \
 		names
 		out.write(record)
@@ -569,5 +569,22 @@ def main():
 	if updated:
 		open(classesfile,'w').write(record)
 		print "\tupdated:       src/classes_def.xml"
+
+	cms = '''
+	rm -rf BuildFile.xml
+	scram b -c
+	
+	cd bin
+	rm -rf BuildFile.xml
+	scram b -c
+	cd ..
+
+	cd plugins
+	rm -rf BuildFile.xml
+	scram b -c
+	cd ..
+	'''
+	os.system(cmd)
+	
 #------------------------------------------------------------------------------
 main()

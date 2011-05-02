@@ -6,7 +6,7 @@
 // Updated:     Mon Mar 08, 2010 Sezen & HBP - add triggerBits class
 //              Tue Aug 24, 2010 HBP - add HcalNoiseRBXHelper
 //              Thu Sep 02, 2010 HBP - update to new version of HelperFor
-//$Revision: 1.17 $
+//$Revision: 1.18 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -24,6 +24,18 @@
 using namespace edm;
 using namespace reco;
 using namespace std;
+//-----------------------------------------------------------------------------
+/*
+  The following variables are available to all helpers
+
+  event             pointer to current event
+  eventsetup        pointer to current event setup
+  object            pointer to current helped object
+
+  oindex            index of current helped object (dumb pointer)
+  index             index of current helper object (dumb pointer)
+  count             number of instances returned by helper
+ */
 //-----------------------------------------------------------------------------
 namespace {
   void split(string str, vector<string>& vstr)
@@ -43,8 +55,10 @@ namespace {
 // TriggerResults helper
 //-----------------------------------------------------------------------------
 bool TriggerResultsHelper::first=true;
+unsigned int TriggerResultsHelper::run=-1;
 
-TriggerResultsHelper::TriggerResultsHelper() : HelperFor<edm::TriggerResults>()
+TriggerResultsHelper::TriggerResultsHelper() 
+  : HelperFor<edm::TriggerResults>()
 {}
     
 TriggerResultsHelper::~TriggerResultsHelper() {}
@@ -75,13 +89,84 @@ TriggerResultsHelper::value(std::string name) const
   // Get bit associated with trigger name
   unsigned int bit = tnames.triggerIndex(name);
   
-  // If trigger does not exist, crash and burn!
+  // If trigger does not exist, crash and burn, unless
+  // the caller is kind and reduces this exception into a warning.
   if ( bit == tnames.size() )
     throw edm::Exception(edm::errors::Configuration,
                          "\nTriggerResultsHelper - " 
                          "trigger \"" + name + "\" NOT FOUND");
   else
     return object->accept(bit);
+}
+
+///
+unsigned int
+TriggerResultsHelper::prescale(std::string name)
+{
+  if ( event == 0 )
+    throw edm::Exception(edm::errors::Configuration,
+                         "\nTriggerResultsHelper - " 
+                         "event pointer is ZERO");
+  
+  // NB: use a reference to avoid expensive copying
+  const edm::TriggerNames& tnames = event->triggerNames(*object);
+
+  // Write out trigger names upon first call
+  if ( TriggerResultsHelper::first )
+    {
+      TriggerResultsHelper::first = false;
+      ofstream fout("triggerNames.txt");
+      fout << std::endl << "Bit" << "\t" "Trigger Name" << std::endl;
+      for(unsigned  bit=0; bit < tnames.size(); bit++)
+        fout << bit << "\t" << tnames.triggerName(bit) << std::endl;
+      fout.close();
+    }
+
+  // Get bit associated with trigger name
+  unsigned int bit = tnames.triggerIndex(name);
+  
+  // If trigger does not exist, crash and burn, unless
+  // the caller is kind and reduces this exception into a warning.
+  if ( bit == tnames.size() )
+    throw edm::Exception(edm::errors::Configuration,
+                         "\nTriggerResultsHelper - " 
+                         "trigger \"" + name + "\" NOT FOUND");
+  else
+    {
+      // Prescales only make sense for real data
+
+      if ( !event->isRealData() ) return 1;
+
+      // Initialize the HLT configuration every new
+      // run .
+      if ( event->id().run() != run ) 
+        {
+          run = event->id().run();
+
+          // Fron Josh
+          bool hltChanged=false;
+          const string HLT("HLT");
+          bool okay = hltConfig_.init(event->getRun(), 
+                                      *eventsetup, 
+                                      HLT, 
+                                      hltChanged);
+          if ( okay )
+            {
+              if ( hltChanged ) 
+                edm::LogInfo("HLTConfig") 
+                  << "The HLT configuration has changed"
+                  << std::endl;
+            }
+          else 
+            edm::LogWarning("HLTConfigFailure") 
+              << "Problem with HLT configuration"
+              << std::endl;
+          return -9999;
+        }
+
+      // return prescale
+      return hltConfig_.prescaleValue(*event, *eventsetup, name);
+    }
 }
 
 

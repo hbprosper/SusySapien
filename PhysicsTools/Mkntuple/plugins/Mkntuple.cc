@@ -48,7 +48,7 @@
 //                   Sun Nov 07 HBP - add event setup to fill
 //                   Sat Mar 12 2011 HBP - change selectorname to usermacroname
 //
-// $Id: Mkntuple.cc,v 1.26 2011/03/13 05:10:55 prosper Exp $
+// $Id: Mkntuple.cc,v 1.27 2011/04/14 18:35:40 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -90,6 +90,7 @@ public:
 
 private:
   virtual void beginJob();
+  //virtual void beginRun(const edm::Run&, const edm::EventSetup&);
   virtual void analyze(const edm::Event&, const edm::EventSetup&);
   virtual void endJob();
 
@@ -125,7 +126,7 @@ private:
   int imalivecount_;
   int logger_;
   bool haltlogger_;
-  
+
   TTree* ptree_;
   int inputCount_;
 };
@@ -134,7 +135,7 @@ private:
 Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   : output(otreestream(iConfig.getUntrackedParameter<string>("ntupleName"), 
                        "Events", 
-                       "created by Mkntuple $Revision: 1.26 $")),
+                       "created by Mkntuple $Revision: 1.27 $")),
     logfilename_("Mkntuple.log"),
     log_(new std::ofstream(logfilename_.c_str())),
     usermacroname_(""),
@@ -147,13 +148,13 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
     haltlogger_(false),
     inputCount_(0)
 {
-  cout << "\nBEGIN Mkntuple" << endl;
+  cout << "\nBEGIN TheNtupleMaker Configuration" << endl;
 
   // --------------------------------------------------------------------------
   // Add a provenance tree to ntuple
   // --------------------------------------------------------------------------
   TFile* file = output.file();
-  ptree_ = new TTree("Provenance","created by Mkntuple $Revision: 1.26 $");
+  ptree_ = new TTree("Provenance","created by Mkntuple $Revision: 1.27 $");
   string cmsver = kit::strip(kit::shell("echo $CMSSW_VERSION"));
   ptree_->Branch("cmssw_version", (void*)(cmsver.c_str()), "cmssw_version/C");
 
@@ -174,7 +175,7 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   ptree_->Fill();
 
   // --------------------------------------------------------------------------
-  // Cache configuration 
+  // Cache global configuration 
   Configuration::instance().set(iConfig);
 
   // Get optional configuration parameters
@@ -278,11 +279,17 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   //                 otherwise, take prefix = <buffer>_<label>
   // followed by the list of methods
   // 
+  // Helper methods may optionally contain strings with the format
+  //   parameter parameter-name = parameter-value
+  //
   vector<string> vrecords = iConfig.
     getUntrackedParameter<vector<string> >("buffers");
 
   boost::regex getmethod("[a-zA-Z][^ ]*[(].*[)][^ ]*|[a-zA-Z]+$");
   boost::smatch matchmethod;
+
+  boost::regex isparam("^ *p[a-z] *");
+  boost::smatch matchparam;
 
   for(unsigned ii=0; ii < vrecords.size(); ii++)
     {
@@ -302,7 +309,13 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
       if ( DEBUG > 1 ) 
         cout << " record(" << record  << ")" << endl; 
 
+      // If current buffer is a Helper, create a parameter set specific to
+      // the Helper from this string.
+      //string localparam("");
+
+      // Structure containing information about the methods to be called.
       vector<VariableDescriptor> var;
+
       vector<string> field;              
       kit::split(record, field);
 
@@ -369,6 +382,19 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
       for(unsigned i=1; i < bufferrecords.size(); i++)
         {
           string record = bufferrecords[i];
+
+          // Check for a Helper parameter
+
+//           if ( boost::regex_search(record, matchparam, isparam) )
+//             {
+//               std::string param = kit::replace(record,
+//                                                matchparam[0], "");
+
+//               string key, value;
+//               kit::bisplit(param, key, value, "=");
+//               paramset.addUntrackedParameter(key, value);
+//               continue;
+//             }
 
           // Get method
       
@@ -462,7 +488,7 @@ Mkntuple::Mkntuple(const edm::ParameterSet& iConfig)
   if ( analyzername_ != "" )
     kit::shell("mkanalyzer.py " + analyzername_ + " variables.txt");
 
-  cout << "END Mkntuple" << endl;
+  cout << "END TheNtupleMaker Configuration" << endl;
 }
 
 
@@ -614,6 +640,13 @@ void
 Mkntuple::beginJob()
 {
 }
+
+/*
+void 
+Mkntuple::beginRun(const edm::Run& run, const edm::EventSetup& eventsetup)
+{
+}
+*/
 
 // --- method called once each job just after ending the event loop  ----------
 void 

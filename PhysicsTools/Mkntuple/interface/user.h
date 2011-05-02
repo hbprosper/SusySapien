@@ -11,7 +11,7 @@
 //                                   - add TriggerResultsHelper
 //                                   - add GenParticleHelper
 //              Thu Sep 02, 2010 HBP - move HelpFor to separate file
-//$Revision: 1.13 $
+//$Revision: 1.14 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -20,6 +20,7 @@
 #include "FWCore/Common/interface/TriggerNames.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
+#include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
 #include "DataFormats/Common/interface/TriggerResults.h"
 #include "DataFormats/METReco/interface/HcalNoiseRBX.h"
 #include "PhysicsTools/Mkntuple/interface/HelperFor.h"
@@ -76,8 +77,16 @@ namespace edm
     ///
     bool value(std::string tname) const;
 
+    ///
+    unsigned int prescale(std::string tname);
+
   private:
     static bool first;
+    static unsigned int run;
+    // From Josh's code
+    HLTConfigProvider hltConfig_; 
+
+    
   };
   //---------------------------------------------------------------------------
   /// Helper class for edm::Event.

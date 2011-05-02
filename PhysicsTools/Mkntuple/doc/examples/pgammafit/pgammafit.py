@@ -10,6 +10,7 @@
 #               histograms.
 #- Created: 20-Sep-2010 Harrison B. Prosper
 #           11-Feb-2011 HBP - remove dependence of kit.h
+#$Revision:$
 #------------------------------------------------------------------------------
 from string import *
 from ROOT import *
@@ -264,7 +265,7 @@ def main():
 	print "Fit..."
 	pgfit = PoissonGammaFit(D)
 	for a, da in A:
-		pgfit.add(a, da) # add a source
+		pgfit.add(a, False, da) # add a source, but with a floating yield
 										  
 	# do fit
 	guess = vdouble(len(sources), total/3)

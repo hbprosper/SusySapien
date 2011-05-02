@@ -9,7 +9,7 @@
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Sep 19 HBP - copy from Buffer.h
 //
-// $Id: UserBuffer.h,v 1.7 2011/04/14 18:35:40 prosper Exp $
+// $Id: UserBuffer.h,v 1.8 2011/04/20 12:38:12 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/BufferUtil.h"
@@ -68,8 +68,6 @@ struct UserBuffer  : public BufferThing
     boost::regex getname("GenEvent|GenParticle|GenJet|GenRun");
     boost::smatch m;
     skipme_ = boost::regex_search(classname_, m, getname);
-    std::cout << "\t==> class(" << classname_ 
-              << ")\t==> skipme_(" << skipme_ << ")" << std::endl;
   }
   
   ///
@@ -134,18 +132,7 @@ struct UserBuffer  : public BufferThing
     // If this is real data ignore generator objects
     if ( event.isRealData() )
       {
-        std::cout << "===> REAL DATA" << std::endl;
-        if ( skipme_ ) 
-          {
-            return true;
-          }
-//         if ( label1_ == std::string("generator") )    return true;
-//         if ( label1_ == std::string("genParticles") ) return true;
-//         if ( label1_ == std::string("genJets") )      return true;
-        
-//         if ( label2_ == std::string("generator") )    return true;
-//         if ( label2_ == std::string("genParticles") ) return true;
-//         if ( label2_ == std::string("genJets") )      return true;
+        if ( skipme_ ) return true;
       }
     
     // Create helper.

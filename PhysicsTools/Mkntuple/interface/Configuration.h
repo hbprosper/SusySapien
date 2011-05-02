@@ -4,13 +4,13 @@
 // Package:    PhysicsTools/Mkntuple
 //             Configuration.h
 //
-//             A singleton object to make config object available
+//             A singleton object to make configuration info available
 //             to whoever needs it
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Wed Sep 01, 2010
 //
-// $Id: Configuration.h,v 1.3 2010/08/08 16:26:06 prosper Exp $
+// $Id: Configuration.h,v 1.1 2010/09/03 01:54:13 prosper Exp $
 
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 
@@ -34,6 +34,15 @@ public:
   ///
   const edm::ParameterSet* get() const { return config_; }
 
+//   ///
+//   void setLocal(const edm::ParameterSet& config) 
+//   { 
+//     localconfig_ = &config;
+//   }
+
+//   ///
+//   const edm::ParameterSet*  getLocal() const { return localconfig_; }
+
 private:
   Configuration() {}                               // prevent explicit creation
   ~Configuration() {}                  
@@ -41,6 +50,7 @@ private:
   Configuration& operator=(const Configuration&);  // prevent assignment
   
   const edm::ParameterSet* config_;
+  //const edm::ParameterSet* localconfig_;
 };
 
 #endif

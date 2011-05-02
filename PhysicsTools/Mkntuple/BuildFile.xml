@@ -27,6 +27,7 @@
 <use   name="DataFormats/TrajectorySeed"/>
 <use   name="DataFormats/VertexReco"/>
 <use   name="L1Trigger/GlobalTriggerAnalyzer"/>
+<use   name="HLTrigger/HLTcore"/>
 <use   name="PhysicsTools/PatUtils"/>
 <use   name="PhysicsTools/UtilAlgos"/>
 <use   name="CommonTools/Utils"/>

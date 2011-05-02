@@ -18,6 +18,7 @@
 //
 // Created: 27-Jun-2005 Harrison B. Prosper
 //          19-Feb-2011 HBP add add(..)
+//          16-Apr-2011 HBP allow for parameter fixing
 ///////////////////////////////////////////////////////////////////////////////
 #include <vector>
 
@@ -152,8 +153,8 @@ class PoissonGammaFit
   /// True if all is well.
   bool       good();
 
-  /// Add a source
-  void       add(vdouble& A, vdouble& dA=vNULL);
+  /// Add a source with a floating yield by default.
+  void       add(vdouble& A, bool fixed=false, vdouble& dA=vNULL);
 
   /// Execute the fit.
   bool       execute(std::vector<double>& guess);
@@ -169,6 +170,12 @@ class PoissonGammaFit
     
   /// Return width of posterior density. 
   vdouble&   width();
+
+  /// Return initial guesses of parameters.
+  vdouble&   guess();
+
+  /// Return which parameters are fixed, if any
+  std::vector<bool>&   fixed();
 
   /// Return error matrix of parameters
   vvdouble&  errorMatrix();
@@ -192,6 +199,10 @@ class PoissonGammaFit
   vvdouble _f;
   bool     _scale;
   int      _verbosity;
+
+  vvdouble _a;
+  std::vector<bool> _fixed;
+  vdouble           _guess;
   
   int      _N;
   int      _M;
@@ -209,7 +220,7 @@ class PoissonGammaFit
 
   Status   _status;
 
-  bool     _findmode(std::vector<double>& guess);
+  bool     _findmode();
 
 #ifdef __WITH_CINT__
  public:
@@ -217,12 +228,15 @@ class PoissonGammaFit
 #endif
 };
 
-double 
-poissongamma(vdouble&   D,         // Observed counts
-             vdouble&	p,         // Weights "p_j" 
-             vvdouble&	A,         // Counts  "A_ji" for up to 10 sources
-             vvdouble&	f=vvNULL,  // Scale factors associated with counts
-             bool returnlog=false, // return log(P) if true
-             bool scale=true);     // Scale p_j if true  
+
+namespace pg {
+  double 
+  poissongamma(vdouble&     D,         // Observed counts
+               vdouble&	    p,         // Weights "p_j" 
+               vvdouble&	A,         // Counts  "A_ji" for up to 10 sources
+               vvdouble&	f=vvNULL,  // Scale factors associated with counts
+               bool returnlog=false, // return log(P) if true
+               bool scale=true);     // Scale p_j if true  
+}
 
 #endif

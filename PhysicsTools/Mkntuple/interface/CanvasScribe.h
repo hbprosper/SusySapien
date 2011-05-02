@@ -1,9 +1,10 @@
-#ifndef CANVASSCRIBE_HPP
-#define CANVASSCRIBE_HPP
+#ifndef CANVASSCRIBE_H
+#define CANVASSCRIBE_H
 //-----------------------------------------------------------------------------
-// File: CanvasScribe.hpp
+// File: CanvasScribe.h
 // Description: A simple class to (LaTeX) lines to a canvas
 // Created: 23-Feb-2005 Harrison B. Prosper
+//$Revision:$
 //-----------------------------------------------------------------------------
 #include <string>
 #include <TLatex.h>
@@ -16,15 +17,19 @@ public:
   CanvasScribe();
 
   /** TCanvas writer.
-      @param xxpos - horizontal starting position of text
-      @param yymin - minimum vertical position of text buffer
-      @param yymax - maximum vertical position of text buffer
+      @param xpos - horizontal starting position of text
+      @param ypos - vertical starting position of text
+      @param ymin - minimum vertical position of text buffer
+      @param ymax - maximum vertical position of text buffer
+      @param logy - set true for vertical log scale
       @param size - text size
       @param font - text font
    */
-  CanvasScribe(float xxpos, 
-               float yymin, 
-               float yymax, 
+  CanvasScribe(float xpos,
+               float ypos,
+               float ymin, 
+               float ymax,
+               bool  logy,
                float size=0.04, 
                int font=42);
 
@@ -38,8 +43,10 @@ public:
 
  private:
   float xpos;
+  float ypos;
   float ymin;
   float ymax;
+  bool  logy;
   float textsize;
   float scale;
   float linewidth;

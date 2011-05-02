@@ -11,7 +11,9 @@
 #          02-Oct-2010 HBP - add cloning
 #          10-Jan-2011 HBP - merge histFile and skimFile into outputFile
 #          11-Mar-2011 HBP - fix naming bug
-#$Revision: 1.22 $
+#          26-Apr-2011 HBP - alert user only if duplicate name is not a leaf
+#                            counter
+#$Revision: 1.23 $
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
 from string import *
@@ -82,7 +84,7 @@ TEMPLATE_H =\
 // Description: Analyzer header for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.22 $
+// $Revision: 1.23 $
 //-----------------------------------------------------------------------------
 
 // -- System
@@ -218,7 +220,7 @@ struct outputFile
 	    file_ = tree_->GetCurrentFile();
 	  }
 	file_->cd();
-	//file_->Write("", TObject::kOverwrite);
+	//file_->Write("", TObject::kWriteDelete);
 	file_->Write();
 	file_->ls();
 	file_->Close();
@@ -260,8 +262,9 @@ decodeCommandLine(int argc, char** argv, commandLine& cl)
 	cl.outputfilename = cl.progname + std::string("_histograms");
 
   // Make sure extension is ".root"
-  cl.outputfilename = nameonly(cl.outputfilename);
-  cl.outputfilename += ".root";
+  std::string name = cl.outputfilename;
+  if ( name.substr(name.size()-5, 5) != std::string(".root") )
+    cl.outputfilename += std::string(".root");
 }
 
 // Read ntuple filenames from file list
@@ -309,7 +312,7 @@ TEMPLATE_CC =\
 // Description: Analyzer for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.22 $
+// $Revision: 1.23 $
 //-----------------------------------------------------------------------------
 #include "%(name)s.h"
 
@@ -343,18 +346,47 @@ int main(int argc, char** argv)
 
   selectVariables(stream);
 
-  //---------------------------------------------------------------------------
-  // Book histograms etc.
-  //---------------------------------------------------------------------------
+
   // The root application is needed to make canvases visible during
   // program execution. If this is not needed, just comment out the following
   // line
 
   TApplication app("analyzer", &argc, argv);
 
+  /*
+	 Notes:
+	
+	 1. Use
+	   ofile = outputFile(cmdline.outputfile, stream)
+	
+	 to skim events to output file in addition to writing out histograms.
+	
+	 2. Use
+	   ofile.addEvent(event-weight)
+	
+	 to specify that the current event is to be added to the output file. If
+	 omitted, the event-weight is taken to 1.
+	
+	 3. Use
+	    ofile.count(cut-name, event-weight)
+	
+	 to keep track, in the count histogram, of the number of events passing
+	 a given cut. If omitted, the event-weight is taken to be 1. If you want
+	 the counts in the count histogram to appear in a given order, specify the
+	 order, before entering the event loop, as in the example below
+	 
+	    ofile.count("NoCuts", 0)
+		ofile.count("GoodEvent", 0)
+		ofile.count("Vertex", 0)
+		ofile.count("MET", 0)
+  */
+  
   outputFile ofile(cmdline.outputfilename);
 
+  //---------------------------------------------------------------------------
   // Declare histograms
+  //---------------------------------------------------------------------------
+
 
 
   //---------------------------------------------------------------------------
@@ -365,12 +397,21 @@ int main(int argc, char** argv)
 	{
 	  // Read event into memory
 	  stream.read(entry);
-	 
+
+	  // Uncomment the following line if you wish to copy variables into
+	  // structs. See the header file %(name)s.h for to find out
+	  // what structs are available.
+	  // fillObjects();
+	  
 	  // ---------------------
-	  // -- Event Selection --
+	  // -- event selection --
 	  // ---------------------
 
-	  // if ( !SUSY ) continue;
+
+	  // ---------------------
+	  // -- fill histograms --
+	  // ---------------------	  
+
 	}
 
   stream.close();
@@ -385,13 +426,22 @@ PYTEMPLATELIB =\
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
 #  Author:      %(author)s
-#  $Revision: 1.22 $
+#  $Revision: 1.23 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from time import sleep
 from string import *
-#from PhysicsTools.Mkntuple.AutoLoader import *
+from array import array
+from math import *
+from sys import exit
 import os, sys, re
+# -----------------------------------------------------------------------------
+STANDALONE = True  # set to False to work within CMSSW
+if STANDALONE:
+    gROOT.ProcessLine(".L treestream.cc+")
+	gROOT.ProcessLine(".L pdg.cc+")
+else:
+    from PhysicsTools.Mkntuple.AutoLoader import *
 # -----------------------------------------------------------------------------
 # -- Classes, procedures and functions
 # -----------------------------------------------------------------------------
@@ -468,8 +518,8 @@ def decodeCommandLine():
 		cl.outputfilename = cl.progname + "_histograms"
 
 	# Make sure extension is ".root"
-	cl.outputfilename = os.path.basename(cl.outputfilename)
-	cl.outputfilename = split(cl.outputfilename, ".")[0] + ".root"
+	if cl.outputfile[:-5] != ".root": cl.outputfilename += ".root"
+	print "\n\t==> output to:", cl.outputfilename
 
 	return cl
 # -----------------------------------------------------------------------------
@@ -624,7 +674,7 @@ PYTEMPLATE =\
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
 #  Author:      %(author)s
-#  $Revision: 1.22 $
+#  $Revision: 1.23 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from string import *
@@ -642,12 +692,41 @@ def main():
 	nevents = stream.size()
 	print "Number of events:", nevents
 
+
+	# Notes:
+	#
+	# 1. Use
+	#   ofile = outputFile(cmdline.outputfile, stream)
+	#
+	# to skim events to output file in addition to writing out histograms.
+	#
+	# 2. Use
+	#   ofile.addEvent(event-weight)
+	#
+	# to specify that the current event is to be added to the output file. If
+	# omitted, the event-weight is taken to be 1.
+	#
+	# 3. Use
+	#    ofile.count(cut-name, event-weight)
+	#
+	# to keep track, in the count histogram, of the number of events passing
+	# a given cut. If omitted, the event-weight is taken to be 1. If you want
+	# the counts in the count histogram to appear in a given order, specify
+	# the order, before entering the event loop, as in the example below
+	# 
+	#   ofile.count("NoCuts", 0)
+	#	ofile.count("GoodEvent", 0)
+	#	ofile.count("Vertex", 0)
+	#	ofile.count("MET", 0)
+	
+	ofile = outputFile(cmdline.outputfilename)
+
 	# -------------------------------------------------------------------------
-	# Book histograms etc.
+	# Define histograms
 	# -------------------------------------------------------------------------
 	setStyle()
 
-	ofile = outputFile(cmdline.outputfilename)
+
 
 	# -------------------------------------------------------------------------
 	# Loop over events
@@ -656,7 +735,6 @@ def main():
 		stream.read(entry)
 
 		# -- Event selection
-		#if not SUSY: continue
 
 	stream.close()
 	ofile.close()
@@ -677,7 +755,7 @@ MAKEFILE = '''#-----------------------------------------------------------------
 #                 verbose    (e.g., verbose=1)
 #                 withcern   (e.g., withcern=1  expects to find CERN_LIB)
 # Author:      %(author)s
-#$Revision: 1.22 $
+#$Revision: 1.23 $
 #------------------------------------------------------------------------------
 ifndef ROOTSYS
 $(error *** Please set up Root)
@@ -782,7 +860,7 @@ clean   	:
 	rm -rf tmp/*.o $(program)
 '''
 
-README = '''$Revision: 1.22 $
+README = '''$Revision: 1.23 $
 Created: %(time)s
 
     o To build the default program (%(name)s) do
@@ -914,12 +992,21 @@ def main():
 			rtype = "int"
 		elif rtype == "uint":
 			rtype = "int"			
+
+		# Check for leaf counter flag (a "*")
+
+		t = split(count)
+		count = atoi(t[0]) # Change type to an integer
+		iscounter = t[-1] == "*"
 		
 		# Check that varname is not the same as that of a potential
 		# struct
 		if stnamemap.has_key(varname):
-			print "\t**warning: multiply defined name, %s; changing " % varname
-			print "\t           varname to %s1" % varname
+			if not iscounter:
+				# This is not a leaf counter, so alert user
+				print "\t**warning: multiply defined name, %s; changing " % \
+					  varname
+				print "\t           varname to %s1" % varname
 			varname = "%s1" % varname
 			
 		# Get object and field names
@@ -946,12 +1033,6 @@ def main():
 				else:
 					objname = ''
 					fldname = ''
-
-		# Check for leaf counter flag (a "*")
-
-		t = split(count)
-		count = atoi(t[0]) # Change type to an integer
-		iscounter = t[-1] == "*"
 
 		# Take care of duplicate names
 		n = 1

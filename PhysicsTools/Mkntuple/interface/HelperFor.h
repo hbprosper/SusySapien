@@ -5,7 +5,8 @@
 // Sub-Package: Mkntuple
 // Description: Base class for helpers
 // Created:     Aug, 2010 Harrison B. Prosper
-//$Revision: 1.6 $
+//              01 May, 2011 HBP add param
+//$Revision: 1.7 $
 //-----------------------------------------------------------------------------
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
@@ -17,6 +18,7 @@ class HelperFor
 {
 public:
   HelperFor() : config(Configuration::instance().get()),
+                //localconfig(*Configuration::instance().getLocal()),
                 event(0),      // pointer to current event
                 eventsetup(0), // pointer to current event setup
                 object(0),     // pointer to current helped object
@@ -58,6 +60,9 @@ public:
   // ---------------- available to user
   /// Pointer to ParameterSet initialized from config file.
   const edm::ParameterSet* config;
+
+  /// Parameter set local to buffer
+  //const edm::ParameterSet  localconfig;
 
   /// Pointer to event.
   const edm::Event* event;
