@@ -41,12 +41,13 @@
 //          02-Oct-2010 HBP minor change to itreestream to handle vector types
 //                      directly.
 //          22-Nov-2010 HBP allow reading of multiple trees
-//$Revision: 1.5 $
+//$Revision: 1.6 $
 //----------------------------------------------------------------------------
 #ifdef PROJECT_NAME
 #include <boost/regex.hpp>
 #endif
 
+#include <glob.h>
 #include <map>
 #include <vector>
 #include <string>
@@ -56,7 +57,7 @@
 #include <typeinfo>
 #include <cctype>
 #include <cassert>
-#include <glob.h>
+
 
 #include "TList.h"
 #include "TKey.h"
@@ -125,9 +126,9 @@ namespace
     istringstream stream(str);
     while ( stream )
       {
-        string str;
-        stream >> str;
-      if ( stream ) vstr.push_back(str);
+        string strg;
+        stream >> strg;
+      if ( stream ) vstr.push_back(strg);
       }
   }
  
@@ -687,7 +688,7 @@ itreestream::itreestream()
     _delete(true)
 {}
 
-itreestream::itreestream(string filename, int bufsize)
+itreestream::itreestream(string filename_, int bufsize)
   : _tree(0),
     _chain(0),
     _statuscode(kSUCCESS),
@@ -701,7 +702,7 @@ itreestream::itreestream(string filename, int bufsize)
     _delete(true)
 {
   vector<string> fname;
-  split(filename, fname);
+  split(filename_, fname);
   vector<string> tname;
   _open(fname, tname);
 }
@@ -723,7 +724,7 @@ itreestream::itreestream(vector<string>& fname, int bufsize)
   _open(fname, tname);
 }
 
-itreestream::itreestream(string filename, string treename, int bufsize)
+itreestream::itreestream(string filename_, string treename, int bufsize)
   : _tree(0),
     _chain(0),
     _statuscode(kSUCCESS),
@@ -737,7 +738,7 @@ itreestream::itreestream(string filename, string treename, int bufsize)
     _delete(true)
 {
   vector<string> fname;
-  split(filename, fname);
+  split(filename_, fname);
   vector<string> tname;
   split(treename, tname);
   _open(fname, tname);
@@ -762,10 +763,10 @@ itreestream::itreestream(vector<string>& fname, string treename, int bufsize)
 }
 
 void
-itreestream::init(TTree* tree)
+itreestream::init(TTree* tree_)
 {
   _delete = false;
-  _tree = tree;
+  _tree = tree_;
   vector<string> fname;
   vector<string> tname;
   _open(fname, tname);
@@ -800,12 +801,12 @@ itreestream::_open(vector<string>& fname, vector<string>& tname)
       // file1 file2 ..
       // ----------------------------------------
       filepath.clear();
-      for(int i=0; i < (int)fname.size(); i++)
+      for(int i=0; i < (int)fname.size(); ++i)
         {
           glob_t g;
           glob(fname[i].c_str(), GLOB_ERR | GLOB_NOCHECK, NULL, &g);
-          for (int i=0; i < (int)g.gl_pathc; i++)
-            filepath.push_back(g.gl_pathv[i]);
+          for (int j=0; j < (int)g.gl_pathc; ++j)
+            filepath.push_back(g.gl_pathv[j]);
           globfree(&g);
         }
       DBUG("itreestream::ctor - new TFile ", 2);
@@ -813,10 +814,10 @@ itreestream::_open(vector<string>& fname, vector<string>& tname)
       // ----------------------------------------
       // Open first file
       // ----------------------------------------
-      TFile* file = new TFile(filepath[0].c_str());
-      if ( ! file || (file != 0 && ! file->IsOpen()) )
+      TFile* file_ = new TFile(filepath[0].c_str());
+      if ( ! file_ || (file_ != 0 && ! file_->IsOpen()) )
         fatal("itreestream - unable to open file " + filepath[0]);
-      file->cd();
+      file_->cd();
       
       if ( treename == "" )
         {      
@@ -828,7 +829,7 @@ itreestream::_open(vector<string>& fname, vector<string>& tname)
           // ----------------------------------------
           _tree = 0; // make sure to zero
           
-          TIter nextkey(file->GetListOfKeys());
+          TIter nextkey(file_->GetListOfKeys());
           
           while ( TKey* key = (TKey*)nextkey() )
             {
@@ -855,7 +856,7 @@ itreestream::_open(vector<string>& fname, vector<string>& tname)
         }
       else
         {
-          _tree = (TTree*)file->Get(treename.c_str());
+          _tree = (TTree*)file_->Get(treename.c_str());
           if ( ! _tree )
             fatal("itreestream - NO tree found in file " + filepath[0]);
         }
@@ -866,7 +867,7 @@ itreestream::_open(vector<string>& fname, vector<string>& tname)
       // Remember to close file. It will be re-opened as part of a
       // chain.
       
-      file->Close();
+      file_->Close();
       
       DBUG("itreestream::ctor - after file->Close", 2);
 
@@ -1013,8 +1014,8 @@ itreestream::_getbranches(TBranch* branch, int depth)
       int nbranches = array->GetEntries();
       for (int i = 0; i < nbranches; i++)
         {
-          TBranch* branch = (TBranch*)((*array)[i]);
-          _getbranches(branch, depth);
+          TBranch* branch_ = (TBranch*)((*array)[i]);
+          _getbranches(branch_, depth);
         }
     }
 }
@@ -1494,18 +1495,18 @@ itreestream::_select(string namen, void* address, int maxsize, char srctype,
           // Current field has a leaf counter
           
           TBranch* branch = leafcounter->GetBranch();
-          string name(branch->GetName());
+          string name_(branch->GetName());
           
           if ( DEBUGLEVEL > 1 )
             cout << "_select - " << namen << " needs counter " 
-                 << name << endl;
+                 << name_ << endl;
           
           // If leaf counter field not yet created, create it
-          if ( selecteddata.find(name) == selecteddata.end() )
+          if ( selecteddata.find(name_) == selecteddata.end() )
             {
               if ( DEBUGLEVEL > 0 )
                 cout << "_select - " << namen << " get counter " 
-                     << name << endl;
+                     << name_ << endl;
               
               _getleaf(branch);
 
@@ -1514,11 +1515,11 @@ itreestream::_select(string namen, void* address, int maxsize, char srctype,
               // If the caller does not need it, then the address field 
               // should remain zero.
               
-              Field& f = data[name];  // NB: Get a reference, not a copy!
+              Field& f = data[name_];  // NB: Get a reference, not a copy!
               f.srctype = 'I';        // Default source type
               f.maxsize = 1;
               f.iscounter = true;
-              selecteddata[name] = &f;
+              selecteddata[name_] = &f;
             }
         }
     }
@@ -1574,16 +1575,16 @@ itreestream::_update()
 }
 
 int 
-itreestream::maximum(string name)
+itreestream::maximum(string name_)
 {
-  if ( data.find(name) != data.end() )
-    return getmaxsize(data[name].leaf);
+  if ( data.find(name_) != data.end() )
+    return getmaxsize(data[name_].leaf);
   else
     return 1;
 }
 
 bool
-itreestream::present(string name) { return data.find(name) != data.end(); }
+itreestream::present(string name_) { return data.find(name_) != data.end(); }
 
 // int 
 // itreestream::operator[](int entry) 
@@ -1615,7 +1616,7 @@ otreestream::otreestream()
 
 otreestream::otreestream(std::string filename, 
                          std::string treename, 
-                         std::string title,
+                         std::string title_,
                          int complevel,
                          int bufsize)
   : _file(0),
@@ -1638,7 +1639,7 @@ otreestream::otreestream(std::string filename,
   _file->SetCompressionLevel(complevel);
   _file->cd();
 
-  _tree = new TTree(treename.c_str(), title.c_str());
+  _tree = new TTree(treename.c_str(), title_.c_str());
   if ( ! _tree )
     {
       cerr << "itreestream **Error** can't make tree " << treename << endl;
@@ -1647,12 +1648,12 @@ otreestream::otreestream(std::string filename,
     }
 }
 
-otreestream::otreestream(TFile* file, 
+otreestream::otreestream(TFile* file_, 
                          std::string treename, 
-                         std::string title,
+                         std::string title_,
                          int complevel,
                          int bufsize)
-  : _file(file),
+  : _file(file_),
     _tree(0),
     _statuscode(kSUCCESS),
     _entries(0),
@@ -1670,7 +1671,7 @@ otreestream::otreestream(TFile* file,
   _file->SetCompressionLevel(complevel);
   _file->cd();
 
-  _tree = new TTree(treename.c_str(), title.c_str());
+  _tree = new TTree(treename.c_str(), title_.c_str());
   if ( ! _tree )
     {
       cerr << "otreestream **Error** can't make tree " << treename << endl;
@@ -1886,12 +1887,12 @@ otreestream::store()
       TLeaf* leafcounter = field->leaf->GetLeafCounter(flag);
       if ( leafcounter != 0 )
         {
-          string name(leafcounter->GetName());
-          DBUG("\t\t- leaf counter: " + name);
+          string name_(leafcounter->GetName());
+          DBUG("\t\t- leaf counter: " + name_);
 
-          if ( selecteddata.find(name) != selecteddata.end() )
+          if ( selecteddata.find(name_) != selecteddata.end() )
             count = min(count, 
-                        static_cast<int>(getexvalue(selecteddata[name])));
+                        static_cast<int>(getexvalue(selecteddata[name_])));
 
           if ( DEBUGLEVEL > 1 )
             cout << "\t\t - with count: " << count << endl;

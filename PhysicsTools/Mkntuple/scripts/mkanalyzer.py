@@ -13,7 +13,7 @@
 #          11-Mar-2011 HBP - fix naming bug
 #          26-Apr-2011 HBP - alert user only if duplicate name is not a leaf
 #                            counter
-#$Revision: 1.23 $
+#$Revision: 1.24 $
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
 from string import *
@@ -84,7 +84,7 @@ TEMPLATE_H =\
 // Description: Analyzer header for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.23 $
+// $Revision: 1.24 $
 //-----------------------------------------------------------------------------
 
 // -- System
@@ -312,7 +312,7 @@ TEMPLATE_CC =\
 // Description: Analyzer for ntuples created by Mkntuple
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.23 $
+// $Revision: 1.24 $
 //-----------------------------------------------------------------------------
 #include "%(name)s.h"
 
@@ -399,8 +399,8 @@ int main(int argc, char** argv)
 	  stream.read(entry);
 
 	  // Uncomment the following line if you wish to copy variables into
-	  // structs. See the header file %(name)s.h for to find out
-	  // what structs are available.
+	  // structs. See the header file %(name)s.h to find out what structs
+	  // are available.
 	  // fillObjects();
 	  
 	  // ---------------------
@@ -426,7 +426,7 @@ PYTEMPLATELIB =\
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
 #  Author:      %(author)s
-#  $Revision: 1.23 $
+#  $Revision: 1.24 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from time import sleep
@@ -439,7 +439,7 @@ import os, sys, re
 STANDALONE = True  # set to False to work within CMSSW
 if STANDALONE:
     gROOT.ProcessLine(".L treestream.cc+")
-	gROOT.ProcessLine(".L pdg.cc+")
+    gROOT.ProcessLine(".L pdg.cc+")
 else:
     from PhysicsTools.Mkntuple.AutoLoader import *
 # -----------------------------------------------------------------------------
@@ -447,7 +447,7 @@ else:
 # -----------------------------------------------------------------------------
 class outputFile:
 
-	def __init__(self, filename, stream=None, savecount=50000):
+    def __init__(self, filename, stream=None, savecount=50000):
 		if stream != None:
 		    print "events will be skimmed to file", filename
 		    self.tree = stream.tree().CloneTree(0)
@@ -518,8 +518,8 @@ def decodeCommandLine():
 		cl.outputfilename = cl.progname + "_histograms"
 
 	# Make sure extension is ".root"
-	if cl.outputfile[:-5] != ".root": cl.outputfilename += ".root"
-	print "\n\t==> output to:", cl.outputfilename
+	if cl.outputfilename[:-5] != ".root": cl.outputfilename += ".root"
+	print "==> output to:", cl.outputfilename
 
 	return cl
 # -----------------------------------------------------------------------------
@@ -674,7 +674,7 @@ PYTEMPLATE =\
 #  Description: Analyzer for ntuples created by Mkntuple
 #  Created:     %(time)s by mkntanalyzer.py
 #  Author:      %(author)s
-#  $Revision: 1.23 $
+#  $Revision: 1.24 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from string import *
@@ -755,7 +755,7 @@ MAKEFILE = '''#-----------------------------------------------------------------
 #                 verbose    (e.g., verbose=1)
 #                 withcern   (e.g., withcern=1  expects to find CERN_LIB)
 # Author:      %(author)s
-#$Revision: 1.23 $
+#$Revision: 1.24 $
 #------------------------------------------------------------------------------
 ifndef ROOTSYS
 $(error *** Please set up Root)
@@ -860,7 +860,7 @@ clean   	:
 	rm -rf tmp/*.o $(program)
 '''
 
-README = '''$Revision: 1.23 $
+README = '''$Revision: 1.24 $
 Created: %(time)s
 
     o To build the default program (%(name)s) do

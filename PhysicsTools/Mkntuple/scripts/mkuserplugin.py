@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # Create the skeleton of a user plugin
 # Created: 27-Aug-2010 Harrison B. Prosper
-#$Revision: 1.12 $
+#$Revision: 1.13 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -92,7 +92,7 @@ def wrpluginheader(names):
 // Description: Mkntuple helper class for %(classname)s
 // Created:     %(time)s
 // Author:      %(author)s      
-//$Revision: 1.12 $
+//$Revision: 1.13 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -192,7 +192,7 @@ def wrplugincode(names):
 // Description: Mkntuple helper class for %(classname)s
 // Created:     %(time)s
 // Author:      %(author)s      
-//$Revision: 1.12 $
+//$Revision: 1.13 $
 //-----------------------------------------------------------------------------
 #include "%(package)s/%(subpackage)s/interface/%(filename)s.h"
 //-----------------------------------------------------------------------------
@@ -241,7 +241,7 @@ def wrplugin(names):
 	template = '''// ----------------------------------------------------------------------------
 // Created: %(time)s by mkuserplugin.py
 // Author:      %(author)s      
-//$Revision: 1.12 $
+//$Revision: 1.13 $
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/UserBuffer.h"
 #include "PhysicsTools/Mkntuple/interface/pluginfactory.h"
@@ -483,7 +483,8 @@ def main():
 		
 	if find(record, filename) < 0:
 		updated = True
-		record += "<library file=userplugin_%(filename)s.cc>\n"\
+		record += "<library file=userplugin_%(filename)s.cc "\
+				  "name=%(filename)s>\n"\
 				  "<flags EDM_PLUGIN=1>\n"\
 				  "</library>\n" % names
 	if updated:
@@ -502,7 +503,7 @@ def main():
 	else:
 		updated = True
 		out = open(classesfile, 'w')
-		record ='''//$Revision: 1.12 $
+		record ='''//$Revision: 1.13 $
 //--------------------------------------------------------------------''' % \
 		names
 		out.write(record)

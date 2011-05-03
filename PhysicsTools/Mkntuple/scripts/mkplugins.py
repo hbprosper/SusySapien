@@ -4,7 +4,7 @@
 # Created: 05-Jan-2010 Harrison B. Prosper
 # Updated: 15-Feb-2010 HBP - run mkclasslist.py if needed
 #          01-May-2011 HBP - split plugin definitions into separate files
-#$Revision: 1.14 $
+#$Revision: 1.15 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -117,7 +117,7 @@ for index, (ctype, name) in enumerate(cnames):
 '''// -------------------------------------------------------------------------
 // File::   plugin_%(shortname)s.cc
 // Created: %(time)s by mkplugins.py
-// $Revision: 1.14 $
+// $Revision: 1.15 $
 // -------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/%(bufferheader)s.h"
 #include "PhysicsTools/Mkntuple/interface/pluginfactory.h"
@@ -138,9 +138,12 @@ DEFINE_EDM_PLUGIN(BufferFactory, %(buffername)s_t,
 	if find(buildfile, pluginname) < 0:
 		rec = \
 '''
-<library file=plugin_%(shortname)s.cc>
+<library file=plugin_%(shortname)s.cc
+         name=%(shortname)s>
   <flags EDM_PLUGIN=1>
 </library>''' % names
 		buildfile += rec
 	
 open("BuildFile", "w").write(buildfile)
+os.system("rm -rf BuildFile.xml; scram b -c")
+

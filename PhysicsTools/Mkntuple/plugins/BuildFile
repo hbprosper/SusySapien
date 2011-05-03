@@ -38,280 +38,373 @@
   <flags EDM_PLUGIN=1>
 </library>
 
-<library file=userplugin_user.cc>
+<library file=userplugin_user.cc name=user>
   <flags EDM_PLUGIN=1>
 </library>
 
-<library file=plugin_BeamSpotOnline.cc>
+
+
+<library file=plugin_BeamSpotOnline.cc
+         name=BeamSpotOnline>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_DcsStatus.cc>
+<library file=plugin_DcsStatus.cc
+         name=DcsStatus>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_L1AcceptBunchCrossing.cc>
+<library file=plugin_L1AcceptBunchCrossing.cc
+         name=L1AcceptBunchCrossing>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_L1GctEmCand.cc>
+<library file=plugin_L1GctEmCand.cc
+         name=L1GctEmCand>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_L1GctEtHad.cc>
+<library file=plugin_L1GctEtHad.cc
+         name=L1GctEtHad>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_L1GctEtMiss.cc>
+<library file=plugin_L1GctEtMiss.cc
+         name=L1GctEtMiss>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_L1GctEtTotal.cc>
+<library file=plugin_L1GctEtTotal.cc
+         name=L1GctEtTotal>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_L1GctHFBitCounts.cc>
+<library file=plugin_L1GctHFBitCounts.cc
+         name=L1GctHFBitCounts>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_L1GctHFRingEtSums.cc>
+<library file=plugin_L1GctHFRingEtSums.cc
+         name=L1GctHFRingEtSums>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_L1GctHtMiss.cc>
+<library file=plugin_L1GctHtMiss.cc
+         name=L1GctHtMiss>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_L1GctJetCand.cc>
+<library file=plugin_L1GctJetCand.cc
+         name=L1GctJetCand>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_L1GctJetCounts.cc>
+<library file=plugin_L1GctJetCounts.cc
+         name=L1GctJetCounts>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_L1TriggerScalers.cc>
+<library file=plugin_L1TriggerScalers.cc
+         name=L1TriggerScalers>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_Level1TriggerScalers.cc>
+<library file=plugin_Level1TriggerScalers.cc
+         name=Level1TriggerScalers>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_LumiScalers.cc>
+<library file=plugin_LumiScalers.cc
+         name=LumiScalers>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_TrajectorySeed.cc>
+<library file=plugin_TrajectorySeed.cc
+         name=TrajectorySeed>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_edmErrorSummaryEntry.cc>
+<library file=plugin_edmErrorSummaryEntry.cc
+         name=edmErrorSummaryEntry>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_patElectron.cc>
+<library file=plugin_patElectron.cc
+         name=patElectron>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_patHemisphere.cc>
+<library file=plugin_patHemisphere.cc
+         name=patHemisphere>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_patJet.cc>
+<library file=plugin_patJet.cc
+         name=patJet>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_patMET.cc>
+<library file=plugin_patMET.cc
+         name=patMET>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_patMHT.cc>
+<library file=plugin_patMHT.cc
+         name=patMHT>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_patMuon.cc>
+<library file=plugin_patMuon.cc
+         name=patMuon>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_patPhoton.cc>
+<library file=plugin_patPhoton.cc
+         name=patPhoton>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_patTau.cc>
+<library file=plugin_patTau.cc
+         name=patTau>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoCaloCluster.cc>
+<library file=plugin_recoCaloCluster.cc
+         name=recoCaloCluster>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoCaloJet.cc>
+<library file=plugin_recoCaloJet.cc
+         name=recoCaloJet>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoCaloMET.cc>
+<library file=plugin_recoCaloMET.cc
+         name=recoCaloMET>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoCaloMuon.cc>
+<library file=plugin_recoCaloMuon.cc
+         name=recoCaloMuon>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoCaloTau.cc>
+<library file=plugin_recoCaloTau.cc
+         name=recoCaloTau>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoCaloTauTagInfo.cc>
+<library file=plugin_recoCaloTauTagInfo.cc
+         name=recoCaloTauTagInfo>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoCastorCluster.cc>
+<library file=plugin_recoCastorCluster.cc
+         name=recoCastorCluster>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoCastorEgamma.cc>
+<library file=plugin_recoCastorEgamma.cc
+         name=recoCastorEgamma>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoCastorJet.cc>
+<library file=plugin_recoCastorJet.cc
+         name=recoCastorJet>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoCastorTower.cc>
+<library file=plugin_recoCastorTower.cc
+         name=recoCastorTower>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoConversion.cc>
+<library file=plugin_recoConversion.cc
+         name=recoConversion>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoElectronSeed.cc>
+<library file=plugin_recoElectronSeed.cc
+         name=recoElectronSeed>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoGenJet.cc>
+<library file=plugin_recoGenJet.cc
+         name=recoGenJet>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoGenMET.cc>
+<library file=plugin_recoGenMET.cc
+         name=recoGenMET>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoGenParticle.cc>
+<library file=plugin_recoGenParticle.cc
+         name=recoGenParticle>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoGsfElectron.cc>
+<library file=plugin_recoGsfElectron.cc
+         name=recoGsfElectron>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoGsfElectronCore.cc>
+<library file=plugin_recoGsfElectronCore.cc
+         name=recoGsfElectronCore>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoGsfTrack.cc>
+<library file=plugin_recoGsfTrack.cc
+         name=recoGsfTrack>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoGsfTrackExtra.cc>
+<library file=plugin_recoGsfTrackExtra.cc
+         name=recoGsfTrackExtra>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoHFEMClusterShape.cc>
+<library file=plugin_recoHFEMClusterShape.cc
+         name=recoHFEMClusterShape>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoHcalNoiseRBX.cc>
+<library file=plugin_recoHcalNoiseRBX.cc
+         name=recoHcalNoiseRBX>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoJPTJet.cc>
+<library file=plugin_recoJPTJet.cc
+         name=recoJPTJet>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoMET.cc>
+<library file=plugin_recoMET.cc
+         name=recoMET>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoMuon.cc>
+<library file=plugin_recoMuon.cc
+         name=recoMuon>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoPFBlock.cc>
+<library file=plugin_recoPFBlock.cc
+         name=recoPFBlock>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoPFCandidate.cc>
+<library file=plugin_recoPFCandidate.cc
+         name=recoPFCandidate>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoPFCluster.cc>
+<library file=plugin_recoPFCluster.cc
+         name=recoPFCluster>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoPFJet.cc>
+<library file=plugin_recoPFJet.cc
+         name=recoPFJet>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoPFMET.cc>
+<library file=plugin_recoPFMET.cc
+         name=recoPFMET>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoPFRecHit.cc>
+<library file=plugin_recoPFRecHit.cc
+         name=recoPFRecHit>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoPFTau.cc>
+<library file=plugin_recoPFTau.cc
+         name=recoPFTau>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoPFTauTagInfo.cc>
+<library file=plugin_recoPFTauTagInfo.cc
+         name=recoPFTauTagInfo>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoPhoton.cc>
+<library file=plugin_recoPhoton.cc
+         name=recoPhoton>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoPhotonCore.cc>
+<library file=plugin_recoPhotonCore.cc
+         name=recoPhotonCore>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoPreId.cc>
+<library file=plugin_recoPreId.cc
+         name=recoPreId>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoPreshowerCluster.cc>
+<library file=plugin_recoPreshowerCluster.cc
+         name=recoPreshowerCluster>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoPreshowerClusterShape.cc>
+<library file=plugin_recoPreshowerClusterShape.cc
+         name=recoPreshowerClusterShape>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoRecoChargedRefCandidate.cc>
+<library file=plugin_recoRecoChargedRefCandidate.cc
+         name=recoRecoChargedRefCandidate>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoRecoEcalCandidate.cc>
+<library file=plugin_recoRecoEcalCandidate.cc
+         name=recoRecoEcalCandidate>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoSecondaryVertexTagInfo.cc>
+<library file=plugin_recoSecondaryVertexTagInfo.cc
+         name=recoSecondaryVertexTagInfo>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoSoftLeptonTagInfo.cc>
+<library file=plugin_recoSoftLeptonTagInfo.cc
+         name=recoSoftLeptonTagInfo>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoSuperCluster.cc>
+<library file=plugin_recoSuperCluster.cc
+         name=recoSuperCluster>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoTrack.cc>
+<library file=plugin_recoTrack.cc
+         name=recoTrack>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoTrackExtra.cc>
+<library file=plugin_recoTrackExtra.cc
+         name=recoTrackExtra>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoTrackExtrapolation.cc>
+<library file=plugin_recoTrackExtrapolation.cc
+         name=recoTrackExtrapolation>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoTrackIPTagInfo.cc>
+<library file=plugin_recoTrackIPTagInfo.cc
+         name=recoTrackIPTagInfo>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoTrackJet.cc>
+<library file=plugin_recoTrackJet.cc
+         name=recoTrackJet>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoVertex.cc>
+<library file=plugin_recoVertex.cc
+         name=recoVertex>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoVertexCompositeCandidate.cc>
+<library file=plugin_recoVertexCompositeCandidate.cc
+         name=recoVertexCompositeCandidate>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_GenEventInfoProduct.cc>
+<library file=plugin_GenEventInfoProduct.cc
+         name=GenEventInfoProduct>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_GenRunInfoProduct.cc>
+<library file=plugin_GenRunInfoProduct.cc
+         name=GenRunInfoProduct>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_HcalNoiseSummary.cc>
+<library file=plugin_HcalNoiseSummary.cc
+         name=HcalNoiseSummary>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_L1GlobalTriggerObjectMapRecord.cc>
+<library file=plugin_L1GlobalTriggerObjectMapRecord.cc
+         name=L1GlobalTriggerObjectMapRecord>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_L1GlobalTriggerReadoutRecord.cc>
+<library file=plugin_L1GlobalTriggerReadoutRecord.cc
+         name=L1GlobalTriggerReadoutRecord>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_edmConditionsInEventBlock.cc>
+<library file=plugin_edmConditionsInEventBlock.cc
+         name=edmConditionsInEventBlock>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_edmEvent.cc>
+<library file=plugin_edmEvent.cc
+         name=edmEvent>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_edmTriggerResults.cc>
+<library file=plugin_edmTriggerResults.cc
+         name=edmTriggerResults>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoBeamHaloSummary.cc>
+<library file=plugin_recoBeamHaloSummary.cc
+         name=recoBeamHaloSummary>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoBeamSpot.cc>
+<library file=plugin_recoBeamSpot.cc
+         name=recoBeamSpot>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoCSCHaloData.cc>
+<library file=plugin_recoCSCHaloData.cc
+         name=recoCSCHaloData>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoCaloTauDiscriminator.cc>
+<library file=plugin_recoCaloTauDiscriminator.cc
+         name=recoCaloTauDiscriminator>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoEcalHaloData.cc>
+<library file=plugin_recoEcalHaloData.cc
+         name=recoEcalHaloData>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoGlobalHaloData.cc>
+<library file=plugin_recoGlobalHaloData.cc
+         name=recoGlobalHaloData>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoHcalHaloData.cc>
+<library file=plugin_recoHcalHaloData.cc
+         name=recoHcalHaloData>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_recoPFTauDiscriminator.cc>
+<library file=plugin_recoPFTauDiscriminator.cc
+         name=recoPFTauDiscriminator>
   <flags EDM_PLUGIN=1>
 </library>
-<library file=plugin_triggerTriggerEvent.cc>
+<library file=plugin_triggerTriggerEvent.cc
+         name=triggerTriggerEvent>
   <flags EDM_PLUGIN=1>
 </library>
