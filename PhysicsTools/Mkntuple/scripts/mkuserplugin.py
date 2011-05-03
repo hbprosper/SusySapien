@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # Create the skeleton of a user plugin
 # Created: 27-Aug-2010 Harrison B. Prosper
-#$Revision: 1.11 $
+#$Revision: 1.12 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -16,10 +16,12 @@ from PhysicsTools.Mkntuple.Lib import \
 #------------------------------------------------------------------------------
 PACKAGE, SUBPACKAGE, LOCALBASE, BASE, VERSION = cmsswProject()
 if PACKAGE == None:
-	print "Please run me in your sub-package directory"
+	print "Please run me in a sub-package directory:"
+	print "  $CMSSW_BASE/src/<package>/<sub-package>"
 	sys.exit(0)
 if SUBPACKAGE == None:
-	print "Please run me in your sub-package directory"
+	print "Please run me in a sub-package directory"
+	print "  $CMSSW_BASE/src/<package>/<sub-package>"
 	sys.exit(0)
 #------------------------------------------------------------------------------
 print "Package:     %s" % PACKAGE
@@ -90,7 +92,7 @@ def wrpluginheader(names):
 // Description: Mkntuple helper class for %(classname)s
 // Created:     %(time)s
 // Author:      %(author)s      
-//$Revision: 1.11 $
+//$Revision: 1.12 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -101,12 +103,12 @@ def wrpluginheader(names):
 //-----------------------------------------------------------------------------
 // Note: The following variables are automatically defined and available to
 //       all methods:
-//         1. config          pointer to ParameterSet object
+//         1. config          pointer to global ParameterSet object
 //         2. event           pointer to the current event
-//         3. object          pointer to the current object
-//         4. oindex          index of current object
+//         3. object          pointer to the current helper object
+//         4. oindex          index of current helper object
 //         5. index           index of item(s) returned by helper 
-//         6. count           count per object (default = 1)
+//         6. count           count per helper object (default = 1)
 //       Items 1-6 are initialized by Mkntuple. The count can be changed from
 //       its default value of 1 by the helper. However, items 1-5 should not
 //       be changed.
@@ -130,7 +132,6 @@ public:
   
   // -- Access Methods
 
-  // -- Note: access methods must be declared const
   // -- e.g., int pt() const;
   
 private:
@@ -158,7 +159,6 @@ namespace %(namespace)s
   
 	// -- Access Methods
 
-	// -- Note: access methods must be declared const
 	// -- e.g., int pt() const;
 	 
   private:
@@ -192,7 +192,7 @@ def wrplugincode(names):
 // Description: Mkntuple helper class for %(classname)s
 // Created:     %(time)s
 // Author:      %(author)s      
-//$Revision: 1.11 $
+//$Revision: 1.12 $
 //-----------------------------------------------------------------------------
 #include "%(package)s/%(subpackage)s/interface/%(filename)s.h"
 //-----------------------------------------------------------------------------
@@ -241,7 +241,7 @@ def wrplugin(names):
 	template = '''// ----------------------------------------------------------------------------
 // Created: %(time)s by mkuserplugin.py
 // Author:      %(author)s      
-//$Revision: 1.11 $
+//$Revision: 1.12 $
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/Mkntuple/interface/UserBuffer.h"
 #include "PhysicsTools/Mkntuple/interface/pluginfactory.h"
@@ -278,7 +278,7 @@ def undo():
 	if len(t) > 0:
 		redofile = replace(t[0], '.redo.', '')
 		print "restore %s" % redofile
-		os.system('mv %s %s' % (t[0], redofile))
+		os.system('mv %s %s; rm -rf' % (t[0], redofile))
 
 	# redo src/classes.h
 	t = glob("%(srcdir)s/.redo.classes.h" % names)
@@ -322,6 +322,13 @@ def undo():
 		print "restore %s" % redofile
 		os.system('mv %s %s' % (t[0], redofile))
 
+	cmd = '''
+	cd plugins
+	rm -rf BuildFile.xml
+	scram b -c
+	cd ..
+	'''
+	os.system(cmd)
 	sys.exit(0)
 #------------------------------------------------------------------------------
 def main():
@@ -350,7 +357,7 @@ def main():
 	if len(ctype) != 1:
 		usage()
 
-	if not ctype in ['s','c']:
+	if not ctype in ['s','c', 'S', 'C']:
 		usage()
 	
 	if argc > 2:
@@ -388,10 +395,9 @@ def main():
 		nspacewithcolon = nspace[0]
 		nspace = doublecolon.sub("", nspacewithcolon)
 
-		
 	name  = namespace.sub("",classname) + postfix      # remove namespace
 	bname = doublecolon.sub("", classname) + postfix   # remove "::"
-	filename = doublecolon.sub("", name)
+	filename = doublecolon.sub("", bname)
 	if nspacewithcolon != "":
 		fullname = nspacewithcolon + name
 	else:
@@ -477,8 +483,7 @@ def main():
 		
 	if find(record, filename) < 0:
 		updated = True
-		record += "<library file=userplugin_%(filename)s.cc "\
-				  "name=userplugin_%(filename)s>\n"\
+		record += "<library file=userplugin_%(filename)s.cc>\n"\
 				  "<flags EDM_PLUGIN=1>\n"\
 				  "</library>\n" % names
 	if updated:
@@ -497,7 +502,7 @@ def main():
 	else:
 		updated = True
 		out = open(classesfile, 'w')
-		record ='''//$Revision: 1.11 $
+		record ='''//$Revision: 1.12 $
 //--------------------------------------------------------------------''' % \
 		names
 		out.write(record)
@@ -570,15 +575,8 @@ def main():
 		open(classesfile,'w').write(record)
 		print "\tupdated:       src/classes_def.xml"
 
-	cms = '''
-	rm -rf BuildFile.xml
-	scram b -c
-	
-	cd bin
-	rm -rf BuildFile.xml
-	scram b -c
-	cd ..
 
+	cmd = '''
 	cd plugins
 	rm -rf BuildFile.xml
 	scram b -c

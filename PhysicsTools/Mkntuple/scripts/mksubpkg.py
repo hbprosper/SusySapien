@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # Create the skeleton of a user sub-pacakge
 # Created: 03-Sep-2010 Harrison B. Prosper
-#$Revision: 1.8 $
+#$Revision: 1.9 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -12,11 +12,12 @@ from PhysicsTools.Mkntuple.Lib import \
 #------------------------------------------------------------------------------
 PACKAGE, SUBPACKAGE, LOCALBASE, BASE, VERSION = cmsswProject()
 if PACKAGE == None:
-	print "*** First create a <package> directory in src:"
+	print "*** First create a <package> directory in $CMSSW_BASE/src:"
 	print "      mkdir <package>"
+	print 
 	print "    Then:"
 	print "      cd <package>"
-	print "      mkdocs.py <sub-package-name>"
+	print "      mksubpkg.py <sub-package-name>"
 	sys.exit(0)
 	
 print "Package:     %s" % PACKAGE
@@ -62,14 +63,17 @@ def main():
 	mkdir -p bin
 	sed -e "s/plugins_t/%(prog)s/g" $CMSSW_BASE/src/%(mkntuple)s/bin/BuildFile   | egrep -v "test" > bin/BuildFile
  	echo "int main(int argc, char** argv) {return 0;}" > bin/%(prog)s.cc
-	
+
+	rm -rf BuildFile.xml
 	scram b -c
-	
+
 	cd plugins
+	rm -rf BuildFile.xml
 	scram b -c
 	cd ..
 
 	cd bin
+	rm -rf BuildFile.xml
 	scram b -c
 	cd ..
 	''' % names
