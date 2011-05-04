@@ -1,0 +1,68 @@
+TheNtupleMaker													Harrison B. Prosper
+															Sun Feb 07 2010
+															Thu Aug 26 2010
+															Sat Aug 25 2010
+															$Revision: 1.7 $
+I	Setup
+---------
+	In the following, "x" is a lower case letter greater than "d".
+
+	1.	Set up a local release of CMSSW 
+	
+		scram project CMSSW CMSSW_3_8_3x
+		cd CMSSW_3_8_3/src
+		cmsenv
+
+
+	2.	Download PhysicsTools/LiteAnalysis and PhysicsTools/TheNtupleMaker:
+
+		cvs co -r v3_8_3x -d PhysicsTools UserCode/SusySapien/PhysicsTools
+
+	3.	Compile and link
+
+		cd PhysicsTools
+	    scram b clean	
+		scram b	
+		cmsenv
+
+II 	Notes
+---------
+
+	The TheNtupleMaker system is driven by two important files:
+
+		1.	PhysicsTools/TheNtupleMaker/python/classmap.py
+
+		2.	PhysicsTools/TheNtupleMaker/plugins/classes.txt
+
+The first file is created using
+
+		mkclassmap.py
+
+It constructs a map of DataFormats class names to headers and defines the
+universal set of classes from which the subset known to TheNtupleMaker is drawn.
+
+	The 2nd file, classes.txt, lists the classes defined by the RECO and PAT
+files supplied to mkclasslist.py, which creates classes.txt:
+
+		mkclasslist.py reco.root pat.root
+ 
+The classes listed in classes.txt should be a subset of those listed in 
+classmap.py. The script mkplugins.py, which creates 
+
+		3.	PhysicsTools/TheNtupleMaker/plugins/plugins.cc
+
+uses classes.txt to determine the plugins to define and classmap.py to find the
+associated header files.
+
+
+III	Notes
+---------
+
+	The GUI mkntuplecfi.py is an aid in constructing configuration file
+fragments. The first time mkntuplecfi.py is run it creates the directories:
+
+		txt
+		html
+and		methods
+
+The methods directory contains lists of the methods available to the user.
