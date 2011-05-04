@@ -10,26 +10,32 @@ from time import *
 from PhysicsTools.Mkntuple.Lib import \
 	 nameonly, getauthor, cmsswProject
 #------------------------------------------------------------------------------
-print "\n\t====> Please use mkpackage.py instead <=====\n"
-sys.exit(0)
-
+#               CMS jargon
+# PACAKGE    -> SUBSYSTEM
+# SUBPACKAGE -> PACKAGE
+#
 PACKAGE, SUBPACKAGE, LOCALBASE, BASE, VERSION = cmsswProject()
 if PACKAGE == None:
-	print "*** First create a <subsystem> directory in $CMSSW_BASE/src:"
+	print " The CMS directory structure is"
+	print ""
+	print "      $CMSSW_BASE/src/<subsystem>/<package>"
+	print ""
+	print "First create a <subsystem> directory in $CMSSW_BASE/src:"
 	print "      mkdir <subsystem>"
 	print 
-	print "    Then:"
+	print "Then:"
 	print "      cd <subsystem>"
-	print "      mksubpkg.py <sub-package-name>"
+	print ""
+	print "      mkpackage.py <package>"
 	sys.exit(0)
 	
-print "Package:     %s" % PACKAGE
+print "Subsystem:     %s" % PACKAGE
 AUTHOR = getauthor()
 #------------------------------------------------------------------------------
 def usage():
 	print '''
 Usage:
-	mksubpkg.py <sub-package-name>
+	mkpackage.py <package>
 	'''
 	sys.exit(0)
 #------------------------------------------------------------------------------
@@ -40,7 +46,7 @@ def main():
 		usage()
 
 	SUBPACKAGE = argv[0]
-	print "Sub-Package: %s" % SUBPACKAGE
+	print "Package: %s" % SUBPACKAGE
 	print "Author:      %s" % AUTHOR
 	
 	names = {}
@@ -50,10 +56,14 @@ def main():
 	names['author'] = AUTHOR
 	names['mkntuple'] = 'PhysicsTools/Mkntuple'
 	names['lib'] = 'PhysicsToolsMkntuple'
+	
 	cmd = '''
 	mkdir -p %(subpkg)s
 	cd %(subpkg)s
-	sed -e "s/%(lib)s/%(pkg)s%(subpkg)s/g" $CMSSW_BASE/src/%(mkntuple)s/BuildFile  > BuildFile 
+	sed -e "s/%(lib)s/%(pkg)s%(subpkg)s/g" $CMSSW_BASE/src/%(mkntuple)s/BuildFile  > .b
+	sed -e "s|/UtilAlgos>|/UtilAlgos>\\n<use name=%(mkntuple)s>|g" .b > BuildFile
+	rm -rf .b
+	
 	mkdir -p interface
 	mkdir -p python
 	cp $CMSSW_BASE/src/PhysicsTools/Mkntuple/python/classmap.py python

@@ -1,7 +1,3 @@
-<use   name="PhysicsTools/Mkntuple"/>
-<use   name="PhysicsTools/UtilAlgos"/>
-<use   name="PhysicsTools/Utilities"/>
-<use   name="PhysicsTools/PatUtils"/>
 <use   name="FWCore/FWLite"/>
 <use   name="FWCore/PluginManager"/>
 <use   name="DataFormats/JetReco"/>
@@ -19,6 +15,10 @@
 <use   name="DataFormats/TrajectorySeed"/>
 <use   name="SimDataFormats/GeneratorProducts"/>
 <use   name="SimDataFormats/Vertex"/>
+<use   name="PhysicsTools/Mkntuple"/>
+<use   name="PhysicsTools/UtilAlgos"/>
+<use   name="PhysicsTools/Utilities"/>
+<use   name="PhysicsTools/PatUtils"/>
 <use   name="boost_regex"/>
 <use   name="boost_python"/>
 <use   name="rootrflx"/>
@@ -34,6 +34,12 @@
 </library>
 <library   file="userplugin_user.cc" name="user">
   <flags   EDM_PLUGIN="1"/>
+</library>
+<library     file="userplugin_GenEventInfoProductHelper.cc" name="GenEventInfoProductHelper">
+  <flags     EDM_PLUGIN="1"/>
+</library>
+<library     file="userplugin_L1GlobalTriggerReadoutRecordHelper.cc" name="L1GlobalTriggerReadoutHelper">
+  <flags     EDM_PLUGIN="1"/>
 </library>
 <library   file="plugin_BeamSpotOnline.cc" name="BeamSpotOnline">
   <flags   EDM_PLUGIN="1"/>

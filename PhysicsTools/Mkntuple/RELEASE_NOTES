@@ -1,4 +1,17 @@
-$Revision: 1.5 $
+$Revision: 1.6 $
+
+v4_1_8 May   04 2011
+--------------------
+    1. Use mkpackage.py instead of mksubpkg.py to be consistent with CMS
+	jargon
+
+	2. Bug fix: include dependency on PhysicsTools/Mkntuple in the BuildFile
+	of a user package. This seems to trigger the scanning of classes.h. But
+	why is unclear.
+ 
+v4_1_7 May   03 2011
+--------------------
+    1. Minor change
 
 v4_1_6: Apr. 30 2011
 --------------------
