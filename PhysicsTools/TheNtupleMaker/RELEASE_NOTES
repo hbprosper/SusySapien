@@ -1,13 +1,16 @@
-$Revision: 1.7 $
+$Revision: 1.1.1.1 $
 
-v4_1_8 May   04 2011
+v5_0_0 May   04 2011
 --------------------
-    1. Use mkpackage.py instead of mksubpkg.py to be consistent with CMS
+	1. Rename Mkntuple to TheNtupleMaker. Since this is a major change, we
+	go to v5_0_0.
+
+    2. Use mkpackage.py instead of mksubpkg.py to be consistent with CMS
 	jargon
 
-	2. Bug fix: include dependency on PhysicsTools/TheNtupleMaker in the BuildFile
-	of a user package. This seems to trigger the scanning of classes.h. But
-	why is unclear.
+	3. Bug fix: include dependency on PhysicsTools/TheNtupleMaker in the 
+	BuildFile of a user package. This seems to trigger the scanning of 
+	classes.h. But why is unclear.
  
 v4_1_7 May   03 2011
 --------------------
