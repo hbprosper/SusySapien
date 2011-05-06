@@ -74,7 +74,6 @@ HEADER=\
 // Description: user macro called by TheNtupleMaker
 // Created:     %(time)s by mkusermacro.py
 // Author:      %(author)s
-// $Revision: 1.9 $
 //-----------------------------------------------------------------------------
 #include <map>
 #include <string>
@@ -122,7 +121,6 @@ MACRO=\
 // Description: user macro
 // Created:     %(time)s by mkusermacro.py
 // Author:      %(author)s
-// $Revision: 1.9 $
 //-----------------------------------------------------------------------------
 #include "%(name)s.h"
 //-----------------------------------------------------------------------------

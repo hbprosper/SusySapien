@@ -179,7 +179,7 @@ def writeHTML(db, txtfilename):
 #============================================================================
 def main():
 
-	print "mkdocs.py $Revision: 1.9 $\n"
+	print "mkdocs.py\n"
 	
 	fmap = {}
 	for file in ClassToHeaderMap.values():

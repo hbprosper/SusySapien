@@ -47,11 +47,11 @@ if not os.environ.has_key("CMSSW_BASE"):
 	sys.exit(0)
 
 BASE = os.environ["PWD"]
-REVISION="$Revision: 1.9 $"
-rev = split(REVISION)[1]
+REVISION=""
+rev = "" #split(REVISION)[1]
 VERSION        = \
 """
-mkntuplecfi.py v%s February 2010
+mkntuplecfi.py %s February 2010
 Python %s
 Root   %s
 """ % (rev,

@@ -135,7 +135,7 @@ def addToMap(fullkey, key, header, cmap):
 #============================================================================
 def main():
 	
-	print "mkclassmap.py $Revision: 1.9 $\n"
+	print "mkclassmap.py\n"
 
 	subpackagelist = SUBPACKAGELIST
 	filelist = []
@@ -277,7 +277,6 @@ def main():
 	out = open(outfile,'w')
 	out.write('# Created: %s\n' % ctime(time()))
 	out.write('# Version: %s\n' % VERSION)
-	out.write('#$Revision: 1.9 $\n')
 	out.write("ClassToHeaderMap = {\\\n")
 	out.write(record+'\n')
 	out.write("}\n")

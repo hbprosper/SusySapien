@@ -116,7 +116,6 @@ for index, (ctype, name) in enumerate(cnames):
 '''// -------------------------------------------------------------------------
 // File::   plugin_%(shortname)s.cc
 // Created: %(time)s by mkplugins.py
-// $Revision: 1.9 $
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/%(bufferheader)s.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"

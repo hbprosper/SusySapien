@@ -91,7 +91,6 @@ def wrpluginheader(names):
 // Description: TheNtupleMaker helper class for %(classname)s
 // Created:     %(time)s
 // Author:      %(author)s      
-//$Revision: 1.9 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -191,7 +190,6 @@ def wrplugincode(names):
 // Description: TheNtupleMaker helper class for %(classname)s
 // Created:     %(time)s
 // Author:      %(author)s      
-//$Revision: 1.9 $
 //-----------------------------------------------------------------------------
 #include "%(package)s/%(subpackage)s/interface/%(filename)s.h"
 //-----------------------------------------------------------------------------
@@ -240,7 +238,6 @@ def wrplugin(names):
 	template = '''// ----------------------------------------------------------------------------
 // Created: %(time)s by mkuserplugin.py
 // Author:      %(author)s      
-//$Revision: 1.9 $
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/UserBuffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
@@ -502,7 +499,7 @@ def main():
 	else:
 		updated = True
 		out = open(classesfile, 'w')
-		record ='''//$Revision: 1.9 $
+		record ='''//
 //--------------------------------------------------------------------''' % \
 		names
 		out.write(record)
