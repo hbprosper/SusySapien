@@ -6,7 +6,7 @@
 # Updated: 20-Oct-2006 HBP & Daekwang Kau
 #          02-Apr-2008 HBP some minor fixes for Serban
 #          11-Nov-2010 HBP fix sh script when -mr is specified
-#$Revision: 1.3 $
+#$Revision:$
 #------------------------------------------------------------------------------
 import os, sys
 from string import *

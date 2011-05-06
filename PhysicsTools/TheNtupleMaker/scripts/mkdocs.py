@@ -9,7 +9,7 @@
 #              08-Aug-2010 HBP, fix search of user.h in TheNtupleMaker
 #              26-Aug02919 HBP, get list of potential classes from
 #                          python/classmap.py
-#$Revision: 1.3 $
+#$Revision:$
 #---------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
@@ -180,7 +180,7 @@ def writeHTML(db, txtfilename):
 #============================================================================
 def main():
 
-	print "mkdocs.py $Revision: 1.3 $\n"
+	print "mkdocs.py $Revision: 1.4 $\n"
 	
 	fmap = {}
 	for file in ClassToHeaderMap.values():

@@ -3,7 +3,7 @@
 # File:        mkclassmap.py
 # Description: Create a map of classnames to headers
 # Created:     26-Aug-2010 Harrison B. Prosper
-#$Revision: 1.3 $
+#$Revision:$
 #---------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
@@ -136,7 +136,7 @@ def addToMap(fullkey, key, header, cmap):
 #============================================================================
 def main():
 	
-	print "mkclassmap.py $Revision: 1.3 $\n"
+	print "mkclassmap.py $Revision: 1.4 $\n"
 
 	subpackagelist = SUBPACKAGELIST
 	filelist = []
@@ -278,7 +278,7 @@ def main():
 	out = open(outfile,'w')
 	out.write('# Created: %s\n' % ctime(time()))
 	out.write('# Version: %s\n' % VERSION)
-	out.write('#$Revision: 1.3 $\n')
+	out.write('#$Revision: 1.4 $\n')
 	out.write("ClassToHeaderMap = {\\\n")
 	out.write(record+'\n')
 	out.write("}\n")
