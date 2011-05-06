@@ -1,5 +1,9 @@
 $Revision: 1.2 $
 
+v5_0_4 May   06 2011
+--------------------
+    1. Force CVS to preserve file modes 
+
 v5_0_3 May   06 2011
 --------------------
     1. Force CVS to preserve file modes 
