@@ -5,7 +5,7 @@
 # Created: 06-Mar-2010 Harrison B. Prosper
 # Updated: 05-Oct-2010 HBP - clean up
 #          12-Mar-2011 HBP - give user option to add variables
-#$Revision: 1.5 $
+#$Revision: 1.6 $
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
 from string import *
@@ -75,7 +75,7 @@ HEADER=\
 // Description: user macro called by TheNtupleMaker
 // Created:     %(time)s by mkusermacro.py
 // Author:      %(author)s
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 //-----------------------------------------------------------------------------
 #include <map>
 #include <string>
@@ -123,7 +123,7 @@ MACRO=\
 // Description: user macro
 // Created:     %(time)s by mkusermacro.py
 // Author:      %(author)s
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 //-----------------------------------------------------------------------------
 #include "%(name)s.h"
 //-----------------------------------------------------------------------------

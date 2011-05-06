@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # Create the skeleton of a user package
 # Created: 03-Sep-2010 Harrison B. Prosper
-#$Revision: 1.5 $
+#$Revision: 1.6 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *

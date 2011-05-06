@@ -3,7 +3,7 @@
 # File: mkdoc.py
 # Description: Create documentation of classes.
 # Created: 11-Dec-2009 HBP, (during CERN visit)
-#$Revision: 1.5 $
+#$Revision: 1.6 $
 #------------------------------------------------------------------------------
 import os, sys, glob
 from string import *
