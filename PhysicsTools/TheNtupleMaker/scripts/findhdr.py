@@ -3,7 +3,7 @@
 # File:        findhdr.py
 # Description: find header for given class using classmap.py
 # Created:     04-Sep-2010 Harrison B. Prosper
-#$Revision: 1.1.1.1 $
+#$Revision: 1.2 $
 #---------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *

@@ -3,7 +3,7 @@
 # File: plotslha.py
 # Description: plot SUSY mass spectrum or decays from an SLHA file
 # Created: 22 Sep 2010 Harrison B. Prosper & Sezen Sekmen
-#$Revision: 1.1.1.1 $
+#$Revision: 1.2 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
