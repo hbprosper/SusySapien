@@ -15,7 +15,7 @@
 #          15-May-2010 HBP Change format of floats - use more precision
 #          17-Sep-2010 HBP handle abs(..) variables
 #          18-Oct-2010 HBP remove ";" from end of namespace
-#$Revision: 1.2 $
+#$Revision: 1.3 $
 #------------------------------------------------------------------------------
 import os, sys
 from getopt import getopt, GetoptError
