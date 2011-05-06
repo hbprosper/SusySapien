@@ -17,7 +17,6 @@
 #  Fixes:       15-Nov-2010 HBP make sure buffers have a count of at least 1
 #               22-Nov-2010 HBP allow multiple trees
 #               11-Jan-2011 HBP shorten genparticlehelper variable
-# $Revision: 1.8 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from time import *

@@ -4,7 +4,6 @@
 # Created: 05-Jan-2010 Harrison B. Prosper
 # Updated: 08-Aug-2010 HBP minor fix before release
 #          25-Aug-2010 HBP add a few more classes (by hand)
-#$Revision: 1.8 $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *

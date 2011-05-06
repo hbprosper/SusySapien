@@ -13,7 +13,6 @@
 #          11-Mar-2011 HBP - fix naming bug
 #          26-Apr-2011 HBP - alert user only if duplicate name is not a leaf
 #                            counter
-#$Revision: 1.8 $
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
 from string import *
@@ -84,7 +83,7 @@ TEMPLATE_H =\
 // Description: Analyzer header for ntuples created by TheNtupleMaker
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.8 $
+// $Revision: 1.9 $
 //-----------------------------------------------------------------------------
 
 // -- System
@@ -312,7 +311,7 @@ TEMPLATE_CC =\
 // Description: Analyzer for ntuples created by TheNtupleMaker
 // Created:     %(time)s by mkntanalyzer.py
 // Author:      %(author)s
-// $Revision: 1.8 $
+// $Revision: 1.9 $
 //-----------------------------------------------------------------------------
 #include "%(name)s.h"
 
@@ -426,7 +425,7 @@ PYTEMPLATELIB =\
 #  Description: Analyzer for ntuples created by TheNtupleMaker
 #  Created:     %(time)s by mkntanalyzer.py
 #  Author:      %(author)s
-#  $Revision: 1.8 $
+#  $Revision: 1.9 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from time import sleep
@@ -674,7 +673,7 @@ PYTEMPLATE =\
 #  Description: Analyzer for ntuples created by TheNtupleMaker
 #  Created:     %(time)s by mkntanalyzer.py
 #  Author:      %(author)s
-#  $Revision: 1.8 $
+#  $Revision: 1.9 $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from string import *
@@ -755,7 +754,7 @@ MAKEFILE = '''#-----------------------------------------------------------------
 #                 verbose    (e.g., verbose=1)
 #                 withcern   (e.g., withcern=1  expects to find CERN_LIB)
 # Author:      %(author)s
-#$Revision: 1.8 $
+#$Revision: 1.9 $
 #------------------------------------------------------------------------------
 ifndef ROOTSYS
 $(error *** Please set up Root)
@@ -860,7 +859,7 @@ clean   	:
 	rm -rf tmp/*.o $(program)
 '''
 
-README = '''$Revision: 1.8 $
+README = '''$Revision: 1.9 $
 Created: %(time)s
 
     o To build the default program (%(name)s) do

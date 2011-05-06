@@ -15,7 +15,6 @@
 #              02-Dec-2010 HBP - something in Pat changed (of course!) in 3_8_7
 #                                requiring a different getbranch regex...sigh!
 #-----------------------------------------------------------------------------
-#$Revision: 1.8 $
 #-----------------------------------------------------------------------------
 import sys, os, re, platform
 from string import *
@@ -48,7 +47,7 @@ if not os.environ.has_key("CMSSW_BASE"):
 	sys.exit(0)
 
 BASE = os.environ["PWD"]
-REVISION="$Revision: 1.8 $"
+REVISION="$Revision: 1.9 $"
 rev = split(REVISION)[1]
 VERSION        = \
 """
