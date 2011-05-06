@@ -1,9 +1,13 @@
-$Revision: 1.1.1.1 $
+$Revision: 1.2 $
 
-v5_0_0 May   04 2011
+v5_0_2 May   06 2011
+--------------------
+    1. No change, just a trying to test something
+
+v5_0_1 May   04 2011
 --------------------
 	1. Rename Mkntuple to TheNtupleMaker. Since this is a major change, we
-	go to v5_0_0.
+	go to v5_0_1.
 
     2. Use mkpackage.py instead of mksubpkg.py to be consistent with CMS
 	jargon
