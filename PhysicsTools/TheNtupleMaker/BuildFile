@@ -34,16 +34,18 @@
 <use name=PhysicsTools/UtilAlgos>
 <use name=CommonTools/Utils>
 
-<use name=boost_python>
-<use name=boost_regex>
 <use name=hepmc>
 <use name=heppdt>
 <use name=clhep>
 <use name=lhapdf>
-<use name=rootrflx>
+<use name=f77compiler>
+
+<use name=boost_python>
+<use name=boost_regex>
 <use name=rootminuit>
 <use name=rootmath>
-<use name=f77compiler>
+<use name=boost>
+<use name=rootrflx>
 
 <lib name=Gui>
 <lib name=Postscript>

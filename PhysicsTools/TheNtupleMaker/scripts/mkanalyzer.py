@@ -13,6 +13,7 @@
 #          11-Mar-2011 HBP - fix naming bug
 #          26-Apr-2011 HBP - alert user only if duplicate name is not a leaf
 #                            counter
+#$Id:$
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
 from string import *

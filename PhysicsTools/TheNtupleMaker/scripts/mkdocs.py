@@ -9,6 +9,7 @@
 #              08-Aug-2010 HBP, fix search of user.h in TheNtupleMaker
 #              26-Aug02919 HBP, get list of potential classes from
 #                          python/classmap.py
+#$Id:$
 #---------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *

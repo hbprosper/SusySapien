@@ -3,6 +3,7 @@
 # Filename: mkmethodlist.py
 # Description: For given class, make an exhaustive listing of methods
 # Created:  10-Doc-2009 HBP
+#$Id:$
 #-----------------------------------------------------------------------------
 import os, sys, re
 from sys    import exit

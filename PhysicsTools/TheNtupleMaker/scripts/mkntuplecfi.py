@@ -15,6 +15,7 @@
 #              02-Dec-2010 HBP - something in Pat changed (of course!) in 3_8_7
 #                                requiring a different getbranch regex...sigh!
 #-----------------------------------------------------------------------------
+#$Id:$
 #-----------------------------------------------------------------------------
 import sys, os, re, platform
 from string import *

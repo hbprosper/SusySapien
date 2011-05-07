@@ -22,13 +22,15 @@
 <use name=PhysicsTools/Utilities>
 <use name=PhysicsTools/PatUtils>
 
-<use name=boost_regex>
-<use name=boost_python>
-<use name=rootrflx>
-<use name=rootminuit>
-<use name=rootmath>
 <use name=lhapdf>
 <use name=f77compiler>
+
+<use name=boost>
+<use name=boost_python>
+<use name=boost_regex>
+<use name=rootminuit>
+<use name=rootmath>
+<use name=rootrflx>
 
 <library file=TheNtupleMaker.cc>
   <flags EDM_PLUGIN=1>

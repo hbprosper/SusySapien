@@ -5,12 +5,15 @@
 # Created: 06-Mar-2010 Harrison B. Prosper
 # Updated: 05-Oct-2010 HBP - clean up
 #          12-Mar-2011 HBP - give user option to add variables
+#$Id:$
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
 from string import *
 from time import *
 from glob import glob
 #------------------------------------------------------------------------------
+print "\n\t===> use mkmacro.py <===\n"
+sys.exit(0)
 # Functions
 #------------------------------------------------------------------------------
 getvno = re.compile(r'[0-9]+$')

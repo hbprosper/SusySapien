@@ -3,6 +3,7 @@
 # File: mkslideshow.py
 # Description: Create a web-based slideshow from a list of gif files
 # Created: 29-Oct-2006 Harrison B. Prosper
+#$Id:$
 #------------------------------------------------------------------------------
 import os
 import sys

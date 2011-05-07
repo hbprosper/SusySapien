@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 #------------------------------------------------------------------------------
-# Create the skeleton of a user plugin
+# Create the skeleton of a user helper (a plugin)
 # Created: 27-Aug-2010 Harrison B. Prosper
+#$Id:$
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -13,6 +14,8 @@ from PhysicsTools.TheNtupleMaker.Lib import \
 	 cmsswProject, \
 	 getauthor
 #------------------------------------------------------------------------------
+print "\n\t===> use mkhelper.py <===\n"
+sys.exit(0)
 PACKAGE, SUBPACKAGE, LOCALBASE, BASE, VERSION = cmsswProject()
 if PACKAGE == None:
 	print "Please run me in a sub-package directory:"

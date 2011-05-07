@@ -4,6 +4,7 @@
 # Created: 05-Jan-2010 Harrison B. Prosper
 # Updated: 15-Feb-2010 HBP - run mkclasslist.py if needed
 #          01-May-2011 HBP - split plugin definitions into separate files
+#$Id:$
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
