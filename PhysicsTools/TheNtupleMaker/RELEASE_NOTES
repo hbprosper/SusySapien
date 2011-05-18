@@ -1,8 +1,15 @@
-$Revision: 1.5 $
+$Revision: 1.6 $
+
+v5_0_8 May   18 2011
+--------------------
+	1. group plugins into four plugin files. This is a compromise between 
+	having one or all plugins per file.
+
+   	2. Add missing scripts mkmacro.py and mkhelper.py
 
 v5_0_7 May   12 2011
 --------------------
-   1. Add mkmacro.py and mkhelper.py
+   Add missing scripts mkmacro.py and mkhelper.py
 
 v5_0_4 May   06 2011
 --------------------

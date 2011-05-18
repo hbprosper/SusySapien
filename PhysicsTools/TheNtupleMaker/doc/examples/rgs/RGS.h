@@ -4,7 +4,7 @@
 // File:    RGS.h
 // Purpose: Declaration of RGS classes
 // Created: 18-Aug-2000 Harrison B. Prosper, Chandigarh, India
-//$Revision: 1.3 $
+//$Revision: 1.1.1.1 $
 //////////////////////////////////////////////////////////////////////////////
 #ifdef __WITH_CINT__
 #include "TObject.h"
@@ -34,7 +34,7 @@ const int rBADINDEX=-2;
 const int rEOF     =-6;
 const int rPYTHONERROR =-7;
 
-enum CUTCODE {GT, LT, ABSGT, ABSLT};
+enum CUTCODE {GT, LT, ABSGT, ABSLT, GTLT};
 
 typedef std::map< std::string, int >  varmap;
 
@@ -119,6 +119,7 @@ private:
   varmap      _varmap;
   vstring     _var;
   vint        _cutcode;
+  vint        _cutntry;
 
   vstring                   _searchname;
   std::vector< vvdouble >   _searchdata;

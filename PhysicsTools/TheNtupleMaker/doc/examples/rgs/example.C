@@ -26,9 +26,12 @@ getvars(string filename, vector<string>& vars, vector<string>& cutdir)
   ifstream inpv(filename.c_str());
   if ( ! inpv.good() ) error("unable to open " + filename);
 
-  string v, c;
-  while ( inpv >> v >> c )
-    { 
+  string line;
+  while (getline(inpv, line))
+    {
+      istringstream inp(line);
+      string v, c, n("");
+      inp >> v >> c;
       if ( v == "" ) continue;
       vars.push_back(v);
       cutdir.push_back(c);

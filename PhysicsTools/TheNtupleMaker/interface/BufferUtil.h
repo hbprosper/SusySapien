@@ -11,7 +11,7 @@
 //                   Thu Apr 28 HBP for variables not found return
 //                   -9999
 //
-// $Id: BufferUtil.h,v 1.9 2011/05/02 23:50:57 prosper Exp $
+// $Id: BufferUtil.h,v 1.1.1.1 2011/05/04 13:04:28 prosper Exp $
 // ----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python/type_id.hpp>
@@ -26,7 +26,6 @@
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/Run.h"
 #include "FWCore/MessageLogger/interface/MessageLogger.h"
-//#include "SimDataFormats/GeneratorProducts/interface/GenRunInfoProduct.h"
 
 #include "PhysicsTools/TheNtupleMaker/interface/treestream.h"
 #include "PhysicsTools/TheNtupleMaker/interface/colors.h"

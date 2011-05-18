@@ -3,7 +3,7 @@
 # File: unweight.py
 # Description: Create unweighted events from weighted ones.
 # Created: 19-Dec-2005 Harrison B. Prosper
-#$Id:$
+#$Id: unweight.py,v 1.16 2011/05/07 18:39:15 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys
 from string import *
@@ -19,14 +19,14 @@ def binsearch(L, item):
     found = False
     while (first <= last) and not found:
         mid = (first + last) / 2
-        if item < L[mid]:
-            last = mid - 1
+        if item <= L[mid]: # was <
+            last = mid;       
         elif item > L[mid]:
             first = mid + 1
-        else:
-            found = True
+##         else:
+##             found = True
             
-        if first > last:
+        if first >= last: # fixed 12 May 2011 HBP (> changed to >=)
             mid = first
             found = True
 

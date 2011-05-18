@@ -4,7 +4,10 @@
 # Created: 05-Jan-2010 Harrison B. Prosper
 # Updated: 15-Feb-2010 HBP - run mkclasslist.py if needed
 #          01-May-2011 HBP - split plugin definitions into separate files
-#$Id:$
+#          18-May-2011 HBP - also create plugins.cc and make it optional
+#                            whether to compile with it rather than with the
+#                            split files
+#$Id: mkplugins.py,v 1.16 2011/05/07 18:39:14 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -34,6 +37,8 @@ except:
 #------------------------------------------------------------------------------
 isVector  = re.compile(r'(?<=^vector\<).+(?=\>)')
 hasnspace = re.compile(r'::')
+findplugins=re.compile(r'<library file=plugins.cc'\
+					   '[^<]+?<flags [^<]+?</library>\s',re.M)
 #------------------------------------------------------------------------------
 def exclass(x):
 	m = isVector.findall(x)
@@ -76,7 +81,13 @@ cnames.sort()
 
 names = {'time': ctime(time())}
 
+# Get original buildfile
 buildfile = open("BuildFile").read()
+
+# Split across several plugin files
+npmax = len(cnames)/4
+np = 0
+nplugin = 0
 
 count = 0
 for index, (ctype, name) in enumerate(cnames):
@@ -101,48 +112,56 @@ for index, (ctype, name) in enumerate(cnames):
 	shortname = replace(name, "::", "")
 	names['shortname']  = shortname
 
-	# special processing for Event class
-	if shortname == "edmEvent":
-		names['bufferheader'] = "BufferEvent"
-	else:
-		names['bufferheader'] = "Buffer"
-		
-	pluginname = "plugin_%(shortname)s.cc" % names
-	
 	count += 1
-	print "%5d\t%s" % (count, pluginname)
-	
-	out  = open(pluginname, "w")
-	record = \
+	print "%5d\t%s" % (count, shortname)
+
+	np += 1
+	if np == 1:
+		nplugin += 1
+		pluginname = "plugins%d" % nplugin
+		print "==> plugin file %s.cc" % pluginname 
+		out  = open(pluginname+".cc", "w")
+		names['pluginname'] = pluginname
+		record = \
 '''// -------------------------------------------------------------------------
-// File::   plugin_%(shortname)s.cc
+// File::   %(pluginname)s.cc
 // Created: %(time)s by mkplugins.py
 // -------------------------------------------------------------------------
-#include "PhysicsTools/TheNtupleMaker/interface/%(bufferheader)s.h"
+#include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
 '''
-	out.write(record % names)
+		out.write(record % names)			
+
+		# Add an entry to BuildFile if one does not yet exist
+		if find(buildfile, pluginname) < 0:
+			rec = \
+'''
+<library file=%(pluginname)s.cc
+         name=%(pluginname)s>
+  <flags EDM_PLUGIN=1>
+</library>''' % names
+			buildfile += rec
+	
+	# special processing for Event class
+	if shortname == "edmEvent":
+		record = \
+'''
+#include "PhysicsTools/TheNtupleMaker/interface/BufferEvent.h"'''
+		out.write(record % names)
 	
 	header = '#include "%s"' % header	
 	names['header'] = header
-	record = '''%(header)s
-
+	record = '''
+%(header)s
 typedef Buffer<%(classname)s, %(singleton)s> %(buffername)s_t;
 DEFINE_EDM_PLUGIN(BufferFactory, %(buffername)s_t,
                   "%(buffername)s");\n''' % names
 	out.write(record)
-	out.close()
 
-	# Add an entry to BuildFile if one does not yet exist
-	if find(buildfile, pluginname) < 0:
-		rec = \
-'''
-<library file=plugin_%(shortname)s.cc
-         name=%(shortname)s>
-  <flags EDM_PLUGIN=1>
-</library>''' % names
-		buildfile += rec
-	
+	if np >= npmax or index == len(cnames)-1 :
+		np = 0
+		out.close()
+
 open("BuildFile", "w").write(buildfile)
 os.system("rm -rf BuildFile.xml; scram b -c")
 

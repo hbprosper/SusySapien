@@ -4,8 +4,9 @@
 //  Created: 18-Aug-2000 Harrison B. Prosper, Chandigarh, India
 //  Updated: 05-Apr-2002 HBP tidy up
 //           17-May-2006 HBP use weightindex instead of a vector of weights
+//           12-May-2011 HBP implement Sezen's method for double-sided cuts
 //-----------------------------------------------------------------------------
-//$Revision: 1.3 $
+//$Revision: 1.1.1.1 $
 //-----------------------------------------------------------------------------
 #include <stdio.h>
 #include <cmath>
@@ -31,7 +32,7 @@ ClassImp(RGS)
 #endif
 
 
-string rgsversion() {return string("RGS - $Revision: 1.3 $");}
+string rgsversion() {return string("RGS - $Revision: 1.1.1.1 $");}
 
 void error(string message)
 {
@@ -97,11 +98,11 @@ bool slurp_table(string filename,
       int nrow=0;
       while ( getline(stream, line, '\n') )
         {
-          istringstream inp(line);
+          istringstream inp2(line);
           for(int i=0; i < (int)header.size(); i++)
             {
               double x;
-              inp >> x;
+              inp2 >> x;
               data[nrow].push_back(x);
             }
           nrow++;
@@ -117,8 +118,8 @@ bool slurp_table(string filename,
       int nrow=0;
       while ( getline(stream, line, '\n') )
         {	  
-          istringstream inp(line);      
-          for(int i=0; i < (int)header.size(); i++) inp >> d[i];
+          istringstream inp2(line);      
+          for(int i=0; i < (int)header.size(); i++) inp2 >> d[i];
           data.push_back(d);
           nrow++;
           if ( count <= 0 ) continue;
@@ -260,15 +261,51 @@ void RGS::run(vstring&  cutvar,        // Variables defining cuts
 
   // Decode cut
   /////////////
+
+  // If a cut point contains at least one variable with a duplicate name, then
+  // expand the number of cut points by randomly selecting cut points along
+  // each associated axis.
+
+
   int code = -1;
+  _cutcode.clear();
+  _cutntry.clear();
+  map<string, bool> bidirectional;
+
+  int sample = 10; // default sample size for bi-directional cuts
+
   for (int i = 0; i < (int)cutdir.size(); i++)
     {
-      if      ( inString(cutdir[i],">") )
+      // Check for sample count for bidirectional cut
+      if ( cutvar[i].substr(0,1) == "#" || 
+           cutvar[i].substr(0,1) == "@" ||
+           cutvar[i].substr(0,1) == "\\" )
+        {
+          sample = atoi(cutdir[i].c_str());
+          continue;
+        }
+      string cuttype = cutdir[i];
+      if ( bidirectional.find(cutvar[i]) != bidirectional.end() )
+        // we have a duplicate name, assume we have birectional cut for
+        // current cut variable
+        bidirectional[cutvar[i]] = true;
+      else
+        bidirectional[cutvar[i]] = false;
+
+
+      if      ( cuttype == ">" )
         code = GT;
-      else if ( inString(cutdir[i],"<") )
+      else if ( cuttype == "<" )
         code = LT;
-      if   (  ( inString(cutdir[i],"|") ) )
-        code = code + 2;
+      else if ( cuttype == ">|" )
+        code = ABSGT;
+      else if ( cuttype == "|>" )
+        code = ABSGT;
+      else if ( cuttype == "<|" )
+        code = ABSLT;
+      else if ( cuttype == "|<" )
+        code = ABSLT;
+ 
       _cutcode.push_back(code);
       
       // Load indices into data objects
@@ -280,11 +317,22 @@ void RGS::run(vstring&  cutvar,        // Variables defining cuts
           exit(0);
         }
       
-      cout << i << "\t" << _index.back() << "\t" 
-           << cutvar[i] << "\t" << cutdir[i] << " cut code " << code << endl;
-      
+      cout << i << " " << _index.back() 
+           << "\t" << cutvar[i] 
+           << "\t" << cutdir[i] 
+           << "\tcode " << code 
+           << "\tbidirectional: " << bidirectional[cutvar[i]]
+           << endl;
+        
     } 
+  cout << "\tsample size for bidrectional cuts: " << sample << endl;
 
+  // If we have bidirectional cuts then expand number of cuts points
+  // by the factor sample
+//   for (int cutset = 0; cutset < (int)_cutdata.size(); cutset++)
+//     {
+      
+//     }
   // Loop over files to be processed
   //////////////////////////////////
 
@@ -330,8 +378,7 @@ void RGS::run(vstring&  cutvar,        // Variables defining cuts
                 {
                   int   jcut = _index[cut];
                   float x    = sdata[row][jcut];
-                  float xcut = _cutdata[cutset][jcut];
-                  
+                  float xcut  = _cutdata[cutset][jcut];
                   switch (_cutcode[cut])
                     {
                     case GT:
@@ -388,7 +435,7 @@ RGS::save(string filename, double lumi)
 
   vector<string> cvar = cutvars();
   vector<double> cut(cvar.size());
-  vector<double> count(_counts.size());
+  vector<double> _count(_counts.size());
 
   for(unsigned int i=0; i < cvar.size(); i++)
     {
@@ -396,13 +443,13 @@ RGS::save(string filename, double lumi)
       sprintf(fmt, "%s/D", cvar[i].c_str() );
       tree->Branch(cvar[i].c_str(), &cut[i], fmt); 
     }
-  for(unsigned int i=0; i < count.size(); i++)
+  for(unsigned int i=0; i < _count.size(); i++)
     {
       char fmt[40];
       char name[40];
       sprintf(name, "count%d", i);
       sprintf(fmt, "count%d/D", i);
-      tree->Branch(name, &count[i], fmt);
+      tree->Branch(name, &_count[i], fmt);
     }
 
   for (unsigned int cutset=0; cutset < _cutdata.size(); cutset++)
@@ -410,8 +457,8 @@ RGS::save(string filename, double lumi)
       for(unsigned i=0; i < cvar.size(); i++)
         cut[i] = _cutdata[cutset][_index[i]];
 
-      for(unsigned int i=0; i < count.size(); i++)
-        count[i] = _counts[i][cutset]*lumi;
+      for(unsigned int i=0; i < _count.size(); i++)
+        _count[i] = _counts[i][cutset]*lumi;
       
       file->cd();
       tree->Fill();
