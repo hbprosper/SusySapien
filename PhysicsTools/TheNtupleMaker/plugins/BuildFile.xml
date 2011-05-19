@@ -28,29 +28,8 @@
 <use   name="rootmath"/>
 <use   name="rootrflx"/>
 <library   file="TheNtupleMaker.cc">
-  <flags   EDM_PLUGIN="1"/>
 </library>
 <library   file="TestMethod.cc">
-  <flags   EDM_PLUGIN="1"/>
 </library>
-<library   file="userplugin_user.cc" name="user">
-  <flags   EDM_PLUGIN="1"/>
-</library>
-<library     file="userplugin_GenEventInfoProductHelper.cc" name="GenEventInfoProductHelper">
-  <flags     EDM_PLUGIN="1"/>
-</library>
-<library     file="userplugin_L1GlobalTriggerReadoutRecordHelper.cc" name="L1GlobalTriggerReadoutHelper">
-  <flags     EDM_PLUGIN="1"/>
-</library>
-<library   file="plugins1.cc" name="plugins1">
-  <flags   EDM_PLUGIN="1"/>
-</library>
-<library   file="plugins2.cc" name="plugins2">
-  <flags   EDM_PLUGIN="1"/>
-</library>
-<library   file="plugins3.cc" name="plugins3">
-  <flags   EDM_PLUGIN="1"/>
-</library>
-<library   file="plugins4.cc" name="plugins4">
-  <flags   EDM_PLUGIN="1"/>
+<library   file="*plugin*.cc" name="bufferplugins">
 </library>

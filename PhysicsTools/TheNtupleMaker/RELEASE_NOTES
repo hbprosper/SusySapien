@@ -1,4 +1,11 @@
-$Revision: 1.6 $
+$Revision: 1.7 $
+
+v5_0_9 May 19 2011
+------------------
+	1. create a single shared library from user and package plugins.
+	2. drop EDM_PLUGIN flag from plugins/BuildFile.xml. This seems not be to
+	needed anymore.
+	3. mkplugins.py no longer modifies the BuildFile in the plugins directory.
 
 v5_0_8 May   18 2011
 --------------------

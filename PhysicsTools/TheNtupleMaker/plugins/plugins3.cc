@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------------
 // File::   plugins3.cc
-// Created: Wed May 18 02:30:14 2011 by mkplugins.py
+// Created: Thu May 19 10:06:12 2011 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"

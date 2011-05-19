@@ -7,7 +7,9 @@
 #          18-May-2011 HBP - also create plugins.cc and make it optional
 #                            whether to compile with it rather than with the
 #                            split files
-#$Id: mkplugins.py,v 1.16 2011/05/07 18:39:14 prosper Exp $
+#          19-May-2011 HBP   no longer modify plugins BuildFile, just create
+#                            separate plugin files.
+#$Id: mkplugins.py,v 1.17 2011/05/18 08:51:48 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -81,13 +83,10 @@ cnames.sort()
 
 names = {'time': ctime(time())}
 
-# Get original buildfile
-buildfile = open("BuildFile").read()
-
 # Split across several plugin files
 npmax = len(cnames)/4
 np = 0
-nplugin = 0
+nplugin = 0 # plugin file number
 
 count = 0
 for index, (ctype, name) in enumerate(cnames):
@@ -112,14 +111,11 @@ for index, (ctype, name) in enumerate(cnames):
 	shortname = replace(name, "::", "")
 	names['shortname']  = shortname
 
-	count += 1
-	print "%5d\t%s" % (count, shortname)
-
 	np += 1
 	if np == 1:
 		nplugin += 1
 		pluginname = "plugins%d" % nplugin
-		print "==> plugin file %s.cc" % pluginname 
+		print "\n=> plugin file %s.cc" % pluginname 
 		out  = open(pluginname+".cc", "w")
 		names['pluginname'] = pluginname
 		record = \
@@ -132,22 +128,19 @@ for index, (ctype, name) in enumerate(cnames):
 '''
 		out.write(record % names)			
 
-		# Add an entry to BuildFile if one does not yet exist
-		if find(buildfile, pluginname) < 0:
-			rec = \
-'''
-<library file=%(pluginname)s.cc
-         name=%(pluginname)s>
-  <flags EDM_PLUGIN=1>
-</library>''' % names
-			buildfile += rec
+
+	count += 1
+	print "%5d\t%5d\t%s" % (count, np, shortname)
+
+	# ===> special processing for Event class
 	
-	# special processing for Event class
 	if shortname == "edmEvent":
 		record = \
 '''
 #include "PhysicsTools/TheNtupleMaker/interface/BufferEvent.h"'''
 		out.write(record % names)
+
+	# add buffer specific header
 	
 	header = '#include "%s"' % header	
 	names['header'] = header
@@ -162,6 +155,4 @@ DEFINE_EDM_PLUGIN(BufferFactory, %(buffername)s_t,
 		np = 0
 		out.close()
 
-open("BuildFile", "w").write(buildfile)
-os.system("rm -rf BuildFile.xml; scram b -c")
 
