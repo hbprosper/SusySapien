@@ -7,7 +7,7 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
-// $Id: Method.h,v 1.2 2010/10/02 14:22:59 prosper Exp $
+// $Id: Method.h,v 1.1.1.1 2011/05/04 13:04:28 prosper Exp $
 //
 // If using Python, include its header first to avoid annoying compiler
 // complaints.
@@ -16,12 +16,12 @@
 #include <boost/python/type_id.hpp>
 #include <string>
 #include <iostream>
-#include "PhysicsTools/TheNtupleMaker/interface/FunctionMember.h"
+#include "PhysicsTools/TheNtupleMaker/interface/ClassFunction.h"
 //-----------------------------------------------------------------------------
 /// Model function methods.
 
 template <typename T>
-class Method : public FunctionMember
+class Method : public ClassFunction
 {
 public:
   ///
@@ -29,7 +29,7 @@ public:
   
   ///
   Method(std::string expression)
-    : FunctionMember(boost::python::type_id<T>().name(), expression),
+    : ClassFunction(boost::python::type_id<T>().name(), expression),
       name_(boost::python::type_id<T>().name()+std::string("::")+expression)
   {}
   

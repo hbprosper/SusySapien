@@ -1,12 +1,12 @@
 // -*- C++ -*-
 //
-// Description: Test FunctionMember, a method calling system based on Reflex.
+// Description: Test Method class, a method calling system based on Reflex.
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Jan 17 HBP - add log file
-// $Id: TestMethod.cc,v 1.3 2010/10/11 02:15:31 prosper Exp $
-// $Revision: 1.3 $
+// $Id: TestMethod.cc,v 1.1.1.1 2011/05/04 13:04:29 prosper Exp $
+// $Revision: 1.1.1.1 $
 //
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>

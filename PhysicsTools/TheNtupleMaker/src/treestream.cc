@@ -41,7 +41,7 @@
 //          02-Oct-2010 HBP minor change to itreestream to handle vector types
 //                      directly.
 //          22-Nov-2010 HBP allow reading of multiple trees
-//$Revision: 1.7 $
+//$Revision: 1.1.1.1 $
 //----------------------------------------------------------------------------
 #ifdef PROJECT_NAME
 #include <boost/regex.hpp>
@@ -1625,7 +1625,7 @@ otreestream::otreestream(std::string filename,
     _entries(0),
     _idatabuf(0),
     _databuf(vector<double>(bufsize)),
-    _autosavecount(1000)
+    _autosavecount(-1)
 {
   DBUG("create file "+filename,1);
 
@@ -1659,7 +1659,7 @@ otreestream::otreestream(TFile* file_,
     _entries(0),
     _idatabuf(0),
     _databuf(vector<double>(bufsize)),
-    _autosavecount(1000)
+    _autosavecount(-1)
 {
   if ( ! _file )
     {
@@ -1953,12 +1953,12 @@ otreestream::save()
   _tree->Fill();
   _entries++;
 
-  // Save header every _autosavecount events
-  if ( _entries % _autosavecount == 0 )
-    {
-      cout << _entries << "\totreestream::commit is saving header" << endl;
-      _tree->AutoSave("SaveSelf");
-    }
+//   // Save header every _autosavecount events
+//   if ( _entries % _autosavecount == 0 )
+//     {
+//       cout << _entries << "\totreestream::commit is saving header" << endl;
+//       _tree->AutoSave("SaveSelf");
+//     }
 }
 
 void
@@ -1969,7 +1969,12 @@ otreestream::commit()
 }
 
 void
-otreestream::autosave(int count) { _autosavecount = count; }
+otreestream::autosave(int count) 
+{ 
+  // count in Mbytes
+  _autosavecount = count;
+  if ( _autosavecount > 0 ) _tree->SetAutoSave(_autosavecount * 1000000);
+}
 
 int 
 otreestream::entries() { return _entries; }

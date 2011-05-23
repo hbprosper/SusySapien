@@ -1,15 +1,15 @@
-#ifndef FUNCTIONMEMBER_H
-#define FUNCTIONMEMBER_H
+#ifndef CLASSFUNCTION_H
+#define CLASSFUNCTION_H
 //-----------------------------------------------------------------------------
 //
 // Package:    PhysicsTools/TheNtupleMaker
-//             FunctionMember.h
+//             ClassFunction.h
 // Description: Recursively invoke methods:
 //              object(.|->)method1(..)[(.|->)method2(..)] etc.
 //           
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
-// $Id: FunctionMember.h,v 1.3 2010/10/04 22:45:42 prosper Exp $
+// $Id: ClassFunction.h,v 1.1.1.1 2011/05/04 13:04:28 prosper Exp $
 //
 //-----------------------------------------------------------------------------
 #include <vector>
@@ -41,7 +41,7 @@ typedef std::map<int, std::map<std::string, int> > RunToTypeMap;
     <i>Example</i>
     The code fragment
     \code
-    FunctionMember f("pat::Muon", "gsfTrack()->numberOfValidHits()");
+    ClassFunction f("pat::Muon", "gsfTrack()->numberOfValidHits()");
     :  :
     int nhits = (int)f(muon);
     \endcode
@@ -49,67 +49,68 @@ typedef std::map<int, std::map<std::string, int> > RunToTypeMap;
     \code
     int nhits = muon.gsfTrack()->numberOfValidHits();
     \endcode
- */
-class FunctionMember
+*/
+class ClassFunction
 {
 public:
   ///
-  FunctionMember();
+  ClassFunction();
     
   /** Model a function member or a data member.
       @param classname - name of class containing method to be invoked
       @param expression - method to be called (given without the return type)
-   */
-  FunctionMember(std::string classname, std::string expression);
+  */
+  ClassFunction(std::string classname, std::string expression);
 
-  virtual ~FunctionMember();
+  virtual ~ClassFunction();
 
    
   /** Call the method.
-      @param address - address of object for which the method is to be called
+      @param address - address of object for which this method is to be called
       @return - value of method cast to a double
-   */
+  */
   double  invoke(void* address);
-
+    
   ///
   long double invokeLong(void* address);
-
-   /** Call the method.
-      @param address - address of object for which the method is to be called
+    
+  /** Call the method.
+      @param address - address of object for which this method is to be called
       @return the return value cast to a double
-   */
+  */
   double operator()(void* address);
-
+    
   /// String representation of decoded method.
   std::string  str() const;
-
+    
   ///
   void* raddress();
-
+    
   static RunToTypeMap donotcall;
-
+    
 private:
   std::string classname_;
   std::string expression_;
   std::vector<FunctionDescriptor> fd_;
-
+    
   void*        raddr_;
   double       value_;
   long double  longvalue_;
-
+    
   void execute(FunctionDescriptor& fd, 
                void* address, 
                void*& raddr,
                double& value, 
                long double& longvalue);
-
+    
   bool doNotCall(FunctionDescriptor& fd);
   void updatedoNotCall(FunctionDescriptor& fd);
-
+    
 };
 
 ///
-std::ostream& operator<<(std::ostream& os, const FunctionMember& o);
+std::ostream& operator<<(std::ostream& os, const ClassFunction& o);
+
 
 //-----------------------------------------------------------------------------
 // Test classes
@@ -179,6 +180,19 @@ public:
   void hello() {std::cout << "hello from BTest" << std::endl;}
 };
 
+class MemoryHog
+{
+public:
+  MemoryHog() {wasteOfSpace = new double[1000000];}
+  ~MemoryHog() {delete wasteOfSpace;}
+  double value() const 
+  {
+    return 3.1415926536;
+  }
+private:
+  double* wasteOfSpace;
+};
+
 class ATest : public ATestBase
 {
 public:
@@ -201,6 +215,19 @@ public:
   Aclass* ptrToA() const { return a_; }
   Aclass& refToA() const { return *a_; }
   Aclass  toA()    const { return *a_; }
+  MemoryHog toHog()  const
+  {
+    MemoryHog hog;
+    return hog;
+  }
+
+  MemoryHog refToHog() { return hog_; }
+
+  Aclass  toAwithArg(std::string arg)    const 
+  { 
+    std::cout << "==> from toAwithArg(\"" << arg << "\")" << std::endl;
+    return *a_; 
+  }
 
   float say(std::string s) 
   { 
@@ -269,6 +296,7 @@ private:
   Aclass* a_;
   Bclass  b_;
   int count_;
+  MemoryHog hog_;
 };
 
 

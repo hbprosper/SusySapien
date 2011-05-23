@@ -1,4 +1,4 @@
-//$Revision: 1.12 $
+//$Revision: 1.1.1.1 $
 #include "PhysicsTools/TheNtupleMaker/interface/Connection.h"
 #include "PhysicsTools/TheNtupleMaker/interface/Slot.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pdg.h"
@@ -12,7 +12,7 @@
 #include "PhysicsTools/TheNtupleMaker/interface/GEvent.h"
 #include "PhysicsTools/TheNtupleMaker/interface/HistogramCache.h"
 #include "PhysicsTools/TheNtupleMaker/interface/CanvasScribe.h"
-#include "PhysicsTools/TheNtupleMaker/interface/FunctionMember.h"
+#include "PhysicsTools/TheNtupleMaker/interface/ClassFunction.h"
 #include "PhysicsTools/TheNtupleMaker/interface/ClassMembers.h"
 #include "PhysicsTools/TheNtupleMaker/interface/PoissonGammaFit.h"
 #include "PhysicsTools/TheNtupleMaker/interface/RGS.h"

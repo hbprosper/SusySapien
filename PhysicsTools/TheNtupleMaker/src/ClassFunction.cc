@@ -1,10 +1,10 @@
 // -*- C++ -*-
 //
 // Package:    PhysicsTools
-// Class:      FunctionMember
+// Class:      ClassFunction
 // 
-/**\class FunctionMember FunctionMember.cc 
-   PhysicsTools/TheNtupleMaker/src/FunctionMember.cc
+/**\class ClassFunction ClassFunction.cc 
+   PhysicsTools/TheNtupleMaker/src/ClassFunction.cc
 
    Description: model simple or compound methods
 
@@ -15,7 +15,10 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //                   Wed Oct 20 HBP - go back to logging all warnings
-// $Id: FunctionMember.cc,v 1.7 2010/10/20 16:08:01 prosper Exp $
+//                   Sat May 21 2011 HBP - clear memory occupied by objects
+//                                         returned by value
+// 
+// $Id: ClassFunction.cc,v 1.1.1.1 2011/05/04 13:04:29 prosper Exp $
 //-----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python.hpp>
@@ -26,36 +29,37 @@
 //-----------------------------------------------------------------------------
 #include "FWCore/Utilities/interface/Exception.h"
 #include "FWCore/MessageLogger/interface/MessageLogger.h"
-#include "PhysicsTools/TheNtupleMaker/interface/FunctionMember.h"
+#include "PhysicsTools/TheNtupleMaker/interface/ClassFunction.h"
 #include "PhysicsTools/TheNtupleMaker/interface/colors.h"
 #include "PhysicsTools/TheNtupleMaker/interface/CurrentEvent.h"
 //-----------------------------------------------------------------------------
 using namespace std;
 using namespace ROOT::Reflex;
 //-----------------------------------------------------------------------------
-static bool DBFunctionMember = getenv("DBFunctionMember")>0 ? true : false; 
+static bool DBClassFunction = getenv("DBClassFunction")>0 ? true : false; 
 static bool FirstCallToFM=true;
 
-RunToTypeMap FunctionMember::donotcall = RunToTypeMap();
+RunToTypeMap ClassFunction::donotcall = RunToTypeMap();
 
-FunctionMember::FunctionMember()
+ClassFunction::ClassFunction()
   : classname_(""),
     expression_("")
 {}
 
 
-FunctionMember::~FunctionMember() 
+ClassFunction::~ClassFunction() 
 { 
   for(unsigned depth=0; depth < fd_.size(); ++depth)
     {
       FunctionDescriptor& fd = fd_[depth]; // NB: get an alias NOT a copy!
 
-      if ( DBFunctionMember )
+      if ( DBClassFunction )
         cout << "       - deallocate memory for: " 
              << BLUE 
              << fd.classname << "::" << fd.expression
              << DEFAULT_COLOR
              << endl;
+
       fd.rtype.Deallocate(fd.robject.Address());
 
       for(unsigned j=0; j < fd.values.size(); ++j) delete fd.values[j];
@@ -64,21 +68,21 @@ FunctionMember::~FunctionMember()
 
 // Model an instantiable method using the Reflex tools
 
-FunctionMember::FunctionMember(std::string classname, 
-                               std::string expression)
+ClassFunction::ClassFunction(std::string classname, 
+                                    std::string expression)
   : classname_(classname),
     expression_(expression)
 {
   if ( FirstCallToFM )
     {
       FirstCallToFM = false;
-      cout << endl << "\t==> Using FunctionMember to call methods <=="
+      cout << endl << "\t==> Using ClassFunction to call methods <=="
            << endl << endl;
     }
 
-  if ( DBFunctionMember )
+  if ( DBClassFunction )
     cout << endl 
-         << "BEGIN FunctionMember - " 
+         << "BEGIN ClassFunction - " 
          << classname_ + "::" << expression_ << endl;
 
   if ( classname_ == "" ) 
@@ -118,7 +122,7 @@ FunctionMember::FunctionMember(std::string classname,
       // that is needed to render the calling of the method as efficient 
       // as possible.
 
-      if ( DBFunctionMember )
+      if ( DBClassFunction )
         cout << BLUE
              << "       - allocate function descriptor " << depth
              << DEFAULT_COLOR << endl; 
@@ -132,12 +136,13 @@ FunctionMember::FunctionMember(std::string classname,
       fd.otype       = Type::ByName(fd.classname); // Model parent object
       if ( fd.otype.Name() == "" )
         throw cms::Exception("NullClassName") 
-          << "FunctionMember sadly cannot find type of the object whose method"
+          << "ClassFunction sadly cannot find type of the object whose method"
           << " is to be called"
           << endl;
       
       fd.datamember  = false;
       fd.simple      = false;
+      fd.byvalue     = false;
       fd.pointer     = false;
       fd.reference   = false;
       fd.smartpointer= false;
@@ -152,7 +157,7 @@ FunctionMember::FunctionMember(std::string classname,
       if ( rfx::isCompoundMethod(expression, delim) ) 
         rfx::bisplit(expression, fd.expression, expr2, delim);
 
-      if ( DBFunctionMember )
+      if ( DBClassFunction )
         cout << "       - method/datamember " << ": " 
              << fd.classname << "::" 
              << BLUE << fd.expression << DEFAULT_COLOR << endl
@@ -170,7 +175,7 @@ FunctionMember::FunctionMember(std::string classname,
           //-------------------------------------------------------------------
           // This seems to be a data member
           //-------------------------------------------------------------------
-          if ( DBFunctionMember )
+          if ( DBClassFunction )
             cout << "       - is " << RED << "data member" 
                  << DEFAULT_COLOR << endl;
 
@@ -204,6 +209,8 @@ FunctionMember::FunctionMember(std::string classname,
           else if ( fd.rtype.IsReference() )
             fd.reference = true;
 
+          fd.byvalue = !(fd.pointer || fd.reference);
+
           // Get type name of data member
           // Note: for data members, the rtype variable
           // isn't the final type in the sense that it
@@ -212,7 +219,7 @@ FunctionMember::FunctionMember(std::string classname,
           // type.
             
           fd.rname = fd.rtype.Name(SCOPED+FINAL);
-          if ( DBFunctionMember )
+          if ( DBClassFunction )
             cout << "       - datamember type: " 
                  << BLUE
                  << retname
@@ -230,7 +237,7 @@ FunctionMember::FunctionMember(std::string classname,
               << fd.classname << "::"
               << fd.expression << endl;
 
-          if ( DBFunctionMember )
+          if ( DBClassFunction )
             cout << "       - datamember type (confirmation): " 
                  << fd.rname << endl;
         }
@@ -239,7 +246,7 @@ FunctionMember::FunctionMember(std::string classname,
           //-------------------------------------------------------------------
           // This seems to be a method
           //-------------------------------------------------------------------
-          if ( DBFunctionMember )
+          if ( DBClassFunction )
             cout << "       - is " << RED << "method " 
                  << DEFAULT_COLOR << endl;
           
@@ -263,6 +270,8 @@ FunctionMember::FunctionMember(std::string classname,
           fd.simple  = fd.rtype.IsFundamental();
           fd.pointer = fd.rtype.IsPointer();
           fd.reference = fd.rtype.IsReference();
+          fd.byvalue = !(fd.pointer || fd.reference);
+
           if ( fd.pointer ) fd.rtype = fd.rtype.ToType();
 
           // Get type name of returned object
@@ -274,7 +283,7 @@ FunctionMember::FunctionMember(std::string classname,
               << fd.method.Name() << endl;
 
           
-          if ( DBFunctionMember )
+          if ( DBClassFunction )
             cout << "       - return type: " << fd.rname << endl;
 
           // This could be an isAvailable method
@@ -308,7 +317,7 @@ FunctionMember::FunctionMember(std::string classname,
 
           expr2 = string("isAvailable()") + delim + expr2;
 
-          if ( DBFunctionMember )
+          if ( DBClassFunction )
             cout << "       - return type: " 
                  << RED << "smart pointer" 
                  << DEFAULT_COLOR << endl;
@@ -331,14 +340,14 @@ FunctionMember::FunctionMember(std::string classname,
       // Memory is needed by Reflex to store the return values from functions.
       // We need to reserve the right amount of space for each object
       // returned, which could of course be a fundamental (that is, simple)
-      // type. We free all reserved memory in FunctionMember's destructor.
+      // type. We free all reserved memory in ClassFunction's destructor.
 
       fd.robject = Object(fd.rtype, fd.rtype.Allocate());
 
       // set return type code
 
       fd.rcode = Tools::FundamentalType(fd.rtype);
-      if ( DBFunctionMember )
+      if ( DBClassFunction )
            cout << "       - return code: " 
                  << RED << fd.rcode 
                  << DEFAULT_COLOR << endl;
@@ -353,10 +362,10 @@ FunctionMember::FunctionMember(std::string classname,
             {
               if ( !fd.isNull )
                 {
-                  // This FunctionMember should always arrive here!
+                  // This ClassFunction should always arrive here!
                   done = true;
-                  if ( DBFunctionMember )
-                    cout << "END FunctionMember - " 
+                  if ( DBClassFunction )
+                    cout << "END ClassFunction - " 
                          << classname_ + "::" << expression_ << endl << endl;
                   break;
                 }
@@ -373,7 +382,7 @@ FunctionMember::FunctionMember(std::string classname,
     }
 
   if ( ! done )
-    throw cms::Exception("FunctionMemberFailure")
+    throw cms::Exception("ClassFunctionFailure")
       << " **** I can't understand this method: " 
       << classname_ << "::" << expression_ << endl
       << " **** make sure it returns a simple type"
@@ -381,18 +390,18 @@ FunctionMember::FunctionMember(std::string classname,
 }
 
 bool 
-FunctionMember::doNotCall(FunctionDescriptor& fd)
+ClassFunction::doNotCall(FunctionDescriptor& fd)
 {
   const edm::Event* event = CurrentEvent::instance().get();
   if ( event == 0 ) return false;
   int run = event->id().run();
-  if ( FunctionMember::donotcall.find(run) != 
-       FunctionMember::donotcall.end() )
+  if ( ClassFunction::donotcall.find(run) != 
+       ClassFunction::donotcall.end() )
     {
-      if ( FunctionMember::donotcall[run].find(fd.rname) !=
-           FunctionMember::donotcall[run].end() )
+      if ( ClassFunction::donotcall[run].find(fd.rname) !=
+           ClassFunction::donotcall[run].end() )
 
-        if ( DBFunctionMember )
+        if ( DBClassFunction )
           cout << "==> Skipping method " 
                << RED 
                << classname_ << "::" 
@@ -405,33 +414,41 @@ FunctionMember::doNotCall(FunctionDescriptor& fd)
 }
 
 void
-FunctionMember::updatedoNotCall(FunctionDescriptor& fd)
+ClassFunction::updatedoNotCall(FunctionDescriptor& fd)
 {
   const edm::Event* event = CurrentEvent::instance().get();
   if ( event == 0 ) return;
   int run = event->id().run();
-  if ( FunctionMember::donotcall.find(run) == 
-       FunctionMember::donotcall.end() )
+  if ( ClassFunction::donotcall.find(run) == 
+       ClassFunction::donotcall.end() )
     {
-      FunctionMember::donotcall[run] = map<string, int>();
+      ClassFunction::donotcall[run] = map<string, int>();
     }
-  FunctionMember::donotcall[run][fd.rname] = 0;
-  if ( DBFunctionMember )
+  ClassFunction::donotcall[run][fd.rname] = 0;
+  if ( DBClassFunction )
     cout << "==> Adding " << RED << fd.rname << DEFAULT_COLOR 
          << " to doNotCall list" << endl;
 }
 
 double
-FunctionMember::invoke(void* address)
+ClassFunction::invoke(void* address)
 {
 #ifdef DEBUG
-  if ( DBFunctionMember )
-    cout << "BEGIN FunctionMember::invoke" << endl;
+  if ( DBClassFunction )
+    cout << "BEGIN ClassFunction::invoke" << endl;
 #endif
 
+  void* raddr = 0;
+  double value= 0;
+  long double longvalue=0;
   value_ = 0;
   longvalue_ = 0;
-  void*  raddr = 0;
+
+
+  // Keep track of objects returned by value because we need to
+  // call their destructors
+
+  vector<FunctionDescriptor*> condemned;
 
   // Loop over each part of method
 
@@ -455,8 +472,8 @@ FunctionMember::invoke(void* address)
 //             }
 //         }
 
-      execute(fd, address, raddr, value_, longvalue_);
-
+      execute(fd, address, raddr, value, longvalue);
+ 
       if ( fd.simple )
         {
           //---------------------------------------
@@ -467,8 +484,8 @@ FunctionMember::invoke(void* address)
           // 1. a bool from the isAvailable() method of a smart pointer
           // 2. a bool from the isNull() method of a smart pointer
 #ifdef DEBUG
-          if ( DBFunctionMember )
-            cout << "\tFunctionMember::invoke - FUNCTION:     " 
+          if ( DBClassFunction )
+            cout << "\tClassFunction::invoke - FUNCTION:     " 
                  << BLUE << fd.method.Name() << DEFAULT_COLOR << endl
                  << "\t                       - RETURN TYPE:  " 
                  << RED << "FUNDAMENTAL" << DEFAULT_COLOR << endl
@@ -482,12 +499,12 @@ FunctionMember::invoke(void* address)
 
           if ( fd.isAvailable )
             {
-              bool available = (bool)value_;
+              bool available = (bool)value;
               if ( available )
                 {
 #ifdef DEBUG
-                  if ( DBFunctionMember )
-                    cout << "\tFunctionMember::invoke - isAvailable returns: " 
+                  if ( DBClassFunction )
+                    cout << "\tClassFunction::invoke - isAvailable returns: " 
                          << RED << "TRUE" << DEFAULT_COLOR << endl;
 #endif
                 }
@@ -499,7 +516,7 @@ FunctionMember::invoke(void* address)
                                                         << "::" 
                                                         << expression_ 
                                                         << endl;  
-                  value_ = 0;
+                  value = 0;
                   //updatedoNotCall(fd);
                   break; // break out of loop
                 }
@@ -509,7 +526,7 @@ FunctionMember::invoke(void* address)
 
           else if ( fd.isNull )
             {
-              bool null = (bool)value_;
+              bool null = (bool)value;
               if ( null )
                 {
                   // The collection is not available, so return a null pointer
@@ -518,14 +535,14 @@ FunctionMember::invoke(void* address)
                                                       << "::" 
                                                       << expression_ 
                                                       << endl;  
-                  value_ = 0;
+                  value = 0;
                   break; // break out of loop
                 }
               else
                 {
 #ifdef DEBUG
-                  if ( DBFunctionMember )
-                    cout << "\tFunctionMember::invoke - isNull returns: " 
+                  if ( DBClassFunction )
+                    cout << "\tClassFunction::invoke - isNull returns: " 
                          << RED << "FALSE" << DEFAULT_COLOR << endl;
 #endif
                 }
@@ -536,9 +553,14 @@ FunctionMember::invoke(void* address)
           //---------------------------------------
           // Non-fundamental return type
           //---------------------------------------
+
+          // Keep track of objects returned by value. We need to call
+          // their destructors explicitly.
+          if ( fd.byvalue ) condemned.push_back(&fd);
+          
 #ifdef DEBUG
-          if ( DBFunctionMember )
-            cout << "\tFunctionMember::invoke - FUNCTION:       " 
+          if ( DBClassFunction )
+            cout << "\tClassFunction::invoke - FUNCTION:       " 
                  << BLUE << fd.method.Name() << DEFAULT_COLOR << endl
                  << "\t                       - RETURN TYPE:    " 
                  << RED << "NON-FUNDAMENTAL" << DEFAULT_COLOR << endl
@@ -556,7 +578,7 @@ FunctionMember::invoke(void* address)
                                                  << "::" 
                                                  << expression_ 
                                                  << endl; 
-                  value_ = 0;
+                  value = 0;
                   break; // break out of loop
                 }
             }
@@ -565,34 +587,48 @@ FunctionMember::invoke(void* address)
           address = raddr;
         }
     }
+
+  // Cache return value
+  raddr_     = raddr;
+  value_     = value;
+  longvalue_ = longvalue;
+
+  // Explicitly destroy objects that were returned by value
+  for(unsigned int i=0; i < condemned.size(); ++i)
+    {
+      // get a reference not a copy
+      FunctionDescriptor& fd = *condemned[i];
+
+      // call object's destructor, but keep memory reserved when
+      // ClassFunction was initialized.
+      fd.rtype.Destruct(fd.robject.Address(), false);
+    }
+
 #ifdef DEBUG
-  if ( DBFunctionMember )
-    cout << "END FunctionMember::invoke" << endl << endl;
+  if ( DBClassFunction )
+    cout << "END ClassFunction::invoke" << endl << endl;
 #endif
 
-  raddr_ = raddr;
   return value_;
 }
 
 void* 
-FunctionMember::raddress() { return raddr_; }
+ClassFunction::raddress() { return raddr_; }
 
 void
-FunctionMember::execute(FunctionDescriptor& fd, 
-                        void*   address, 
-                        void*&  raddr,
-                        double& value,
-                        long double& longvalue)
+ClassFunction::execute(FunctionDescriptor& fd, 
+                       void*   address, 
+                       void*&  raddr,
+                       double& value,
+                       long double& longvalue)
 {
-  // classname   the parent class to which method/data member belongs
   // address     address of object whose method/data member is being called
-  // method      object that models a method or a data member
-  // args_       the arguments of the method to be called
+  // raddr       address of return object or value
   
   
 #ifdef DEBUG
-      if ( DBFunctionMember )
-        cout << "\tFunctionMember::execute: " 
+      if ( DBClassFunction )
+        cout << "\tClassFunction::execute: " 
              << fd.classname << "::" 
              << fd.expression << endl;
 #endif
@@ -703,17 +739,17 @@ FunctionMember::execute(FunctionDescriptor& fd,
 }
 
 long double
-FunctionMember::invokeLong(void* address) 
+ClassFunction::invokeLong(void* address) 
 {
   invoke(address);
   return longvalue_; 
 }
 
 double
-FunctionMember::operator()(void* address) { return invoke(address); }
+ClassFunction::operator()(void* address) { return invoke(address); }
 
 std::string
-FunctionMember::str() const
+ClassFunction::str() const
 {
   ostringstream os;
 
@@ -742,7 +778,7 @@ FunctionMember::str() const
 
 
 std::ostream&
-operator<<(std::ostream& os, const FunctionMember& o)
+operator<<(std::ostream& os, const ClassFunction& o)
 {
   os << o.str();
   return os;

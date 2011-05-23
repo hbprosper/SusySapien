@@ -45,7 +45,7 @@
 //                                PhysicsTools/TheNtupleMaker
 //          22-Nov-2010 Allow reading of multiple trees using friend
 //                      mechanism
-//$Revision: 1.6 $
+//$Revision: 1.1.1.1 $
 //----------------------------------------------------------------------------
 #include <vector>
 #include <string>
@@ -454,8 +454,8 @@ class otreestream
   /// Store and save.
   void   commit();
 
-  ///
-  void   autosave(int nevents=1000);
+  /// Automatically save the tree header after every Mbytes written to file.
+  void   autosave(int Mbytes=-1);
 
   ///
   void   close(bool closefile=true);

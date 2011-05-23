@@ -49,7 +49,7 @@
 //                   Sat Mar 12 2011 HBP - change selectorname to usermacroname
 //                   Wed May 04 2011 HBP - change name to TheNtupleMaker
 //
-// $Id: TheNtupleMaker.cc,v 1.28 2011/05/02 23:51:18 prosper Exp $
+// $Id: TheNtupleMaker.cc,v 1.1.1.1 2011/05/04 13:04:29 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -136,7 +136,7 @@ private:
 TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   : output(otreestream(iConfig.getUntrackedParameter<string>("ntupleName"), 
                        "Events", 
-                       "created by TheNtupleMaker $Revision: 1.28 $")),
+                       "created by TheNtupleMaker $Revision: 1.1.1.1 $")),
     logfilename_("TheNtupleMaker.log"),
     log_(new std::ofstream(logfilename_.c_str())),
     usermacroname_(""),
@@ -155,7 +155,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   // Add a provenance tree to ntuple
   // --------------------------------------------------------------------------
   TFile* file = output.file();
-  ptree_ = new TTree("Provenance","created by TheNtupleMaker $Revision: 1.28 $");
+  ptree_ = new TTree("Provenance","created by TheNtupleMaker $Revision: 1.1.1.1 $");
   string cmsver = kit::strip(kit::shell("echo $CMSSW_VERSION"));
   ptree_->Branch("cmssw_version", (void*)(cmsver.c_str()), "cmssw_version/C");
 
@@ -187,6 +187,17 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
     }
   catch (...)
     {}
+
+  // Save Tree header and branch buffers after every autosaveCount Mbytes
+  // have been written to file. Default is 100 Mbytes.
+  int autosaveCount = 100;
+  try
+    {
+      autosaveCount = iConfig.getUntrackedParameter<int>("autosaveCount");
+    }
+  catch (...)
+    {}
+  output.autosave(autosaveCount);
 
   try
     {
@@ -506,7 +517,7 @@ TheNtupleMaker::~TheNtupleMaker()
 // ------------ method called to for each event  ------------
 void
 TheNtupleMaker::analyze(const edm::Event& iEvent, 
-                  const edm::EventSetup& iSetup)
+                        const edm::EventSetup& iSetup)
 {
   //cout << "===> iEvent.isRealData(" << iEvent.isRealData() << ")" << endl;
 
@@ -530,32 +541,34 @@ TheNtupleMaker::analyze(const edm::Event& iEvent,
         }
     }
 
+
   // Cache current event
 
   CurrentEvent::instance().set(iEvent, iSetup);
 
   // Loop over allocated buffers and for each call its fill method
   
-  string message("");  
-  for(unsigned i=0; i < buffers.size(); i++)
-    if ( !buffers[i]->fill(iEvent, iSetup) ) message += buffers[i]->message();
+  for(unsigned i=0; i < buffers.size(); i++) buffers[i]->fill(iEvent, iSetup);
+
+  //string message("");  
+   //if ( !buffers[i]->fill(iEvent, iSetup) ) message += buffers[i]->message();
 
   // Check for error report from buffers
 
-  if ( message != "" )
-    {
-      time_t tt = time(0);
-      string ct(ctime(&tt));
+//   if ( message != "" )
+//     {
+//       time_t tt = time(0);
+//       string ct(ctime(&tt));
       
-      log_->open(logfilename_.c_str(), ios::app);
-      *log_ << endl
-            << "REPORT RUN: " 
-            << iEvent.id().run() << "\tEvent: " << iEvent.id().event() 
-            << "\t" << ct << endl 
-            << message << endl
-            << "END" << endl;
-      log_->close();
-    }
+//       log_->open(logfilename_.c_str(), ios::app);
+//       *log_ << endl
+//             << "REPORT RUN: " 
+//             << iEvent.id().run() << "\tEvent: " << iEvent.id().event() 
+//             << "\t" << ct << endl 
+//             << message << endl
+//             << "END" << endl;
+//       log_->close();
+//     }
 
   // Apply optional cuts
 
@@ -565,8 +578,8 @@ TheNtupleMaker::analyze(const edm::Event& iEvent,
 
   output.store();
 
-  // Event kept. Shrink buffers as needed. Shrinking is needed if only
-  // certain objects of a given buffer have been selected.
+  //Event kept. Shrink buffers as needed. Shrinking is needed if only
+  //certain objects of a given buffer have been selected.
 
   //shrinkBuffers();
 

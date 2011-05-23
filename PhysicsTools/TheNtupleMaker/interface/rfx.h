@@ -17,9 +17,9 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Fri Apr 04 2008
-// $Id: rfx.h,v 1.3 2010/10/04 22:45:42 prosper Exp $
+// $Id: rfx.h,v 1.1.1.1 2011/05/04 13:04:28 prosper Exp $
 //
-//$Revision: 1.3 $
+//$Revision: 1.1.1.1 $
 //-----------------------------------------------------------------------------
 #include <iostream>
 #include <fstream>
@@ -68,6 +68,9 @@ struct rfx
 
     X x_;
   };
+
+  static
+  unsigned int   memcheck(std::string program);
 
   ///
   static
@@ -189,11 +192,13 @@ struct FunctionDescriptor
   std::string               rname;       /// Name of return type
   
   bool               datamember;     /// True if this is a data member
+
   bool               simple;         /// True if return type is simple
-  bool               pointer;        /// True if return type is a pointer
-  bool               reference;      /// True if return type is a reference
-    
-  bool               smartpointer;   /// True if return type is a smart pointer
+  bool               byvalue;        /// True if return is by value
+  bool               pointer;        /// True if return is by pointer
+  bool               reference;      /// True if return is by reference   
+  bool               smartpointer;   /// True if return is by smart pointer
+
   bool               isAvailable;    /// True if this is isAvailable()
   bool               isNull;         /// True if this is isAvailable()
 };

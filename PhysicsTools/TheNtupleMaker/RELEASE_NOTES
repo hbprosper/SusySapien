@@ -1,4 +1,15 @@
-$Revision: 1.7 $
+$Revision: 1.8 $
+
+v5_1_0 May 23 2011
+------------------
+	1. explicitly call destructors for objects returned by value. An example
+	of a method that does this is pat::Jet::correctedJet("Uncorrected"), which
+	returns a pat::Jet by value.
+
+	2. add memmon.py to help monitor memory of the specified program:
+
+		memmon.py cmsRun
+
 
 v5_0_9 May 19 2011
 ------------------

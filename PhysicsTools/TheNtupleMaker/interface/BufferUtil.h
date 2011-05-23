@@ -11,7 +11,7 @@
 //                   Thu Apr 28 HBP for variables not found return
 //                   -9999
 //
-// $Id: BufferUtil.h,v 1.1.1.1 2011/05/04 13:04:28 prosper Exp $
+// $Id: BufferUtil.h,v 1.2 2011/05/18 08:51:45 prosper Exp $
 // ----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python/type_id.hpp>
@@ -174,8 +174,8 @@ void initBuffer(otreestream& out,
   // rather than a vector because a push_back on the latter can trigger
   // calls to the destructor of the pushed object. We don't want this to
   // happen for Variable<X> because it contains an object of type 
-  // FunctionMember. A call to Variable<X>'s destructor will trigger a call
-  // to the FunctionMember destructer, thereby deallocating memory at the wrong
+  // ClassFunction. A call to Variable<X>'s destructor will trigger a call
+  // to the ClassFunction destructer, thereby deallocating memory at the wrong
   // time.
 
   variables.clear();

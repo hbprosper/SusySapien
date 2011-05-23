@@ -19,7 +19,7 @@
 #include "TRandom.h"
 
 #include "FWCore/FWLite/interface/AutoLibraryLoader.h"
-#include "PhysicsTools/TheNtupleMaker/interface/FunctionMember.h"
+#include "PhysicsTools/TheNtupleMaker/interface/ClassFunction.h"
 #include "PhysicsTools/TheNtupleMaker/interface/Method.h"
 #include "PhysicsTools/TheNtupleMaker/interface/colors.h"
 //-----------------------------------------------------------------------------
@@ -53,6 +53,7 @@ main(int argc, char** argv)
   mname.push_back("ptrToA()->avalue");
   mname.push_back("ptrToB->value()");
   mname.push_back("say(\"Go boil your head!\")");
+  mname.push_back("toAwithArg(\"Monty Python and the Holy Grail\").value()");
 
   boost::ptr_vector<Method<ATest> > method;
 
@@ -65,7 +66,7 @@ main(int argc, char** argv)
 
   char record[256];
 
-  for(int i=0; i < 1001; i++)
+  for(int i=0; i < 1000000; i++)
     {
       cout << endl << i 
            << " ------------------------------------------------"   << endl;
@@ -75,10 +76,17 @@ main(int argc, char** argv)
               mname[0].c_str(), c.ptrToA()->value());
       cout << record << endl;
 
-      sprintf(record, "Method         - %-20s\t= %10.4f", 
-              mname[0].c_str(), method[0](c)); 
-      cout << record << endl;
-      cout << endl;
+      try
+        {
+          sprintf(record, "Method         - %-20s\t= %10.4f", 
+                  mname[0].c_str(), method[0](c)); 
+          cout << record << endl;
+          cout << endl;
+        }
+      catch (...)
+        {
+          cout << "====> ERROR <===" << endl;
+        }
 
       //--------------------------------------------------------------------
       c.refToA().set(random.Uniform(100));
@@ -137,6 +145,17 @@ main(int argc, char** argv)
       sprintf(record, "Method         - %-20s\t= %10.4f", 
               mname[6].c_str(), method[6](c)); 
       cout << record << endl;
+      //--------------------------------------------------------------------
+      a.set(random.Uniform(100));
+      sprintf(record, "Direct         - %-20s\t= %10.4f", 
+              mname[7].c_str(), 
+              c.toAwithArg("Monty Python and the Holy Grail").value());
+      cout << record << endl;
+
+      sprintf(record, "Method         - %-20s\t= %10.4f", 
+              mname[7].c_str(), method[7](c)); 
+      cout << record << endl;
+      cout << endl;
     }
 
   return 0;

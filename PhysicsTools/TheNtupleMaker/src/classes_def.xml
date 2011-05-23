@@ -24,7 +24,7 @@
    <class name="root"/>
    <class name="TFileDialog"/>
    <class name="THelpDialog"/>
-   <class name="FunctionMember"/>
+   <class name="ClassFunction"/>
    <class name="ClassMembers"/>
    <class name="PoissonGammaFit"/>
    <class name="itreestream"/>
@@ -38,6 +38,7 @@
    <class name="Aclass"/>
    <class name="Bclass"/>
    <class name="ATest"/>
+   <class name="MemoryHog"/>
    <class name="GEvent"/>
    <class name="GParticle"/>
    <class name="triggerBits"/>

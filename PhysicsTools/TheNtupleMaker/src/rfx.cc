@@ -15,7 +15,7 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Wed Jun 20 19:53:47 EDT 2007
 //         Updated:  Sat Oct 25 2008 - make matchInDeltaR saner
-// $Id: rfx.cc,v 1.5 2010/11/08 11:00:36 prosper Exp $
+// $Id: rfx.cc,v 1.1.1.1 2011/05/04 13:04:29 prosper Exp $
 //
 //
 //-----------------------------------------------------------------------------
@@ -28,6 +28,7 @@
 #include <string>
 #include <cmath>
 #include <iomanip>
+#include <iostream>
 #include <string>
 #include <algorithm>
 #include <map>
@@ -143,6 +144,22 @@ rfx::regex_sub(string& str, string expr, string rstr)
     return replace(str, match[0], rstr);
   else
     return str;
+}
+
+unsigned int
+rfx::memcheck(std::string program)
+{
+  string cmd("ps aux | grep "+program);
+  FILE* f = popen(cmd.c_str(),"r");
+  int buffsize=8192;
+  char s[8192];
+  int n = fread(s,1,buffsize,f);
+  pclose(f);
+  istringstream inp(rfx::strip(string(s).substr(0,n)));
+  string a;
+  unsigned int k;
+  inp >> a >> a >> a >> a >> k;
+  return k;
 }
 
 // ---------------------------------------------------------------------------
@@ -513,7 +530,7 @@ rfx::invokeMethod(FunctionDescriptor& fd, void* address)
   // Model instance of class
   Object object(fd.otype, address);
 
-  // Call method on class instance
+//   // Call method on class instance
   fd.method.Invoke(object, &fd.robject, fd.args);
 
   // Get address of returned object
@@ -521,7 +538,8 @@ rfx::invokeMethod(FunctionDescriptor& fd, void* address)
 
   // If this is a pointer or reference, return address of object pointed to
   if ( fd.pointer || fd.reference ) raddr = *static_cast<void**>(raddr);
-  return raddr;
+
+ return raddr;
 }
 
 
