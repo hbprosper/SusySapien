@@ -1,4 +1,9 @@
-$Revision: 1.8 $
+$Revision: 1.9 $
+
+v5_1_1 May 23 2011
+------------------
+	1. Add an (optional) flushEvent method to helpers. This method is called
+	at the end of the event loop.
 
 v5_1_0 May 23 2011
 ------------------
