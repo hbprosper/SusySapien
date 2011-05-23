@@ -9,7 +9,7 @@
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Sep 19 HBP - copy from Buffer.h
 //
-// $Id: UserBuffer.h,v 1.9 2011/05/02 23:50:58 prosper Exp $
+// $Id: UserBuffer.h,v 1.1.1.1 2011/05/04 13:04:28 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/BufferUtil.h"
@@ -209,6 +209,9 @@ struct UserBuffer  : public BufferThing
           }
       }
     
+    // Perform (optional) user post event-level cleanup/analysis
+    helper_.flushEvent();
+
     if ( debug_ > 0 ) 
       std::cout << DEFAULT_COLOR << "End UserBuffer::fill " << std::endl; 
     return true;

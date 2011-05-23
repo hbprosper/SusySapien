@@ -6,7 +6,7 @@
 // Description: Base class for helpers
 // Created:     Aug, 2010 Harrison B. Prosper
 //              01 May, 2011 HBP add param
-//$Revision: 1.8 $
+//$Revision: 1.1.1.1 $
 //-----------------------------------------------------------------------------
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
@@ -56,6 +56,9 @@ public:
 
   /// do some object-level analysis, if needed.
   virtual void analyzeObject() {}
+
+  /// do some post event-level analysis, if needed.
+  virtual void flushEvent() {}
 
   // ---------------- available to user
   /// Pointer to ParameterSet initialized from config file.
