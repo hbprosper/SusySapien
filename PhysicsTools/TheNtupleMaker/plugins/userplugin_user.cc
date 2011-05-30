@@ -6,7 +6,7 @@
 // Updated:     Mon Mar 08, 2010 Sezen & HBP - add triggerBits class
 //              Thu Apr 08, 2010 Sezen & HBP - add GParticle class
 //              Thu Aug 25, 2010 HBP - rename classes
-//$Revision: 1.1 $
+//$Revision: 1.1.1.1 $
 //-----------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/UserBuffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
@@ -35,9 +35,14 @@ DEFINE_EDM_PLUGIN(BufferFactory, edmEventHelper_t, "edmEventHelper");
 
 // Synomyms:
 
-typedef UserBuffer<edm::TriggerResults, triggerBits, true> triggerBits_t;
-DEFINE_EDM_PLUGIN(BufferFactory, triggerBits_t, "triggerBits");
+// typedef UserBuffer<edm::TriggerResults, triggerBits, true> triggerBits_t;
+// DEFINE_EDM_PLUGIN(BufferFactory, triggerBits_t, "triggerBits");
 
-typedef UserBuffer<reco::GenParticle, GParticle, false> GParticle_t;
-DEFINE_EDM_PLUGIN(BufferFactory, GParticle_t, "GParticle");
+// typedef UserBuffer<reco::GenParticle, GParticle, false> GParticle_t;
+// DEFINE_EDM_PLUGIN(BufferFactory, GParticle_t, "GParticle");
 
+typedef UserBuffer<double, doubleHelper, true> doubleHelper_t;
+DEFINE_EDM_PLUGIN(BufferFactory, doubleHelper_t, "sdouble");
+
+typedef UserBuffer<double, doubleHelper, false> vdoubleHelper_t;
+DEFINE_EDM_PLUGIN(BufferFactory, vdoubleHelper_t, "vdouble");

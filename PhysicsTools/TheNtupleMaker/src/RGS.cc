@@ -5,7 +5,7 @@
 //  Updated: 05-Apr-2002 HBP tidy up
 //           17-May-2006 HBP use weightindex instead of a vector of weights
 //-----------------------------------------------------------------------------
-//$Revision: 1.4 $
+//$Revision: 1.1.1.1 $
 //-----------------------------------------------------------------------------
 #include <stdio.h>
 #include <cmath>
@@ -31,7 +31,7 @@ ClassImp(RGS)
 #endif
 
 
-string rgsversion() {return string("RGS - $Revision: 1.4 $");}
+string rgsversion() {return string("RGS - $Revision: 1.1.1.1 $");}
 
 void error(string message)
 {
@@ -97,11 +97,11 @@ bool slurp_table(string filename,
       int nrow=0;
       while ( getline(stream, line, '\n') )
         {
-          istringstream inp(line);
+          istringstream inp2(line);
           for(int i=0; i < (int)header.size(); i++)
             {
               double x;
-              inp >> x;
+              inp2 >> x;
               data[nrow].push_back(x);
             }
           nrow++;
@@ -117,8 +117,8 @@ bool slurp_table(string filename,
       int nrow=0;
       while ( getline(stream, line, '\n') )
         {	  
-          istringstream inp(line);      
-          for(int i=0; i < (int)header.size(); i++) inp >> d[i];
+          istringstream inp2(line);      
+          for(int i=0; i < (int)header.size(); i++) inp2 >> d[i];
           data.push_back(d);
           nrow++;
           if ( count <= 0 ) continue;
@@ -388,7 +388,7 @@ RGS::save(string filename, double lumi)
 
   vector<string> cvar = cutvars();
   vector<double> cut(cvar.size());
-  vector<double> count(_counts.size());
+  vector<double> count2(_counts.size());
 
   for(unsigned int i=0; i < cvar.size(); i++)
     {
@@ -396,13 +396,13 @@ RGS::save(string filename, double lumi)
       sprintf(fmt, "%s/D", cvar[i].c_str() );
       tree->Branch(cvar[i].c_str(), &cut[i], fmt); 
     }
-  for(unsigned int i=0; i < count.size(); i++)
+  for(unsigned int i=0; i < count2.size(); i++)
     {
       char fmt[40];
       char name[40];
       sprintf(name, "count%d", i);
       sprintf(fmt, "count%d/D", i);
-      tree->Branch(name, &count[i], fmt);
+      tree->Branch(name, &count2[i], fmt);
     }
 
   for (unsigned int cutset=0; cutset < _cutdata.size(); cutset++)
@@ -410,8 +410,8 @@ RGS::save(string filename, double lumi)
       for(unsigned i=0; i < cvar.size(); i++)
         cut[i] = _cutdata[cutset][_index[i]];
 
-      for(unsigned int i=0; i < count.size(); i++)
-        count[i] = _counts[i][cutset]*lumi;
+      for(unsigned int i=0; i < count2.size(); i++)
+        count2[i] = _counts[i][cutset]*lumi;
       
       file->cd();
       tree->Fill();

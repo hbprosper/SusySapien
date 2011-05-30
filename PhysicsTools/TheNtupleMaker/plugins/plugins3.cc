@@ -1,9 +1,44 @@
 // -------------------------------------------------------------------------
 // File::   plugins3.cc
-// Created: Thu May 19 10:06:12 2011 by mkplugins.py
+// Created: Mon May 30 06:05:59 2011 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
+
+#include "DataFormats/ParticleFlowReco/interface/PFCluster.h"
+typedef Buffer<reco::PFCluster, false> recoPFCluster_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFCluster_t,
+                  "recoPFCluster");
+
+#include "DataFormats/ParticleFlowReco/interface/PFDisplacedVertex.h"
+typedef Buffer<reco::PFDisplacedVertex, false> recoPFDisplacedVertex_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFDisplacedVertex_t,
+                  "recoPFDisplacedVertex");
+
+#include "DataFormats/JetReco/interface/PFJet.h"
+typedef Buffer<reco::PFJet, false> recoPFJet_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFJet_t,
+                  "recoPFJet");
+
+#include "DataFormats/METReco/interface/PFMET.h"
+typedef Buffer<reco::PFMET, false> recoPFMET_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFMET_t,
+                  "recoPFMET");
+
+#include "DataFormats/ParticleFlowReco/interface/PFRecHit.h"
+typedef Buffer<reco::PFRecHit, false> recoPFRecHit_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFRecHit_t,
+                  "recoPFRecHit");
+
+#include "DataFormats/TauReco/interface/PFTau.h"
+typedef Buffer<reco::PFTau, false> recoPFTau_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFTau_t,
+                  "recoPFTau");
+
+#include "DataFormats/EgammaCandidates/interface/Photon.h"
+typedef Buffer<reco::Photon, false> recoPhoton_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPhoton_t,
+                  "recoPhoton");
 
 #include "DataFormats/EgammaCandidates/interface/PhotonCore.h"
 typedef Buffer<reco::PhotonCore, false> recoPhotonCore_t;
@@ -85,6 +120,11 @@ typedef Buffer<reco::VertexCompositeCandidate, false> recoVertexCompositeCandida
 DEFINE_EDM_PLUGIN(BufferFactory, recoVertexCompositeCandidate_t,
                   "recoVertexCompositeCandidate");
 
+#include "DataFormats/EcalDigi/interface/EcalTrigPrimCompactColl.h"
+typedef Buffer<EcalTrigPrimCompactColl, true> EcalTrigPrimCompactColl_t;
+DEFINE_EDM_PLUGIN(BufferFactory, EcalTrigPrimCompactColl_t,
+                  "EcalTrigPrimCompactColl");
+
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
 typedef Buffer<GenEventInfoProduct, true> GenEventInfoProduct_t;
 DEFINE_EDM_PLUGIN(BufferFactory, GenEventInfoProduct_t,
@@ -94,59 +134,3 @@ DEFINE_EDM_PLUGIN(BufferFactory, GenEventInfoProduct_t,
 typedef Buffer<GenRunInfoProduct, true> GenRunInfoProduct_t;
 DEFINE_EDM_PLUGIN(BufferFactory, GenRunInfoProduct_t,
                   "GenRunInfoProduct");
-
-#include "DataFormats/METReco/interface/HcalNoiseSummary.h"
-typedef Buffer<HcalNoiseSummary, true> HcalNoiseSummary_t;
-DEFINE_EDM_PLUGIN(BufferFactory, HcalNoiseSummary_t,
-                  "HcalNoiseSummary");
-
-#include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerObjectMapRecord.h"
-typedef Buffer<L1GlobalTriggerObjectMapRecord, true> L1GlobalTriggerObjectMapRecord_t;
-DEFINE_EDM_PLUGIN(BufferFactory, L1GlobalTriggerObjectMapRecord_t,
-                  "L1GlobalTriggerObjectMapRecord");
-
-#include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerReadoutRecord.h"
-typedef Buffer<L1GlobalTriggerReadoutRecord, true> L1GlobalTriggerReadoutRecord_t;
-DEFINE_EDM_PLUGIN(BufferFactory, L1GlobalTriggerReadoutRecord_t,
-                  "L1GlobalTriggerReadoutRecord");
-
-#include "DataFormats/Common/interface/ConditionsInEdm.h"
-typedef Buffer<edm::ConditionsInEventBlock, true> edmConditionsInEventBlock_t;
-DEFINE_EDM_PLUGIN(BufferFactory, edmConditionsInEventBlock_t,
-                  "edmConditionsInEventBlock");
-
-#include "PhysicsTools/TheNtupleMaker/interface/BufferEvent.h"
-#include "FWCore/Framework/interface/Event.h"
-typedef Buffer<edm::Event, true> edmEvent_t;
-DEFINE_EDM_PLUGIN(BufferFactory, edmEvent_t,
-                  "edmEvent");
-
-#include "DataFormats/Common/interface/TriggerResults.h"
-typedef Buffer<edm::TriggerResults, true> edmTriggerResults_t;
-DEFINE_EDM_PLUGIN(BufferFactory, edmTriggerResults_t,
-                  "edmTriggerResults");
-
-#include "DataFormats/METReco/interface/BeamHaloSummary.h"
-typedef Buffer<reco::BeamHaloSummary, true> recoBeamHaloSummary_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoBeamHaloSummary_t,
-                  "recoBeamHaloSummary");
-
-#include "DataFormats/BeamSpot/interface/BeamSpot.h"
-typedef Buffer<reco::BeamSpot, true> recoBeamSpot_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoBeamSpot_t,
-                  "recoBeamSpot");
-
-#include "DataFormats/METReco/interface/CSCHaloData.h"
-typedef Buffer<reco::CSCHaloData, true> recoCSCHaloData_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoCSCHaloData_t,
-                  "recoCSCHaloData");
-
-#include "DataFormats/TauReco/interface/CaloTauDiscriminator.h"
-typedef Buffer<reco::CaloTauDiscriminator, true> recoCaloTauDiscriminator_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoCaloTauDiscriminator_t,
-                  "recoCaloTauDiscriminator");
-
-#include "DataFormats/METReco/interface/EcalHaloData.h"
-typedef Buffer<reco::EcalHaloData, true> recoEcalHaloData_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoEcalHaloData_t,
-                  "recoEcalHaloData");

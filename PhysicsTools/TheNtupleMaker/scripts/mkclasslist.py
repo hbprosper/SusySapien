@@ -4,7 +4,7 @@
 # Created: 05-Jan-2010 Harrison B. Prosper
 # Updated: 08-Aug-2010 HBP minor fix before release
 #          25-Aug-2010 HBP add a few more classes (by hand)
-#$Id:$
+#$Id: mkclasslist.py,v 1.16 2011/05/07 18:39:14 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -17,6 +17,9 @@ if cwd != "plugins":
 # Extract getByLabel strings using a non-greedy search
 getfields = re.compile(r'(?<=")[^ ]*?(?=")')
 isvector  = re.compile(r'^(?<=std::)?vector<')
+isAvector = re.compile(r'edm::AssociationVector<')
+skipme    = re.compile('Collection|edmNew|'\
+					   'AssociationMap|ValueMap|RangeMap|OwnVector')
 #------------------------------------------------------------------------------
 argv = sys.argv[1:]
 argc = len(argv)
@@ -51,21 +54,23 @@ for record in records:
 	classname = strip(split(record, '"')[0])
 	fields = getfields.findall(record)
 	if len(fields) == 0: continue
-	if classname in ['double', 'int', 'bool']: continue
-	# For now, exclude collection classes
-	if rfind(classname, "Collection") > -1: continue
 
+	#Skip a bunch of complicated stuff, for now...
+	if skipme.findall(classname) != []: continue
+	
 	# Determine whether or not this is a singleton
 	if isvector.match(classname) != None:
-		tname[classname] = "C"
+		tname["C %s" % classname] = "C"
+	elif isAvector.match(classname) != None:
+		tname["C %s" % classname] = "C"
 	else:
-		tname[classname] = "S"
+		tname["S %s" % classname] = "S"
 
 keys = tname.keys()
 keys.sort()
 out = open("classes.txt",'w')
 for index, key in enumerate(keys):
-	record = "%s %s\n" % (tname[key], key)
+	record = "%s\n" % key
 	out.write(record)
 out.close()
 

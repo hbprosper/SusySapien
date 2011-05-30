@@ -49,7 +49,7 @@
 //                   Sat Mar 12 2011 HBP - change selectorname to usermacroname
 //                   Wed May 04 2011 HBP - change name to TheNtupleMaker
 //
-// $Id: TheNtupleMaker.cc,v 1.1.1.1 2011/05/04 13:04:29 prosper Exp $
+// $Id: TheNtupleMaker.cc,v 1.2 2011/05/23 08:46:57 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -75,7 +75,7 @@
 #include "PhysicsTools/TheNtupleMaker/interface/CurrentEvent.h"
 #include "PhysicsTools/TheNtupleMaker/interface/Configuration.h"
 #include "PhysicsTools/TheNtupleMaker/interface/SelectedObjectMap.h"
-
+#include "DataFormats/PatCandidates/interface/Muon.h"
 #include "TROOT.h"
 #include "TSystem.h"
 #include "TMap.h"
@@ -136,7 +136,7 @@ private:
 TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   : output(otreestream(iConfig.getUntrackedParameter<string>("ntupleName"), 
                        "Events", 
-                       "created by TheNtupleMaker $Revision: 1.1.1.1 $")),
+                       "created by TheNtupleMaker $Revision: 1.2 $")),
     logfilename_("TheNtupleMaker.log"),
     log_(new std::ofstream(logfilename_.c_str())),
     usermacroname_(""),
@@ -155,7 +155,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   // Add a provenance tree to ntuple
   // --------------------------------------------------------------------------
   TFile* file = output.file();
-  ptree_ = new TTree("Provenance","created by TheNtupleMaker $Revision: 1.1.1.1 $");
+  ptree_ = new TTree("Provenance","created by TheNtupleMaker $Revision: 1.2 $");
   string cmsver = kit::strip(kit::shell("echo $CMSSW_VERSION"));
   ptree_->Branch("cmssw_version", (void*)(cmsver.c_str()), "cmssw_version/C");
 
@@ -519,36 +519,16 @@ void
 TheNtupleMaker::analyze(const edm::Event& iEvent, 
                         const edm::EventSetup& iSetup)
 {
-  //cout << "===> iEvent.isRealData(" << iEvent.isRealData() << ")" << endl;
+  // Cache current event and event setup
+  CurrentEvent::instance().set(iEvent, iSetup);
 
+  // Call methods for each buffer
+  for(unsigned i=0; i < buffers.size(); i++) buffers[i]->fill(iEvent, iSetup);
+
+  inputCount_++;
   count_++;
   if ( count_ % imalivecount_ == 0 )
     cout << "\t=> event count: " << count_ << endl;
-
-  // Ok, fill this branch
-  TFile* file = output.file();
-  inputCount_++;
-  file->cd();
-  ptree_->Fill();
-
-  if ( haltlogger_ )
-    {
-      if ( count_ >= logger_ )
-        {
-          cout << endl << "\t==> Halting Message Logger <==" << endl << endl;
-          haltlogger_ = false;
-          edm::HaltMessageLogging();
-        }
-    }
-
-
-  // Cache current event
-
-  CurrentEvent::instance().set(iEvent, iSetup);
-
-  // Loop over allocated buffers and for each call its fill method
-  
-  for(unsigned i=0; i < buffers.size(); i++) buffers[i]->fill(iEvent, iSetup);
 
   //string message("");  
    //if ( !buffers[i]->fill(iEvent, iSetup) ) message += buffers[i]->message();
@@ -582,6 +562,12 @@ TheNtupleMaker::analyze(const edm::Event& iEvent,
   //certain objects of a given buffer have been selected.
 
   //shrinkBuffers();
+
+
+  // Ok, fill this branch
+  TFile* file = output.file();
+  file->cd();
+  ptree_->Fill();
 
   output.save();
 }

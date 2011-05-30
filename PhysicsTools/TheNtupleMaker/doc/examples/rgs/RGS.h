@@ -34,7 +34,7 @@ const int rBADINDEX=-2;
 const int rEOF     =-6;
 const int rPYTHONERROR =-7;
 
-enum CUTCODE {GT, LT, ABSGT, ABSLT, GTLT};
+enum CUTCODE {GT, LT, ABSGT, ABSLT};
 
 typedef std::map< std::string, int >  varmap;
 
@@ -119,7 +119,6 @@ private:
   varmap      _varmap;
   vstring     _var;
   vint        _cutcode;
-  vint        _cutntry;
 
   vstring                   _searchname;
   std::vector< vvdouble >   _searchdata;

@@ -9,7 +9,7 @@
 #                            split files
 #          19-May-2011 HBP   no longer modify plugins BuildFile, just create
 #                            separate plugin files.
-#$Id: mkplugins.py,v 1.17 2011/05/18 08:51:48 prosper Exp $
+#$Id: mkplugins.py,v 1.18 2011/05/19 14:08:25 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -41,6 +41,12 @@ isVector  = re.compile(r'(?<=^vector\<).+(?=\>)')
 hasnspace = re.compile(r'::')
 findplugins=re.compile(r'<library file=plugins.cc'\
 					   '[^<]+?<flags [^<]+?</library>\s',re.M)
+
+isAvector    = re.compile(r'edm::AssociationVector')
+AvectorKey   = re.compile(r'(?<=edm::RefToBaseProd\<).+?(?=\>)')
+AvectorValue = re.compile(r'(?<=vector\<).+?(?=\>)')
+methodname   = re.compile(r'(?<= ).+(?=[(])')
+vectoronly   = re.compile(r'(?!=std::)vector')
 #------------------------------------------------------------------------------
 def exclass(x):
 	m = isVector.findall(x)
@@ -90,14 +96,6 @@ nplugin = 0 # plugin file number
 
 count = 0
 for index, (ctype, name) in enumerate(cnames):
-	# Find associated header
-	if not ClassToHeaderMap.has_key(name):
-		#print "\t**can't find header for\n\t%s" % name
-		continue
-	
-	header = ClassToHeaderMap[name]
-	if type(header) == type([]): header = header[0]
-	bname = hasnspace.sub("", name)	
 
 	# singleton or not, which is it?
 	if ctype in ['s','S']:
@@ -105,11 +103,51 @@ for index, (ctype, name) in enumerate(cnames):
 	else:
 		ctype = 'false'
 		
-	names['buffername'] = bname
-	names['classname']  = name
-	names['singleton']  = ctype
-	shortname = replace(name, "::", "")
-	names['shortname']  = shortname
+	if isAvector.match(name) != None:
+		akey   = strip(AvectorKey.findall(name)[0])
+		avalue = strip(AvectorValue.findall(name)[0])
+		if not avalue in ['float', 'double']: continue
+## 		t = AvectorValue.findall("%s>" % avalue)
+## 		if len(t) > 0: avalue = strip(t[0])
+
+		# use fully scoped name
+		name = vectoronly.sub("std::vector", name)
+		
+		aheader= ClassToHeaderMap["edm::AssociationVector"]
+
+		# Find associated header
+		if not ClassToHeaderMap.has_key(akey):
+			#print "\t**can't find header for\n\t%s" % name
+			continue
+
+		header = ClassToHeaderMap[akey]
+		if type(header) == type([]): header = header[0]
+		akey   = hasnspace.sub("", akey)
+		avalue = hasnspace.sub("", avalue)	
+		bname = "edmAssociationVector%s%s" % (akey, avalue)
+
+		names['buffername'] = bname
+		names['classname']  = name
+		names['singleton']  = ctype
+		names['shortname']  = bname
+		shortname = bname
+		
+	else:
+		aheader = None
+		# Find associated header
+		if not ClassToHeaderMap.has_key(name):
+			#print "\t**can't find header for\n\t%s" % name
+			continue
+
+		header = ClassToHeaderMap[name]
+		if type(header) == type([]): header = header[0]
+		bname = hasnspace.sub("", name)	
+
+		names['buffername'] = bname
+		names['classname']  = name
+		names['singleton']  = ctype
+		shortname = replace(name, "::", "")
+		names['shortname']  = shortname
 
 	np += 1
 	if np == 1:
@@ -141,8 +179,11 @@ for index, (ctype, name) in enumerate(cnames):
 		out.write(record % names)
 
 	# add buffer specific header
-	
-	header = '#include "%s"' % header	
+
+	if aheader != None:
+		header = '#include "%s"\n#include "%s"' % (aheader, header)	
+	else:
+		header = '#include "%s"' % header	
 	names['header'] = header
 	record = '''
 %(header)s

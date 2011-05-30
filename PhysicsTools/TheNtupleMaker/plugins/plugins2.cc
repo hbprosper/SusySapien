@@ -1,9 +1,44 @@
 // -------------------------------------------------------------------------
 // File::   plugins2.cc
-// Created: Thu May 19 10:06:12 2011 by mkplugins.py
+// Created: Mon May 30 06:05:59 2011 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
+
+#include "DataFormats/PatCandidates/interface/Photon.h"
+typedef Buffer<pat::Photon, false> patPhoton_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patPhoton_t,
+                  "patPhoton");
+
+#include "DataFormats/PatCandidates/interface/Tau.h"
+typedef Buffer<pat::Tau, false> patTau_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patTau_t,
+                  "patTau");
+
+#include "DataFormats/JetReco/interface/BasicJet.h"
+typedef Buffer<reco::BasicJet, false> recoBasicJet_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoBasicJet_t,
+                  "recoBasicJet");
+
+#include "DataFormats/CaloRecHit/interface/CaloCluster.h"
+typedef Buffer<reco::CaloCluster, false> recoCaloCluster_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCaloCluster_t,
+                  "recoCaloCluster");
+
+#include "DataFormats/JetReco/interface/CaloJet.h"
+typedef Buffer<reco::CaloJet, false> recoCaloJet_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCaloJet_t,
+                  "recoCaloJet");
+
+#include "DataFormats/METReco/interface/CaloMET.h"
+typedef Buffer<reco::CaloMET, false> recoCaloMET_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCaloMET_t,
+                  "recoCaloMET");
+
+#include "DataFormats/MuonReco/interface/CaloMuon.h"
+typedef Buffer<reco::CaloMuon, false> recoCaloMuon_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCaloMuon_t,
+                  "recoCaloMuon");
 
 #include "DataFormats/TauReco/interface/CaloTau.h"
 typedef Buffer<reco::CaloTau, false> recoCaloTau_t;
@@ -14,21 +49,6 @@ DEFINE_EDM_PLUGIN(BufferFactory, recoCaloTau_t,
 typedef Buffer<reco::CaloTauTagInfo, false> recoCaloTauTagInfo_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoCaloTauTagInfo_t,
                   "recoCaloTauTagInfo");
-
-#include "DataFormats/CastorReco/interface/CastorCluster.h"
-typedef Buffer<reco::CastorCluster, false> recoCastorCluster_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoCastorCluster_t,
-                  "recoCastorCluster");
-
-#include "DataFormats/CastorReco/interface/CastorEgamma.h"
-typedef Buffer<reco::CastorEgamma, false> recoCastorEgamma_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoCastorEgamma_t,
-                  "recoCastorEgamma");
-
-#include "DataFormats/CastorReco/interface/CastorJet.h"
-typedef Buffer<reco::CastorJet, false> recoCastorJet_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoCastorJet_t,
-                  "recoCastorJet");
 
 #include "DataFormats/CastorReco/interface/CastorTower.h"
 typedef Buffer<reco::CastorTower, false> recoCastorTower_t;
@@ -114,38 +134,3 @@ DEFINE_EDM_PLUGIN(BufferFactory, recoPFBlock_t,
 typedef Buffer<reco::PFCandidate, false> recoPFCandidate_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoPFCandidate_t,
                   "recoPFCandidate");
-
-#include "DataFormats/ParticleFlowReco/interface/PFCluster.h"
-typedef Buffer<reco::PFCluster, false> recoPFCluster_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPFCluster_t,
-                  "recoPFCluster");
-
-#include "DataFormats/JetReco/interface/PFJet.h"
-typedef Buffer<reco::PFJet, false> recoPFJet_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPFJet_t,
-                  "recoPFJet");
-
-#include "DataFormats/METReco/interface/PFMET.h"
-typedef Buffer<reco::PFMET, false> recoPFMET_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPFMET_t,
-                  "recoPFMET");
-
-#include "DataFormats/ParticleFlowReco/interface/PFRecHit.h"
-typedef Buffer<reco::PFRecHit, false> recoPFRecHit_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPFRecHit_t,
-                  "recoPFRecHit");
-
-#include "DataFormats/TauReco/interface/PFTau.h"
-typedef Buffer<reco::PFTau, false> recoPFTau_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPFTau_t,
-                  "recoPFTau");
-
-#include "DataFormats/TauReco/interface/PFTauTagInfo.h"
-typedef Buffer<reco::PFTauTagInfo, false> recoPFTauTagInfo_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPFTauTagInfo_t,
-                  "recoPFTauTagInfo");
-
-#include "DataFormats/EgammaCandidates/interface/Photon.h"
-typedef Buffer<reco::Photon, false> recoPhoton_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPhoton_t,
-                  "recoPhoton");

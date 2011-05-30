@@ -3,7 +3,7 @@
 # File:        mkclassmap.py
 # Description: Create a map of classnames to headers
 # Created:     26-Aug-2010 Harrison B. Prosper
-#$Id:$
+#$Id: mkclassmap.py,v 1.16 2011/05/07 18:39:14 prosper Exp $
 #---------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
@@ -152,8 +152,7 @@ def main():
 		for subpackage in subpackagelist:
 			package, subpkg = split(subpackage,'/')
 			if subpkg == "*":
-
-				cmd = "%s%s" % (LOCALBASE, subpackage)
+				cmd = "%s%s" % (BASE, subpackage)
 				subsystems = filter(lambda x: os.path.isdir(x), glob(cmd))
 				if len(subsystems) == 0:
 					cmd = "%s%s" % (PKGBASE, subpackage)

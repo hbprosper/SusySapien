@@ -11,7 +11,7 @@
 //                                   - add TriggerResultsHelper
 //                                   - add GenParticleHelper
 //              Thu Sep 02, 2010 HBP - move HelpFor to separate file
-//$Revision: 1.15 $
+//$Revision: 1.1.1.1 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -116,6 +116,18 @@ namespace edm
     unsigned int nanosecondOffset() const;
   }; 
 }
+
+// ----------------------------------------------------------------------------
+class doubleHelper : public HelperFor<double>
+{
+public:
+  ///
+  doubleHelper();
+
+  virtual ~doubleHelper();
+
+  double value() const;
+};
 
 // ----------------------------------------------------------------------------
 // Synonym:

@@ -14,8 +14,9 @@
 #                          getbylabel is chosen.
 #              02-Dec-2010 HBP - something in Pat changed (of course!) in 3_8_7
 #                                requiring a different getbranch regex...sigh!
+#              30-May-2011 HBP - use absolute path to methods directory
 #-----------------------------------------------------------------------------
-#$Id:$
+#$Id: mkntuplecfi.py,v 1.16 2011/05/07 18:39:14 prosper Exp $
 #-----------------------------------------------------------------------------
 import sys, os, re, platform
 from string import *
@@ -26,9 +27,10 @@ from ROOT import *
 from PhysicsTools.TheNtupleMaker.Lib import cmsswProject
 #------------------------------------------------------------------------------
 PACKAGE, SUBPACKAGE, LOCALBASE, BASE, VERSION = cmsswProject()
-PYDIR = '%s%s/%s/python' % (LOCALBASE, PACKAGE, SUBPACKAGE)
+PKGDIR = '%s%s/%s' % (LOCALBASE, PACKAGE, SUBPACKAGE)
+PYDIR  = '%s/python' % PKGDIR
 if not os.path.exists(PYDIR):
-	PYDIR = "."
+	PYDIR = "."	
 
 def usage():
 	print """
@@ -52,12 +54,13 @@ REVISION=""
 rev = "" #split(REVISION)[1]
 VERSION        = \
 """
-mkntuplecfi.py %s February 2010
+mkntuplecfi.py %s May 2011
 Python %s
 Root   %s
 """ % (rev,
 	   platform.python_version(),
 	   gROOT.GetVersion())
+
 ICONDIR   = "%s/icons" % os.environ["ROOTSYS"]
 METHODDIR = "methods"
 TXTDIR    = "txt"
@@ -78,7 +81,10 @@ if not os.path.exists(METHODDIR):
 	print "\n%s\n" % cmd
 	os.system(cmd)
 
+# Now get full path to methods directory
+METHODDIR = strip(os.popen("find `pwd` -name %s" % METHODDIR).read())
 print VERSION
+
 #-----------------------------------------------------------------------------
 from PhysicsTools.TheNtupleMaker.AutoLoader import *
 #-----------------------------------------------------------------------------
@@ -118,11 +124,17 @@ ismethods = re.compile(r'is.+')
 
 isRootFile= re.compile(r'[.]root$')
 
+AvectorKey   = re.compile(r'(?<=edm::RefToBaseProd\<).+?(?=\>)')
+AvectorValue = re.compile(r'(?<=vector\<).+?(?=\>)')
+methodname   = re.compile(r'(?<= ).+(?=[(])')
+
 # Strip away namespace, vector< etc.
 stripname = re.compile(r'::|vector\<|\>| ')
 
 def isVector(name):
-	return find(name, "vector<") > -1
+	return find(name, "vector<") > -1 or \
+		   find(name, "AssociationVector") > -1 or \
+		   find(name, "vdouble") > -1
 
 def sortMethods(methods):
 	# Standard methods
@@ -186,7 +198,7 @@ K_LISTBOX_WIDTH    = WIDTH/3
 K_LISTBOX_HEIGHT   = 450
 
 K_PROG_MAX         = 20.0
-K_MAX_COUNT        = 500
+K_MAX_COUNT        = 200
 K_MAX_LINES        = 255
 
 # Help
@@ -591,7 +603,7 @@ class Gui:
 		self.statusBar.SetText(filename, 1)
 
 		self.progTimer.Start()
-
+		
 		stream = itreestream(filename, "Events")
 		record = stream.str()
 		stream.close()
@@ -599,8 +611,8 @@ class Gui:
 		stream = itreestream(filename, "Runs")
 		record += stream.str()
 		stream.close()
+		sleep(2)
 		
-		sleep(1)
 		self.progTimer.Stop()
 		self.progressBar.Reset()
 		
@@ -618,21 +630,57 @@ class Gui:
 		
 		self.cmap = {}
 		self.previousID = -1
-			
+
 		for record in records:
-			label = getlabel.findall(record)[0]
-			cname = getclass.findall(record)[0]
-			fname = "%s/%s.txt" % (self.methodDir, stripname.sub("", cname))
+			#print "RECORD(%s)" % record
+			label = strip(getlabel.findall(record)[0])
+			cname = strip(getclass.findall(record)[0])
+
+			# Handle some other types
+			doubleType = cname == "double"
+			vdoubleType= cname == "vector<double>"
+			avectorType= find(cname, "edm::AssociationVector") > -1
+
+			# For now ignore AssociationVectors
+			if avectorType: continue
+			
+			if doubleType or vdoubleType:
+				fname = "%s/doubleHelper.txt" % self.methodDir
+
+			elif avectorType:
+				akey   = AvectorKey.findall(cname)[0]
+				avalue = AvectorValue.findall(cname)[0]
+				fname  = "%s/%s.txt" % (self.methodDir,
+										stripname.sub("", akey))
+				cname  = "edm::AssociationVector %s <-> %s" % (akey, avalue)
+									
+			else:
+				fname = "%s/%s.txt" % (self.methodDir,
+									   stripname.sub("", cname))
 			if not os.path.exists(fname): continue
 			
 			# methods file found, so read methods
-			
+
 			if not self.cmap.has_key(cname):
 				methods = sortMethods(filter(lambda x: x != "",
 											 map(strip,
 												 open(fname).readlines())))
-				#open("test.log","w").writelines(joinfields(methods,'\n'))
 				
+				# keep only first method for simple types
+			
+				if doubleType or vdoubleType:
+					methods = methods[:1]
+
+				elif avectorType:
+					m = ['%s  second' % avalue]					
+					for i, method in enumerate(methods):
+						name = methodname.findall(method)
+						if len(name) > 0:
+							name = "first->%s" % strip(name[0])
+							m.append(methodname.sub(name, method))
+					methods = m
+
+				#open("test.log","a").writelines(joinfields(methods,'\n'))
 				mmap = {}
 				for method in methods: mmap[method] = False
 				self.cmap[cname] = {'selected': False,
@@ -1088,7 +1136,7 @@ class Gui:
 
 			# If this class is a vector, set the maximum count to K_MAX_COUNT,
 			# otherwise assume we have a singleton
-			
+
 			if isVector(cname):
 				maxcount = K_MAX_COUNT
 			else:
@@ -1122,6 +1170,19 @@ class Gui:
 			# make sure each buffer block has a unique name
 
 			labels.sort()
+
+			doubleType = cname == "double"
+			vdoubleType= cname == "vector<double>"
+			avectorType= find(cname, "edm::AssociationVector") > -1
+
+			if doubleType:
+				cname = "sdouble"
+			elif vdoubleType:
+				cname = "vdouble"
+			elif avectorType:
+				cname = replace(cname, " ", "")
+				cname = replace(cname, "<->", "")
+									
 			buffer = stripname.sub("", cname)
 			blocks.append(buffer)
 

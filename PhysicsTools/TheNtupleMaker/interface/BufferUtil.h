@@ -11,7 +11,7 @@
 //                   Thu Apr 28 HBP for variables not found return
 //                   -9999
 //
-// $Id: BufferUtil.h,v 1.2 2011/05/18 08:51:45 prosper Exp $
+// $Id: BufferUtil.h,v 1.3 2011/05/23 08:46:57 prosper Exp $
 // ----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python/type_id.hpp>
@@ -237,34 +237,34 @@ bool getByLabel(const edm::Event& event,
           if ( label2 == "" )
             event.getByLabel(edm::InputTag(label1), handle);
           else
-            event.getByLabel(label1, label2, handle);
+            event.getByLabel(edm::InputTag(label1, label2), handle);
         }
     }
   catch (cms::Exception& e)
     {
-      // Fall on sword...
+      // Complain
       std::ostringstream out;
-      out << "getByLabel with label \"" 
-          << label1 << " " << label2 << "\" failed on " 
-          << boost::python::type_id<X>().name() << std::endl  
-          << e.explainSelf(); 
-      std::cout << out.str() << std::endl;
-      message += out.str();
+      out << "full of sound and fury, signifying nothing" << std::endl
+          << "Buffer::fill - label: \"" 
+          << label1 << " " << label2 << "\" - class: " 
+          << boost::python::type_id<X>().name() << " " 
+          << e.explainSelf();
+      edm::LogWarning("getByLabelFailure") << out.str() << std::endl;
       return false;
     }
         
   // getByLabel succeeded, check that we have a valid handle,
-  // otherwise again fall on sword...
+  // otherwise complain bitterly
   
   if ( !handle.isValid() )
     {
-      // Ok, throw up badly!
-      std::string m("\n\t...you blocks you stones you worse than"
-                    " senseless things!\n");
-      m += std::string("\n\tBuffer::fill - getByLabel failed on ");
-      m += boost::python::type_id<X>().name();
-      m += std::string(" with label ") + label1 + std::string(" ") + label2;
-      throw edm::Exception(edm::errors::Configuration, m);
+      std::ostringstream out;
+      out << "you blocks you stones you worse than"
+          << " senseless things!" << std::endl
+          << "Buffer::fill - label: \"" 
+          << label1 << " " << label2 << "\" - class: " 
+          << boost::python::type_id<X>().name();
+      throw edm::Exception(edm::errors::Configuration, out.str());
     }
   return true;
 }

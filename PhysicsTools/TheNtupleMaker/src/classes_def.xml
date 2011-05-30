@@ -59,4 +59,8 @@
  <class name="L1GlobalTriggerReadoutRecordHelper"/>
  <class name="HelperFor<GenEventInfoProduct>"/>
  <class name="GenEventInfoProductHelper"/>
+
+ <class name="HelperFor<double>"/>
+ <class name="doubleHelper"/>
+ 
 </lcgdict>

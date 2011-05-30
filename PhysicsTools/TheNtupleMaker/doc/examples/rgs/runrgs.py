@@ -19,15 +19,15 @@ VARFILE = "rgs.vars"
 if not os.path.exists(VARFILE):
 	error("unable to open variables file %s" % VARFILE)
 
-CUTSFILE = "cuts.dat"
+CUTSFILE = "ttbar.dat"
 if not os.path.exists(CUTSFILE):
 	error("unable to open cuts file %s" % CUTSFILE)
 
-SIGFILE = "sig.dat"
+SIGFILE = "ttbar.dat"
 if not os.path.exists(SIGFILE):
 	error("unable to open signal file %s" % SIGFILE)
 
-BKGFILE = "bkg.dat"
+BKGFILE = "qcd.dat"
 if not os.path.exists(BKGFILE):
 	error("unable to open background file %s" % BKGFILE)
 # -----------------------------------------------------------------------------
@@ -62,73 +62,6 @@ def formatHist(h, color):
 	h.GetYaxis().SetTitle("efficiency (signal)")
 	h.GetYaxis().SetTitleOffset(1.8)
 	h.GetYaxis().SetNdivisions(NDIVY)
-# -------------------------------------------			
-def getbestcuts(rgs, maxcuts, cutvar, cutdir, smin=100.0):
-	
-	# Compute significance
-	btotal = rgs.total(0)   #  summed background weights
-	stotal = rgs.total(1)   #  summed signal weights
-
-	print
-	print "\tbackground total: %10.1f" % btotal
-	print "\tsignal total:     %10.1f" % stotal
-
-	best   = -1.0
-	kbest  = -1
-	bmin   = 1.e20
-	eb = [0.0]*maxcuts
-	es = [0.0]*maxcuts
-	sigsig = [0.0]*maxcuts
-	for i in xrange(maxcuts):
-		b = rgs.count(0, i)  #  background count after the ith cut-point
-		s = rgs.count(1, i)  #  signal count after the ith cut-point
-		eb[i] = b/btotal
-		es[i] = s/stotal
-		if s > smin:
-			if b < bmin:
-				bmin = b
-				kbest= i	
-	#	if b > 0:
-	#		sigsig[i] = s/sqrt(b) # sqrt(2*(-s + (s+b)*log(1+s/b)))
-	#	else:
-	#		sigsig[i] =-1.0
-	#		
-	#	if sigsig[i] > best:
-	#		kbest = i
-	#		best = sigsig[i]
-
-	#  Get best cuts
-
-	if kbest > -1:
-		b = rgs.count(0, kbest)   #  background count after the ith cut-point
-		s = rgs.count(1, kbest)   #  signal count after the ith cut-point
-		effb = eb[kbest]          #  background efficiency
-		effs = es[kbest]          #  signal efficiency
-	    #isignif= sigsig[kbest]
-		if b > 0:
-			signif = s / sqrt(b)
-		else:
-			signif = -1
-		out = open("bestcuts.txt","w")
-		record = "\trecord:     %10d\n"\
-				 "\tsignal:     %10.1f\n"\
-				 "\tbackground: %10.1f\n"\
-				 "\tsignif:     %10.1f\n"\
-				 "\teff(s):     %10.3f\n"\
-				 "\teff(b):     %10.3f" % (kbest+2, s, b, signif, effs, effb)
-		print record
-		out.write(record+"\n")
-
-		cut = rgs.cuts(kbest)
-	
-		for i in xrange(cut.size()):
-			record = "\t%-10s\t%s\t%10.1f" % (cutvar[i],
-											  cutdir[i],
-											  cut[i])
-			print record
-			out.write(record+"\n")
-		out.close()
-	return (es, eb, sigsig, kbest)
 # -------------------------------------------
 def efflimits(x):
 	x1 = sum(x)/len(x)
@@ -146,7 +79,7 @@ def main():
 	# -------------------------------------------------------------------------
 	#  Load RGS class and style file
 	# -------------------------------------------------------------------------
-	gROOT.ProcessLine(".L rgsearch.cc+")
+	gROOT.ProcessLine(".L RGS.cc+")
 	gROOT.ProcessLine(".x style.C")
 
 	# -------------------------------------------------------------------------
@@ -163,7 +96,7 @@ def main():
 	#  not the same as the signal file on which the RGS algorithm is run.
 	# -------------------------------------------------------------------------
 	start = 0    
-	maxcuts = 50000 #  maximum number of cut-points to consider
+	maxcuts = 10000 #  maximum number of cut-points to consider
 
 	print "\t==> create RGS object"
 	rgs = RGS(CUTSFILE, start, maxcuts)
@@ -175,68 +108,118 @@ def main():
 	numrows = 0 #  Load all the data from the files
 	
 	print "\t==> load background data"
-	numrows = 1310662
-	rgs.add(BKGFILE, start, numrows, "weight")
+	rgs.add(BKGFILE, start, numrows, "Weight")
 	print
 	
 	print "\t==> load signal data"
-	numrows = 83716
-	rgs.add(SIGFILE, start, numrows, "weight")
+	rgs.add(SIGFILE, start, numrows, "Weight")
 	print
 	
 	# -------------------------------------------------------------------------
 	#  Run!
 	# -------------------------------------------------------------------------
 	rgs.run(cutvar, cutdir)
-	rgs.save("results35v2.root", 350)
+
 	
-	es, eb, signif, kbest = getbestcuts(rgs, maxcuts, cutvar, cutdir)
-	sys.exit(0)
 	# -------------------------------------------------------------------------
 	#  Plot results
 	# -------------------------------------------------------------------------
+	crgs = TCanvas("fig_rgs", "RGS Distribution", 50, 50, 500, 500)
+
 	nbins= 100
-	bmin, bmax = 0.0, 0.00001 # efflimits(eb)
-	smin, smax = 0.0, 0.04 # efflimits(es)
+	bmax = 0.05
+	smax = 0.25
+
 	nh = 5
-	hrgs = [None]*(nh+1)
-	color = [kBlue, kGreen, kYellow, kRed, kBlack]
-	threshold = [0.2, 0.4, 0.6, 0.8, 1.2]
+	hrgs = [0]*5
+	color= [kBlue, kGreen, kYellow, kRed, kBlack]
 	for i in xrange(nh):
 		hname = "hrgs%d" % i
-		hrgs[i] = TH2F(hname, "", nbins, bmin, bmax, nbins, smin, smax)
+		hrgs[i] = TH2F(hname, "", nbins, 0, bmax, nbins, 0, smax)
 		formatHist(hrgs[i], color[i])
 
-	hrgs[nh] = TH2F("hbest", "", nbins, bmin, bmax, nbins, smin, smax)
-	formatHist(hrgs[nh], kMagenta)
-	hrgs[nh].SetMarkerStyle(21)
-	hrgs[nh].SetMarkerSize(2)
-	
-	maxsignif = signif[kbest]
-	
 	#  Plot
-	
-	for i in xrange(maxcuts):
-		if (i % 1000 == 0): print i
-		
-		if signif[i] < 0: continue
-		
-		sigf = signif[i] / maxsignif
-		
-		#  Plot es vs eb
-		for k in xrange(nh):
-			if sigf < threshold[k]:
-				hrgs[k].Fill(eb[i], es[i])
-				break
 
-	hrgs[nh].Fill(eb[kbest], es[kbest])
-	crgs = TCanvas("fig_rgs", "RGS Distribution", 750, 0, 500, 500)
+	btotal = rgs.total(0)   #  summed background weights
+	stotal = rgs.total(1)   #  summed signal weights
+	big = -1
+	k = -1
+	for i in xrange(maxcuts):
+		b = rgs.count(0, i) #  background count after the ith cut-point
+		s = rgs.count(1, i) #  signal count after the ith cut-point
+		eb= b / btotal      #  background efficiency
+		es= s / stotal      #  signal efficiency
+
+		#  Here we can compute our signal significance measure
+		#  We'll use the rather low-brow s/sqrt(b) measure!
+
+		signif = 0.0
+		if b > 0:  signif = s / sqrt(b)
+
+		#  Plot es vs eb
+
+		if signif < 2:
+			hrgs[0].Fill(eb, es)
+		elif signif < 5:
+			hrgs[1].Fill(eb, es)
+		elif signif < 8:
+			hrgs[2].Fill(eb, es)
+		elif signif < 11:
+			hrgs[3].Fill(eb, es)
+		else:
+			hrgs[4].Fill(eb, es)
+
+		if signif > big:
+			k = i
+			big = signif
+			
+		if i % 100 == 0:
+			crgs.cd()
+			hrgs[0].Draw()
+			for j in xrange(1, nh): hrgs[j].Draw("same")
+			crgs.Update()
+			
+	#  Get best cuts
+
+	b = rgs.count(0, k) #  background count after the ith cut-point
+	s = rgs.count(1, k) #  signal count after the ith cut-point
+	eb= b / btotal      #  background efficiency
+	es= s / stotal      #  signal efficiency
+	signif = s / sqrt(b)
+
+	out = open("bestcuts.txt", "w")
+	record =\
+		   "record: %d\n"\
+		   "\tsignal:     %10.1f\n"\
+		   "\tbackground: %10.1f\n"\
+		   "\ts/sqrt(b):  %10.1f\n"\
+		   "\teff_s:      %10.3f\n"\
+		   "\teff_b:      %10.3f\n" % (k+2, s, b, signif, es, eb)
+	print record
+	out.write(record)
+
+	cut = rgs.cuts(k)
+
+	for i in xrange(cutvar.size()):
+		record = "\t%-10s\t%s\t%10.1f" % (cutvar[i],
+										  cutdir[i],
+										  cut[i])
+		print record
+		out.write("%s\n" % record)
+	out.close()
+
+	#  Save results to a root file
+	rfile = rgs.save("rgs.root")
+
 	crgs.cd()
 	hrgs[0].Draw()
-	for j in xrange(1, nh+1): hrgs[j].Draw("same")
+	for j in xrange(nh):
+		hrgs[j].Draw("same")
+		hrgs[j].Write("", TObject.kOverwrite)
 	crgs.Update()
 	crgs.SaveAs(".gif")
-	gSystem.Sleep(2000)
+	crgs.Write()
+	gSystem.Sleep(5000)
 # -----------------------------------------------------------------------------
 main()
 
