@@ -15,7 +15,7 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Wed Jun 20 19:53:47 EDT 2007
 //         Updated:  Sat Oct 25 2008 - make matchInDeltaR saner
-// $Id: rfx.cc,v 1.1.1.1 2011/05/04 13:04:29 prosper Exp $
+// $Id: rfx.cc,v 1.2 2011/05/23 08:46:57 prosper Exp $
 //
 //
 //-----------------------------------------------------------------------------
@@ -422,7 +422,7 @@ rfx::decodeArguments(std::string  args,
   vector<string> atype;
   vector<boost::regex> expr;
   expr.push_back(boost::regex("\".*\"")); 
-  atype.push_back("std::string");
+  atype.push_back("(std::string|std::basic_string<char>)");
 
   // Regex for reals
   expr.push_back(boost::regex("[-+]?[0-9]*[.][0-9]*([eE][-+]?[0-9]+)?"));

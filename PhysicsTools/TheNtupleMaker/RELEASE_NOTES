@@ -1,4 +1,10 @@
-$Revision: 1.9 $
+$Revision: 1.10 $
+
+v5_1_3 Jun 06 2011
+------------------
+	1. Allow for matches between std::string and std::basic_string>char> in 
+	decodeArguments in rfx.cc. This is needed to handle arguments such as
+	const std::string& used in userFloat(const std::string&).
 
 v5_1_1 May 23 2011
 ------------------
