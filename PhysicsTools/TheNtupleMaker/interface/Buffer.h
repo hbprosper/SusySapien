@@ -27,7 +27,7 @@
 //                   Sun May 01 HBP - Place Specialized buffer in a separate
 //                                    file, BufferEvent.h
 //
-// $Id: Buffer.h,v 1.29 2011/05/02 23:50:57 prosper Exp $
+// $Id: Buffer.h,v 1.1.1.1 2011/05/04 13:04:28 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/BufferUtil.h"
@@ -171,7 +171,7 @@ struct Buffer  : public BufferThing
       {
         edm::Handle<X> handle;
         if ( ! getByLabel(event, handle, label1_, label2_, message_ ,
-                          buffertype_) )
+                          buffertype_, crash) )
           return false;
    
         // OK handle is valid, so extract data for all variables
@@ -182,7 +182,7 @@ struct Buffer  : public BufferThing
       {
         edm::Handle< edm::View<X> > handle;
         if ( ! getByLabel(event, handle, label1_, label2_, message_,
-                          buffertype_) )
+                          buffertype_, crash) )
           return false;
 
         // OK handle is valid, so extract data for all variables.        

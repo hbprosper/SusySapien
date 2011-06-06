@@ -49,7 +49,7 @@
 //                   Sat Mar 12 2011 HBP - change selectorname to usermacroname
 //                   Wed May 04 2011 HBP - change name to TheNtupleMaker
 //
-// $Id: TheNtupleMaker.cc,v 1.2 2011/05/23 08:46:57 prosper Exp $
+// $Id: TheNtupleMaker.cc,v 1.3 2011/05/30 14:37:09 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -136,7 +136,7 @@ private:
 TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   : output(otreestream(iConfig.getUntrackedParameter<string>("ntupleName"), 
                        "Events", 
-                       "created by TheNtupleMaker $Revision: 1.2 $")),
+                       "created by TheNtupleMaker $Revision: 1.3 $")),
     logfilename_("TheNtupleMaker.log"),
     log_(new std::ofstream(logfilename_.c_str())),
     usermacroname_(""),
@@ -155,7 +155,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   // Add a provenance tree to ntuple
   // --------------------------------------------------------------------------
   TFile* file = output.file();
-  ptree_ = new TTree("Provenance","created by TheNtupleMaker $Revision: 1.2 $");
+  ptree_ = new TTree("Provenance","created by TheNtupleMaker $Revision: 1.3 $");
   string cmsver = kit::strip(kit::shell("echo $CMSSW_VERSION"));
   ptree_->Branch("cmssw_version", (void*)(cmsver.c_str()), "cmssw_version/C");
 
@@ -303,6 +303,10 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   boost::regex isparam("^ *p[a-z] *");
   boost::smatch matchparam;
 
+  // To check for non-letter symbol at start of buffer
+  boost::regex letter("^[a-zA-Z]");
+  boost::smatch matchletter;
+
   for(unsigned ii=0; ii < vrecords.size(); ii++)
     {
       if ( DEBUG > 1 ) 
@@ -332,6 +336,18 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
       kit::split(record, field);
 
       string buffer = field[0];                 // Buffer name
+
+      // If buffer name is prefixed by the symbol other than a letter, say,
+      // @, this means do not cause the buffer to crash if a handle is
+      // invalid.
+
+      bool crash = true; // default is to crash if handle is invalid
+      if ( ! boost::regex_search(buffer, matchletter, letter) )
+        {
+          crash = false;
+          buffer = buffer.substr(0, buffer.size()-1);
+        }
+
       if ( DEBUG > 0 )
         cout << "  buffer: " << buffer << endl;
 
@@ -467,6 +483,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
       // ... and initialize it
       buffers.back()->init(output, label, prefix, var, maxcount, 
                            vout, DEBUG);
+      buffers.back()->crash = crash;
 
       // cache addresses of buffers
       buffermap[prefix] = buffers.back();

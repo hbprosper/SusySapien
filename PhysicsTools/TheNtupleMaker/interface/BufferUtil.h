@@ -11,7 +11,7 @@
 //                   Thu Apr 28 HBP for variables not found return
 //                   -9999
 //
-// $Id: BufferUtil.h,v 1.3 2011/05/23 08:46:57 prosper Exp $
+// $Id: BufferUtil.h,v 1.4 2011/05/30 14:37:08 prosper Exp $
 // ----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python/type_id.hpp>
@@ -84,6 +84,8 @@ struct BufferThing
   virtual int maxcount()=0;
   ///
   virtual int count()=0;
+
+  bool crash;
 };
 
 ///
@@ -225,7 +227,8 @@ bool getByLabel(const edm::Event& event,
                 std::string& label1, 
                 std::string& label2, 
                 std::string& message,
-                BufferType buffertype)
+                BufferType buffertype,
+                bool crash)
 { 
   // Try to do a getByLabel and fall on sword if it fails.
   try
@@ -264,7 +267,11 @@ bool getByLabel(const edm::Event& event,
           << "Buffer::fill - label: \"" 
           << label1 << " " << label2 << "\" - class: " 
           << boost::python::type_id<X>().name();
-      throw edm::Exception(edm::errors::Configuration, out.str());
+      if ( crash )
+        throw edm::Exception(edm::errors::Configuration, out.str());
+      else
+        edm::LogWarning("InvalidHandle") << out.str() << std::endl;
+      return false;
     }
   return true;
 }

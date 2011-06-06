@@ -9,7 +9,7 @@
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Sep 19 HBP - copy from Buffer.h
 //
-// $Id: UserBuffer.h,v 1.1.1.1 2011/05/04 13:04:28 prosper Exp $
+// $Id: UserBuffer.h,v 1.2 2011/05/23 15:57:44 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/BufferUtil.h"
@@ -153,7 +153,7 @@ struct UserBuffer  : public BufferThing
       {
         edm::Handle<X> handle;
         if ( ! getByLabel(event, handle, label1_, label2_, message_,
-                          buffertype_) )
+                          buffertype_, crash) )
           return false;
         
         // OK handle is valid, so extract data for all variables. 
@@ -180,7 +180,7 @@ struct UserBuffer  : public BufferThing
       {
         edm::Handle< edm::View<X> > handle;      
         if ( ! getByLabel(event, handle, label1_, label2_, message_,
-                          buffertype_) )
+                          buffertype_, crash) )
           return false;
         
         // OK handle is valid, so extract data for all variables  
