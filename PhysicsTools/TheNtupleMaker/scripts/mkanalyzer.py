@@ -13,7 +13,7 @@
 #          11-Mar-2011 HBP - fix naming bug
 #          26-Apr-2011 HBP - alert user only if duplicate name is not a leaf
 #                            counter
-#$Id:$
+#$Id: mkanalyzer.py,v 1.16 2011/05/07 18:39:14 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
 from string import *
@@ -362,16 +362,17 @@ int main(int argc, char** argv)
 	 2. Use
 	   ofile.addEvent(event-weight)
 	
-	 to specify that the current event is to be added to the output file. If
-	 omitted, the event-weight is taken to 1.
+	 to specify that the current event is to be added to the output file.
+	 If omitted, the event-weight is defaulted to 1.
 	
 	 3. Use
 	    ofile.count(cut-name, event-weight)
 	
-	 to keep track, in the count histogram, of the number of events passing
-	 a given cut. If omitted, the event-weight is taken to be 1. If you want
-	 the counts in the count histogram to appear in a given order, specify the
-	 order, before entering the event loop, as in the example below
+	 to keep track, in the count histogram, of the number of events
+	 passing a given cut. If omitted, the event-weight is taken to be 1.
+	 If you want the counts in the count histogram to appear in a given
+	 order, specify the order, before entering the event loop, as in
+	 the example below
 	 
 	    ofile.count("NoCuts", 0)
 		ofile.count("GoodEvent", 0)
@@ -910,6 +911,7 @@ def main():
 	if argc < 1: usage()
 
 	filename = nameonly(argv[0])
+
 	if argc > 1:
 		varfilename = argv[1]
 	else:
@@ -1199,9 +1201,12 @@ def main():
 	record = TEMPLATE_H % names
 	open(outfilename,"w").write(record)
 
+	# Create cc file if one does not yet exist
+	
 	outfilename = "%s/%s.cc" % (filename, filename)
-	record = TEMPLATE_CC % names
-	open(outfilename,"w").write(record)
+	if not os.path.exists(outfilename):
+		record = TEMPLATE_CC % names
+		open(outfilename,"w").write(record)
 
 	# Create README
 
@@ -1211,8 +1216,10 @@ def main():
 
 	# Create python code
 
-	s = join("", pydeclare, "\n") + "\n" + join("", pyselect,"\n")
 	outfilename = "%s/%slib.py" % (filename, filename)
+
+	s = join("", pydeclare, "\n") + "\n" + join("", pyselect,"\n")
+
 	names = {'name': filename,
 			 'treename': treename,
 			 'percent': '%',
@@ -1224,10 +1231,13 @@ def main():
 	record = PYTEMPLATELIB % names
 	open(outfilename,"w").write(record)
 
+	# Create Python script if one does not yet exist
+	
 	outfilename = "%s/%s.py" % (filename, filename)
-	record = PYTEMPLATE % names
-	open(outfilename,"w").write(record)
-	os.system("chmod +x %s" % outfilename)
+	if not os.path.exists(outfilename):
+		record = PYTEMPLATE % names
+		open(outfilename,"w").write(record)
+		os.system("chmod +x %s" % outfilename)
 
 	print "\tdone!"
 #------------------------------------------------------------------------------

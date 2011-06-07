@@ -1,4 +1,10 @@
-$Revision: 1.10 $
+$Revision: 1.11 $
+
+v5_1_5 Jun 07 2011
+------------------
+	Introduce the switch "crashOnInvalidHandle". When set to zero, 
+	TheNtupleMaker will not crash if a handle is zero but merely issue
+	an InvalidHandle warning.
 
 v5_1_3 Jun 06 2011
 ------------------

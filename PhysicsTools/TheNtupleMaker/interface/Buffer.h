@@ -27,10 +27,11 @@
 //                   Sun May 01 HBP - Place Specialized buffer in a separate
 //                                    file, BufferEvent.h
 //
-// $Id: Buffer.h,v 1.1.1.1 2011/05/04 13:04:28 prosper Exp $
+// $Id: Buffer.h,v 1.2 2011/06/06 22:01:27 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/BufferUtil.h"
+#include "PhysicsTools/TheNtupleMaker/interface/Configuration.h"
 // ----------------------------------------------------------------------------
 // We need a few templates to make the code generic. 
 // WARNING: keep code as short as possible to minimize code bloat due to 
@@ -102,7 +103,7 @@ struct Buffer  : public BufferThing
       @param maxcount - maximum count for this buffer
       @param log - log file
    */
-  void
+  virtual void
   init(otreestream& out,
        std::string  label, 
        std::string  prefix,
@@ -117,6 +118,32 @@ struct Buffer  : public BufferThing
     var_    = var;
     maxcount_ = maxcount;
     debug_  = debug;
+
+    std::cout << "\t=== Initialize Buffer for (" 
+              << classname_ << ")"
+              << std::endl;
+
+    // Get optional crash switch
+
+    try
+      {
+        crash_ = 
+          (bool)(Configuration::instance().
+                 get()->getUntrackedParameter<int>("crashOnInvalidHandle"));
+      }
+    catch (...)
+      {
+        crash_ = true;
+      }
+
+    if ( crash_ )
+      std::cout << "\t=== CRASH on InvalidHandle (" 
+                << classname_ << ")"
+                << std::endl;
+    else
+      std::cout << "\t=== WARN on InvalidHandle (" 
+                << classname_ << ")"
+                << std::endl;  
 
     // Is this a RunInfo object?
     // Data for these classes must be extracted using the getRun() 
@@ -145,7 +172,8 @@ struct Buffer  : public BufferThing
   }
   
   /// Fill buffer.
-  bool fill(const edm::Event& event, const edm::EventSetup& eventsetup)
+  virtual bool 
+  fill(const edm::Event& event, const edm::EventSetup& eventsetup)
   {
     if ( debug_ > 0 ) 
       std::cout << DEFAULT_COLOR
@@ -171,7 +199,7 @@ struct Buffer  : public BufferThing
       {
         edm::Handle<X> handle;
         if ( ! getByLabel(event, handle, label1_, label2_, message_ ,
-                          buffertype_, crash) )
+                          buffertype_, crash_) )
           return false;
    
         // OK handle is valid, so extract data for all variables
@@ -182,7 +210,7 @@ struct Buffer  : public BufferThing
       {
         edm::Handle< edm::View<X> > handle;
         if ( ! getByLabel(event, handle, label1_, label2_, message_,
-                          buffertype_, crash) )
+                          buffertype_, crash_) )
           return false;
 
         // OK handle is valid, so extract data for all variables.        
@@ -250,6 +278,7 @@ private:
   std::string message_;
   int  debug_;
   bool skipme_;
+  bool crash_;
 };
 
 #endif

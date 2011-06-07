@@ -9,10 +9,11 @@
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Sep 19 HBP - copy from Buffer.h
 //
-// $Id: UserBuffer.h,v 1.2 2011/05/23 15:57:44 prosper Exp $
+// $Id: UserBuffer.h,v 1.3 2011/06/06 22:01:27 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/BufferUtil.h"
+#include "PhysicsTools/TheNtupleMaker/interface/Configuration.h"
 // ----------------------------------------------------------------------------
 /** Model a helper buffer.
     A buffer is a thing with<br>
@@ -58,9 +59,10 @@ struct UserBuffer  : public BufferThing
       singleton_(SINGLETON),
       message_(""),
       debug_(0),
-      skipme_(false)
+      skipme_(false),
+      crash_(true)
   {
-    std::cout << "Buffer created for objects of type: " 
+    std::cout << "UserBuffer created for objects of type: " 
               << name()
               << std::endl;
 
@@ -81,7 +83,7 @@ struct UserBuffer  : public BufferThing
       @param maxcount - maximum count for this buffer
       @param log - log file
    */
-  void
+  virtual void
   init(otreestream& out,
        std::string  label, 
        std::string  prefix,
@@ -97,6 +99,32 @@ struct UserBuffer  : public BufferThing
     maxcount_ = maxcount;
     debug_  = debug;
     classname_ = boost::python::type_id<Y>().name();
+
+    std::cout << "\t=== Initialize UserBuffer for (" 
+              << classname_ << ")"
+              << std::endl;
+
+    // Get optional crash switch
+
+    try
+      {
+        crash_ = 
+          (bool)(Configuration::instance().
+                 get()->getUntrackedParameter<int>("crashOnInvalidHandle"));
+      }
+    catch (...)
+      {
+        crash_ = true;
+      }
+
+    if ( crash_ )
+      std::cout << "\t=== CRASH on InvalidHandle (" 
+                << classname_ << ")"
+                << std::endl;
+    else
+      std::cout << "\t=== WARN on InvalidHandle (" 
+                << classname_ << ")"
+                << std::endl;    
 
     initBuffer<Y>(out,
                   label_,
@@ -115,7 +143,8 @@ struct UserBuffer  : public BufferThing
   }
   
   /// Fill buffer.
-  bool fill(const edm::Event& event, const edm::EventSetup& eventsetup)
+  virtual bool 
+  fill(const edm::Event& event, const edm::EventSetup& eventsetup)
   {
     if ( debug_ > 0 ) 
       std::cout << DEFAULT_COLOR
@@ -153,7 +182,7 @@ struct UserBuffer  : public BufferThing
       {
         edm::Handle<X> handle;
         if ( ! getByLabel(event, handle, label1_, label2_, message_,
-                          buffertype_, crash) )
+                          buffertype_, crash_) )
           return false;
         
         // OK handle is valid, so extract data for all variables. 
@@ -180,7 +209,7 @@ struct UserBuffer  : public BufferThing
       {
         edm::Handle< edm::View<X> > handle;      
         if ( ! getByLabel(event, handle, label1_, label2_, message_,
-                          buffertype_, crash) )
+                          buffertype_, crash_) )
           return false;
         
         // OK handle is valid, so extract data for all variables  
@@ -264,6 +293,7 @@ private:
   std::string message_;
   int  debug_;
   bool skipme_; 
+  bool crash_;
 
   // helper object
   Y helper_;

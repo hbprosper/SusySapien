@@ -49,7 +49,7 @@
 //                   Sat Mar 12 2011 HBP - change selectorname to usermacroname
 //                   Wed May 04 2011 HBP - change name to TheNtupleMaker
 //
-// $Id: TheNtupleMaker.cc,v 1.3 2011/05/30 14:37:09 prosper Exp $
+// $Id: TheNtupleMaker.cc,v 1.4 2011/06/06 22:01:27 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -136,7 +136,7 @@ private:
 TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   : output(otreestream(iConfig.getUntrackedParameter<string>("ntupleName"), 
                        "Events", 
-                       "created by TheNtupleMaker $Revision: 1.3 $")),
+                       "created by TheNtupleMaker $Revision: 1.4 $")),
     logfilename_("TheNtupleMaker.log"),
     log_(new std::ofstream(logfilename_.c_str())),
     usermacroname_(""),
@@ -155,7 +155,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   // Add a provenance tree to ntuple
   // --------------------------------------------------------------------------
   TFile* file = output.file();
-  ptree_ = new TTree("Provenance","created by TheNtupleMaker $Revision: 1.3 $");
+  ptree_ = new TTree("Provenance","created by TheNtupleMaker $Revision: 1.4 $");
   string cmsver = kit::strip(kit::shell("echo $CMSSW_VERSION"));
   ptree_->Branch("cmssw_version", (void*)(cmsver.c_str()), "cmssw_version/C");
 
@@ -178,7 +178,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   // --------------------------------------------------------------------------
   // Cache global configuration 
   Configuration::instance().set(iConfig);
-
+    
   // Get optional configuration parameters
 
   try
@@ -303,10 +303,6 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   boost::regex isparam("^ *p[a-z] *");
   boost::smatch matchparam;
 
-  // To check for non-letter symbol at start of buffer
-  boost::regex letter("^[a-zA-Z]");
-  boost::smatch matchletter;
-
   for(unsigned ii=0; ii < vrecords.size(); ii++)
     {
       if ( DEBUG > 1 ) 
@@ -322,9 +318,6 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
       // first field
       string record = bufferrecords[0];
 
-      if ( DEBUG > 1 ) 
-        cout << " record(" << record  << ")" << endl; 
-
       // If current buffer is a Helper, create a parameter set specific to
       // the Helper from this string.
       //string localparam("");
@@ -336,17 +329,6 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
       kit::split(record, field);
 
       string buffer = field[0];                 // Buffer name
-
-      // If buffer name is prefixed by the symbol other than a letter, say,
-      // @, this means do not cause the buffer to crash if a handle is
-      // invalid.
-
-      bool crash = true; // default is to crash if handle is invalid
-      if ( ! boost::regex_search(buffer, matchletter, letter) )
-        {
-          crash = false;
-          buffer = buffer.substr(0, buffer.size()-1);
-        }
 
       if ( DEBUG > 0 )
         cout << "  buffer: " << buffer << endl;
@@ -483,7 +465,6 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
       // ... and initialize it
       buffers.back()->init(output, label, prefix, var, maxcount, 
                            vout, DEBUG);
-      buffers.back()->crash = crash;
 
       // cache addresses of buffers
       buffermap[prefix] = buffers.back();
@@ -510,12 +491,31 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
                << index << "\t" << name << endl;
         }
     }
-  cout << " END Branches" << endl;
+  cout << " END Branches" << endl << endl;
 
   // Create ntuple analyzer template if requested
 
   if ( analyzername_ != "" )
     kit::shell("mkanalyzer.py " + analyzername_ + " variables.txt");
+
+
+  // Check for crash switch
+  
+  bool crash = true;
+  try
+    {
+      crash = 
+        (bool)Configuration::instance().
+        get()->getUntrackedParameter<int>("crashOnInvalidHandle");
+    }
+  catch (...)
+    {}
+
+  if ( crash )
+    cout << "\t==> TheNtupleMaker will CRASH if a handle is invalid <==";
+  else
+    cout << "\t==> TheNtupleMaker will WARN if a handle is invalid <==";
+  cout << endl << endl;
 
   cout << "END TheNtupleMaker Configuration" << endl;
 }
