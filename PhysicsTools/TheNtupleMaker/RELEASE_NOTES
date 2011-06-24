@@ -1,4 +1,8 @@
-$Revision: 1.12 $
+$Revision: 1.13 $
+
+v5_1_7 Jun 24 2011
+------------------
+	use getenv instead of gSystem->Getenv().
 
 v5_1_6 Jun 24 2011
 ------------------

@@ -49,9 +49,9 @@
 //                   Sat Mar 12 2011 HBP - change selectorname to usermacroname
 //                   Wed May 04 2011 HBP - change name to TheNtupleMaker
 //                   Fri Jun 24 2011 HBP - get provenance info using 
-//                                   gSystem->Getenv(...)
+//                                   getenv
 //
-// $Id: TheNtupleMaker.cc,v 1.5 2011/06/07 07:41:55 prosper Exp $
+// $Id: TheNtupleMaker.cc,v 1.6 2011/06/24 17:35:09 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -138,7 +138,7 @@ private:
 TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   : output(otreestream(iConfig.getUntrackedParameter<string>("ntupleName"), 
                        "Events", 
-                       "created by TheNtupleMaker $Revision: 1.5 $")),
+                       "created by TheNtupleMaker $Revision: 1.6 $")),
     logfilename_("TheNtupleMaker.log"),
     log_(new std::ofstream(logfilename_.c_str())),
     usermacroname_(""),
@@ -157,29 +157,25 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   // Add a provenance tree to ntuple
   // --------------------------------------------------------------------------
   TFile* file = output.file();
-  ptree_ = new TTree("Provenance","created by TheNtupleMaker $Revision: 1.5 $");
-  const char* chr=0;
-  string cmsver("");
-  chr = gSystem->Getenv("CMSSW_VERSION");
-  if ( chr ) cmsver = string(cmsver);
+  ptree_ = new TTree("Provenance",
+                     "created by TheNtupleMaker $Revision: 1.6 $");
+  string cmsver("unknown");
+  if ( getenv("CMSSW_VERSION") > 0 ) cmsver = string(getenv("CMSSW_VERSION"));
   ptree_->Branch("cmssw_version", (void*)(cmsver.c_str()), "cmssw_version/C");
 
   time_t tt = time(0);
   string ct(ctime(&tt));
   ptree_->Branch("date", (void*)(ct.c_str()), "date/C");
 
-  string hostname("");
-  chr = gSystem->Getenv("HOSTNAME");
-  if ( chr ) hostname = string(chr);
+  string hostname("unknown");
+  if ( getenv("HOSTNAME") > 0 ) hostname = string(getenv("HOSTNAME"));
   ptree_->Branch("hostname", (void*)(hostname.c_str()), "hostname/C");
 
-  //string username = kit::strip(kit::shell("echo $USER"));
-  string username("");
-  chr = gSystem->Getenv("USER");
-  if ( chr ) username = string(chr);
+  string username("unknown");
+  if ( getenv("USER") > 0 ) username = string(getenv("USER"));
   ptree_->Branch("username", (void*)(username.c_str()), "username/C");
 
-  ptree_->Branch("inputcount", &inputCount_, "inputcount/I");
+  //ptree_->Branch("inputcount", &inputCount_, "inputcount/I");
 
   // Ok, fill this branch
   file->cd();
@@ -552,7 +548,7 @@ TheNtupleMaker::analyze(const edm::Event& iEvent,
   // Call methods for each buffer
   for(unsigned i=0; i < buffers.size(); i++) buffers[i]->fill(iEvent, iSetup);
 
-  inputCount_++;
+  //inputCount_++;
   count_++;
   if ( count_ % imalivecount_ == 0 )
     cout << "\t=> event count: " << count_ << endl;
@@ -594,7 +590,7 @@ TheNtupleMaker::analyze(const edm::Event& iEvent,
   // Ok, fill this branch
   TFile* file = output.file();
   file->cd();
-  ptree_->Fill();
+  //ptree_->Fill();
 
   output.save();
 }
