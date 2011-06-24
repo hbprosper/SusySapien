@@ -1,4 +1,4 @@
-//$Revision: 1.2 $
+//$Revision: 1.3 $
 #include "PhysicsTools/TheNtupleMaker/interface/Connection.h"
 #include "PhysicsTools/TheNtupleMaker/interface/Slot.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pdg.h"
@@ -56,5 +56,6 @@ namespace {
   HelperFor<L1GlobalTriggerReadoutRecord> t_L1GlobalTriggerReadoutRecordHelper;
   HelperFor<GenEventInfoProduct> t_GenEventInfoProductHelper;
   HelperFor<double> t_doubleHelper;
+  HelperFor<int> t_intHelper;
 }
 

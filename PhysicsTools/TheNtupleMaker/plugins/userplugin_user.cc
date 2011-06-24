@@ -6,7 +6,8 @@
 // Updated:     Mon Mar 08, 2010 Sezen & HBP - add triggerBits class
 //              Thu Apr 08, 2010 Sezen & HBP - add GParticle class
 //              Thu Aug 25, 2010 HBP - rename classes
-//$Revision: 1.1.1.1 $
+//              Fri Jun 24, 2011 HBP - add sint and vint
+//$Revision: 1.2 $
 //-----------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/UserBuffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
@@ -46,3 +47,9 @@ DEFINE_EDM_PLUGIN(BufferFactory, doubleHelper_t, "sdouble");
 
 typedef UserBuffer<double, doubleHelper, false> vdoubleHelper_t;
 DEFINE_EDM_PLUGIN(BufferFactory, vdoubleHelper_t, "vdouble");
+
+typedef UserBuffer<int, intHelper, true> intHelper_t;
+DEFINE_EDM_PLUGIN(BufferFactory, intHelper_t, "sint");
+
+typedef UserBuffer<int, intHelper, false> vintHelper_t;
+DEFINE_EDM_PLUGIN(BufferFactory, vintHelper_t, "vint");

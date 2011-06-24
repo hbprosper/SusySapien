@@ -48,8 +48,10 @@
 //                   Sun Nov 07 HBP - add event setup to fill
 //                   Sat Mar 12 2011 HBP - change selectorname to usermacroname
 //                   Wed May 04 2011 HBP - change name to TheNtupleMaker
+//                   Fri Jun 24 2011 HBP - get provenance info using 
+//                                   gSystem->Getenv(...)
 //
-// $Id: TheNtupleMaker.cc,v 1.4 2011/06/06 22:01:27 prosper Exp $
+// $Id: TheNtupleMaker.cc,v 1.5 2011/06/07 07:41:55 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -136,7 +138,7 @@ private:
 TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   : output(otreestream(iConfig.getUntrackedParameter<string>("ntupleName"), 
                        "Events", 
-                       "created by TheNtupleMaker $Revision: 1.4 $")),
+                       "created by TheNtupleMaker $Revision: 1.5 $")),
     logfilename_("TheNtupleMaker.log"),
     log_(new std::ofstream(logfilename_.c_str())),
     usermacroname_(""),
@@ -155,18 +157,26 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   // Add a provenance tree to ntuple
   // --------------------------------------------------------------------------
   TFile* file = output.file();
-  ptree_ = new TTree("Provenance","created by TheNtupleMaker $Revision: 1.4 $");
-  string cmsver = kit::strip(kit::shell("echo $CMSSW_VERSION"));
+  ptree_ = new TTree("Provenance","created by TheNtupleMaker $Revision: 1.5 $");
+  const char* chr=0;
+  string cmsver("");
+  chr = gSystem->Getenv("CMSSW_VERSION");
+  if ( chr ) cmsver = string(cmsver);
   ptree_->Branch("cmssw_version", (void*)(cmsver.c_str()), "cmssw_version/C");
 
   time_t tt = time(0);
   string ct(ctime(&tt));
   ptree_->Branch("date", (void*)(ct.c_str()), "date/C");
 
-  string hostname = kit::strip(kit::shell("echo $HOSTNAME"));
+  string hostname("");
+  chr = gSystem->Getenv("HOSTNAME");
+  if ( chr ) hostname = string(chr);
   ptree_->Branch("hostname", (void*)(hostname.c_str()), "hostname/C");
 
-  string username = kit::strip(kit::shell("echo $USER"));
+  //string username = kit::strip(kit::shell("echo $USER"));
+  string username("");
+  chr = gSystem->Getenv("USER");
+  if ( chr ) username = string(chr);
   ptree_->Branch("username", (void*)(username.c_str()), "username/C");
 
   ptree_->Branch("inputcount", &inputCount_, "inputcount/I");

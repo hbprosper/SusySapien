@@ -11,7 +11,7 @@
 //                                   - add TriggerResultsHelper
 //                                   - add GenParticleHelper
 //              Thu Sep 02, 2010 HBP - move HelpFor to separate file
-//$Revision: 1.1.1.1 $
+//$Revision: 1.2 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -127,6 +127,17 @@ public:
   virtual ~doubleHelper();
 
   double value() const;
+};
+
+class intHelper : public HelperFor<int>
+{
+public:
+  ///
+  intHelper();
+
+  virtual ~intHelper();
+
+  int value() const;
 };
 
 // ----------------------------------------------------------------------------

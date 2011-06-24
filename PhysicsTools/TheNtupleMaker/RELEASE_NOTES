@@ -1,4 +1,9 @@
-$Revision: 1.11 $
+$Revision: 1.12 $
+
+v5_1_6 Jun 24 2011
+------------------
+	1. Add option to save ints and vectors of ints.
+	2. Get provenance info using gSystem->Getenv(..)
 
 v5_1_5 Jun 07 2011
 ------------------

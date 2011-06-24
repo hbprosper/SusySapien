@@ -62,5 +62,8 @@
 
  <class name="HelperFor<double>"/>
  <class name="doubleHelper"/>
+
+ <class name="HelperFor<int>"/>
+ <class name="intHelper"/>
  
 </lcgdict>
