@@ -60,10 +60,16 @@
  <class name="HelperFor<GenEventInfoProduct>"/>
  <class name="GenEventInfoProductHelper"/>
 
+ <class name="HelperFor<float>"/>
+ <class name="BasicType<float>"/>
+
  <class name="HelperFor<double>"/>
- <class name="doubleHelper"/>
+ <class name="BasicType<double>"/>
 
  <class name="HelperFor<int>"/>
- <class name="intHelper"/>
+ <class name="BasicType<int>"/>
+
+ <class name="HelperFor<unsigned int>"/>
+ <class name="BasicType<unsigned int>"/>
  
 </lcgdict>

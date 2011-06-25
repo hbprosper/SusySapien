@@ -11,7 +11,8 @@
 //                                   - add TriggerResultsHelper
 //                                   - add GenParticleHelper
 //              Thu Sep 02, 2010 HBP - move HelpFor to separate file
-//$Revision: 1.2 $
+//              Sat Jun 25, 2011 HBP - add template class for ints etc.
+//$Revision: 1.3 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -118,26 +119,49 @@ namespace edm
 }
 
 // ----------------------------------------------------------------------------
-class doubleHelper : public HelperFor<double>
+template <typename X>
+class BasicType : public HelperFor<X>
 {
 public:
-  ///
-  doubleHelper();
-
-  virtual ~doubleHelper();
-
-  double value() const;
+  BasicType() : HelperFor<X>() {}
+  virtual ~BasicType() {}
+  X value() const {return (X)0;}
 };
 
-class intHelper : public HelperFor<int>
+template <>
+class BasicType<int> : public HelperFor<int>
 {
 public:
-  ///
-  intHelper();
+  BasicType() : HelperFor<int>() {}
+  virtual ~BasicType() {}
+  int value() const {return *object;}
+};
 
-  virtual ~intHelper();
+template <>
+class BasicType<unsigned int> : public HelperFor<unsigned int>
+{
+public:
+  BasicType() : HelperFor<unsigned int>() {}
+  virtual ~BasicType() {}
+  unsigned int value() const {return *object;}
+};
 
-  int value() const;
+template <>
+class BasicType<float> : public HelperFor<float>
+{
+public:
+  BasicType() : HelperFor<float>() {}
+  virtual ~BasicType() {}
+  float value() const {return *object;}
+};
+
+template <>
+class BasicType<double> : public HelperFor<double>
+{
+public:
+  BasicType() : HelperFor<double>() {}
+  virtual ~BasicType() {}
+  double value() const {return *object;}
 };
 
 // ----------------------------------------------------------------------------

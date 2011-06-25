@@ -1,4 +1,4 @@
-//$Revision: 1.3 $
+//$Revision: 1.4 $
 #include "PhysicsTools/TheNtupleMaker/interface/Connection.h"
 #include "PhysicsTools/TheNtupleMaker/interface/Slot.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pdg.h"
@@ -55,7 +55,17 @@ namespace {
   HelperFor<edm::Event> h4;
   HelperFor<L1GlobalTriggerReadoutRecord> t_L1GlobalTriggerReadoutRecordHelper;
   HelperFor<GenEventInfoProduct> t_GenEventInfoProductHelper;
+
+  HelperFor<float> t_floatHelper;
+  BasicType<float> t_floatBasicType;
+
   HelperFor<double> t_doubleHelper;
+  BasicType<double> t_doubleBasicType;
+
   HelperFor<int> t_intHelper;
+  BasicType<int> t_intBasicType;
+
+  HelperFor<unsigned int> t_uintHelper;
+  BasicType<unsigned int> t_uintBasicType;
 }
 

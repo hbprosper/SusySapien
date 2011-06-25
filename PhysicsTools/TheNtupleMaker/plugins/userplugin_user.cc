@@ -7,7 +7,8 @@
 //              Thu Apr 08, 2010 Sezen & HBP - add GParticle class
 //              Thu Aug 25, 2010 HBP - rename classes
 //              Fri Jun 24, 2011 HBP - add sint and vint
-//$Revision: 1.2 $
+//              Fri Jun 25, 2011 HBP - add suint and vuint
+//$Revision: 1.3 $
 //-----------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/UserBuffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
@@ -34,22 +35,28 @@ DEFINE_EDM_PLUGIN(BufferFactory, edmTriggerResultsHelper_t,
 typedef UserBuffer<edm::Event, edm::EventHelper, true> edmEventHelper_t;
 DEFINE_EDM_PLUGIN(BufferFactory, edmEventHelper_t, "edmEventHelper");
 
-// Synomyms:
+// Fundamental types
 
-// typedef UserBuffer<edm::TriggerResults, triggerBits, true> triggerBits_t;
-// DEFINE_EDM_PLUGIN(BufferFactory, triggerBits_t, "triggerBits");
+typedef UserBuffer<float, BasicType<float>, true> floatHelper_t;
+DEFINE_EDM_PLUGIN(BufferFactory, floatHelper_t, "sfloat");
 
-// typedef UserBuffer<reco::GenParticle, GParticle, false> GParticle_t;
-// DEFINE_EDM_PLUGIN(BufferFactory, GParticle_t, "GParticle");
+typedef UserBuffer<float, BasicType<float>, false> vfloatHelper_t;
+DEFINE_EDM_PLUGIN(BufferFactory, vfloatHelper_t, "vfloat");
 
-typedef UserBuffer<double, doubleHelper, true> doubleHelper_t;
+typedef UserBuffer<double, BasicType<double>, true> doubleHelper_t;
 DEFINE_EDM_PLUGIN(BufferFactory, doubleHelper_t, "sdouble");
 
-typedef UserBuffer<double, doubleHelper, false> vdoubleHelper_t;
+typedef UserBuffer<double, BasicType<double>, false> vdoubleHelper_t;
 DEFINE_EDM_PLUGIN(BufferFactory, vdoubleHelper_t, "vdouble");
 
-typedef UserBuffer<int, intHelper, true> intHelper_t;
+typedef UserBuffer<int, BasicType<int>, true> intHelper_t;
 DEFINE_EDM_PLUGIN(BufferFactory, intHelper_t, "sint");
 
-typedef UserBuffer<int, intHelper, false> vintHelper_t;
+typedef UserBuffer<int, BasicType<int>, false> vintHelper_t;
 DEFINE_EDM_PLUGIN(BufferFactory, vintHelper_t, "vint");
+
+typedef UserBuffer<unsigned int, BasicType<unsigned int>, true> uintHelper_t;
+DEFINE_EDM_PLUGIN(BufferFactory, uintHelper_t, "suint");
+
+typedef UserBuffer<unsigned int, BasicType<unsigned int>, false> vuintHelper_t;
+DEFINE_EDM_PLUGIN(BufferFactory, vuintHelper_t, "vuint");

@@ -1,4 +1,8 @@
-$Revision: 1.13 $
+$Revision: 1.14 $
+
+v5_1_8 Jun 25 2011
+------------------
+	Add support for unsigned int, float, and vectors thereof.
 
 v5_1_7 Jun 24 2011
 ------------------

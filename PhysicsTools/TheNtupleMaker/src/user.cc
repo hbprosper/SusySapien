@@ -6,7 +6,7 @@
 // Updated:     Mon Mar 08, 2010 Sezen & HBP - add triggerBits class
 //              Tue Aug 24, 2010 HBP - add HcalNoiseRBXHelper
 //              Thu Sep 02, 2010 HBP - update to new version of HelperFor
-//$Revision: 1.2 $
+//$Revision: 1.3 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -321,12 +321,12 @@ bufferLabel(string buffername)
   label = field[1];
   return label;
 }
-//-----------------------------------------------------------------------------
-doubleHelper::doubleHelper() : HelperFor<double>() {}
-doubleHelper::~doubleHelper() {}
-double   doubleHelper::value()  const { return *object; }
+// //-----------------------------------------------------------------------------
+// doubleHelper::doubleHelper() : HelperFor<double>() {}
+// doubleHelper::~doubleHelper() {}
+// double   doubleHelper::value()  const { return *object; }
 
-//-----------------------------------------------------------------------------
-intHelper::intHelper() : HelperFor<int>() {}
-intHelper::~intHelper() {}
-int   intHelper::value()  const { return *object; }
+// //-----------------------------------------------------------------------------
+// intHelper::intHelper() : HelperFor<int>() {}
+// intHelper::~intHelper() {}
+// int   intHelper::value()  const { return *object; }
