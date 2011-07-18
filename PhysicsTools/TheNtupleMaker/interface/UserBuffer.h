@@ -8,8 +8,10 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Sep 19 HBP - copy from Buffer.h
+//                   Mon Jul 18 HBP - include a partial template 
+//                                    specialization for edm::Event
 //
-// $Id: UserBuffer.h,v 1.3 2011/06/06 22:01:27 prosper Exp $
+// $Id: UserBuffer.h,v 1.4 2011/06/07 07:41:55 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/BufferUtil.h"
@@ -98,10 +100,9 @@ struct UserBuffer  : public BufferThing
     var_    = var;
     maxcount_ = maxcount;
     debug_  = debug;
-    classname_ = boost::python::type_id<Y>().name();
-
-    std::cout << "\t=== Initialize UserBuffer for (" 
-              << classname_ << ")"
+      
+    std::cout << "\t=== Initialize UserBuffer (" 
+              << boost::python::type_id<Y>().name() << ")"
               << std::endl;
 
     // Get optional crash switch
@@ -171,27 +172,28 @@ struct UserBuffer  : public BufferThing
     
     // Cache event and eventsetup in helper
     helper_.cacheEvent(event, eventsetup);
-    
+     
     // Perform (optional) user event-level analysis
     helper_.analyzeEvent();
     
     // Note: We use the handle edm::Handle<X> for singletons and
     //       the handle edm::Handle< View<X> > for collections.
-    
+    //       However, if this is a helper for the event itself, we
+    //       of course do not need call getByLabel.
     if ( singleton_ )
       {
         edm::Handle<X> handle;
         if ( ! getByLabel(event, handle, label1_, label2_, message_,
                           buffertype_, crash_) )
           return false;
-        
+
         // OK handle is valid, so extract data for all variables. 
         
         // cache object in helper, along with its ordinal index - oindex -
         // set to 0 and set the count to its default value of 1.
         // NB: the helper could change "count" in analyzeObject()
         helper_.cacheObject(*handle);
-        
+
         // Perform (optional) user object-level analysis
         helper_.analyzeObject();
         
@@ -294,6 +296,200 @@ private:
   int  debug_;
   bool skipme_; 
   bool crash_;
+
+  // helper object
+  Y helper_;
+};
+
+// ----------------------------------------------------------
+// We need a partial template specialization for edm::Event
+// ----------------------------------------------------------
+template <typename Y>
+struct UserBuffer<edm::Event, Y, true> : public BufferThing
+{
+  ///
+  UserBuffer() 
+    : out_(0),
+      classname_("edm::Event"),
+      label_(""),
+      label1_(""),
+      label2_(""),
+      prefix_(""),
+      buffertype_(HELPER),
+      var_(std::vector<VariableDescriptor>()),
+      maxcount_(0),
+      count_(0),
+      singleton_(true),
+      message_(""),
+      debug_(0),
+      skipme_(false)
+  {
+    std::cout << "UserBuffer created for objects of type: " 
+              << name()
+              << std::endl;
+
+    // We need to skip these classes, if we are running over real data
+    boost::regex getname("GenEvent|GenParticle|GenJet|GenRun");
+    boost::smatch m;
+    skipme_ = boost::regex_search(classname_, m, getname);
+  }
+  
+  ///
+  virtual ~UserBuffer() {}
+
+  /** Initialize buffer.
+      @param out - output ntuple file.
+      @param label - getByLabel
+      @param prefix - prefix for variable names (and internal name of buffer)
+      @param var - variable descriptors
+      @param maxcount - maximum count for this buffer
+      @param log - log file
+   */
+  virtual void
+  init(otreestream& out,
+       std::string  label, 
+       std::string  prefix,
+       std::vector<VariableDescriptor>& var,
+       int  maxcount,
+       std::ofstream& log,
+       int debug=0)
+  {
+    out_    = &out;
+    label_  = label;
+    prefix_ = prefix;
+    var_    = var;
+    maxcount_ = maxcount;
+    debug_  = debug;
+      
+    std::cout << "\t=== Initialize UserBuffer (" 
+              << boost::python::type_id<Y>().name() << ")"
+              << std::endl;
+
+
+    initBuffer<Y>(out,
+                  label_,
+                  label1_,
+                  label2_,
+                  prefix_,
+                  var_,
+                  variables_,
+                  varnames_,
+                  varmap_,
+                  count_,
+                  singleton_,
+                  maxcount_,
+                  log,
+                  debug_);
+  }
+  
+  /// Fill buffer.
+  virtual bool 
+  fill(const edm::Event& event, const edm::EventSetup& eventsetup)
+  {
+    if ( debug_ > 0 ) 
+      std::cout << DEFAULT_COLOR
+                << "Begin UserBuffer::fill\n\t" 
+                << BLUE
+                << "X: " << "edm::Event" << "\n\t"
+                << "Y: " << boost::python::type_id<Y>().name()
+                << DEFAULT_COLOR
+                << std::endl;
+    
+    count_ = 0; // reset count, just in case we have to bail out
+    message_ = "";
+    
+    // If this is real data ignore generator objects
+    if ( event.isRealData() )
+      {
+        if ( skipme_ ) return true;
+      }
+    
+    // Create helper.
+    // A helper provides the following methods in addition to its accessors:
+    // 1. void analyzeEvent()
+    // 2. void analyzeObject()
+    
+    // However, in this case since the helped object is edm::Event, 
+    // analyzeEvent and analyzeObject do the same thing
+
+    // Cache event and eventsetup in helper
+    helper_.cacheEvent(event, eventsetup);
+     
+    // Perform (optional) user event-level analysis
+    helper_.analyzeEvent();
+    
+    // cache object in helper, along with its ordinal index - oindex -
+    // set to 0 and set the count to its default value of 1.
+    helper_.cacheObject(event);
+
+    // Perform (optional) user object-level analysis
+    helper_.analyzeObject();
+        
+    // Note: size returns the value of the internal variable count
+    int k = 0;
+    while ( (k < helper_.size()) && (count_ < maxcount_) )
+      {
+        helper_.set(k);    // set index of items to be returned
+        callMethods(count_, (const Y)helper_, variables_, debug_);
+        k++;
+        count_++;
+      }
+      
+    // Perform (optional) user post event-level cleanup/analysis
+    helper_.flushEvent();
+
+    if ( debug_ > 0 ) 
+      std::cout << DEFAULT_COLOR << "End UserBuffer::fill " << std::endl; 
+    return true;
+  }
+  
+  std::string& message() { return message_; }
+
+  std::string name() { return classname_; }
+
+  /// Shrink buffer size using specified array of indices.
+  void shrink(std::vector<int>& index)
+  {
+    count_ = index.size();
+    for(unsigned i=0; i < variables_.size(); ++i)
+      for(int j=0; j < count_; ++j)
+        variables_[i].value[j] = variables_[i].value[index[j]];
+  }
+
+  countvalue& variable(std::string name)
+  {
+    if ( varmap_.find(name) != varmap_.end() ) 
+      return varmap_[name];
+    else
+      return varmap_["NONE"];
+  }
+
+  std::vector<std::string>& varnames()
+  {
+    return varnames_;
+  }
+
+  int count() { return count_; }
+  int maxcount() { return maxcount_; }
+
+private:
+  otreestream* out_;
+  std::string  classname_;  
+  std::string  label_;
+  std::string  label1_;
+  std::string  label2_;
+  std::string  prefix_;
+  BufferType buffertype_;
+  std::vector<VariableDescriptor> var_;
+  boost::ptr_vector<Variable<Y> > variables_;
+  std::vector<std::string> varnames_;
+  std::map<std::string, countvalue> varmap_;
+  int  maxcount_;
+  int  count_;
+  bool singleton_;
+  std::string message_;
+  int  debug_;
+  bool skipme_; 
 
   // helper object
   Y helper_;
