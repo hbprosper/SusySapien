@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # Create the skeleton of a user package
 # Created: 03-Sep-2010 Harrison B. Prosper
-#$Id:$
+#$Id: mkpackage.py,v 1.16 2011/05/07 18:39:14 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -60,35 +60,24 @@ def main():
 	cmd = '''
 	mkdir -p %(subpkg)s
 	cd %(subpkg)s
-	sed -e "s/%(lib)s/%(pkg)s%(subpkg)s/g" $CMSSW_BASE/src/%(mkntuple)s/BuildFile  > .b
-	sed -e "s|/UtilAlgos>|/UtilAlgos>\\n<use name=%(mkntuple)s>|g" .b > BuildFile
+	sed -e "s/%(lib)s/%(pkg)s%(subpkg)s/g" $CMSSW_BASE/src/%(mkntuple)s/BuildFile.xml  > .b
+	sed -e "s|/UtilAlgos>|/UtilAlgos>\\n<use name="%(mkntuple)s"/>|g" .b > BuildFile.xml
 	rm -rf .b
 	
 	mkdir -p interface
 	mkdir -p python
 	cp $CMSSW_BASE/src/PhysicsTools/TheNtupleMaker/python/classmap.py python
 	mkdir -p plugins
-	grep "<use name" $CMSSW_BASE/src/%(mkntuple)s/plugins/BuildFile > plugins/BuildFile
-	echo "<use name=%(pkg)s/%(subpkg)s>" >> plugins/BuildFile
+	grep "<use " $CMSSW_BASE/src/%(mkntuple)s/plugins/BuildFile.xml > plugins/BuildFile.xml
+	echo -e "<use name=\\"%(pkg)s/%(subpkg)s\\"/>" >> plugins/BuildFile.xml	
 	mkdir -p src
 	mkdir -p test
 	sed -e "s/PhysicsTools.TheNtupleMaker/%(pkg)s.%(subpkg)s/g" $CMSSW_BASE/src/%(mkntuple)s/test/config.py  > test/config.py
 	mkdir -p bin
-	sed -e "s/plugins_t/%(prog)s/g" $CMSSW_BASE/src/%(mkntuple)s/bin/BuildFile   | egrep -v "test" > bin/BuildFile
+	grep "<use " $CMSSW_BASE/src/%(mkntuple)s/bin/BuildFile.xml > bin/BuildFile.xml
+	echo -e "<bin name=\\"%(prog)s\\" file=\\"%(prog)s.cc\\">" >> bin/BuildFile.xml
+	echo -e "</bin>" >> bin/BuildFile.xml
  	echo "int main(int argc, char** argv) {return 0;}" > bin/%(prog)s.cc
-
-	rm -rf BuildFile.xml
-	scram b -c
-
-	cd plugins
-	rm -rf BuildFile.xml
-	scram b -c
-	cd ..
-
-	cd bin
-	rm -rf BuildFile.xml
-	scram b -c
-	cd ..
 	''' % names
 	os.system(cmd)
 #------------------------------------------------------------------------------

@@ -6,7 +6,8 @@
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Sep 19 HBP move initBuffer from Buffer.h
 //                   Thu Feb 17 HBP change definition of isArray (maxcount > 1)
-// $Id: BufferUtil.cc,v 1.5 2011/02/17 05:58:11 prosper Exp $
+//                   Wed Jul 20 HBP handle BasicType
+// $Id: BufferUtil.cc,v 1.1.1.1 2011/05/04 13:04:29 prosper Exp $
 //-----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python/type_id.hpp>
@@ -94,6 +95,7 @@ void initializeBuffer(otreestream& out,
                                                  stripcolon, "").c_str());
   objname.ToLower();
   objectname = std::string(objname.Data());
+  if (objectname.substr(0, 9) == "basictype") objectname = prefix;
 
   // Define variables destined for the output tree
   

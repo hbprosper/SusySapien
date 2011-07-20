@@ -1,4 +1,16 @@
-$Revision: 1.14 $
+$Revision: 1.15 $
+
+v5_1_9 Jul 20 2011
+------------------
+	1. Work with BuildFile.xml only and update mkpackage.py and mkhelper.py
+	accordingly.
+	2. Call HLTConfigProvider from beginRun() in TheNtupleMaker.
+	3. Make pointer, hltconfig, to HLTConfigProvider available to all helpers
+	and update HelperFor and Configuration accordingly.
+	4. Remove HLT config set up from TriggerResultsHelper in user.cc.
+	5. Fix problem with simple types in mkanalyzer.py
+	6. Make mkvariables.py produce exactly the same variable names as 
+	TheNtupleMaker.
 
 v5_1_8 Jun 25 2011
 ------------------

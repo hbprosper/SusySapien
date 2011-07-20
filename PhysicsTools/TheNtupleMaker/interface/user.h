@@ -12,7 +12,7 @@
 //                                   - add GenParticleHelper
 //              Thu Sep 02, 2010 HBP - move HelpFor to separate file
 //              Sat Jun 25, 2011 HBP - add template class for ints etc.
-//$Revision: 1.3 $
+//$Revision: 1.4 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -82,12 +82,7 @@ namespace edm
     unsigned int prescale(std::string tname);
 
   private:
-    static bool first;
-    static unsigned int run;
-    // From Josh's code
-    HLTConfigProvider hltConfig_; 
-
-    
+    static bool first;    
   };
   //---------------------------------------------------------------------------
   /// Helper class for edm::Event.

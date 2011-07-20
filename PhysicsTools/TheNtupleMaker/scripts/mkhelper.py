@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # Create the skeleton of a user plugin
 # Created: 27-Aug-2010 Harrison B. Prosper
-#$Id:$
+#$Id: mkhelper.py,v 1.1 2011/05/12 09:50:59 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -102,15 +102,17 @@ def wrpluginheader(names):
 //-----------------------------------------------------------------------------
 // Note: The following variables are automatically defined and available to
 //       all methods:
+//         0. hltconfig       pointer to HLTConfigProvider
 //         1. config          pointer to global ParameterSet object
 //         2. event           pointer to the current event
 //         3. object          pointer to the current helper object
 //         4. oindex          index of current helper object
 //         5. index           index of item(s) returned by helper 
 //         6. count           count per helper object (default = 1)
-//       Items 1-6 are initialized by TheNtupleMaker. The count can be changed from
-//       its default value of 1 by the helper. However, items 1-5 should not
-//       be changed.
+//
+//       Items 0-6 are initialized by TheNtupleMaker.
+//       Items 0-5 should not be changed.
+//       Item  6 can be changed from its default value of 1 by the helper.
 //-----------------------------------------------------------------------------
 '''
 	template_nonamespace = '''
@@ -148,7 +150,7 @@ namespace %(namespace)s
 	///
 	%(name)s();
 
-	virtual ~%(name)s();//////
+	virtual ~%(name)s();
 
 	// Uncomment if this class does some event-level analysis
 	// virtual void analyzeEvent();
@@ -237,7 +239,7 @@ using namespace std;
 #------------------------------------------------------------------------------
 def wrplugin(names):	
 	template = '''// ----------------------------------------------------------------------------
-// Created: %(time)s by mkuserplugin.py
+// Created: %(time)s by mkhelper.py
 // Author:      %(author)s      
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/UserBuffer.h"
@@ -270,8 +272,8 @@ def undo():
 		print "delete %s" % undofile
 		os.system('rm -rf %s; rm -rf %s' % (undofile, t[0]))
 
-	# redo plugins/BuildFile
-	t = glob("%(plugindir)s/.redo.BuildFile" % names)
+	# redo plugins/BuildFile.xml
+	t = glob("%(plugindir)s/.redo.BuildFile.xml" % names)
 	if len(t) > 0:
 		redofile = replace(t[0], '.redo.', '')
 		print "restore %s" % redofile
@@ -319,13 +321,13 @@ def undo():
 		print "restore %s" % redofile
 		os.system('mv %s %s' % (t[0], redofile))
 
-	cmd = '''
-	cd plugins
-	rm -rf BuildFile.xml
-	scram b -c
-	cd ..
-	'''
-	os.system(cmd)
+## 	cmd = '''
+## 	cd plugins
+## 	rm -rf BuildFile.xml
+## 	scram b -c
+## 	cd ..
+## 	'''
+## 	os.system(cmd)
 	sys.exit(0)
 #------------------------------------------------------------------------------
 def main():
@@ -439,26 +441,26 @@ def main():
 	wrplugin(names)
 
 	#------------------------------------------------------------------------
-	# Update BuildFile in plugins directory
+	# Update BuildFile.xml in plugins directory
 	#------------------------------------------------------------------------
 	updated = False
-	buildfile = "%s/BuildFile" % PLUGINDIR
-	redofile  = "%s/.redo.BuildFile" % PLUGINDIR
+	buildfile = "%s/BuildFile.xml" % PLUGINDIR
+	redofile  = "%s/.redo.BuildFile.xml" % PLUGINDIR
 	if os.path.exists(buildfile):
 		os.system("cp %s %s" % (buildfile, redofile))
 	else:
 		updated = True
 		out = open(buildfile, 'w')
-		record = '''<use name=PhysicsTools/TheNtupleMaker>
-<use name=FWCore/FWLite>
-<use name=FWCore/PluginManager>
+		record = '''<use name="PhysicsTools/TheNtupleMaker"/>
+<use name="FWCore/FWLite"/>
+<use name="FWCore/PluginManager"/>
 
-<use name=boost_regex>
-<use name=boost_python>
-<use name=rootrflx>
-<use name=rootminuit>
-<use name=rootmath>
-<use name=f77compiler>
+<use name="boost_regex"/>
+<use name="boost_python"/>
+<use name="rootrflx"/>
+<use name="rootminuit"/>
+<use name="rootmath"/>
+<use name="f77compiler"/>
 '''
 		out.write(record)
 		out.close()
@@ -471,22 +473,21 @@ def main():
 
 	if find(record, pkg) < 0:
 		updated = True
-		record += "\n<use name=%s>\n" % pkg
+		record += '\n<use name="%s"/>\n' % pkg
 
 	pkg = '%(package)s/%(subpackage)s' % names
 	if find(record, pkg) < 0:
 		updated = True
-		record += "\n<use name=%s>\n" % pkg
+		record += '\n<use name="%s"/>\n' % pkg
 		
 	if find(record, filename) < 0:
 		updated = True
-		record += "<library file=userplugin_%(filename)s.cc "\
-				  "name=%(filename)s>\n"\
-				  "<flags EDM_PLUGIN=1>\n"\
-				  "</library>\n" % names
+		record += '<library file="userplugin_%(filename)s.cc" '\
+				  'name="%(filename)s">\n'\
+				  '</library>\n' % names
 	if updated:
 		open(buildfile, 'w').write(record)
-		print "\tupdated:       plugins/BuildFile"
+		print "\tupdated:       plugins/BuildFile.xml"
 
 	#------------------------------------------------------------------------
 	# Update classes.h
@@ -575,10 +576,6 @@ def main():
 
 
 	cmd = '''
-	cd plugins
-	rm -rf BuildFile.xml
-	scram b -c
-	cd ..
 	touch BuildFile.xml
 	'''
 	os.system(cmd)

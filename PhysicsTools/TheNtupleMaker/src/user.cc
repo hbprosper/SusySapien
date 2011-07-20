@@ -6,7 +6,7 @@
 // Updated:     Mon Mar 08, 2010 Sezen & HBP - add triggerBits class
 //              Tue Aug 24, 2010 HBP - add HcalNoiseRBXHelper
 //              Thu Sep 02, 2010 HBP - update to new version of HelperFor
-//$Revision: 1.3 $
+//$Revision: 1.4 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -27,7 +27,8 @@ using namespace std;
 //-----------------------------------------------------------------------------
 /*
   The following variables are available to all helpers
-
+  config            pointee to global configuration object
+  hltconfig         pointer to current HLT configuration
   event             pointer to current event
   eventsetup        pointer to current event setup
   object            pointer to current helped object
@@ -55,7 +56,6 @@ namespace {
 // TriggerResults helper
 //-----------------------------------------------------------------------------
 bool TriggerResultsHelper::first=true;
-unsigned int TriggerResultsHelper::run=-1;
 
 TriggerResultsHelper::TriggerResultsHelper() 
   : HelperFor<edm::TriggerResults>()
@@ -108,6 +108,11 @@ TriggerResultsHelper::prescale(std::string name)
                          "\nTriggerResultsHelper - " 
                          "event pointer is ZERO");
   
+  if ( hltconfig == 0 )
+    throw edm::Exception(edm::errors::Configuration,
+                         "\nTriggerResultsHelper - " 
+                         "HLTConfigProvider pointer is ZERO");
+  
   // NB: use a reference to avoid expensive copying
   const edm::TriggerNames& tnames = event->triggerNames(*object);
 
@@ -131,42 +136,14 @@ TriggerResultsHelper::prescale(std::string name)
     throw edm::Exception(edm::errors::Configuration,
                          "\nTriggerResultsHelper - " 
                          "trigger \"" + name + "\" NOT FOUND");
+
+  
+  if ( !event->isRealData() ) 
+    return 1;
+  else if (hltconfig->prescaleSet(*event, *eventsetup) != -1)
+    return hltconfig->prescaleValue(*event, *eventsetup, name);
   else
-    {
-      // Prescales only make sense for real data
-
-      if ( !event->isRealData() ) return 1;
-
-      // Initialize the HLT configuration every new
-      // run .
-      if ( event->id().run() != run ) 
-        {
-          run = event->id().run();
-
-          // Fron Josh
-          bool hltChanged=false;
-          const string HLT("HLT");
-          bool okay = hltConfig_.init(event->getRun(), 
-                                      *eventsetup, 
-                                      HLT, 
-                                      hltChanged);
-          if ( okay )
-            {
-              if ( hltChanged ) 
-                edm::LogInfo("HLTConfig") 
-                  << "The HLT configuration has changed"
-                  << std::endl;
-            }
-          else 
-            edm::LogWarning("HLTConfigFailure") 
-              << "Problem with HLT configuration"
-              << std::endl;
-          return -9999;
-        }
-
-      // return prescale
-      return hltConfig_.prescaleValue(*event, *eventsetup, name);
-    }
+    return 1;
 }
 
 
@@ -303,7 +280,7 @@ triggerBits::~triggerBits() {}
 string
 bufferLabel(string buffername)
 {
-  const edm::ParameterSet* config = Configuration::instance().get();
+  const edm::ParameterSet* config = Configuration::instance().getConfig();
   if ( config == 0 )
     throw cms::Exception("InvalidPointer", "bufferLabel, config = 0");
 

@@ -17,7 +17,8 @@
 #  Fixes:       15-Nov-2010 HBP make sure buffers have a count of at least 1
 #               22-Nov-2010 HBP allow multiple trees
 #               11-Jan-2011 HBP shorten genparticlehelper variable
-#$Id:$
+#               20-Jul-2011 HBP fix problem with basic type
+#$Id: mkvariables.py,v 1.16 2011/05/07 18:39:14 prosper Exp $
 # -----------------------------------------------------------------------------
 from ROOT import *
 from time import *
@@ -54,6 +55,7 @@ except:
 # -----------------------------------------------------------------------------
 # extract vector type from vector<type>
 getvtype = re.compile('(?<=vector[<]).+(?=[>])')
+namespace= re.compile('^(edm|reco|pat)')
 patname  = re.compile('(?<=pat)[a-z]+[1-9]*')
 reconame = re.compile('(?<=reco)[a-z]+[1-9]*')
 genname  = re.compile('^(gen[a-z]+|edm[a-z]+)')
@@ -112,7 +114,7 @@ def main():
 			maxcount = 1
 		elif len(x) == 5:
 			a, branch, c, btype, maxcount = x
-			maxcount = 1 + 2 * atoi(maxcount[1:-1]) # double up...just in case!
+			maxcount = 1 + 2*atoi(maxcount[1:-1])
 		else:
 			print "\t**hmmm...not sure what to do with:\n\t%s\n\tchoi!" % x
 			sys.exit(0)
@@ -124,15 +126,15 @@ def main():
 			btype = vtype[0] # vector type
 			maxcount = 100   # default maximum count for vectors
 
-		# fix a few types
-		if btype[:-2] in ["32", "64"]:
-			btype = btype[:-2]
-		elif btype == "bool":
-			btype = "int"
-		elif btype == "uchar":
-			btype = "int"
-		elif btype == "uint":
-			btype = "int"
+## 		# fix a few types
+## 		if btype[:-2] in ["32", "64"]:
+## 			btype = btype[:-2]
+## 		elif btype == "bool":
+## 			btype = "int"
+## 		elif btype == "uchar":
+## 			btype = "int"
+## 		elif btype == "uint":
+## 			btype = "int"
 			
 		# If this is leaf counter, add " *" to end of record
 		if iscounter:
@@ -144,6 +146,7 @@ def main():
 		# but take care of duplicate names
 		t = split(branch, '.')
 		bname = t[0]
+		
 		if len(t) > 1:
 			t[0] = lower(t[0])			
 			a = patname.findall(t[0])
@@ -156,7 +159,7 @@ def main():
 		else:
 			if len(countname.findall(t[0])) > 0:
 				t[0] = split(lower(countname.sub("", t[0])),'_')[0]
-		t[0] = replace(t[0], 'helper', '')
+		#t[0] = replace(t[0], 'helper', '')
 
 		# check for duplicate names
 		key = t[0]
@@ -169,7 +172,9 @@ def main():
 			
 		if dupname[key][1] > 0:
 			t[0] = "%s%d" % (t[0], dupname[key][1])
-			
+
+		# first strip away namespace
+		t[0] = namespace.sub("", t[0])
 		name = joinfields(t, '_')
 		#print "%s\t%s" % (t[0], bname)
 

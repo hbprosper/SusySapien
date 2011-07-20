@@ -10,11 +10,12 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Wed Sep 01, 2010
 //
-// $Id: Configuration.h,v 1.2 2011/05/02 23:50:58 prosper Exp $
+// $Id: Configuration.h,v 1.1.1.1 2011/05/04 13:04:28 prosper Exp $
 
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
+#include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
 
-/// A singleton class to cache ParameterSet object.
+/// A singleton class to cache global objects.
 class Configuration
 {
 public:
@@ -26,13 +27,18 @@ public:
   }
 
   ///
-  void set(const edm::ParameterSet& config) 
+  void set(const edm::ParameterSet& config, 
+           HLTConfigProvider& hltconfig) 
   { 
     config_ = &config;
+    hltconfig_ = &hltconfig;
   }
 
   ///
-  const edm::ParameterSet* get() const { return config_; }
+  const edm::ParameterSet* getConfig() const { return config_; }
+
+  ///
+  const HLTConfigProvider* getHLTconfig() const { return hltconfig_; }
 
 //   ///
 //   void setLocal(const edm::ParameterSet& config) 
@@ -50,6 +56,7 @@ private:
   Configuration& operator=(const Configuration&);  // prevent assignment
   
   const edm::ParameterSet* config_;
+  const HLTConfigProvider* hltconfig_;
   //const edm::ParameterSet* localconfig_;
 };
 

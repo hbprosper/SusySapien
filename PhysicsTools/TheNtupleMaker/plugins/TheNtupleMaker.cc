@@ -50,8 +50,10 @@
 //                   Wed May 04 2011 HBP - change name to TheNtupleMaker
 //                   Fri Jun 24 2011 HBP - get provenance info using 
 //                                   getenv
+//                   Wed Jul 20 2011 HBP - add trigger configuration set up
+//                                   in beginRun()
 //
-// $Id: TheNtupleMaker.cc,v 1.6 2011/06/24 17:35:09 prosper Exp $
+// $Id: TheNtupleMaker.cc,v 1.7 2011/06/24 23:30:08 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -78,6 +80,7 @@
 #include "PhysicsTools/TheNtupleMaker/interface/Configuration.h"
 #include "PhysicsTools/TheNtupleMaker/interface/SelectedObjectMap.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
+#include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
 #include "TROOT.h"
 #include "TSystem.h"
 #include "TMap.h"
@@ -93,15 +96,15 @@ public:
 
 private:
   virtual void beginJob();
-  //virtual void beginRun(const edm::Run&, const edm::EventSetup&);
+  virtual void beginRun(const edm::Run&, const edm::EventSetup&);
   virtual void analyze(const edm::Event&, const edm::EventSetup&);
   virtual void endJob();
 
   bool selectEvent(const edm::Event& iEvent);
-
   void shrinkBuffers();
 
   // Object that models the output n-tuple.
+  std::string ntuplename_;
   otreestream output;
 
   // Object that models the allocated buffers, one per object to be read.
@@ -132,13 +135,18 @@ private:
 
   TTree* ptree_;
   int inputCount_;
+
+  // From Josh's code
+  std::string triggerProcessName_;
+  HLTConfigProvider hltConfig_; 
 };
 
 
 TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
-  : output(otreestream(iConfig.getUntrackedParameter<string>("ntupleName"), 
+  : ntuplename_(iConfig.getUntrackedParameter<string>("ntupleName")), 
+    output(otreestream(ntuplename_,
                        "Events", 
-                       "created by TheNtupleMaker $Revision: 1.6 $")),
+                       "created by TheNtupleMaker $Revision: 1.7 $")),
     logfilename_("TheNtupleMaker.log"),
     log_(new std::ofstream(logfilename_.c_str())),
     usermacroname_(""),
@@ -149,7 +157,8 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
     imalivecount_(1000),
     logger_(0),
     haltlogger_(false),
-    inputCount_(0)
+    inputCount_(0),
+    triggerProcessName_("HLT") 
 {
   cout << "\nBEGIN TheNtupleMaker Configuration" << endl;
 
@@ -158,7 +167,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   // --------------------------------------------------------------------------
   TFile* file = output.file();
   ptree_ = new TTree("Provenance",
-                     "created by TheNtupleMaker $Revision: 1.6 $");
+                     "created by TheNtupleMaker $Revision: 1.7 $");
   string cmsver("unknown");
   if ( getenv("CMSSW_VERSION") > 0 ) cmsver = string(getenv("CMSSW_VERSION"));
   ptree_->Branch("cmssw_version", (void*)(cmsver.c_str()), "cmssw_version/C");
@@ -183,9 +192,19 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
 
   // --------------------------------------------------------------------------
   // Cache global configuration 
-  Configuration::instance().set(iConfig);
+  Configuration::instance().set(iConfig, hltConfig_);
     
   // Get optional configuration parameters
+
+  try
+    {
+      triggerProcessName_ 
+        = iConfig.getUntrackedParameter<string>("triggerProcessName");
+    }
+  catch (...)
+    {
+      triggerProcessName_ = std::string("HLT");
+    }
 
   try
     {
@@ -480,6 +499,15 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
     }
   vout.close();
 
+  // Create ntuple analyzer template if requested
+
+  if ( analyzername_ != "" )
+    {
+      string cmd("mkanalyzer.py "  + kit::nameonly(analyzername_));
+      cout << cmd << endl;
+      kit::shell(cmd);
+    }
+
   // Cache variable addresses for each buffer
 
   int index=0;
@@ -499,12 +527,6 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
     }
   cout << " END Branches" << endl << endl;
 
-  // Create ntuple analyzer template if requested
-
-  if ( analyzername_ != "" )
-    kit::shell("mkanalyzer.py " + analyzername_ + " variables.txt");
-
-
   // Check for crash switch
   
   bool crash = true;
@@ -512,7 +534,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
     {
       crash = 
         (bool)Configuration::instance().
-        get()->getUntrackedParameter<int>("crashOnInvalidHandle");
+        getConfig()->getUntrackedParameter<int>("crashOnInvalidHandle");
     }
   catch (...)
     {}
@@ -664,12 +686,31 @@ TheNtupleMaker::beginJob()
 {
 }
 
-/*
+
 void 
-TheNtupleMaker::beginRun(const edm::Run& run, const edm::EventSetup& eventsetup)
+TheNtupleMaker::beginRun(const edm::Run& run, 
+                         const edm::EventSetup& eventsetup)
 {
+  // Initialize the HLT configuration every new
+  // run .
+  // From Josh
+  bool hltChanged=false;
+  bool okay = hltConfig_.init(run, 
+                              eventsetup, 
+                              triggerProcessName_, 
+                              hltChanged);
+  if ( okay )
+    {
+      if ( hltChanged ) 
+        edm::LogInfo("HLTConfig") 
+          << "The HLT configuration has changed"
+          << std::endl;
+    }
+  else 
+    edm::LogWarning("HLTConfigFailure") 
+      << "Problem with HLT configuration"
+      << std::endl;
 }
-*/
 
 // --- method called once each job just after ending the event loop  ----------
 void 

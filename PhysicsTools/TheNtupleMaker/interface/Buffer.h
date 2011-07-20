@@ -27,7 +27,7 @@
 //                   Sun May 01 HBP - Place Specialized buffer in a separate
 //                                    file, BufferEvent.h
 //
-// $Id: Buffer.h,v 1.2 2011/06/06 22:01:27 prosper Exp $
+// $Id: Buffer.h,v 1.3 2011/06/07 07:41:55 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/BufferUtil.h"
@@ -129,7 +129,8 @@ struct Buffer  : public BufferThing
       {
         crash_ = 
           (bool)(Configuration::instance().
-                 get()->getUntrackedParameter<int>("crashOnInvalidHandle"));
+                 getConfig()->
+                 getUntrackedParameter<int>("crashOnInvalidHandle"));
       }
     catch (...)
       {

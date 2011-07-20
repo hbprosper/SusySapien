@@ -6,10 +6,11 @@
 // Description: Base class for helpers
 // Created:     Aug, 2010 Harrison B. Prosper
 //              01 May, 2011 HBP add param
-//$Revision: 1.1.1.1 $
+//$Revision: 1.2 $
 //-----------------------------------------------------------------------------
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
+#include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
 #include "PhysicsTools/TheNtupleMaker/interface/Configuration.h"
 //-----------------------------------------------------------------------------
 /// Base class for helpers.
@@ -17,8 +18,8 @@ template <typename X>
 class HelperFor
 {
 public:
-  HelperFor() : config(Configuration::instance().get()),
-                //localconfig(*Configuration::instance().getLocal()),
+  HelperFor() : config(Configuration::instance().getConfig()),
+                hltconfig(Configuration::instance().getHLTconfig()),
                 event(0),      // pointer to current event
                 eventsetup(0), // pointer to current event setup
                 object(0),     // pointer to current helped object
@@ -63,6 +64,9 @@ public:
   // ---------------- available to user
   /// Pointer to ParameterSet initialized from config file.
   const edm::ParameterSet* config;
+
+  ///
+  const HLTConfigProvider* hltconfig;
 
   /// Parameter set local to buffer
   //const edm::ParameterSet  localconfig;

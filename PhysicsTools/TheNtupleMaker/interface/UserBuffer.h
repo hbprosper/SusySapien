@@ -11,7 +11,7 @@
 //                   Mon Jul 18 HBP - include a partial template 
 //                                    specialization for edm::Event
 //
-// $Id: UserBuffer.h,v 1.4 2011/06/07 07:41:55 prosper Exp $
+// $Id: UserBuffer.h,v 1.5 2011/07/18 23:53:50 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/BufferUtil.h"
@@ -111,7 +111,8 @@ struct UserBuffer  : public BufferThing
       {
         crash_ = 
           (bool)(Configuration::instance().
-                 get()->getUntrackedParameter<int>("crashOnInvalidHandle"));
+                 getConfig()->
+                 getUntrackedParameter<int>("crashOnInvalidHandle"));
       }
     catch (...)
       {
