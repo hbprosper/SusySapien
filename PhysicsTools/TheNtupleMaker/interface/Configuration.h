@@ -10,8 +10,9 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Wed Sep 01, 2010
 //
-// $Id: Configuration.h,v 1.1.1.1 2011/05/04 13:04:28 prosper Exp $
+// $Id: Configuration.h,v 1.2 2011/07/20 16:19:54 prosper Exp $
 
+#include <string>
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
 
@@ -35,10 +36,29 @@ public:
   }
 
   ///
+  void set(std::string& blockname,
+           std::string& buffername,
+           std::string& labelname)
+  { 
+    blockname_  = blockname;
+    buffername_ = buffername;
+    labelname_  = labelname;
+  }
+
+  ///
   const edm::ParameterSet* getConfig() const { return config_; }
 
   ///
   const HLTConfigProvider* getHLTconfig() const { return hltconfig_; }
+
+  ///
+  std::string getblockname() const { return blockname_; }
+
+  ///
+  std::string getbuffername() const { return buffername_; }
+
+  ///
+  std::string getlabelname() const { return labelname_; }
 
 //   ///
 //   void setLocal(const edm::ParameterSet& config) 
@@ -58,6 +78,10 @@ private:
   const edm::ParameterSet* config_;
   const HLTConfigProvider* hltconfig_;
   //const edm::ParameterSet* localconfig_;
+
+  std::string blockname_;
+  std::string buffername_;
+  std::string labelname_;
 };
 
 #endif

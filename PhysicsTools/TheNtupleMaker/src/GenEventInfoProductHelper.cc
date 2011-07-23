@@ -4,7 +4,7 @@
 // Description: TheNtupleMaker helper class for GenEventInfoProduct
 // Created:     Wed Feb 16 01:43:26 2011
 // Author:      Harrison B. Prosper      
-//$Revision: 1.3 $
+//$Revision: 1.1.1.1 $
 //-----------------------------------------------------------------------------
 #include <stdlib.h>
 #include "PhysicsTools/TheNtupleMaker/interface/GenEventInfoProductHelper.h"
@@ -17,6 +17,11 @@ static bool DBGenEventInfo = getenv("DBGenEventInfoProductHelper") > 0;
 GenEventInfoProductHelper::GenEventInfoProductHelper()
   : HelperFor<GenEventInfoProduct>() 
 {
+  std::cout << "GenEventInfoProductHelper:" << std::endl
+            << "\tblockname:  " << blockname << std::endl
+            << "\tbuffername: " << buffername << std::endl
+            << "\tlabelname:  " << labelname << std::endl; 
+
   if ( config == 0 )
     throw cms::Exception("NullConfigPointer");
 

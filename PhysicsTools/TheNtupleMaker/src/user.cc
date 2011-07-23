@@ -6,7 +6,7 @@
 // Updated:     Mon Mar 08, 2010 Sezen & HBP - add triggerBits class
 //              Tue Aug 24, 2010 HBP - add HcalNoiseRBXHelper
 //              Thu Sep 02, 2010 HBP - update to new version of HelperFor
-//$Revision: 1.4 $
+//$Revision: 1.5 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -59,7 +59,12 @@ bool TriggerResultsHelper::first=true;
 
 TriggerResultsHelper::TriggerResultsHelper() 
   : HelperFor<edm::TriggerResults>()
-{}
+{
+  std::cout << "TriggerResultsHelper:" << std::endl
+            << "\tblockname:  " << blockname << std::endl
+            << "\tbuffername: " << buffername << std::endl
+            << "\tlabelname:  " << labelname << std::endl; 
+}
     
 TriggerResultsHelper::~TriggerResultsHelper() {}
 
@@ -151,7 +156,13 @@ TriggerResultsHelper::prescale(std::string name)
 // Event helper
 //-----------------------------------------------------------------------------
 ///
-EventHelper::EventHelper() : HelperFor<edm::Event>() {}
+EventHelper::EventHelper() : HelperFor<edm::Event>() 
+{
+  std::cout << "EventHelper:" << std::endl
+            << "\tblockname:  " << blockname << std::endl
+            << "\tbuffername: " << buffername << std::endl
+            << "\tlabelname:  " << labelname << std::endl; 
+}
     
 EventHelper::~EventHelper() {}
 

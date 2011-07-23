@@ -1,4 +1,10 @@
-$Revision: 1.15 $
+$Revision: 1.16 $
+
+v5_2_0 Jul 22 2011
+------------------
+	1. Fix duplicate class bug in classes_def.xml
+	2. make block, buffer, and label names available to helpers
+	3. undo is broken for now!
 
 v5_1_9 Jul 20 2011
 ------------------

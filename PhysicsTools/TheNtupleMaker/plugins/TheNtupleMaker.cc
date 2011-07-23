@@ -52,8 +52,10 @@
 //                                   getenv
 //                   Wed Jul 20 2011 HBP - add trigger configuration set up
 //                                   in beginRun()
+//                   Fri Jul 22 2011 HBP - make buffer name and get by label
+//                                   available to buffers
 //
-// $Id: TheNtupleMaker.cc,v 1.7 2011/06/24 23:30:08 prosper Exp $
+// $Id: TheNtupleMaker.cc,v 1.8 2011/07/20 16:19:54 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -146,7 +148,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   : ntuplename_(iConfig.getUntrackedParameter<string>("ntupleName")), 
     output(otreestream(ntuplename_,
                        "Events", 
-                       "created by TheNtupleMaker $Revision: 1.7 $")),
+                       "created by TheNtupleMaker $Revision: 1.8 $")),
     logfilename_("TheNtupleMaker.log"),
     log_(new std::ofstream(logfilename_.c_str())),
     usermacroname_(""),
@@ -167,7 +169,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   // --------------------------------------------------------------------------
   TFile* file = output.file();
   ptree_ = new TTree("Provenance",
-                     "created by TheNtupleMaker $Revision: 1.7 $");
+                     "created by TheNtupleMaker $Revision: 1.8 $");
   string cmsver("unknown");
   if ( getenv("CMSSW_VERSION") > 0 ) cmsver = string(getenv("CMSSW_VERSION"));
   ptree_->Branch("cmssw_version", (void*)(cmsver.c_str()), "cmssw_version/C");
@@ -479,7 +481,12 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
       if ( DEBUG > 0 )
         cout 
           << "  create buffer: " << buffer << endl;
-          
+
+      // First cache block name, buffer name and get by label so that they are
+      // available when the buffer is created.
+
+      Configuration::instance().set(vrecords[ii], buffer, label);
+
       buffers.push_back( BufferFactory::get()->create(buffer) );
       if (buffers.back() == 0)
         throw cms::Exception("PluginLoadFailure")

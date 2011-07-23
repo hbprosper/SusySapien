@@ -6,7 +6,7 @@
 // Description: Base class for helpers
 // Created:     Aug, 2010 Harrison B. Prosper
 //              01 May, 2011 HBP add param
-//$Revision: 1.2 $
+//$Revision: 1.3 $
 //-----------------------------------------------------------------------------
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
@@ -18,14 +18,19 @@ template <typename X>
 class HelperFor
 {
 public:
-  HelperFor() : config(Configuration::instance().getConfig()),
+  HelperFor() : blockname(Configuration::instance().getblockname()),
+                buffername(Configuration::instance().getbuffername()),
+                labelname(Configuration::instance().getlabelname()),
+                config(Configuration::instance().getConfig()),
                 hltconfig(Configuration::instance().getHLTconfig()),
+
                 event(0),      // pointer to current event
                 eventsetup(0), // pointer to current event setup
                 object(0),     // pointer to current helped object
                 oindex(0),     // index of current helped object (dumb pointer)
                 index(0),      // index of current helper object (dumb pointer)
                 count(1)       // number of instances returned by helper
+
   {}
 
   virtual ~HelperFor() {}
@@ -62,6 +67,11 @@ public:
   virtual void flushEvent() {}
 
   // ---------------- available to user
+
+  std::string blockname;
+  std::string buffername;
+  std::string labelname;
+
   /// Pointer to ParameterSet initialized from config file.
   const edm::ParameterSet* config;
 

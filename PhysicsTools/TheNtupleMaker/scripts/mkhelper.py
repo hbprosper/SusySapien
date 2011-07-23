@@ -2,7 +2,8 @@
 #------------------------------------------------------------------------------
 # Create the skeleton of a user plugin
 # Created: 27-Aug-2010 Harrison B. Prosper
-#$Id: mkhelper.py,v 1.1 2011/05/12 09:50:59 prosper Exp $
+#          22-Jul-2011 HBP - fix duplicate HelperFor bug
+#$Id: mkhelper.py,v 1.2 2011/07/20 16:19:54 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -102,6 +103,11 @@ def wrpluginheader(names):
 //-----------------------------------------------------------------------------
 // Note: The following variables are automatically defined and available to
 //       all methods:
+//
+//         blockname          name of config block 
+//         buffername         name of buffer in config block
+//         labelname          name of label for getByLabel
+//
 //         0. hltconfig       pointer to HLTConfigProvider
 //         1. config          pointer to global ParameterSet object
 //         2. event           pointer to the current event
@@ -177,10 +183,10 @@ namespace %(namespace)s
 
 	if os.path.exists(filename):
 		redofile = "%(incdir)s/.redo.%(filename)s.h" % names
-		os.system("cp %s %s" % (filename, redofile))
+		#os.system("cp %s %s" % (filename, redofile))
 	else:
 		undofile = "%(incdir)s/.undo.%(filename)s.h" % names
-		open(undofile,'w').write('\n')
+		#open(undofile,'w').write('\n')
 		
 	out  = open(filename, "w")
 	out.write(record)
@@ -218,7 +224,7 @@ using namespace std;
 //}
 
 // -- Access Methods
-//double %(name)s::someMethod(...)  const
+//double %(name)s::someMethod()  const
 //{
 //  return  //-- some-value --
 //}
@@ -228,10 +234,10 @@ using namespace std;
 	filename = "%(srcdir)s/%(filename)s.cc" % names
 	if os.path.exists(filename):
 		redofile = "%(srcdir)s/.redo.%(filename)s.cc" % names
-		os.system("cp %s %s" % (filename, redofile))
+		#os.system("cp %s %s" % (filename, redofile))
 	else:
 		undofile = "%(srcdir)s/.undo.%(filename)s.cc" % names
-		open(undofile,'w').write('\n')
+		#open(undofile,'w').write('\n')
 		
 	out  = open(filename, "w")
 	out.write(template)
@@ -251,14 +257,17 @@ DEFINE_EDM_PLUGIN(BufferFactory, %(buffername)s_t,
                   "%(buffername)s");\n''' % names
 
 	undofile = "%(plugindir)s/.undo.userplugin_%(filename)s.cc" % names
-	open(undofile,'w').write('\n')
+	#open(undofile,'w').write('\n')
 	
 	filename = "%(plugindir)s/userplugin_%(filename)s.cc" % names
-	out  = open(filename, "w")
+	#out  = open(filename, "w")
 	out.write(template)
 	out.close()
 #------------------------------------------------------------------------------
 def undo():
+	print "\n\t\t*** UNDO is broken! Will be fixed soon...."
+	print "\n\t\t*** Alas you must clean up your own mess!"
+	sys.exit(0)
 	names = {}
 	names['subpackage'] = SUBPACKAGE
 	names['plugindir']  = PLUGINDIR
@@ -321,13 +330,6 @@ def undo():
 		print "restore %s" % redofile
 		os.system('mv %s %s' % (t[0], redofile))
 
-## 	cmd = '''
-## 	cd plugins
-## 	rm -rf BuildFile.xml
-## 	scram b -c
-## 	cd ..
-## 	'''
-## 	os.system(cmd)
 	sys.exit(0)
 #------------------------------------------------------------------------------
 def main():
@@ -530,16 +532,15 @@ def main():
 	
 	if find(record, "namespace") < 0:
 		record += "\nnamespace\n{\n}\n"
-		
-	gettemplates = re.compile("(?<={)[^}]+", re.M)
-	rectemps     = gettemplates.findall(record)[0]
-	template = "HelperFor<%(classname)s>" % names
-	if find(rectemps, template) < 0:
+
+	HelperFor = "HelperFor<%(classname)s>" % names
+	
+	if find(record, HelperFor) < 0:
 		updated = True
-		newrec = "  %s t_%s;\n}" % (template,
+		newrec = "  %s t_%s;\n}" % (HelperFor,
 										names['buffername'])
 		record = replace(record, "}", newrec)
-	
+
 	if updated:
 		open(classesfile,'w').write(record)
 		print "\tupdated:       src/classes.h"
@@ -561,20 +562,37 @@ def main():
 		out.write(record)
 		out.close()
 		os.system("cp %s %s" % (classesfile, redofile))
-		
+
+	# Open existing classes_def.xml file
 	record = open(classesfile).read()
+
+	# remove </lcgdict>..it will be added back later
+	record = replace(record, "</lcgdict>", "")
+	record = rstrip(record) + "\n"
+	
+	# If an entry for the appropriate HelperFor
+	# does not exist in the file, add one
+
+	rec = ''
+	if find(record, HelperFor) < 0:
+		updated = True
+		rec += ' <class name="%s"/>\n' % HelperFor
+		rec = rec % names
+		#print "\tADD %s" % HelperFor
+		
+	# If an entry for helper class does not exist, add one
 	if find(record, fullname) < 0:
 		updated = True
-		rec = ' <class name="HelperFor<%(classname)s>"/>\n'
-		rec +=' <class name="%(fullname)s"/>\n</lcgdict>'
+		rec +=' <class name="%(fullname)s"/>\n'
 		rec = rec % names
-		record = replace(record, '</lcgdict>', rec)
-
+		print "\tADD helper class"
+	
+	# Add back </lcgdict>
 	if updated:
+		record += rec + "</lcgdict>\n"
 		open(classesfile,'w').write(record)
 		print "\tupdated:       src/classes_def.xml"
-
-
+		
 	cmd = '''
 	touch BuildFile.xml
 	'''
