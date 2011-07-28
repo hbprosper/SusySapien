@@ -3,7 +3,7 @@
 # File:        mkclassmap.py
 # Description: Create a map of classnames to headers
 # Created:     26-Aug-2010 Harrison B. Prosper
-#$Id: mkclassmap.py,v 1.16 2011/05/07 18:39:14 prosper Exp $
+#$Id: mkclassmap.py,v 1.17 2011/05/30 14:37:09 prosper Exp $
 #---------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
@@ -23,7 +23,7 @@ from PhysicsTools.TheNtupleMaker.Lib import \
 #---------------------------------------------------------------------------
 PACKAGE, SUBPACKAGE, LOCALBASE, BASE, VERSION = cmsswProject()
 if PACKAGE == None:
-	print "Please run me in your sub-package directory"
+	print "Please run me in your package directory"
 	sys.exit(0)
 
 PROJECTBASE = "%s/%s/%s"   % (LOCALBASE, PACKAGE, SUBPACKAGE)
@@ -33,15 +33,16 @@ shortOptions = "Hu:"
 
 USAGE='''
 Usage:
-  mkclassmap.py [options] [sub-package1 [sub-package2...]]
+  mkclassmap.py [options] [package1 [package2...]]
 
   options
-  -u<sub-package-path>   Update classmap by scanning given sub-package-path
+  -u<package-path>   Update classmap by scanning given package-path
 
   example:
       mkclassmap.py -u$CMSSW_BASE/src/MyArea/MyAnalysis
 
-  default sub-packages:
+  default packages:
+                AnalysisDataFormats/* 
                 DataFormats/* 
 				SimDataFormats/*
 				FWCore/Framework
@@ -88,7 +89,8 @@ for option, value in opts:
 if len(subpkgs) > 0:
 	SUBPACKAGELIST = subpkgs
 else:
-	SUBPACKAGELIST = ["DataFormats/*",
+	SUBPACKAGELIST = ["AnalysisDataFormats/*",
+					  "DataFormats/*",
 					  "SimDataFormats/*",
 					  "FWCore/Framework",
 					  "FWCore/Common",
@@ -142,7 +144,7 @@ def main():
 	filelist = []
 	if Update:
 		for subpackage in subpackagelist:
-			print "scan sub-package: %s" % subpackage
+			print "scan package: %s" % subpackage
 			file = "%s/interface/*.h" % subpackage
 			hlist = glob(file)
 			hlist.sort()
@@ -171,7 +173,7 @@ def main():
 					if not os.path.exists(dirpath):
 						"** directory %s not found" % dirpath
 						continue
-				print "scan sub-package: %s/%s" % (package, subsystem)
+				print "scan package: %s/%s" % (package, subsystem)
 				file = "%s/interface/*.h" % dirpath
 				hlist = glob(file)
 				hlist.sort()

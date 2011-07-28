@@ -55,7 +55,7 @@
 //                   Fri Jul 22 2011 HBP - make buffer name and get by label
 //                                   available to buffers
 //
-// $Id: TheNtupleMaker.cc,v 1.8 2011/07/20 16:19:54 prosper Exp $
+// $Id: TheNtupleMaker.cc,v 1.9 2011/07/23 12:33:26 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -148,7 +148,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   : ntuplename_(iConfig.getUntrackedParameter<string>("ntupleName")), 
     output(otreestream(ntuplename_,
                        "Events", 
-                       "created by TheNtupleMaker $Revision: 1.8 $")),
+                       "created by TheNtupleMaker $Revision: 1.9 $")),
     logfilename_("TheNtupleMaker.log"),
     log_(new std::ofstream(logfilename_.c_str())),
     usermacroname_(""),
@@ -169,7 +169,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   // --------------------------------------------------------------------------
   TFile* file = output.file();
   ptree_ = new TTree("Provenance",
-                     "created by TheNtupleMaker $Revision: 1.8 $");
+                     "created by TheNtupleMaker $Revision: 1.9 $");
   string cmsver("unknown");
   if ( getenv("CMSSW_VERSION") > 0 ) cmsver = string(getenv("CMSSW_VERSION"));
   ptree_->Branch("cmssw_version", (void*)(cmsver.c_str()), "cmssw_version/C");
@@ -324,7 +324,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   vector<string> vrecords = iConfig.
     getUntrackedParameter<vector<string> >("buffers");
 
-  boost::regex getmethod("[a-zA-Z][^ ]*[(].*[)][^ ]*|[a-zA-Z]+$");
+  boost::regex getmethod("[a-zA-Z][^ ]*[(].*[)][^ ]*|[a-zA-Z][a-zA-Z0-9]*$");
   boost::smatch matchmethod;
 
   boost::regex isparam("^ *p[a-z] *");
@@ -419,6 +419,8 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
       for(unsigned i=1; i < bufferrecords.size(); i++)
         {
           string record = bufferrecords[i];
+          if ( DEBUG > 0 )
+            cout << "record:   (" << RED << record << BLACK << ")" << endl;
 
           // Check for a Helper parameter
 
@@ -442,7 +444,9 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
                                  "I can't get method name from \n" +
                                  record);
           string method = kit::strip(matchmethod[0]);
-      
+          if ( DEBUG > 0 )
+            cout << "  method(" << method << ")" << endl;
+
           // Get optional method alias name
           
           string varname = method;

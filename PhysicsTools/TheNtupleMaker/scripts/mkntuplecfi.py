@@ -15,8 +15,9 @@
 #              02-Dec-2010 HBP - something in Pat changed (of course!) in 3_8_7
 #                                requiring a different getbranch regex...sigh!
 #              30-May-2011 HBP - use absolute path to methods directory
+#              28-Jul-2011 HBP - handle simple types
 #-----------------------------------------------------------------------------
-#$Id: mkntuplecfi.py,v 1.16 2011/05/07 18:39:14 prosper Exp $
+#$Id: mkntuplecfi.py,v 1.17 2011/05/30 14:37:09 prosper Exp $
 #-----------------------------------------------------------------------------
 import sys, os, re, platform
 from string import *
@@ -54,7 +55,7 @@ REVISION=""
 rev = "" #split(REVISION)[1]
 VERSION        = \
 """
-mkntuplecfi.py %s May 2011
+mkntuplecfi.py %s July 2011
 Python %s
 Root   %s
 """ % (rev,
@@ -69,12 +70,12 @@ TXTDIR    = "txt"
 
 if not os.path.exists(METHODDIR):
 	if not os.path.exists(TXTDIR):
-		cmd = "mkdocs.py"
+		cmd = "mkvomit.py"
 		print "\n%s\n" % cmd
 		
 		os.system(cmd)
 	if not os.path.exists(TXTDIR):
-		print "\t** error ** unable to run mkdocs.py"
+		print "\t** error ** unable to run mkvomit.py"
 		sys.exit(0)
 		
 	cmd = "mkmethodlist.py %s/*.txt" % TXTDIR
@@ -123,7 +124,9 @@ isomethods= re.compile(r'.+Iso')
 ismethods = re.compile(r'is.+')
 
 isRootFile= re.compile(r'[.]root$')
-
+isSimpleType = re.compile(r'^unsigned int|int|float|double')
+isSimpleVectorType = re.compile(r'(?<=vector\<)unsigned int|int'\
+								'|float|double(?=\>)')
 AvectorKey   = re.compile(r'(?<=edm::RefToBaseProd\<).+?(?=\>)')
 AvectorValue = re.compile(r'(?<=vector\<).+?(?=\>)')
 methodname   = re.compile(r'(?<= ).+(?=[(])')
@@ -637,15 +640,25 @@ class Gui:
 			cname = strip(getclass.findall(record)[0])
 
 			# Handle some other types
-			doubleType = cname == "double"
-			vdoubleType= cname == "vector<double>"
+
 			avectorType= find(cname, "edm::AssociationVector") > -1
 
 			# For now ignore AssociationVectors
 			if avectorType: continue
+
+			s = isSimpleType.findall(cname)
+			v = isSimpleVectorType.findall(cname)
+			simpleType = len(s) > 0 or len(v) > 0
+
+			if len(v) > 0:
+				v = joinfields(split(v[0]),'')
+				fname = "%s/vector_%s.txt" % (self.methodDir, v)
+				open(fname, "w").write("%s value()\n" % v)
 			
-			if doubleType or vdoubleType:
-				fname = "%s/doubleHelper.txt" % self.methodDir
+			elif len(s) > 0:
+				s = joinfields(split(s[0]),'')
+				fname = "%s/simple_%s.txt" % (self.methodDir, s)
+				open(fname, "w").write("%s value()\n" % s)
 
 			elif avectorType:
 				akey   = AvectorKey.findall(cname)[0]
@@ -657,6 +670,10 @@ class Gui:
 			else:
 				fname = "%s/%s.txt" % (self.methodDir,
 									   stripname.sub("", cname))
+
+			##D
+			#print "METHODFILE( %s )\n" % fname
+			
 			if not os.path.exists(fname): continue
 			
 			# methods file found, so read methods
@@ -668,7 +685,7 @@ class Gui:
 				
 				# keep only first method for simple types
 			
-				if doubleType or vdoubleType:
+				if simpleType:
 					methods = methods[:1]
 
 				elif avectorType:
@@ -1171,23 +1188,29 @@ class Gui:
 
 			labels.sort()
 
-			doubleType = cname == "double"
-			vdoubleType= cname == "vector<double>"
 			avectorType= find(cname, "edm::AssociationVector") > -1
 
-			if doubleType:
-				cname = "sdouble"
-			elif vdoubleType:
-				cname = "vdouble"
-			elif avectorType:
-				cname = replace(cname, " ", "")
-				cname = replace(cname, "<->", "")
-									
+			# For now ignore AssociationVectors
+			if avectorType: continue
+
+			s = isSimpleType.findall(cname)
+			v = isSimpleVectorType.findall(cname)
+
 			buffer = stripname.sub("", cname)
+			if len(v) > 0:
+				buffer = "v%s" % (joinfields(split(v[0])))
+			elif len(s) > 0:
+				buffer = "s%s" % (joinfields(split(s[0])))
+			elif avectorType:
+				t = replace(cname, " ", "")
+				t = replace(t, "<->", "")
+				buffer = stripname.sub("", t)
+				
 			blocks.append(buffer)
 
 			##D
-			#print "    buffer(%s)" % buffer
+			#print "TYPE( %s )    BUFFER( %s )" % (cname, buffer)
+			
 			databuf[buffer] = {}
 			databuf[buffer]['buffer']  = buffer
 			databuf[buffer]['label']   = labels[0]

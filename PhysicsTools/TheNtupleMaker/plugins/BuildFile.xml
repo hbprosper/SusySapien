@@ -15,6 +15,13 @@
 <use   name="DataFormats/TrajectorySeed"/>
 <use   name="SimDataFormats/GeneratorProducts"/>
 <use   name="SimDataFormats/Vertex"/>
+
+<use   name="AnalysisDataFormats/EWK"/>
+<use   name="AnalysisDataFormats/Egamma"/>
+<use   name="AnalysisDataFormats/SUSYBSMObjects"/>
+<use   name="AnalysisDataFormats/TopObjects"/>
+<use   name="AnalysisDataFormats/TrackInfo"/>
+
 <use   name="PhysicsTools/TheNtupleMaker"/>
 <use   name="PhysicsTools/UtilAlgos"/>
 <use   name="PhysicsTools/Utilities"/>

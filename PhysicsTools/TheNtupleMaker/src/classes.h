@@ -1,4 +1,4 @@
-//$Revision: 1.4 $
+//$Revision: 1.5 $
 #include "PhysicsTools/TheNtupleMaker/interface/Connection.h"
 #include "PhysicsTools/TheNtupleMaker/interface/Slot.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pdg.h"
@@ -20,6 +20,7 @@
 #include "PhysicsTools/TheNtupleMaker/interface/KDE.h"
 #include "PhysicsTools/TheNtupleMaker/interface/AdBayes.h"
 #include "PhysicsTools/TheNtupleMaker/interface/Bayespack.h"
+#include "PhysicsTools/TheNtupleMaker/interface/analysisDataFormats.h"
 //-----------------------------------------------------------------------------
 #include "TLorentzVector.h"
 #include "TH1F.h"
