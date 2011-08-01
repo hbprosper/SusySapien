@@ -55,7 +55,7 @@
 //                   Fri Jul 22 2011 HBP - make buffer name and get by label
 //                                   available to buffers
 //
-// $Id: TheNtupleMaker.cc,v 1.9 2011/07/23 12:33:26 prosper Exp $
+// $Id: TheNtupleMaker.cc,v 1.10 2011/07/28 10:37:13 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -148,7 +148,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   : ntuplename_(iConfig.getUntrackedParameter<string>("ntupleName")), 
     output(otreestream(ntuplename_,
                        "Events", 
-                       "created by TheNtupleMaker $Revision: 1.9 $")),
+                       "created by TheNtupleMaker $Revision: 1.10 $")),
     logfilename_("TheNtupleMaker.log"),
     log_(new std::ofstream(logfilename_.c_str())),
     usermacroname_(""),
@@ -169,7 +169,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   // --------------------------------------------------------------------------
   TFile* file = output.file();
   ptree_ = new TTree("Provenance",
-                     "created by TheNtupleMaker $Revision: 1.9 $");
+                     "created by TheNtupleMaker $Revision: 1.10 $");
   string cmsver("unknown");
   if ( getenv("CMSSW_VERSION") > 0 ) cmsver = string(getenv("CMSSW_VERSION"));
   ptree_->Branch("cmssw_version", (void*)(cmsver.c_str()), "cmssw_version/C");
@@ -327,7 +327,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   boost::regex getmethod("[a-zA-Z][^ ]*[(].*[)][^ ]*|[a-zA-Z][a-zA-Z0-9]*$");
   boost::smatch matchmethod;
 
-  boost::regex isparam("^ *p[a-z] *");
+  boost::regex isparam("^ *param +");
   boost::smatch matchparam;
 
   for(unsigned ii=0; ii < vrecords.size(); ii++)
@@ -416,6 +416,13 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
       // If the latter is omitted, it is assumed to be the same as the
       // method name.
 
+      // Optionally, the buffer can have parameters given as a key value
+      // pair, e.g.:
+      //
+      // param coneSize = 0.7
+      // 
+      std::map<std::string, std::string> parameters;
+
       for(unsigned i=1; i < bufferrecords.size(); i++)
         {
           string record = bufferrecords[i];
@@ -424,16 +431,17 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
 
           // Check for a Helper parameter
 
-//           if ( boost::regex_search(record, matchparam, isparam) )
-//             {
-//               std::string param = kit::replace(record,
-//                                                matchparam[0], "");
-
-//               string key, value;
-//               kit::bisplit(param, key, value, "=");
-//               paramset.addUntrackedParameter(key, value);
-//               continue;
-//             }
+          if ( boost::regex_search(record, matchparam, isparam) )
+            {
+              std::string param = kit::replace(record,
+                                               matchparam[0], "");
+              string key, value;
+              kit::bisplit(param, key, value, "=");
+              key   = kit::strip(key);
+              value = kit::strip(value);
+              parameters[key] = value;
+              continue;
+            }
 
           // Get method
       
@@ -489,7 +497,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
       // First cache block name, buffer name and get by label so that they are
       // available when the buffer is created.
 
-      Configuration::instance().set(vrecords[ii], buffer, label);
+      Configuration::instance().set(vrecords[ii], buffer, label, parameters);
 
       buffers.push_back( BufferFactory::get()->create(buffer) );
       if (buffers.back() == 0)

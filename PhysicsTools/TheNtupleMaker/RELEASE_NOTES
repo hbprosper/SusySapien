@@ -1,5 +1,12 @@
-$Revision: 1.16 $
+$Revision: 1.17 $
 
+v5_2_1 Jul 31 2011
+------------------
+	1. Introduced param keyword in buffers. Helper classes can accessed buffer
+	specific parameters using the method paramater(string) >> value
+	2. Fix bug in mkhelper.py
+
+	
 v5_2_0 Jul 22 2011
 ------------------
 	1. Fix duplicate class bug in classes_def.xml

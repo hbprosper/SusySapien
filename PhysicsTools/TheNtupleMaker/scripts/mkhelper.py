@@ -3,7 +3,7 @@
 # Create the skeleton of a user plugin
 # Created: 27-Aug-2010 Harrison B. Prosper
 #          22-Jul-2011 HBP - fix duplicate HelperFor bug
-#$Id: mkhelper.py,v 1.2 2011/07/20 16:19:54 prosper Exp $
+#$Id: mkhelper.py,v 1.3 2011/07/23 12:33:26 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -107,6 +107,12 @@ def wrpluginheader(names):
 //         blockname          name of config block 
 //         buffername         name of buffer in config block
 //         labelname          name of label for getByLabel
+//         parameters         parameters (as key, value pairs)
+//
+//                            accessed as in following example:
+//
+//                            float coneSize;
+//                            parameters["coneSize"] >> conesize;
 //
 //         0. hltconfig       pointer to HLTConfigProvider
 //         1. config          pointer to global ParameterSet object
@@ -260,7 +266,7 @@ DEFINE_EDM_PLUGIN(BufferFactory, %(buffername)s_t,
 	#open(undofile,'w').write('\n')
 	
 	filename = "%(plugindir)s/userplugin_%(filename)s.cc" % names
-	#out  = open(filename, "w")
+	out  = open(filename, "w")
 	out.write(template)
 	out.close()
 #------------------------------------------------------------------------------

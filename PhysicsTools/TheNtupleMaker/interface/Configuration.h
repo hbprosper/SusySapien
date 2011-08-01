@@ -10,9 +10,10 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Wed Sep 01, 2010
 //
-// $Id: Configuration.h,v 1.2 2011/07/20 16:19:54 prosper Exp $
+// $Id: Configuration.h,v 1.3 2011/07/23 12:33:25 prosper Exp $
 
 #include <string>
+#include <sstream>
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
 
@@ -38,11 +39,13 @@ public:
   ///
   void set(std::string& blockname,
            std::string& buffername,
-           std::string& labelname)
+           std::string& labelname,
+           std::map<std::string, std::string>& parameters)
   { 
     blockname_  = blockname;
     buffername_ = buffername;
     labelname_  = labelname;
+    parameters_ = parameters;
   }
 
   ///
@@ -52,22 +55,17 @@ public:
   const HLTConfigProvider* getHLTconfig() const { return hltconfig_; }
 
   ///
-  std::string getblockname() const { return blockname_; }
+  std::string getBlockname() const { return blockname_; }
 
   ///
-  std::string getbuffername() const { return buffername_; }
+  std::string getBuffername() const { return buffername_; }
 
   ///
-  std::string getlabelname() const { return labelname_; }
+  std::string getLabelname() const { return labelname_; }
 
-//   ///
-//   void setLocal(const edm::ParameterSet& config) 
-//   { 
-//     localconfig_ = &config;
-//   }
-
-//   ///
-//   const edm::ParameterSet*  getLocal() const { return localconfig_; }
+  ///
+  std::map<std::string, std::string> 
+  getParameters() const { return parameters_; }
 
 private:
   Configuration() {}                               // prevent explicit creation
@@ -77,11 +75,11 @@ private:
   
   const edm::ParameterSet* config_;
   const HLTConfigProvider* hltconfig_;
-  //const edm::ParameterSet* localconfig_;
 
   std::string blockname_;
   std::string buffername_;
   std::string labelname_;
+  std::map<std::string, std::string> parameters_;
 };
 
 #endif

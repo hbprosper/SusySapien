@@ -12,7 +12,7 @@
 //                                   - add GenParticleHelper
 //              Thu Sep 02, 2010 HBP - move HelpFor to separate file
 //              Sat Jun 25, 2011 HBP - add template class for ints etc.
-//$Revision: 1.4 $
+//$Revision: 1.5 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -120,7 +120,6 @@ class BasicType : public HelperFor<X>
 public:
   BasicType() : HelperFor<X>() {}
   virtual ~BasicType() {}
-  X value() const {return (X)0;}
 };
 
 template <>
@@ -158,6 +157,18 @@ public:
   virtual ~BasicType() {}
   double value() const {return *object;}
 };
+
+// template <typename VALUE, typename KEY>
+// class VMap : public HelperFor<edm::ValueMap<VALUE> >
+// {
+// public:
+//   VMap() : HelperFor<edm::ValueMap<VALUE> >() {}
+//   virtual ~VMAP() {}
+//   VALUE get() {ptr()->
+//   //X value() const {return (X)0;}
+//   //X value() const {return get();}
+// };
+
 
 // ----------------------------------------------------------------------------
 // Synonym:

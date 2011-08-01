@@ -6,8 +6,10 @@
 // Description: Base class for helpers
 // Created:     Aug, 2010 Harrison B. Prosper
 //              01 May, 2011 HBP add param
-//$Revision: 1.3 $
+//$Revision: 1.4 $
 //-----------------------------------------------------------------------------
+#include <sstream>
+#include <memory>
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
@@ -18,9 +20,10 @@ template <typename X>
 class HelperFor
 {
 public:
-  HelperFor() : blockname(Configuration::instance().getblockname()),
-                buffername(Configuration::instance().getbuffername()),
-                labelname(Configuration::instance().getlabelname()),
+  HelperFor() : blockname(Configuration::instance().getBlockname()),
+                buffername(Configuration::instance().getBuffername()),
+                labelname(Configuration::instance().getLabelname()),
+                parameters(Configuration::instance().getParameters()),
                 config(Configuration::instance().getConfig()),
                 hltconfig(Configuration::instance().getHLTconfig()),
 
@@ -67,10 +70,51 @@ public:
   virtual void flushEvent() {}
 
   // ---------------- available to user
-
+  
   std::string blockname;
   std::string buffername;
   std::string labelname;
+  std::map<std::string, std::string> parameters;
+
+  
+  template <typename T>
+  T parameter(std::string key)
+  {
+    if ( parameters.find(key) != parameters.end() ) 
+      {
+        T a;
+        std::istringstream iss(parameters[key]);
+        iss >> a;
+        return a;
+      }
+    return (T)0;
+  }
+
+
+  std::string parameter(std::string key)
+  {
+    if ( parameters.find(key) != parameters.end() ) 
+      return parameters[key];
+    else
+      return "";
+  }
+  
+//   template <>
+//   std::string parameter<std::string>(std::string key)
+//   {
+//     if ( parameters.find(key) != parameters.end() ) 
+//       return parameters[key];
+//     else
+//       return "";
+//   }
+  
+ //  std::istringstream& parameter(std::string key)
+  //   {
+//     std::string value("");
+//     if ( parameters.find(key) != parameters.end() ) value = parameters[key];
+//     std::auto_ptr<std::istringstream> iss(new std::istringstream(value));
+//     return *(iss->get());
+//   }
 
   /// Pointer to ParameterSet initialized from config file.
   const edm::ParameterSet* config;
@@ -99,6 +143,7 @@ public:
   /// 
   int count;
 };
+
 
 #endif
 
