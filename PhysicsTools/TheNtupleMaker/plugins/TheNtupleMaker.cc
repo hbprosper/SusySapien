@@ -55,7 +55,7 @@
 //                   Fri Jul 22 2011 HBP - make buffer name and get by label
 //                                   available to buffers
 //                   Mon Aug 08 2011 HBP - allow global alias
-// $Id: TheNtupleMaker.cc,v 1.11 2011/08/01 07:47:55 prosper Exp $
+// $Id: TheNtupleMaker.cc,v 1.12 2011/08/08 15:59:38 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -148,7 +148,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   : ntuplename_(iConfig.getUntrackedParameter<string>("ntupleName")), 
     output(otreestream(ntuplename_,
                        "Events", 
-                       "created by TheNtupleMaker $Revision: 1.11 $")),
+                       "created by TheNtupleMaker $Revision: 1.12 $")),
     logfilename_("TheNtupleMaker.log"),
     log_(new std::ofstream(logfilename_.c_str())),
     usermacroname_(""),
@@ -169,7 +169,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   // --------------------------------------------------------------------------
   TFile* file = output.file();
   ptree_ = new TTree("Provenance",
-                     "created by TheNtupleMaker $Revision: 1.11 $");
+                     "created by TheNtupleMaker $Revision: 1.12 $");
   string cmsver("unknown");
   if ( getenv("CMSSW_VERSION") > 0 ) cmsver = string(getenv("CMSSW_VERSION"));
   ptree_->Branch("cmssw_version", (void*)(cmsver.c_str()), "cmssw_version/C");
@@ -415,6 +415,9 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
         // replace double colon with an "_"
         prefix += string("_") + kit::replace(label, "::", "_");
 
+      // Modify variable name by (optional) varprefix
+      if ( varprefix != "" ) prefix +=  "_" + varprefix;
+
       //DB
       if ( DEBUG > 1 )
         cout 
@@ -489,9 +492,6 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
           string rtype = kit::strip(left);
           right = kit::strip(right);
           if ( right != "" )  varname = right;
-
-          // Modify variable name by (optional) varprefix
-          if ( varprefix != "" ) varname = varprefix + "_" + varname;
 
           // Add to vector of variables
           var.push_back(VariableDescriptor(rtype, method, varname));
