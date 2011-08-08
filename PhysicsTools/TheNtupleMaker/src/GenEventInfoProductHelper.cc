@@ -4,7 +4,7 @@
 // Description: TheNtupleMaker helper class for GenEventInfoProduct
 // Created:     Wed Feb 16 01:43:26 2011
 // Author:      Harrison B. Prosper      
-//$Revision: 1.1.1.1 $
+//$Revision: 1.2 $
 //-----------------------------------------------------------------------------
 #include <stdlib.h>
 #include "PhysicsTools/TheNtupleMaker/interface/GenEventInfoProductHelper.h"
@@ -26,22 +26,22 @@ GenEventInfoProductHelper::GenEventInfoProductHelper()
     throw cms::Exception("NullConfigPointer");
 
   // Get the PDF set
-  pdfsetname_ = string("cteq66.LHgrid");
-  npdfset_ = 44;
-  try
-    {
-      pdfsetname_ = config->getUntrackedParameter<string>("PDFSet");
-    }
-  catch (...)
-    {}
-  try
-    {
-      npdfset_ = config->getUntrackedParameter<int>("numberPDFSets");
-    }
-  catch (...)
-    {}
+  pdfsetname_ = parameter("PDFSets");
+  if ( pdfsetname_ == "" )
+    throw cms::Exception("PDFSetsError") 
+      << "Please specify PDFSets in buffer: " 
+      << blockname << endl;
+
+  string number = parameter("numberOfPDFSets");
+  if ( number == "" )
+    throw cms::Exception("PDFSetsError") 
+      << "Please specify numberOfPDFSets in buffer: "
+      << blockname << endl; 
+
+  npdfset_ = atoi(number.c_str());
   
-  cout << endl << "\t==> using PDF set: " << pdfsetname_ << endl;
+  cout << endl << "\t==> using PDF set:      " << pdfsetname_ << endl;
+  cout << endl << "\t==> number of PDF sets: " << npdfset_ << endl;
 
   LHAPDF::initPDFSet(1, pdfsetname_);
 

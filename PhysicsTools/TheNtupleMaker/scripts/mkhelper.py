@@ -3,7 +3,7 @@
 # Create the skeleton of a user plugin
 # Created: 27-Aug-2010 Harrison B. Prosper
 #          22-Jul-2011 HBP - fix duplicate HelperFor bug
-#$Id: mkhelper.py,v 1.3 2011/07/23 12:33:26 prosper Exp $
+#$Id: mkhelper.py,v 1.4 2011/08/01 07:47:55 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -68,6 +68,7 @@ except:
 #------------------------------------------------------------------------------
 namespace = re.compile(r'^[a-zA-Z]+::')
 doublecolon = re.compile(r'::')
+istemplate = re.compile(r'(?<=\<).+(?=\>)')
 #------------------------------------------------------------------------------
 shortOptions = "u"
 def usage():
@@ -107,12 +108,11 @@ def wrpluginheader(names):
 //         blockname          name of config block 
 //         buffername         name of buffer in config block
 //         labelname          name of label for getByLabel
-//         parameters         parameters (as key, value pairs)
+//         parameter          parameter (as key, value pairs)
 //
 //                            accessed as in following example:
 //
-//                            float coneSize;
-//                            parameters["coneSize"] >> conesize;
+//                            string param = parameter("label");
 //
 //         0. hltconfig       pointer to HLTConfigProvider
 //         1. config          pointer to global ParameterSet object
@@ -360,6 +360,17 @@ def main():
 		usage()
 
 	classname = argv[0]
+	classtype = classname
+	template  = ""
+	
+	# Check for templates
+	t = istemplate.findall(classname)
+	if len(t) > 0:
+		template  = split(classname, '<')[0]
+		classtype = t[0]
+
+	#print "CLASS( %s ) TEMPLATE( %s )" % (classname, template)
+	
 	ctype = argv[1]
 	if len(ctype) != 1:
 		usage()
@@ -373,11 +384,11 @@ def main():
 		postfix = "Helper"
 
 	# Find header associated with class
-	if ClassToHeaderMap.has_key(classname):
-		header = ClassToHeaderMap[classname]
+	if ClassToHeaderMap.has_key(classtype):
+		header = ClassToHeaderMap[classtype]
 	else:
 		header = raw_input('Enter header for class "%s" starting at src: ' %
-						   classname)
+						   classtype)
 		if header == "": sys.exit(0)
 	if type(header) == type([]): header = header[0]
 	
@@ -393,8 +404,13 @@ def main():
 	else:
 		ctype = "false"
 
+	# if template is edm::ValueMap append name of class
+	if template != "":
+		template = split(template, "::")[-1]
+		postfix  = template + postfix
+		
 	# Create names of helper class and associated buffer plugin
-	nspace = namespace.findall(classname)
+	nspace = namespace.findall(classtype)
 	if len(nspace) == 0:
 		nspace = ""
 		nspacewithcolon = ""
@@ -402,8 +418,8 @@ def main():
 		nspacewithcolon = nspace[0]
 		nspace = doublecolon.sub("", nspacewithcolon)
 
-	name  = namespace.sub("",classname) + postfix      # remove namespace
-	bname = doublecolon.sub("", classname) + postfix   # remove "::"
+	name  = namespace.sub("",classtype) + postfix      # remove namespace
+	bname = doublecolon.sub("", classtype) + postfix   # remove "::"
 	filename = doublecolon.sub("", bname)
 	if nspacewithcolon != "":
 		fullname = nspacewithcolon + name
@@ -418,7 +434,7 @@ def main():
 	print "\t               interface/%s.h" % filename
 	print "\t               plugins/userplugin_%s.cc" % filename
 	print
-
+	
 	names = {}
 	names['filename']   = filename
 	names['time']       = ctime(time())
@@ -426,7 +442,11 @@ def main():
 	names['name']       = name
 	names['fullname']   = fullname
 	names['headername'] = upper(bname)
-	names['classname']  = classname
+	if template == "":
+		names['classname']  = classname
+	else:
+		names['classname']  = classname + " "
+	names['classtype']  = classtype
 	
 	names['namespace']  = nspace
 	if nspace != "":
@@ -435,8 +455,12 @@ def main():
 		usingnspace = ""
 	names['usingnamespace']  = usingnspace
 	
-	names['buffername'] = bname		
-	names['header']     = '#include "%s"' % header
+	names['buffername'] = bname
+	if template == "":
+		names['header'] = '#include "%s"' % header
+	else:
+		names['header'] = '#include "DataFormats/Common/interface/ValueMap.h"'\
+						  '\n#include "%s"' % header
 	names['package']    = PACKAGE
 	names['subpackage'] = SUBPACKAGE
 	names['plugindir']  = PLUGINDIR
@@ -544,7 +568,7 @@ def main():
 	if find(record, HelperFor) < 0:
 		updated = True
 		newrec = "  %s t_%s;\n}" % (HelperFor,
-										names['buffername'])
+									names['buffername'])
 		record = replace(record, "}", newrec)
 
 	if updated:

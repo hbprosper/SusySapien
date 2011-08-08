@@ -1,4 +1,13 @@
-$Revision: 1.18 $
+$Revision: 1.19 $
+
+v5_2_3 Aug 08 2011
+------------------
+	1. Modified GenEventInfoProductHelper.cc to use new param mechanism.
+	2. Introduce variable prefix mechanism
+					<label>/<prefix>
+	e.g.
+	GenEventInfoProductHelper	generator/cteq		
+
 
 v5_2_2 Aug 01 2011
 ------------------

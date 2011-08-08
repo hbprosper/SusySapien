@@ -3,7 +3,7 @@
 # File:        mkclassmap.py
 # Description: Create a map of classnames to headers
 # Created:     26-Aug-2010 Harrison B. Prosper
-#$Id: mkclassmap.py,v 1.17 2011/05/30 14:37:09 prosper Exp $
+#$Id: mkclassmap.py,v 1.18 2011/07/28 10:37:13 prosper Exp $
 #---------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
@@ -52,6 +52,7 @@ Usage:
 				FWCore/Utilities
 				FWCore/Common
 				PhysicsTools/TheNtupleMaker
+				<user-sub-system>/<user-package>
 '''
 def usage():
 	print USAGE
@@ -100,6 +101,9 @@ else:
 					  "FWCore/ParameterSet",
 					  "PhysicsTools/TheNtupleMaker"
 					  ]
+	userpackage = "%s/%s" % (PACKAGE, SUBPACKAGE)
+	if not userpackage in SUBPACKAGELIST:
+		SUBPACKAGELIST.append(userpackage)
 #----------------------------------------------------------------------------
 # subsystems to ignore
 
@@ -117,22 +121,29 @@ skipsubsystem = re.compile('Alignment|'\
 skipheader = re.compile('(classes|Fwd|print).h$')
 stripnamespace = re.compile('^[a-zA-Z]+::')
 #----------------------------------------------------------------------------
+## def addToMap(fullkey, key, header, cmap):
+## 	if cmap.has_key(fullkey):
+## 		fullkey2 = "%s*" % fullkey
+## 		if not cmap.has_key(fullkey2):
+## 			cmap[fullkey2] = [cmap[fullkey]]
+## 		cmap[fullkey2].append(header)
+## 	else:
+## 		cmap[fullkey] = header
+
+## 	if cmap.has_key(key):
+## 		key2 = "%s*" % key
+## 		if not cmap.has_key(key2):
+## 			cmap[key2] = [cmap[key]]
+## 		cmap[key2].append(header)
+## 	else:
+## 		cmap[key] = header
+
 def addToMap(fullkey, key, header, cmap):
-	if cmap.has_key(fullkey):
-		fullkey2 = "%s*" % fullkey
-		if not cmap.has_key(fullkey2):
-			cmap[fullkey2] = [cmap[fullkey]]
-		cmap[fullkey2].append(header)
-	else:
+	if not cmap.has_key(fullkey):
 		cmap[fullkey] = header
 
-	if cmap.has_key(key):
-		key2 = "%s*" % key
-		if not cmap.has_key(key2):
-			cmap[key2] = [cmap[key]]
-		cmap[key2].append(header)
-	else:
-		cmap[key] = header
+	if not cmap.has_key(key):
+		cmap[key] = header		
 #============================================================================
 # Main Program
 #============================================================================
@@ -193,7 +204,7 @@ def main():
 			continue
 		
 		file = os.path.abspath(file)
-		
+	
 		# Scan header and parse it for classes
 		
 		record, items = parseHeader(file)
@@ -206,7 +217,7 @@ def main():
 		header = file
 		k = rfind(header, "/src/") # search from right
 		if k > 0: header = header[k+5:]
-		
+
 		names = []
 		for irecord, (record, group, start, end) in enumerate(records):
 

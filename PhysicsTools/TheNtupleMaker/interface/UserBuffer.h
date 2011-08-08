@@ -11,7 +11,7 @@
 //                   Mon Jul 18 HBP - include a partial template 
 //                                    specialization for edm::Event
 //
-// $Id: UserBuffer.h,v 1.5 2011/07/18 23:53:50 prosper Exp $
+// $Id: UserBuffer.h,v 1.6 2011/07/20 16:19:54 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/BufferUtil.h"
@@ -67,11 +67,6 @@ struct UserBuffer  : public BufferThing
     std::cout << "UserBuffer created for objects of type: " 
               << name()
               << std::endl;
-
-    // We need to skip these classes, if we are running over real data
-    boost::regex getname("GenEvent|GenParticle|GenJet|GenRun");
-    boost::smatch m;
-    skipme_ = boost::regex_search(classname_, m, getname);
   }
   
   ///
@@ -94,16 +89,23 @@ struct UserBuffer  : public BufferThing
        std::ofstream& log,
        int debug=0)
   {
+    std::cout << "\t=== Initialize UserBuffer (" 
+              << boost::python::type_id<Y>().name() << ")"
+              << std::endl;
+
     out_    = &out;
     label_  = label;
     prefix_ = prefix;
     var_    = var;
     maxcount_ = maxcount;
     debug_  = debug;
-      
-    std::cout << "\t=== Initialize UserBuffer (" 
-              << boost::python::type_id<Y>().name() << ")"
-              << std::endl;
+     
+    // We need to skip these classes, if we are running over real data
+    boost::regex getname("GenEvent|GenParticle"
+                         "|GenJet|GenRun|genPart|generator");
+    boost::smatch m;
+    std::string tmpstr = classname_ + " " + label_;
+    skipme_ = boost::regex_search(tmpstr, m, getname);
 
     // Get optional crash switch
 

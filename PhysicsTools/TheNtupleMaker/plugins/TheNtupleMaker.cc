@@ -54,8 +54,8 @@
 //                                   in beginRun()
 //                   Fri Jul 22 2011 HBP - make buffer name and get by label
 //                                   available to buffers
-//
-// $Id: TheNtupleMaker.cc,v 1.10 2011/07/28 10:37:13 prosper Exp $
+//                   Mon Aug 08 2011 HBP - allow global alias
+// $Id: TheNtupleMaker.cc,v 1.11 2011/08/01 07:47:55 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -148,7 +148,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   : ntuplename_(iConfig.getUntrackedParameter<string>("ntupleName")), 
     output(otreestream(ntuplename_,
                        "Events", 
-                       "created by TheNtupleMaker $Revision: 1.10 $")),
+                       "created by TheNtupleMaker $Revision: 1.11 $")),
     logfilename_("TheNtupleMaker.log"),
     log_(new std::ofstream(logfilename_.c_str())),
     usermacroname_(""),
@@ -169,7 +169,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   // --------------------------------------------------------------------------
   TFile* file = output.file();
   ptree_ = new TTree("Provenance",
-                     "created by TheNtupleMaker $Revision: 1.10 $");
+                     "created by TheNtupleMaker $Revision: 1.11 $");
   string cmsver("unknown");
   if ( getenv("CMSSW_VERSION") > 0 ) cmsver = string(getenv("CMSSW_VERSION"));
   ptree_->Branch("cmssw_version", (void*)(cmsver.c_str()), "cmssw_version/C");
@@ -327,8 +327,14 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   boost::regex getmethod("[a-zA-Z][^ ]*[(].*[)][^ ]*|[a-zA-Z][a-zA-Z0-9]*$");
   boost::smatch matchmethod;
 
-  boost::regex isparam("^ *param +");
+  boost::regex getparam("^ *param +");
   boost::smatch matchparam;
+
+  boost::regex getvarprefix("(?<=/)[a-zA-Z0-9]+");
+  boost::smatch matchvarprefix;
+
+  boost::regex getlabel("[a-zA-Z0-9]+(?=/)");
+  boost::smatch matchlabel;
 
   for(unsigned ii=0; ii < vrecords.size(); ii++)
     {
@@ -352,7 +358,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
       // Structure containing information about the methods to be called.
       vector<VariableDescriptor> var;
 
-      vector<string> field;              
+      vector<string> field;
       kit::split(record, field);
 
       string buffer = field[0];                 // Buffer name
@@ -362,6 +368,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
 
       string label("");
       string prefix = buffer;
+      string varprefix = "";
       int maxcount=1;
 
       // edmEventHelper does not use getByLabel since it is just a 
@@ -382,6 +389,21 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
 
       // getByLabel
       if ( field.size() > 1 ) label = field[1];
+      if ( boost::regex_search(record, matchvarprefix, getvarprefix) )
+        {
+          varprefix = kit::strip(matchvarprefix[0]);
+          if ( boost::regex_search(record, matchlabel, getlabel) )
+            {
+              field[1] = matchlabel[0];
+              label = field[1];
+            }
+          else
+            // Have a tantrum!
+            throw edm::Exception(edm::errors::Configuration,
+                                 "cfg error: "
+                                 "check getByLabel\n"
+                                 "expected <label>/<prefix>");
+        }
 
       // max object count to store
       if ( field.size() > 2 ) maxcount  = atoi(field[2].c_str());  
@@ -431,7 +453,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
 
           // Check for a Helper parameter
 
-          if ( boost::regex_search(record, matchparam, isparam) )
+          if ( boost::regex_search(record, matchparam, getparam) )
             {
               std::string param = kit::replace(record,
                                                matchparam[0], "");
@@ -468,6 +490,10 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
           right = kit::strip(right);
           if ( right != "" )  varname = right;
 
+          // Modify variable name by (optional) varprefix
+          if ( varprefix != "" ) varname = varprefix + "_" + varname;
+
+          // Add to vector of variables
           var.push_back(VariableDescriptor(rtype, method, varname));
 
           if ( DEBUG > 0 )

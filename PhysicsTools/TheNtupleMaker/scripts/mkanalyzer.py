@@ -13,7 +13,7 @@
 #          11-Mar-2011 HBP - fix naming bug
 #          26-Apr-2011 HBP - alert user only if duplicate name is not a leaf
 #                            counter
-#$Id: mkanalyzer.py,v 1.16 2011/05/07 18:39:14 prosper Exp $
+#$Id: mkanalyzer.py,v 1.17 2011/06/07 07:41:55 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
 from string import *
@@ -1187,6 +1187,7 @@ def main():
 	# Create C++ code
 
 	outfilename = "%s/%s.h" % (filename, filename)
+
 	names = {'NAME': upper(filename),
 			 'name': filename,
 			 'time': ctime(time()),
@@ -1201,6 +1202,9 @@ def main():
 	record = TEMPLATE_H % names
 	open(outfilename,"w").write(record)
 
+	###
+	#print "OUT( %s )" % outfilename
+	
 	# Create cc file if one does not yet exist
 	
 	outfilename = "%s/%s.cc" % (filename, filename)
