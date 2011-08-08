@@ -4,7 +4,7 @@
 // Description: TheNtupleMaker helper class for GenEventInfoProduct
 // Created:     Wed Feb 16 01:43:26 2011
 // Author:      Harrison B. Prosper      
-//$Revision: 1.3 $
+//$Revision: 1.4 $
 //-----------------------------------------------------------------------------
 #include <stdlib.h>
 #include "PhysicsTools/TheNtupleMaker/interface/GenEventInfoProductHelper.h"
@@ -40,6 +40,8 @@ GenEventInfoProductHelper::GenEventInfoProductHelper()
 
   npdfset_ = atoi(number.c_str());
   
+  LHAPDF::initPDFSet(1, pdfsetname_);
+
   cout << endl << "\t==> using PDF set:      " << pdfsetname_ << endl;
   cout << endl << "\t==> number of PDF sets: " << npdfset_ << endl;
 
@@ -78,7 +80,6 @@ void GenEventInfoProductHelper::analyzeObject()
 
   // Get pdf central values
 
-  LHAPDF::initPDFSet(1, pdfsetname_);
   LHAPDF::usePDFMember(1, 0);
   pdf1_[0] = LHAPDF::xfx(1, x1, q, id1);
   pdf2_[0] = LHAPDF::xfx(1, x2, q, id2);
