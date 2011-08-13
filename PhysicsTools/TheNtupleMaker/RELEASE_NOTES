@@ -1,5 +1,9 @@
 $Revision: 1.20 $
 
+v5_2_6 Aug 13 2011
+------------------
+	1. Fix usage of LHAPDF in GenEventProductInfoHelper.
+
 v5_2_4 Aug 08 2011
 ------------------
 	1. Fix <label>/<prefix> bug
