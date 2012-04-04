@@ -19,7 +19,7 @@
 // 03/15/2005, RS+SJ: - added option for projecting a 2D histogram onto 
 //                      one axis
 // 08/08/2010, HBP - overload contents
-//$Revision: 1.3 $
+//$Revision: 1.1.1.1 $
 //---------------------------------------------------------------------
 #include "TClass.h"
 #include "TMath.h"
@@ -248,6 +248,11 @@ HistogramCache::str()
   return _os->str();
 }
 
+vector<string>
+HistogramCache::histnames() 
+{
+  return _histnames;
+}
 
 //------------------------------------------------------
 // Private methods
@@ -292,12 +297,13 @@ HistogramCache::_build(TDirectory* dir, int depth)
         {
           TH1* h = (TH1*)o;
           *_os << tab << o->ClassName() << "\t" << h->GetName() << endl;
-          string key = _name(h);
-          _hist[key] = h;
-          
+          string keyname = _name(h);
+          _hist[keyname] = h;
+          _histnames.push_back(keyname);
+
           if ( _verbose )
             { 
-              cout << key;
+              cout << keyname;
               if ( h->IsA()->InheritsFrom("TH3") )
                 cout << "\t3-D";
               else if ( h->IsA()->InheritsFrom("TH2") )

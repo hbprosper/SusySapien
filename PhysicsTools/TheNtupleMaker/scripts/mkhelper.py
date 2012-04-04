@@ -3,7 +3,7 @@
 # Create the skeleton of a user plugin
 # Created: 27-Aug-2010 Harrison B. Prosper
 #          22-Jul-2011 HBP - fix duplicate HelperFor bug
-#$Id: mkhelper.py,v 1.4 2011/08/01 07:47:55 prosper Exp $
+#$Id: mkhelper.py,v 1.5 2011/08/08 15:59:38 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -17,16 +17,16 @@ from PhysicsTools.TheNtupleMaker.Lib import \
 #------------------------------------------------------------------------------
 PACKAGE, SUBPACKAGE, LOCALBASE, BASE, VERSION = cmsswProject()
 if PACKAGE == None:
-	print "Please run me in a sub-package directory:"
-	print "  $CMSSW_BASE/src/<package>/<sub-package>"
+	print "Please run me in a package directory:"
+	print "  $CMSSW_BASE/src/<subsystem>/<package>"
 	sys.exit(0)
 if SUBPACKAGE == None:
-	print "Please run me in a sub-package directory"
-	print "  $CMSSW_BASE/src/<package>/<sub-package>"
+	print "Please run me in a package directory"
+	print "  $CMSSW_BASE/src/<subsystem>/<package>"
 	sys.exit(0)
 #------------------------------------------------------------------------------
-print "Package:     %s" % PACKAGE
-print "Sub-package: %s" % SUBPACKAGE
+print "Subsystem: %s" % PACKAGE
+print "Package:   %s" % SUBPACKAGE
 
 PROJECTBASE = "%s/%s/%s"   % (LOCALBASE, PACKAGE, SUBPACKAGE)
 PLUGINDIR = "%s/plugins"   % PROJECTBASE  
@@ -89,8 +89,8 @@ def wrpluginheader(names):
 	template_header = '''#ifndef %(headername)s_H
 #define %(headername)s_H
 //-----------------------------------------------------------------------------
-// Package:     %(package)s
-// Sub-Package: %(subpackage)s
+// Subsystem:   %(package)s
+// Package:     %(subpackage)s
 // Description: TheNtupleMaker helper class for %(classname)s
 // Created:     %(time)s
 // Author:      %(author)s      
@@ -105,12 +105,11 @@ def wrpluginheader(names):
 // Note: The following variables are automatically defined and available to
 //       all methods:
 //
-//         blockname          name of config block 
+//         blockname          name of config. buffer object (config block) 
 //         buffername         name of buffer in config block
-//         labelname          name of label for getByLabel
+//         labelname          name of label in config block (for getByLabel)
 //         parameter          parameter (as key, value pairs)
-//
-//                            accessed as in following example:
+//                            accessed as in the following example:
 //
 //                            string param = parameter("label");
 //
@@ -145,7 +144,7 @@ public:
   
   // -- Access Methods
 
-  // -- e.g., int pt() const;
+  // -- e.g., double pt() const;
   
 private:
   // -- internals
@@ -172,7 +171,7 @@ namespace %(namespace)s
   
 	// -- Access Methods
 
-	// -- e.g., int pt() const;
+	// -- e.g., double pt() const;
 	 
   private:
     // -- internals
@@ -186,22 +185,17 @@ namespace %(namespace)s
 	else:
 		record = template_header + template_withnamespace
 	record = record % names
-
-	if os.path.exists(filename):
-		redofile = "%(incdir)s/.redo.%(filename)s.h" % names
-		#os.system("cp %s %s" % (filename, redofile))
-	else:
-		undofile = "%(incdir)s/.undo.%(filename)s.h" % names
-		#open(undofile,'w').write('\n')
 		
 	out  = open(filename, "w")
 	out.write(record)
 	out.close()
+	undofile = "%(incdir)s/.undo.%(filename)s.h" % names
+	open(undofile,'w').write('\n')
 #------------------------------------------------------------------------------
 def wrplugincode(names):
 	template = '''//-----------------------------------------------------------------------------
-// Package:     %(package)s
-// Sub-Package: %(subpackage)s
+// Subsystem:   %(package)s
+// Package:     %(subpackage)s
 // Description: TheNtupleMaker helper class for %(classname)s
 // Created:     %(time)s
 // Author:      %(author)s      
@@ -238,21 +232,17 @@ using namespace std;
 
 	
 	filename = "%(srcdir)s/%(filename)s.cc" % names
-	if os.path.exists(filename):
-		redofile = "%(srcdir)s/.redo.%(filename)s.cc" % names
-		#os.system("cp %s %s" % (filename, redofile))
-	else:
-		undofile = "%(srcdir)s/.undo.%(filename)s.cc" % names
-		#open(undofile,'w').write('\n')
 		
 	out  = open(filename, "w")
 	out.write(template)
 	out.close()
+	undofile = "%(srcdir)s/.undo.%(filename)s.cc" % names
+	open(undofile,'w').write('\n')
 #------------------------------------------------------------------------------
 def wrplugin(names):	
 	template = '''// ----------------------------------------------------------------------------
 // Created: %(time)s by mkhelper.py
-// Author:      %(author)s      
+// Author:  %(author)s      
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/UserBuffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
@@ -263,6 +253,7 @@ DEFINE_EDM_PLUGIN(BufferFactory, %(buffername)s_t,
                   "%(buffername)s");\n''' % names
 
 	undofile = "%(plugindir)s/.undo.userplugin_%(filename)s.cc" % names
+	
 	#open(undofile,'w').write('\n')
 	
 	filename = "%(plugindir)s/userplugin_%(filename)s.cc" % names
@@ -271,9 +262,9 @@ DEFINE_EDM_PLUGIN(BufferFactory, %(buffername)s_t,
 	out.close()
 #------------------------------------------------------------------------------
 def undo():
-	print "\n\t\t*** UNDO is broken! Will be fixed soon...."
-	print "\n\t\t*** Alas you must clean up your own mess!"
-	sys.exit(0)
+## 	print "\n\t\t*** UNDO is broken! Will be fixed soon...."
+## 	print "\n\t\t*** Alas you must clean up your own mess!"
+## 	sys.exit(0)
 	names = {}
 	names['subpackage'] = SUBPACKAGE
 	names['plugindir']  = PLUGINDIR
@@ -287,26 +278,26 @@ def undo():
 		print "delete %s" % undofile
 		os.system('rm -rf %s; rm -rf %s' % (undofile, t[0]))
 
-	# redo plugins/BuildFile.xml
-	t = glob("%(plugindir)s/.redo.BuildFile.xml" % names)
+	# undo plugins/BuildFile.xml
+	t = glob("%(plugindir)s/.undo.BuildFile.xml" % names)
 	if len(t) > 0:
-		redofile = replace(t[0], '.redo.', '')
-		print "restore %s" % redofile
-		os.system('mv %s %s; rm -rf' % (t[0], redofile))
+		undofile = replace(t[0], '.undo.', '')
+		print "restore %s" % undofile
+		os.system('mv %s %s' % (t[0], undofile))
 
-	# redo src/classes.h
-	t = glob("%(srcdir)s/.redo.classes.h" % names)
+	# undo src/classes.h
+	t = glob("%(srcdir)s/.undo.classes.h" % names)
 	if len(t) > 0:
-		redofile = replace(t[0], '.redo.', '')
-		print "restore %s" % redofile
-		os.system('mv %s %s' % (t[0], redofile))
+		undofile = replace(t[0], '.undo.', '')
+		print "restore %s" % undofile
+		os.system('mv %s %s' % (t[0], undofile))
 
-	# redo src/classes_def.xml
-	t = glob("%(srcdir)s/.redo.classes_def.xml" % names)
+	# undo src/classes_def.xml
+	t = glob("%(srcdir)s/.undo.classes_def.xml" % names)
 	if len(t) > 0:
-		redofile = replace(t[0], '.redo.', '')
-		print "restore %s" % redofile
-		os.system('mv %s %s' % (t[0], redofile))
+		undofile = replace(t[0], '.undo.', '')
+		print "restore %s" % undofile
+		os.system('mv %s %s' % (t[0], undofile))
 				
 	# undo user plugin source
 	t = glob("%(srcdir)s/.undo.*.cc" % names)
@@ -315,12 +306,12 @@ def undo():
 		print "delete %s" % undofile
 		os.system('rm -rf %s; rm -rf %s' % (undofile, t[0]))
 
-	# redo user plugin source
-	t = glob("%(srcdir)s/.redo.*.cc" % names)
+	# undo user plugin source
+	t = glob("%(srcdir)s/.undo.*.cc" % names)
 	if len(t) > 0:
-		redofile = replace(t[0], '.redo.', '')
-		print "restore %s" % redofile
-		os.system('mv %s %s' % (t[0], redofile))
+		undofile = replace(t[0], '.undo.', '')
+		print "restore %s" % undofile
+		os.system('mv %s %s' % (t[0], undofile))
 
 	# undo user plugin header
 	t = glob("%(incdir)s/.undo.*.h" % names)
@@ -329,12 +320,12 @@ def undo():
 		print "delete %s" % undofile
 		os.system('rm -rf %s; rm -rf %s' % (undofile, t[0]))
 
-	# redo user plugin header
-	t = glob("%(incdir)s/.redo.*.h" % names)
+	# undo user plugin header
+	t = glob("%(incdir)s/.undo.*.h" % names)
 	if len(t) > 0:
-		redofile = replace(t[0], '.redo.', '')
-		print "restore %s" % redofile
-		os.system('mv %s %s' % (t[0], redofile))
+		redofile = replace(t[0], '.undo.', '')
+		print "restore %s" % undofile
+		os.system('mv %s %s' % (t[0], undofile))
 
 	sys.exit(0)
 #------------------------------------------------------------------------------
@@ -393,11 +384,13 @@ def main():
 	if type(header) == type([]): header = header[0]
 	
 	# Check that header exists
-	filename = "%s/%s" % (BASE, header)
+	filename = "%s%s" % (LOCALBASE, header)
 	if not os.path.exists(filename):
-		print "\t** can't find %s" % filename
-		sys.exit(0)
-	
+		filename = "%s%s" % (BASE, header)
+		if not os.path.exists(filename):
+			print "\t** can't find %s" % filename
+			sys.exit(0)
+		
 	# Objects of this type can be singletons or form collections
 	if ctype in ['s', 'S']:
 		ctype = "true"
@@ -430,6 +423,7 @@ def main():
 	print "header: %s\n" % header
 	print "\thelper class:  %s" % nspacewithcolon+name
 	print "\thelper buffer: %s" % bname
+	print ""
 	print "\thelper code:   src/%s.cc" % filename
 	print "\t               interface/%s.h" % filename
 	print "\t               plugins/userplugin_%s.cc" % filename
@@ -468,6 +462,14 @@ def main():
 	names['incdir']     = INCDIR
 	names['author']     = AUTHOR
 	#------------------------------------------------------------------------
+
+	# delete previous .undo. files
+	os.system('''
+	rm -rf src/.undo.*
+	rm -rf plugins/.undo.*
+	rm -rf interface/.undo.*
+	''')
+	
 	wrpluginheader(names)
 	wrplugincode(names)
 	wrplugin(names)
@@ -477,9 +479,9 @@ def main():
 	#------------------------------------------------------------------------
 	updated = False
 	buildfile = "%s/BuildFile.xml" % PLUGINDIR
-	redofile  = "%s/.redo.BuildFile.xml" % PLUGINDIR
+	undofile  = "%s/.undo.BuildFile.xml" % PLUGINDIR
 	if os.path.exists(buildfile):
-		os.system("cp %s %s" % (buildfile, redofile))
+		os.system("cp %s %s" % (buildfile, undofile))
 	else:
 		updated = True
 		out = open(buildfile, 'w')
@@ -526,10 +528,10 @@ def main():
 	#------------------------------------------------------------------------
 	updated = False
 	classesfile = "%s/classes.h" % SRCDIR
-	redofile = "%s/.redo.classes.h" % SRCDIR
+	undofile = "%s/.undo.classes.h" % SRCDIR
 	
 	if os.path.exists(classesfile):
-		os.system("cp %s %s" % (classesfile, redofile))
+		os.system("cp %s %s" % (classesfile, undofile))
 	else:
 		updated = True
 		out = open(classesfile, 'w')
@@ -538,7 +540,7 @@ def main():
 		names
 		out.write(record)
 		out.close()
-		os.system("cp %s %s" % (classesfile, redofile))
+		os.system("cp %s %s" % (classesfile, undofile))
 
 	record = open(classesfile).read()
 
@@ -580,9 +582,9 @@ def main():
 	#------------------------------------------------------------------------
 	updated = False
 	classesfile = "%s/classes_def.xml" % SRCDIR
-	redofile = "%s/.redo.classes_def.xml" % SRCDIR
+	undofile = "%s/.undo.classes_def.xml" % SRCDIR
 	if os.path.exists(classesfile):
-		os.system("cp %s %s" % (classesfile, redofile))
+		os.system("cp %s %s" % (classesfile, undofile))
 	else:
 		updated = True
 		out = open(classesfile, 'w')
@@ -591,7 +593,7 @@ def main():
 		'''
 		out.write(record)
 		out.close()
-		os.system("cp %s %s" % (classesfile, redofile))
+		os.system("cp %s %s" % (classesfile, undofile))
 
 	# Open existing classes_def.xml file
 	record = open(classesfile).read()
@@ -615,7 +617,6 @@ def main():
 		updated = True
 		rec +=' <class name="%(fullname)s"/>\n'
 		rec = rec % names
-		print "\tADD helper class"
 	
 	# Add back </lcgdict>
 	if updated:

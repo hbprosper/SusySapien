@@ -4,7 +4,8 @@
 #              from either xml2boost.py or header2xml.
 # Created: 19-May-2006 Harrison B. Prosper
 #          18-Sep-2010 HBP use updated version of convert2html
-#$Revision: 1.1 $
+#          31-Mar-2012 HBP parseHeader now extract typedefs 
+#$Revision: 1.1.1.1 $
 #---------------------------------------------------------------------------
 from ROOT import *
 from string import *
@@ -1096,26 +1097,32 @@ def fatal(s):
 #---------------------------------------------------------------------------
 # Use (homegrown) CPP to clean-up header before parsing
 #---------------------------------------------------------------------------
-cpp_namespace = '^ *namespace +[a-zA-Z]+\s*{'
-cpp_tclassname = '^ *template +<[^>]+>\s*class +\w+\s*\w*\s*[^{;]+{'
-cpp_classname = '^ *class +\w+\s*\w*\s*[^{;]+{'
+cpp_namespace  = '^ *namespace +[a-zA-Z]+\s*{'
+cpp_tclassname = '^ *template *<[^>]+>\s*class +\w+\s*\w*\s*[^{;]+{'
+cpp_classname  = '^ *class +\w+\s*\w*\s*[^{;]+{'
 
-cpp_tstructname = '^ *template +<[^>]+>\s*struct +\w+\s*\w*\s*[^{;]+{'
+cpp_tstructname= '^ *template +<[^>]+>\s*struct +\w+\s*\w*\s*[^{;]+{'
 cpp_structname = '^ *struct +\w+\s*\w*\s*[^{;]+{'
-
-cpp_leftbrace = '{'
+cpp_typedef    = '^ *typedef +\w+\s*\w*\s*[^;]+'
+cpp_leftbrace  = '{'
 cpp_rightbrace = '};|}'
 
-cpp_stripbodies = re.compile('(?<={|})\s*{\s*};?', re.M)
+cpp_stripbodies= re.compile('(?<={|})\s*{\s*};?', re.M)
 
 cpp_regex = joinfields([cpp_namespace,
 						cpp_tclassname,
 						cpp_classname,
 						cpp_tstructname,
 						cpp_structname,
+						cpp_typedef,
 						cpp_leftbrace,
 						cpp_rightbrace],'|')
 cpp_search= re.compile(cpp_regex, re.M)
+
+gettypedefs  = re.compile('^ *typedef +\w+ *\w* *.*; *$', re.M)
+gettypedefs  = re.compile('^ *typedef .*$', re.M)
+gettypedefs  = re.compile('^ *typedef [a-zA-Z0-9:_<>, ]+$', re.M)
+skipdefs     = re.compile('typename|iterator|_type')
 
 # Find different comment styles
 
@@ -1314,11 +1321,25 @@ def findAllSame(regex,s):
 #===========================================================================
 def parseHeader(file):
 	record = strip(open(file).read())
+
 	# ---------------------------------------------------
 	# Clean up with CPP
 	# ---------------------------------------------------
 	items = {}
 	record = cpp(record, items)
+
+	# ---------------------------------------------------
+	# Change format of typedefs so that they can be
+	# processed the same way as classes
+	# ---------------------------------------------------
+	tdefs = gettypedefs.findall(record)
+	for td in tdefs:
+		td = strip(td)
+		if skipdefs.search(td) != None: continue
+
+		t = split(td)
+		rec = "\tclass %s {\n\t};" % t[-1]
+		record = replace(record, td, rec)
 
 	# ---------------------------------------------------
 	# Find namespace preambles and ends and replace them.
@@ -1503,8 +1524,12 @@ def classMethods(classname, db, depth=0):
 
 		name  = m.Name()		
 		mtype = m.TypeOf().Name(SCOPED)
+		t = split(mtype, '(')
 
-		rtype, args = split(mtype, '(')
+		# keep methods with simple arguments
+		if len(t) != 2:  continue
+		rtype = strip(t[0])
+		args  = strip(t[1])
 		args  = replace('(%s' % args, '(void)', '()')
 
 		# In C++ there is no overloading across scopes

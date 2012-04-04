@@ -45,7 +45,8 @@
 //                                PhysicsTools/TheNtupleMaker
 //          22-Nov-2010 Allow reading of multiple trees using friend
 //                      mechanism
-//$Revision: 1.1.1.1 $
+//          22-Nov-2011 Handle storing of strings
+//$Revision: 1.2 $
 //----------------------------------------------------------------------------
 #include <vector>
 #include <string>
@@ -222,6 +223,12 @@ class itreestream
   ///
   void   select(std::string namen, unsigned short& datum);
 
+  ///
+  void   select(std::string namen, std::string& datum);
+
+//   ///
+//   void   select(std::string namen, std::string& datum);
+
   /** Specify the name of a vector-valued variable to be read and give the
       address of a buffer into which its values are to be written. 
       The size of the (vector) buffer determines the maximum number of elements
@@ -244,6 +251,9 @@ class itreestream
 
   ///
   void   select(std::string namen, std::vector<short>& data);
+
+  ///
+  void   select(std::string namen, std::vector<char>& data);
 
   ///
   void   select(std::string namen, std::vector<unsigned long>& data);
@@ -407,6 +417,9 @@ class otreestream
   ///
   void   add(std::string namen, unsigned short& datum);
 
+  ///
+  void   add(std::string namen, std::string& datum);
+
   /** Specify the name of a variable to be added to the tree and and the 
       address from which its value is to be read. <p>Note: <i>name</i> 
       can have the form
@@ -430,6 +443,9 @@ class otreestream
   void   add(std::string namen, std::vector<short>& data);
 
   ///
+  void   add(std::string namen, std::vector<char>& data);
+
+  ///
   void   add(std::string namen, std::vector<unsigned long>& data);
 
   ///
@@ -437,7 +453,6 @@ class otreestream
 
   ///
   void   add(std::string namen, std::vector<unsigned short>& data);
-
 
   ///
   void   add(std::string namen);
@@ -501,6 +516,7 @@ class otreestream
   SelectedData selecteddata;
 
   std::vector<std::string>      branchname;
+  std::vector<int*> strsize;
 
   void _add(std::string name, void* address, int maxsize,
 	    char srctype, char iotype, bool isvector=false);

@@ -8,7 +8,7 @@
 //
 // Created: 11-Oct-2004 Harrison B. Prosper
 // Updated: 08-Aug-2010 HBP overload contents
-// $Revision: 1.3 $
+// $Revision: 1.1.1.1 $
 //--------------------------------------------------------------------
 #include <map>
 #include <stack>
@@ -70,6 +70,8 @@ public:
 
   /// List contents of cache.
   std::string           str();
+
+  std::vector<std::string>   histnames();
     
 private:
   
@@ -81,7 +83,7 @@ private:
   
   std::stack<std::string>     _path;
   std::map<std::string, TH1*> _hist;
-  
+  std::vector<std::string>    _histnames;
   std::string _name(TH1* h);
   void        _check(int depth);
   void        _build(TDirectory* d, int depth=-1);

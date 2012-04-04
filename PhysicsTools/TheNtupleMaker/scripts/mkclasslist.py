@@ -1,77 +1,117 @@
 #!/usr/bin/env python
 #------------------------------------------------------------------------------
-# create classes.txt
+# create classlist.txt
 # Created: 05-Jan-2010 Harrison B. Prosper
 # Updated: 08-Aug-2010 HBP minor fix before release
 #          25-Aug-2010 HBP add a few more classes (by hand)
-#$Id: mkclasslist.py,v 1.16 2011/05/07 18:39:14 prosper Exp $
+#          31-Mar-2012 HBP use directories defined by classmap.py
+#                      simplify classes.txt format to one class per line
+#$Id: mkclasslist.py,v 1.17 2011/05/30 14:37:09 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
+from PhysicsTools.TheNtupleMaker.classmap import ClassToHeaderMap
+from PhysicsTools.TheNtupleMaker.Lib import cmsswProject
 #------------------------------------------------------------------------------
+PACKAGE, SUBPACKAGE, LOCALBASE, BASE, VERSION = cmsswProject()
 cwd = os.path.basename(os.environ['PWD'])
-if cwd != "plugins":
-	print "\t** must be run from plugins directory"
+if PACKAGE == None:
+	print "\n\t** Must be run from package directory"
 	sys.exit(0)
 
 # Extract getByLabel strings using a non-greedy search
+getclass1  = re.compile(r'(?<=edm::Wrapper\<).+(?=\>")')
+getclass2  = re.compile(r'(?<=edm::Wrapper\<).+(?=\> ")')
 getfields = re.compile(r'(?<=")[^ ]*?(?=")')
-isvector  = re.compile(r'^(?<=std::)?vector<')
-isAvector = re.compile(r'edm::AssociationVector<')
-skipme    = re.compile('Collection|edmNew|'\
-					   'AssociationMap|ValueMap|RangeMap|OwnVector')
+isvector  = re.compile(r'(?<=std::vector\<).+(?=\>)')
+isAvector = re.compile(r'^(?<=edm::AssociationVector\<).+(?=\>)$')
+
+# classes to exclude
+skipme    = re.compile('edmNew|'\
+					   'edm::Ref|'\
+					   '[*]|'\
+					   'Collection|'\
+					   'RefVector|'
+					   'PtrVector|'
+					   'AssociationMap|'\
+					   'ValueMap|'\
+					   'RangeMap|'\
+					   'OwnVector|'\
+					   'DetSet|'\
+					   'Lazy')
 #------------------------------------------------------------------------------
 argv = sys.argv[1:]
 argc = len(argv)
-if argc == 0:
-	print "Usage:\n  mkclasslist.py <root-file> [root-file]\n"
-	sys.exit(0)
 
-# Get list of branches
+# Get list of directories
 
-record = ''
-for rootfile in argv:
-	if not os.path.exists(rootfile):
-		print "*** error *** File %s not found" % rootfile
-		sys.exit(0)
-		
-	print "\tlisting branches for file: %s" % rootfile
-	cmd = "edmDumpEventContent %s" % rootfile
-	record += os.popen(cmd).read()
-records = split(record, '\n')
+values = ClassToHeaderMap.values()
+values.sort()
+records = {}
+for value in values:
+	t = split(value, "/interface/")
+	records[t[0]] = 0
+records = records.keys()
+records.sort()
 
-# For now, add some stuff by hand **** FIXME LATER
-# It would be more elegant to have something like edmDumpContent <treename>.
+# Get list of classes
 
-records.append('GenRunInfoProduct "generator" "" "HLT."')
-records.append('edm::Event "info" "" "RECO."')
-
-# Get list of classes and labels
-
-print "\t\twriting classes.txt ..."
-tname = {}
+wclasses = []
 for record in records:
-	classname = strip(split(record, '"')[0])
-	fields = getfields.findall(record)
-	if len(fields) == 0: continue
+	xmlfile = "%s/%s/src/classes_def.xml" % (LOCALBASE, record)
+	if not os.path.exists(xmlfile):
+		xmlfile = "%s/%s/src/classes_def.xml" % (BASE, record)
+		if not os.path.exists(xmlfile): continue
+
+	recs = os.popen('grep "edm::Wrapper" %s' % xmlfile).readlines()
+	for rec in recs:
+
+		# fix string before getting class
+		rec = strip(rec)
+		rec = replace(rec, "&lt;", "<")
+		rec = replace(rec, "&gt;", ">")
+
+		classname = getclass1.findall(rec)
+		if len(classname) == 0:
+			classname = getclass2.findall(rec)
+			if len(classname) == 0: continue
+		classname = strip(classname[0])
+		#print classname
+		wclasses.append(classname)
+
+# -------------------------
+# Add some classes by hand
+# -------------------------
+wclasses.append("std::vector<reco::CaloCluster>")
+wclasses.append("std::vector<reco::VertexCompositeCandidate>")
+wclasses.sort()
+#------------------------------------------------------------------------------
+# Get list of classes
+
+print "\t==> writing plugins/classlist.txt ..."
+tname = {}
+for classname in wclasses:
 
 	#Skip a bunch of complicated stuff, for now...
 	if skipme.findall(classname) != []: continue
 	
-	# Determine whether or not this is a singleton
-	if isvector.match(classname) != None:
-		tname["C %s" % classname] = "C"
-	elif isAvector.match(classname) != None:
-		tname["C %s" % classname] = "C"
-	else:
-		tname["S %s" % classname] = "S"
+	# Find singletons and collections
 
+	t = isvector.findall(classname)
+	if len(t) > 0:
+		key = strip(t[0])
+		tname[key] = classname
+	else:
+		if not tname.has_key(classname):
+			tname[classname] = classname
+
+# write out classes
 keys = tname.keys()
 keys.sort()
-out = open("classes.txt",'w')
+records = []
 for index, key in enumerate(keys):
-	record = "%s\n" % key
-	out.write(record)
-out.close()
-
+	records.append("%s\n" % tname[key])
+records.sort()
+print "\t==> number of classes: %d" % len(records) 
+open("plugins/classlist.txt",'w').writelines(records)
 

@@ -13,7 +13,7 @@
 #          11-Mar-2011 HBP - fix naming bug
 #          26-Apr-2011 HBP - alert user only if duplicate name is not a leaf
 #                            counter
-#$Id: mkanalyzer.py,v 1.17 2011/06/07 07:41:55 prosper Exp $
+#$Id: mkanalyzer.py,v 1.18 2011/08/08 15:59:38 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
 from string import *
@@ -82,10 +82,9 @@ TEMPLATE_H =\
 //-----------------------------------------------------------------------------
 // File:        %(name)s.h
 // Description: Analyzer header for ntuples created by TheNtupleMaker
-// Created:     %(time)s by mkntanalyzer.py
+// Created:     %(time)s by mkanalyzer.py
 // Author:      %(author)s
 //-----------------------------------------------------------------------------
-
 // -- System
 
 #include <stdio.h>
@@ -98,17 +97,11 @@ TEMPLATE_H =\
 #include <fstream>
 
 #ifdef PROJECT_NAME
-
-// --- CMSSW
-
 #include "PhysicsTools/TheNtupleMaker/interface/treestream.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pdg.h"
-
 #else
-
 #include "treestream.h"
 #include "pdg.h"
-
 #endif
 
 // -- Root
@@ -121,6 +114,28 @@ TEMPLATE_H =\
 #include "TKey.h"
 #include "TH1F.h"
 #include "TH2F.h"
+//-----------------------------------------------------------------------------
+// -- Declare variables to be read
+//-----------------------------------------------------------------------------
+%(vardecl)s
+//-----------------------------------------------------------------------------
+// --- Structs can be filled by calling fillObjects()
+// --- after the call to stream.read(...)
+//-----------------------------------------------------------------------------
+%(structdecl)s
+%(structimpl)s
+//-----------------------------------------------------------------------------
+// --- Call saveSelectedObjects() just before call to addEvent if
+// --- you wish to save only the selected objects
+//-----------------------------------------------------------------------------
+%(selectimpl)s
+//-----------------------------------------------------------------------------
+// -- Select variables to be read
+//-----------------------------------------------------------------------------
+void selectVariables(itreestream& stream)
+{
+%(selection)s
+}
 //-----------------------------------------------------------------------------
 // -- Utilities
 //-----------------------------------------------------------------------------
@@ -282,25 +297,6 @@ getFilenames(std::string filelist)
 	if ( strip(filename) != "" ) v.push_back(filename);
   return v;
 }
-//-----------------------------------------------------------------------------
-// -- Declare variables to be read
-//-----------------------------------------------------------------------------
-%(vardecl)s
-
-//-----------------------------------------------------------------------------
-// -- Select variables to be read
-//-----------------------------------------------------------------------------
-void selectVariables(itreestream& stream)
-{
-%(selection)s
-}
-
-//-----------------------------------------------------------------------------
-// --- These structs can be filled by calling fillObjects()
-// --- after the call to stream.read(...)
-//-----------------------------------------------------------------------------
-%(structdecl)s
-%(structimpl)s
 
 #endif
 '''
@@ -399,7 +395,10 @@ int main(int argc, char** argv)
 
 	  // Uncomment the following line if you wish to copy variables into
 	  // structs. See the header file %(name)s.h to find out what structs
-	  // are available.
+	  // are available. Each struct contains the field "selected", which
+	  // can be set as needed. Call saveSelectedObjects() before a call to
+	  // addEvent if you wish to save only the selected objects.
+	  
 	  // fillObjects();
 	  
 	  // ---------------------
@@ -917,7 +916,7 @@ def main():
 	else:
 		varfilename = "variables.txt"
 	if not os.path.exists(varfilename):
-		print "mkntanalyzer.py - can't find variable file: %s" % varfilename
+		print "mkanalyzer.py - can't find variable file: %s" % varfilename
 		sys.exit(0)
 
 	# Read variable names
@@ -1098,9 +1097,18 @@ def main():
 	structdecl = []
 	structimpl = []
 
+	selectdecl = []
+	selectimpl = []
+	
+	selectimpl.append('void saveSelectedObjects()')
+	selectimpl.append('{')
+	selectimpl.append('  if ( ! fillObjectsCalled ) return;')
+	selectimpl.append('  int n = 0;')
+
+	structimpl.append('static bool fillObjectsCalled = false;')
 	structimpl.append('void fillObjects()')
 	structimpl.append('{')
-
+	structimpl.append('  fillObjectsCalled = true;')
 	for index, objname in enumerate(keys):
 		values = vectormap[objname]
 		varname= values[0][-2];
@@ -1108,24 +1116,43 @@ def main():
 		structimpl.append('')
 		structimpl.append('  %s.resize(%s.size());' % (objname, varname))
 		structimpl.append('  for(unsigned int i=0; i < %s.size(); ++i)' % \
-						  varname)
+						  objname)
 		structimpl.append('    {')
+		structimpl.append('      %s[i].selected\t= false;' % objname)
+
+		selectimpl.append('')
+		selectimpl.append('  n = 0;')
+		selectimpl.append('  for(unsigned int i=0; i < %s.size(); ++i)' % \
+						  objname)
+		selectimpl.append('    {')
+		selectimpl.append('      if ( ! %s[i].selected ) continue;' % \
+						  objname)
 
 		structdecl.append('struct %s_s' % objname)
 		structdecl.append('{')
+
+		structdecl.append('  %s\t%s;' % ("bool", "selected"))
+		
 		for rtype, fldname, varname, count in values:
 			# treat bools as ints
 			if rtype == "bool":
 				cast = '(bool)'
 			else:
 				cast = ''
-			
+
+						# this is a vector
+	
 			structdecl.append('  %s\t%s;' % (rtype, fldname))
 
 			structimpl.append('      %s[i].%s\t= %s%s[i];' % (objname,
 															  fldname,
 															  cast,
 															  varname))
+
+			selectimpl.append('      %s[n]\t= %s[i].%s;' % (varname,
+															objname,
+															fldname))
+			
 		structdecl.append('};')
 		structdecl.append('std::vector<%s_s> %s(%d);' % (objname,
 														 objname,
@@ -1146,9 +1173,15 @@ def main():
 		structdecl.append('}')
 		structdecl.append('//-----------------------------------------'
 						  '------------------------------------')
+
+		structimpl.append('    }')
+		selectimpl.append('      n++;')
+		selectimpl.append('    }')
+		selectimpl.append('  n%s = n;' % objname)
 		
-		structimpl.append('    }')	
 	structimpl.append('}')  # end of fillObjects()
+	selectimpl.append('  fillObjectsCalled = false;')
+	selectimpl.append('}')  # end of saveObjects()
 	
 	# Write out files
 
@@ -1196,6 +1229,7 @@ def main():
 			 'selection': join("  ", select, "\n"),
 			 'structdecl': join("", structdecl, "\n"),
 			 'structimpl': join("", structimpl, "\n"),
+			 'selectimpl': join("", selectimpl, "\n"),
 			 'treename': treename,
 			 'percent': '%' }
 

@@ -1,4 +1,18 @@
-$Revision: 1.20 $
+$Revision: 1.22 $
+v5_2_7 Mar 31 2012
+------------------
+	1. change ntuplecfi.py to ntuple_cfi.py. (update mkntuplecfi.py)
+	2. change config.py    to <package>_cfg.py. mkpackage.py updated 
+	3. update mkpackage.py to use new naming scheme
+	4. mkclasslist.py now handles objects such as DiObject<c1, c2>. Changed
+       classes.txt to classlist.txt
+	5. mkplugins.py now updates BuildFiles with packages required to
+	   compile and link plugins.
+	6. added initTNMwCMG.py, which can be used to initialize TheNtupleMaker by
+	   creating python/classmap.py, plugins/classlist.txt and 
+	   plugins/plugins*.cc
+	7. mkanalyzer.py now permits the saving of selected objects.
+
 
 v5_2_6 Aug 13 2011
 ------------------

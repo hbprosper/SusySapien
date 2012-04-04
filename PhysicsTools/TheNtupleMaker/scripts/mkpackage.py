@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # Create the skeleton of a user package
 # Created: 03-Sep-2010 Harrison B. Prosper
-#$Id: mkpackage.py,v 1.16 2011/05/07 18:39:14 prosper Exp $
+#$Id: mkpackage.py,v 1.17 2011/07/20 16:19:54 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -66,14 +66,17 @@ def main():
 	
 	mkdir -p interface
 	mkdir -p python
+	mkdir -p src
+	mkdir -p test
+	mkdir -p bin
+	
 	cp $CMSSW_BASE/src/PhysicsTools/TheNtupleMaker/python/classmap.py python
 	mkdir -p plugins
 	grep "<use " $CMSSW_BASE/src/%(mkntuple)s/plugins/BuildFile.xml > plugins/BuildFile.xml
 	echo -e "<use name=\\"%(pkg)s/%(subpkg)s\\"/>" >> plugins/BuildFile.xml	
-	mkdir -p src
-	mkdir -p test
-	sed -e "s/PhysicsTools.TheNtupleMaker/%(pkg)s.%(subpkg)s/g" $CMSSW_BASE/src/%(mkntuple)s/test/config.py  > test/config.py
-	mkdir -p bin
+
+	sed -e "s/PhysicsTools.TheNtupleMaker/%(pkg)s.%(subpkg)s/g" $CMSSW_BASE/src/%(mkntuple)s/test/thentuplemaker_cfg.py  >  test/%(subpkg)s_cfg.py
+
 	grep "<use " $CMSSW_BASE/src/%(mkntuple)s/bin/BuildFile.xml > bin/BuildFile.xml
 	echo -e "<bin name=\\"%(prog)s\\" file=\\"%(prog)s.cc\\">" >> bin/BuildFile.xml
 	echo -e "</bin>" >> bin/BuildFile.xml

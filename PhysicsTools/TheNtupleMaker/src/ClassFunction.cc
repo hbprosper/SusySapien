@@ -18,7 +18,7 @@
 //                   Sat May 21 2011 HBP - clear memory occupied by objects
 //                                         returned by value
 // 
-// $Id: ClassFunction.cc,v 1.1.1.1 2011/05/04 13:04:29 prosper Exp $
+// $Id: ClassFunction.cc,v 1.1 2011/05/23 08:46:57 prosper Exp $
 //-----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python.hpp>
@@ -37,7 +37,7 @@ using namespace std;
 using namespace ROOT::Reflex;
 //-----------------------------------------------------------------------------
 static bool DBClassFunction = getenv("DBClassFunction")>0 ? true : false; 
-static bool FirstCallToFM=true;
+//static bool FirstCallToFM=true;
 
 RunToTypeMap ClassFunction::donotcall = RunToTypeMap();
 
@@ -69,16 +69,16 @@ ClassFunction::~ClassFunction()
 // Model an instantiable method using the Reflex tools
 
 ClassFunction::ClassFunction(std::string classname, 
-                                    std::string expression)
+                             std::string expression)
   : classname_(classname),
     expression_(expression)
 {
-  if ( FirstCallToFM )
-    {
-      FirstCallToFM = false;
-      cout << endl << "\t==> Using ClassFunction to call methods <=="
-           << endl << endl;
-    }
+//   if ( FirstCallToFM )
+//     {
+//       FirstCallToFM = false;
+//       cout << endl << "\t==> Using ClassFunction to call methods <=="
+//            << endl << endl;
+//     }
 
   if ( DBClassFunction )
     cout << endl 
@@ -136,8 +136,10 @@ ClassFunction::ClassFunction(std::string classname,
       fd.otype       = Type::ByName(fd.classname); // Model parent object
       if ( fd.otype.Name() == "" )
         throw cms::Exception("NullClassName") 
-          << "ClassFunction sadly cannot find type of the object whose method"
-          << " is to be called"
+          << "ClassFunction cannot find type information for class "
+          << classname
+          << " so sadly can't call "
+          << expression
           << endl;
       
       fd.datamember  = false;

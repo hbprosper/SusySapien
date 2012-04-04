@@ -3,7 +3,8 @@
 # File:        mkclassmap.py
 # Description: Create a map of classnames to headers
 # Created:     26-Aug-2010 Harrison B. Prosper
-#$Id: mkclassmap.py,v 1.18 2011/07/28 10:37:13 prosper Exp $
+#              31-Mar-2011 HBP - include typedefs
+#$Id: mkclassmap.py,v 1.19 2011/08/08 15:59:38 prosper Exp $
 #---------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
@@ -86,7 +87,7 @@ for option, value in opts:
 			Update = False
 			PKGBASE = LOCALBASE
 			subpkgs = ["%s/%s", (PACKAGE, SUBPACKAGE)]
-			
+
 if len(subpkgs) > 0:
 	SUBPACKAGELIST = subpkgs
 else:
@@ -139,6 +140,7 @@ stripnamespace = re.compile('^[a-zA-Z]+::')
 ## 		cmap[key] = header
 
 def addToMap(fullkey, key, header, cmap):
+	#print "==>", header
 	if not cmap.has_key(fullkey):
 		cmap[fullkey] = header
 
@@ -202,12 +204,13 @@ def main():
 		if not os.path.exists(file):
 			print "** file %s not found" % file
 			continue
-		
+
 		file = os.path.abspath(file)
 	
 		# Scan header and parse it for classes
 		
 		record, items = parseHeader(file)
+		
 		if record == '': continue
 		records = splitHeader(record)
 		if len(records) == 0: continue
@@ -220,7 +223,8 @@ def main():
 
 		names = []
 		for irecord, (record, group, start, end) in enumerate(records):
-
+			#print "GROUP(%s)" % group
+			
 			# Get actual record from items map
 
 			key = strip(record)

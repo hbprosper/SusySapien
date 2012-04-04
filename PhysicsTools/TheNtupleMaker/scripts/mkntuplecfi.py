@@ -16,16 +16,17 @@
 #                                requiring a different getbranch regex...sigh!
 #              30-May-2011 HBP - use absolute path to methods directory
 #              28-Jul-2011 HBP - handle simple types
+#              24-Mar-2012 HBP - change ntuplecfi to ntuple_cfi
 #-----------------------------------------------------------------------------
-#$Id: mkntuplecfi.py,v 1.17 2011/05/30 14:37:09 prosper Exp $
+#$Id: mkntuplecfi.py,v 1.18 2011/07/28 10:37:13 prosper Exp $
 #-----------------------------------------------------------------------------
 import sys, os, re, platform
 from string import *
 from time import *
 from glob import glob
 from array import array
-from ROOT import *
 from PhysicsTools.TheNtupleMaker.Lib import cmsswProject
+from ROOT import *
 #------------------------------------------------------------------------------
 PACKAGE, SUBPACKAGE, LOCALBASE, BASE, VERSION = cmsswProject()
 PKGDIR = '%s%s/%s' % (LOCALBASE, PACKAGE, SUBPACKAGE)
@@ -33,6 +34,36 @@ PYDIR  = '%s/python' % PKGDIR
 if not os.path.exists(PYDIR):
 	PYDIR = "."	
 
+# Load class list, if it exists
+PLUGINSDIR= "%s/plugins" % PKGDIR
+CLASSLISTFILE = "%sPhysicsTools/TheNtupleMaker/plugins/classlist.txt" % \
+				LOCALBASE
+if os.path.exists(CLASSLISTFILE):
+	records = map(strip, open(CLASSLISTFILE).readlines())
+	CLASSLIST = set(records)
+
+	CLASSLIST.add("double")
+	CLASSLIST.add("float")
+	CLASSLIST.add("long")
+	CLASSLIST.add("int")
+	CLASSLIST.add("short")
+	CLASSLIST.add("bool")
+	CLASSLIST.add("unsigned long")
+	CLASSLIST.add("unsigned int")
+	CLASSLIST.add("unsigned short")
+
+	CLASSLIST.add("std::vector<double>")
+	CLASSLIST.add("std::vector<float>")
+	CLASSLIST.add("std::vector<long>")
+	CLASSLIST.add("std::vector<int>")
+	CLASSLIST.add("std::vector<short>")
+	CLASSLIST.add("std::vector<bool>")
+	CLASSLIST.add("std::vector<unsigned long>")
+	CLASSLIST.add("std::vector<unsigned int>")
+	CLASSLIST.add("std::vector<unsigned short>")
+else:
+	CLASSLIST = set()
+#------------------------------------------------------------------------------
 def usage():
 	print """
 Usage:
@@ -55,7 +86,7 @@ REVISION=""
 rev = "" #split(REVISION)[1]
 VERSION        = \
 """
-mkntuplecfi.py %s July 2011
+mkntuplecfi.py %s March 2012
 Python %s
 Root   %s
 """ % (rev,
@@ -96,7 +127,8 @@ HEIGHT         = 500            # Height of GUI in pixels
 STATUS_PARTS   = array('i')     # Status bar division in percentage
 STATUS_PARTS.append(23)
 STATUS_PARTS.append(77)
-CFI_NAME = "ntuplecfi"
+CFI_NAME = lower(SUBPACKAGE)
+CFI_NAME = "ntuple_cfi"         # Set default config file name
 CFI_LIS  = "%s.lis" % CFI_NAME
 CFI_PY   = "%s.py"  % CFI_NAME
 #-----------------------------------------------------------------------------
@@ -106,6 +138,8 @@ CFI_PY   = "%s.py"  % CFI_NAME
 # Extract branches ending in
 #getbranch = re.compile(r'(?<=\_).+\.edm::EDProduct +/ +.+$',re.M)
 getbranch = re.compile(r'(?<=\_).+\. +/ +edm::Wrapper.+$',re.M)
+getbranch = re.compile(r'(?<=\_).+\. +/ +edm::Wrapper.+$')
+#getbranch = re.compile(r'edm::Wrapper.+$',re.M)
 
 # Extract class name from branch name
 getclass  = re.compile(r'(?<=Wrapper\<).+(?=\>)')
@@ -125,14 +159,22 @@ ismethods = re.compile(r'is.+')
 
 isRootFile= re.compile(r'[.]root$')
 isSimpleType = re.compile(r'^unsigned int|int|float|double')
-isSimpleVectorType = re.compile(r'(?<=vector\<)unsigned int|int'\
-								'|float|double(?=\>)')
+isSimpleVectorType = re.compile(r'(?<=vector\<)(unsigned int|int'\
+								'|float|double)(?=\>)')
 AvectorKey   = re.compile(r'(?<=edm::RefToBaseProd\<).+?(?=\>)')
 AvectorValue = re.compile(r'(?<=vector\<).+?(?=\>)')
 methodname   = re.compile(r'(?<= ).+(?=[(])')
 
 # Strip away namespace, vector< etc.
 stripname = re.compile(r'::|vector\<|\>| ')
+
+def makeUnique(alist):
+	m = {}
+	for x in alist:
+		m[x] = 1
+	k = m.keys()
+	k.sort()
+	return k
 
 def isVector(name):
 	return find(name, "vector<") > -1 or \
@@ -418,7 +460,7 @@ class Gui:
 			self.openButton = TGPictureButton(self.toolBar,
 											  self.openIcon,
 											  B_OPEN)
-			self.openButton.SetToolTipText("Open a RECO, AOD or PAT root file")
+			self.openButton.SetToolTipText("Open an EDM file")
 			self.toolBar.AddFrame(self.openButton, BUTTON_LAYOUT)
 			self.connection.append(Connection(self.openButton,
 											  "Clicked()",
@@ -618,11 +660,45 @@ class Gui:
 		
 		self.progTimer.Stop()
 		self.progressBar.Reset()
+
+		#print record
 		
 		# Get branches
+		# for some reason, getbranch has stopped working (03/31/12)
+		recs = split(record, "\n")
+		records = []
+		for x in recs:
+			t = split(x, '/')
+			if len(t) != 2: continue
 
-		records = getbranch.findall(record)
-		
+			n, l = split(t[0])
+			if l[-1] != ".": continue
+
+			# Get class name
+			c = strip(t[1])
+			cname = strip(getclass.findall(c)[0])
+
+			# Display class only if it is in classlist.txt
+			if len(CLASSLIST) > 0:
+				if cname[:6] == "vector":
+					cnamen = "std::%s" % cname
+				else:
+					cnamen = cname
+					
+				if cnamen not in CLASSLIST:
+					print "\t==> IGNORING: %s" % cnamen
+					continue
+			
+			# Get label name
+			t = split(l, '_')
+			label = "%s" % (t[1])
+			if t[2] != '': label += "_%s" % t[2]
+			
+			records.append( (label, cname) )
+			#print "LABEL(%s) CLASS(%s)" % (label, cname)
+
+		#records = getbranch.findall(record)
+
 		if len(records) == 0:
 			self.statusBar.SetText("** Error", 0)
 			self.statusBar.SetText("No branches found", 1)
@@ -636,9 +712,10 @@ class Gui:
 
 		for record in records:
 			#print "RECORD(%s)" % record
-			label = strip(getlabel.findall(record)[0])
-			cname = strip(getclass.findall(record)[0])
-
+			#label = strip(getlabel.findall(record)[0])
+			#cname = strip(getclass.findall(record)[0])
+			label, cname = record
+			
 			# Handle some other types
 
 			avectorType= find(cname, "edm::AssociationVector") > -1
@@ -1064,11 +1141,13 @@ class Gui:
 
 		filename = fdialog.Filename()
 		self.openDir  = fdialog.IniDir()
+
 		if isRootFile.search(filename) == None:
 			THelpDialog(self.window,
 						"Warning",
 						"Please select a root file!", 230, 50)
-			return 			
+			return
+
 		self.loadData(filename)
 #---------------------------------------------------------------------------
 	def undo(self):
@@ -1192,10 +1271,10 @@ class Gui:
 
 			# For now ignore AssociationVectors
 			if avectorType: continue
-
+			
 			s = isSimpleType.findall(cname)
 			v = isSimpleVectorType.findall(cname)
-
+			
 			buffer = stripname.sub("", cname)
 			if len(v) > 0:
 				buffer = "v%s" % (joinfields(split(v[0])))

@@ -55,7 +55,7 @@
 //                   Fri Jul 22 2011 HBP - make buffer name and get by label
 //                                   available to buffers
 //                   Mon Aug 08 2011 HBP - allow global alias
-// $Id: TheNtupleMaker.cc,v 1.12 2011/08/08 15:59:38 prosper Exp $
+// $Id: TheNtupleMaker.cc,v 1.13 2011/08/08 18:36:10 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -87,6 +87,7 @@
 #include "TSystem.h"
 #include "TMap.h"
 #include "TString.h"
+#include "TApplication.h"
 // ---------------------------------------------------------------------------
 using namespace std;
 // ---------------------------------------------------------------------------
@@ -148,7 +149,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   : ntuplename_(iConfig.getUntrackedParameter<string>("ntupleName")), 
     output(otreestream(ntuplename_,
                        "Events", 
-                       "created by TheNtupleMaker $Revision: 1.12 $")),
+                       "created by TheNtupleMaker $Revision: 1.13 $")),
     logfilename_("TheNtupleMaker.log"),
     log_(new std::ofstream(logfilename_.c_str())),
     usermacroname_(""),
@@ -164,12 +165,14 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
 {
   cout << "\nBEGIN TheNtupleMaker Configuration" << endl;
 
+  string cfg = iConfig.dump();
+
   // --------------------------------------------------------------------------
   // Add a provenance tree to ntuple
   // --------------------------------------------------------------------------
   TFile* file = output.file();
   ptree_ = new TTree("Provenance",
-                     "created by TheNtupleMaker $Revision: 1.12 $");
+                     "created by TheNtupleMaker $Revision: 1.13 $");
   string cmsver("unknown");
   if ( getenv("CMSSW_VERSION") > 0 ) cmsver = string(getenv("CMSSW_VERSION"));
   ptree_->Branch("cmssw_version", (void*)(cmsver.c_str()), "cmssw_version/C");
@@ -185,6 +188,9 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   string username("unknown");
   if ( getenv("USER") > 0 ) username = string(getenv("USER"));
   ptree_->Branch("username", (void*)(username.c_str()), "username/C");
+
+  if ( cfg != "" )
+    ptree_->Branch("cfg", (void*)(cfg.c_str()), "cfg/C");
 
   //ptree_->Branch("inputcount", &inputCount_, "inputcount/I");
 
@@ -737,7 +743,7 @@ TheNtupleMaker::beginRun(const edm::Run& run,
                          const edm::EventSetup& eventsetup)
 {
   // Initialize the HLT configuration every new
-  // run .
+  // run
   // From Josh
   bool hltChanged=false;
   bool okay = hltConfig_.init(run, 

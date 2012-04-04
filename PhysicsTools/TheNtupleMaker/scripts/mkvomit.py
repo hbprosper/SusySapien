@@ -9,7 +9,7 @@
 #              08-Aug-2010 HBP, fix search of user.h in TheNtupleMaker
 #              26-Aug02919 HBP, get list of potential classes from
 #                          python/classmap.py
-#$Id: mkvomit.py,v 1.16 2011/05/07 18:39:14 prosper Exp $
+#$Id: mkvomit.py,v 1.1 2011/07/28 10:37:13 prosper Exp $
 #---------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
@@ -34,8 +34,8 @@ if PACKAGE == None:
 	print "Please run mkvomit.py in your package directory"
 	sys.exit(0)
 	
-print "Sub-System:     %s" % PACKAGE
-print "package: %s" % SUBPACKAGE
+print "Subsystem: %s" % PACKAGE
+print "Package:   %s" % SUBPACKAGE
 
 PROJECTBASE = "%s%s/%s"   % (LOCALBASE, PACKAGE, SUBPACKAGE)
 PLUGINDIR = "%s/plugins"   % PROJECTBASE  
@@ -275,7 +275,7 @@ def main():
 				db['classlist'] = []
 				db['baseclassnames'] = []
 				db['signature'] = {}
-				
+
 				classMethods(fullname, db)
 				db['baseclassnames'] = []
 				classDataMembers(fullname, db)
