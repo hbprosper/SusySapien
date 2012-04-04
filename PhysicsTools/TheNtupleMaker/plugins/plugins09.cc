@@ -1,18 +1,18 @@
 // -------------------------------------------------------------------------
 // File::   plugins09.cc
-// Created: Tue Apr  3 21:16:04 2012 by mkplugins.py
+// Created: Tue Apr  3 21:40:06 2012 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
 // -------------------------------------------------------------------------
 
+#include "DataFormats/CaloRecHit/interface/CaloCluster.h"
 #include "DataFormats/CastorReco/interface/CastorCell.h"
 #include "DataFormats/CastorReco/interface/CastorCluster.h"
 #include "DataFormats/CastorReco/interface/CastorEgamma.h"
 #include "DataFormats/CastorReco/interface/CastorJet.h"
 #include "DataFormats/CastorReco/interface/CastorTower.h"
 #include "DataFormats/EgammaCandidates/interface/Conversion.h"
-#include "DataFormats/EgammaCandidates/interface/Electron.h"
 #include "DataFormats/EgammaReco/interface/BasicCluster.h"
 #include "DataFormats/EgammaReco/interface/ClusterShape.h"
 #include "DataFormats/JetReco/interface/BasicJet.h"
@@ -101,6 +101,11 @@ recoBasicJet_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoBasicJet_t,
                   "recoBasicJet");
 				  
+typedef Buffer<reco::CaloCluster, false>
+recoCaloCluster_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCaloCluster_t,
+                  "recoCaloCluster");
+				  
 typedef Buffer<reco::CaloJet, false>
 recoCaloJet_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoCaloJet_t,
@@ -170,9 +175,4 @@ typedef Buffer<reco::Conversion, false>
 recoConversion_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoConversion_t,
                   "recoConversion");
-				  
-typedef Buffer<reco::Electron, false>
-recoElectron_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoElectron_t,
-                  "recoElectron");
 				  

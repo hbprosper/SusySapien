@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------------
 // File::   plugins12.cc
-// Created: Tue Apr  3 21:16:04 2012 by mkplugins.py
+// Created: Tue Apr  3 21:40:06 2012 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
@@ -13,7 +13,9 @@
 #include "AnalysisDataFormats/SUSYBSMObjects/interface/HSCParticle.h"
 #include "AnalysisDataFormats/TrackInfo/interface/TrackInfo.h"
 #include "DataFormats/Candidate/interface/CompositeCandidate.h"
+#include "DataFormats/Candidate/interface/VertexCompositeCandidate.h"
 #include "DataFormats/EgammaCandidates/interface/SiStripElectron.h"
+#include "DataFormats/EgammaReco/interface/PreshowerCluster.h"
 #include "DataFormats/EgammaReco/interface/PreshowerClusterShape.h"
 #include "DataFormats/EgammaReco/interface/SuperCluster.h"
 #include "DataFormats/HLTReco/interface/HLTPrescaleTable.h"
@@ -33,6 +35,11 @@
 #include "DataFormats/VertexReco/interface/Vertex.h"
 // -------------------------------------------------------------------------
 
+typedef Buffer<reco::PreshowerCluster, false>
+recoPreshowerCluster_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPreshowerCluster_t,
+                  "recoPreshowerCluster");
+				  
 typedef Buffer<reco::PreshowerClusterShape, false>
 recoPreshowerClusterShape_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoPreshowerClusterShape_t,
@@ -107,6 +114,11 @@ typedef Buffer<reco::Vertex, false>
 recoVertex_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoVertex_t,
                   "recoVertex");
+				  
+typedef Buffer<reco::VertexCompositeCandidate, false>
+recoVertexCompositeCandidate_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoVertexCompositeCandidate_t,
+                  "recoVertexCompositeCandidate");
 				  
 typedef Buffer<reco::WMuNuCandidate, false>
 recoWMuNuCandidate_t;

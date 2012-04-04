@@ -18,7 +18,7 @@
 #              28-Jul-2011 HBP - handle simple types
 #              24-Mar-2012 HBP - change ntuplecfi to ntuple_cfi
 #-----------------------------------------------------------------------------
-#$Id: mkntuplecfi.py,v 1.18 2011/07/28 10:37:13 prosper Exp $
+#$Id: mkntuplecfi.py,v 1.19 2012/04/04 01:32:41 prosper Exp $
 #-----------------------------------------------------------------------------
 import sys, os, re, platform
 from string import *
@@ -686,7 +686,7 @@ class Gui:
 					cnamen = cname
 					
 				if cnamen not in CLASSLIST:
-					print "\t==> IGNORING: %s" % cnamen
+					#print "\t==> IGNORING: %s" % cnamen
 					continue
 			
 			# Get label name

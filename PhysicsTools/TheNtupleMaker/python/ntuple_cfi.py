@@ -1,5 +1,5 @@
 #-------------------------------------------------------------------------
-# Created: Tue Aug 24 22:06:57 2010 by /home/harry/CMS/cmssw/CMSSW_3_6_1/src/PhysicsTools/TheNtupleMaker/test/ntuplecfi.py
+# Created: Tue Aug 24 22:06:57 2010 by mkntuplecfi.py
 #-------------------------------------------------------------------------
 import FWCore.ParameterSet.Config as cms
 demo =\

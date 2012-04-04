@@ -235,6 +235,7 @@ std::vector<reco::BaseTau>
 std::vector<reco::BaseTauTagInfo>
 std::vector<reco::BasicCluster>
 std::vector<reco::BasicJet>
+std::vector<reco::CaloCluster>
 std::vector<reco::CaloJet>
 std::vector<reco::CaloMET>
 std::vector<reco::CaloMuon>
@@ -321,6 +322,7 @@ std::vector<reco::TrackInfo>
 std::vector<reco::TrackJet>
 std::vector<reco::V0Candidate>
 std::vector<reco::Vertex>
+std::vector<reco::VertexCompositeCandidate>
 std::vector<reco::WMuNuCandidate>
 std::vector<reco::WMuNuCandidatePtr>
 std::vector<std::pair<reco::CompositeCandidate, std::vector<int> > >

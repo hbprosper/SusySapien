@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------------
 // File::   plugins10.cc
-// Created: Tue Apr  3 21:16:04 2012 by mkplugins.py
+// Created: Tue Apr  3 21:40:06 2012 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
@@ -8,6 +8,7 @@
 
 #include "AnalysisDataFormats/Egamma/interface/ElectronID.h"
 #include "DataFormats/Candidate/interface/LeafCandidate.h"
+#include "DataFormats/EgammaCandidates/interface/Electron.h"
 #include "DataFormats/EgammaCandidates/interface/GsfElectron.h"
 #include "DataFormats/EgammaCandidates/interface/GsfElectronCore.h"
 #include "DataFormats/EgammaReco/interface/ElectronSeed.h"
@@ -31,11 +32,15 @@
 #include "DataFormats/MuonReco/interface/MuonTrackLinks.h"
 #include "DataFormats/ParticleFlowCandidate/interface/IsolatedPFCandidate.h"
 #include "DataFormats/ParticleFlowReco/interface/GsfPFRecTrack.h"
-#include "DataFormats/ParticleFlowReco/interface/PFBlock.h"
 #include "DataFormats/TauReco/interface/HLTTau.h"
 #include "DataFormats/VertexReco/interface/NuclearInteraction.h"
 // -------------------------------------------------------------------------
 
+typedef Buffer<reco::Electron, false>
+recoElectron_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoElectron_t,
+                  "recoElectron");
+				  
 typedef Buffer<reco::ElectronID, false>
 recoElectronID_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoElectronID_t,
@@ -170,9 +175,4 @@ typedef Buffer<reco::NuclearInteraction, false>
 recoNuclearInteraction_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoNuclearInteraction_t,
                   "recoNuclearInteraction");
-				  
-typedef Buffer<reco::PFBlock, false>
-recoPFBlock_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPFBlock_t,
-                  "recoPFBlock");
 				  

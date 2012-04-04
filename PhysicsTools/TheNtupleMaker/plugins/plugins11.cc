@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------------
 // File::   plugins11.cc
-// Created: Tue Apr  3 21:16:04 2012 by mkplugins.py
+// Created: Tue Apr  3 21:40:06 2012 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
@@ -9,7 +9,6 @@
 #include "DataFormats/Candidate/interface/Particle.h"
 #include "DataFormats/EgammaCandidates/interface/Photon.h"
 #include "DataFormats/EgammaCandidates/interface/PhotonCore.h"
-#include "DataFormats/EgammaReco/interface/PreshowerCluster.h"
 #include "DataFormats/JetReco/interface/PFClusterJet.h"
 #include "DataFormats/JetReco/interface/PFJet.h"
 #include "DataFormats/METReco/interface/PFClusterMET.h"
@@ -18,6 +17,7 @@
 #include "DataFormats/ParticleFlowCandidate/interface/PFCandidateElectronExtra.h"
 #include "DataFormats/ParticleFlowCandidate/interface/PFCandidatePhotonExtra.h"
 #include "DataFormats/ParticleFlowCandidate/interface/PileUpPFCandidate.h"
+#include "DataFormats/ParticleFlowReco/interface/PFBlock.h"
 #include "DataFormats/ParticleFlowReco/interface/PFBlockElementSuperCluster.h"
 #include "DataFormats/ParticleFlowReco/interface/PFCluster.h"
 #include "DataFormats/ParticleFlowReco/interface/PFConversion.h"
@@ -36,6 +36,11 @@
 #include "DataFormats/TauReco/interface/PFTauTagInfo.h"
 // -------------------------------------------------------------------------
 
+typedef Buffer<reco::PFBlock, false>
+recoPFBlock_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFBlock_t,
+                  "recoPFBlock");
+				  
 typedef Buffer<reco::PFBlockElementSuperCluster, false>
 recoPFBlockElementSuperCluster_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoPFBlockElementSuperCluster_t,
@@ -170,9 +175,4 @@ typedef Buffer<reco::PreId, false>
 recoPreId_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoPreId_t,
                   "recoPreId");
-				  
-typedef Buffer<reco::PreshowerCluster, false>
-recoPreshowerCluster_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPreshowerCluster_t,
-                  "recoPreshowerCluster");
 				  

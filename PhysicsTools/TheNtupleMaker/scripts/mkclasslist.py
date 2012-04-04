@@ -6,7 +6,7 @@
 #          25-Aug-2010 HBP add a few more classes (by hand)
 #          31-Mar-2012 HBP use directories defined by classmap.py
 #                      simplify classes.txt format to one class per line
-#$Id: mkclasslist.py,v 1.17 2011/05/30 14:37:09 prosper Exp $
+#$Id: mkclasslist.py,v 1.18 2012/04/04 01:32:41 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -94,7 +94,7 @@ for classname in wclasses:
 
 	#Skip a bunch of complicated stuff, for now...
 	if skipme.findall(classname) != []: continue
-	
+	#print classname
 	# Find singletons and collections
 
 	t = isvector.findall(classname)
