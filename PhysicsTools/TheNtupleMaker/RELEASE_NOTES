@@ -1,4 +1,9 @@
-$Revision: 1.22 $
+$Revision: 1.23 $
+
+v5_2_8 Apr 03 2012
+------------------
+	1. Fix typo in initTNMwCMG.py
+
 v5_2_7 Mar 31 2012
 ------------------
 	1. change ntuplecfi.py to ntuple_cfi.py. (update mkntuplecfi.py)

@@ -40,7 +40,7 @@ print "\n\t* Initialize TheNtupleMaker with CMGTools *\n"
 
 # Now execute initialization commands
 
-cmd = "scripts/mkclassmap.py $CMSSW_BASE/src/AnalysisDataFormats/CMGTools"
+cmd = "scripts/mkclassmap.py -u$CMSSW_BASE/src/AnalysisDataFormats/CMGTools"
 print cmd
 os.system(cmd)
 
@@ -48,7 +48,7 @@ cmd = "scripts/mkclasslist.py"
 print cmd
 os.system(cmd)
 
-cmd = "scripys/mkplugins.py"
+cmd = "scripts/mkplugins.py"
 print cmd
 os.system(cmd)
 
