@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------------
 // File::   plugins11.cc
-// Created: Tue Apr  3 22:26:00 2012 by mkplugins.py
+// Created: Thu Apr 12 04:32:19 2012 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
@@ -9,17 +9,13 @@
 #include "DataFormats/Candidate/interface/Particle.h"
 #include "DataFormats/EgammaCandidates/interface/Photon.h"
 #include "DataFormats/EgammaCandidates/interface/PhotonCore.h"
-#include "DataFormats/JetReco/interface/PFClusterJet.h"
+#include "DataFormats/EgammaCandidates/interface/SiStripElectron.h"
+#include "DataFormats/EgammaReco/interface/PreshowerCluster.h"
+#include "DataFormats/EgammaReco/interface/PreshowerClusterShape.h"
+#include "DataFormats/EgammaReco/interface/SuperCluster.h"
 #include "DataFormats/JetReco/interface/PFJet.h"
-#include "DataFormats/METReco/interface/PFClusterMET.h"
 #include "DataFormats/METReco/interface/PFMET.h"
-#include "DataFormats/ParticleFlowCandidate/interface/PFCandidate.h"
-#include "DataFormats/ParticleFlowCandidate/interface/PFCandidateElectronExtra.h"
-#include "DataFormats/ParticleFlowCandidate/interface/PFCandidatePhotonExtra.h"
 #include "DataFormats/ParticleFlowCandidate/interface/PileUpPFCandidate.h"
-#include "DataFormats/ParticleFlowReco/interface/PFBlock.h"
-#include "DataFormats/ParticleFlowReco/interface/PFBlockElementSuperCluster.h"
-#include "DataFormats/ParticleFlowReco/interface/PFCluster.h"
 #include "DataFormats/ParticleFlowReco/interface/PFConversion.h"
 #include "DataFormats/ParticleFlowReco/interface/PFDisplacedTrackerVertex.h"
 #include "DataFormats/ParticleFlowReco/interface/PFDisplacedVertex.h"
@@ -31,51 +27,17 @@
 #include "DataFormats/ParticleFlowReco/interface/PFTrajectoryPoint.h"
 #include "DataFormats/ParticleFlowReco/interface/PFV0.h"
 #include "DataFormats/ParticleFlowReco/interface/PreId.h"
+#include "DataFormats/RecoCandidate/interface/RecoChargedCandidate.h"
+#include "DataFormats/RecoCandidate/interface/RecoChargedRefCandidate.h"
+#include "DataFormats/RecoCandidate/interface/RecoEcalCandidate.h"
+#include "DataFormats/RecoCandidate/interface/RecoPFClusterRefCandidate.h"
 #include "DataFormats/TauReco/interface/PFTau.h"
 #include "DataFormats/TauReco/interface/PFTauDecayMode.h"
 #include "DataFormats/TauReco/interface/PFTauTagInfo.h"
+#include "DataFormats/TauReco/interface/RecoTauPiZero.h"
+#include "DataFormats/TrackReco/interface/Track.h"
 // -------------------------------------------------------------------------
 
-typedef Buffer<reco::PFBlock, false>
-recoPFBlock_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPFBlock_t,
-                  "recoPFBlock");
-				  
-typedef Buffer<reco::PFBlockElementSuperCluster, false>
-recoPFBlockElementSuperCluster_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPFBlockElementSuperCluster_t,
-                  "recoPFBlockElementSuperCluster");
-				  
-typedef Buffer<reco::PFCandidate, false>
-recoPFCandidate_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPFCandidate_t,
-                  "recoPFCandidate");
-				  
-typedef Buffer<reco::PFCandidateElectronExtra, false>
-recoPFCandidateElectronExtra_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPFCandidateElectronExtra_t,
-                  "recoPFCandidateElectronExtra");
-				  
-typedef Buffer<reco::PFCandidatePhotonExtra, false>
-recoPFCandidatePhotonExtra_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPFCandidatePhotonExtra_t,
-                  "recoPFCandidatePhotonExtra");
-				  
-typedef Buffer<reco::PFCluster, false>
-recoPFCluster_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPFCluster_t,
-                  "recoPFCluster");
-				  
-typedef Buffer<reco::PFClusterJet, false>
-recoPFClusterJet_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPFClusterJet_t,
-                  "recoPFClusterJet");
-				  
-typedef Buffer<reco::PFClusterMET, false>
-recoPFClusterMET_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPFClusterMET_t,
-                  "recoPFClusterMET");
-				  
 typedef Buffer<reco::PFConversion, false>
 recoPFConversion_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoPFConversion_t,
@@ -175,4 +137,54 @@ typedef Buffer<reco::PreId, false>
 recoPreId_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoPreId_t,
                   "recoPreId");
+				  
+typedef Buffer<reco::PreshowerCluster, false>
+recoPreshowerCluster_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPreshowerCluster_t,
+                  "recoPreshowerCluster");
+				  
+typedef Buffer<reco::PreshowerClusterShape, false>
+recoPreshowerClusterShape_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPreshowerClusterShape_t,
+                  "recoPreshowerClusterShape");
+				  
+typedef Buffer<reco::RecoChargedCandidate, false>
+recoRecoChargedCandidate_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoRecoChargedCandidate_t,
+                  "recoRecoChargedCandidate");
+				  
+typedef Buffer<reco::RecoChargedRefCandidate, false>
+recoRecoChargedRefCandidate_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoRecoChargedRefCandidate_t,
+                  "recoRecoChargedRefCandidate");
+				  
+typedef Buffer<reco::RecoEcalCandidate, false>
+recoRecoEcalCandidate_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoRecoEcalCandidate_t,
+                  "recoRecoEcalCandidate");
+				  
+typedef Buffer<reco::RecoPFClusterRefCandidate, false>
+recoRecoPFClusterRefCandidate_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoRecoPFClusterRefCandidate_t,
+                  "recoRecoPFClusterRefCandidate");
+				  
+typedef Buffer<reco::RecoTauPiZero, false>
+recoRecoTauPiZero_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoRecoTauPiZero_t,
+                  "recoRecoTauPiZero");
+				  
+typedef Buffer<reco::SiStripElectron, false>
+recoSiStripElectron_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoSiStripElectron_t,
+                  "recoSiStripElectron");
+				  
+typedef Buffer<reco::SuperCluster, false>
+recoSuperCluster_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoSuperCluster_t,
+                  "recoSuperCluster");
+				  
+typedef Buffer<reco::Track, false>
+recoTrack_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoTrack_t,
+                  "recoTrack");
 				  

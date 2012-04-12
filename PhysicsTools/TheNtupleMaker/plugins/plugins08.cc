@@ -1,13 +1,11 @@
 // -------------------------------------------------------------------------
 // File::   plugins08.cc
-// Created: Tue Apr  3 22:26:00 2012 by mkplugins.py
+// Created: Thu Apr 12 04:32:19 2012 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
 // -------------------------------------------------------------------------
 
-#include "AnalysisDataFormats/TopObjects/interface/TtDilepEvtSolution.h"
-#include "AnalysisDataFormats/TopObjects/interface/TtHadEvtSolution.h"
 #include "AnalysisDataFormats/TopObjects/interface/TtSemiEvtSolution.h"
 #include "DataFormats/Candidate/interface/Candidate.h"
 #include "DataFormats/Common/interface/HLTPathStatus.h"
@@ -26,25 +24,14 @@
 #include "DataFormats/PatCandidates/interface/PFParticle.h"
 #include "DataFormats/PatCandidates/interface/Particle.h"
 #include "DataFormats/PatCandidates/interface/Photon.h"
-#include "DataFormats/TrajectorySeed/interface/TrajectorySeed.h"
+#include "DataFormats/PatCandidates/interface/Tau.h"
+#include "DataFormats/PatCandidates/interface/TauJetCorrFactors.h"
+#include "DataFormats/PatCandidates/interface/TriggerAlgorithm.h"
+#include "DataFormats/PatCandidates/interface/TriggerCondition.h"
+#include "DataFormats/PatCandidates/interface/TriggerFilter.h"
 #include "FWCore/MessageLogger/interface/ErrorSummaryEntry.h"
 // -------------------------------------------------------------------------
 
-typedef Buffer<TrajectorySeed, false>
-TrajectorySeed_t;
-DEFINE_EDM_PLUGIN(BufferFactory, TrajectorySeed_t,
-                  "TrajectorySeed");
-				  
-typedef Buffer<TtDilepEvtSolution, false>
-TtDilepEvtSolution_t;
-DEFINE_EDM_PLUGIN(BufferFactory, TtDilepEvtSolution_t,
-                  "TtDilepEvtSolution");
-				  
-typedef Buffer<TtHadEvtSolution, false>
-TtHadEvtSolution_t;
-DEFINE_EDM_PLUGIN(BufferFactory, TtHadEvtSolution_t,
-                  "TtHadEvtSolution");
-				  
 typedef Buffer<TtSemiEvtSolution, false>
 TtSemiEvtSolution_t;
 DEFINE_EDM_PLUGIN(BufferFactory, TtSemiEvtSolution_t,
@@ -134,4 +121,29 @@ typedef Buffer<pat::Photon, false>
 patPhoton_t;
 DEFINE_EDM_PLUGIN(BufferFactory, patPhoton_t,
                   "patPhoton");
+				  
+typedef Buffer<pat::Tau, false>
+patTau_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patTau_t,
+                  "patTau");
+				  
+typedef Buffer<pat::TauJetCorrFactors::CorrectionFactor, false>
+patTauJetCorrFactorsCorrectionFactor_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patTauJetCorrFactorsCorrectionFactor_t,
+                  "patTauJetCorrFactorsCorrectionFactor");
+				  
+typedef Buffer<pat::TriggerAlgorithm, false>
+patTriggerAlgorithm_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patTriggerAlgorithm_t,
+                  "patTriggerAlgorithm");
+				  
+typedef Buffer<pat::TriggerCondition, false>
+patTriggerCondition_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patTriggerCondition_t,
+                  "patTriggerCondition");
+				  
+typedef Buffer<pat::TriggerFilter, false>
+patTriggerFilter_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patTriggerFilter_t,
+                  "patTriggerFilter");
 				  

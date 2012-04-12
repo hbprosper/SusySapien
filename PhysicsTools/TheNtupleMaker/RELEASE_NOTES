@@ -1,4 +1,9 @@
-$Revision: 1.23 $
+$Revision: 1.24 $
+
+v5_2_9 Apr 11 2012
+------------------
+        1. Fix initTNMwCMG.py
+        2. Make (minor) mods to compile in CMSSW_5_X_X
 
 v5_2_8 Apr 03 2012
 ------------------

@@ -17,9 +17,9 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Fri Apr 04 2008
-// $Id: rfx.h,v 1.1.1.1 2011/05/04 13:04:28 prosper Exp $
+// $Id: rfx.h,v 1.2 2011/05/23 08:46:57 prosper Exp $
 //
-//$Revision: 1.1.1.1 $
+//$Revision: 1.2 $
 //-----------------------------------------------------------------------------
 #include <iostream>
 #include <fstream>
@@ -33,6 +33,7 @@
 #include "Reflex/Object.h"
 #include "Reflex/Base.h"
 #include "Reflex/Type.h"
+#include "Reflex/Member.h"
 //-----------------------------------------------------------------------------
 namespace {
   std::vector<void*> DEFARGS;

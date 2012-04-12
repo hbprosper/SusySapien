@@ -1,11 +1,12 @@
 // -------------------------------------------------------------------------
 // File::   plugins09.cc
-// Created: Tue Apr  3 22:26:00 2012 by mkplugins.py
+// Created: Thu Apr 12 04:32:19 2012 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
 // -------------------------------------------------------------------------
 
+#include "AnalysisDataFormats/Egamma/interface/ElectronID.h"
 #include "DataFormats/CaloRecHit/interface/CaloCluster.h"
 #include "DataFormats/CastorReco/interface/CastorCell.h"
 #include "DataFormats/CastorReco/interface/CastorCluster.h"
@@ -13,20 +14,21 @@
 #include "DataFormats/CastorReco/interface/CastorJet.h"
 #include "DataFormats/CastorReco/interface/CastorTower.h"
 #include "DataFormats/EgammaCandidates/interface/Conversion.h"
+#include "DataFormats/EgammaCandidates/interface/Electron.h"
 #include "DataFormats/EgammaReco/interface/BasicCluster.h"
 #include "DataFormats/EgammaReco/interface/ClusterShape.h"
+#include "DataFormats/EgammaReco/interface/ElectronSeed.h"
+#include "DataFormats/HepMCCandidate/interface/FlavorHistory.h"
+#include "DataFormats/HepMCCandidate/interface/FlavorHistoryEvent.h"
 #include "DataFormats/JetReco/interface/BasicJet.h"
 #include "DataFormats/JetReco/interface/CaloJet.h"
 #include "DataFormats/JetReco/interface/CastorJetID.h"
+#include "DataFormats/JetReco/interface/GenJet.h"
 #include "DataFormats/METReco/interface/CaloMET.h"
 #include "DataFormats/MuonReco/interface/CaloMuon.h"
 #include "DataFormats/ParticleFlowReco/interface/Calibratable.h"
 #include "DataFormats/ParticleFlowReco/interface/ConvBremSeed.h"
 #include "DataFormats/ParticleFlowReco/interface/ParticleFiltrationDecision.h"
-#include "DataFormats/PatCandidates/interface/Tau.h"
-#include "DataFormats/PatCandidates/interface/TriggerAlgorithm.h"
-#include "DataFormats/PatCandidates/interface/TriggerCondition.h"
-#include "DataFormats/PatCandidates/interface/TriggerFilter.h"
 #include "DataFormats/PatCandidates/interface/TriggerObject.h"
 #include "DataFormats/PatCandidates/interface/TriggerObjectStandAlone.h"
 #include "DataFormats/PatCandidates/interface/TriggerPath.h"
@@ -36,26 +38,6 @@
 #include "DataFormats/TauReco/interface/CaloTauTagInfo.h"
 // -------------------------------------------------------------------------
 
-typedef Buffer<pat::Tau, false>
-patTau_t;
-DEFINE_EDM_PLUGIN(BufferFactory, patTau_t,
-                  "patTau");
-				  
-typedef Buffer<pat::TriggerAlgorithm, false>
-patTriggerAlgorithm_t;
-DEFINE_EDM_PLUGIN(BufferFactory, patTriggerAlgorithm_t,
-                  "patTriggerAlgorithm");
-				  
-typedef Buffer<pat::TriggerCondition, false>
-patTriggerCondition_t;
-DEFINE_EDM_PLUGIN(BufferFactory, patTriggerCondition_t,
-                  "patTriggerCondition");
-				  
-typedef Buffer<pat::TriggerFilter, false>
-patTriggerFilter_t;
-DEFINE_EDM_PLUGIN(BufferFactory, patTriggerFilter_t,
-                  "patTriggerFilter");
-				  
 typedef Buffer<pat::TriggerObject, false>
 patTriggerObject_t;
 DEFINE_EDM_PLUGIN(BufferFactory, patTriggerObject_t,
@@ -175,4 +157,34 @@ typedef Buffer<reco::Conversion, false>
 recoConversion_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoConversion_t,
                   "recoConversion");
+				  
+typedef Buffer<reco::Electron, false>
+recoElectron_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoElectron_t,
+                  "recoElectron");
+				  
+typedef Buffer<reco::ElectronID, false>
+recoElectronID_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoElectronID_t,
+                  "recoElectronID");
+				  
+typedef Buffer<reco::ElectronSeed, false>
+recoElectronSeed_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoElectronSeed_t,
+                  "recoElectronSeed");
+				  
+typedef Buffer<reco::FlavorHistory, false>
+recoFlavorHistory_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoFlavorHistory_t,
+                  "recoFlavorHistory");
+				  
+typedef Buffer<reco::FlavorHistoryEvent, false>
+recoFlavorHistoryEvent_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoFlavorHistoryEvent_t,
+                  "recoFlavorHistoryEvent");
+				  
+typedef Buffer<reco::GenJet, false>
+recoGenJet_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoGenJet_t,
+                  "recoGenJet");
 				  

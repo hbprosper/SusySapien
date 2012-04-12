@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------------
 // File::   plugins01.cc
-// Created: Tue Apr  3 22:26:00 2012 by mkplugins.py
+// Created: Thu Apr 12 04:32:19 2012 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
@@ -13,30 +13,37 @@
 #include "DataFormats/HcalRecHit/interface/HcalSourcePositionData.h"
 #include "DataFormats/L1CSCTrackFinder/interface/CSCTriggerContainer.h"
 #include "DataFormats/L1CSCTrackFinder/interface/TrackStub.h"
-#include "DataFormats/L1DTTrackFinder/interface/L1MuDTChambPhContainer.h"
-#include "DataFormats/L1DTTrackFinder/interface/L1MuDTChambThContainer.h"
-#include "DataFormats/L1DTTrackFinder/interface/L1MuDTTrackContainer.h"
 #include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerEvmReadoutRecord.h"
 #include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerObjectMapRecord.h"
+#include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerObjectMaps.h"
 #include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerReadoutRecord.h"
 #include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerReadoutSetup.h"
 #include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerRecord.h"
 #include "DataFormats/L1GlobalTrigger/interface/L1GtTechnicalTriggerRecord.h"
 #include "DataFormats/L1GlobalTrigger/interface/L1GtTriggerMenuLite.h"
-#include "DataFormats/L1GlobalTrigger/interface/L1GtfeExtWord.h"
-#include "DataFormats/L1GlobalTrigger/interface/L1GtfeWord.h"
-#include "DataFormats/L1GlobalTrigger/interface/L1TcsWord.h"
 #include "DataFormats/L1Trigger/interface/L1DataEmulRecord.h"
 #include "DataFormats/METObjects/interface/BaseMET.h"
+#include "DataFormats/METReco/interface/AnomalousECALVariables.h"
 #include "DataFormats/METReco/interface/HcalNoiseSummary.h"
+#include "DataFormats/TrackerCommon/interface/ClusterSummary.h"
+#include "SimDataFormats/CaloHit/interface/PCaloHit.h"
+#include "SimDataFormats/CrossingFrame/interface/CrossingFrame.h"
 #include "SimDataFormats/CrossingFrame/interface/CrossingFramePlaybackInfo.h"
 #include "SimDataFormats/CrossingFrame/interface/CrossingFramePlaybackInfoExtended.h"
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
 #include "SimDataFormats/GeneratorProducts/interface/GenFilterInfo.h"
 #include "SimDataFormats/GeneratorProducts/interface/GenRunInfoProduct.h"
 #include "SimDataFormats/HcalTestBeam/interface/HcalTB02HistoClass.h"
+#include "SimDataFormats/Track/interface/SimTrack.h"
+#include "SimDataFormats/TrackingHit/interface/PSimHit.h"
+#include "SimDataFormats/Vertex/interface/SimVertex.h"
 // -------------------------------------------------------------------------
 
+typedef Buffer<AnomalousECALVariables, true>
+AnomalousECALVariables_t;
+DEFINE_EDM_PLUGIN(BufferFactory, AnomalousECALVariables_t,
+                  "AnomalousECALVariables");
+				  
 typedef Buffer<BaseMETv0, true>
 BaseMETv0_t;
 DEFINE_EDM_PLUGIN(BufferFactory, BaseMETv0_t,
@@ -46,6 +53,36 @@ typedef Buffer<CSCTriggerContainer<csctf::TrackStub>, true>
 CSCTriggerContainercsctfTrackStub_t;
 DEFINE_EDM_PLUGIN(BufferFactory, CSCTriggerContainercsctfTrackStub_t,
                   "CSCTriggerContainercsctfTrackStub");
+				  
+typedef Buffer<ClusterSummary, true>
+ClusterSummary_t;
+DEFINE_EDM_PLUGIN(BufferFactory, ClusterSummary_t,
+                  "ClusterSummary");
+				  
+typedef Buffer<CrossingFrame<PCaloHit>, true>
+CrossingFramePCaloHit_t;
+DEFINE_EDM_PLUGIN(BufferFactory, CrossingFramePCaloHit_t,
+                  "CrossingFramePCaloHit");
+				  
+typedef Buffer<CrossingFrame<PSimHit>, true>
+CrossingFramePSimHit_t;
+DEFINE_EDM_PLUGIN(BufferFactory, CrossingFramePSimHit_t,
+                  "CrossingFramePSimHit");
+				  
+typedef Buffer<CrossingFrame<SimTrack>, true>
+CrossingFrameSimTrack_t;
+DEFINE_EDM_PLUGIN(BufferFactory, CrossingFrameSimTrack_t,
+                  "CrossingFrameSimTrack");
+				  
+typedef Buffer<CrossingFrame<SimVertex>, true>
+CrossingFrameSimVertex_t;
+DEFINE_EDM_PLUGIN(BufferFactory, CrossingFrameSimVertex_t,
+                  "CrossingFrameSimVertex");
+				  
+typedef Buffer<CrossingFrame<edm::HepMCProduct>, true>
+CrossingFrameedmHepMCProduct_t;
+DEFINE_EDM_PLUGIN(BufferFactory, CrossingFrameedmHepMCProduct_t,
+                  "CrossingFrameedmHepMCProduct");
 				  
 typedef Buffer<CrossingFramePlaybackInfo, true>
 CrossingFramePlaybackInfo_t;
@@ -122,6 +159,11 @@ L1GlobalTriggerObjectMapRecord_t;
 DEFINE_EDM_PLUGIN(BufferFactory, L1GlobalTriggerObjectMapRecord_t,
                   "L1GlobalTriggerObjectMapRecord");
 				  
+typedef Buffer<L1GlobalTriggerObjectMaps, true>
+L1GlobalTriggerObjectMaps_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GlobalTriggerObjectMaps_t,
+                  "L1GlobalTriggerObjectMaps");
+				  
 typedef Buffer<L1GlobalTriggerReadoutRecord, true>
 L1GlobalTriggerReadoutRecord_t;
 DEFINE_EDM_PLUGIN(BufferFactory, L1GlobalTriggerReadoutRecord_t,
@@ -146,34 +188,4 @@ typedef Buffer<L1GtTriggerMenuLite, true>
 L1GtTriggerMenuLite_t;
 DEFINE_EDM_PLUGIN(BufferFactory, L1GtTriggerMenuLite_t,
                   "L1GtTriggerMenuLite");
-				  
-typedef Buffer<L1GtfeExtWord, true>
-L1GtfeExtWord_t;
-DEFINE_EDM_PLUGIN(BufferFactory, L1GtfeExtWord_t,
-                  "L1GtfeExtWord");
-				  
-typedef Buffer<L1GtfeWord, true>
-L1GtfeWord_t;
-DEFINE_EDM_PLUGIN(BufferFactory, L1GtfeWord_t,
-                  "L1GtfeWord");
-				  
-typedef Buffer<L1MuDTChambPhContainer, true>
-L1MuDTChambPhContainer_t;
-DEFINE_EDM_PLUGIN(BufferFactory, L1MuDTChambPhContainer_t,
-                  "L1MuDTChambPhContainer");
-				  
-typedef Buffer<L1MuDTChambThContainer, true>
-L1MuDTChambThContainer_t;
-DEFINE_EDM_PLUGIN(BufferFactory, L1MuDTChambThContainer_t,
-                  "L1MuDTChambThContainer");
-				  
-typedef Buffer<L1MuDTTrackContainer, true>
-L1MuDTTrackContainer_t;
-DEFINE_EDM_PLUGIN(BufferFactory, L1MuDTTrackContainer_t,
-                  "L1MuDTTrackContainer");
-				  
-typedef Buffer<L1TcsWord, true>
-L1TcsWord_t;
-DEFINE_EDM_PLUGIN(BufferFactory, L1TcsWord_t,
-                  "L1TcsWord");
 				  

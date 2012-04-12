@@ -1,22 +1,24 @@
 // -------------------------------------------------------------------------
 // File::   plugins02.cc
-// Created: Tue Apr  3 22:26:00 2012 by mkplugins.py
+// Created: Thu Apr 12 04:32:19 2012 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
 // -------------------------------------------------------------------------
 
 #include "AnalysisDataFormats/TopObjects/interface/StGenEvent.h"
-#include "AnalysisDataFormats/TopObjects/interface/TopGenEvent.h"
-#include "AnalysisDataFormats/TopObjects/interface/TtFullHadronicEvent.h"
-#include "DataFormats/PatCandidates/interface/StringMap.h"
+#include "DataFormats/L1DTTrackFinder/interface/L1MuDTChambPhContainer.h"
+#include "DataFormats/L1DTTrackFinder/interface/L1MuDTChambThContainer.h"
+#include "DataFormats/L1DTTrackFinder/interface/L1MuDTTrackContainer.h"
+#include "DataFormats/L1GlobalTrigger/interface/L1GtfeExtWord.h"
+#include "DataFormats/L1GlobalTrigger/interface/L1GtfeWord.h"
+#include "DataFormats/L1GlobalTrigger/interface/L1TcsWord.h"
 #include "DataFormats/RPCDigi/interface/RPCRawDataCounts.h"
 #include "DataFormats/SiPixelDigi/interface/SiPixelCalibDigiError.h"
 #include "DataFormats/SiStripCommon/interface/SiStripEventSummary.h"
 #include "SimDataFormats/CaloHit/interface/PCaloHit.h"
 #include "SimDataFormats/CrossingFrame/interface/PCrossingFrame.h"
 #include "SimDataFormats/EcalTestBeam/interface/PEcalTBInfo.h"
-#include "SimDataFormats/Forward/interface/TotemTestHistoClass.h"
 #include "SimDataFormats/GeneratorProducts/interface/LHEEventProduct.h"
 #include "SimDataFormats/GeneratorProducts/interface/LHERunInfoProduct.h"
 #include "SimDataFormats/HcalTestBeam/interface/PHcalTB04Info.h"
@@ -27,6 +29,36 @@
 #include "SimDataFormats/Vertex/interface/SimVertex.h"
 // -------------------------------------------------------------------------
 
+typedef Buffer<L1GtfeExtWord, true>
+L1GtfeExtWord_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GtfeExtWord_t,
+                  "L1GtfeExtWord");
+				  
+typedef Buffer<L1GtfeWord, true>
+L1GtfeWord_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GtfeWord_t,
+                  "L1GtfeWord");
+				  
+typedef Buffer<L1MuDTChambPhContainer, true>
+L1MuDTChambPhContainer_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1MuDTChambPhContainer_t,
+                  "L1MuDTChambPhContainer");
+				  
+typedef Buffer<L1MuDTChambThContainer, true>
+L1MuDTChambThContainer_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1MuDTChambThContainer_t,
+                  "L1MuDTChambThContainer");
+				  
+typedef Buffer<L1MuDTTrackContainer, true>
+L1MuDTTrackContainer_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1MuDTTrackContainer_t,
+                  "L1MuDTTrackContainer");
+				  
+typedef Buffer<L1TcsWord, true>
+L1TcsWord_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1TcsWord_t,
+                  "L1TcsWord");
+				  
 typedef Buffer<LHEEventProduct, true>
 LHEEventProduct_t;
 DEFINE_EDM_PLUGIN(BufferFactory, LHEEventProduct_t,
@@ -141,24 +173,4 @@ typedef Buffer<StGenEvent, true>
 StGenEvent_t;
 DEFINE_EDM_PLUGIN(BufferFactory, StGenEvent_t,
                   "StGenEvent");
-				  
-typedef Buffer<StringMap, true>
-StringMap_t;
-DEFINE_EDM_PLUGIN(BufferFactory, StringMap_t,
-                  "StringMap");
-				  
-typedef Buffer<TopGenEvent, true>
-TopGenEvent_t;
-DEFINE_EDM_PLUGIN(BufferFactory, TopGenEvent_t,
-                  "TopGenEvent");
-				  
-typedef Buffer<TotemTestHistoClass, true>
-TotemTestHistoClass_t;
-DEFINE_EDM_PLUGIN(BufferFactory, TotemTestHistoClass_t,
-                  "TotemTestHistoClass");
-				  
-typedef Buffer<TtFullHadronicEvent, true>
-TtFullHadronicEvent_t;
-DEFINE_EDM_PLUGIN(BufferFactory, TtFullHadronicEvent_t,
-                  "TtFullHadronicEvent");
 				  

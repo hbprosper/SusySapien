@@ -24,7 +24,7 @@
 //                       way back when!
 //  Updated: 02-Nov-2009 HBP - Improve optimize() method
 //                       Panjab University, Chandigarh, India
-//$Revision: 1.1 $ 
+//$Revision: 1.1.1.1 $ 
 //----------------------------------------------------------------------------
 #ifdef PROJECT_NAME
 #include "PhysicsTools/TheNtupleMaker/interface/KDE.h"
@@ -141,6 +141,7 @@ namespace {
     // Stupid code to avoid compiler warnings!
     int dumb = iflag; dumb = 0;
     double* evendumber = grad; evendumber = 0;
+    dumb = dumb * (*evendumber);
   }
 
   // Split a string into a vector thereof

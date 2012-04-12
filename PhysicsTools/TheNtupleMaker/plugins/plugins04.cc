@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------------
 // File::   plugins04.cc
-// Created: Tue Apr  3 22:26:00 2012 by mkplugins.py
+// Created: Thu Apr 12 04:32:19 2012 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
@@ -10,6 +10,8 @@
 #include "DataFormats/Candidate/interface/CandMatchMapMany.h"
 #include "DataFormats/Candidate/interface/CompositeCandidate.h"
 #include "DataFormats/HLTReco/interface/HLTResult.h"
+#include "DataFormats/JetReco/interface/DiscretizedEnergyFlow.h"
+#include "DataFormats/JetReco/interface/FFTJetPileupSummary.h"
 #include "DataFormats/JetReco/interface/FFTJetProducerSummary.h"
 #include "DataFormats/METReco/interface/BeamHaloSummary.h"
 #include "DataFormats/METReco/interface/CSCHaloData.h"
@@ -17,14 +19,25 @@
 #include "DataFormats/METReco/interface/GlobalHaloData.h"
 #include "DataFormats/METReco/interface/HcalHaloData.h"
 #include "DataFormats/MuonReco/interface/MuonTimeExtraMap.h"
+#include "DataFormats/PatCandidates/interface/TriggerObjectStandAlone.h"
+#include "DataFormats/PatCandidates/interface/TriggerPath.h"
 #include "DataFormats/TauReco/interface/CaloTauDiscriminator.h"
 #include "DataFormats/TauReco/interface/CaloTauDiscriminatorAgainstElectron.h"
 #include "DataFormats/TauReco/interface/CaloTauDiscriminatorByIsolation.h"
 #include "DataFormats/TauReco/interface/JetPiZeroAssociation.h"
-#include "DataFormats/TauReco/interface/PFTauDecayModeAssociation.h"
 #include "DataFormats/TrackerRecHit2D/interface/ClusterRemovalInfo.h"
 // -------------------------------------------------------------------------
 
+typedef Buffer<pat::TriggerObjectStandAloneRefProd, true>
+patTriggerObjectStandAloneRefProd_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patTriggerObjectStandAloneRefProd_t,
+                  "patTriggerObjectStandAloneRefProd");
+				  
+typedef Buffer<pat::TriggerPathRefProd, true>
+patTriggerPathRefProd_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patTriggerPathRefProd_t,
+                  "patTriggerPathRefProd");
+				  
 typedef Buffer<reco::BeamHaloSummary, true>
 recoBeamHaloSummary_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoBeamHaloSummary_t,
@@ -70,10 +83,20 @@ recoCompositeCandidate_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoCompositeCandidate_t,
                   "recoCompositeCandidate");
 				  
+typedef Buffer<reco::DiscretizedEnergyFlow, true>
+recoDiscretizedEnergyFlow_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoDiscretizedEnergyFlow_t,
+                  "recoDiscretizedEnergyFlow");
+				  
 typedef Buffer<reco::EcalHaloData, true>
 recoEcalHaloData_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoEcalHaloData_t,
                   "recoEcalHaloData");
+				  
+typedef Buffer<reco::FFTJetPileupSummary, true>
+recoFFTJetPileupSummary_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoFFTJetPileupSummary_t,
+                  "recoFFTJetPileupSummary");
 				  
 typedef Buffer<reco::FFTJetProducerSummary, true>
 recoFFTJetProducerSummary_t;
@@ -114,9 +137,4 @@ typedef Buffer<reco::MuonTimeExtraMap, true>
 recoMuonTimeExtraMap_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoMuonTimeExtraMap_t,
                   "recoMuonTimeExtraMap");
-				  
-typedef Buffer<reco::PFTauDecayModeAssociation, true>
-recoPFTauDecayModeAssociation_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPFTauDecayModeAssociation_t,
-                  "recoPFTauDecayModeAssociation");
 				  

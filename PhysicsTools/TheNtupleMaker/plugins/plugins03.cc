@@ -1,11 +1,13 @@
 // -------------------------------------------------------------------------
 // File::   plugins03.cc
-// Created: Tue Apr  3 22:26:00 2012 by mkplugins.py
+// Created: Thu Apr 12 04:32:19 2012 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
 // -------------------------------------------------------------------------
 
+#include "AnalysisDataFormats/TopObjects/interface/TopGenEvent.h"
+#include "AnalysisDataFormats/TopObjects/interface/TtFullHadronicEvent.h"
 #include "AnalysisDataFormats/TopObjects/interface/TtFullLeptonicEvent.h"
 #include "AnalysisDataFormats/TopObjects/interface/TtGenEvent.h"
 #include "AnalysisDataFormats/TopObjects/interface/TtSemiLeptonicEvent.h"
@@ -21,18 +23,39 @@
 #include "DataFormats/HeavyIonEvent/interface/HeavyIon.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 #include "DataFormats/MuonReco/interface/Muon.h"
+#include "DataFormats/PatCandidates/interface/StringMap.h"
 #include "DataFormats/PatCandidates/interface/TriggerAlgorithm.h"
 #include "DataFormats/PatCandidates/interface/TriggerCondition.h"
 #include "DataFormats/PatCandidates/interface/TriggerEvent.h"
 #include "DataFormats/PatCandidates/interface/TriggerFilter.h"
 #include "DataFormats/PatCandidates/interface/TriggerObject.h"
 #include "DataFormats/PatCandidates/interface/TriggerObjectStandAlone.h"
-#include "DataFormats/PatCandidates/interface/TriggerPath.h"
 #include "DataFormats/TauReco/interface/PFTau.h"
 #include "DataFormats/TauReco/interface/PFTauDecayMode.h"
+#include "SimDataFormats/Forward/interface/TotemTestHistoClass.h"
 #include "SimDataFormats/HiGenData/interface/GenHIEvent.h"
 // -------------------------------------------------------------------------
 
+typedef Buffer<StringMap, true>
+StringMap_t;
+DEFINE_EDM_PLUGIN(BufferFactory, StringMap_t,
+                  "StringMap");
+				  
+typedef Buffer<TopGenEvent, true>
+TopGenEvent_t;
+DEFINE_EDM_PLUGIN(BufferFactory, TopGenEvent_t,
+                  "TopGenEvent");
+				  
+typedef Buffer<TotemTestHistoClass, true>
+TotemTestHistoClass_t;
+DEFINE_EDM_PLUGIN(BufferFactory, TotemTestHistoClass_t,
+                  "TotemTestHistoClass");
+				  
+typedef Buffer<TtFullHadronicEvent, true>
+TtFullHadronicEvent_t;
+DEFINE_EDM_PLUGIN(BufferFactory, TtFullHadronicEvent_t,
+                  "TtFullHadronicEvent");
+				  
 typedef Buffer<TtFullLeptonicEvent, true>
 TtFullLeptonicEvent_t;
 DEFINE_EDM_PLUGIN(BufferFactory, TtFullLeptonicEvent_t,
@@ -157,14 +180,4 @@ typedef Buffer<pat::TriggerObjectRefProd, true>
 patTriggerObjectRefProd_t;
 DEFINE_EDM_PLUGIN(BufferFactory, patTriggerObjectRefProd_t,
                   "patTriggerObjectRefProd");
-				  
-typedef Buffer<pat::TriggerObjectStandAloneRefProd, true>
-patTriggerObjectStandAloneRefProd_t;
-DEFINE_EDM_PLUGIN(BufferFactory, patTriggerObjectStandAloneRefProd_t,
-                  "patTriggerObjectStandAloneRefProd");
-				  
-typedef Buffer<pat::TriggerPathRefProd, true>
-patTriggerPathRefProd_t;
-DEFINE_EDM_PLUGIN(BufferFactory, patTriggerPathRefProd_t,
-                  "patTriggerPathRefProd");
 				  

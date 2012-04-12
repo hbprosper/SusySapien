@@ -1,5 +1,12 @@
+AnomalousECALVariables
 BaseMETv0
 CSCTriggerContainer<csctf::TrackStub>
+ClusterSummary
+CrossingFrame<PCaloHit>
+CrossingFrame<PSimHit>
+CrossingFrame<SimTrack>
+CrossingFrame<SimVertex>
+CrossingFrame<edm::HepMCProduct>
 CrossingFramePlaybackInfo
 CrossingFramePlaybackInfoExtended
 EcalTrigPrimCompactColl
@@ -15,6 +22,7 @@ HcalUnpackerReport
 L1DataEmulRecord
 L1GlobalTriggerEvmReadoutRecord
 L1GlobalTriggerObjectMapRecord
+L1GlobalTriggerObjectMaps
 L1GlobalTriggerReadoutRecord
 L1GlobalTriggerReadoutSetup
 L1GlobalTriggerRecord
@@ -95,8 +103,10 @@ reco::CandViewMatchMap
 reco::Centrality
 reco::ClusterRemovalInfo
 reco::CompositeCandidate
+reco::DiscretizedEnergyFlow
 reco::EcalHaloData
 reco::EvtPlane
+reco::FFTJetPileupSummary
 reco::FFTJetProducerSummary
 reco::GlobalHaloData
 reco::HLTResult< 8, unsigned short>
@@ -131,7 +141,9 @@ std::set<EcalScDetId>
 std::set<EcalTrigTowerDetId>
 std::vector< std::pair<LinkBoardElectronicIndex, int> >
 std::vector<BeamSpotOnline>
+std::vector<BoundaryInformation>
 std::vector<CaloTower>
+std::vector<CorrMETData>
 std::vector<DcsStatus>
 std::vector<ESListOfFEDS>
 std::vector<EcalListOfFEDS>
@@ -223,6 +235,7 @@ std::vector<pat::PFParticle>
 std::vector<pat::Particle>
 std::vector<pat::Photon>
 std::vector<pat::Tau>
+std::vector<pat::TauJetCorrFactors::CorrectionFactor>
 std::vector<pat::TriggerAlgorithm>
 std::vector<pat::TriggerCondition>
 std::vector<pat::TriggerFilter>

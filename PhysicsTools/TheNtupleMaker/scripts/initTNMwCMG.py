@@ -23,10 +23,13 @@ if not os.environ.has_key("CMSSW_BASE"):
         sys.exit(0)
 
         
-# Add python to PYTHONPATH so that the scripts can be "seen" by python
+# Add link to TheNtupleMaker
 
 base = os.environ["CMSSW_BASE"]
-sys.path.append("%s/src/PhysicsTools/TheNtupleMaker/python")
+os.system('''
+rm -rf %s/python/PhysicsTools/TheNtupleMaker
+ln -s %s/src/PhysicsTools/TheNtupleMaker/python %s/python/PhysicsTools/TheNtupleMaker
+''' % (base, base, base))
 
 # Check if CMGTools installed
 

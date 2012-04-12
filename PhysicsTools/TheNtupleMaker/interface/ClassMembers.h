@@ -16,9 +16,9 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  December 2009
-// $Id: ClassMembers.h,v 1.1 2010/09/25 21:34:54 prosper Exp $
+// $Id: ClassMembers.h,v 1.1.1.1 2011/05/04 13:04:28 prosper Exp $
 //
-//$Revision: 1.1 $
+//$Revision: 1.1.1.1 $
 //-----------------------------------------------------------------------------
 #include <iostream>
 #include <vector>
@@ -27,6 +27,7 @@
 #include "Reflex/Object.h"
 #include "Reflex/Base.h"
 #include "Reflex/Type.h"
+#include "Reflex/Member.h"
 //-----------------------------------------------------------------------------
 ///
 class ClassMembers
