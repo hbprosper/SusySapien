@@ -27,9 +27,10 @@ if not os.environ.has_key("CMSSW_BASE"):
 
 base = os.environ["CMSSW_BASE"]
 os.system('''
+mkdir -p %s/python/PhysicsTools
 rm -rf %s/python/PhysicsTools/TheNtupleMaker
 ln -s %s/src/PhysicsTools/TheNtupleMaker/python %s/python/PhysicsTools/TheNtupleMaker
-''' % (base, base, base))
+''' % (base, base, base,base))
 
 # Check if CMGTools installed
 
