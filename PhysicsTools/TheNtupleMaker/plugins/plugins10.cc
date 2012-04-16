@@ -1,24 +1,28 @@
 // -------------------------------------------------------------------------
 // File::   plugins10.cc
-// Created: Thu Apr 12 04:32:19 2012 by mkplugins.py
+// Created: Sun Apr 15 22:17:19 2012 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
 // -------------------------------------------------------------------------
 
+#include "AnalysisDataFormats/Egamma/interface/ElectronID.h"
 #include "DataFormats/Candidate/interface/LeafCandidate.h"
+#include "DataFormats/EgammaCandidates/interface/Electron.h"
 #include "DataFormats/EgammaCandidates/interface/GsfElectron.h"
 #include "DataFormats/EgammaCandidates/interface/GsfElectronCore.h"
+#include "DataFormats/EgammaReco/interface/ElectronSeed.h"
 #include "DataFormats/EgammaReco/interface/HFEMClusterShape.h"
 #include "DataFormats/GsfTrackReco/interface/GsfTrack.h"
 #include "DataFormats/GsfTrackReco/interface/GsfTrackExtra.h"
+#include "DataFormats/HepMCCandidate/interface/FlavorHistory.h"
+#include "DataFormats/HepMCCandidate/interface/FlavorHistoryEvent.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
+#include "DataFormats/JetReco/interface/GenJet.h"
 #include "DataFormats/JetReco/interface/JPTJet.h"
 #include "DataFormats/JetReco/interface/JetID.h"
-#include "DataFormats/JetReco/interface/PFClusterJet.h"
 #include "DataFormats/METReco/interface/GenMET.h"
 #include "DataFormats/METReco/interface/MET.h"
-#include "DataFormats/METReco/interface/PFClusterMET.h"
 #include "DataFormats/MuonReco/interface/Muon.h"
 #include "DataFormats/MuonReco/interface/MuonCosmicCompatibility.h"
 #include "DataFormats/MuonReco/interface/MuonMETCorrectionData.h"
@@ -27,17 +31,41 @@
 #include "DataFormats/MuonReco/interface/MuonTimeExtra.h"
 #include "DataFormats/MuonReco/interface/MuonTrackLinks.h"
 #include "DataFormats/ParticleFlowCandidate/interface/IsolatedPFCandidate.h"
-#include "DataFormats/ParticleFlowCandidate/interface/PFCandidate.h"
-#include "DataFormats/ParticleFlowCandidate/interface/PFCandidateElectronExtra.h"
-#include "DataFormats/ParticleFlowCandidate/interface/PFCandidatePhotonExtra.h"
 #include "DataFormats/ParticleFlowReco/interface/GsfPFRecTrack.h"
-#include "DataFormats/ParticleFlowReco/interface/PFBlock.h"
-#include "DataFormats/ParticleFlowReco/interface/PFBlockElementSuperCluster.h"
-#include "DataFormats/ParticleFlowReco/interface/PFCluster.h"
 #include "DataFormats/TauReco/interface/HLTTau.h"
 #include "DataFormats/VertexReco/interface/NuclearInteraction.h"
 // -------------------------------------------------------------------------
 
+typedef Buffer<reco::Electron, false>
+recoElectron_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoElectron_t,
+                  "recoElectron");
+				  
+typedef Buffer<reco::ElectronID, false>
+recoElectronID_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoElectronID_t,
+                  "recoElectronID");
+				  
+typedef Buffer<reco::ElectronSeed, false>
+recoElectronSeed_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoElectronSeed_t,
+                  "recoElectronSeed");
+				  
+typedef Buffer<reco::FlavorHistory, false>
+recoFlavorHistory_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoFlavorHistory_t,
+                  "recoFlavorHistory");
+				  
+typedef Buffer<reco::FlavorHistoryEvent, false>
+recoFlavorHistoryEvent_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoFlavorHistoryEvent_t,
+                  "recoFlavorHistoryEvent");
+				  
+typedef Buffer<reco::GenJet, false>
+recoGenJet_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoGenJet_t,
+                  "recoGenJet");
+				  
 typedef Buffer<reco::GenMET, false>
 recoGenMET_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoGenMET_t,
@@ -147,44 +175,4 @@ typedef Buffer<reco::NuclearInteraction, false>
 recoNuclearInteraction_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoNuclearInteraction_t,
                   "recoNuclearInteraction");
-				  
-typedef Buffer<reco::PFBlock, false>
-recoPFBlock_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPFBlock_t,
-                  "recoPFBlock");
-				  
-typedef Buffer<reco::PFBlockElementSuperCluster, false>
-recoPFBlockElementSuperCluster_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPFBlockElementSuperCluster_t,
-                  "recoPFBlockElementSuperCluster");
-				  
-typedef Buffer<reco::PFCandidate, false>
-recoPFCandidate_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPFCandidate_t,
-                  "recoPFCandidate");
-				  
-typedef Buffer<reco::PFCandidateElectronExtra, false>
-recoPFCandidateElectronExtra_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPFCandidateElectronExtra_t,
-                  "recoPFCandidateElectronExtra");
-				  
-typedef Buffer<reco::PFCandidatePhotonExtra, false>
-recoPFCandidatePhotonExtra_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPFCandidatePhotonExtra_t,
-                  "recoPFCandidatePhotonExtra");
-				  
-typedef Buffer<reco::PFCluster, false>
-recoPFCluster_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPFCluster_t,
-                  "recoPFCluster");
-				  
-typedef Buffer<reco::PFClusterJet, false>
-recoPFClusterJet_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPFClusterJet_t,
-                  "recoPFClusterJet");
-				  
-typedef Buffer<reco::PFClusterMET, false>
-recoPFClusterMET_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPFClusterMET_t,
-                  "recoPFClusterMET");
 				  

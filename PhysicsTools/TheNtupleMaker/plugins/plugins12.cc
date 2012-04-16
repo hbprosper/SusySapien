@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------------
 // File::   plugins12.cc
-// Created: Thu Apr 12 04:32:19 2012 by mkplugins.py
+// Created: Sun Apr 15 22:17:19 2012 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
@@ -14,17 +14,77 @@
 #include "AnalysisDataFormats/TrackInfo/interface/TrackInfo.h"
 #include "DataFormats/Candidate/interface/CompositeCandidate.h"
 #include "DataFormats/Candidate/interface/VertexCompositeCandidate.h"
+#include "DataFormats/EgammaCandidates/interface/SiStripElectron.h"
+#include "DataFormats/EgammaReco/interface/PreshowerCluster.h"
+#include "DataFormats/EgammaReco/interface/PreshowerClusterShape.h"
+#include "DataFormats/EgammaReco/interface/SuperCluster.h"
 #include "DataFormats/HLTReco/interface/HLTPrescaleTable.h"
 #include "DataFormats/HLTReco/interface/TriggerEvent.h"
 #include "DataFormats/HLTReco/interface/TriggerEventWithRefs.h"
 #include "DataFormats/HLTReco/interface/TriggerFilterObjectWithRefs.h"
 #include "DataFormats/JetReco/interface/TrackExtrapolation.h"
 #include "DataFormats/JetReco/interface/TrackJet.h"
+#include "DataFormats/RecoCandidate/interface/RecoChargedCandidate.h"
+#include "DataFormats/RecoCandidate/interface/RecoChargedRefCandidate.h"
+#include "DataFormats/RecoCandidate/interface/RecoEcalCandidate.h"
+#include "DataFormats/RecoCandidate/interface/RecoPFClusterRefCandidate.h"
+#include "DataFormats/TauReco/interface/RecoTauPiZero.h"
+#include "DataFormats/TrackReco/interface/Track.h"
 #include "DataFormats/TrackReco/interface/TrackExtra.h"
 #include "DataFormats/V0Candidate/interface/V0Candidate.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 // -------------------------------------------------------------------------
 
+typedef Buffer<reco::PreshowerCluster, false>
+recoPreshowerCluster_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPreshowerCluster_t,
+                  "recoPreshowerCluster");
+				  
+typedef Buffer<reco::PreshowerClusterShape, false>
+recoPreshowerClusterShape_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPreshowerClusterShape_t,
+                  "recoPreshowerClusterShape");
+				  
+typedef Buffer<reco::RecoChargedCandidate, false>
+recoRecoChargedCandidate_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoRecoChargedCandidate_t,
+                  "recoRecoChargedCandidate");
+				  
+typedef Buffer<reco::RecoChargedRefCandidate, false>
+recoRecoChargedRefCandidate_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoRecoChargedRefCandidate_t,
+                  "recoRecoChargedRefCandidate");
+				  
+typedef Buffer<reco::RecoEcalCandidate, false>
+recoRecoEcalCandidate_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoRecoEcalCandidate_t,
+                  "recoRecoEcalCandidate");
+				  
+typedef Buffer<reco::RecoPFClusterRefCandidate, false>
+recoRecoPFClusterRefCandidate_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoRecoPFClusterRefCandidate_t,
+                  "recoRecoPFClusterRefCandidate");
+				  
+typedef Buffer<reco::RecoTauPiZero, false>
+recoRecoTauPiZero_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoRecoTauPiZero_t,
+                  "recoRecoTauPiZero");
+				  
+typedef Buffer<reco::SiStripElectron, false>
+recoSiStripElectron_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoSiStripElectron_t,
+                  "recoSiStripElectron");
+				  
+typedef Buffer<reco::SuperCluster, false>
+recoSuperCluster_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoSuperCluster_t,
+                  "recoSuperCluster");
+				  
+typedef Buffer<reco::Track, false>
+recoTrack_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoTrack_t,
+                  "recoTrack");
+				  
 typedef Buffer<reco::TrackExtra, false>
 recoTrackExtra_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoTrackExtra_t,

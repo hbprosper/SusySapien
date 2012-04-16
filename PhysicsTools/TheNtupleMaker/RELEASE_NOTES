@@ -1,4 +1,8 @@
-$Revision: 1.25 $
+$Revision: 1.26 $
+
+v5_3_1 Apr 15 2012
+------------------
+	1. add exclusionlist.txt (to exclude unwanted classes)
 
 v5_3_0 Apr 11 2012
 ------------------

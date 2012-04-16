@@ -6,7 +6,9 @@
 #          25-Aug-2010 HBP add a few more classes (by hand)
 #          31-Mar-2012 HBP use directories defined by classmap.py
 #                      simplify classes.txt format to one class per line
-#$Id: mkclasslist.py,v 1.18 2012/04/04 01:32:41 prosper Exp $
+#          15-Apr-2012 HBP use exclusionlist.txt to exclude specific
+#                      classes
+#$Id: mkclasslist.py,v 1.19 2012/04/04 01:41:03 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -18,27 +20,37 @@ cwd = os.path.basename(os.environ['PWD'])
 if PACKAGE == None:
 	print "\n\t** Must be run from package directory"
 	sys.exit(0)
-
+#------------------------------------------------------------------------------
 # Extract getByLabel strings using a non-greedy search
-getclass1  = re.compile(r'(?<=edm::Wrapper\<).+(?=\>")')
-getclass2  = re.compile(r'(?<=edm::Wrapper\<).+(?=\> ")')
+getclass1 = re.compile(r'(?<=edm::Wrapper\<).+(?=\>")')
+getclass2 = re.compile(r'(?<=edm::Wrapper\<).+(?=\> ")')
 getfields = re.compile(r'(?<=")[^ ]*?(?=")')
 isvector  = re.compile(r'(?<=std::vector\<).+(?=\>)')
 isAvector = re.compile(r'^(?<=edm::AssociationVector\<).+(?=\>)$')
-
+#------------------------------------------------------------------------------
 # classes to exclude
-skipme    = re.compile('edmNew|'\
-					   'edm::Ref|'\
-					   '[*]|'\
-					   'Collection|'\
-					   'RefVector|'
-					   'PtrVector|'
-					   'AssociationMap|'\
-					   'ValueMap|'\
-					   'RangeMap|'\
-					   'OwnVector|'\
-					   'DetSet|'\
-					   'Lazy')
+exlist = '''
+edmNew
+edm::Ref
+[*]
+Collection
+RefVector
+PtrVector
+AssociationMap
+ValueMap
+RangeMap
+OwnVector
+DetSet
+Lazy
+'''
+exlist = joinfields(map(strip, split(strip(exlist),'\n')),'|')
+
+exlistfile = "plugins/exclusionlist.txt"
+if os.path.exists(exlistfile):
+	exclusionlist = split(strip(open(exlistfile).read()), '\n')
+	for x in exclusionlist:
+		exlist += '|%s' % x
+skipme = re.compile(exlist)
 #------------------------------------------------------------------------------
 argv = sys.argv[1:]
 argc = len(argv)

@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------------
 // File::   plugins05.cc
-// Created: Thu Apr 12 04:32:19 2012 by mkplugins.py
+// Created: Sun Apr 15 22:17:19 2012 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
@@ -13,28 +13,21 @@
 #include "DataFormats/EcalDetId/interface/EcalTrigTowerDetId.h"
 #include "DataFormats/EcalRawData/interface/ESListOfFEDS.h"
 #include "DataFormats/EcalRawData/interface/EcalListOfFEDS.h"
+#include "DataFormats/HcalCalibObjects/interface/HOCalibVariables.h"
 #include "DataFormats/HepMCCandidate/interface/PdfInfo.h"
 #include "DataFormats/JetReco/interface/PattRecoPeak.h"
 #include "DataFormats/JetReco/interface/PattRecoTree.h"
 #include "DataFormats/L1CSCTrackFinder/interface/L1CSCSPStatusDigi.h"
-#include "DataFormats/METReco/interface/BoundaryInformation.h"
-#include "DataFormats/METReco/interface/CorrMETData.h"
 #include "DataFormats/METReco/interface/PhiWedge.h"
 #include "DataFormats/Scalers/interface/BeamSpotOnline.h"
 #include "DataFormats/Scalers/interface/DcsStatus.h"
 #include "DataFormats/SiPixelRawData/interface/SiPixelRawDataError.h"
-#include "DataFormats/TauReco/interface/PFTauDecayModeAssociation.h"
 #include "DataFormats/TauReco/interface/PFTauDiscriminator.h"
 #include "DataFormats/TauReco/interface/PFTauDiscriminatorByIsolation.h"
 #include "SimDataFormats/CaloHit/interface/HFShowerLibraryEventInfo.h"
 #include "SimDataFormats/CaloHit/interface/HFShowerPhoton.h"
 // -------------------------------------------------------------------------
 
-typedef Buffer<reco::PFTauDecayModeAssociation, true>
-recoPFTauDecayModeAssociation_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPFTauDecayModeAssociation_t,
-                  "recoPFTauDecayModeAssociation");
-				  
 typedef Buffer<reco::PFTauDiscriminator, true>
 recoPFTauDiscriminator_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoPFTauDiscriminator_t,
@@ -100,20 +93,10 @@ BeamSpotOnline_t;
 DEFINE_EDM_PLUGIN(BufferFactory, BeamSpotOnline_t,
                   "BeamSpotOnline");
 				  
-typedef Buffer<BoundaryInformation, false>
-BoundaryInformation_t;
-DEFINE_EDM_PLUGIN(BufferFactory, BoundaryInformation_t,
-                  "BoundaryInformation");
-				  
 typedef Buffer<CaloTower, false>
 CaloTower_t;
 DEFINE_EDM_PLUGIN(BufferFactory, CaloTower_t,
                   "CaloTower");
-				  
-typedef Buffer<CorrMETData, false>
-CorrMETData_t;
-DEFINE_EDM_PLUGIN(BufferFactory, CorrMETData_t,
-                  "CorrMETData");
 				  
 typedef Buffer<DcsStatus, false>
 DcsStatus_t;
@@ -139,4 +122,9 @@ typedef Buffer<HFShowerPhoton, false>
 HFShowerPhoton_t;
 DEFINE_EDM_PLUGIN(BufferFactory, HFShowerPhoton_t,
                   "HFShowerPhoton");
+				  
+typedef Buffer<HOCalibVariables, false>
+HOCalibVariables_t;
+DEFINE_EDM_PLUGIN(BufferFactory, HOCalibVariables_t,
+                  "HOCalibVariables");
 				  

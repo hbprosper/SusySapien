@@ -1,19 +1,18 @@
 // -------------------------------------------------------------------------
 // File::   plugins07.cc
-// Created: Thu Apr 12 04:32:19 2012 by mkplugins.py
+// Created: Sun Apr 15 22:17:19 2012 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
 // -------------------------------------------------------------------------
 
 #include "AnalysisDataFormats/TopObjects/interface/StEvtSolution.h"
-#include "AnalysisDataFormats/TopObjects/interface/TtDilepEvtSolution.h"
-#include "AnalysisDataFormats/TopObjects/interface/TtHadEvtSolution.h"
 #include "AnalysisDataFormats/TrackInfo/interface/RecoTracktoTP.h"
 #include "AnalysisDataFormats/TrackInfo/interface/TPtoRecoTrack.h"
 #include "DataFormats/LTCDigi/interface/LTCDigi.h"
 #include "DataFormats/METObjects/interface/MET.h"
 #include "DataFormats/METObjects/interface/TowerMET.h"
+#include "DataFormats/MuonSeed/interface/L3MuonTrajectorySeed.h"
 #include "DataFormats/RPCDigi/interface/RPCDigiL1Link.h"
 #include "DataFormats/Scalers/interface/Level1TriggerRates.h"
 #include "DataFormats/Scalers/interface/Level1TriggerScalers.h"
@@ -21,7 +20,6 @@
 #include "DataFormats/SiPixelRawData/interface/SiPixelRawDataError.h"
 #include "DataFormats/TrackCandidate/interface/TrackCandidate.h"
 #include "DataFormats/TrackingSeed/interface/TrackingSeed.h"
-#include "DataFormats/TrajectorySeed/interface/TrajectorySeed.h"
 #include "SimDataFormats/CaloHit/interface/PCaloHit.h"
 #include "SimDataFormats/Forward/interface/LHCTransportLink.h"
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupMixingContent.h"
@@ -37,6 +35,11 @@
 #include "SimDataFormats/Vertex/interface/SimVertex.h"
 // -------------------------------------------------------------------------
 
+typedef Buffer<L3MuonTrajectorySeed, false>
+L3MuonTrajectorySeed_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L3MuonTrajectorySeed_t,
+                  "L3MuonTrajectorySeed");
+				  
 typedef Buffer<LHCTransportLink, false>
 LHCTransportLink_t;
 DEFINE_EDM_PLUGIN(BufferFactory, LHCTransportLink_t,
@@ -166,19 +169,4 @@ typedef Buffer<TrackingVertex, false>
 TrackingVertex_t;
 DEFINE_EDM_PLUGIN(BufferFactory, TrackingVertex_t,
                   "TrackingVertex");
-				  
-typedef Buffer<TrajectorySeed, false>
-TrajectorySeed_t;
-DEFINE_EDM_PLUGIN(BufferFactory, TrajectorySeed_t,
-                  "TrajectorySeed");
-				  
-typedef Buffer<TtDilepEvtSolution, false>
-TtDilepEvtSolution_t;
-DEFINE_EDM_PLUGIN(BufferFactory, TtDilepEvtSolution_t,
-                  "TtDilepEvtSolution");
-				  
-typedef Buffer<TtHadEvtSolution, false>
-TtHadEvtSolution_t;
-DEFINE_EDM_PLUGIN(BufferFactory, TtHadEvtSolution_t,
-                  "TtHadEvtSolution");
 				  

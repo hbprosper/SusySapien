@@ -1,12 +1,11 @@
 // -------------------------------------------------------------------------
 // File::   plugins06.cc
-// Created: Thu Apr 12 04:32:19 2012 by mkplugins.py
+// Created: Sun Apr 15 22:17:19 2012 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
 // -------------------------------------------------------------------------
 
-#include "DataFormats/HcalCalibObjects/interface/HOCalibVariables.h"
 #include "DataFormats/L1CaloTrigger/interface/L1CaloEmCand.h"
 #include "DataFormats/L1CaloTrigger/interface/L1CaloRegion.h"
 #include "DataFormats/L1GlobalCaloTrigger/interface/L1GctEmCand.h"
@@ -32,17 +31,11 @@
 #include "DataFormats/L1GlobalTrigger/interface/L1GtTechnicalTrigger.h"
 #include "DataFormats/L1Trigger/interface/L1TriggerError.h"
 #include "DataFormats/MuonSeed/interface/L2MuonTrajectorySeed.h"
-#include "DataFormats/MuonSeed/interface/L3MuonTrajectorySeed.h"
 #include "DataFormats/Scalers/interface/L1AcceptBunchCrossing.h"
 #include "DataFormats/Scalers/interface/L1TriggerRates.h"
 #include "DataFormats/Scalers/interface/L1TriggerScalers.h"
 // -------------------------------------------------------------------------
 
-typedef Buffer<HOCalibVariables, false>
-HOCalibVariables_t;
-DEFINE_EDM_PLUGIN(BufferFactory, HOCalibVariables_t,
-                  "HOCalibVariables");
-				  
 typedef Buffer<L1AcceptBunchCrossing, false>
 L1AcceptBunchCrossing_t;
 DEFINE_EDM_PLUGIN(BufferFactory, L1AcceptBunchCrossing_t,
@@ -182,9 +175,4 @@ typedef Buffer<L2MuonTrajectorySeed, false>
 L2MuonTrajectorySeed_t;
 DEFINE_EDM_PLUGIN(BufferFactory, L2MuonTrajectorySeed_t,
                   "L2MuonTrajectorySeed");
-				  
-typedef Buffer<L3MuonTrajectorySeed, false>
-L3MuonTrajectorySeed_t;
-DEFINE_EDM_PLUGIN(BufferFactory, L3MuonTrajectorySeed_t,
-                  "L3MuonTrajectorySeed");
 				  

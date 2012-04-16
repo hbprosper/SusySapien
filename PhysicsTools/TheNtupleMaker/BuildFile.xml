@@ -57,7 +57,6 @@
 <use   name="DataFormats/TauReco"/>
 <use   name="DataFormats/TrackCandidate"/>
 <use   name="DataFormats/TrackReco"/>
-<use   name="DataFormats/TrackerCommon"/>
 <use   name="DataFormats/TrackerRecHit2D"/>
 <use   name="DataFormats/TrackingSeed"/>
 <use   name="DataFormats/TrajectorySeed"/>
