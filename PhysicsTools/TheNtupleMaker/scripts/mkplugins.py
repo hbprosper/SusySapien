@@ -11,13 +11,15 @@
 #                            separate plugin files.
 #          31-Mar-2012 HBP   use simplified classes.txt format. change name
 #                            to classlist.txt
-#$Id: mkplugins.py,v 1.19 2011/05/30 14:37:09 prosper Exp $
+#          22-Apr-2012 HBP   use SINGLETON and COLLECTION keywords
+#$Id: mkplugins.py,v 1.20 2012/04/04 01:32:42 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
 from time import *
-from PhysicsTools.TheNtupleMaker.Lib import nameonly
-from PhysicsTools.TheNtupleMaker.Lib import cmsswProject
+from PhysicsTools.TheNtupleMaker.Lib import cmsswProject, nameonly, getwords
+from PhysicsTools.TheNtupleMaker.ReflexLib import findHeaders
+from PhysicsTools.TheNtupleMaker.classmap import ClassToHeaderMap
 #------------------------------------------------------------------------------
 if not os.environ.has_key("CMSSW_BASE"):
 	print "\t**you must first set up CMSSW"
@@ -32,22 +34,6 @@ if PACKAGE == None:
 LOCALBASE = "%s/src" % os.environ['CMSSW_BASE']
 
 NPLUGINS  = 12 # split plugins into this number of files
-
-# Load classmap.py
-
-cmd = 'find %s/PhysicsTools/TheNtupleMaker -name "classmap.py"' % LOCALBASE
-t = map(strip, os.popen(cmd).readlines())
-if len(t) == 0:
-	print "\n\t** unable to locate classmap.py"\
-		  "\t** try running mkclassmap.py to create it"
-	sys.exit(0)
-
-mapfile = t[0]
-try:
-	execfile(mapfile)
-except:
-	print "\n\t** unable to load classmap.py"
-	sys.exit(0)
 #------------------------------------------------------------------------------
 getlibs = re.compile(r'(?<=name=").*?(?=")')
 PLUGINS_BUILDFILE ='''<use   name="FWCore/FWLite"/>
@@ -110,11 +96,13 @@ deflibs = getlibs.findall(BUILDFILE)
 isfun     = re.compile(r'[0-9]+|bool|short|int|long|float|double'\
 					   '|unsigned short|unsigned int|unsigned long')
 isSTL     = re.compile(r'std::(vector|set|map|pair)')
-isvector  = re.compile(r'(?<=^std::vector\<).+(?=\>)')
-isVector  = re.compile(r'(?<=\wVector\<).+(?=\>)')
-getwords  = re.compile(r'[a-z]*[:]*[a-zA-Z0-9]+')
+
+# IMPORTANT: Need to match start of line "^"
+isvector  = re.compile(r'(?<=^std::vector\<).*(?=\>)')
+iscollection  = re.compile(r'(?<=^edm::SortedCollection\<).*(?=\>)')
 hasnspace = re.compile(r'::')
 stripme   = re.compile(r'::|<|>|,| ')
+simplify  = re.compile(r',edm::(FindValue|StrictWeakOrdering)\<.+?\> *')
 findplugins=re.compile(r'<library file=plugins.cc'\
 					   '[^<]+?<flags [^<]+?</library>\s',re.M)
 
@@ -128,18 +116,10 @@ istemplate   = re.compile(templatecmd)
 isTemplate   = re.compile(r'(?P<tclass>\w+(::)?\w+)<.*>')
 #------------------------------------------------------------------------------
 def exclass(x):
-
-	m = isvector.findall(x)
-	n = isVector.findall(x)
-	if len(m) > 0:
-		x = strip(m[0])
-		return ("false", x)
-	elif len(n) > 0:
-		x = strip(n[0])
-		return ("false", x)
-	else:
-		x = strip(x)
-		return ("true", x)
+	t = split(x)
+	ctype = upper(t[0])
+	cname = joinfields(t[1:],' ')
+	return (ctype, cname)
 #------------------------------------------------------------------------------
 # Check if classlist.txt exists
 #------------------------------------------------------------------------------
@@ -149,8 +129,9 @@ if not os.path.exists("plugins/classlist.txt"):
 	"""
 	sys.exit(0)
 #------------------------------------------------------------------------------
-cnames = map(strip, open("plugins/classlist.txt").readlines())
-cnames = map(exclass, cnames)
+cnames = map(exclass,
+			 map(strip,
+				 open("plugins/classlist.txt").readlines()))
 names  = {'time': ctime(time())}
 
 # Split across several plugin files
@@ -163,38 +144,24 @@ hdrs  = {}
 pkgs  = {}
 count = 0
 for index, (ctype, name) in enumerate(cnames):
+	headers = findHeaders(name)
+	if len(headers) == 0:
+		print "** could not identify header for class (%s)" % name
+		continue
+	
+	for header in headers:
+		# note package and header
+		pkg = split(split(header, "/interface")[0], '/src/')[-1]
+		pkgs[pkg] = 1
+		hdrs[header] = 1
+		#print "\t%s" % header
 
-	words = getwords.findall(name)
-	classlist = []
-	for word in words:
-		if isfun.match(word) != None:
-			#print "\tFTYPE(%s)" % word
-			continue
-		elif isSTL.match(word) != None:
-			#print "\tSTL(%s)" % word
-			continue
-		else:
-			if not word in classlist:
-				classlist.append(word)
-				#print "\tCMS(%s)" % word
+	bname = simplify.sub("", name)
+	bname = strip(stripme.sub("", bname))
 
-	headers = []
-	for cname in classlist:
-		# Find associated header
-		if ClassToHeaderMap.has_key(cname):
-			header = ClassToHeaderMap[cname]
-			if type(header) == type([]): header = header[0]
-			if not header in headers:
-				headers.append(header)
-				# note package and header
-				pkg = split(split(header, "/interface")[0], '/src/')[-1]
-				pkgs[pkg] = 1
-				hdrs[header] = 1
-				
-	bname = strip(stripme.sub("", name))
 	names['buffername'] = bname
 	names['classname']  = name
-	names['singleton']  = ctype
+	names['ctype']      = ctype
 	names['shortname']  = bname
 	shortname = bname
 
@@ -230,12 +197,15 @@ for index, (ctype, name) in enumerate(cnames):
 
 	# If there are no headers, don't write out this class
 	if len(headers) == 0:
-		print "*** no header found for %s" % name
+		#print "*** no header found for %s" % name
 		continue
+	
 	# add buffer specific header
 
 	record = '''
-typedef Buffer<%(classname)s, %(singleton)s>
+std::string %(buffername)s_n("%(classname)s");
+typedef Buffer<%(classname)s,
+               &%(buffername)s_n, %(ctype)s>
 %(buffername)s_t;
 DEFINE_EDM_PLUGIN(BufferFactory, %(buffername)s_t,
                   "%(buffername)s");
@@ -260,7 +230,7 @@ DEFINE_EDM_PLUGIN(BufferFactory, %(buffername)s_t,
 		out.close()
 		hdrs = {} # remember to reset
 		outrecs = []
-		
+
 # Update plugins buildfile
 
 print "\n\t==> Updating BuildFiles"

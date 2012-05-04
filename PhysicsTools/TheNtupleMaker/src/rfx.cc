@@ -15,7 +15,7 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Wed Jun 20 19:53:47 EDT 2007
 //         Updated:  Sat Oct 25 2008 - make matchInDeltaR saner
-// $Id: rfx.cc,v 1.2 2011/05/23 08:46:57 prosper Exp $
+// $Id: rfx.cc,v 1.3 2011/06/06 17:10:04 prosper Exp $
 //
 //
 //-----------------------------------------------------------------------------
@@ -180,6 +180,14 @@ rfx::isCompoundMethod(std::string expression, std::string& delim)
   bool yes = boost::regex_search(expression, what, expr);
   if ( yes ) delim = what[0];
   return yes;
+}
+
+string
+rfx::fullname(std::string classname)
+{
+
+  Type t = Type::ByName(classname);
+  return t.FinalType().Name(SCOPED);
 }
 
 void 

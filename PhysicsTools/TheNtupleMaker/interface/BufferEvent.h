@@ -26,7 +26,7 @@
 //                   Wed Apr 20 HBP - Add GenRun
 //                   Sun May 01 HBP - split from Buffer and place in this file
 //
-// $Id: BufferEvent.h,v 1.1 2011/05/02 23:50:57 prosper Exp $
+// $Id: BufferEvent.h,v 1.1.1.1 2011/05/04 13:04:28 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
@@ -61,7 +61,7 @@
     - SINGLETON = <i>true</i> if there can be at most once instance per event
 */
 template <>
-struct Buffer<edm::Event, true>  : public BufferThing
+struct Buffer<edm::Event, "edm::Event", SINGLETON>  : public BufferThing
 {
   ///
   Buffer() 
@@ -75,7 +75,7 @@ struct Buffer<edm::Event, true>  : public BufferThing
       var_(std::vector<VariableDescriptor>()),
       maxcount_(0),
       count_(0),
-      singleton_(true),
+      ctype_(SINGLETON),
       message_(""),
       debug_(0)
   {
@@ -121,9 +121,10 @@ struct Buffer<edm::Event, true>  : public BufferThing
                            varnames_,
                            varmap_,
                            count_,
-                           singleton_,
+                           ctype_,
                            maxcount_,
                            log,
+                           bufferkey_,
                            debug_);
   }
   
@@ -171,6 +172,7 @@ struct Buffer<edm::Event, true>  : public BufferThing
 
   int count() { return count_; }
   int maxcount() { return maxcount_; }
+  std::string key() { return bufferkey_; }
 
 private:
   otreestream* out_;
@@ -186,9 +188,10 @@ private:
   std::map<std::string, countvalue> varmap_;
   int  maxcount_;
   int  count_;
-  bool singleton_;
+  ClassType ctype_;
   std::string message_;
   int  debug_;
+  std::string bufferkey_;
 };
 
 #endif

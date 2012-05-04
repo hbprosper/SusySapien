@@ -5,7 +5,7 @@
 # Created: 19-May-2006 Harrison B. Prosper
 #          18-Sep-2010 HBP use updated version of convert2html
 #          31-Mar-2012 HBP parseHeader now extract typedefs 
-#$Revision: 1.1.1.1 $
+#$Revision: 1.2 $
 #---------------------------------------------------------------------------
 from ROOT import *
 from string import *
@@ -1075,7 +1075,7 @@ namespaces = re.compile(beginnamespace,re.M)
 
 classtitle = re.compile('%s?'\
 						'\s*(class|struct)\s+' \
-						'(?P<classtitle>[a-zA-Z]\w*[^\{]*\{)' % \
+						'(?P<classtitle>[_a-zA-Z]\w*[^\{]*\{)' % \
 						templatecmd, re.M)
 
 classtype  = re.compile('(?P<classtype>\\b(class|struct)\\b)',re.M)
@@ -1094,10 +1094,119 @@ def fatal(s):
 	print "** Error ** %s" %s
 	print "\tgoodbye!"
 	sys.exit(1)
+## #---------------------------------------------------------------------------
+## # Use (homegrown) CPP to clean-up header before parsing
+## #---------------------------------------------------------------------------
+## cpp_namespace  = '^ *namespace +[a-zA-Z0-9]+\s*{'
+## cpp_tclassname = '^ *template *<[^>]+>\s*class +\w+\s*\w*\s*[^{;]+{'
+## cpp_classname  = '^ *class +\w+\s*\w*\s*[^{;]+{'
+
+## cpp_tstructname= '^ *template +<[^>]+>\s*struct +\w+\s*\w*\s*[^{;]+{'
+## cpp_structname = '^ *struct +\w+\s*\w*\s*[^{;]+{'
+## cpp_typedef    = '^ *typedef +\w+\s*\w*\s*[^;]+'
+## cpp_leftbrace  = '{'
+## cpp_rightbrace = '};|}'
+
+## cpp_stripbodies= re.compile('(?<={|})\s*{\s*};?', re.M)
+
+## cpp_regex = joinfields([cpp_namespace,
+## 						cpp_tclassname,
+## 						cpp_classname,
+## 						cpp_tstructname,
+## 						cpp_structname,
+## 						cpp_typedef,
+## 						cpp_leftbrace,
+## 						cpp_rightbrace],'|')
+## cpp_search= re.compile(cpp_regex, re.M)
+
+## gettypedefs  = re.compile('^ *typedef +\w+ *\w* *.*; *$', re.M)
+## gettypedefs  = re.compile('^ *typedef .*$', re.M)
+## gettypedefs  = re.compile('^ *typedef [a-zA-Z0-9:_<>, ]+$', re.M)
+## skipdefs     = re.compile('typename|iterator|_type')
+
+## # Find different comment styles
+
+## # C++-style
+## scomment2    = '(?P<scomment2>(^[ \t]*///(?!/)[^\n]*\n))'
+## scomment3    = '(?P<scomment3>(^[ \t]*//(?!/)[^\n]*\n)+)'
+
+## # C-style
+## ccomment     = '(?P<ccomment>^[ \t]*/[*].+?(?=[*]/)[*]/(?! \)))'
+
+## # Doxygen-style
+## ocomment     = '(?P<ocomment>^[ \t]*///[^\n]+?\n[ \t]*/[*][*].+?(?=[*]/)[*]/)'
+
+## groups = (ocomment,scomment3,scomment2,ccomment)
+## format = (len(groups)-1)*'%s|'+'%s'
+## cpp_stripcomments = re.compile(format % groups,re.M+re.S)
+## cpp_stripinlinecomments = re.compile('//.*\n|/\*\*.*\*/\n', re.M)
+## cpp_stripbodies   = re.compile('(?<={|})\s*{\s*};?', re.M)
+## cpp_stripincludes = re.compile('^#.*\s*', re.M)
+## cpp_stripstrings  = re.compile('"[^"]+"\s*', re.M)
+
+## cpp_findweird     = re.compile('(class|struct) +(?P<weird>\w+\s+)\w+')
+## cpp_doublecolon   = re.compile('::')
+## cpp_singlecolon   = re.compile('(?<!:):(?!=:)')
+## cpp_rbracescolon  = re.compile('\} *;')
+## cpp_rightbrace    = re.compile('\} ')
+## cpp_rightangle    = re.compile('\> (?=[a-zA-Z])')
+## cpp_abstract      = re.compile('\bvirtual .*\) *= *0 *;')
+
+## def cpp(record, items):
+	
+## 	record = cpp_stripcomments.sub("", record)
+## 	record = replace(record, "\\\"","")
+## 	record = cpp_stripinlinecomments.sub("", record)
+## 	record = cpp_stripincludes.sub("",record)
+## 	record = cpp_stripstrings.sub("", record)
+
+## 	record = joinfields(split(replace(record, '\n', ' ')), ' ')
+## 	record = cpp_rbracescolon.sub("};", record)
+## 	record = replace(record,';',';\n')
+## 	record = cpp_rightbrace.sub("}\n\n", record)
+## 	record = replace(record,'{', '{\n')
+## 	record = cpp_doublecolon.sub("@@", record)
+## 	record = cpp_singlecolon.sub(":\n", record)
+## 	record = replace(record, "@@", "::")
+## 	record = cpp_rightangle.sub(">\n", record)
+
+## 	results = map(lambda x: strip(replace(x,'\n',' ')),
+## 				  cpp_search.findall(record))
+
+## 	record = ''
+## 	col = 0
+## 	previous = ''
+## 	for result in results:
+## 		if find(result, 'class') > -1 or find(result, 'struct') > -1:
+## 			m = cpp_findweird.search(result)
+## 			if m != None:
+## 				weird = m.group('weird')
+## 				result = replace(result, weird, '')
+
+## 		if find(result, '{') > -1:
+## 			if previous == '{':
+## 				col += 1
+## 			previous = '{'
+## 		elif find(result, '}') > -1:
+## 			if previous == '}':
+## 				col -= 1
+## 			previous = "}"
+## 		tab = '  '*col
+## 		record += "%s%s\n" % (tab, result)
+
+## 	newrecord = ''
+## 	count = 0
+## 	while (newrecord != record) and (count < 10):
+## 		if newrecord != '': record = newrecord
+## 		newrecord = cpp_stripbodies.sub("", record)
+## 		count += 1
+## 	record = newrecord
+## 	return record
+
 #---------------------------------------------------------------------------
 # Use (homegrown) CPP to clean-up header before parsing
 #---------------------------------------------------------------------------
-cpp_namespace  = '^ *namespace +[a-zA-Z]+\s*{'
+cpp_namespace  = '^ *namespace +[a-zA-Z0-9]+\s*{'
 cpp_tclassname = '^ *template *<[^>]+>\s*class +\w+\s*\w*\s*[^{;]+{'
 cpp_classname  = '^ *class +\w+\s*\w*\s*[^{;]+{'
 
@@ -1152,6 +1261,7 @@ def cpp(record, items):
 	record = cpp_stripinlinecomments.sub("", record)
 	record = cpp_stripincludes.sub("",record)
 	record = cpp_stripstrings.sub("", record)
+	record = replace(record,'{','{\n')
 	results = map(lambda x: strip(replace(x,'\n',' ')),
 				  cpp_search.findall(record))
 	record = ''
@@ -1340,6 +1450,20 @@ def parseHeader(file):
 		t = split(td)
 		rec = "\tclass %s {\n\t};" % t[-1]
 		record = replace(record, td, rec)
+		
+## 	# ---------------------------------------------------
+## 	# Change format of typedefs so that they can be
+## 	# processed the same way as classes
+## 	# ---------------------------------------------------
+## 	tdefs = gettypedefs.findall(record)
+## 	for td in tdefs:
+## 		td = strip(td)
+## 		if skipdefs.search(td) != None: continue
+
+## 		t = split(td)
+## 		tname = joinfields(t[:-1], ' ')+'@' + t[-1]
+## 		rec = "\tclass %s {\n\t};" % tname
+## 		record = replace(record, td, rec)
 
 	# ---------------------------------------------------
 	# Find namespace preambles and ends and replace them.
@@ -1492,155 +1616,12 @@ def getClassname(record):
 		cname = strip(title[:len(title)-1])
 
 	return (cname,bname,template)
-#----------------------------------------------------------------------------
-skipmethod = re.compile(r'TClass|TBuffer|TMember|operator|^__')
-reftype = re.compile(r'(?<=edm::Ref\<std::vector\<)(?P<name>.+?)(?=\>,)')
-basicstr = re.compile(r'std::basic_string\<char\>')
-vsqueeze = re.compile(r'(?<=[^>]) +\>')
-#----------------------------------------------------------------------------
-FINAL   = 1
-SCOPED  = 4
-
-def classMethods(classname, db, depth=0):
-	depth += 1
-	if depth > 20:
-		print "lost in trees"
-		return
-	tab = "  " * (depth-1)
-
-	cdb = {'classname': classname,
-		   'methods': []}
-
-	thing = Reflex.Type()
-	c = thing.ByName(classname)
-	n = c.FunctionMemberSize()
-
-	for i in xrange(n):
-		m = c.FunctionMemberAt(i)
-		if not m.IsPublic(): continue
-		if not m.IsFunctionMember(): continue
-		if m.IsConstructor(): continue
-		if m.IsDestructor():  continue
-
-		name  = m.Name()		
-		mtype = m.TypeOf().Name(SCOPED)
-		t = split(mtype, '(')
-
-		# keep methods with simple arguments
-		if len(t) != 2:  continue
-		rtype = strip(t[0])
-		args  = strip(t[1])
-		args  = replace('(%s' % args, '(void)', '()')
-
-		# In C++ there is no overloading across scopes
-		# only within scopes
-		if db['scopes'].has_key(name):
-			# This method is potentially an overload.
-			# If we are not in the same scope, however, it cannot
-			# overload the existing method
-			scope = db['scopes'][name]
-			if  scope != classname: continue
-		db['scopes'][name] = classname
-
-		signature = name + args
-
-		# Skip setters
-		rtype = strip(rtype)
-		if rtype in ['void', 'void*']: continue
-
-		# Expand typedefs, but check first for pointers and
-		# references
-		fullrtype = rtype
-		if rtype[-1] in ['*','&']:
-			r = thing.ByName(rtype[:-1])
-			if r.IsTypedef():
-				fullrtype = "%s%s" % (r.Name(SCOPED+FINAL), rtype[-1])
-				rtype = fullrtype # Fri Jan 29
-		else:
-			r = thing.ByName(rtype)
-			if r.IsTypedef():
-				fullrtype = r.Name(SCOPED+FINAL)			
-
-		rtype     = strip(basicstr.sub("std::string", rtype))
-		fullrtype = strip(basicstr.sub("std::string", fullrtype))
-		signature = basicstr.sub("std::string", signature)
-		str = "%s  %s" % (rtype, signature)
-		if skipmethod.search(str) != None: continue
-
-		m = reftype.findall(str)
-		if len(m) != 0:
-			for x in m:
-				cname = "%sRef" % x
-				cmd = re.compile(r"edm::Ref\<.+?,%s\> \>" % x)
-				rtype = cmd.sub(cname, rtype)
-				signature = cmd.sub(cname, signature)
-
-		# Ok, now added to methods list
-		rtype = vsqueeze.sub(">", rtype)
-		signature = vsqueeze.sub(">", signature)
-		method    = "%32s  %s" % (rtype, signature)
-
-		# Important: make sure we don't have duplicates
-		if db['methods'].has_key(method):
-			###D
-			#print "\t*** DUPLICATE METHOD(%s)" % method
-			continue
-		db['methods'][method] = classname
-		cdb['methods'].append((fullrtype, method))
-
-	db['classlist'].append( cdb )
-
-	nb = c.BaseSize()
-	for i in xrange(nb):
-		b = c.BaseAt(i).ToType()
-		basename = b.Name(SCOPED)
-		db['baseclassnames'].append(basename)
-		classMethods(basename, db, depth)
-
-#----------------------------------------------------------------------------
-def classDataMembers(classname, db, depth=0):
-	depth += 1
-	if depth > 20:
-		print "lost in trees"
-		return
-	tab = "  " * (depth-1)
-
-	cdb = {'classname': classname,
-		   'datamembers': []}
-
-	thing = Reflex.Type()
-	c = thing.ByName(classname)
-	n = c.DataMemberSize()
-
-	for i in xrange(n):
-		m = c.DataMemberAt(i)
-		if not m.IsPublic(): continue
-
-		name  = m.Name()
-		dtype = m.TypeOf()
-		nametype = dtype.Name(SCOPED+FINAL)
-		nametype  = strip(basicstr.sub("std::string", nametype))
-		db['scopes'][name] = classname
-		signature = name
-
-		# Ok, now added to datamembers list
-		nametype = vsqueeze.sub(">", nametype)
-		signature= vsqueeze.sub(">", signature)
-		member   = "%32s  %s" % (nametype, name)
-
-		if db['datamembers'].has_key(member):
-			continue
-		db['datamembers'][member] = classname
-		cdb['datamembers'].append((nametype, member))
-	db['classlist'].append( cdb )
-
-	# scan bases classes
-	nb = c.BaseSize()
-	for i in xrange(nb):
-		b = c.BaseAt(i).ToType()
-		basename = b.Name(SCOPED)
-		db['baseclassnames'].append(basename)
-		classDataMembers(basename, db, depth)
+#------------------------------------------------------------------------------
+scrunch   = re.compile(r' +(?=[\<])|(?<=[\<]) +|(?<=,) +')
+def fixName(name):
+	name = scrunch.sub('',name)
+	return name
+getwords  = re.compile(r'[a-zA-Z0-9]*[:]*[a-zA-Z0-9]*[:]*[a-zA-Z0-9]+')
 #------------------------------------------------------------------------------
 def cmsswProject():
 	if not os.environ.has_key("CMSSW_RELEASE_BASE"):
@@ -1686,3 +1667,6 @@ def getauthor():
 		t = regex.findall(record)
 		if len(t) > 0: author = t[0]
 	return author
+
+def getAuthor():
+	return getauthor()

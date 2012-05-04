@@ -18,7 +18,7 @@
 //                   Sat May 21 2011 HBP - clear memory occupied by objects
 //                                         returned by value
 // 
-// $Id: ClassFunction.cc,v 1.1 2011/05/23 08:46:57 prosper Exp $
+// $Id: ClassFunction.cc,v 1.2 2012/04/04 01:32:42 prosper Exp $
 //-----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python.hpp>
@@ -38,6 +38,15 @@ using namespace ROOT::Reflex;
 //-----------------------------------------------------------------------------
 static bool DBClassFunction = getenv("DBClassFunction")>0 ? true : false; 
 //static bool FirstCallToFM=true;
+
+namespace {
+  string scrunch(string filename)
+  {
+    filename = rfx::replace(filename, " ", "");
+    filename = rfx::replace(filename, ">>", "> >");
+    return filename;
+  }
+}
 
 RunToTypeMap ClassFunction::donotcall = RunToTypeMap();
 
@@ -70,9 +79,11 @@ ClassFunction::~ClassFunction()
 
 ClassFunction::ClassFunction(std::string classname, 
                              std::string expression)
-  : classname_(classname),
+  : classname_(scrunch(classname)),
     expression_(expression)
 {
+  classname = classname_; // added 25 Apr 2012
+
 //   if ( FirstCallToFM )
 //     {
 //       FirstCallToFM = false;

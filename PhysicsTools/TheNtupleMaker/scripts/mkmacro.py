@@ -5,7 +5,7 @@
 # Created: 06-Mar-2010 Harrison B. Prosper
 # Updated: 05-Oct-2010 HBP - clean up
 #          12-Mar-2011 HBP - give user option to add variables
-#$Id:$
+#$Id: mkmacro.py,v 1.1 2011/05/12 09:50:59 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
 from string import *
@@ -73,7 +73,7 @@ HEADER=\
 //-----------------------------------------------------------------------------
 // File:        %(name)s.h
 // Description: user macro called by TheNtupleMaker
-// Created:     %(time)s by mkusermacro.py
+// Created:     %(time)s by mkmacro.py
 // Author:      %(author)s
 //-----------------------------------------------------------------------------
 #include <map>
@@ -84,72 +84,127 @@ HEADER=\
 #include <algorithm>
 #include <cassert>
 #include <stdlib.h>
+
 #include "TROOT.h"
 #include "TTree.h"
-//-----------------------------------------------------------------------------
-// -- Declare variables to be initialized every event
-//-----------------------------------------------------------------------------
-%(decl)s
 //-----------------------------------------------------------------------------
 struct countvalue
 {
   int*    count;
   double* value;
 };
-typedef std::map<std::string, countvalue> Vars;
+typedef std::map<std::string, countvalue> VarMap;
+typedef std::map<std::string, std::vector<int> > IndexMap;
 
-void initializeEvent(Vars& vars)
+// -----------------------------------------------------------------------
+// This struct is defined by the user in %(name)s.cc
+class %(name)sInternal;
+
+class %(name)s
 {
-  countvalue v;
-  int count=0;
-  
-%(impl)s
-}
+public:
+  %(name)s(TTree* tree_, VarMap* varmap_, IndexMap* indexmap_)
+    : tree(tree_), varmap(varmap_), indexmap(indexmap_)
+%(init)s
+	{}
 
-//-----------------------------------------------------------------------------
-// --- These structs can be filled by calling fillObjects()
-// --- after the call to initializeEvents(...)
-//-----------------------------------------------------------------------------
-%(structdecl)s
-%(structimpl)s
+  ~%(name)s() {}
+
+  void beginJob();
+  void initialize() { initialize_(); }
+  void endJob();
+  
+  bool analyze();
+
+  // call this function to keep specified object
+  // example:
+  //   keep("electron", i);
+  void keep(std::string name, int index)
+  {
+    if ( indexmap->find(name) == indexmap->end() )
+	  (*indexmap)[name] = std::vector<int>();
+    (*indexmap)[name].push_back(index);
+  }
+
+private:
+  TTree*    tree;
+  VarMap*   varmap;
+  IndexMap* indexmap;
+  %(name)sInternal* local;
+
+  // ------------------------------------------------------------------------
+  // --- Initialize variables
+  // ------------------------------------------------------------------------
+%(decl)s
+
+  void initialize_()
+  {
+    indexmap->clear();
+	
+%(impl)s
+  }
+  
+public:
+  ClassDef(%(name)s,1)
+};
+ClassImp(%(name)s)
 
 #endif
 '''
 
+TMP2='''
+//---------------------------------------------------------------------------
+// --- These structs can be filled by calling fillObjects()
+// --- after the call to initializeEvents(...)
+//---------------------------------------------------------------------------
+%(structdecl)s
+%(structimpl)s
+'''
 MACRO=\
 		  '''//-----------------------------------------------------------------------------
 // File:        %(name)s.cc
 // Description: user macro
-// Created:     %(time)s by mkusermacro.py
+// Created:     %(time)s by mkmacro.py
 // Author:      %(author)s
 //-----------------------------------------------------------------------------
 #include "%(name)s.h"
 //-----------------------------------------------------------------------------
 using namespace std;
 
-// Declare all user-defined variables to be added to ntuple.
-// The variables should be declared static so that their values
-// and addresses do not change between calls to %(name)s(..)
+// Declare all user-defined variables to be added to ntuple in
+// the following struct
 
-//static float HT=0;
-
-static bool firstEvent=true;
-
-bool %(name)s(Vars& vars, TTree& tree)
+struct %(name)sInternal
 {
-  if ( firstEvent )
-    {
-	  firstEvent = false;
-	  // do what needs to be done once per run
-	  // e.g. add a branch to the ntuple:
-	  //tree.Branch("HT", &HT, "HT/F");
-	}
-  initializeEvent(vars);
+  int counter;
 
-  // compute user-defined variables/do event selection
-  // e.g.:
-  //HT = 0;
-  //for(unsigned int i=0; i < jet_pt.size(); ++i) HT += jet_pt[i];
+  // double HT;
+};
+
+
+void %(name)s::beginJob()
+{
+  local = new %(name)sInternal();
+  local->counter = 0;
+  
+  //tree->Branch("HT", &local->HT, "HT/F");
+}
+
+void %(name)s::endJob()
+{
+  if ( local ) delete local;
+}
+
+
+bool %(name)s::analyze()
+{
+  local->counter++;
+
+  // compute variables
+  // apply cuts etc.
+
+  // local->HT = 0;
+  // for(unsigned int i=0; i < jet_pt.size(); ++i) local->HT += jet_pt[i];
   
   // if ( miserable-event ) return false;
   
@@ -185,21 +240,22 @@ COMPILE=\
 # Created: %(time)s
 #------------------------------------------------------------------------------
 name	:= %(name)s
-AT		:= @
+AT      := @
 #------------------------------------------------------------------------------
 CINT	:= rootcint
-CXX		:= g++
+CXX     := g++
 LDSHARED:= g++
 #------------------------------------------------------------------------------
 DEBUG	:= -ggdb
-CPPFLAGS:= -I. $(shell root-config --cflags)    
+CPPFLAGS:= -I. $(shell root-config --cflags)
 CXXFLAGS:= $(DEBUG) -pipe -O2 -fPIC -Wall
 LDFLAGS := -shared 
 #------------------------------------------------------------------------------
 LIBS	:= $(shell root-config --glibs)
 #------------------------------------------------------------------------------
 linkdef	:= linkdef.h
-header  := header.h
+header  := %(name)s.h
+cinthdr := dict.h
 cintsrc	:= dict.cc
 cintobj	:= dict.o
 
@@ -208,14 +264,13 @@ cppobj  := $(name).o
 
 objects	:= $(cintobj) $(cppobj) 
 library	:= lib$(name).so
-$(shell rm -rf header.h linkdef.h)
 #-----------------------------------------------------------------------
 lib:	$(library)
 
 $(library)	: $(objects)
 	@echo "---> Linking $@"
 	$(AT)$(LDSHARED) $(LDFLAGS) $+ $(LIBS) -o $@
-	@rm -rf $(cintsrc) $(objects) $(linkdef) $(header)
+	@rm -rf $(cinthdr) $(cintsrc) $(objects) 
 
 $(cppobj)	: $(cppsrc)
 	@echo "---> Compiling `basename $<`" 
@@ -229,25 +284,11 @@ $(cintsrc) : $(header) $(linkdef)
 	@echo "---> Generating dictionary `basename $@`"
 	$(AT)$(CINT) -f $@ -c $(CPPFLAGS) $+
 
-$(header)	: $(linkdef)
-	@echo "---> Creating $(header)"
-	@echo -e "#ifndef HEADER_H"  >  $(header)
-	@echo -e "#define HEADER_H" >>	$(header)
-	@echo -e "#include <map>" >>	$(header)
-	@echo -e "#include <string>" >>	$(header)
-	@echo -e "#include <vector>" >>	$(header)
-	@echo -e "#include <TTree.h>" >>	$(header)
-	@echo -e "struct countvalue { int* count; double* value; };" >> $(header)
-	@echo -e "bool %(name)s(std::map<std::string, countvalue>&, TTree& tree);"\
-	>> $(header)
-	@echo -e \"#endif" >> $(header)
-
 $(linkdef)	:
 	@echo "---> Creating $(linkdef)"
 	@echo -e "#include <map>"  >	$(linkdef)
 	@echo -e "#include <string>" >>	$(linkdef)
 	@echo -e "#include <vector>" >>	$(linkdef)
-	@echo -e "#include <$(header)>" >> $(linkdef)
 	@echo -e "#ifdef __CINT__" >> $(linkdef)
 	@echo -e "#pragma link off all globals;" >> $(linkdef)
 	@echo -e "#pragma link off all classes;" >> $(linkdef)
@@ -255,15 +296,18 @@ $(linkdef)	:
 	@echo -e "#pragma link C++ class countvalue+;" >> $(linkdef)
 	@echo -e "#pragma link C++ class map<string, countvalue>+;" \
 	>> $(linkdef)
-	@echo -e "#pragma link C++ function %(name)s;" >> $(linkdef)
+	@echo -e "#pragma link C++ class map<string, vector<int> >+;" \
+	>> $(linkdef)
+	@echo -e "#pragma link C++ class %(name)s+;" \
+	>> $(linkdef)	
 	@echo -e "#endif" >> $(linkdef)
 
 clean   :
-	@rm -rf dict.* $(header) $(linkdef) $(objects)  $(library)
+	@rm -rf dict.* $(objects)  $(library) $(linkdef)
 '''
 #------------------------------------------------------------------------------
 def main():
-	print "\n\tmkusermacro.py"
+	print "\n\tmkmacro.py"
 
 	# Decode command line
 
@@ -407,8 +451,8 @@ def main():
 	keys.sort()
 	decl = []
 	impl = []
-
-	for varname in keys:
+	init = []
+	for index, varname in enumerate(keys):
 		n, rtype, branchname, count, iscounter = vars[varname]
 
 		# If this is a counter variable ignore it
@@ -417,20 +461,30 @@ def main():
 		if rtype == "bool": rtype = "int"
 
 		if count == 1:
-			decl.append("%s\t%s;" % (rtype, varname))
-			impl.append('  v = vars["%s"];' % branchname)
-			impl.append('  assert(v.value!=0);')
-			impl.append('  %s = *(v.value);' % varname)
+			decl.append("  %s\t%s;" % (rtype, varname))
+			impl.append('    countvalue& v%d = (*varmap)["%s"];' % (index,
+															   branchname))
+			impl.append('    if ( v%d.value )' % index)
+			impl.append('      %s = *v%d.value;' % (varname, index))
+			impl.append('    else')
+			impl.append('      %s = 0;' % varname)
 			impl.append('')
 
 		else:
 			# this is a vector
-			decl.append("std::vector<%s>\t%s(%d,0);" %(rtype, varname, count))
-			impl.append('  v = vars["%s"];' % branchname)
-			impl.append('  assert(v.value!=0); assert(v.count!=0);')
-			impl.append('  count = *(v.count);')
-			impl.append('  %s.resize(count);' % varname)
-			impl.append('  copy(v.value, v.value+count, %s.begin());'% varname)
+			init.append(" %s\t(std::vector<%s>(%d,0))" %\
+						(varname, rtype, count))
+			decl.append("  std::vector<%s>\t%s;" %(rtype, varname))
+			impl.append('    countvalue& v%d = (*varmap)["%s"];' % (index,
+															   branchname))
+			impl.append('    if ( v%d.value )' % index)
+			impl.append('      {')
+			impl.append('        %s.resize(*v%d.count);' % (varname, index))
+			impl.append('        copy(v%d.value, v%d.value+*v%d.count, '\
+						'%s.begin());'% (index, index, index, varname))
+			impl.append('      }')
+			impl.append('    else')
+			impl.append('      %s.clear();' % varname)
 			impl.append('')
 
 	# Create structs for vector variables
@@ -499,6 +553,7 @@ def main():
 			 'class' : join("", records, ""),
 			 'decl'  : join("", decl, "\n"),
 			 'impl'  : rstrip(join("", impl, "\n")),
+			 'init'  : join("    ,", init, "\n"),
 			 'author': AUTHOR,
 			 's': '%s',
 			 'structdecl': join("", structdecl, "\n"),
@@ -517,7 +572,6 @@ def main():
 	outfilename = "%(name)s.mk" % names
 	open(outfilename, "w").write(record)
 
-	print "\tdone!"
 	print "\n\tto compile and link the macro %(name)s\n\tdo" % names
 	print "\t\tmake -f %(name)s.mk\n" % names
 #------------------------------------------------------------------------------

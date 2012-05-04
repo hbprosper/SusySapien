@@ -7,15 +7,18 @@
 # Updated:     15-Feb-2010 HBP, make it possible to be run anywhere
 #              09-Mar-2010 HBP, add search of SimDataFormats
 #              08-Aug-2010 HBP, fix search of user.h in TheNtupleMaker
-#              26-Aug02919 HBP, get list of potential classes from
+#              26-Aug-2011 HBP, get list of potential classes from
 #                          python/classmap.py
-#$Id: mkvomit.py,v 1.1 2011/07/28 10:37:13 prosper Exp $
+#              24-Apr-2012 HBP, get list of potential classes from
+#                          plugins/classlist.txt instead
+#$Id: mkvomit.py,v 1.2 2012/04/04 01:32:42 prosper Exp $
 #---------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
 from string import *
 from time import *
 from getopt import getopt
+from PhysicsTools.TheNtupleMaker.classmap import ClassToHeaderMap
 from PhysicsTools.TheNtupleMaker.Lib import \
 	 parseHeader,\
 	 splitHeader,\
@@ -23,9 +26,11 @@ from PhysicsTools.TheNtupleMaker.Lib import \
 	 namespaceName,\
 	 getClassname,\
 	 convert2html,\
+	 cmsswProject
+from PhysicsTools.TheNtupleMaker.ReflexLib import \
 	 classMethods,\
 	 classDataMembers,\
-	 cmsswProject
+	 findHeaders
 #---------------------------------------------------------------------------
 # Constants
 #---------------------------------------------------------------------------
@@ -42,25 +47,6 @@ PLUGINDIR = "%s/plugins"   % PROJECTBASE
 SRCDIR    = "%s/src"       % PROJECTBASE
 INCDIR    = "%s/interface" % PROJECTBASE
 #------------------------------------------------------------------------------
-# Load classmap.py
-# First try local release
-#cmd = 'find %s%s/%s -name "classmap.py"' % (LOCALBASE, PACKAGE, SUBPACKAGE)
-#t = map(strip, os.popen(cmd).readlines())
-t = []
-if len(t) == 0:
-	# try TheNtupleMaker
-	cmd = 'find %sPhysicsTools/TheNtupleMaker -name "classmap.py"' % LOCALBASE
-	t = map(strip, os.popen(cmd).readlines())
-	if len(t) == 0:
-		print "\n\t** unable to locate classmap.py"\
-		  "\t** try running mkclassmap.py to create it"
-		sys.exit(0)
-CLASSMAPFILE = t[0]
-try:
-	execfile(CLASSMAPFILE)
-except:
-	print "\n\t** unable to load classmap.py"
-	sys.exit(0)
 #------------------------------------------------------------------------------
 USAGE='''
 Usage:
@@ -73,8 +59,7 @@ def usage():
 SHORTOPTIONS = 'hI:'
 #----------------------------------------------------------------------------
 # Load needed libraries
-from PhysicsTools.TheNtupleMaker.AutoLoader import *
-#gSystem.Load("libPhysicsToolsTheNtupleMaker")
+#import PhysicsTools.TheNtupleMaker.AutoLoader
 #----------------------------------------------------------------------------
 # Code to extract methods etc.
 #----------------------------------------------------------------------------
@@ -182,19 +167,24 @@ def writeHTML(db, txtfilename):
 def main():
 
 	print "mkvomit.py\n"
-	
-	fmap = {}
-	for file in ClassToHeaderMap.values():
-		if type(file) == type([]):
-			for f in file:
-				fmap[f] = 0
-		else:
-			fmap[file] = 0
-	filelist = fmap.keys()
-	filelist.sort()
 
+	# read classlist.txt
+	filename='%sPhysicsTools/TheNtupleMaker/plugins/classlist.txt' % LOCALBASE
+	classlist = map(strip, open(filename).readlines())
+
+	clist = []
+	for name in classlist:
+		t = split(name)
+		name = joinfields(t[1:], ' ')
+		headers = findHeaders(name)
+		if len(headers) == 0: continue
+		
+		clist.append((name, headers[0]))
+	clist.sort()
+	classlist = clist
+	
 	#-------------------------------------------------
-	# Loop over header files to be scanned
+	# Loop over classes to be scanned
 	#-------------------------------------------------
 
 	# Make sure html and txt directories exist
@@ -202,110 +192,72 @@ def main():
 	os.system("mkdir -p html; mkdir -p txt")
 	
 	count = 0
-	for index, filename in enumerate(filelist):
+	for index, (classname, header) in enumerate(classlist):
 	
 		# Create full pathname to header
 
-		file = LOCALBASE + filename
+		file = LOCALBASE + header
 		if not os.path.exists(file):
-			file = BASE + filename
+			file = BASE + header
 			if not os.path.exists(file):
 				print "** file %s not found" % file
 				continue
+
 		file = os.path.abspath(file)
+		header = file		
+		fullname = classname
 
-		# Scan header and parse it for classes
+		# For now ignore templates
+		if find(fullname, '<') > -1: continue
 		
-		record, items = parseHeader(file)
-		
-		if record == '': continue
-		records = splitHeader(record)
-		if len(records) == 0: continue
+		# Get methods and/or datamembers and write them out
 
-		# Now strip away path up to "/src/" in pathname of header
+		# Initialize map to contain info about classes, methods & datamembers
 		
-		header = file
-## 		###D
-## 		print "HEADER( %s )" % header
 		k = rfind(header, "/src/") # search from right
 		if k > 0: header = header[k+5:]
-	
 		filestem = replace(header, 'interface/', '')
 		filestem = split(filestem, '.h')[0]
 		filestem = replace(filestem, '/', '.')
 
-		# Initialize map to contain info about classes, methods & datamembers
-		
 		db = {'version':  VERSION,
 			  'filestem': filestem,
 			  'header':   header}
 
-		names = []
-		for irecord, (record, group, start, end) in enumerate(records):
+		db['scopes'] = {}
+		db['methods'] = {}
+		db['datamembers'] = {}
+		db['classname'] = fullname
+		db['classlist'] = []
+		db['baseclassnames'] = []
+		db['signature'] = {}
 
-			# Get actual record from items map
+		classMethods(fullname, db)
+		db['baseclassnames'] = []
+		classDataMembers(fullname, db)
+		
+		nmeth = len(db['methods'])
+		ndata = len(db['datamembers'])
 
-			key = strip(record)
-			if items.has_key(key):
-				record = items[key]
-				if type(record) == type(()):
-					record, extraRecord = record
-			record = stripBlanklines(record)
+		if nmeth > 0 or ndata > 0:
+
+			count += 1
+			print "%5d\t%s" % (count, fullname)
 			
-			if group == "namespace":
-				name = strip(namespaceName(record))
-				if name != '': names.append(name)
-
-			elif group == "endnamespace":
-				if len(names) > 0: names.pop()
-				
-			elif group in ["endclass", "endstructclass"]:
-				
-				fullname = joinfields(names, "::")
-
-				# For now ignore templates
-				if find(fullname, '<') > -1: continue
-				
-				# Get methods and/or datamembers and write them out
-				
-				db['scopes'] = {}
-				db['methods'] = {}
-				db['datamembers'] = {}
-				db['classname'] = fullname
-				db['classlist'] = []
-				db['baseclassnames'] = []
-				db['signature'] = {}
-
-				classMethods(fullname, db)
-				db['baseclassnames'] = []
-				classDataMembers(fullname, db)
-
-				nmeth = len(db['methods'])
-				ndata = len(db['datamembers'])
-				
-				if nmeth > 0 or ndata > 0:
-
-					count += 1
-					print "%5d\t%s" % (count, fullname)
-					
-					cname  = split(fullname,'::').pop()
-					methfilename = "txt/%s.%s.txt" % (filestem, cname)
-
-					out = open(methfilename, 'w')
-					printHeader(db, out)
-					printMethods(db, out)
-					printDataMembers(db, out)
-					out.close()
-					
-					writeHTML(db, methfilename)
-				names.pop()
-				
-			elif group in ["class", "structclass"]:
-				classname, basenames, template = getClassname(record)
-				names.append(classname)
+			cname  = split(fullname,'::').pop()
+			methfilename = "txt/%s.%s.txt" % (filestem, cname)
+			
+			out = open(methfilename, 'w')
+			printHeader(db, out)
+			printMethods(db, out)
+			printDataMembers(db, out)
+			out.close()
+			
+			writeHTML(db, methfilename)
+		else:
+			print "*** no methods found for %s" % fullname
 
 	# Create index.html
-
 	print "\ncreating html/index.html.."
 	os.system("mkindex.py")
 	print "\n\tmkvomit.py is done!\n"

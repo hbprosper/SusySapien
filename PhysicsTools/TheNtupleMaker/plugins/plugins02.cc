@@ -1,164 +1,275 @@
 // -------------------------------------------------------------------------
 // File::   plugins02.cc
-// Created: Sun Apr 15 22:17:19 2012 by mkplugins.py
+// Created: Thu Apr 26 00:40:14 2012 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
 // -------------------------------------------------------------------------
 
-#include "AnalysisDataFormats/TopObjects/interface/StGenEvent.h"
-#include "AnalysisDataFormats/TopObjects/interface/TopGenEvent.h"
-#include "AnalysisDataFormats/TopObjects/interface/TtFullHadronicEvent.h"
-#include "DataFormats/PatCandidates/interface/StringMap.h"
-#include "DataFormats/RPCDigi/interface/RPCRawDataCounts.h"
-#include "DataFormats/SiPixelDigi/interface/SiPixelCalibDigiError.h"
-#include "DataFormats/SiStripCommon/interface/SiStripEventSummary.h"
+#include "AnalysisDataFormats/CMGTools/interface/CompositePtrCandidateT1T2MEt.h"
+#include "AnalysisDataFormats/CMGTools/interface/CompositePtrCandidateTMEt.h"
+#include "AnalysisDataFormats/TopObjects/interface/StEvtSolution.h"
+#include "AnalysisDataFormats/TrackInfo/interface/RecoTracktoTP.h"
+#include "AnalysisDataFormats/TrackInfo/interface/TPtoRecoTrack.h"
+#include "DataFormats/GeometryVector/interface/GlobalTag.h"
+#include "DataFormats/GeometryVector/interface/Point3DBase.h"
+#include "DataFormats/LTCDigi/interface/LTCDigi.h"
+#include "DataFormats/METObjects/interface/MET.h"
+#include "DataFormats/METObjects/interface/TowerMET.h"
+#include "DataFormats/MuonSeed/interface/L2MuonTrajectorySeed.h"
+#include "DataFormats/MuonSeed/interface/L3MuonTrajectorySeed.h"
+#include "DataFormats/RPCDigi/interface/RPCDigiL1Link.h"
+#include "DataFormats/Scalers/interface/L1TriggerRates.h"
+#include "DataFormats/Scalers/interface/L1TriggerScalers.h"
+#include "DataFormats/Scalers/interface/Level1TriggerRates.h"
+#include "DataFormats/Scalers/interface/Level1TriggerScalers.h"
+#include "DataFormats/Scalers/interface/LumiScalers.h"
+#include "DataFormats/SiPixelRawData/interface/SiPixelRawDataError.h"
+#include "DataFormats/TrackCandidate/interface/TrackCandidate.h"
+#include "DataFormats/TrackingSeed/interface/TrackingSeed.h"
 #include "SimDataFormats/CaloHit/interface/PCaloHit.h"
-#include "SimDataFormats/CrossingFrame/interface/PCrossingFrame.h"
-#include "SimDataFormats/EcalTestBeam/interface/PEcalTBInfo.h"
-#include "SimDataFormats/Forward/interface/TotemTestHistoClass.h"
-#include "SimDataFormats/GeneratorProducts/interface/LHEEventProduct.h"
-#include "SimDataFormats/GeneratorProducts/interface/LHERunInfoProduct.h"
-#include "SimDataFormats/HcalTestBeam/interface/PHcalTB04Info.h"
-#include "SimDataFormats/HcalTestBeam/interface/PHcalTB06Info.h"
+#include "SimDataFormats/Forward/interface/LHCTransportLink.h"
+#include "SimDataFormats/PileupSummaryInfo/interface/PileupMixingContent.h"
+#include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
 #include "SimDataFormats/Track/interface/SimTrack.h"
+#include "SimDataFormats/TrackingAnalysis/interface/ParticleBase.h"
+#include "SimDataFormats/TrackingAnalysis/interface/TrackingParticle.h"
+#include "SimDataFormats/TrackingAnalysis/interface/TrackingVertex.h"
 #include "SimDataFormats/TrackingHit/interface/PSimHit.h"
-#include "SimDataFormats/ValidationFormats/interface/PValidationFormats.h"
+#include "SimDataFormats/ValidationFormats/interface/MaterialAccountingDetector.h"
+#include "SimDataFormats/ValidationFormats/interface/MaterialAccountingStep.h"
+#include "SimDataFormats/ValidationFormats/interface/MaterialAccountingTrack.h"
 #include "SimDataFormats/Vertex/interface/SimVertex.h"
 // -------------------------------------------------------------------------
 
-typedef Buffer<LHEEventProduct, true>
-LHEEventProduct_t;
-DEFINE_EDM_PLUGIN(BufferFactory, LHEEventProduct_t,
-                  "LHEEventProduct");
+std::string L1TriggerRates_n("L1TriggerRates");
+typedef Buffer<L1TriggerRates,
+               &L1TriggerRates_n, COLLECTION>
+L1TriggerRates_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1TriggerRates_t,
+                  "L1TriggerRates");
 				  
-typedef Buffer<LHERunInfoProduct, true>
-LHERunInfoProduct_t;
-DEFINE_EDM_PLUGIN(BufferFactory, LHERunInfoProduct_t,
-                  "LHERunInfoProduct");
+std::string L1TriggerScalers_n("L1TriggerScalers");
+typedef Buffer<L1TriggerScalers,
+               &L1TriggerScalers_n, COLLECTION>
+L1TriggerScalers_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1TriggerScalers_t,
+                  "L1TriggerScalers");
 				  
-typedef Buffer<PCrossingFrame<PCaloHit>, true>
-PCrossingFramePCaloHit_t;
-DEFINE_EDM_PLUGIN(BufferFactory, PCrossingFramePCaloHit_t,
-                  "PCrossingFramePCaloHit");
+std::string L2MuonTrajectorySeed_n("L2MuonTrajectorySeed");
+typedef Buffer<L2MuonTrajectorySeed,
+               &L2MuonTrajectorySeed_n, COLLECTION>
+L2MuonTrajectorySeed_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L2MuonTrajectorySeed_t,
+                  "L2MuonTrajectorySeed");
 				  
-typedef Buffer<PCrossingFrame<PSimHit>, true>
-PCrossingFramePSimHit_t;
-DEFINE_EDM_PLUGIN(BufferFactory, PCrossingFramePSimHit_t,
-                  "PCrossingFramePSimHit");
+std::string L3MuonTrajectorySeed_n("L3MuonTrajectorySeed");
+typedef Buffer<L3MuonTrajectorySeed,
+               &L3MuonTrajectorySeed_n, COLLECTION>
+L3MuonTrajectorySeed_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L3MuonTrajectorySeed_t,
+                  "L3MuonTrajectorySeed");
 				  
-typedef Buffer<PCrossingFrame<SimTrack>, true>
-PCrossingFrameSimTrack_t;
-DEFINE_EDM_PLUGIN(BufferFactory, PCrossingFrameSimTrack_t,
-                  "PCrossingFrameSimTrack");
+std::string LHCTransportLink_n("LHCTransportLink");
+typedef Buffer<LHCTransportLink,
+               &LHCTransportLink_n, COLLECTION>
+LHCTransportLink_t;
+DEFINE_EDM_PLUGIN(BufferFactory, LHCTransportLink_t,
+                  "LHCTransportLink");
 				  
-typedef Buffer<PCrossingFrame<SimVertex>, true>
-PCrossingFrameSimVertex_t;
-DEFINE_EDM_PLUGIN(BufferFactory, PCrossingFrameSimVertex_t,
-                  "PCrossingFrameSimVertex");
+std::string LTCDigi_n("LTCDigi");
+typedef Buffer<LTCDigi,
+               &LTCDigi_n, COLLECTION>
+LTCDigi_t;
+DEFINE_EDM_PLUGIN(BufferFactory, LTCDigi_t,
+                  "LTCDigi");
 				  
-typedef Buffer<PCrossingFrame<edm::HepMCProduct>, true>
-PCrossingFrameedmHepMCProduct_t;
-DEFINE_EDM_PLUGIN(BufferFactory, PCrossingFrameedmHepMCProduct_t,
-                  "PCrossingFrameedmHepMCProduct");
+std::string Level1TriggerRates_n("Level1TriggerRates");
+typedef Buffer<Level1TriggerRates,
+               &Level1TriggerRates_n, COLLECTION>
+Level1TriggerRates_t;
+DEFINE_EDM_PLUGIN(BufferFactory, Level1TriggerRates_t,
+                  "Level1TriggerRates");
 				  
-typedef Buffer<PEcalTBInfo, true>
-PEcalTBInfo_t;
-DEFINE_EDM_PLUGIN(BufferFactory, PEcalTBInfo_t,
-                  "PEcalTBInfo");
+std::string Level1TriggerScalers_n("Level1TriggerScalers");
+typedef Buffer<Level1TriggerScalers,
+               &Level1TriggerScalers_n, COLLECTION>
+Level1TriggerScalers_t;
+DEFINE_EDM_PLUGIN(BufferFactory, Level1TriggerScalers_t,
+                  "Level1TriggerScalers");
 				  
-typedef Buffer<PEcalValidInfo, true>
-PEcalValidInfo_t;
-DEFINE_EDM_PLUGIN(BufferFactory, PEcalValidInfo_t,
-                  "PEcalValidInfo");
+std::string LumiScalers_n("LumiScalers");
+typedef Buffer<LumiScalers,
+               &LumiScalers_n, COLLECTION>
+LumiScalers_t;
+DEFINE_EDM_PLUGIN(BufferFactory, LumiScalers_t,
+                  "LumiScalers");
 				  
-typedef Buffer<PGlobalDigi, true>
-PGlobalDigi_t;
-DEFINE_EDM_PLUGIN(BufferFactory, PGlobalDigi_t,
-                  "PGlobalDigi");
+std::string METv0_n("METv0");
+typedef Buffer<METv0,
+               &METv0_n, COLLECTION>
+METv0_t;
+DEFINE_EDM_PLUGIN(BufferFactory, METv0_t,
+                  "METv0");
 				  
-typedef Buffer<PGlobalRecHit, true>
-PGlobalRecHit_t;
-DEFINE_EDM_PLUGIN(BufferFactory, PGlobalRecHit_t,
-                  "PGlobalRecHit");
+std::string MaterialAccountingDetector_n("MaterialAccountingDetector");
+typedef Buffer<MaterialAccountingDetector,
+               &MaterialAccountingDetector_n, COLLECTION>
+MaterialAccountingDetector_t;
+DEFINE_EDM_PLUGIN(BufferFactory, MaterialAccountingDetector_t,
+                  "MaterialAccountingDetector");
 				  
-typedef Buffer<PGlobalSimHit, true>
-PGlobalSimHit_t;
-DEFINE_EDM_PLUGIN(BufferFactory, PGlobalSimHit_t,
-                  "PGlobalSimHit");
+std::string MaterialAccountingStep_n("MaterialAccountingStep");
+typedef Buffer<MaterialAccountingStep,
+               &MaterialAccountingStep_n, COLLECTION>
+MaterialAccountingStep_t;
+DEFINE_EDM_PLUGIN(BufferFactory, MaterialAccountingStep_t,
+                  "MaterialAccountingStep");
 				  
-typedef Buffer<PHcalTB04Info, true>
-PHcalTB04Info_t;
-DEFINE_EDM_PLUGIN(BufferFactory, PHcalTB04Info_t,
-                  "PHcalTB04Info");
+std::string MaterialAccountingTrack_n("MaterialAccountingTrack");
+typedef Buffer<MaterialAccountingTrack,
+               &MaterialAccountingTrack_n, COLLECTION>
+MaterialAccountingTrack_t;
+DEFINE_EDM_PLUGIN(BufferFactory, MaterialAccountingTrack_t,
+                  "MaterialAccountingTrack");
 				  
-typedef Buffer<PHcalTB06Info, true>
-PHcalTB06Info_t;
-DEFINE_EDM_PLUGIN(BufferFactory, PHcalTB06Info_t,
-                  "PHcalTB06Info");
+std::string PATMuPair_n("PATMuPair");
+typedef Buffer<PATMuPair,
+               &PATMuPair_n, COLLECTION>
+PATMuPair_t;
+DEFINE_EDM_PLUGIN(BufferFactory, PATMuPair_t,
+                  "PATMuPair");
 				  
-typedef Buffer<PHcalValidInfoJets, true>
-PHcalValidInfoJets_t;
-DEFINE_EDM_PLUGIN(BufferFactory, PHcalValidInfoJets_t,
-                  "PHcalValidInfoJets");
+std::string PATMuonNuPair_n("PATMuonNuPair");
+typedef Buffer<PATMuonNuPair,
+               &PATMuonNuPair_n, COLLECTION>
+PATMuonNuPair_t;
+DEFINE_EDM_PLUGIN(BufferFactory, PATMuonNuPair_t,
+                  "PATMuonNuPair");
 				  
-typedef Buffer<PHcalValidInfoLayer, true>
-PHcalValidInfoLayer_t;
-DEFINE_EDM_PLUGIN(BufferFactory, PHcalValidInfoLayer_t,
-                  "PHcalValidInfoLayer");
+std::string PCaloHit_n("PCaloHit");
+typedef Buffer<PCaloHit,
+               &PCaloHit_n, COLLECTION>
+PCaloHit_t;
+DEFINE_EDM_PLUGIN(BufferFactory, PCaloHit_t,
+                  "PCaloHit");
 				  
-typedef Buffer<PHcalValidInfoNxN, true>
-PHcalValidInfoNxN_t;
-DEFINE_EDM_PLUGIN(BufferFactory, PHcalValidInfoNxN_t,
-                  "PHcalValidInfoNxN");
+std::string PSimHit_n("PSimHit");
+typedef Buffer<PSimHit,
+               &PSimHit_n, COLLECTION>
+PSimHit_t;
+DEFINE_EDM_PLUGIN(BufferFactory, PSimHit_t,
+                  "PSimHit");
 				  
-typedef Buffer<PMuonSimHit, true>
-PMuonSimHit_t;
-DEFINE_EDM_PLUGIN(BufferFactory, PMuonSimHit_t,
-                  "PMuonSimHit");
+std::string ParticleBase_n("ParticleBase");
+typedef Buffer<ParticleBase,
+               &ParticleBase_n, COLLECTION>
+ParticleBase_t;
+DEFINE_EDM_PLUGIN(BufferFactory, ParticleBase_t,
+                  "ParticleBase");
 				  
-typedef Buffer<PTrackerSimHit, true>
-PTrackerSimHit_t;
-DEFINE_EDM_PLUGIN(BufferFactory, PTrackerSimHit_t,
-                  "PTrackerSimHit");
+std::string PileupMixingContent_n("PileupMixingContent");
+typedef Buffer<PileupMixingContent,
+               &PileupMixingContent_n, COLLECTION>
+PileupMixingContent_t;
+DEFINE_EDM_PLUGIN(BufferFactory, PileupMixingContent_t,
+                  "PileupMixingContent");
 				  
-typedef Buffer<RPCRawDataCounts, true>
-RPCRawDataCounts_t;
-DEFINE_EDM_PLUGIN(BufferFactory, RPCRawDataCounts_t,
-                  "RPCRawDataCounts");
+std::string PileupSummaryInfo_n("PileupSummaryInfo");
+typedef Buffer<PileupSummaryInfo,
+               &PileupSummaryInfo_n, COLLECTION>
+PileupSummaryInfo_t;
+DEFINE_EDM_PLUGIN(BufferFactory, PileupSummaryInfo_t,
+                  "PileupSummaryInfo");
 				  
-typedef Buffer<SiPixelCalibDigiError, true>
-SiPixelCalibDigiError_t;
-DEFINE_EDM_PLUGIN(BufferFactory, SiPixelCalibDigiError_t,
-                  "SiPixelCalibDigiError");
+std::string Point3DBasefloatGlobalTag_n("Point3DBase<float,GlobalTag>");
+typedef Buffer<Point3DBase<float,GlobalTag>,
+               &Point3DBasefloatGlobalTag_n, COLLECTION>
+Point3DBasefloatGlobalTag_t;
+DEFINE_EDM_PLUGIN(BufferFactory, Point3DBasefloatGlobalTag_t,
+                  "Point3DBasefloatGlobalTag");
 				  
-typedef Buffer<SiStripEventSummary, true>
-SiStripEventSummary_t;
-DEFINE_EDM_PLUGIN(BufferFactory, SiStripEventSummary_t,
-                  "SiStripEventSummary");
+std::string RPCDigiL1Link_n("RPCDigiL1Link");
+typedef Buffer<RPCDigiL1Link,
+               &RPCDigiL1Link_n, COLLECTION>
+RPCDigiL1Link_t;
+DEFINE_EDM_PLUGIN(BufferFactory, RPCDigiL1Link_t,
+                  "RPCDigiL1Link");
 				  
-typedef Buffer<StGenEvent, true>
-StGenEvent_t;
-DEFINE_EDM_PLUGIN(BufferFactory, StGenEvent_t,
-                  "StGenEvent");
+std::string RecoTracktoTP_n("RecoTracktoTP");
+typedef Buffer<RecoTracktoTP,
+               &RecoTracktoTP_n, COLLECTION>
+RecoTracktoTP_t;
+DEFINE_EDM_PLUGIN(BufferFactory, RecoTracktoTP_t,
+                  "RecoTracktoTP");
 				  
-typedef Buffer<StringMap, true>
-StringMap_t;
-DEFINE_EDM_PLUGIN(BufferFactory, StringMap_t,
-                  "StringMap");
+std::string SiPixelRawDataError_n("SiPixelRawDataError");
+typedef Buffer<SiPixelRawDataError,
+               &SiPixelRawDataError_n, COLLECTION>
+SiPixelRawDataError_t;
+DEFINE_EDM_PLUGIN(BufferFactory, SiPixelRawDataError_t,
+                  "SiPixelRawDataError");
 				  
-typedef Buffer<TopGenEvent, true>
-TopGenEvent_t;
-DEFINE_EDM_PLUGIN(BufferFactory, TopGenEvent_t,
-                  "TopGenEvent");
+std::string SimTrack_n("SimTrack");
+typedef Buffer<SimTrack,
+               &SimTrack_n, COLLECTION>
+SimTrack_t;
+DEFINE_EDM_PLUGIN(BufferFactory, SimTrack_t,
+                  "SimTrack");
 				  
-typedef Buffer<TotemTestHistoClass, true>
-TotemTestHistoClass_t;
-DEFINE_EDM_PLUGIN(BufferFactory, TotemTestHistoClass_t,
-                  "TotemTestHistoClass");
+std::string SimVertex_n("SimVertex");
+typedef Buffer<SimVertex,
+               &SimVertex_n, COLLECTION>
+SimVertex_t;
+DEFINE_EDM_PLUGIN(BufferFactory, SimVertex_t,
+                  "SimVertex");
 				  
-typedef Buffer<TtFullHadronicEvent, true>
-TtFullHadronicEvent_t;
-DEFINE_EDM_PLUGIN(BufferFactory, TtFullHadronicEvent_t,
-                  "TtFullHadronicEvent");
+std::string StEvtSolution_n("StEvtSolution");
+typedef Buffer<StEvtSolution,
+               &StEvtSolution_n, COLLECTION>
+StEvtSolution_t;
+DEFINE_EDM_PLUGIN(BufferFactory, StEvtSolution_t,
+                  "StEvtSolution");
+				  
+std::string TPtoRecoTrack_n("TPtoRecoTrack");
+typedef Buffer<TPtoRecoTrack,
+               &TPtoRecoTrack_n, COLLECTION>
+TPtoRecoTrack_t;
+DEFINE_EDM_PLUGIN(BufferFactory, TPtoRecoTrack_t,
+                  "TPtoRecoTrack");
+				  
+std::string TowerMETv0_n("TowerMETv0");
+typedef Buffer<TowerMETv0,
+               &TowerMETv0_n, COLLECTION>
+TowerMETv0_t;
+DEFINE_EDM_PLUGIN(BufferFactory, TowerMETv0_t,
+                  "TowerMETv0");
+				  
+std::string TrackCandidate_n("TrackCandidate");
+typedef Buffer<TrackCandidate,
+               &TrackCandidate_n, COLLECTION>
+TrackCandidate_t;
+DEFINE_EDM_PLUGIN(BufferFactory, TrackCandidate_t,
+                  "TrackCandidate");
+				  
+std::string TrackingParticle_n("TrackingParticle");
+typedef Buffer<TrackingParticle,
+               &TrackingParticle_n, COLLECTION>
+TrackingParticle_t;
+DEFINE_EDM_PLUGIN(BufferFactory, TrackingParticle_t,
+                  "TrackingParticle");
+				  
+std::string TrackingSeed_n("TrackingSeed");
+typedef Buffer<TrackingSeed,
+               &TrackingSeed_n, COLLECTION>
+TrackingSeed_t;
+DEFINE_EDM_PLUGIN(BufferFactory, TrackingSeed_t,
+                  "TrackingSeed");
+				  
+std::string TrackingVertex_n("TrackingVertex");
+typedef Buffer<TrackingVertex,
+               &TrackingVertex_n, COLLECTION>
+TrackingVertex_t;
+DEFINE_EDM_PLUGIN(BufferFactory, TrackingVertex_t,
+                  "TrackingVertex");
 				  

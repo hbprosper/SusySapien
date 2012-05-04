@@ -10,8 +10,10 @@
 //         Updated:  Sun Sep 19 HBP - copy from Buffer.h
 //                   Mon Jul 18 HBP - include a partial template 
 //                                    specialization for edm::Event
+//                   Thu May 03 2012 HBP - allow for storage of selected
+//                                         objects
 //
-// $Id: UserBuffer.h,v 1.6 2011/07/20 16:19:54 prosper Exp $
+// $Id: UserBuffer.h,v 1.7 2011/08/08 15:59:38 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/BufferUtil.h"
@@ -41,9 +43,12 @@
     <i>typenames</i>:<br>
     - X = type of object extracted using getByLabel (extractable object)
     - Y = type of helper object
-    - SINGLETON = <i>true</i> if there can be at most once instance per event
+    - CTYPE = <i>SINGLETON, COLLECTION</i> 
+    <p>
+    singleton  (at most once instance per event)<br>
+    collection (vector or SortedCollection)<br>
 */
-template <typename X, typename Y, bool SINGLETON>
+template <typename X, typename Y, ClassType CTYPE>
 struct UserBuffer  : public BufferThing
 {
   ///
@@ -58,7 +63,7 @@ struct UserBuffer  : public BufferThing
       var_(std::vector<VariableDescriptor>()),
       maxcount_(0),
       count_(0),
-      singleton_(SINGLETON),
+      ctype_(CTYPE),
       message_(""),
       debug_(0),
       skipme_(false),
@@ -130,7 +135,9 @@ struct UserBuffer  : public BufferThing
                 << classname_ << ")"
                 << std::endl;    
 
+    std::string helpername = boost::python::type_id<Y>().name();
     initBuffer<Y>(out,
+                  helpername,
                   label_,
                   label1_,
                   label2_,
@@ -140,9 +147,10 @@ struct UserBuffer  : public BufferThing
                   varnames_,
                   varmap_,
                   count_,
-                  singleton_,
+                  ctype_,
                   maxcount_,
                   log,
+                  bufferkey_,
                   debug_);
   }
   
@@ -183,7 +191,7 @@ struct UserBuffer  : public BufferThing
     //       the handle edm::Handle< View<X> > for collections.
     //       However, if this is a helper for the event itself, we
     //       of course do not need call getByLabel.
-    if ( singleton_ )
+    if ( ctype_ == SINGLETON )
       {
         edm::Handle<X> handle;
         if ( ! getByLabel(event, handle, label1_, label2_, message_,
@@ -279,6 +287,7 @@ struct UserBuffer  : public BufferThing
 
   int count() { return count_; }
   int maxcount() { return maxcount_; }
+  std::string key() { return bufferkey_; }
 
 private:
   otreestream* out_;
@@ -294,11 +303,12 @@ private:
   std::map<std::string, countvalue> varmap_;
   int  maxcount_;
   int  count_;
-  bool singleton_;
+  ClassType ctype_;
   std::string message_;
   int  debug_;
   bool skipme_; 
   bool crash_;
+  std::string bufferkey_;
 
   // helper object
   Y helper_;
@@ -308,7 +318,7 @@ private:
 // We need a partial template specialization for edm::Event
 // ----------------------------------------------------------
 template <typename Y>
-struct UserBuffer<edm::Event, Y, true> : public BufferThing
+struct UserBuffer<edm::Event, Y, SINGLETON> : public BufferThing
 {
   ///
   UserBuffer() 
@@ -322,7 +332,7 @@ struct UserBuffer<edm::Event, Y, true> : public BufferThing
       var_(std::vector<VariableDescriptor>()),
       maxcount_(0),
       count_(0),
-      singleton_(true),
+      ctype_(SINGLETON),
       message_(""),
       debug_(0),
       skipme_(false)
@@ -379,9 +389,10 @@ struct UserBuffer<edm::Event, Y, true> : public BufferThing
                   varnames_,
                   varmap_,
                   count_,
-                  singleton_,
+                  ctype_,
                   maxcount_,
                   log,
+                  bufferkey_,
                   debug_);
   }
   
@@ -474,6 +485,7 @@ struct UserBuffer<edm::Event, Y, true> : public BufferThing
 
   int count() { return count_; }
   int maxcount() { return maxcount_; }
+  std::string key() { return bufferkey_; }
 
 private:
   otreestream* out_;
@@ -489,10 +501,11 @@ private:
   std::map<std::string, countvalue> varmap_;
   int  maxcount_;
   int  count_;
-  bool singleton_;
+  ClassType  ctype_;
   std::string message_;
   int  debug_;
   bool skipme_; 
+  std::string bufferkey_;
 
   // helper object
   Y helper_;

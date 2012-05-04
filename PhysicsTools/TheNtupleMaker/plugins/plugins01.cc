@@ -1,179 +1,274 @@
 // -------------------------------------------------------------------------
 // File::   plugins01.cc
-// Created: Sun Apr 15 22:17:19 2012 by mkplugins.py
+// Created: Thu Apr 26 00:40:14 2012 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
 // -------------------------------------------------------------------------
 
-#include "DataFormats/EcalDigi/interface/EcalTrigPrimCompactColl.h"
-#include "DataFormats/HLTReco/interface/HLTPerformanceInfo.h"
-#include "DataFormats/HcalDigi/interface/HcalLaserDigi.h"
-#include "DataFormats/HcalDigi/interface/HcalUnpackerReport.h"
-#include "DataFormats/HcalRecHit/interface/HcalSourcePositionData.h"
-#include "DataFormats/L1CSCTrackFinder/interface/CSCTriggerContainer.h"
-#include "DataFormats/L1CSCTrackFinder/interface/TrackStub.h"
-#include "DataFormats/L1DTTrackFinder/interface/L1MuDTChambPhContainer.h"
-#include "DataFormats/L1DTTrackFinder/interface/L1MuDTChambThContainer.h"
-#include "DataFormats/L1DTTrackFinder/interface/L1MuDTTrackContainer.h"
-#include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerEvmReadoutRecord.h"
-#include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerObjectMapRecord.h"
-#include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerReadoutRecord.h"
-#include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerReadoutSetup.h"
-#include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerRecord.h"
-#include "DataFormats/L1GlobalTrigger/interface/L1GtTechnicalTriggerRecord.h"
-#include "DataFormats/L1GlobalTrigger/interface/L1GtTriggerMenuLite.h"
-#include "DataFormats/L1GlobalTrigger/interface/L1GtfeExtWord.h"
-#include "DataFormats/L1GlobalTrigger/interface/L1GtfeWord.h"
-#include "DataFormats/L1GlobalTrigger/interface/L1TcsWord.h"
-#include "DataFormats/L1Trigger/interface/L1DataEmulRecord.h"
-#include "DataFormats/METObjects/interface/BaseMET.h"
-#include "DataFormats/METReco/interface/HcalNoiseSummary.h"
-#include "SimDataFormats/CrossingFrame/interface/CrossingFramePlaybackInfo.h"
-#include "SimDataFormats/CrossingFrame/interface/CrossingFramePlaybackInfoExtended.h"
-#include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
-#include "SimDataFormats/GeneratorProducts/interface/GenFilterInfo.h"
-#include "SimDataFormats/GeneratorProducts/interface/GenRunInfoProduct.h"
-#include "SimDataFormats/HcalTestBeam/interface/HcalTB02HistoClass.h"
+#include "DataFormats/CaloTowers/interface/CaloTower.h"
+#include "DataFormats/EcalRawData/interface/ESListOfFEDS.h"
+#include "DataFormats/EcalRawData/interface/EcalListOfFEDS.h"
+#include "DataFormats/HcalCalibObjects/interface/HOCalibVariables.h"
+#include "DataFormats/L1CaloTrigger/interface/L1CaloEmCand.h"
+#include "DataFormats/L1CaloTrigger/interface/L1CaloRegion.h"
+#include "DataFormats/L1GlobalCaloTrigger/interface/L1GctEmCand.h"
+#include "DataFormats/L1GlobalCaloTrigger/interface/L1GctEtHad.h"
+#include "DataFormats/L1GlobalCaloTrigger/interface/L1GctEtMiss.h"
+#include "DataFormats/L1GlobalCaloTrigger/interface/L1GctEtTotal.h"
+#include "DataFormats/L1GlobalCaloTrigger/interface/L1GctFibreWord.h"
+#include "DataFormats/L1GlobalCaloTrigger/interface/L1GctHFBitCounts.h"
+#include "DataFormats/L1GlobalCaloTrigger/interface/L1GctHFRingEtSums.h"
+#include "DataFormats/L1GlobalCaloTrigger/interface/L1GctHtMiss.h"
+#include "DataFormats/L1GlobalCaloTrigger/interface/L1GctInternEmCand.h"
+#include "DataFormats/L1GlobalCaloTrigger/interface/L1GctInternEtSum.h"
+#include "DataFormats/L1GlobalCaloTrigger/interface/L1GctInternHFData.h"
+#include "DataFormats/L1GlobalCaloTrigger/interface/L1GctInternHtMiss.h"
+#include "DataFormats/L1GlobalCaloTrigger/interface/L1GctInternJetData.h"
+#include "DataFormats/L1GlobalCaloTrigger/interface/L1GctJetCand.h"
+#include "DataFormats/L1GlobalCaloTrigger/interface/L1GctJetCounts.h"
+#include "DataFormats/L1GlobalMuonTrigger/interface/L1MuGMTCand.h"
+#include "DataFormats/L1GlobalMuonTrigger/interface/L1MuRegionalCand.h"
+#include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerObjectMap.h"
+#include "DataFormats/L1GlobalTrigger/interface/L1GtFdlWord.h"
+#include "DataFormats/L1GlobalTrigger/interface/L1GtPsbWord.h"
+#include "DataFormats/L1GlobalTrigger/interface/L1GtTechnicalTrigger.h"
+#include "DataFormats/L1Trigger/interface/L1TriggerError.h"
+#include "DataFormats/Scalers/interface/BeamSpotOnline.h"
+#include "DataFormats/Scalers/interface/DcsStatus.h"
+#include "DataFormats/Scalers/interface/L1AcceptBunchCrossing.h"
+#include "SimDataFormats/CaloHit/interface/HFShowerLibraryEventInfo.h"
+#include "SimDataFormats/CaloHit/interface/HFShowerPhoton.h"
 // -------------------------------------------------------------------------
 
-typedef Buffer<BaseMETv0, true>
-BaseMETv0_t;
-DEFINE_EDM_PLUGIN(BufferFactory, BaseMETv0_t,
-                  "BaseMETv0");
+std::string BeamSpotOnline_n("BeamSpotOnline");
+typedef Buffer<BeamSpotOnline,
+               &BeamSpotOnline_n, COLLECTION>
+BeamSpotOnline_t;
+DEFINE_EDM_PLUGIN(BufferFactory, BeamSpotOnline_t,
+                  "BeamSpotOnline");
 				  
-typedef Buffer<CSCTriggerContainer<csctf::TrackStub>, true>
-CSCTriggerContainercsctfTrackStub_t;
-DEFINE_EDM_PLUGIN(BufferFactory, CSCTriggerContainercsctfTrackStub_t,
-                  "CSCTriggerContainercsctfTrackStub");
+std::string CaloTower_n("CaloTower");
+typedef Buffer<CaloTower,
+               &CaloTower_n, COLLECTION>
+CaloTower_t;
+DEFINE_EDM_PLUGIN(BufferFactory, CaloTower_t,
+                  "CaloTower");
 				  
-typedef Buffer<CrossingFramePlaybackInfo, true>
-CrossingFramePlaybackInfo_t;
-DEFINE_EDM_PLUGIN(BufferFactory, CrossingFramePlaybackInfo_t,
-                  "CrossingFramePlaybackInfo");
+std::string DcsStatus_n("DcsStatus");
+typedef Buffer<DcsStatus,
+               &DcsStatus_n, COLLECTION>
+DcsStatus_t;
+DEFINE_EDM_PLUGIN(BufferFactory, DcsStatus_t,
+                  "DcsStatus");
 				  
-typedef Buffer<CrossingFramePlaybackInfoExtended, true>
-CrossingFramePlaybackInfoExtended_t;
-DEFINE_EDM_PLUGIN(BufferFactory, CrossingFramePlaybackInfoExtended_t,
-                  "CrossingFramePlaybackInfoExtended");
+std::string ESListOfFEDS_n("ESListOfFEDS");
+typedef Buffer<ESListOfFEDS,
+               &ESListOfFEDS_n, COLLECTION>
+ESListOfFEDS_t;
+DEFINE_EDM_PLUGIN(BufferFactory, ESListOfFEDS_t,
+                  "ESListOfFEDS");
 				  
-typedef Buffer<EcalTrigPrimCompactColl, true>
-EcalTrigPrimCompactColl_t;
-DEFINE_EDM_PLUGIN(BufferFactory, EcalTrigPrimCompactColl_t,
-                  "EcalTrigPrimCompactColl");
+std::string EcalListOfFEDS_n("EcalListOfFEDS");
+typedef Buffer<EcalListOfFEDS,
+               &EcalListOfFEDS_n, COLLECTION>
+EcalListOfFEDS_t;
+DEFINE_EDM_PLUGIN(BufferFactory, EcalListOfFEDS_t,
+                  "EcalListOfFEDS");
 				  
-typedef Buffer<GenEventInfoProduct, true>
-GenEventInfoProduct_t;
-DEFINE_EDM_PLUGIN(BufferFactory, GenEventInfoProduct_t,
-                  "GenEventInfoProduct");
+std::string HFShowerLibraryEventInfo_n("HFShowerLibraryEventInfo");
+typedef Buffer<HFShowerLibraryEventInfo,
+               &HFShowerLibraryEventInfo_n, COLLECTION>
+HFShowerLibraryEventInfo_t;
+DEFINE_EDM_PLUGIN(BufferFactory, HFShowerLibraryEventInfo_t,
+                  "HFShowerLibraryEventInfo");
 				  
-typedef Buffer<GenFilterInfo, true>
-GenFilterInfo_t;
-DEFINE_EDM_PLUGIN(BufferFactory, GenFilterInfo_t,
-                  "GenFilterInfo");
+std::string HFShowerPhoton_n("HFShowerPhoton");
+typedef Buffer<HFShowerPhoton,
+               &HFShowerPhoton_n, COLLECTION>
+HFShowerPhoton_t;
+DEFINE_EDM_PLUGIN(BufferFactory, HFShowerPhoton_t,
+                  "HFShowerPhoton");
 				  
-typedef Buffer<GenRunInfoProduct, true>
-GenRunInfoProduct_t;
-DEFINE_EDM_PLUGIN(BufferFactory, GenRunInfoProduct_t,
-                  "GenRunInfoProduct");
+std::string HOCalibVariables_n("HOCalibVariables");
+typedef Buffer<HOCalibVariables,
+               &HOCalibVariables_n, COLLECTION>
+HOCalibVariables_t;
+DEFINE_EDM_PLUGIN(BufferFactory, HOCalibVariables_t,
+                  "HOCalibVariables");
 				  
-typedef Buffer<HLTPerformanceInfo, true>
-HLTPerformanceInfo_t;
-DEFINE_EDM_PLUGIN(BufferFactory, HLTPerformanceInfo_t,
-                  "HLTPerformanceInfo");
+std::string L1AcceptBunchCrossing_n("L1AcceptBunchCrossing");
+typedef Buffer<L1AcceptBunchCrossing,
+               &L1AcceptBunchCrossing_n, COLLECTION>
+L1AcceptBunchCrossing_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1AcceptBunchCrossing_t,
+                  "L1AcceptBunchCrossing");
 				  
-typedef Buffer<HcalLaserDigi, true>
-HcalLaserDigi_t;
-DEFINE_EDM_PLUGIN(BufferFactory, HcalLaserDigi_t,
-                  "HcalLaserDigi");
+std::string L1CaloEmCand_n("L1CaloEmCand");
+typedef Buffer<L1CaloEmCand,
+               &L1CaloEmCand_n, COLLECTION>
+L1CaloEmCand_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1CaloEmCand_t,
+                  "L1CaloEmCand");
 				  
-typedef Buffer<HcalNoiseSummary, true>
-HcalNoiseSummary_t;
-DEFINE_EDM_PLUGIN(BufferFactory, HcalNoiseSummary_t,
-                  "HcalNoiseSummary");
+std::string L1CaloRegion_n("L1CaloRegion");
+typedef Buffer<L1CaloRegion,
+               &L1CaloRegion_n, COLLECTION>
+L1CaloRegion_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1CaloRegion_t,
+                  "L1CaloRegion");
 				  
-typedef Buffer<HcalSourcePositionData, true>
-HcalSourcePositionData_t;
-DEFINE_EDM_PLUGIN(BufferFactory, HcalSourcePositionData_t,
-                  "HcalSourcePositionData");
+std::string L1GctEmCand_n("L1GctEmCand");
+typedef Buffer<L1GctEmCand,
+               &L1GctEmCand_n, COLLECTION>
+L1GctEmCand_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GctEmCand_t,
+                  "L1GctEmCand");
 				  
-typedef Buffer<HcalTB02HistoClass, true>
-HcalTB02HistoClass_t;
-DEFINE_EDM_PLUGIN(BufferFactory, HcalTB02HistoClass_t,
-                  "HcalTB02HistoClass");
+std::string L1GctEtHad_n("L1GctEtHad");
+typedef Buffer<L1GctEtHad,
+               &L1GctEtHad_n, COLLECTION>
+L1GctEtHad_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GctEtHad_t,
+                  "L1GctEtHad");
 				  
-typedef Buffer<HcalUnpackerReport, true>
-HcalUnpackerReport_t;
-DEFINE_EDM_PLUGIN(BufferFactory, HcalUnpackerReport_t,
-                  "HcalUnpackerReport");
+std::string L1GctEtMiss_n("L1GctEtMiss");
+typedef Buffer<L1GctEtMiss,
+               &L1GctEtMiss_n, COLLECTION>
+L1GctEtMiss_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GctEtMiss_t,
+                  "L1GctEtMiss");
 				  
-typedef Buffer<L1DataEmulRecord, true>
-L1DataEmulRecord_t;
-DEFINE_EDM_PLUGIN(BufferFactory, L1DataEmulRecord_t,
-                  "L1DataEmulRecord");
+std::string L1GctEtTotal_n("L1GctEtTotal");
+typedef Buffer<L1GctEtTotal,
+               &L1GctEtTotal_n, COLLECTION>
+L1GctEtTotal_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GctEtTotal_t,
+                  "L1GctEtTotal");
 				  
-typedef Buffer<L1GlobalTriggerEvmReadoutRecord, true>
-L1GlobalTriggerEvmReadoutRecord_t;
-DEFINE_EDM_PLUGIN(BufferFactory, L1GlobalTriggerEvmReadoutRecord_t,
-                  "L1GlobalTriggerEvmReadoutRecord");
+std::string L1GctFibreWord_n("L1GctFibreWord");
+typedef Buffer<L1GctFibreWord,
+               &L1GctFibreWord_n, COLLECTION>
+L1GctFibreWord_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GctFibreWord_t,
+                  "L1GctFibreWord");
 				  
-typedef Buffer<L1GlobalTriggerObjectMapRecord, true>
-L1GlobalTriggerObjectMapRecord_t;
-DEFINE_EDM_PLUGIN(BufferFactory, L1GlobalTriggerObjectMapRecord_t,
-                  "L1GlobalTriggerObjectMapRecord");
+std::string L1GctHFBitCounts_n("L1GctHFBitCounts");
+typedef Buffer<L1GctHFBitCounts,
+               &L1GctHFBitCounts_n, COLLECTION>
+L1GctHFBitCounts_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GctHFBitCounts_t,
+                  "L1GctHFBitCounts");
 				  
-typedef Buffer<L1GlobalTriggerReadoutRecord, true>
-L1GlobalTriggerReadoutRecord_t;
-DEFINE_EDM_PLUGIN(BufferFactory, L1GlobalTriggerReadoutRecord_t,
-                  "L1GlobalTriggerReadoutRecord");
+std::string L1GctHFRingEtSums_n("L1GctHFRingEtSums");
+typedef Buffer<L1GctHFRingEtSums,
+               &L1GctHFRingEtSums_n, COLLECTION>
+L1GctHFRingEtSums_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GctHFRingEtSums_t,
+                  "L1GctHFRingEtSums");
 				  
-typedef Buffer<L1GlobalTriggerReadoutSetup, true>
-L1GlobalTriggerReadoutSetup_t;
-DEFINE_EDM_PLUGIN(BufferFactory, L1GlobalTriggerReadoutSetup_t,
-                  "L1GlobalTriggerReadoutSetup");
+std::string L1GctHtMiss_n("L1GctHtMiss");
+typedef Buffer<L1GctHtMiss,
+               &L1GctHtMiss_n, COLLECTION>
+L1GctHtMiss_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GctHtMiss_t,
+                  "L1GctHtMiss");
 				  
-typedef Buffer<L1GlobalTriggerRecord, true>
-L1GlobalTriggerRecord_t;
-DEFINE_EDM_PLUGIN(BufferFactory, L1GlobalTriggerRecord_t,
-                  "L1GlobalTriggerRecord");
+std::string L1GctInternEmCand_n("L1GctInternEmCand");
+typedef Buffer<L1GctInternEmCand,
+               &L1GctInternEmCand_n, COLLECTION>
+L1GctInternEmCand_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GctInternEmCand_t,
+                  "L1GctInternEmCand");
 				  
-typedef Buffer<L1GtTechnicalTriggerRecord, true>
-L1GtTechnicalTriggerRecord_t;
-DEFINE_EDM_PLUGIN(BufferFactory, L1GtTechnicalTriggerRecord_t,
-                  "L1GtTechnicalTriggerRecord");
+std::string L1GctInternEtSum_n("L1GctInternEtSum");
+typedef Buffer<L1GctInternEtSum,
+               &L1GctInternEtSum_n, COLLECTION>
+L1GctInternEtSum_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GctInternEtSum_t,
+                  "L1GctInternEtSum");
 				  
-typedef Buffer<L1GtTriggerMenuLite, true>
-L1GtTriggerMenuLite_t;
-DEFINE_EDM_PLUGIN(BufferFactory, L1GtTriggerMenuLite_t,
-                  "L1GtTriggerMenuLite");
+std::string L1GctInternHFData_n("L1GctInternHFData");
+typedef Buffer<L1GctInternHFData,
+               &L1GctInternHFData_n, COLLECTION>
+L1GctInternHFData_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GctInternHFData_t,
+                  "L1GctInternHFData");
 				  
-typedef Buffer<L1GtfeExtWord, true>
-L1GtfeExtWord_t;
-DEFINE_EDM_PLUGIN(BufferFactory, L1GtfeExtWord_t,
-                  "L1GtfeExtWord");
+std::string L1GctInternHtMiss_n("L1GctInternHtMiss");
+typedef Buffer<L1GctInternHtMiss,
+               &L1GctInternHtMiss_n, COLLECTION>
+L1GctInternHtMiss_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GctInternHtMiss_t,
+                  "L1GctInternHtMiss");
 				  
-typedef Buffer<L1GtfeWord, true>
-L1GtfeWord_t;
-DEFINE_EDM_PLUGIN(BufferFactory, L1GtfeWord_t,
-                  "L1GtfeWord");
+std::string L1GctInternJetData_n("L1GctInternJetData");
+typedef Buffer<L1GctInternJetData,
+               &L1GctInternJetData_n, COLLECTION>
+L1GctInternJetData_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GctInternJetData_t,
+                  "L1GctInternJetData");
 				  
-typedef Buffer<L1MuDTChambPhContainer, true>
-L1MuDTChambPhContainer_t;
-DEFINE_EDM_PLUGIN(BufferFactory, L1MuDTChambPhContainer_t,
-                  "L1MuDTChambPhContainer");
+std::string L1GctJetCand_n("L1GctJetCand");
+typedef Buffer<L1GctJetCand,
+               &L1GctJetCand_n, COLLECTION>
+L1GctJetCand_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GctJetCand_t,
+                  "L1GctJetCand");
 				  
-typedef Buffer<L1MuDTChambThContainer, true>
-L1MuDTChambThContainer_t;
-DEFINE_EDM_PLUGIN(BufferFactory, L1MuDTChambThContainer_t,
-                  "L1MuDTChambThContainer");
+std::string L1GctJetCounts_n("L1GctJetCounts");
+typedef Buffer<L1GctJetCounts,
+               &L1GctJetCounts_n, COLLECTION>
+L1GctJetCounts_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GctJetCounts_t,
+                  "L1GctJetCounts");
 				  
-typedef Buffer<L1MuDTTrackContainer, true>
-L1MuDTTrackContainer_t;
-DEFINE_EDM_PLUGIN(BufferFactory, L1MuDTTrackContainer_t,
-                  "L1MuDTTrackContainer");
+std::string L1GlobalTriggerObjectMap_n("L1GlobalTriggerObjectMap");
+typedef Buffer<L1GlobalTriggerObjectMap,
+               &L1GlobalTriggerObjectMap_n, COLLECTION>
+L1GlobalTriggerObjectMap_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GlobalTriggerObjectMap_t,
+                  "L1GlobalTriggerObjectMap");
 				  
-typedef Buffer<L1TcsWord, true>
-L1TcsWord_t;
-DEFINE_EDM_PLUGIN(BufferFactory, L1TcsWord_t,
-                  "L1TcsWord");
+std::string L1GtFdlWord_n("L1GtFdlWord");
+typedef Buffer<L1GtFdlWord,
+               &L1GtFdlWord_n, COLLECTION>
+L1GtFdlWord_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GtFdlWord_t,
+                  "L1GtFdlWord");
+				  
+std::string L1GtPsbWord_n("L1GtPsbWord");
+typedef Buffer<L1GtPsbWord,
+               &L1GtPsbWord_n, COLLECTION>
+L1GtPsbWord_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GtPsbWord_t,
+                  "L1GtPsbWord");
+				  
+std::string L1GtTechnicalTrigger_n("L1GtTechnicalTrigger");
+typedef Buffer<L1GtTechnicalTrigger,
+               &L1GtTechnicalTrigger_n, COLLECTION>
+L1GtTechnicalTrigger_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GtTechnicalTrigger_t,
+                  "L1GtTechnicalTrigger");
+				  
+std::string L1MuGMTCand_n("L1MuGMTCand");
+typedef Buffer<L1MuGMTCand,
+               &L1MuGMTCand_n, COLLECTION>
+L1MuGMTCand_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1MuGMTCand_t,
+                  "L1MuGMTCand");
+				  
+std::string L1MuRegionalCand_n("L1MuRegionalCand");
+typedef Buffer<L1MuRegionalCand,
+               &L1MuRegionalCand_n, COLLECTION>
+L1MuRegionalCand_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1MuRegionalCand_t,
+                  "L1MuRegionalCand");
+				  
+std::string L1TriggerError_n("L1TriggerError");
+typedef Buffer<L1TriggerError,
+               &L1TriggerError_n, COLLECTION>
+L1TriggerError_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1TriggerError_t,
+                  "L1TriggerError");
 				  

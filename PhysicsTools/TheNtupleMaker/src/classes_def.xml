@@ -43,42 +43,9 @@
    <class name="GParticle"/>
    <class name="triggerBits"/>
 
-   <class name="reco::WMuNuCandidate"/>
-   <class name="reco::WMuNuCandidatePtr"/>
-   <class name="reco::ElectronID"/>
-   <class name="susybsm::HSCPCaloInfo"/>
-   <class name="susybsm::HSCPIsolation"/>
-   <class name="susybsm::RPCHit4D"/>
-   <class name="susybsm::RPCBetaMeasurement"/>
-   <class name="susybsm::HSCParticle"/>
-   <class name="reco::CATopJetProperties"/>
-   <class name="reco::CATopJetTagInfo"/>
-   <class name="StEvtSolution"/>
-   <class name="StGenEvent"/>
-   <class name="TopGenEvent"/>
-   <class name="TtDilepEvtSolution"/>
-   <class name="TtEvent::HypoClassKeyStringToEnum"/>
-   <class name="TtEvent"/>
-   <class name="TtEventPartons"/>
-   <class name="TtFullHadEvtPartons"/>
-   <class name="TtFullHadronicEvent"/>
-   <class name="TtFullLepEvtPartons"/>
-   <class name="TtFullLeptonicEvent"/>
-   <class name="TtGenEvent"/>
-   <class name="TtHadEvtSolution"/>
-   <class name="TtSemiEvtSolution"/>
-   <class name="TtSemiLepEvtPartons"/>
-   <class name="TtSemiLeptonicEvent"/>
-   <class name="RecoTracktoTP"/>
-   <class name="TPtoRecoTrack"/>
-   <class name="reco::TrackInfo"/>
-   <class name="reco::TrackingRecHitInfo"/>
-   <class name="reco::TrackingStateInfo"/>
-
- 
  <class name="HelperFor<reco::GenParticle>"/>
  <class name="reco::GenParticleHelper"/>
-
+ 
  <class name="HelperFor<reco::HcalNoiseRBX>"/>
  <class name="reco::HcalNoiseRBXCaloTower"/>
 
@@ -99,10 +66,25 @@
  <class name="HelperFor<double>"/>
  <class name="BasicType<double>"/>
 
+ <class name="HelperFor<bool>"/>
+ <class name="BasicType<bool>"/>
+
+ <class name="HelperFor<short>"/>
+ <class name="BasicType<short>"/>
+
+ <class name="HelperFor<unsigned short>"/>
+ <class name="BasicType<unsigned short>"/>
+ 
  <class name="HelperFor<int>"/>
  <class name="BasicType<int>"/>
 
  <class name="HelperFor<unsigned int>"/>
  <class name="BasicType<unsigned int>"/>
+ 
+ <class name="HelperFor<long>"/>
+ <class name="BasicType<long>"/>
+
+ <class name="HelperFor<unsigned long>"/>
+ <class name="BasicType<unsigned long>"/>
  
 </lcgdict>

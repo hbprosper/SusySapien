@@ -1,4 +1,4 @@
-//$Revision: 1.5 $
+//$Revision: 1.6 $
 #include "PhysicsTools/TheNtupleMaker/interface/Connection.h"
 #include "PhysicsTools/TheNtupleMaker/interface/Slot.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pdg.h"
@@ -20,7 +20,6 @@
 #include "PhysicsTools/TheNtupleMaker/interface/KDE.h"
 #include "PhysicsTools/TheNtupleMaker/interface/AdBayes.h"
 #include "PhysicsTools/TheNtupleMaker/interface/Bayespack.h"
-#include "PhysicsTools/TheNtupleMaker/interface/analysisDataFormats.h"
 //-----------------------------------------------------------------------------
 #include "TLorentzVector.h"
 #include "TH1F.h"
@@ -63,10 +62,25 @@ namespace {
   HelperFor<double> t_doubleHelper;
   BasicType<double> t_doubleBasicType;
 
+  HelperFor<bool> t_boolHelper;
+  BasicType<bool> t_boolBasicType;
+
+  HelperFor<short> t_shortHelper;
+  BasicType<short> t_shortBasicType;
+
+  HelperFor<unsigned short> t_ushortHelper;
+  BasicType<unsigned short> t_ushortBasicType;
+
   HelperFor<int> t_intHelper;
   BasicType<int> t_intBasicType;
 
   HelperFor<unsigned int> t_uintHelper;
   BasicType<unsigned int> t_uintBasicType;
+
+  HelperFor<long> t_longHelper;
+  BasicType<long> t_longBasicType;
+
+  HelperFor<unsigned long> t_ulongHelper;
+  BasicType<unsigned long> t_ulongBasicType;
 }
 

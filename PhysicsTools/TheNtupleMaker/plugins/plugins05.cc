@@ -1,130 +1,274 @@
 // -------------------------------------------------------------------------
 // File::   plugins05.cc
-// Created: Sun Apr 15 22:17:19 2012 by mkplugins.py
+// Created: Thu Apr 26 00:40:14 2012 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
 // -------------------------------------------------------------------------
 
-#include "DataFormats/CaloTowers/interface/CaloTower.h"
-#include "DataFormats/EcalDetId/interface/EBDetId.h"
-#include "DataFormats/EcalDetId/interface/EEDetId.h"
-#include "DataFormats/EcalDetId/interface/EcalScDetId.h"
-#include "DataFormats/EcalDetId/interface/EcalTrigTowerDetId.h"
-#include "DataFormats/EcalRawData/interface/ESListOfFEDS.h"
-#include "DataFormats/EcalRawData/interface/EcalListOfFEDS.h"
-#include "DataFormats/HcalCalibObjects/interface/HOCalibVariables.h"
-#include "DataFormats/HepMCCandidate/interface/PdfInfo.h"
-#include "DataFormats/JetReco/interface/PattRecoPeak.h"
-#include "DataFormats/JetReco/interface/PattRecoTree.h"
-#include "DataFormats/L1CSCTrackFinder/interface/L1CSCSPStatusDigi.h"
-#include "DataFormats/METReco/interface/PhiWedge.h"
-#include "DataFormats/Scalers/interface/BeamSpotOnline.h"
-#include "DataFormats/Scalers/interface/DcsStatus.h"
-#include "DataFormats/SiPixelRawData/interface/SiPixelRawDataError.h"
-#include "DataFormats/TauReco/interface/PFTauDiscriminator.h"
-#include "DataFormats/TauReco/interface/PFTauDiscriminatorByIsolation.h"
-#include "SimDataFormats/CaloHit/interface/HFShowerLibraryEventInfo.h"
-#include "SimDataFormats/CaloHit/interface/HFShowerPhoton.h"
+#include "AnalysisDataFormats/TopObjects/interface/CATopJetTagInfo.h"
+#include "DataFormats/BTauReco/interface/BaseTagInfo.h"
+#include "DataFormats/CaloRecHit/interface/CaloCluster.h"
+#include "DataFormats/EgammaReco/interface/BasicCluster.h"
+#include "DataFormats/JetReco/interface/BasicJet.h"
+#include "DataFormats/JetReco/interface/CaloJet.h"
+#include "DataFormats/L1Trigger/interface/L1ParticleMap.h"
+#include "DataFormats/METReco/interface/CaloMET.h"
+#include "DataFormats/MuonReco/interface/CaloMuon.h"
+#include "DataFormats/ParticleFlowReco/interface/Calibratable.h"
+#include "DataFormats/ParticleFlowReco/interface/ParticleFiltrationDecision.h"
+#include "DataFormats/PatCandidates/interface/CompositeCandidate.h"
+#include "DataFormats/PatCandidates/interface/Electron.h"
+#include "DataFormats/PatCandidates/interface/EventHypothesis.h"
+#include "DataFormats/PatCandidates/interface/GenericParticle.h"
+#include "DataFormats/PatCandidates/interface/Hemisphere.h"
+#include "DataFormats/PatCandidates/interface/Jet.h"
+#include "DataFormats/PatCandidates/interface/MET.h"
+#include "DataFormats/PatCandidates/interface/MHT.h"
+#include "DataFormats/PatCandidates/interface/Muon.h"
+#include "DataFormats/PatCandidates/interface/PFParticle.h"
+#include "DataFormats/PatCandidates/interface/Particle.h"
+#include "DataFormats/PatCandidates/interface/Photon.h"
+#include "DataFormats/PatCandidates/interface/Tau.h"
+#include "DataFormats/PatCandidates/interface/TriggerAlgorithm.h"
+#include "DataFormats/PatCandidates/interface/TriggerCondition.h"
+#include "DataFormats/PatCandidates/interface/TriggerFilter.h"
+#include "DataFormats/PatCandidates/interface/TriggerObject.h"
+#include "DataFormats/PatCandidates/interface/TriggerObjectStandAlone.h"
+#include "DataFormats/PatCandidates/interface/TriggerPath.h"
+#include "DataFormats/TauReco/interface/BaseTau.h"
+#include "DataFormats/TauReco/interface/BaseTauTagInfo.h"
+#include "DataFormats/TauReco/interface/CaloTau.h"
 // -------------------------------------------------------------------------
 
-typedef Buffer<reco::PFTauDiscriminator, true>
-recoPFTauDiscriminator_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPFTauDiscriminator_t,
-                  "recoPFTauDiscriminator");
+std::string l1extraL1ParticleMap_n("l1extra::L1ParticleMap");
+typedef Buffer<l1extra::L1ParticleMap,
+               &l1extraL1ParticleMap_n, COLLECTION>
+l1extraL1ParticleMap_t;
+DEFINE_EDM_PLUGIN(BufferFactory, l1extraL1ParticleMap_t,
+                  "l1extraL1ParticleMap");
 				  
-typedef Buffer<reco::PFTauDiscriminatorByIsolation, true>
-recoPFTauDiscriminatorByIsolation_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPFTauDiscriminatorByIsolation_t,
-                  "recoPFTauDiscriminatorByIsolation");
+std::string patCompositeCandidate_n("pat::CompositeCandidate");
+typedef Buffer<pat::CompositeCandidate,
+               &patCompositeCandidate_n, COLLECTION>
+patCompositeCandidate_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patCompositeCandidate_t,
+                  "patCompositeCandidate");
 				  
-typedef Buffer<reco::PattRecoTree<double,reco::PattRecoPeak<double> >, true>
-recoPattRecoTreedoublerecoPattRecoPeakdouble_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPattRecoTreedoublerecoPattRecoPeakdouble_t,
-                  "recoPattRecoTreedoublerecoPattRecoPeakdouble");
+std::string patElectron_n("pat::Electron");
+typedef Buffer<pat::Electron,
+               &patElectron_n, COLLECTION>
+patElectron_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patElectron_t,
+                  "patElectron");
 				  
-typedef Buffer<reco::PattRecoTree<float,reco::PattRecoPeak<float> >, true>
-recoPattRecoTreefloatrecoPattRecoPeakfloat_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPattRecoTreefloatrecoPattRecoPeakfloat_t,
-                  "recoPattRecoTreefloatrecoPattRecoPeakfloat");
+std::string patEventHypothesis_n("pat::EventHypothesis");
+typedef Buffer<pat::EventHypothesis,
+               &patEventHypothesis_n, COLLECTION>
+patEventHypothesis_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patEventHypothesis_t,
+                  "patEventHypothesis");
 				  
-typedef Buffer<reco::PdfInfo, true>
-recoPdfInfo_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPdfInfo_t,
-                  "recoPdfInfo");
+std::string patGenericParticle_n("pat::GenericParticle");
+typedef Buffer<pat::GenericParticle,
+               &patGenericParticle_n, COLLECTION>
+patGenericParticle_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patGenericParticle_t,
+                  "patGenericParticle");
 				  
-typedef Buffer<reco::PhiWedge, true>
-recoPhiWedge_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPhiWedge_t,
-                  "recoPhiWedge");
+std::string patHemisphere_n("pat::Hemisphere");
+typedef Buffer<pat::Hemisphere,
+               &patHemisphere_n, COLLECTION>
+patHemisphere_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patHemisphere_t,
+                  "patHemisphere");
 				  
-typedef Buffer<std::map<int, std::vector<SiPixelRawDataError> >, true>
-stdmapintstdvectorSiPixelRawDataError_t;
-DEFINE_EDM_PLUGIN(BufferFactory, stdmapintstdvectorSiPixelRawDataError_t,
-                  "stdmapintstdvectorSiPixelRawDataError");
+std::string patJet_n("pat::Jet");
+typedef Buffer<pat::Jet,
+               &patJet_n, COLLECTION>
+patJet_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patJet_t,
+                  "patJet");
 				  
-typedef Buffer<std::pair< int, std::vector<L1CSCSPStatusDigi> >, true>
-stdpairintstdvectorL1CSCSPStatusDigi_t;
-DEFINE_EDM_PLUGIN(BufferFactory, stdpairintstdvectorL1CSCSPStatusDigi_t,
-                  "stdpairintstdvectorL1CSCSPStatusDigi");
+std::string patMET_n("pat::MET");
+typedef Buffer<pat::MET,
+               &patMET_n, COLLECTION>
+patMET_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patMET_t,
+                  "patMET");
 				  
-typedef Buffer<std::set<EBDetId>, true>
-stdsetEBDetId_t;
-DEFINE_EDM_PLUGIN(BufferFactory, stdsetEBDetId_t,
-                  "stdsetEBDetId");
+std::string patMHT_n("pat::MHT");
+typedef Buffer<pat::MHT,
+               &patMHT_n, COLLECTION>
+patMHT_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patMHT_t,
+                  "patMHT");
 				  
-typedef Buffer<std::set<EEDetId>, true>
-stdsetEEDetId_t;
-DEFINE_EDM_PLUGIN(BufferFactory, stdsetEEDetId_t,
-                  "stdsetEEDetId");
+std::string patMuon_n("pat::Muon");
+typedef Buffer<pat::Muon,
+               &patMuon_n, COLLECTION>
+patMuon_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patMuon_t,
+                  "patMuon");
 				  
-typedef Buffer<std::set<EcalScDetId>, true>
-stdsetEcalScDetId_t;
-DEFINE_EDM_PLUGIN(BufferFactory, stdsetEcalScDetId_t,
-                  "stdsetEcalScDetId");
+std::string patPFParticle_n("pat::PFParticle");
+typedef Buffer<pat::PFParticle,
+               &patPFParticle_n, COLLECTION>
+patPFParticle_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patPFParticle_t,
+                  "patPFParticle");
 				  
-typedef Buffer<std::set<EcalTrigTowerDetId>, true>
-stdsetEcalTrigTowerDetId_t;
-DEFINE_EDM_PLUGIN(BufferFactory, stdsetEcalTrigTowerDetId_t,
-                  "stdsetEcalTrigTowerDetId");
+std::string patParticle_n("pat::Particle");
+typedef Buffer<pat::Particle,
+               &patParticle_n, COLLECTION>
+patParticle_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patParticle_t,
+                  "patParticle");
 				  
-typedef Buffer<BeamSpotOnline, false>
-BeamSpotOnline_t;
-DEFINE_EDM_PLUGIN(BufferFactory, BeamSpotOnline_t,
-                  "BeamSpotOnline");
+std::string patPhoton_n("pat::Photon");
+typedef Buffer<pat::Photon,
+               &patPhoton_n, COLLECTION>
+patPhoton_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patPhoton_t,
+                  "patPhoton");
 				  
-typedef Buffer<CaloTower, false>
-CaloTower_t;
-DEFINE_EDM_PLUGIN(BufferFactory, CaloTower_t,
-                  "CaloTower");
+std::string patTau_n("pat::Tau");
+typedef Buffer<pat::Tau,
+               &patTau_n, COLLECTION>
+patTau_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patTau_t,
+                  "patTau");
 				  
-typedef Buffer<DcsStatus, false>
-DcsStatus_t;
-DEFINE_EDM_PLUGIN(BufferFactory, DcsStatus_t,
-                  "DcsStatus");
+std::string patTriggerAlgorithm_n("pat::TriggerAlgorithm");
+typedef Buffer<pat::TriggerAlgorithm,
+               &patTriggerAlgorithm_n, COLLECTION>
+patTriggerAlgorithm_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patTriggerAlgorithm_t,
+                  "patTriggerAlgorithm");
 				  
-typedef Buffer<ESListOfFEDS, false>
-ESListOfFEDS_t;
-DEFINE_EDM_PLUGIN(BufferFactory, ESListOfFEDS_t,
-                  "ESListOfFEDS");
+std::string patTriggerCondition_n("pat::TriggerCondition");
+typedef Buffer<pat::TriggerCondition,
+               &patTriggerCondition_n, COLLECTION>
+patTriggerCondition_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patTriggerCondition_t,
+                  "patTriggerCondition");
 				  
-typedef Buffer<EcalListOfFEDS, false>
-EcalListOfFEDS_t;
-DEFINE_EDM_PLUGIN(BufferFactory, EcalListOfFEDS_t,
-                  "EcalListOfFEDS");
+std::string patTriggerFilter_n("pat::TriggerFilter");
+typedef Buffer<pat::TriggerFilter,
+               &patTriggerFilter_n, COLLECTION>
+patTriggerFilter_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patTriggerFilter_t,
+                  "patTriggerFilter");
 				  
-typedef Buffer<HFShowerLibraryEventInfo, false>
-HFShowerLibraryEventInfo_t;
-DEFINE_EDM_PLUGIN(BufferFactory, HFShowerLibraryEventInfo_t,
-                  "HFShowerLibraryEventInfo");
+std::string patTriggerObject_n("pat::TriggerObject");
+typedef Buffer<pat::TriggerObject,
+               &patTriggerObject_n, COLLECTION>
+patTriggerObject_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patTriggerObject_t,
+                  "patTriggerObject");
 				  
-typedef Buffer<HFShowerPhoton, false>
-HFShowerPhoton_t;
-DEFINE_EDM_PLUGIN(BufferFactory, HFShowerPhoton_t,
-                  "HFShowerPhoton");
+std::string patTriggerObjectStandAlone_n("pat::TriggerObjectStandAlone");
+typedef Buffer<pat::TriggerObjectStandAlone,
+               &patTriggerObjectStandAlone_n, COLLECTION>
+patTriggerObjectStandAlone_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patTriggerObjectStandAlone_t,
+                  "patTriggerObjectStandAlone");
 				  
-typedef Buffer<HOCalibVariables, false>
-HOCalibVariables_t;
-DEFINE_EDM_PLUGIN(BufferFactory, HOCalibVariables_t,
-                  "HOCalibVariables");
+std::string patTriggerPath_n("pat::TriggerPath");
+typedef Buffer<pat::TriggerPath,
+               &patTriggerPath_n, COLLECTION>
+patTriggerPath_t;
+DEFINE_EDM_PLUGIN(BufferFactory, patTriggerPath_t,
+                  "patTriggerPath");
+				  
+std::string pftoolsCalibratable_n("pftools::Calibratable");
+typedef Buffer<pftools::Calibratable,
+               &pftoolsCalibratable_n, COLLECTION>
+pftoolsCalibratable_t;
+DEFINE_EDM_PLUGIN(BufferFactory, pftoolsCalibratable_t,
+                  "pftoolsCalibratable");
+				  
+std::string pftoolsParticleFiltrationDecision_n("pftools::ParticleFiltrationDecision");
+typedef Buffer<pftools::ParticleFiltrationDecision,
+               &pftoolsParticleFiltrationDecision_n, COLLECTION>
+pftoolsParticleFiltrationDecision_t;
+DEFINE_EDM_PLUGIN(BufferFactory, pftoolsParticleFiltrationDecision_t,
+                  "pftoolsParticleFiltrationDecision");
+				  
+std::string recoBaseTagInfo_n("reco::BaseTagInfo");
+typedef Buffer<reco::BaseTagInfo,
+               &recoBaseTagInfo_n, COLLECTION>
+recoBaseTagInfo_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoBaseTagInfo_t,
+                  "recoBaseTagInfo");
+				  
+std::string recoBaseTau_n("reco::BaseTau");
+typedef Buffer<reco::BaseTau,
+               &recoBaseTau_n, COLLECTION>
+recoBaseTau_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoBaseTau_t,
+                  "recoBaseTau");
+				  
+std::string recoBaseTauTagInfo_n("reco::BaseTauTagInfo");
+typedef Buffer<reco::BaseTauTagInfo,
+               &recoBaseTauTagInfo_n, COLLECTION>
+recoBaseTauTagInfo_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoBaseTauTagInfo_t,
+                  "recoBaseTauTagInfo");
+				  
+std::string recoBasicCluster_n("reco::BasicCluster");
+typedef Buffer<reco::BasicCluster,
+               &recoBasicCluster_n, COLLECTION>
+recoBasicCluster_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoBasicCluster_t,
+                  "recoBasicCluster");
+				  
+std::string recoBasicJet_n("reco::BasicJet");
+typedef Buffer<reco::BasicJet,
+               &recoBasicJet_n, COLLECTION>
+recoBasicJet_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoBasicJet_t,
+                  "recoBasicJet");
+				  
+std::string recoCATopJetTagInfo_n("reco::CATopJetTagInfo");
+typedef Buffer<reco::CATopJetTagInfo,
+               &recoCATopJetTagInfo_n, COLLECTION>
+recoCATopJetTagInfo_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCATopJetTagInfo_t,
+                  "recoCATopJetTagInfo");
+				  
+std::string recoCaloCluster_n("reco::CaloCluster");
+typedef Buffer<reco::CaloCluster,
+               &recoCaloCluster_n, COLLECTION>
+recoCaloCluster_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCaloCluster_t,
+                  "recoCaloCluster");
+				  
+std::string recoCaloJet_n("reco::CaloJet");
+typedef Buffer<reco::CaloJet,
+               &recoCaloJet_n, COLLECTION>
+recoCaloJet_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCaloJet_t,
+                  "recoCaloJet");
+				  
+std::string recoCaloMET_n("reco::CaloMET");
+typedef Buffer<reco::CaloMET,
+               &recoCaloMET_n, COLLECTION>
+recoCaloMET_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCaloMET_t,
+                  "recoCaloMET");
+				  
+std::string recoCaloMuon_n("reco::CaloMuon");
+typedef Buffer<reco::CaloMuon,
+               &recoCaloMuon_n, COLLECTION>
+recoCaloMuon_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCaloMuon_t,
+                  "recoCaloMuon");
+				  
+std::string recoCaloTau_n("reco::CaloTau");
+typedef Buffer<reco::CaloTau,
+               &recoCaloTau_n, COLLECTION>
+recoCaloTau_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCaloTau_t,
+                  "recoCaloTau");
 				  

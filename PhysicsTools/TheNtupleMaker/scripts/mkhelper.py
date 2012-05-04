@@ -3,7 +3,9 @@
 # Create the skeleton of a user plugin
 # Created: 27-Aug-2010 Harrison B. Prosper
 #          22-Jul-2011 HBP - fix duplicate HelperFor bug
-#$Id: mkhelper.py,v 1.5 2011/08/08 15:59:38 prosper Exp $
+#          22-Apr-2012 HBP - use SINGLETON and COLLECTION keywords
+#          03-May-2012 HBP - add methods automatically
+#$Id: mkhelper.py,v 1.6 2012/04/04 01:32:41 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -14,6 +16,11 @@ from PhysicsTools.TheNtupleMaker.Lib import \
 	 nameonly, \
 	 cmsswProject, \
 	 getauthor
+
+from PhysicsTools.TheNtupleMaker.ReflexLib import \
+         classMethods,\
+         classDataMembers,\
+         isFuntype
 #------------------------------------------------------------------------------
 PACKAGE, SUBPACKAGE, LOCALBASE, BASE, VERSION = cmsswProject()
 if PACKAGE == None:
@@ -66,9 +73,13 @@ except:
 	print "\n\t** unable to load classmap.py"
 	sys.exit(0)
 #------------------------------------------------------------------------------
-namespace = re.compile(r'^[a-zA-Z]+::')
+namespace   = re.compile(r'^[a-zA-Z]+::')
 doublecolon = re.compile(r'::')
-istemplate = re.compile(r'(?<=\<).+(?=\>)')
+istemplate  = re.compile(r'(?<=\<).+(?=\>)')
+stufftoskip = re.compile(r'clone|Clone|print|iterator')
+signature   = re.compile(r'[a-zA-Z]+[\w]*\(.*\)')
+arguments   = re.compile(r'(?<=\w\().*(?=\))')
+constptr    = re.compile(r'^const .*\*$')
 #------------------------------------------------------------------------------
 shortOptions = "u"
 def usage():
@@ -141,13 +152,21 @@ public:
 
   // Uncomment if helper class does some object-level analysis
   // virtual void analyzeObject();
-  
-  // -- Access Methods
 
-  // -- e.g., double pt() const;
-  
+  // ---------------------------------------------------------
+  // -- User access methods go here
+  // ---------------------------------------------------------
+
+
 private:
-  // -- internals
+  // -- User internals
+
+
+public:
+  // ---------------------------------------------------------
+  // -- Access Methods
+  // ---------------------------------------------------------
+  %(methods)s
 };
 #endif
 '''
@@ -168,13 +187,21 @@ namespace %(namespace)s
 	 
 	// Uncomment if this class does some object-level analysis
 	// virtual void analyzeObject();
-  
-	// -- Access Methods
 
-	// -- e.g., double pt() const;
-	 
+	// ---------------------------------------------------------
+	// -- User access methods go here
+	// ---------------------------------------------------------
+
+	
   private:
-    // -- internals
+    // -- User internals
+
+
+  public:
+    // ---------------------------------------------------------
+    // -- Access Methods
+    // ---------------------------------------------------------
+%(methods)s
   };
 }
 #endif
@@ -223,7 +250,7 @@ using namespace std;
 //
 //}
 
-// -- Access Methods
+// -- User access methods
 //double %(name)s::someMethod()  const
 //{
 //  return  //-- some-value --
@@ -393,9 +420,9 @@ def main():
 		
 	# Objects of this type can be singletons or form collections
 	if ctype in ['s', 'S']:
-		ctype = "true"
+		ctype = "SINGLETON"
 	else:
-		ctype = "false"
+		ctype = "COLLECTION"
 
 	# if template is edm::ValueMap append name of class
 	if template != "":
@@ -407,10 +434,12 @@ def main():
 	if len(nspace) == 0:
 		nspace = ""
 		nspacewithcolon = ""
+		tab = ' '*2
 	else:
 		nspacewithcolon = nspace[0]
 		nspace = doublecolon.sub("", nspacewithcolon)
-
+		tab = ' '*4
+		
 	name  = namespace.sub("",classtype) + postfix      # remove namespace
 	bname = doublecolon.sub("", classtype) + postfix   # remove "::"
 	filename = doublecolon.sub("", bname)
@@ -418,7 +447,88 @@ def main():
 		fullname = nspacewithcolon + name
 	else:
 		fullname = name
+
+	# ----------------------------------------------------------------
+	# Get class methods
+	# ----------------------------------------------------------------
+	db = {}
+	db['scopes'] = {}
+	db['methods'] = {}
+	db['datamembers'] = {}
+	db['classname'] = classtype
+	db['classlist'] = []
+	db['baseclassnames'] = []
+	db['signature'] = {}
+	
+	classMethods(classtype, db)
+	#db['baseclassnames'] = []
+	#classDataMembers(classtype, db)
+
+	methods = ''
+	for method in db['methods']:
+		if stufftoskip.search(method) != None: continue
+		method = strip(method)
+		msig   = signature.findall(method)
+		if len(msig) == 0: continue
 		
+		msig  = msig[0]
+		args  = arguments.findall(msig)
+		if len(args) == 0: continue
+
+		args  = strip(args[0])
+		rtype = strip(replace(method, msig, ""))
+		
+		if len(args) > 0:
+			t = split(args, ',')
+			# Keep methods only if all arguments are fundamental types
+			# or void
+			skipMethod = False
+			for x in t:
+				if isFuntype.match(strip(x)) != None: continue
+				skipMethod = True
+				break
+			if skipMethod: continue
+			
+			n = range(len(t))
+			
+			t = map(lambda x, i: "%s a%d" % (x, i), t, n)
+			args = '(%s)' % joinfields(t, ',')
+			nom  = split(msig, '(')[0]
+			msig = nom + args
+
+			t = map(lambda i: "a%d" % i, n)
+			args = '(%s)' % joinfields(t, ', ')
+			mcall = nom + args
+		else:
+			mcall = msig
+
+		# If return type is a non-const pointer
+		# then cast it explicitly to a non-const type
+		cast = ""
+		if rtype[-1] == "*":
+			if rtype[:6] != "const ":
+				cast = "(%s)" % rtype
+			
+		noms = {'tab': tab,
+				'rtype': rtype,
+				'cast' : cast,
+				'signature': msig,
+				'methodcall': mcall}
+				 
+		m = '%(tab)s%(rtype)s %(signature)s const'\
+			' { return %(cast)sobject->%(methodcall)s; }' % noms
+		
+		if len(m) > 79:
+			m = '%(tab)s%(rtype)s %(signature)s const' % noms
+			if len(m) > 79:
+				m = '%(tab)s%(rtype)s\n%(tab)s%(signature)s const' % noms
+			n = ' { return %(cast)sobject->%(methodcall)s; }' % noms
+			if len(n+m) > 79:
+				m = m + '\n%(tab)s' + strip(n)
+				m = m % noms
+		methods += "\n\n%s" % m
+	#----------------------------------
+	
 	print "class:  %s" % classname
 	print "header: %s\n" % header
 	print "\thelper class:  %s" % nspacewithcolon+name
@@ -436,6 +546,8 @@ def main():
 	names['name']       = name
 	names['fullname']   = fullname
 	names['headername'] = upper(bname)
+	names['methods']    = methods
+	
 	if template == "":
 		names['classname']  = classname
 	else:

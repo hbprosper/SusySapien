@@ -7,7 +7,8 @@
 //         Updated:  Sun Sep 19 HBP move initBuffer from Buffer.h
 //                   Thu Feb 17 HBP change definition of isArray (maxcount > 1)
 //                   Wed Jul 20 HBP handle BasicType
-// $Id: BufferUtil.cc,v 1.1.1.1 2011/05/04 13:04:29 prosper Exp $
+//                   25-Apr-2012 HBP fix objectname when it is a template
+// $Id: BufferUtil.cc,v 1.2 2011/07/20 16:19:55 prosper Exp $
 //-----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python/type_id.hpp>
@@ -30,9 +31,10 @@ void initializeBuffer(otreestream& out,
                       std::string& prefix,
                       std::vector<VariableDescriptor>& var,
                       int&  count,
-                      bool  singleton,
+                      ClassType ctype,
                       int   maxcount,
                       std::ofstream& log,
+                      std::string&   bufferkey,
                       int   debug)
 {
   // Define regular expressions to check for compound methods; i.e., methods
@@ -45,7 +47,7 @@ void initializeBuffer(otreestream& out,
   // 6. y = a->b()
 
   boost::regex stripargs("[(].*?[)]");
-  boost::regex stripme("-[>]|[.]|\"|[(]|[)]");
+  boost::regex stripme("-[>]|[.]|\"|[(]|[)]| |,|[<]|[>]");
   boost::regex stripcolon("[a-zA-Z]+::");
   boost::regex strip3_("___");
   boost::regex strip2_("__");
@@ -56,12 +58,22 @@ void initializeBuffer(otreestream& out,
 
    if ( debug > 0 )
     {
-      if ( singleton )
-        std::cout << RED  << "\tSINGLETON( " << classname << " )" 
-                  << BLACK << std::endl;
-      else
-        std::cout << BLUE << "\tCOLLECTION( " << classname << " )" 
-                  << BLACK << std::endl;
+      switch (ctype)
+        {
+        case SINGLETON:
+          std::cout << RED  << "\tSINGLETON( " << classname << " )" 
+                    << BLACK << std::endl;
+          break;
+
+        case COLLECTION:
+          std::cout << RED  << "\tCOLLECTION( " << classname << " )" 
+                    << BLACK << std::endl;
+          break;
+
+        case CONTAINER:
+          std::cout << RED  << "\tCONTAINER( " << classname << " )" 
+                    << BLACK << std::endl;
+        }
     }
 
   // Split getByLabel into its component parts
@@ -95,7 +107,13 @@ void initializeBuffer(otreestream& out,
                                                  stripcolon, "").c_str());
   objname.ToLower();
   objectname = std::string(objname.Data());
+  // Replace "->", ".", "(", ")" "," " " and quotes by ""
+  objectname = rfx::strip(boost::regex_replace(objectname, stripme,  ""));
+
   if (objectname.substr(0, 9) == "basictype") objectname = prefix;
+
+  // buffer key is used in shrink buffer method of TNM
+  bufferkey = objectname;
 
   // Define variables destined for the output tree
   
@@ -106,14 +124,13 @@ void initializeBuffer(otreestream& out,
   // to and from vectors ourselves.
 
   // If we have a vector variable, create a counter variable for it.
-  // Root calls this a "leaf counter". A vector variable is generally a
+  // Root calls this a "leaf counter". A vector variable i s generally a
   // collection. However, a helper for a singleton object could expand
   // into a vector variable. Likewise, a helper class for a collection object,
   // say a collection of pat::Jets, could map these objects to a single 
   // instance of each variable, for example to HT. If so, we shall assume 
   // that the n-tuple variable is to be a simple non-array type.
 
-  //bool isArray = !singleton && maxcount > 1; 
   bool isArray = maxcount > 1; 
   std::string counter("");
   if ( isArray )

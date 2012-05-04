@@ -1,4 +1,14 @@
-$Revision: 1.26 $
+$Revision: 1.27 $
+
+v5_3_2 May 04 2012
+------------------
+	1. place reflex utilities into ReflexLib.py
+	2. re-write mkmacro.py
+	3. add methods to helper automatically so that help has the same
+	   methods as the helped object
+	4. change format of plugins - now use COLLECTION and SINGLETON types
+	5. use try except to catch trigger setup problems
+	6. streamline the way classes.txt is created
 
 v5_3_1 Apr 15 2012
 ------------------

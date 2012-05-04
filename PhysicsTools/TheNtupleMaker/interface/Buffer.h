@@ -26,8 +26,9 @@
 //                   Wed Apr 20 HBP - Add GenRun
 //                   Sun May 01 HBP - Place Specialized buffer in a separate
 //                                    file, BufferEvent.h
+//                   Sun Apr 22 2012 HBP - Use Caller object
 //
-// $Id: Buffer.h,v 1.3 2011/06/07 07:41:55 prosper Exp $
+// $Id: Buffer.h,v 1.4 2011/07/20 16:19:54 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/BufferUtil.h"
@@ -60,15 +61,16 @@
     <p>
     <i>typenames</i>:<br>
     - X = type of object extracted using getByLabel (extractable object)
-    - SINGLETON = <i>true</i> if there can be at most once instance per event
+    - CTYPE = <i>SINGLETON, COLLECTION, CONTAINER</i> 
 */
-template <typename X, bool SINGLETON>
+template <typename X, std::string* CNAME, ClassType CTYPE>
 struct Buffer  : public BufferThing
 {
   ///
   Buffer() 
     : out_(0),
-      classname_(boost::python::type_id<X>().name()),
+      classname_(*CNAME),
+      //classname_(boost::python::type_id<X>().name()),
       label_(""),
       label1_(""),
       label2_(""),
@@ -77,10 +79,11 @@ struct Buffer  : public BufferThing
       var_(std::vector<VariableDescriptor>()),
       maxcount_(0),
       count_(0),
-      singleton_(SINGLETON),
+      ctype_(CTYPE),
       message_(""),
       debug_(0),
-      skipme_(false)
+      skipme_(false),
+      call_(Caller<X, X, CTYPE>())
   {
     std::cout << "Buffer created for objects of type: " 
               << name()
@@ -151,12 +154,13 @@ struct Buffer  : public BufferThing
     // method of the event object.
     // Definition: An extractable object is one that can be extracted from an
     // event using getByLabel
-    classname_ = boost::python::type_id<X>().name();
+
     boost::regex re("RunInfo");
     boost::smatch match;
     if ( boost::regex_search(classname_, match, re) ) buffertype_ = RUNINFO;
 
     initBuffer<X>(out,
+                  classname_,
                   label_,
                   label1_,
                   label2_,
@@ -166,9 +170,10 @@ struct Buffer  : public BufferThing
                   varnames_,
                   varmap_,
                   count_,
-                  singleton_,
+                  ctype_,
                   maxcount_,
                   log,
+                  bufferkey_,
                   debug_);
   }
   
@@ -187,49 +192,29 @@ struct Buffer  : public BufferThing
     count_ = 0; // reset count, just in case we have to bail out
     message_ = "";
 
-  // If this is real data ignore generator objects
-  if ( event.isRealData() )
-    {
-      if ( skipme_ ) return true;      
-    }
-
-    // Note: We use the handle edm::Handle<X> for singletons and
-    //       the handle edm::Handle< View<X> > for collections.
-  
-    if ( singleton_ )
+    // If this is real data ignore generator objects
+    if ( event.isRealData() )
       {
-        edm::Handle<X> handle;
-        if ( ! getByLabel(event, handle, label1_, label2_, message_ ,
-                          buffertype_, crash_) )
-          return false;
-   
-        // OK handle is valid, so extract data for all variables
-        const X& object = *handle;
-        callMethods(0, object, variables_, debug_);
+        if ( skipme_ ) return true;      
       }
-    else
-      {
-        edm::Handle< edm::View<X> > handle;
-        if ( ! getByLabel(event, handle, label1_, label2_, message_,
-                          buffertype_, crash_) )
-          return false;
-
-        // OK handle is valid, so extract data for all variables.        
-        // For the object count, use the smaller of handle size and maxcount.
-        count_ = (int)handle->size() < maxcount_ 
-          ? handle->size() 
-          : maxcount_;
-
-        for(int j=0; j < count_; j++)
-          {
-            const X& object = (*handle)[j];
-            callMethods(j, object, variables_, debug_);
-          }
-        }
     
+    // Note: We use the handle edm::Handle<X> for singletons and
+    //       containers, but edm::Handle< View<X> > for vector types
+
+    bool status = call_(event, 
+                        label1_, 
+                        label2_, 
+                        message_,
+                        buffertype_,
+                        crash_,
+                        variables_, 
+                        count_,
+                        maxcount_,
+                        debug_);
+
     if ( debug_ > 0 ) 
       std::cout << DEFAULT_COLOR << "End Buffer::fill " << std::endl; 
-    return true;
+    return status;
   }
   
   std::string& message() { return message_; }
@@ -260,6 +245,7 @@ struct Buffer  : public BufferThing
 
   int count() { return count_; }
   int maxcount() { return maxcount_; }
+  std::string key() {return bufferkey_;}
 
 private:
   otreestream* out_;
@@ -275,11 +261,14 @@ private:
   std::map<std::string, countvalue> varmap_;
   int  maxcount_;
   int  count_;
-  bool singleton_;
+  ClassType ctype_;
   std::string message_;
   int  debug_;
   bool skipme_;
   bool crash_;
+  std::string bufferkey_;
+
+  Caller<X, X, CTYPE> call_;
 };
 
 #endif

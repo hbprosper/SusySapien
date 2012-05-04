@@ -5,8 +5,8 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Jan 17 HBP - add log file
-// $Id: TestMethod.cc,v 1.1.1.1 2011/05/04 13:04:29 prosper Exp $
-// $Revision: 1.1.1.1 $
+// $Id: TestMethod.cc,v 1.2 2011/05/23 08:46:57 prosper Exp $
+// $Revision: 1.2 $
 //
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
@@ -19,7 +19,6 @@
 #include <time.h>
  
 #include "PhysicsTools/TheNtupleMaker/interface/Method.h"
-#include "PhysicsTools/TheNtupleMaker/interface/MethodT.h"
 #include "PhysicsTools/TheNtupleMaker/interface/CurrentEvent.h"
 
 #include "FWCore/Framework/interface/Frameworkfwd.h"
@@ -74,10 +73,10 @@ void printit(string object, int i)
   cout << object << "[" << i << "]" << endl;
 }
 
-void printit(string method, double x, double y, double z)
+void printit(string method, double x, double y)
 {
   char record[1024];
-  sprintf(record, " %-40s: %f %f %f", method.c_str(), x, y, z);
+  sprintf(record, " %-40s: %10.4e\t%10.4e", method.c_str(), x, y);
   cout << record << endl;
 }
 
@@ -87,7 +86,6 @@ TestMethod::analyze(const edm::Event& iEvent,
 {
   double x = 0;
   double y = 0;
-  double z = 0;
   string method("");
 
   CurrentEvent::instance().set(iEvent, iSetup);
@@ -110,266 +108,63 @@ TestMethod::analyze(const edm::Event& iEvent,
             const pat::Electron& object = (*handle)[i];
 
             {
-              x = y = z = 0;
+              x = y = 0;
               x = object.pt();
               method = string("pt()");
               Method<pat::Electron> f(method);
               y = f(object);
-              MethodT<pat::Electron> g(method);
-              z = g(object);
-              printit(method, x, y, z);
+              printit(method, x, y);
             }
 
             {
-              x = y = z = 0;
+              x = y = 0;
               x = object.eta();
               method = string("eta()");
               Method<pat::Electron> f(method);
               y = f(object);
-              MethodT<pat::Electron> g(method);
-              z = g(object);
-              printit(method, x, y, z);
+              printit(method, x, y);
             }
 
             {
-              x = y = z = 0;
+              x = y = 0;
               x = object.phi();
               method = string("phi()");
               Method<pat::Electron> f(method);
               y = f(object);
-              MethodT<pat::Electron> g(method);
-              z = g(object);
-              printit(method, x, y, z);
+              printit(method, x, y);
             }
 
             {
-              x = y = z = 0;
+              x = y = 0;
               x  = object.trackIso();
               method = string("trackIso()");
               Method<pat::Electron> f(method);
               y = f(object);
-              MethodT<pat::Electron> g(method);
-              z = g(object);
-              printit(method, x, y, z);
+              printit(method, x, y);
             }
             
             {
-              x = y = z = 0;
+              x = y = 0;
               if ( object.gsfTrack().isAvailable() &&
                    object.gsfTrack().isNonnull() ) 
                 x  = object.gsfTrack()->numberOfValidHits();
               method = string("gsfTrack()->numberOfValidHits()");
               Method<pat::Electron> f(method);
               y = f(object);
-              MethodT<pat::Electron> g(method);
-              z = g(object);
-              printit(method, x, y, z);
+              printit(method, x, y);
             }
 
             {
-              x = y = z = 0;
+              x = y = 0;
               if ( object.track().isAvailable() &&
                    object.track().isNonnull() )
                 x  = object.track()->d0();
               method = string("track()->d0()");
               Method<pat::Electron> f(method);
               y = f(object);
-              MethodT<pat::Electron> g(method);
-              z = g(object);
-              printit(method, x, y, z);
+              printit(method, x, y);
             }
 
-          }
-      }
-  }
-
-
-  { // Muons
-
-    label = config.getUntrackedParameter<string>("patMuonLabel");
-
-    edm::Handle<edm::View<pat::Muon> > handle;
-    iEvent.getByLabel(label, handle);
-    if ( !handle.isValid() )
-      throw edm::Exception(edm::errors::Configuration,
-                           "getByLabel failed on label: " + label);
-
-    if ( handle->size() > 0 )
-      {
-        for(unsigned int i=0; i < handle->size(); i++)
-          {      
-            printit("pat::Muon", i);
-            const pat::Muon& object = (*handle)[i];
-                        
-            {
-              x = y = z = 0;
-              x = object.pt();
-              method = string("pt()");
-              Method<pat::Muon> f(method);
-              y = f(object);
-              MethodT<pat::Muon> g(method);
-              z = g(object);
-              printit(method, x, y, z);
-             }
-
-            {
-              x = y = z = 0;
-              x = object.eta();
-              method = string("eta()");
-              Method<pat::Muon> f(method);
-              y = f(object);
-              MethodT<pat::Muon> g(method);
-              z = g(object);
-              printit(method, x, y, z);
-            }
-
-            {
-              x = y = z = 0;
-              x = object.phi();
-              method = string("phi()");
-              Method<pat::Muon> f(method);
-              y = f(object);
-              MethodT<pat::Muon> g(method);
-              z = g(object);
-              printit(method, x, y, z);
-            }
-
-            {
-              x = y = z = 0;
-              x = object.trackIso();
-              method = string("trackIso()");
-              Method<pat::Muon> f(method);
-              y = f(object);
-              MethodT<pat::Muon> g(method);
-              z = g(object);
-              printit(method, x, y, z);
-            }
-
-            {
-              x = y = z = 0;
-              x = object.isGlobalMuon();
-              method = string("isGlobalMuon()");
-              Method<pat::Muon> f(method);
-              y = f(object);
-              MethodT<pat::Muon> g(method);
-              z = g(object);
-              printit(method, x, y, z);
-            }
-               
-            {
-              x = y = z = 0;
-              if ( object.track().isAvailable() &&
-                   object.track().isNonnull() ) 
-                x  = object.track()->hitPattern().numberOfValidMuonHits();
-              method = string("track()->hitPattern().numberOfValidMuonHits()");
-              Method<pat::Muon> f(method);
-              y = f(object);
-              MethodT<pat::Muon> g(method);
-              z = g(object);
-              printit(method, x, y, z);
-            }
-
-            {
-              x = y = z = 0;
-              if ( object.track().isAvailable() &&
-                   object.track().isNonnull() )
-                x  = object.track()->d0();
-              method = string("track()->d0()");
-              Method<pat::Muon> f(method);
-              y = f(object);
-              MethodT<pat::Muon> g(method);
-              z = g(object);
-              printit(method, x, y, z);
-            }
-
-          }
-       }
-  }
-
-  { // Jets
-
-    label = config.getUntrackedParameter<string>("patJetLabel");
-
-    edm::Handle<edm::View<pat::Jet> > handle;
-    iEvent.getByLabel(label, handle);
-    if ( !handle.isValid() )
-      throw edm::Exception(edm::errors::Configuration,
-                           "getByLabel failed on label: " + label);
-
-    if ( handle->size() > 0 )
-      {
-        for(unsigned int i=0; i < handle->size(); i++)
-          {      
-            printit("pat::Jet", i);
-            const pat::Jet& object = (*handle)[i];
-
-            {
-              x = y = z = 0;
-              x = object.pt();
-              method = string("pt()");
-              Method<pat::Jet> f(method);
-              y = f(object);
-              MethodT<pat::Jet> g(method);
-              z = g(object);
-              printit(method, x, y, z);
-            }
-
-            {
-              x = y = z = 0;
-              x = object.eta();
-              method = string("eta()");
-              Method<pat::Jet> f(method);
-              y = f(object);
-              MethodT<pat::Jet> g(method);
-              z = g(object);
-              printit(method, x, y, z);
-            }
-
-            {
-              x = y = z = 0;
-              x = object.phi();
-              method = string("phi()");
-              Method<pat::Jet> f(method);
-              y = f(object);
-              MethodT<pat::Jet> g(method);
-              z = g(object);
-              printit(method, x, y, z);
-            }
-
-            {
-              x = y = z = 0;
-              x = object.jetID().fHPD;
-              method = string("jetID().fHPD");
-              Method<pat::Jet> f(method);
-              y = f(object);
-              MethodT<pat::Jet> g(method);
-              z = g(object);
-              printit(method, x, y, z);
-            }
-
-            {
-              x = y = z = 0;
-              x = object.jetID().n90Hits;
-              method = string("jetID().n90Hits");
-              Method<pat::Jet> f(method);
-              y = f(object);
-              MethodT<pat::Jet> g(method);
-              z = g(object);
-              printit(method, x, y, z);
-            }
-
-            {
-              string b("combinedSecondaryVertexBJetTags");
-              x = y = z = 0;
-              x = object.bDiscriminator(b);
-              method = string("bDiscriminator(\"") + b + string("\")");
-              Method<pat::Jet> f(method);
-              y = f(object);
-              MethodT<pat::Jet> g(method);
-              z = g(object);
-              printit(method, x, y, z);
-            }
-            
           }
       }
   }

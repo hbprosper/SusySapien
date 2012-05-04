@@ -1,5 +1,5 @@
 #-----------------------------------------------------------------------------
-#$Revision: 1.1 $
+#$Revision: 1.1.1.1 $
 import sys
 from ROOT import *
 #-----------------------------------------------------------------------------
@@ -21,11 +21,6 @@ vdouble      = vector("double")
 vstring      = vector("string")
 vvdouble     = vector("vector<double>")
 
-vGenParticle = vector("reco::GenParticle")
-vMatchedPair = vector("kit::MatchedPair")
-vPtThing     = vector("kit::PtThing")
-vTVector3    = vector("TVector3")
-vTLorentzVector = vector("TLorentzVector")
 
 
 

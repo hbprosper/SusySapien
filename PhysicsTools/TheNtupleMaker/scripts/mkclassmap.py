@@ -4,7 +4,8 @@
 # Description: Create a map of classnames to headers
 # Created:     26-Aug-2010 Harrison B. Prosper
 #              31-Mar-2011 HBP - include typedefs
-#$Id: mkclassmap.py,v 1.19 2011/08/08 15:59:38 prosper Exp $
+#              23-Apr-2012 HBP - use import to load class map
+#$Id: mkclassmap.py,v 1.20 2012/04/04 01:32:41 prosper Exp $
 #---------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
@@ -18,7 +19,8 @@ from PhysicsTools.TheNtupleMaker.Lib import \
 	 stripBlanklines,\
 	 namespaceName,\
 	 getClassname,\
-	 cmsswProject
+	 cmsswProject,\
+	 fixName
 #---------------------------------------------------------------------------
 # Constants
 #---------------------------------------------------------------------------
@@ -27,6 +29,7 @@ if PACKAGE == None:
 	print "Please run me in your package directory"
 	sys.exit(0)
 
+SCRAM_ARCH  = os.environ['SCRAM_ARCH']
 PROJECTBASE = "%s/%s/%s"   % (LOCALBASE, PACKAGE, SUBPACKAGE)
 PYTHONDIR   = "%s/python"   % PROJECTBASE
 
@@ -109,9 +112,7 @@ else:
 # subsystems to ignore
 
 skipsubsystem = re.compile('Alignment|'\
-						   'Geometry|'\
 						   'Histograms|'\
-						   'Provenance|'\
 						   'Road|'\
 						   'StdDict|'\
 						   'Streamer|'\
@@ -119,33 +120,12 @@ skipsubsystem = re.compile('Alignment|'\
 						   'VZero|'\
 						   'Wrapped')
 
-skipheader = re.compile('(classes|Fwd|print).h$')
-stripnamespace = re.compile('^[a-zA-Z]+::')
+skipheader = re.compile('(classes|print).h$')
+stripnamespace = re.compile('^[a-zA-Z0-9]+::')
 #----------------------------------------------------------------------------
-## def addToMap(fullkey, key, header, cmap):
-## 	if cmap.has_key(fullkey):
-## 		fullkey2 = "%s*" % fullkey
-## 		if not cmap.has_key(fullkey2):
-## 			cmap[fullkey2] = [cmap[fullkey]]
-## 		cmap[fullkey2].append(header)
-## 	else:
-## 		cmap[fullkey] = header
-
-## 	if cmap.has_key(key):
-## 		key2 = "%s*" % key
-## 		if not cmap.has_key(key2):
-## 			cmap[key2] = [cmap[key]]
-## 		cmap[key2].append(header)
-## 	else:
-## 		cmap[key] = header
-
-def addToMap(fullkey, key, header, cmap):
-	#print "==>", header
+def addToMap(fullkey, header, cmap):
 	if not cmap.has_key(fullkey):
 		cmap[fullkey] = header
-
-	if not cmap.has_key(key):
-		cmap[key] = header		
 #============================================================================
 # Main Program
 #============================================================================
@@ -206,11 +186,10 @@ def main():
 			continue
 
 		file = os.path.abspath(file)
-	
+
 		# Scan header and parse it for classes
-		
+
 		record, items = parseHeader(file)
-		
 		if record == '': continue
 		records = splitHeader(record)
 		if len(records) == 0: continue
@@ -221,6 +200,7 @@ def main():
 		k = rfind(header, "/src/") # search from right
 		if k > 0: header = header[k+5:]
 
+		cache = []
 		names = []
 		for irecord, (record, group, start, end) in enumerate(records):
 			#print "GROUP(%s)" % group
@@ -254,22 +234,27 @@ def main():
 				else:
 					tplate = False
 					fullkey = fullname					
-				key = stripnamespace.sub("", fullkey)
-				
-				if Update:
-					addToMap(fullkey, key, header, ClassToHeaderMap)
-				else:
-					addToMap(fullkey, key, header, cmap)
+
+				cache.append((fullkey, header))
 
 				count += 1
 				print "%5d\t%s" % (count, fullkey)
-								
+
+				# remember to reset
 				names.pop()
 				
 			elif group in ["class", "structclass"]:
 				classname, basenames, template = getClassname(record)
 				names.append(classname)
 
+		# Update map
+		
+		for fullkey, header in cache:
+			if Update:
+				addToMap(fullkey, header, ClassToHeaderMap)
+			else:
+				addToMap(fullkey, header, cmap)
+				
 	# Write out class to header map
 
 	if Update:
@@ -279,15 +264,40 @@ def main():
 		print "creating classmap.py..."
 		hmap = cmap
 
+
+	# define lib areas
+
+	LOCALLIBAREA = "%s/lib/%s/" % (LOCALBASE[:-5], SCRAM_ARCH)
+	LIBAREA = "%s/lib/%s/" % (BASE[:-5], SCRAM_ARCH)
+
+	getmodule = re.compile('(?<=src/).*(?=/interface)')
+	librecs = []
 	recs = []
 	keys = hmap.keys()
 	keys.sort()
 	for key in keys:
+		key = fixName(key) # remove unnecessary spaces
+		
 		value = hmap[key]
 		if type(value) == type(""):
 			recs.append("'%s': '%s'" % (key, value))
 		else:
 			recs.append("'%s': %s"   % (key, value))
+
+		# find the shared library in which the class typeinfo resides
+
+		module = split(value,'/interface/')[0]
+		library = "lib%s" % replace(module, '/', '')
+
+		found = False
+		filename = "%s%s.so" % (LOCALLIBAREA, library)
+		if not os.path.exists(filename):
+			filename = "%s%s.so" % (LIBAREA, library)
+			if not os.path.exists(filename):
+				continue
+
+		# add lib to list
+		librecs.append("'%s': '%s'" % (key, library))
 
 	record = joinfields(recs,',\n')		
 	outfile = CLASSMAPFILE
@@ -296,7 +306,13 @@ def main():
 	out.write('# Version: %s\n' % VERSION)
 	out.write("ClassToHeaderMap = {\\\n")
 	out.write(record+'\n')
+	out.write("}\n\n")
+
+	record = joinfields(librecs,',\n')
+	out.write("ClassToLibraryMap = {\\\n")
+	out.write(record+'\n')
 	out.write("}\n")
+	out.close()
 #---------------------------------------------------------------------------
 main()
 

@@ -55,7 +55,7 @@
 //                   Fri Jul 22 2011 HBP - make buffer name and get by label
 //                                   available to buffers
 //                   Mon Aug 08 2011 HBP - allow global alias
-// $Id: TheNtupleMaker.cc,v 1.13 2011/08/08 18:36:10 prosper Exp $
+// $Id: TheNtupleMaker.cc,v 1.14 2012/04/04 01:32:38 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -117,24 +117,24 @@ private:
   std::map<std::string, BufferThing*> buffermap;
 
   // map from variables to buffer location and count
-  std::map<std::string, countvalue>   vars;
-  bool keep; // true if event is to be kept
+  std::map<std::string, countvalue>   varmap;
+
+  // map from object name to object index (used for selecting objects to be
+  // stored)
+  std::map<std::string, std::vector<int> >   indexmap;
 
   int DEBUG;
 
   std::string logfilename_;
   std::ofstream* log_;
   std::string analyzername_;
-  std::string usermacroname_;
-  std::string varscmd_;
-  std::string boolcmd_;
-  std::string treecmd_;
-  std::string usermacrocmd_;
+  std::string macroname_;
 
   int count_;
   int imalivecount_;
   int logger_;
   bool haltlogger_;
+  bool macroEnabled_;
 
   TTree* ptree_;
   int inputCount_;
@@ -149,30 +149,28 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   : ntuplename_(iConfig.getUntrackedParameter<string>("ntupleName")), 
     output(otreestream(ntuplename_,
                        "Events", 
-                       "created by TheNtupleMaker $Revision: 1.13 $")),
+                       "created by TheNtupleMaker $Revision: 1.14 $")),
     logfilename_("TheNtupleMaker.log"),
     log_(new std::ofstream(logfilename_.c_str())),
-    usermacroname_(""),
-    varscmd_(""),
-    boolcmd_(""),
-    usermacrocmd_(""),
+    macroname_(""),
     count_(0),
     imalivecount_(1000),
     logger_(0),
     haltlogger_(false),
+    macroEnabled_(false),
     inputCount_(0),
     triggerProcessName_("HLT") 
 {
   cout << "\nBEGIN TheNtupleMaker Configuration" << endl;
 
-  string cfg = iConfig.dump();
+  string cfg = string(iConfig.dump());
 
   // --------------------------------------------------------------------------
   // Add a provenance tree to ntuple
   // --------------------------------------------------------------------------
   TFile* file = output.file();
   ptree_ = new TTree("Provenance",
-                     "created by TheNtupleMaker $Revision: 1.13 $");
+                     "created by TheNtupleMaker $Revision: 1.14 $");
   string cmsver("unknown");
   if ( getenv("CMSSW_VERSION") > 0 ) cmsver = string(getenv("CMSSW_VERSION"));
   ptree_->Branch("cmssw_version", (void*)(cmsver.c_str()), "cmssw_version/C");
@@ -189,8 +187,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   if ( getenv("USER") > 0 ) username = string(getenv("USER"));
   ptree_->Branch("username", (void*)(username.c_str()), "username/C");
 
-  if ( cfg != "" )
-    ptree_->Branch("cfg", (void*)(cfg.c_str()), "cfg/C");
+  if ( cfg != "" ) ptree_->Branch("cfg", (void*)(cfg.c_str()), "cfg/C");
 
   //ptree_->Branch("inputcount", &inputCount_, "inputcount/I");
 
@@ -250,25 +247,27 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
       analyzername_ = "";
     }
 
-  // Get name of optional usermacro
+  // Get name of optional macro
   try
     {
-      usermacroname_ = kit::nameonly(iConfig.
-                                    getUntrackedParameter<string>
-                                    ("macroName"));
+      macroname_ = kit::nameonly(iConfig.
+                                 getUntrackedParameter<string>("macroName"));
     }
   catch (...)
     {
-      usermacroname_ = "";
+      macroname_ = "";
     }
 
   // --------------------------------------------------------------------------
-  if ( usermacroname_ != "" )
+
+  macroEnabled_ = macroname_ != "";
+
+  if ( macroEnabled_ )
     {
       // Try to load associated shared library 
 
       // First find shared lib
-      string filestem = string("*") + usermacroname_ + string("*.so");
+      string filestem = string("*") + macroname_ + string("*.so");
       string cmd = string("find . -name \"") + filestem + "\"";
       string shlib = kit::shell(cmd);
       if ( shlib == "" )
@@ -280,20 +279,27 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
 
       // Found shared library, so try to load it
 
-      cout << "\t==> Load usermacro library " << shlib << endl;
+      cout << "\t==> Load macro library " << shlib << endl;
       
       if ( gSystem->Load(shlib.c_str()) != 0 )
          throw cms::Exception("LoadFailed",
                               "\tfor shared library\n\t\t" + shlib);
 
-      // Create commands to execute usermacro using CINT
+      // Create commands to execute macro using CINT
 
-      varscmd_ = string("map<string,countvalue>* vars="
-                      "(map<string,countvalue>*)0x%x");
-      boolcmd_ = string("bool* keep = (bool*)0x%x"); 
-      treecmd_ = string("TTree* tree = (TTree*)0x%x"); 
-      usermacrocmd_ = string("*keep = ") 
-        + usermacroname_ + string("(*vars, *tree);");
+      string mapcmd("map<string,countvalue>* "
+                    "varmap = (map<string,countvalue>*)0x%x");
+      gROOT->ProcessLine(Form(mapcmd.c_str(), &varmap));
+
+      string imapcmd("map<string,vector<int> >* "
+                     "indexmap = (map<string,vector<int> >*)0x%x");
+      gROOT->ProcessLine(Form(imapcmd.c_str(), &indexmap));
+
+      string treecmd("TTree* tree = (TTree*)0x%x"); 
+      gROOT->ProcessLine(Form(treecmd.c_str(), output.tree()));
+
+      string macrocmd = macroname_ + string(" obj(tree,varmap,indexmap);");
+      gROOT->ProcessLine(macrocmd.c_str());
     }
 
   if ( getenv("DBTheNtupleMaker") > 0 )
@@ -539,11 +545,12 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
           << "\tI'm unable to create buffer " + buffer; 
 
       // ... and initialize it
-      buffers.back()->init(output, label, prefix, var, maxcount, 
+      buffers.back()->init(output, label, 
+                           prefix, var, maxcount, 
                            vout, DEBUG);
 
       // cache addresses of buffers
-      buffermap[prefix] = buffers.back();
+      buffermap[buffers.back()->key()] = buffers.back();
 
       if ( DEBUG > 0 )
         cout << "  buffer: " << buffer << " created " << endl << endl;
@@ -570,10 +577,9 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
       for(unsigned int ii=0; ii < vnames.size(); ++ii)
         {
           string name = vnames[ii];
-          vars[name] = buffers[i]->variable(name);
+          varmap[name] = buffers[i]->variable(name);
           index++;
-          cout << "  " 
-               << index << "\t" << name << endl;
+          cout << "  " << index << "\t" << name << endl;
         }
     }
   cout << " END Branches" << endl << endl;
@@ -657,7 +663,7 @@ TheNtupleMaker::analyze(const edm::Event& iEvent,
   //Event kept. Shrink buffers as needed. Shrinking is needed if only
   //certain objects of a given buffer have been selected.
 
-  //shrinkBuffers();
+  shrinkBuffers();
 
 
   // Ok, fill this branch
@@ -671,21 +677,13 @@ TheNtupleMaker::analyze(const edm::Event& iEvent,
 bool
 TheNtupleMaker::selectEvent(const edm::Event& event)
 {
-  keep = true;
-  if ( usermacrocmd_ == "" ) return keep;
+  bool keep = true;
+  if ( ! macroEnabled_ ) return keep;
 
-  // Clear selection buffer
-  SelectedObjectMap::instance().clear();
+  // Execute macro (a compiled Root macro)
 
-  // Execute usermacro (a compiled Root macro)
-
-  TTree* tree = output.tree();
-
-  gROOT->ProcessLine(Form(varscmd_.c_str(), &vars));
-  gROOT->ProcessLine(Form(treecmd_.c_str(), tree));
-  gROOT->ProcessLine(Form(boolcmd_.c_str(), &keep)); 
-  gROOT->ProcessLineFast(usermacrocmd_.c_str());
-
+  keep = (bool)gROOT->ProcessLineFast("obj.analyze();");  
+      
   if ( DEBUG )
     {
       if ( keep )
@@ -706,26 +704,26 @@ TheNtupleMaker::selectEvent(const edm::Event& event)
 void
 TheNtupleMaker::shrinkBuffers()
 {
-  if ( usermacrocmd_ == "" ) return;
+  if ( ! macroEnabled_ ) return;
 
-  map<string, vector<int> >& smap = SelectedObjectMap::instance().get();
-  map<string, vector<int> >::iterator iter = smap.begin();
-  for(iter=smap.begin(); iter != smap.end(); ++iter)
+  // indexmap maps from buffer identifier (object variable name) to
+  // object indices
+  map<string, vector<int> >::iterator iter = indexmap.begin();
+  for(iter=indexmap.begin(); iter != indexmap.end(); ++iter)
     {
       string name(iter->first);
-      vector<int>& index = iter->second;
+      vector<int>& indices = iter->second;
       
       if ( buffermap.find(name) != buffermap.end() )
         {
-          //DEBUG
           if (DEBUG > 0) 
-            cout << "\t** SHRINK( " << name << " ) " << index.size() << endl;
-          buffermap[name]->shrink(index);
+            cout << "\t** SHRINK( " << name << " ) " << indices.size() << endl;
+          buffermap[name]->shrink(indices);
         }
       else
         throw edm::Exception(edm::errors::Configuration,
                              "object selection error: "
-                             "bad internal buffer name - " + name + 
+                             "bad buffer key name - " + name + 
                              "\n\tyou blocks you stones you worse "
                              "than senseless things\n");
     }
@@ -735,6 +733,7 @@ TheNtupleMaker::shrinkBuffers()
 void 
 TheNtupleMaker::beginJob()
 {
+  if ( macroEnabled_ ) gROOT->ProcessLine("obj.beginJob();");
 }
 
 
@@ -745,28 +744,41 @@ TheNtupleMaker::beginRun(const edm::Run& run,
   // Initialize the HLT configuration every new
   // run
   // From Josh
-  bool hltChanged=false;
-  bool okay = hltConfig_.init(run, 
-                              eventsetup, 
-                              triggerProcessName_, 
-                              hltChanged);
-  if ( okay )
+
+  try
     {
-      if ( hltChanged ) 
-        edm::LogInfo("HLTConfig") 
-          << "The HLT configuration has changed"
+      bool hltChanged=false;
+
+      bool okay = hltConfig_.init(run, 
+                                  eventsetup, 
+                                  triggerProcessName_, 
+                                  hltChanged);
+      if ( okay )
+        {
+          if ( hltChanged ) 
+            edm::LogInfo("HLTConfig") 
+              << "The HLT configuration has changed"
+              << std::endl;
+        }
+      else 
+        edm::LogWarning("HLTConfigFailure") 
+          << "Problem with HLT configuration"
           << std::endl;
     }
-  else 
-    edm::LogWarning("HLTConfigFailure") 
-      << "Problem with HLT configuration"
-      << std::endl;
+  catch (...)
+    {
+      edm::LogWarning("HLTConfigInitFailure") 
+        << "Problem initializing HLT configuration"
+        << std::endl;
+    }
 }
 
 // --- method called once each job just after ending the event loop  ----------
 void 
 TheNtupleMaker::endJob() 
 {
+  if ( macroEnabled_ ) gROOT->ProcessLine("obj.endJob();");
+
   output.close();
 }
 

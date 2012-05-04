@@ -17,9 +17,9 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Fri Apr 04 2008
-// $Id: rfx.h,v 1.2 2011/05/23 08:46:57 prosper Exp $
+// $Id: rfx.h,v 1.3 2012/04/12 02:35:48 prosper Exp $
 //
-//$Revision: 1.2 $
+//$Revision: 1.3 $
 //-----------------------------------------------------------------------------
 #include <iostream>
 #include <fstream>
@@ -76,6 +76,11 @@ struct rfx
   ///
   static
   bool           isCompoundMethod(std::string expression, std::string& delim);
+
+
+  ///
+  static
+  std::string    fullname(std::string classname);
 
   ///
   static

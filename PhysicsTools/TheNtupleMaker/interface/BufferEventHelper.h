@@ -5,14 +5,14 @@
 // Sub-Package: TheNtupleMaker
 // Description: Specialized buffer for edm::Event
 // Created:     Thu Aug 26, 2010 Harrison B. Prosper
-//$Revision: 1.6 $
+//$Revision: 1.1.1.1 $
 //-----------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/UserBuffer.h"
 //-----------------------------------------------------------------------------
 ///
 template <>
 struct UserBuffer<edm::Event, 
-                  edm::EventHelper, true>  : public BufferThing
+                  edm::EventHelper, SINGLETON>  : public BufferThing
 {
   ///
   UserBuffer() 
@@ -25,7 +25,7 @@ struct UserBuffer<edm::Event,
       var_(std::vector<VariableDescriptor>()),
       maxcount_(1),
       count_(0),
-      singleton_(true),
+      ctype_(SINGLETON),
       message_(""),
       debug_(0)
   {
@@ -61,8 +61,10 @@ struct UserBuffer<edm::Event,
     maxcount_= 1;
     debug_   = debug;
     count_   = 1;
+    classname_ = "edm::EventHelper";
 
     initBuffer<edm::EventHelper>(out,
+                                 classname_,
                                  label_,
                                  label1_,
                                  label2_,
@@ -72,9 +74,10 @@ struct UserBuffer<edm::Event,
                                  varnames_,
                                  varmap_,
                                  count_,
-                                 singleton_,
+                                 ctype_,
                                  maxcount_,
                                  log,
+                                 bufferkey_,
                                  debug_);
   }
   
@@ -123,6 +126,7 @@ struct UserBuffer<edm::Event,
 
   int count() { return count_; }
   int maxcount() { return maxcount_; }
+  std::string key() {return bufferkey_;}
 
 private:
   otreestream* out_;  
@@ -133,14 +137,15 @@ private:
   BufferType buffertype_;
   std::vector<VariableDescriptor> var_;
   boost::ptr_vector<Variable<edm::EventHelper> > variables_;
-  std::vector<std::string> varnames_;
+  std::vector<std::string> varnames_; 
   std::map<std::string, countvalue> varmap_;
   int  maxcount_;
   int  count_;
-  bool singleton_;
+  ClassType ctype_;
   std::string message_;
   int  debug_;
-
+  std::string classname_;
+  std::string bufferkey_;
   edm::EventHelper helper_;
 };
 

@@ -18,14 +18,15 @@
 #              28-Jul-2011 HBP - handle simple types
 #              24-Mar-2012 HBP - change ntuplecfi to ntuple_cfi
 #-----------------------------------------------------------------------------
-#$Id: mkntuplecfi.py,v 1.19 2012/04/04 01:32:41 prosper Exp $
+#$Id: mkntuplecfi.py,v 1.20 2012/04/04 01:41:03 prosper Exp $
 #-----------------------------------------------------------------------------
 import sys, os, re, platform
 from string import *
 from time import *
 from glob import glob
 from array import array
-from PhysicsTools.TheNtupleMaker.Lib import cmsswProject
+from PhysicsTools.TheNtupleMaker.Lib import cmsswProject, fixName
+from PhysicsTools.TheNtupleMaker.ReflexLib import getFullname
 from ROOT import *
 #------------------------------------------------------------------------------
 PACKAGE, SUBPACKAGE, LOCALBASE, BASE, VERSION = cmsswProject()
@@ -36,33 +37,6 @@ if not os.path.exists(PYDIR):
 
 # Load class list, if it exists
 PLUGINSDIR= "%s/plugins" % PKGDIR
-CLASSLISTFILE = "%sPhysicsTools/TheNtupleMaker/plugins/classlist.txt" % \
-				LOCALBASE
-if os.path.exists(CLASSLISTFILE):
-	records = map(strip, open(CLASSLISTFILE).readlines())
-	CLASSLIST = set(records)
-
-	CLASSLIST.add("double")
-	CLASSLIST.add("float")
-	CLASSLIST.add("long")
-	CLASSLIST.add("int")
-	CLASSLIST.add("short")
-	CLASSLIST.add("bool")
-	CLASSLIST.add("unsigned long")
-	CLASSLIST.add("unsigned int")
-	CLASSLIST.add("unsigned short")
-
-	CLASSLIST.add("std::vector<double>")
-	CLASSLIST.add("std::vector<float>")
-	CLASSLIST.add("std::vector<long>")
-	CLASSLIST.add("std::vector<int>")
-	CLASSLIST.add("std::vector<short>")
-	CLASSLIST.add("std::vector<bool>")
-	CLASSLIST.add("std::vector<unsigned long>")
-	CLASSLIST.add("std::vector<unsigned int>")
-	CLASSLIST.add("std::vector<unsigned short>")
-else:
-	CLASSLIST = set()
 #------------------------------------------------------------------------------
 def usage():
 	print """
@@ -120,7 +94,35 @@ print VERSION
 #-----------------------------------------------------------------------------
 from PhysicsTools.TheNtupleMaker.AutoLoader import *
 #-----------------------------------------------------------------------------
+CLASSLISTFILE = "%sPhysicsTools/TheNtupleMaker/plugins/classlist.txt" % \
+				LOCALBASE
+stripstd = re.compile(r'\bstd::')
+CLASSMAP = {}
+if os.path.exists(CLASSLISTFILE):
+	records = map(split, open(CLASSLISTFILE).readlines())
+	recs = map(lambda x: (x[0], joinfields(x[1:],' ')), records)
+	for ctype, name in recs:
+		fullname = getFullname(name)
+		name = stripstd.sub('',name)
+		fullname = stripstd.sub('',fullname)
+		
+		if ctype == "collection":
+			if name[-1] == ">": name += " "
+			if fullname[-1] == ">": fullname += " "
+			name = "vector<%s>" % name
+			fullname = "vector<%s>" % fullname
+		name = fixName(name)
+		fullname = fixName(fullname)
+		
+		CLASSMAP[name] = name
+		CLASSMAP[fullname] = name
 
+	for x in ["double", "float", "long", "int", "short", "bool",
+			  "unsigned long", "unsigned int", "unsigned short"]:		
+		CLASSMAP[x] = x
+		x = "vector<%s>" % x
+		CLASSMAP[x] = x
+#-----------------------------------------------------------------------------
 WIDTH          = 750            # Width of GUI in pixels
 HEIGHT         = 500            # Height of GUI in pixels
 # StatusBar components
@@ -136,10 +138,7 @@ CFI_PY   = "%s.py"  % CFI_NAME
 #-----------------------------------------------------------------------------
 
 # Extract branches ending in
-#getbranch = re.compile(r'(?<=\_).+\.edm::EDProduct +/ +.+$',re.M)
-getbranch = re.compile(r'(?<=\_).+\. +/ +edm::Wrapper.+$',re.M)
-getbranch = re.compile(r'(?<=\_).+\. +/ +edm::Wrapper.+$')
-#getbranch = re.compile(r'edm::Wrapper.+$',re.M)
+getbranch = re.compile(r'(?<=\_).+?\.[ \t]+/ edm::Wrapper.+',re.M)
 
 # Extract class name from branch name
 getclass  = re.compile(r'(?<=Wrapper\<).+(?=\>)')
@@ -149,8 +148,8 @@ getlabel  = re.compile(r'.+(?=\_\_)|.+(?=\_)')
 
 getmethod = re.compile(r'[a-zA-Z][^\s]*[(].*[)]')
 
-stmethods = re.compile(r' (energy|et|pt|eta|phi'\
-					   '|px|py|pz|p'\
+stmethods = re.compile(r' (pt|eta|phi'\
+					   '|energy|px|py|pz|p|et'\
 					   '|charge)[(]')
 
 isomethods= re.compile(r'.+Iso')
@@ -158,10 +157,16 @@ isomethods= re.compile(r'.+Iso')
 ismethods = re.compile(r'is.+')
 
 isRootFile= re.compile(r'[.]root$')
-isSimpleType = re.compile(r'^unsigned int|int|float|double')
-isSimpleVectorType = re.compile(r'(?<=vector\<)(unsigned int|int'\
-								'|float|double)(?=\>)')
-AvectorKey   = re.compile(r'(?<=edm::RefToBaseProd\<).+?(?=\>)')
+isSimpleType = re.compile('^unsigned long|long'\
+						  '|unsigned int|int'\
+						  '|unsigned short|short'\
+						  '|bool|float|double')
+isSimpleVectorType = re.compile(r'(?<=vector\<)'\
+								'(unsigned long|long'\
+								'|unsigned int|int'\
+								'|unsigned short|short'\
+								'|bool|float|double)'\
+								'(?=\>)')
 AvectorValue = re.compile(r'(?<=vector\<).+?(?=\>)')
 methodname   = re.compile(r'(?<= ).+(?=[(])')
 
@@ -178,7 +183,6 @@ def makeUnique(alist):
 
 def isVector(name):
 	return find(name, "vector<") > -1 or \
-		   find(name, "AssociationVector") > -1 or \
 		   find(name, "vdouble") > -1
 
 def sortMethods(methods):
@@ -661,49 +665,34 @@ class Gui:
 		self.progTimer.Stop()
 		self.progressBar.Reset()
 
-		#print record
-		
 		# Get branches
-		# for some reason, getbranch has stopped working (03/31/12)
-		recs = split(record, "\n")
-		records = []
-		for x in recs:
-			t = split(x, '/')
-			if len(t) != 2: continue
-
-			n, l = split(t[0])
-			if l[-1] != ".": continue
-
-			# Get class name
-			c = strip(t[1])
-			cname = strip(getclass.findall(c)[0])
-
-			# Display class only if it is in classlist.txt
-			if len(CLASSLIST) > 0:
-				if cname[:6] == "vector":
-					cnamen = "std::%s" % cname
-				else:
-					cnamen = cname
-					
-				if cnamen not in CLASSLIST:
-					#print "\t==> IGNORING: %s" % cnamen
-					continue
-			
-			# Get label name
-			t = split(l, '_')
-			label = "%s" % (t[1])
-			if t[2] != '': label += "_%s" % t[2]
-			
-			records.append( (label, cname) )
-			#print "LABEL(%s) CLASS(%s)" % (label, cname)
-
-		#records = getbranch.findall(record)
-
-		if len(records) == 0:
+		recs = getbranch.findall(record)
+		if len(recs) == 0:
 			self.statusBar.SetText("** Error", 0)
 			self.statusBar.SetText("No branches found", 1)
 			return
 		self.statusBar.SetText("Done!", 0)
+
+		records = []
+		for x in recs:
+			t = split(x, '/')
+			
+			c = strip(t[1]) # Wrapped class name
+			cname = fixName(strip(getclass.findall(c)[0]))
+			cname = stripstd.sub('',cname)
+
+			# Display class only if it is in classlist.txt
+			if not CLASSMAP.has_key(cname):
+				#print "\t==> IGNORING: %s" % cname
+				continue
+			cname = CLASSMAP[cname]
+			
+			# Get label name
+			t = split(t[0], '_')
+			label = "%s" % (t[0])
+			if t[1] != '': label += "_%s" % t[1]
+			
+			records.append((label, cname))
 
 		# Creat a map to keep track of selections
 		
@@ -711,18 +700,8 @@ class Gui:
 		self.previousID = -1
 
 		for record in records:
-			#print "RECORD(%s)" % record
-			#label = strip(getlabel.findall(record)[0])
-			#cname = strip(getclass.findall(record)[0])
 			label, cname = record
 			
-			# Handle some other types
-
-			avectorType= find(cname, "edm::AssociationVector") > -1
-
-			# For now ignore AssociationVectors
-			if avectorType: continue
-
 			s = isSimpleType.findall(cname)
 			v = isSimpleVectorType.findall(cname)
 			simpleType = len(s) > 0 or len(v) > 0
@@ -737,21 +716,13 @@ class Gui:
 				fname = "%s/simple_%s.txt" % (self.methodDir, s)
 				open(fname, "w").write("%s value()\n" % s)
 
-			elif avectorType:
-				akey   = AvectorKey.findall(cname)[0]
-				avalue = AvectorValue.findall(cname)[0]
-				fname  = "%s/%s.txt" % (self.methodDir,
-										stripname.sub("", akey))
-				cname  = "edm::AssociationVector %s <-> %s" % (akey, avalue)
-									
 			else:
 				fname = "%s/%s.txt" % (self.methodDir,
 									   stripname.sub("", cname))
 
-			##D
-			#print "METHODFILE( %s )\n" % fname
-			
-			if not os.path.exists(fname): continue
+			if not os.path.exists(fname):
+				print "** file %s not found" % fname
+				continue
 			
 			# methods file found, so read methods
 
@@ -764,15 +735,6 @@ class Gui:
 			
 				if simpleType:
 					methods = methods[:1]
-
-				elif avectorType:
-					m = ['%s  second' % avalue]					
-					for i, method in enumerate(methods):
-						name = methodname.findall(method)
-						if len(name) > 0:
-							name = "first->%s" % strip(name[0])
-							m.append(methodname.sub(name, method))
-					methods = m
 
 				#open("test.log","a").writelines(joinfields(methods,'\n'))
 				mmap = {}

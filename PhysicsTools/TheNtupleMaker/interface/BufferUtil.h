@@ -10,8 +10,10 @@
 //         Updated:  Sun Sep 19 HBP move some code from Buffer.h
 //                   Thu Apr 28 HBP for variables not found return
 //                   -9999
+//                   Sun Apr 22 2012 HBP introduce Caller object and
+//                                   ClassType
 //
-// $Id: BufferUtil.h,v 1.5 2011/06/06 22:01:27 prosper Exp $
+// $Id: BufferUtil.h,v 1.6 2011/06/07 07:41:55 prosper Exp $
 // ----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python/type_id.hpp>
@@ -84,6 +86,9 @@ struct BufferThing
   virtual int maxcount()=0;
   ///
   virtual int count()=0;
+  ///
+  virtual std::string key()=0;
+
 };
 
 ///
@@ -96,6 +101,15 @@ enum BufferType
   };
 
 ///
+enum ClassType
+  {
+    SINGLETON,        // At most one object per event
+    COLLECTION,       // vector or SortedCollection
+    CONTAINER         // Misc. containers (with size() and operator[](int)
+  };
+
+
+///
 void initializeBuffer(otreestream& out,  
                       std::string& classname,
                       std::string& label,
@@ -104,9 +118,10 @@ void initializeBuffer(otreestream& out,
                       std::string& prefix,
                       std::vector<VariableDescriptor>& var,
                       int&  count,
-                      bool  singleton,
+                      ClassType ctype,
                       int   maxcount,
                       std::ofstream& log,
+                      std::string& bufferkey,
                       int   debug);
 // ----------------------------------------------------------------------------
 // We need a few templates to make the code generic. 
@@ -141,7 +156,8 @@ struct Variable
 };
 // ----------------------------------------------------------------------------
 template <typename X>
-void initBuffer(otreestream& out,  
+void initBuffer(otreestream& out,
+                std::string& classname,
                 std::string& label,
                 std::string& label1,
                 std::string& label2,
@@ -151,12 +167,12 @@ void initBuffer(otreestream& out,
                 std::vector<std::string>&   varnames,
                 std::map<std::string, countvalue>& varmap,
                 int&  count,
-                bool  singleton,
+                ClassType ctype,
                 int   maxcount,
                 std::ofstream& log,
+                std::string&   bufferkey,
                 int   debug)
 {
-  std::string classname = boost::python::type_id<X>().name();
   initializeBuffer(out,
                    classname,
                    label,
@@ -165,9 +181,10 @@ void initBuffer(otreestream& out,
                    prefix,
                    var,
                    count,
-                   singleton,
+                   ctype,
                    maxcount,
                    log,
+                   bufferkey,
                    debug);
 
   // Create a variable object for each method. We use a boost::ptr_vector
@@ -286,7 +303,7 @@ bool getByLabel(const edm::Event& event,
 }
 
 // ----------------------------------------------------------------------------
-///
+/// Template function to handle call to methods.
 template <typename X, typename Y>
 void callMethods(int j, 
                  const X& object, 
@@ -324,4 +341,137 @@ void callMethods(int j,
     }
 }
 
+// ----------------------------------------------------------------------------
+/// Function object to handle getByLabel and callMethods.
+template <typename X, typename Y, ClassType>
+struct Caller
+{
+  Caller() {}
+  ~Caller() {}
+
+  bool operator()(const edm::Event& event, 
+                  std::string& label1, 
+                  std::string& label2, 
+                  std::string& message,
+                  BufferType buffertype,
+                  bool crash,
+                  boost::ptr_vector<Variable<Y> >& variables,
+                  int& count,
+                  int& maxcount,
+                  int debug)
+  {
+    return true;
+  }
+};
+
+// ------------------------------------------------
+// Specialized function objects
+// ------------------------------------------------
+/// Handle singletons.
+template <typename X>
+struct Caller<X, X, SINGLETON>
+{
+  Caller() {}
+  ~Caller() {}
+
+  bool operator()(const edm::Event& event, 
+                  std::string& label1, 
+                  std::string& label2, 
+                  std::string& message,
+                  BufferType buffertype,
+                  bool crash,
+                  boost::ptr_vector<Variable<X> >& variables,
+                  int& count,
+                  int& maxcount,
+                  int debug)
+  {
+    edm::Handle<X> handle;
+    if ( ! getByLabel(event, handle, label1, label2, message,
+                    buffertype, crash) )
+      return false;
+    
+    // OK handle is valid, so extract data for all variables
+    const X& object = *handle;
+    callMethods(0, object, variables, debug);
+    return true;
+  }
+};
+
+/// Handle vector types
+template <typename X>
+struct Caller<X, X, COLLECTION>
+{
+  Caller() {}
+  ~Caller() {}
+  
+  bool operator()(const edm::Event& event, 
+                  std::string& label1, 
+                  std::string& label2, 
+                  std::string& message,
+                  BufferType buffertype,
+                  bool crash,
+                  boost::ptr_vector<Variable<X> >& variables, 
+                  int& count,
+                  int& maxcount,
+                  int debug)
+  {
+    edm::Handle< edm::View<X> > handle;
+    if ( ! getByLabel(event, handle, label1, label2, message,
+                      buffertype, crash) )
+      return false;
+    
+    // OK handle is valid, so extract data for all variables.        
+    // For the object count, use the smaller of handle size and maxcount.
+    count = (int)handle->size() < maxcount ? handle->size() : maxcount;
+    
+    for(int j=0; j < count; j++)
+      {
+        const X& object = (*handle)[j];
+        callMethods(j, object, variables, debug);
+      }
+    return true;
+  }
+};
+
+/// Handle containers.
+/**
+   X is the container type
+   Y is the containee type (the contained type)
+ */
+template <typename X, typename Y>
+struct Caller<X, Y, CONTAINER>
+{
+  Caller() {}
+  ~Caller() {}
+  
+  bool operator()(const edm::Event& event, 
+                  std::string& label1, 
+                  std::string& label2, 
+                  std::string& message,
+                  BufferType buffertype,
+                  bool crash,
+                  boost::ptr_vector<Variable<Y> >& variables, 
+                  int& count,
+                  int& maxcount,
+                  int debug)
+  {
+    edm::Handle<X> handle;
+    if ( ! getByLabel(event, handle, label1, label2, message,
+                      buffertype, crash) )
+      return false;
+    
+    // OK handle is valid, so extract data for all variables.        
+    // For the object count, use the smaller of handle size and maxcount.
+    count = (int)handle->size() < maxcount ? handle->size() : maxcount;
+          
+    for(int j=0; j < count; j++)
+      {
+        const Y& object = (*handle)[j];
+        callMethods(j, object, variables, debug);
+      }
+     return true;
+  }
+};
+
 #endif
+  
