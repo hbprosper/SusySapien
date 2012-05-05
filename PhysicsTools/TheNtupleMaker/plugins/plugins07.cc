@@ -1,193 +1,43 @@
 // -------------------------------------------------------------------------
 // File::   plugins07.cc
-// Created: Thu Apr 26 00:40:14 2012 by mkplugins.py
+// Created: Sat May  5 16:09:43 2012 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
 // -------------------------------------------------------------------------
 
-#include "DataFormats/BTauReco/interface/IsolatedTauTagInfo.h"
-#include "DataFormats/BTauReco/interface/JTATagInfo.h"
-#include "DataFormats/BTauReco/interface/JetCrystalsAssociation.h"
-#include "DataFormats/BTauReco/interface/JetTagInfo.h"
-#include "DataFormats/Candidate/interface/LeafCandidate.h"
 #include "DataFormats/Candidate/interface/NamedCompositeCandidate.h"
-#include "DataFormats/EgammaCandidates/interface/GsfElectronCore.h"
-#include "DataFormats/EgammaReco/interface/HFEMClusterShape.h"
-#include "DataFormats/GsfTrackReco/interface/GsfTrack.h"
-#include "DataFormats/GsfTrackReco/interface/GsfTrackExtra.h"
-#include "DataFormats/HcalIsolatedTrack/interface/IsolatedPixelTrackCandidate.h"
-#include "DataFormats/JetReco/interface/JPTJet.h"
-#include "DataFormats/JetReco/interface/JetID.h"
-#include "DataFormats/METReco/interface/HcalNoiseHPD.h"
-#include "DataFormats/METReco/interface/HcalNoiseRBX.h"
-#include "DataFormats/METReco/interface/MET.h"
-#include "DataFormats/MuonReco/interface/Muon.h"
-#include "DataFormats/MuonReco/interface/MuonCosmicCompatibility.h"
-#include "DataFormats/MuonReco/interface/MuonMETCorrectionData.h"
+#include "DataFormats/Candidate/interface/Particle.h"
+#include "DataFormats/JetReco/interface/PFClusterJet.h"
+#include "DataFormats/JetReco/interface/PFJet.h"
+#include "DataFormats/METReco/interface/PFClusterMET.h"
+#include "DataFormats/METReco/interface/PFMET.h"
 #include "DataFormats/MuonReco/interface/MuonQuality.h"
 #include "DataFormats/MuonReco/interface/MuonShower.h"
 #include "DataFormats/MuonReco/interface/MuonTimeExtra.h"
 #include "DataFormats/MuonReco/interface/MuonTrackLinks.h"
-#include "DataFormats/ParticleFlowCandidate/interface/IsolatedPFCandidate.h"
 #include "DataFormats/ParticleFlowCandidate/interface/PFCandidate.h"
 #include "DataFormats/ParticleFlowCandidate/interface/PFCandidateElectronExtra.h"
 #include "DataFormats/ParticleFlowCandidate/interface/PFCandidatePhotonExtra.h"
-#include "DataFormats/ParticleFlowReco/interface/GsfPFRecTrack.h"
 #include "DataFormats/ParticleFlowReco/interface/PFBlock.h"
 #include "DataFormats/ParticleFlowReco/interface/PFBlockElementSuperCluster.h"
 #include "DataFormats/ParticleFlowReco/interface/PFCluster.h"
-#include "DataFormats/TauReco/interface/HLTTau.h"
+#include "DataFormats/ParticleFlowReco/interface/PFConversion.h"
+#include "DataFormats/ParticleFlowReco/interface/PFDisplacedTrackerVertex.h"
+#include "DataFormats/ParticleFlowReco/interface/PFDisplacedVertex.h"
+#include "DataFormats/ParticleFlowReco/interface/PFDisplacedVertexCandidate.h"
+#include "DataFormats/ParticleFlowReco/interface/PFNuclearInteraction.h"
+#include "DataFormats/ParticleFlowReco/interface/PFRecHit.h"
+#include "DataFormats/ParticleFlowReco/interface/PFRecTrack.h"
+#include "DataFormats/ParticleFlowReco/interface/PFSimParticle.h"
+#include "DataFormats/ParticleFlowReco/interface/PFTrajectoryPoint.h"
+#include "DataFormats/ParticleFlowReco/interface/PFV0.h"
+#include "DataFormats/TauReco/interface/PFTau.h"
+#include "DataFormats/TauReco/interface/PFTauDecayMode.h"
+#include "DataFormats/TauReco/interface/PFTauTagInfo.h"
 #include "DataFormats/VertexReco/interface/NuclearInteraction.h"
 // -------------------------------------------------------------------------
 
-std::string recoGsfElectronCore_n("reco::GsfElectronCore");
-typedef Buffer<reco::GsfElectronCore,
-               &recoGsfElectronCore_n, COLLECTION>
-recoGsfElectronCore_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoGsfElectronCore_t,
-                  "recoGsfElectronCore");
-				  
-std::string recoGsfPFRecTrack_n("reco::GsfPFRecTrack");
-typedef Buffer<reco::GsfPFRecTrack,
-               &recoGsfPFRecTrack_n, COLLECTION>
-recoGsfPFRecTrack_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoGsfPFRecTrack_t,
-                  "recoGsfPFRecTrack");
-				  
-std::string recoGsfTrack_n("reco::GsfTrack");
-typedef Buffer<reco::GsfTrack,
-               &recoGsfTrack_n, COLLECTION>
-recoGsfTrack_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoGsfTrack_t,
-                  "recoGsfTrack");
-				  
-std::string recoGsfTrackExtra_n("reco::GsfTrackExtra");
-typedef Buffer<reco::GsfTrackExtra,
-               &recoGsfTrackExtra_n, COLLECTION>
-recoGsfTrackExtra_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoGsfTrackExtra_t,
-                  "recoGsfTrackExtra");
-				  
-std::string recoHFEMClusterShape_n("reco::HFEMClusterShape");
-typedef Buffer<reco::HFEMClusterShape,
-               &recoHFEMClusterShape_n, COLLECTION>
-recoHFEMClusterShape_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoHFEMClusterShape_t,
-                  "recoHFEMClusterShape");
-				  
-std::string recoHLTTau_n("reco::HLTTau");
-typedef Buffer<reco::HLTTau,
-               &recoHLTTau_n, COLLECTION>
-recoHLTTau_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoHLTTau_t,
-                  "recoHLTTau");
-				  
-std::string recoHcalNoiseHPD_n("reco::HcalNoiseHPD");
-typedef Buffer<reco::HcalNoiseHPD,
-               &recoHcalNoiseHPD_n, COLLECTION>
-recoHcalNoiseHPD_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoHcalNoiseHPD_t,
-                  "recoHcalNoiseHPD");
-				  
-std::string recoHcalNoiseRBX_n("reco::HcalNoiseRBX");
-typedef Buffer<reco::HcalNoiseRBX,
-               &recoHcalNoiseRBX_n, COLLECTION>
-recoHcalNoiseRBX_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoHcalNoiseRBX_t,
-                  "recoHcalNoiseRBX");
-				  
-std::string recoIsolatedPFCandidate_n("reco::IsolatedPFCandidate");
-typedef Buffer<reco::IsolatedPFCandidate,
-               &recoIsolatedPFCandidate_n, COLLECTION>
-recoIsolatedPFCandidate_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoIsolatedPFCandidate_t,
-                  "recoIsolatedPFCandidate");
-				  
-std::string recoIsolatedPixelTrackCandidate_n("reco::IsolatedPixelTrackCandidate");
-typedef Buffer<reco::IsolatedPixelTrackCandidate,
-               &recoIsolatedPixelTrackCandidate_n, COLLECTION>
-recoIsolatedPixelTrackCandidate_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoIsolatedPixelTrackCandidate_t,
-                  "recoIsolatedPixelTrackCandidate");
-				  
-std::string recoIsolatedTauTagInfo_n("reco::IsolatedTauTagInfo");
-typedef Buffer<reco::IsolatedTauTagInfo,
-               &recoIsolatedTauTagInfo_n, COLLECTION>
-recoIsolatedTauTagInfo_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoIsolatedTauTagInfo_t,
-                  "recoIsolatedTauTagInfo");
-				  
-std::string recoJPTJet_n("reco::JPTJet");
-typedef Buffer<reco::JPTJet,
-               &recoJPTJet_n, COLLECTION>
-recoJPTJet_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoJPTJet_t,
-                  "recoJPTJet");
-				  
-std::string recoJTATagInfo_n("reco::JTATagInfo");
-typedef Buffer<reco::JTATagInfo,
-               &recoJTATagInfo_n, COLLECTION>
-recoJTATagInfo_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoJTATagInfo_t,
-                  "recoJTATagInfo");
-				  
-std::string recoJetCrystalsAssociation_n("reco::JetCrystalsAssociation");
-typedef Buffer<reco::JetCrystalsAssociation,
-               &recoJetCrystalsAssociation_n, COLLECTION>
-recoJetCrystalsAssociation_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoJetCrystalsAssociation_t,
-                  "recoJetCrystalsAssociation");
-				  
-std::string recoJetID_n("reco::JetID");
-typedef Buffer<reco::JetID,
-               &recoJetID_n, COLLECTION>
-recoJetID_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoJetID_t,
-                  "recoJetID");
-				  
-std::string recoJetTagInfo_n("reco::JetTagInfo");
-typedef Buffer<reco::JetTagInfo,
-               &recoJetTagInfo_n, COLLECTION>
-recoJetTagInfo_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoJetTagInfo_t,
-                  "recoJetTagInfo");
-				  
-std::string recoLeafCandidate_n("reco::LeafCandidate");
-typedef Buffer<reco::LeafCandidate,
-               &recoLeafCandidate_n, COLLECTION>
-recoLeafCandidate_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoLeafCandidate_t,
-                  "recoLeafCandidate");
-				  
-std::string recoMET_n("reco::MET");
-typedef Buffer<reco::MET,
-               &recoMET_n, COLLECTION>
-recoMET_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoMET_t,
-                  "recoMET");
-				  
-std::string recoMuon_n("reco::Muon");
-typedef Buffer<reco::Muon,
-               &recoMuon_n, COLLECTION>
-recoMuon_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoMuon_t,
-                  "recoMuon");
-				  
-std::string recoMuonCosmicCompatibility_n("reco::MuonCosmicCompatibility");
-typedef Buffer<reco::MuonCosmicCompatibility,
-               &recoMuonCosmicCompatibility_n, COLLECTION>
-recoMuonCosmicCompatibility_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoMuonCosmicCompatibility_t,
-                  "recoMuonCosmicCompatibility");
-				  
-std::string recoMuonMETCorrectionData_n("reco::MuonMETCorrectionData");
-typedef Buffer<reco::MuonMETCorrectionData,
-               &recoMuonMETCorrectionData_n, COLLECTION>
-recoMuonMETCorrectionData_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoMuonMETCorrectionData_t,
-                  "recoMuonMETCorrectionData");
-				  
 std::string recoMuonQuality_n("reco::MuonQuality");
 typedef Buffer<reco::MuonQuality,
                &recoMuonQuality_n, COLLECTION>
@@ -271,4 +121,130 @@ typedef Buffer<reco::PFCluster,
 recoPFCluster_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoPFCluster_t,
                   "recoPFCluster");
+				  
+std::string recoPFClusterJet_n("reco::PFClusterJet");
+typedef Buffer<reco::PFClusterJet,
+               &recoPFClusterJet_n, COLLECTION>
+recoPFClusterJet_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFClusterJet_t,
+                  "recoPFClusterJet");
+				  
+std::string recoPFClusterMET_n("reco::PFClusterMET");
+typedef Buffer<reco::PFClusterMET,
+               &recoPFClusterMET_n, COLLECTION>
+recoPFClusterMET_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFClusterMET_t,
+                  "recoPFClusterMET");
+				  
+std::string recoPFConversion_n("reco::PFConversion");
+typedef Buffer<reco::PFConversion,
+               &recoPFConversion_n, COLLECTION>
+recoPFConversion_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFConversion_t,
+                  "recoPFConversion");
+				  
+std::string recoPFDisplacedTrackerVertex_n("reco::PFDisplacedTrackerVertex");
+typedef Buffer<reco::PFDisplacedTrackerVertex,
+               &recoPFDisplacedTrackerVertex_n, COLLECTION>
+recoPFDisplacedTrackerVertex_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFDisplacedTrackerVertex_t,
+                  "recoPFDisplacedTrackerVertex");
+				  
+std::string recoPFDisplacedVertex_n("reco::PFDisplacedVertex");
+typedef Buffer<reco::PFDisplacedVertex,
+               &recoPFDisplacedVertex_n, COLLECTION>
+recoPFDisplacedVertex_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFDisplacedVertex_t,
+                  "recoPFDisplacedVertex");
+				  
+std::string recoPFDisplacedVertexCandidate_n("reco::PFDisplacedVertexCandidate");
+typedef Buffer<reco::PFDisplacedVertexCandidate,
+               &recoPFDisplacedVertexCandidate_n, COLLECTION>
+recoPFDisplacedVertexCandidate_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFDisplacedVertexCandidate_t,
+                  "recoPFDisplacedVertexCandidate");
+				  
+std::string recoPFJet_n("reco::PFJet");
+typedef Buffer<reco::PFJet,
+               &recoPFJet_n, COLLECTION>
+recoPFJet_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFJet_t,
+                  "recoPFJet");
+				  
+std::string recoPFMET_n("reco::PFMET");
+typedef Buffer<reco::PFMET,
+               &recoPFMET_n, COLLECTION>
+recoPFMET_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFMET_t,
+                  "recoPFMET");
+				  
+std::string recoPFNuclearInteraction_n("reco::PFNuclearInteraction");
+typedef Buffer<reco::PFNuclearInteraction,
+               &recoPFNuclearInteraction_n, COLLECTION>
+recoPFNuclearInteraction_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFNuclearInteraction_t,
+                  "recoPFNuclearInteraction");
+				  
+std::string recoPFRecHit_n("reco::PFRecHit");
+typedef Buffer<reco::PFRecHit,
+               &recoPFRecHit_n, COLLECTION>
+recoPFRecHit_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFRecHit_t,
+                  "recoPFRecHit");
+				  
+std::string recoPFRecTrack_n("reco::PFRecTrack");
+typedef Buffer<reco::PFRecTrack,
+               &recoPFRecTrack_n, COLLECTION>
+recoPFRecTrack_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFRecTrack_t,
+                  "recoPFRecTrack");
+				  
+std::string recoPFSimParticle_n("reco::PFSimParticle");
+typedef Buffer<reco::PFSimParticle,
+               &recoPFSimParticle_n, COLLECTION>
+recoPFSimParticle_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFSimParticle_t,
+                  "recoPFSimParticle");
+				  
+std::string recoPFTau_n("reco::PFTau");
+typedef Buffer<reco::PFTau,
+               &recoPFTau_n, COLLECTION>
+recoPFTau_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFTau_t,
+                  "recoPFTau");
+				  
+std::string recoPFTauDecayMode_n("reco::PFTauDecayMode");
+typedef Buffer<reco::PFTauDecayMode,
+               &recoPFTauDecayMode_n, COLLECTION>
+recoPFTauDecayMode_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFTauDecayMode_t,
+                  "recoPFTauDecayMode");
+				  
+std::string recoPFTauTagInfo_n("reco::PFTauTagInfo");
+typedef Buffer<reco::PFTauTagInfo,
+               &recoPFTauTagInfo_n, COLLECTION>
+recoPFTauTagInfo_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFTauTagInfo_t,
+                  "recoPFTauTagInfo");
+				  
+std::string recoPFTrajectoryPoint_n("reco::PFTrajectoryPoint");
+typedef Buffer<reco::PFTrajectoryPoint,
+               &recoPFTrajectoryPoint_n, COLLECTION>
+recoPFTrajectoryPoint_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFTrajectoryPoint_t,
+                  "recoPFTrajectoryPoint");
+				  
+std::string recoPFV0_n("reco::PFV0");
+typedef Buffer<reco::PFV0,
+               &recoPFV0_n, COLLECTION>
+recoPFV0_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFV0_t,
+                  "recoPFV0");
+				  
+std::string recoParticle_n("reco::Particle");
+typedef Buffer<reco::Particle,
+               &recoParticle_n, COLLECTION>
+recoParticle_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoParticle_t,
+                  "recoParticle");
 				  
