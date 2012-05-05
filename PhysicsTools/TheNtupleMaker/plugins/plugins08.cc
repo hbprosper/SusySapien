@@ -1,12 +1,11 @@
 // -------------------------------------------------------------------------
 // File::   plugins08.cc
-// Created: Sat May  5 16:09:43 2012 by mkplugins.py
+// Created: Sat May  5 17:06:51 2012 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
 // -------------------------------------------------------------------------
 
-#include "AnalysisDataFormats/EWK/interface/WMuNuCandidate.h"
 #include "AnalysisDataFormats/TrackInfo/interface/TrackInfo.h"
 #include "DataFormats/BTauReco/interface/SecondaryVertexTagInfo.h"
 #include "DataFormats/BTauReco/interface/SoftLeptonTagInfo.h"
@@ -16,7 +15,7 @@
 #include "DataFormats/BTauReco/interface/TrackCountingTagInfo.h"
 #include "DataFormats/BTauReco/interface/TrackIPTagInfo.h"
 #include "DataFormats/BTauReco/interface/TrackProbabilityTagInfo.h"
-#include "DataFormats/Candidate/interface/VertexCompositeCandidate.h"
+#include "DataFormats/Candidate/interface/Particle.h"
 #include "DataFormats/EgammaCandidates/interface/Photon.h"
 #include "DataFormats/EgammaCandidates/interface/PhotonCore.h"
 #include "DataFormats/EgammaCandidates/interface/SiStripElectron.h"
@@ -26,18 +25,79 @@
 #include "DataFormats/JetReco/interface/TrackExtrapolation.h"
 #include "DataFormats/JetReco/interface/TrackJet.h"
 #include "DataFormats/ParticleFlowCandidate/interface/PileUpPFCandidate.h"
+#include "DataFormats/ParticleFlowReco/interface/PFRecTrack.h"
+#include "DataFormats/ParticleFlowReco/interface/PFSimParticle.h"
+#include "DataFormats/ParticleFlowReco/interface/PFTrajectoryPoint.h"
+#include "DataFormats/ParticleFlowReco/interface/PFV0.h"
 #include "DataFormats/ParticleFlowReco/interface/PreId.h"
 #include "DataFormats/RecoCandidate/interface/RecoChargedCandidate.h"
 #include "DataFormats/RecoCandidate/interface/RecoChargedRefCandidate.h"
 #include "DataFormats/RecoCandidate/interface/RecoEcalCandidate.h"
 #include "DataFormats/RecoCandidate/interface/RecoPFClusterRefCandidate.h"
+#include "DataFormats/TauReco/interface/PFTau.h"
+#include "DataFormats/TauReco/interface/PFTauDecayMode.h"
+#include "DataFormats/TauReco/interface/PFTauTagInfo.h"
 #include "DataFormats/TauReco/interface/RecoTauPiZero.h"
 #include "DataFormats/TrackReco/interface/Track.h"
 #include "DataFormats/TrackReco/interface/TrackExtra.h"
-#include "DataFormats/V0Candidate/interface/V0Candidate.h"
-#include "DataFormats/VertexReco/interface/Vertex.h"
 // -------------------------------------------------------------------------
 
+std::string recoPFRecTrack_n("reco::PFRecTrack");
+typedef Buffer<reco::PFRecTrack,
+               &recoPFRecTrack_n, COLLECTION>
+recoPFRecTrack_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFRecTrack_t,
+                  "recoPFRecTrack");
+				  
+std::string recoPFSimParticle_n("reco::PFSimParticle");
+typedef Buffer<reco::PFSimParticle,
+               &recoPFSimParticle_n, COLLECTION>
+recoPFSimParticle_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFSimParticle_t,
+                  "recoPFSimParticle");
+				  
+std::string recoPFTau_n("reco::PFTau");
+typedef Buffer<reco::PFTau,
+               &recoPFTau_n, COLLECTION>
+recoPFTau_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFTau_t,
+                  "recoPFTau");
+				  
+std::string recoPFTauDecayMode_n("reco::PFTauDecayMode");
+typedef Buffer<reco::PFTauDecayMode,
+               &recoPFTauDecayMode_n, COLLECTION>
+recoPFTauDecayMode_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFTauDecayMode_t,
+                  "recoPFTauDecayMode");
+				  
+std::string recoPFTauTagInfo_n("reco::PFTauTagInfo");
+typedef Buffer<reco::PFTauTagInfo,
+               &recoPFTauTagInfo_n, COLLECTION>
+recoPFTauTagInfo_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFTauTagInfo_t,
+                  "recoPFTauTagInfo");
+				  
+std::string recoPFTrajectoryPoint_n("reco::PFTrajectoryPoint");
+typedef Buffer<reco::PFTrajectoryPoint,
+               &recoPFTrajectoryPoint_n, COLLECTION>
+recoPFTrajectoryPoint_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFTrajectoryPoint_t,
+                  "recoPFTrajectoryPoint");
+				  
+std::string recoPFV0_n("reco::PFV0");
+typedef Buffer<reco::PFV0,
+               &recoPFV0_n, COLLECTION>
+recoPFV0_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoPFV0_t,
+                  "recoPFV0");
+				  
+std::string recoParticle_n("reco::Particle");
+typedef Buffer<reco::Particle,
+               &recoParticle_n, COLLECTION>
+recoParticle_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoParticle_t,
+                  "recoParticle");
+				  
 std::string recoPhoton_n("reco::Photon");
 typedef Buffer<reco::Photon,
                &recoPhoton_n, COLLECTION>
@@ -219,32 +279,4 @@ typedef Buffer<reco::TrackProbabilityTagInfo,
 recoTrackProbabilityTagInfo_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoTrackProbabilityTagInfo_t,
                   "recoTrackProbabilityTagInfo");
-				  
-std::string recoV0Candidate_n("reco::V0Candidate");
-typedef Buffer<reco::V0Candidate,
-               &recoV0Candidate_n, COLLECTION>
-recoV0Candidate_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoV0Candidate_t,
-                  "recoV0Candidate");
-				  
-std::string recoVertex_n("reco::Vertex");
-typedef Buffer<reco::Vertex,
-               &recoVertex_n, COLLECTION>
-recoVertex_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoVertex_t,
-                  "recoVertex");
-				  
-std::string recoVertexCompositeCandidate_n("reco::VertexCompositeCandidate");
-typedef Buffer<reco::VertexCompositeCandidate,
-               &recoVertexCompositeCandidate_n, COLLECTION>
-recoVertexCompositeCandidate_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoVertexCompositeCandidate_t,
-                  "recoVertexCompositeCandidate");
-				  
-std::string recoWMuNuCandidate_n("reco::WMuNuCandidate");
-typedef Buffer<reco::WMuNuCandidate,
-               &recoWMuNuCandidate_n, COLLECTION>
-recoWMuNuCandidate_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoWMuNuCandidate_t,
-                  "recoWMuNuCandidate");
 				  

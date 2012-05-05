@@ -10,7 +10,7 @@
 #                      classes
 #          18-Apr-2012 HBP use inclusionlist.txt to include specific
 #                      classes not picked up automatically
-#$Id: mkclasslist.py,v 1.20 2012/04/16 02:19:23 prosper Exp $
+#$Id: mkclasslist.py,v 1.21 2012/05/04 20:54:35 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -150,6 +150,7 @@ for classname in wclasses:
 	fullname = fixName(fullname)
 	
 	# Skip a bunch of complicated stuff...
+
 	if skipme.match(fullname) != None:
 		continue
 

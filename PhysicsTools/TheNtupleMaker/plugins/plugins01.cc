@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------------
 // File::   plugins01.cc
-// Created: Sat May  5 16:09:43 2012 by mkplugins.py
+// Created: Sat May  5 17:06:51 2012 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
@@ -27,10 +27,14 @@
 #include "DataFormats/L1GlobalCaloTrigger/interface/L1GctInternJetData.h"
 #include "DataFormats/L1GlobalCaloTrigger/interface/L1GctJetCand.h"
 #include "DataFormats/L1GlobalCaloTrigger/interface/L1GctJetCounts.h"
+#include "DataFormats/L1GlobalMuonTrigger/interface/L1MuGMTCand.h"
+#include "DataFormats/L1GlobalMuonTrigger/interface/L1MuRegionalCand.h"
 #include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerObjectMap.h"
 #include "DataFormats/L1GlobalTrigger/interface/L1GtFdlWord.h"
 #include "DataFormats/L1GlobalTrigger/interface/L1GtPsbWord.h"
 #include "DataFormats/L1GlobalTrigger/interface/L1GtTechnicalTrigger.h"
+#include "DataFormats/L1Trigger/interface/L1TriggerError.h"
+#include "DataFormats/METReco/interface/CorrMETData.h"
 #include "DataFormats/Scalers/interface/BeamSpotOnline.h"
 #include "DataFormats/Scalers/interface/DcsStatus.h"
 #include "DataFormats/Scalers/interface/L1AcceptBunchCrossing.h"
@@ -51,6 +55,13 @@ typedef Buffer<CaloTower,
 CaloTower_t;
 DEFINE_EDM_PLUGIN(BufferFactory, CaloTower_t,
                   "CaloTower");
+				  
+std::string CorrMETData_n("CorrMETData");
+typedef Buffer<CorrMETData,
+               &CorrMETData_n, COLLECTION>
+CorrMETData_t;
+DEFINE_EDM_PLUGIN(BufferFactory, CorrMETData_t,
+                  "CorrMETData");
 				  
 std::string DcsStatus_n("DcsStatus");
 typedef Buffer<DcsStatus,
@@ -247,4 +258,25 @@ typedef Buffer<L1GtTechnicalTrigger,
 L1GtTechnicalTrigger_t;
 DEFINE_EDM_PLUGIN(BufferFactory, L1GtTechnicalTrigger_t,
                   "L1GtTechnicalTrigger");
+				  
+std::string L1MuGMTCand_n("L1MuGMTCand");
+typedef Buffer<L1MuGMTCand,
+               &L1MuGMTCand_n, COLLECTION>
+L1MuGMTCand_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1MuGMTCand_t,
+                  "L1MuGMTCand");
+				  
+std::string L1MuRegionalCand_n("L1MuRegionalCand");
+typedef Buffer<L1MuRegionalCand,
+               &L1MuRegionalCand_n, COLLECTION>
+L1MuRegionalCand_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1MuRegionalCand_t,
+                  "L1MuRegionalCand");
+				  
+std::string L1TriggerError_n("L1TriggerError");
+typedef Buffer<L1TriggerError,
+               &L1TriggerError_n, COLLECTION>
+L1TriggerError_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1TriggerError_t,
+                  "L1TriggerError");
 				  

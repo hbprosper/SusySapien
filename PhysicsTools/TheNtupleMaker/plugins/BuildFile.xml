@@ -7,6 +7,7 @@
 <use   name="PhysicsTools/Utilities"/>
 <use   name="PhysicsTools/PatUtils"/>
 
+<use   name="AnalysisDataFormats/CMGTools"/>
 <use   name="AnalysisDataFormats/EWK"/>
 <use   name="AnalysisDataFormats/Egamma"/>
 <use   name="AnalysisDataFormats/SUSYBSMObjects"/>
@@ -25,7 +26,6 @@
 <use   name="DataFormats/EcalRecHit"/>
 <use   name="DataFormats/EgammaCandidates"/>
 <use   name="DataFormats/EgammaReco"/>
-<use   name="DataFormats/EgammaTrackReco"/>
 <use   name="DataFormats/FP420Cluster"/>
 <use   name="DataFormats/FP420Digi"/>
 <use   name="DataFormats/GeometryVector"/>
@@ -33,7 +33,6 @@
 <use   name="DataFormats/HLTReco"/>
 <use   name="DataFormats/HcalCalibObjects"/>
 <use   name="DataFormats/HcalDigi"/>
-<use   name="DataFormats/HcalIsolatedTrack"/>
 <use   name="DataFormats/HcalRecHit"/>
 <use   name="DataFormats/HeavyIonEvent"/>
 <use   name="DataFormats/HepMCCandidate"/>
@@ -67,6 +66,7 @@
 <use   name="DataFormats/TauReco"/>
 <use   name="DataFormats/TrackCandidate"/>
 <use   name="DataFormats/TrackReco"/>
+<use   name="DataFormats/TrackerCommon"/>
 <use   name="DataFormats/TrackerRecHit2D"/>
 <use   name="DataFormats/TrackingSeed"/>
 <use   name="DataFormats/TrajectorySeed"/>

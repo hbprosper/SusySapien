@@ -1,15 +1,19 @@
 // -------------------------------------------------------------------------
 // File::   plugins10.cc
-// Created: Sat May  5 16:09:43 2012 by mkplugins.py
+// Created: Sat May  5 17:06:51 2012 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
 // -------------------------------------------------------------------------
 
-#include "AnalysisDataFormats/TopObjects/interface/StGenEvent.h"
 #include "DataFormats/L1DTTrackFinder/interface/L1MuDTChambPhContainer.h"
 #include "DataFormats/L1DTTrackFinder/interface/L1MuDTChambThContainer.h"
 #include "DataFormats/L1DTTrackFinder/interface/L1MuDTTrackContainer.h"
+#include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerObjectMaps.h"
+#include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerReadoutRecord.h"
+#include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerReadoutSetup.h"
+#include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerRecord.h"
+#include "DataFormats/L1GlobalTrigger/interface/L1GtTechnicalTriggerRecord.h"
 #include "DataFormats/L1GlobalTrigger/interface/L1GtTriggerMenuLite.h"
 #include "DataFormats/L1GlobalTrigger/interface/L1GtfeExtWord.h"
 #include "DataFormats/L1GlobalTrigger/interface/L1GtfeWord.h"
@@ -30,6 +34,41 @@
 #include "SimDataFormats/Vertex/interface/SimVertex.h"
 // -------------------------------------------------------------------------
 
+std::string L1GlobalTriggerObjectMaps_n("L1GlobalTriggerObjectMaps");
+typedef Buffer<L1GlobalTriggerObjectMaps,
+               &L1GlobalTriggerObjectMaps_n, SINGLETON>
+L1GlobalTriggerObjectMaps_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GlobalTriggerObjectMaps_t,
+                  "L1GlobalTriggerObjectMaps");
+				  
+std::string L1GlobalTriggerReadoutRecord_n("L1GlobalTriggerReadoutRecord");
+typedef Buffer<L1GlobalTriggerReadoutRecord,
+               &L1GlobalTriggerReadoutRecord_n, SINGLETON>
+L1GlobalTriggerReadoutRecord_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GlobalTriggerReadoutRecord_t,
+                  "L1GlobalTriggerReadoutRecord");
+				  
+std::string L1GlobalTriggerReadoutSetup_n("L1GlobalTriggerReadoutSetup");
+typedef Buffer<L1GlobalTriggerReadoutSetup,
+               &L1GlobalTriggerReadoutSetup_n, SINGLETON>
+L1GlobalTriggerReadoutSetup_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GlobalTriggerReadoutSetup_t,
+                  "L1GlobalTriggerReadoutSetup");
+				  
+std::string L1GlobalTriggerRecord_n("L1GlobalTriggerRecord");
+typedef Buffer<L1GlobalTriggerRecord,
+               &L1GlobalTriggerRecord_n, SINGLETON>
+L1GlobalTriggerRecord_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GlobalTriggerRecord_t,
+                  "L1GlobalTriggerRecord");
+				  
+std::string L1GtTechnicalTriggerRecord_n("L1GtTechnicalTriggerRecord");
+typedef Buffer<L1GtTechnicalTriggerRecord,
+               &L1GtTechnicalTriggerRecord_n, SINGLETON>
+L1GtTechnicalTriggerRecord_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1GtTechnicalTriggerRecord_t,
+                  "L1GtTechnicalTriggerRecord");
+				  
 std::string L1GtTriggerMenuLite_n("L1GtTriggerMenuLite");
 typedef Buffer<L1GtTriggerMenuLite,
                &L1GtTriggerMenuLite_n, SINGLETON>
@@ -232,11 +271,4 @@ typedef Buffer<SiStripEventSummary,
 SiStripEventSummary_t;
 DEFINE_EDM_PLUGIN(BufferFactory, SiStripEventSummary_t,
                   "SiStripEventSummary");
-				  
-std::string StGenEvent_n("StGenEvent");
-typedef Buffer<StGenEvent,
-               &StGenEvent_n, SINGLETON>
-StGenEvent_t;
-DEFINE_EDM_PLUGIN(BufferFactory, StGenEvent_t,
-                  "StGenEvent");
 				  

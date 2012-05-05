@@ -1,25 +1,31 @@
 // -------------------------------------------------------------------------
 // File::   plugins11.cc
-// Created: Sat May  5 16:09:43 2012 by mkplugins.py
+// Created: Sat May  5 17:06:51 2012 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
 // -------------------------------------------------------------------------
 
+#include "AnalysisDataFormats/CMGTools/interface/METSignificance.h"
+#include "AnalysisDataFormats/TopObjects/interface/StGenEvent.h"
 #include "AnalysisDataFormats/TopObjects/interface/TopGenEvent.h"
 #include "AnalysisDataFormats/TopObjects/interface/TtFullHadronicEvent.h"
 #include "AnalysisDataFormats/TopObjects/interface/TtFullLeptonicEvent.h"
 #include "AnalysisDataFormats/TopObjects/interface/TtGenEvent.h"
 #include "AnalysisDataFormats/TopObjects/interface/TtSemiLeptonicEvent.h"
+#include "DataFormats/BTauReco/interface/SecondaryVertexTagInfo.h"
 #include "DataFormats/BeamSpot/interface/BeamSpot.h"
 #include "DataFormats/Candidate/interface/CandMatchMapMany.h"
 #include "DataFormats/Candidate/interface/CandidateFwd.h"
+#include "DataFormats/Common/interface/AssociationMapHelpers.h"
 #include "DataFormats/Common/interface/ConditionsInEdm.h"
 #include "DataFormats/Common/interface/DataFrameContainer.h"
 #include "DataFormats/Common/interface/HLTGlobalStatus.h"
 #include "DataFormats/Common/interface/MergeableCounter.h"
+#include "DataFormats/Common/interface/RefProd.h"
 #include "DataFormats/Common/interface/TriggerResults.h"
 #include "DataFormats/HLTReco/interface/ModuleTiming.h"
+#include "DataFormats/HeavyIonEvent/interface/Centrality.h"
 #include "DataFormats/HeavyIonEvent/interface/HeavyIon.h"
 #include "DataFormats/JetReco/interface/BasicJetCollection.h"
 #include "DataFormats/JetReco/interface/CaloJetCollection.h"
@@ -31,10 +37,18 @@
 #include "DataFormats/TauReco/interface/CaloTauDiscriminatorAgainstElectron.h"
 #include "DataFormats/TauReco/interface/CaloTauDiscriminatorByIsolation.h"
 #include "DataFormats/TrackerRecHit2D/interface/ClusterRemovalInfo.h"
+#include "DataFormats/VertexReco/interface/Vertex.h"
 #include "SimDataFormats/Forward/interface/TotemTestHistoClass.h"
 #include "SimDataFormats/HiGenData/interface/GenHIEvent.h"
 // -------------------------------------------------------------------------
 
+std::string StGenEvent_n("StGenEvent");
+typedef Buffer<StGenEvent,
+               &StGenEvent_n, SINGLETON>
+StGenEvent_t;
+DEFINE_EDM_PLUGIN(BufferFactory, StGenEvent_t,
+                  "StGenEvent");
+				  
 std::string StringMap_n("StringMap");
 typedef Buffer<StringMap,
                &StringMap_n, SINGLETON>
@@ -83,6 +97,13 @@ typedef Buffer<TtSemiLeptonicEvent,
 TtSemiLeptonicEvent_t;
 DEFINE_EDM_PLUGIN(BufferFactory, TtSemiLeptonicEvent_t,
                   "TtSemiLeptonicEvent");
+				  
+std::string cmgMETSignificance_n("cmg::METSignificance");
+typedef Buffer<cmg::METSignificance,
+               &cmgMETSignificance_n, SINGLETON>
+cmgMETSignificance_t;
+DEFINE_EDM_PLUGIN(BufferFactory, cmgMETSignificance_t,
+                  "cmgMETSignificance");
 				  
 std::string edmConditionsInEventBlock_n("edm::ConditionsInEventBlock");
 typedef Buffer<edm::ConditionsInEventBlock,
@@ -146,6 +167,13 @@ typedef Buffer<edm::TriggerResults,
 edmTriggerResults_t;
 DEFINE_EDM_PLUGIN(BufferFactory, edmTriggerResults_t,
                   "edmTriggerResults");
+				  
+std::string edmhelpersKeyValedmRefProdstdvectorrecoSecondaryVertexTagInfoedmRefProdstdvectorrecoVertex_n("edm::helpers::KeyVal<edm::RefProd<std::vector<reco::SecondaryVertexTagInfo> >,edm::RefProd<std::vector<reco::Vertex> > >");
+typedef Buffer<edm::helpers::KeyVal<edm::RefProd<std::vector<reco::SecondaryVertexTagInfo> >,edm::RefProd<std::vector<reco::Vertex> > >,
+               &edmhelpersKeyValedmRefProdstdvectorrecoSecondaryVertexTagInfoedmRefProdstdvectorrecoVertex_n, SINGLETON>
+edmhelpersKeyValedmRefProdstdvectorrecoSecondaryVertexTagInfoedmRefProdstdvectorrecoVertex_t;
+DEFINE_EDM_PLUGIN(BufferFactory, edmhelpersKeyValedmRefProdstdvectorrecoSecondaryVertexTagInfoedmRefProdstdvectorrecoVertex_t,
+                  "edmhelpersKeyValedmRefProdstdvectorrecoSecondaryVertexTagInfoedmRefProdstdvectorrecoVertex");
 				  
 std::string patHeavyIon_n("pat::HeavyIon");
 typedef Buffer<pat::HeavyIon,
@@ -237,6 +265,13 @@ typedef Buffer<reco::CandidatePtrVector,
 recoCandidatePtrVector_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoCandidatePtrVector_t,
                   "recoCandidatePtrVector");
+				  
+std::string recoCentrality_n("reco::Centrality");
+typedef Buffer<reco::Centrality,
+               &recoCentrality_n, SINGLETON>
+recoCentrality_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCentrality_t,
+                  "recoCentrality");
 				  
 std::string recoClusterRemovalInfo_n("reco::ClusterRemovalInfo");
 typedef Buffer<reco::ClusterRemovalInfo,

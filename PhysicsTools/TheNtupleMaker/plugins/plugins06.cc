@@ -1,43 +1,166 @@
 // -------------------------------------------------------------------------
 // File::   plugins06.cc
-// Created: Sat May  5 16:09:43 2012 by mkplugins.py
+// Created: Sat May  5 17:06:51 2012 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
 // -------------------------------------------------------------------------
 
-#include "DataFormats/BTauReco/interface/IsolatedTauTagInfo.h"
-#include "DataFormats/BTauReco/interface/JTATagInfo.h"
-#include "DataFormats/BTauReco/interface/JetCrystalsAssociation.h"
-#include "DataFormats/BTauReco/interface/JetTagInfo.h"
-#include "DataFormats/Candidate/interface/LeafCandidate.h"
+#include "AnalysisDataFormats/Egamma/interface/ElectronID.h"
+#include "DataFormats/BTauReco/interface/CombinedTauTagInfo.h"
+#include "DataFormats/BTauReco/interface/EMIsolatedTauTagInfo.h"
+#include "DataFormats/Candidate/interface/CompositeCandidate.h"
+#include "DataFormats/CastorReco/interface/CastorEgamma.h"
+#include "DataFormats/CastorReco/interface/CastorJet.h"
+#include "DataFormats/CastorReco/interface/CastorTower.h"
+#include "DataFormats/EgammaCandidates/interface/Conversion.h"
+#include "DataFormats/EgammaCandidates/interface/Electron.h"
 #include "DataFormats/EgammaCandidates/interface/GsfElectron.h"
 #include "DataFormats/EgammaCandidates/interface/GsfElectronCore.h"
+#include "DataFormats/EgammaReco/interface/ClusterShape.h"
+#include "DataFormats/EgammaReco/interface/ElectronSeed.h"
 #include "DataFormats/EgammaReco/interface/HFEMClusterShape.h"
 #include "DataFormats/GsfTrackReco/interface/GsfTrack.h"
 #include "DataFormats/GsfTrackReco/interface/GsfTrackExtra.h"
-#include "DataFormats/HcalIsolatedTrack/interface/IsolatedPixelTrackCandidate.h"
 #include "DataFormats/HepMCCandidate/interface/FlavorHistory.h"
 #include "DataFormats/HepMCCandidate/interface/FlavorHistoryEvent.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
+#include "DataFormats/JetReco/interface/BasicJet.h"
+#include "DataFormats/JetReco/interface/CaloJet.h"
+#include "DataFormats/JetReco/interface/CastorJetID.h"
 #include "DataFormats/JetReco/interface/FFTAnyJet.h"
 #include "DataFormats/JetReco/interface/GenJet.h"
 #include "DataFormats/JetReco/interface/JPTJet.h"
-#include "DataFormats/JetReco/interface/JetID.h"
 #include "DataFormats/JetReco/interface/PFJet.h"
 #include "DataFormats/JetReco/interface/TrackJet.h"
 #include "DataFormats/METReco/interface/GenMET.h"
 #include "DataFormats/METReco/interface/HcalNoiseHPD.h"
 #include "DataFormats/METReco/interface/HcalNoiseRBX.h"
-#include "DataFormats/METReco/interface/MET.h"
-#include "DataFormats/MuonReco/interface/Muon.h"
-#include "DataFormats/MuonReco/interface/MuonCosmicCompatibility.h"
-#include "DataFormats/MuonReco/interface/MuonMETCorrectionData.h"
-#include "DataFormats/ParticleFlowCandidate/interface/IsolatedPFCandidate.h"
+#include "DataFormats/ParticleFlowReco/interface/ConvBremSeed.h"
 #include "DataFormats/ParticleFlowReco/interface/GsfPFRecTrack.h"
 #include "DataFormats/TauReco/interface/HLTTau.h"
+#include "DataFormats/TrackReco/interface/DeDxData.h"
 // -------------------------------------------------------------------------
 
+std::string recoCastorEgamma_n("reco::CastorEgamma");
+typedef Buffer<reco::CastorEgamma,
+               &recoCastorEgamma_n, COLLECTION>
+recoCastorEgamma_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCastorEgamma_t,
+                  "recoCastorEgamma");
+				  
+std::string recoCastorJet_n("reco::CastorJet");
+typedef Buffer<reco::CastorJet,
+               &recoCastorJet_n, COLLECTION>
+recoCastorJet_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCastorJet_t,
+                  "recoCastorJet");
+				  
+std::string recoCastorJetID_n("reco::CastorJetID");
+typedef Buffer<reco::CastorJetID,
+               &recoCastorJetID_n, COLLECTION>
+recoCastorJetID_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCastorJetID_t,
+                  "recoCastorJetID");
+				  
+std::string recoCastorTower_n("reco::CastorTower");
+typedef Buffer<reco::CastorTower,
+               &recoCastorTower_n, COLLECTION>
+recoCastorTower_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCastorTower_t,
+                  "recoCastorTower");
+				  
+std::string recoClusterShape_n("reco::ClusterShape");
+typedef Buffer<reco::ClusterShape,
+               &recoClusterShape_n, COLLECTION>
+recoClusterShape_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoClusterShape_t,
+                  "recoClusterShape");
+				  
+std::string recoCombinedTauTagInfo_n("reco::CombinedTauTagInfo");
+typedef Buffer<reco::CombinedTauTagInfo,
+               &recoCombinedTauTagInfo_n, COLLECTION>
+recoCombinedTauTagInfo_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCombinedTauTagInfo_t,
+                  "recoCombinedTauTagInfo");
+				  
+std::string recoCompositeCandidate_n("reco::CompositeCandidate");
+typedef Buffer<reco::CompositeCandidate,
+               &recoCompositeCandidate_n, COLLECTION>
+recoCompositeCandidate_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCompositeCandidate_t,
+                  "recoCompositeCandidate");
+				  
+std::string recoConvBremSeed_n("reco::ConvBremSeed");
+typedef Buffer<reco::ConvBremSeed,
+               &recoConvBremSeed_n, COLLECTION>
+recoConvBremSeed_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoConvBremSeed_t,
+                  "recoConvBremSeed");
+				  
+std::string recoConversion_n("reco::Conversion");
+typedef Buffer<reco::Conversion,
+               &recoConversion_n, COLLECTION>
+recoConversion_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoConversion_t,
+                  "recoConversion");
+				  
+std::string recoDeDxData_n("reco::DeDxData");
+typedef Buffer<reco::DeDxData,
+               &recoDeDxData_n, COLLECTION>
+recoDeDxData_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoDeDxData_t,
+                  "recoDeDxData");
+				  
+std::string recoEMIsolatedTauTagInfo_n("reco::EMIsolatedTauTagInfo");
+typedef Buffer<reco::EMIsolatedTauTagInfo,
+               &recoEMIsolatedTauTagInfo_n, COLLECTION>
+recoEMIsolatedTauTagInfo_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoEMIsolatedTauTagInfo_t,
+                  "recoEMIsolatedTauTagInfo");
+				  
+std::string recoElectron_n("reco::Electron");
+typedef Buffer<reco::Electron,
+               &recoElectron_n, COLLECTION>
+recoElectron_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoElectron_t,
+                  "recoElectron");
+				  
+std::string recoElectronID_n("reco::ElectronID");
+typedef Buffer<reco::ElectronID,
+               &recoElectronID_n, COLLECTION>
+recoElectronID_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoElectronID_t,
+                  "recoElectronID");
+				  
+std::string recoElectronSeed_n("reco::ElectronSeed");
+typedef Buffer<reco::ElectronSeed,
+               &recoElectronSeed_n, COLLECTION>
+recoElectronSeed_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoElectronSeed_t,
+                  "recoElectronSeed");
+				  
+std::string recoFFTAnyJetrecoBasicJet_n("reco::FFTAnyJet<reco::BasicJet>");
+typedef Buffer<reco::FFTAnyJet<reco::BasicJet>,
+               &recoFFTAnyJetrecoBasicJet_n, COLLECTION>
+recoFFTAnyJetrecoBasicJet_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoFFTAnyJetrecoBasicJet_t,
+                  "recoFFTAnyJetrecoBasicJet");
+				  
+std::string recoFFTAnyJetrecoCaloJet_n("reco::FFTAnyJet<reco::CaloJet>");
+typedef Buffer<reco::FFTAnyJet<reco::CaloJet>,
+               &recoFFTAnyJetrecoCaloJet_n, COLLECTION>
+recoFFTAnyJetrecoCaloJet_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoFFTAnyJetrecoCaloJet_t,
+                  "recoFFTAnyJetrecoCaloJet");
+				  
+std::string recoFFTAnyJetrecoGenJet_n("reco::FFTAnyJet<reco::GenJet>");
+typedef Buffer<reco::FFTAnyJet<reco::GenJet>,
+               &recoFFTAnyJetrecoGenJet_n, COLLECTION>
+recoFFTAnyJetrecoGenJet_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoFFTAnyJetrecoGenJet_t,
+                  "recoFFTAnyJetrecoGenJet");
+				  
 std::string recoFFTAnyJetrecoJPTJet_n("reco::FFTAnyJet<reco::JPTJet>");
 typedef Buffer<reco::FFTAnyJet<reco::JPTJet>,
                &recoFFTAnyJetrecoJPTJet_n, COLLECTION>
@@ -156,95 +279,4 @@ typedef Buffer<reco::HcalNoiseRBX,
 recoHcalNoiseRBX_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoHcalNoiseRBX_t,
                   "recoHcalNoiseRBX");
-				  
-std::string recoIsolatedPFCandidate_n("reco::IsolatedPFCandidate");
-typedef Buffer<reco::IsolatedPFCandidate,
-               &recoIsolatedPFCandidate_n, COLLECTION>
-recoIsolatedPFCandidate_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoIsolatedPFCandidate_t,
-                  "recoIsolatedPFCandidate");
-				  
-std::string recoIsolatedPixelTrackCandidate_n("reco::IsolatedPixelTrackCandidate");
-typedef Buffer<reco::IsolatedPixelTrackCandidate,
-               &recoIsolatedPixelTrackCandidate_n, COLLECTION>
-recoIsolatedPixelTrackCandidate_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoIsolatedPixelTrackCandidate_t,
-                  "recoIsolatedPixelTrackCandidate");
-				  
-std::string recoIsolatedTauTagInfo_n("reco::IsolatedTauTagInfo");
-typedef Buffer<reco::IsolatedTauTagInfo,
-               &recoIsolatedTauTagInfo_n, COLLECTION>
-recoIsolatedTauTagInfo_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoIsolatedTauTagInfo_t,
-                  "recoIsolatedTauTagInfo");
-				  
-std::string recoJPTJet_n("reco::JPTJet");
-typedef Buffer<reco::JPTJet,
-               &recoJPTJet_n, COLLECTION>
-recoJPTJet_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoJPTJet_t,
-                  "recoJPTJet");
-				  
-std::string recoJTATagInfo_n("reco::JTATagInfo");
-typedef Buffer<reco::JTATagInfo,
-               &recoJTATagInfo_n, COLLECTION>
-recoJTATagInfo_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoJTATagInfo_t,
-                  "recoJTATagInfo");
-				  
-std::string recoJetCrystalsAssociation_n("reco::JetCrystalsAssociation");
-typedef Buffer<reco::JetCrystalsAssociation,
-               &recoJetCrystalsAssociation_n, COLLECTION>
-recoJetCrystalsAssociation_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoJetCrystalsAssociation_t,
-                  "recoJetCrystalsAssociation");
-				  
-std::string recoJetID_n("reco::JetID");
-typedef Buffer<reco::JetID,
-               &recoJetID_n, COLLECTION>
-recoJetID_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoJetID_t,
-                  "recoJetID");
-				  
-std::string recoJetTagInfo_n("reco::JetTagInfo");
-typedef Buffer<reco::JetTagInfo,
-               &recoJetTagInfo_n, COLLECTION>
-recoJetTagInfo_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoJetTagInfo_t,
-                  "recoJetTagInfo");
-				  
-std::string recoLeafCandidate_n("reco::LeafCandidate");
-typedef Buffer<reco::LeafCandidate,
-               &recoLeafCandidate_n, COLLECTION>
-recoLeafCandidate_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoLeafCandidate_t,
-                  "recoLeafCandidate");
-				  
-std::string recoMET_n("reco::MET");
-typedef Buffer<reco::MET,
-               &recoMET_n, COLLECTION>
-recoMET_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoMET_t,
-                  "recoMET");
-				  
-std::string recoMuon_n("reco::Muon");
-typedef Buffer<reco::Muon,
-               &recoMuon_n, COLLECTION>
-recoMuon_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoMuon_t,
-                  "recoMuon");
-				  
-std::string recoMuonCosmicCompatibility_n("reco::MuonCosmicCompatibility");
-typedef Buffer<reco::MuonCosmicCompatibility,
-               &recoMuonCosmicCompatibility_n, COLLECTION>
-recoMuonCosmicCompatibility_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoMuonCosmicCompatibility_t,
-                  "recoMuonCosmicCompatibility");
-				  
-std::string recoMuonMETCorrectionData_n("reco::MuonMETCorrectionData");
-typedef Buffer<reco::MuonMETCorrectionData,
-               &recoMuonMETCorrectionData_n, COLLECTION>
-recoMuonMETCorrectionData_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoMuonMETCorrectionData_t,
-                  "recoMuonMETCorrectionData");
 				  

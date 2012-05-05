@@ -1,21 +1,32 @@
 // -------------------------------------------------------------------------
 // File::   plugins07.cc
-// Created: Sat May  5 16:09:43 2012 by mkplugins.py
+// Created: Sat May  5 17:06:51 2012 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
 // -------------------------------------------------------------------------
 
+#include "DataFormats/BTauReco/interface/IsolatedTauTagInfo.h"
+#include "DataFormats/BTauReco/interface/JTATagInfo.h"
+#include "DataFormats/BTauReco/interface/JetCrystalsAssociation.h"
+#include "DataFormats/BTauReco/interface/JetTagInfo.h"
+#include "DataFormats/Candidate/interface/LeafCandidate.h"
 #include "DataFormats/Candidate/interface/NamedCompositeCandidate.h"
-#include "DataFormats/Candidate/interface/Particle.h"
+#include "DataFormats/JetReco/interface/JPTJet.h"
+#include "DataFormats/JetReco/interface/JetID.h"
 #include "DataFormats/JetReco/interface/PFClusterJet.h"
 #include "DataFormats/JetReco/interface/PFJet.h"
+#include "DataFormats/METReco/interface/MET.h"
 #include "DataFormats/METReco/interface/PFClusterMET.h"
 #include "DataFormats/METReco/interface/PFMET.h"
+#include "DataFormats/MuonReco/interface/Muon.h"
+#include "DataFormats/MuonReco/interface/MuonCosmicCompatibility.h"
+#include "DataFormats/MuonReco/interface/MuonMETCorrectionData.h"
 #include "DataFormats/MuonReco/interface/MuonQuality.h"
 #include "DataFormats/MuonReco/interface/MuonShower.h"
 #include "DataFormats/MuonReco/interface/MuonTimeExtra.h"
 #include "DataFormats/MuonReco/interface/MuonTrackLinks.h"
+#include "DataFormats/ParticleFlowCandidate/interface/IsolatedPFCandidate.h"
 #include "DataFormats/ParticleFlowCandidate/interface/PFCandidate.h"
 #include "DataFormats/ParticleFlowCandidate/interface/PFCandidateElectronExtra.h"
 #include "DataFormats/ParticleFlowCandidate/interface/PFCandidatePhotonExtra.h"
@@ -28,16 +39,93 @@
 #include "DataFormats/ParticleFlowReco/interface/PFDisplacedVertexCandidate.h"
 #include "DataFormats/ParticleFlowReco/interface/PFNuclearInteraction.h"
 #include "DataFormats/ParticleFlowReco/interface/PFRecHit.h"
-#include "DataFormats/ParticleFlowReco/interface/PFRecTrack.h"
-#include "DataFormats/ParticleFlowReco/interface/PFSimParticle.h"
-#include "DataFormats/ParticleFlowReco/interface/PFTrajectoryPoint.h"
-#include "DataFormats/ParticleFlowReco/interface/PFV0.h"
-#include "DataFormats/TauReco/interface/PFTau.h"
-#include "DataFormats/TauReco/interface/PFTauDecayMode.h"
-#include "DataFormats/TauReco/interface/PFTauTagInfo.h"
 #include "DataFormats/VertexReco/interface/NuclearInteraction.h"
 // -------------------------------------------------------------------------
 
+std::string recoIsolatedPFCandidate_n("reco::IsolatedPFCandidate");
+typedef Buffer<reco::IsolatedPFCandidate,
+               &recoIsolatedPFCandidate_n, COLLECTION>
+recoIsolatedPFCandidate_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoIsolatedPFCandidate_t,
+                  "recoIsolatedPFCandidate");
+				  
+std::string recoIsolatedTauTagInfo_n("reco::IsolatedTauTagInfo");
+typedef Buffer<reco::IsolatedTauTagInfo,
+               &recoIsolatedTauTagInfo_n, COLLECTION>
+recoIsolatedTauTagInfo_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoIsolatedTauTagInfo_t,
+                  "recoIsolatedTauTagInfo");
+				  
+std::string recoJPTJet_n("reco::JPTJet");
+typedef Buffer<reco::JPTJet,
+               &recoJPTJet_n, COLLECTION>
+recoJPTJet_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoJPTJet_t,
+                  "recoJPTJet");
+				  
+std::string recoJTATagInfo_n("reco::JTATagInfo");
+typedef Buffer<reco::JTATagInfo,
+               &recoJTATagInfo_n, COLLECTION>
+recoJTATagInfo_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoJTATagInfo_t,
+                  "recoJTATagInfo");
+				  
+std::string recoJetCrystalsAssociation_n("reco::JetCrystalsAssociation");
+typedef Buffer<reco::JetCrystalsAssociation,
+               &recoJetCrystalsAssociation_n, COLLECTION>
+recoJetCrystalsAssociation_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoJetCrystalsAssociation_t,
+                  "recoJetCrystalsAssociation");
+				  
+std::string recoJetID_n("reco::JetID");
+typedef Buffer<reco::JetID,
+               &recoJetID_n, COLLECTION>
+recoJetID_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoJetID_t,
+                  "recoJetID");
+				  
+std::string recoJetTagInfo_n("reco::JetTagInfo");
+typedef Buffer<reco::JetTagInfo,
+               &recoJetTagInfo_n, COLLECTION>
+recoJetTagInfo_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoJetTagInfo_t,
+                  "recoJetTagInfo");
+				  
+std::string recoLeafCandidate_n("reco::LeafCandidate");
+typedef Buffer<reco::LeafCandidate,
+               &recoLeafCandidate_n, COLLECTION>
+recoLeafCandidate_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoLeafCandidate_t,
+                  "recoLeafCandidate");
+				  
+std::string recoMET_n("reco::MET");
+typedef Buffer<reco::MET,
+               &recoMET_n, COLLECTION>
+recoMET_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoMET_t,
+                  "recoMET");
+				  
+std::string recoMuon_n("reco::Muon");
+typedef Buffer<reco::Muon,
+               &recoMuon_n, COLLECTION>
+recoMuon_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoMuon_t,
+                  "recoMuon");
+				  
+std::string recoMuonCosmicCompatibility_n("reco::MuonCosmicCompatibility");
+typedef Buffer<reco::MuonCosmicCompatibility,
+               &recoMuonCosmicCompatibility_n, COLLECTION>
+recoMuonCosmicCompatibility_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoMuonCosmicCompatibility_t,
+                  "recoMuonCosmicCompatibility");
+				  
+std::string recoMuonMETCorrectionData_n("reco::MuonMETCorrectionData");
+typedef Buffer<reco::MuonMETCorrectionData,
+               &recoMuonMETCorrectionData_n, COLLECTION>
+recoMuonMETCorrectionData_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoMuonMETCorrectionData_t,
+                  "recoMuonMETCorrectionData");
+				  
 std::string recoMuonQuality_n("reco::MuonQuality");
 typedef Buffer<reco::MuonQuality,
                &recoMuonQuality_n, COLLECTION>
@@ -191,60 +279,4 @@ typedef Buffer<reco::PFRecHit,
 recoPFRecHit_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoPFRecHit_t,
                   "recoPFRecHit");
-				  
-std::string recoPFRecTrack_n("reco::PFRecTrack");
-typedef Buffer<reco::PFRecTrack,
-               &recoPFRecTrack_n, COLLECTION>
-recoPFRecTrack_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPFRecTrack_t,
-                  "recoPFRecTrack");
-				  
-std::string recoPFSimParticle_n("reco::PFSimParticle");
-typedef Buffer<reco::PFSimParticle,
-               &recoPFSimParticle_n, COLLECTION>
-recoPFSimParticle_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPFSimParticle_t,
-                  "recoPFSimParticle");
-				  
-std::string recoPFTau_n("reco::PFTau");
-typedef Buffer<reco::PFTau,
-               &recoPFTau_n, COLLECTION>
-recoPFTau_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPFTau_t,
-                  "recoPFTau");
-				  
-std::string recoPFTauDecayMode_n("reco::PFTauDecayMode");
-typedef Buffer<reco::PFTauDecayMode,
-               &recoPFTauDecayMode_n, COLLECTION>
-recoPFTauDecayMode_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPFTauDecayMode_t,
-                  "recoPFTauDecayMode");
-				  
-std::string recoPFTauTagInfo_n("reco::PFTauTagInfo");
-typedef Buffer<reco::PFTauTagInfo,
-               &recoPFTauTagInfo_n, COLLECTION>
-recoPFTauTagInfo_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPFTauTagInfo_t,
-                  "recoPFTauTagInfo");
-				  
-std::string recoPFTrajectoryPoint_n("reco::PFTrajectoryPoint");
-typedef Buffer<reco::PFTrajectoryPoint,
-               &recoPFTrajectoryPoint_n, COLLECTION>
-recoPFTrajectoryPoint_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPFTrajectoryPoint_t,
-                  "recoPFTrajectoryPoint");
-				  
-std::string recoPFV0_n("reco::PFV0");
-typedef Buffer<reco::PFV0,
-               &recoPFV0_n, COLLECTION>
-recoPFV0_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoPFV0_t,
-                  "recoPFV0");
-				  
-std::string recoParticle_n("reco::Particle");
-typedef Buffer<reco::Particle,
-               &recoParticle_n, COLLECTION>
-recoParticle_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoParticle_t,
-                  "recoParticle");
 				  

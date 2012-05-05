@@ -1,17 +1,16 @@
 // -------------------------------------------------------------------------
 // File::   plugins09.cc
-// Created: Sat May  5 16:09:43 2012 by mkplugins.py
+// Created: Sat May  5 17:06:51 2012 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
 // -------------------------------------------------------------------------
 
+#include "AnalysisDataFormats/EWK/interface/WMuNuCandidate.h"
 #include "AnalysisDataFormats/EWK/interface/WMuNuCandidatePtr.h"
-#include "AnalysisDataFormats/SUSYBSMObjects/interface/HSCPCaloInfo.h"
-#include "AnalysisDataFormats/SUSYBSMObjects/interface/HSCPIsolation.h"
-#include "AnalysisDataFormats/SUSYBSMObjects/interface/HSCParticle.h"
 #include "DataFormats/CSCDigi/interface/CSCCorrelatedLCTDigi.h"
 #include "DataFormats/Candidate/interface/CompositeCandidate.h"
+#include "DataFormats/Candidate/interface/VertexCompositeCandidate.h"
 #include "DataFormats/Common/interface/DetSet.h"
 #include "DataFormats/EcalDigi/interface/EcalTrigPrimCompactColl.h"
 #include "DataFormats/EcalRecHit/interface/EcalRecHit.h"
@@ -25,24 +24,57 @@
 #include "DataFormats/L1CSCTrackFinder/interface/TrackStub.h"
 #include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerEvmReadoutRecord.h"
 #include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerObjectMapRecord.h"
-#include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerReadoutRecord.h"
-#include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerReadoutSetup.h"
-#include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerRecord.h"
-#include "DataFormats/L1GlobalTrigger/interface/L1GtTechnicalTriggerRecord.h"
 #include "DataFormats/L1Trigger/interface/L1DataEmulRecord.h"
 #include "DataFormats/METObjects/interface/BaseMET.h"
+#include "DataFormats/METReco/interface/AnomalousECALVariables.h"
 #include "DataFormats/METReco/interface/HcalNoiseSummary.h"
 #include "DataFormats/MuonData/interface/MuonDigiCollection.h"
 #include "DataFormats/MuonDetId/interface/CSCDetId.h"
 #include "DataFormats/SiStripCluster/interface/SiStripCluster.h"
+#include "DataFormats/TrackerCommon/interface/ClusterSummary.h"
+#include "DataFormats/V0Candidate/interface/V0Candidate.h"
+#include "DataFormats/VertexReco/interface/Vertex.h"
+#include "SimDataFormats/CaloHit/interface/PCaloHit.h"
+#include "SimDataFormats/CrossingFrame/interface/CrossingFrame.h"
 #include "SimDataFormats/CrossingFrame/interface/CrossingFramePlaybackInfo.h"
 #include "SimDataFormats/CrossingFrame/interface/CrossingFramePlaybackInfoExtended.h"
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
 #include "SimDataFormats/GeneratorProducts/interface/GenFilterInfo.h"
 #include "SimDataFormats/GeneratorProducts/interface/GenRunInfoProduct.h"
 #include "SimDataFormats/HcalTestBeam/interface/HcalTB02HistoClass.h"
+#include "SimDataFormats/Track/interface/SimTrack.h"
+#include "SimDataFormats/TrackingHit/interface/PSimHit.h"
+#include "SimDataFormats/Vertex/interface/SimVertex.h"
 // -------------------------------------------------------------------------
 
+std::string recoV0Candidate_n("reco::V0Candidate");
+typedef Buffer<reco::V0Candidate,
+               &recoV0Candidate_n, COLLECTION>
+recoV0Candidate_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoV0Candidate_t,
+                  "recoV0Candidate");
+				  
+std::string recoVertex_n("reco::Vertex");
+typedef Buffer<reco::Vertex,
+               &recoVertex_n, COLLECTION>
+recoVertex_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoVertex_t,
+                  "recoVertex");
+				  
+std::string recoVertexCompositeCandidate_n("reco::VertexCompositeCandidate");
+typedef Buffer<reco::VertexCompositeCandidate,
+               &recoVertexCompositeCandidate_n, COLLECTION>
+recoVertexCompositeCandidate_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoVertexCompositeCandidate_t,
+                  "recoVertexCompositeCandidate");
+				  
+std::string recoWMuNuCandidate_n("reco::WMuNuCandidate");
+typedef Buffer<reco::WMuNuCandidate,
+               &recoWMuNuCandidate_n, COLLECTION>
+recoWMuNuCandidate_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoWMuNuCandidate_t,
+                  "recoWMuNuCandidate");
+				  
 std::string recoWMuNuCandidatePtr_n("reco::WMuNuCandidatePtr");
 typedef Buffer<reco::WMuNuCandidatePtr,
                &recoWMuNuCandidatePtr_n, COLLECTION>
@@ -78,33 +110,19 @@ stdvectoredmDetSetSiStripCluster_t;
 DEFINE_EDM_PLUGIN(BufferFactory, stdvectoredmDetSetSiStripCluster_t,
                   "stdvectoredmDetSetSiStripCluster");
 				  
-std::string susybsmHSCPCaloInfo_n("susybsm::HSCPCaloInfo");
-typedef Buffer<susybsm::HSCPCaloInfo,
-               &susybsmHSCPCaloInfo_n, COLLECTION>
-susybsmHSCPCaloInfo_t;
-DEFINE_EDM_PLUGIN(BufferFactory, susybsmHSCPCaloInfo_t,
-                  "susybsmHSCPCaloInfo");
-				  
-std::string susybsmHSCPIsolation_n("susybsm::HSCPIsolation");
-typedef Buffer<susybsm::HSCPIsolation,
-               &susybsmHSCPIsolation_n, COLLECTION>
-susybsmHSCPIsolation_t;
-DEFINE_EDM_PLUGIN(BufferFactory, susybsmHSCPIsolation_t,
-                  "susybsmHSCPIsolation");
-				  
-std::string susybsmHSCParticle_n("susybsm::HSCParticle");
-typedef Buffer<susybsm::HSCParticle,
-               &susybsmHSCParticle_n, COLLECTION>
-susybsmHSCParticle_t;
-DEFINE_EDM_PLUGIN(BufferFactory, susybsmHSCParticle_t,
-                  "susybsmHSCParticle");
-				  
 std::string triggerTriggerObject_n("trigger::TriggerObject");
 typedef Buffer<trigger::TriggerObject,
                &triggerTriggerObject_n, COLLECTION>
 triggerTriggerObject_t;
 DEFINE_EDM_PLUGIN(BufferFactory, triggerTriggerObject_t,
                   "triggerTriggerObject");
+				  
+std::string AnomalousECALVariables_n("AnomalousECALVariables");
+typedef Buffer<AnomalousECALVariables,
+               &AnomalousECALVariables_n, SINGLETON>
+AnomalousECALVariables_t;
+DEFINE_EDM_PLUGIN(BufferFactory, AnomalousECALVariables_t,
+                  "AnomalousECALVariables");
 				  
 std::string BaseMETv0_n("BaseMETv0");
 typedef Buffer<BaseMETv0,
@@ -119,6 +137,48 @@ typedef Buffer<CSCTriggerContainer<csctf::TrackStub>,
 CSCTriggerContainercsctfTrackStub_t;
 DEFINE_EDM_PLUGIN(BufferFactory, CSCTriggerContainercsctfTrackStub_t,
                   "CSCTriggerContainercsctfTrackStub");
+				  
+std::string ClusterSummary_n("ClusterSummary");
+typedef Buffer<ClusterSummary,
+               &ClusterSummary_n, SINGLETON>
+ClusterSummary_t;
+DEFINE_EDM_PLUGIN(BufferFactory, ClusterSummary_t,
+                  "ClusterSummary");
+				  
+std::string CrossingFramePCaloHit_n("CrossingFrame<PCaloHit>");
+typedef Buffer<CrossingFrame<PCaloHit>,
+               &CrossingFramePCaloHit_n, SINGLETON>
+CrossingFramePCaloHit_t;
+DEFINE_EDM_PLUGIN(BufferFactory, CrossingFramePCaloHit_t,
+                  "CrossingFramePCaloHit");
+				  
+std::string CrossingFramePSimHit_n("CrossingFrame<PSimHit>");
+typedef Buffer<CrossingFrame<PSimHit>,
+               &CrossingFramePSimHit_n, SINGLETON>
+CrossingFramePSimHit_t;
+DEFINE_EDM_PLUGIN(BufferFactory, CrossingFramePSimHit_t,
+                  "CrossingFramePSimHit");
+				  
+std::string CrossingFrameSimTrack_n("CrossingFrame<SimTrack>");
+typedef Buffer<CrossingFrame<SimTrack>,
+               &CrossingFrameSimTrack_n, SINGLETON>
+CrossingFrameSimTrack_t;
+DEFINE_EDM_PLUGIN(BufferFactory, CrossingFrameSimTrack_t,
+                  "CrossingFrameSimTrack");
+				  
+std::string CrossingFrameSimVertex_n("CrossingFrame<SimVertex>");
+typedef Buffer<CrossingFrame<SimVertex>,
+               &CrossingFrameSimVertex_n, SINGLETON>
+CrossingFrameSimVertex_t;
+DEFINE_EDM_PLUGIN(BufferFactory, CrossingFrameSimVertex_t,
+                  "CrossingFrameSimVertex");
+				  
+std::string CrossingFrameedmHepMCProduct_n("CrossingFrame<edm::HepMCProduct>");
+typedef Buffer<CrossingFrame<edm::HepMCProduct>,
+               &CrossingFrameedmHepMCProduct_n, SINGLETON>
+CrossingFrameedmHepMCProduct_t;
+DEFINE_EDM_PLUGIN(BufferFactory, CrossingFrameedmHepMCProduct_t,
+                  "CrossingFrameedmHepMCProduct");
 				  
 std::string CrossingFramePlaybackInfo_n("CrossingFramePlaybackInfo");
 typedef Buffer<CrossingFramePlaybackInfo,
@@ -224,32 +284,4 @@ typedef Buffer<L1GlobalTriggerObjectMapRecord,
 L1GlobalTriggerObjectMapRecord_t;
 DEFINE_EDM_PLUGIN(BufferFactory, L1GlobalTriggerObjectMapRecord_t,
                   "L1GlobalTriggerObjectMapRecord");
-				  
-std::string L1GlobalTriggerReadoutRecord_n("L1GlobalTriggerReadoutRecord");
-typedef Buffer<L1GlobalTriggerReadoutRecord,
-               &L1GlobalTriggerReadoutRecord_n, SINGLETON>
-L1GlobalTriggerReadoutRecord_t;
-DEFINE_EDM_PLUGIN(BufferFactory, L1GlobalTriggerReadoutRecord_t,
-                  "L1GlobalTriggerReadoutRecord");
-				  
-std::string L1GlobalTriggerReadoutSetup_n("L1GlobalTriggerReadoutSetup");
-typedef Buffer<L1GlobalTriggerReadoutSetup,
-               &L1GlobalTriggerReadoutSetup_n, SINGLETON>
-L1GlobalTriggerReadoutSetup_t;
-DEFINE_EDM_PLUGIN(BufferFactory, L1GlobalTriggerReadoutSetup_t,
-                  "L1GlobalTriggerReadoutSetup");
-				  
-std::string L1GlobalTriggerRecord_n("L1GlobalTriggerRecord");
-typedef Buffer<L1GlobalTriggerRecord,
-               &L1GlobalTriggerRecord_n, SINGLETON>
-L1GlobalTriggerRecord_t;
-DEFINE_EDM_PLUGIN(BufferFactory, L1GlobalTriggerRecord_t,
-                  "L1GlobalTriggerRecord");
-				  
-std::string L1GtTechnicalTriggerRecord_n("L1GtTechnicalTriggerRecord");
-typedef Buffer<L1GtTechnicalTriggerRecord,
-               &L1GtTechnicalTriggerRecord_n, SINGLETON>
-L1GtTechnicalTriggerRecord_t;
-DEFINE_EDM_PLUGIN(BufferFactory, L1GtTechnicalTriggerRecord_t,
-                  "L1GtTechnicalTriggerRecord");
 				  
