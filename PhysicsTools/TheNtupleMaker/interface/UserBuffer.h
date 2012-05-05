@@ -13,7 +13,7 @@
 //                   Thu May 03 2012 HBP - allow for storage of selected
 //                                         objects
 //
-// $Id: UserBuffer.h,v 1.7 2011/08/08 15:59:38 prosper Exp $
+// $Id: UserBuffer.h,v 1.8 2012/05/04 20:54:34 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/BufferUtil.h"
@@ -67,7 +67,8 @@ struct UserBuffer  : public BufferThing
       message_(""),
       debug_(0),
       skipme_(false),
-      crash_(true)
+      crash_(true),
+      cache_(std::vector<double>(100))
   {
     std::cout << "UserBuffer created for objects of type: " 
               << name()
@@ -267,9 +268,16 @@ struct UserBuffer  : public BufferThing
   void shrink(std::vector<int>& index)
   {
     count_ = index.size();
+    if ( count_ > (int)cache_.size() ) cache_.resize(count_);
+
     for(unsigned i=0; i < variables_.size(); ++i)
-      for(int j=0; j < count_; ++j)
-        variables_[i].value[j] = variables_[i].value[index[j]];
+      {
+        for(int j=0; j < count_; ++j)
+          cache_[j] = variables_[i].value[index[j]];
+        
+        for(int j=0; j < count_; ++j)
+          variables_[i].value[j] = cache_[j];
+      }
   }
 
   countvalue& variable(std::string name)
@@ -309,6 +317,7 @@ private:
   bool skipme_; 
   bool crash_;
   std::string bufferkey_;
+  std::vector<double> cache_;
 
   // helper object
   Y helper_;
@@ -335,7 +344,8 @@ struct UserBuffer<edm::Event, Y, SINGLETON> : public BufferThing
       ctype_(SINGLETON),
       message_(""),
       debug_(0),
-      skipme_(false)
+      skipme_(false),
+      cache_(std::vector<double>(100))
   {
     std::cout << "UserBuffer created for objects of type: " 
               << name()
@@ -461,13 +471,20 @@ struct UserBuffer<edm::Event, Y, SINGLETON> : public BufferThing
 
   std::string name() { return classname_; }
 
-  /// Shrink buffer size using specified array of indices.
+ /// Shrink buffer size using specified array of indices.
   void shrink(std::vector<int>& index)
   {
     count_ = index.size();
+    if ( count_ > (int)cache_.size() ) cache_.resize(count_);
+
     for(unsigned i=0; i < variables_.size(); ++i)
-      for(int j=0; j < count_; ++j)
-        variables_[i].value[j] = variables_[i].value[index[j]];
+      {
+        for(int j=0; j < count_; ++j)
+          cache_[j] = variables_[i].value[index[j]];
+        
+        for(int j=0; j < count_; ++j)
+          variables_[i].value[j] = cache_[j];
+      }
   }
 
   countvalue& variable(std::string name)
@@ -506,6 +523,7 @@ private:
   int  debug_;
   bool skipme_; 
   std::string bufferkey_;
+  std::vector<double> cache_;
 
   // helper object
   Y helper_;

@@ -1,9 +1,11 @@
-$Revision: 1.27 $
+$Revision: 1.28 $
 
 v5_3_2 May 04 2012
 ------------------
 	1. place reflex utilities into ReflexLib.py
-	2. re-write mkmacro.py
+	2. re-write mkmacro.py - addition of user-defined variables works, as does
+	   event selection. There is a bug in the object selection - to be fixed 
+	   next release
 	3. add methods to helper automatically so that help has the same
 	   methods as the helped object
 	4. change format of plugins - now use COLLECTION and SINGLETON types

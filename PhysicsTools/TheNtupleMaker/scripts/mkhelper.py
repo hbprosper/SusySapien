@@ -5,7 +5,7 @@
 #          22-Jul-2011 HBP - fix duplicate HelperFor bug
 #          22-Apr-2012 HBP - use SINGLETON and COLLECTION keywords
 #          03-May-2012 HBP - add methods automatically
-#$Id: mkhelper.py,v 1.6 2012/04/04 01:32:41 prosper Exp $
+#$Id: mkhelper.py,v 1.7 2012/05/04 20:54:35 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -281,7 +281,7 @@ DEFINE_EDM_PLUGIN(BufferFactory, %(buffername)s_t,
 
 	undofile = "%(plugindir)s/.undo.userplugin_%(filename)s.cc" % names
 	
-	#open(undofile,'w').write('\n')
+	open(undofile,'w').write('\n')
 	
 	filename = "%(plugindir)s/userplugin_%(filename)s.cc" % names
 	out  = open(filename, "w")
@@ -464,8 +464,14 @@ def main():
 	#db['baseclassnames'] = []
 	#classDataMembers(classtype, db)
 
+	# sort methods
+	mlist = []
+	for (method, value) in db['methods'].items():
+		mlist.append((value[0], method))
+	mlist.sort()
+	
 	methods = ''
-	for method in db['methods']:
+	for (nom, method) in mlist:
 		if stufftoskip.search(method) != None: continue
 		method = strip(method)
 		msig   = signature.findall(method)

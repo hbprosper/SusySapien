@@ -2,7 +2,7 @@
 # File: ReflexLib.py
 # Description: A collection of simple Reflex utilities
 # Created: 25-Apr-2012 Harrison B. Prosper
-#$Revision:$
+#$Revision: 1.1 $
 #---------------------------------------------------------------------------
 from ROOT import *
 from string import *
@@ -189,7 +189,7 @@ def classMethods(classname, db, depth=0):
 		# Important: make sure we don't have duplicates
 		if db['methods'].has_key(method):
 			continue
-		db['methods'][method] = classname
+		db['methods'][method] = (name, classname)
 		cdb['methods'].append((fullrtype, method))
 
 	db['classlist'].append( cdb )

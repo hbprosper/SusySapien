@@ -42,7 +42,7 @@
 //                      directly.
 //          22-Nov-2010 HBP allow reading of multiple trees
 //          22-Nov-2011 HBP handle reading/storing of strings
-//$Revision: 1.2 $
+//$Revision: 1.3 $
 //----------------------------------------------------------------------------
 #ifdef PROJECT_NAME
 #include <boost/regex.hpp>
@@ -2122,6 +2122,7 @@ otreestream::insert(vector<double>& data)
 void
 otreestream::store() 
 { 
+  DBUG("BEGIN store");
   _statuscode = kSUCCESS;
   _entry = _entries;
 
@@ -2215,6 +2216,8 @@ otreestream::store()
           break;
         }
     }
+  DBUG("END store");
+  DBUG("");
 }
 
 void

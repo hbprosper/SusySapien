@@ -28,7 +28,7 @@
 //                                    file, BufferEvent.h
 //                   Sun Apr 22 2012 HBP - Use Caller object
 //
-// $Id: Buffer.h,v 1.4 2011/07/20 16:19:54 prosper Exp $
+// $Id: Buffer.h,v 1.5 2012/05/04 20:54:34 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/BufferUtil.h"
@@ -83,7 +83,8 @@ struct Buffer  : public BufferThing
       message_(""),
       debug_(0),
       skipme_(false),
-      call_(Caller<X, X, CTYPE>())
+      call_(Caller<X, X, CTYPE>()),
+      cache_(std::vector<double>(100))
   {
     std::cout << "Buffer created for objects of type: " 
               << name()
@@ -225,9 +226,31 @@ struct Buffer  : public BufferThing
   void shrink(std::vector<int>& index)
   {
     count_ = index.size();
+    if ( count_ > (int)cache_.size() ) cache_.resize(count_);
+
+    if ( debug_ > 0 )
+      std::cout << " Begin Buffer::shrink for " << bufferkey_ << std::endl;
+
     for(unsigned i=0; i < variables_.size(); ++i)
-      for(int j=0; j < count_; ++j)
-        variables_[i].value[j] = variables_[i].value[index[j]];
+      {
+        for(int j=0; j < count_; ++j)
+          cache_[j] = variables_[i].value[index[j]];
+        
+        for(int j=0; j < count_; ++j)
+          {
+            variables_[i].value[j] = cache_[j];
+            if ( debug_ > 0 )
+              {
+                std::cout << "\t" 
+                          << BLUE << variables_[i].name << DEFAULT_COLOR 
+                          << ")[" << j << "] = " 
+                          << RED << variables_[i].value[j] << DEFAULT_COLOR 
+                          << std::endl; 
+              }
+          }
+      }
+    if ( debug_ > 0 )
+      std::cout << " End Buffer::shrink() for " << bufferkey_ << std::endl;
   }
 
   countvalue& variable(std::string name)
@@ -269,6 +292,8 @@ private:
   std::string bufferkey_;
 
   Caller<X, X, CTYPE> call_;
+
+  std::vector<double> cache_;
 };
 
 #endif

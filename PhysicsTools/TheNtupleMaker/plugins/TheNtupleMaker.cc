@@ -55,7 +55,7 @@
 //                   Fri Jul 22 2011 HBP - make buffer name and get by label
 //                                   available to buffers
 //                   Mon Aug 08 2011 HBP - allow global alias
-// $Id: TheNtupleMaker.cc,v 1.14 2012/04/04 01:32:38 prosper Exp $
+// $Id: TheNtupleMaker.cc,v 1.15 2012/05/04 20:54:34 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -149,7 +149,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   : ntuplename_(iConfig.getUntrackedParameter<string>("ntupleName")), 
     output(otreestream(ntuplename_,
                        "Events", 
-                       "created by TheNtupleMaker $Revision: 1.14 $")),
+                       "created by TheNtupleMaker $Revision: 1.15 $")),
     logfilename_("TheNtupleMaker.log"),
     log_(new std::ofstream(logfilename_.c_str())),
     macroname_(""),
@@ -170,7 +170,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   // --------------------------------------------------------------------------
   TFile* file = output.file();
   ptree_ = new TTree("Provenance",
-                     "created by TheNtupleMaker $Revision: 1.14 $");
+                     "created by TheNtupleMaker $Revision: 1.15 $");
   string cmsver("unknown");
   if ( getenv("CMSSW_VERSION") > 0 ) cmsver = string(getenv("CMSSW_VERSION"));
   ptree_->Branch("cmssw_version", (void*)(cmsver.c_str()), "cmssw_version/C");
@@ -550,10 +550,15 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
                            vout, DEBUG);
 
       // cache addresses of buffers
-      buffermap[buffers.back()->key()] = buffers.back();
+      string key = buffers.back()->key();
+      buffermap[key] = buffers.back();
 
       if ( DEBUG > 0 )
-        cout << "  buffer: " << buffer << " created " << endl << endl;
+        {
+          cout << "  buffer: " << buffer << " created " << endl << endl;
+          cout << "          " << key    << " address " << buffermap[key] 
+               << endl << endl;
+        }
     }
   vout.close();
 
@@ -573,13 +578,18 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   for(unsigned int i=0; i < buffers.size(); ++i)
     {
       vector<string>& vnames = buffers[i]->varnames();
-      cout << i+1 << "\t" << vnames.size() << endl;
+      string objname = buffers[i]->key();
+      cout << endl << i+1 
+           << "\tobject: " << objname 
+           << "\taddress: " << buffermap[objname] << endl;
+
       for(unsigned int ii=0; ii < vnames.size(); ++ii)
         {
           string name = vnames[ii];
           varmap[name] = buffers[i]->variable(name);
           index++;
-          cout << "  " << index << "\t" << name << endl;
+          cout << "  " << index 
+               << "\t" << name << endl;
         }
     }
   cout << " END Branches" << endl << endl;
@@ -656,15 +666,14 @@ TheNtupleMaker::analyze(const edm::Event& iEvent,
 
   if ( ! selectEvent(iEvent) ) return;
 
-  // Copy data to output buffers
-
-  output.store();
-
   //Event kept. Shrink buffers as needed. Shrinking is needed if only
   //certain objects of a given buffer have been selected.
 
   shrinkBuffers();
 
+  // Copy data to output buffers
+
+  output.store();
 
   // Ok, fill this branch
   TFile* file = output.file();
@@ -680,8 +689,11 @@ TheNtupleMaker::selectEvent(const edm::Event& event)
   bool keep = true;
   if ( ! macroEnabled_ ) return keep;
 
-  // Execute macro (a compiled Root macro)
+  // Initialize event variables in user macro
+  // and reset indexmap
+  gROOT->ProcessLineFast("obj.initialize();");
 
+  // Call user analyze method
   keep = (bool)gROOT->ProcessLineFast("obj.analyze();");  
       
   if ( DEBUG )
@@ -709,6 +721,10 @@ TheNtupleMaker::shrinkBuffers()
   // indexmap maps from buffer identifier (object variable name) to
   // object indices
   map<string, vector<int> >::iterator iter = indexmap.begin();
+
+  if ( DEBUG > 0)
+    cout << " ==> indexmap.size(): " << indexmap.size() << endl;
+
   for(iter=indexmap.begin(); iter != indexmap.end(); ++iter)
     {
       string name(iter->first);
@@ -716,9 +732,21 @@ TheNtupleMaker::shrinkBuffers()
       
       if ( buffermap.find(name) != buffermap.end() )
         {
-          if (DEBUG > 0) 
-            cout << "\t** SHRINK( " << name << " ) " << indices.size() << endl;
+          if (DEBUG > 0)
+            {
+              cout << "\t** BEFORE SHRINK( " << name << " ) count: " 
+                   << buffermap[name]->count() << endl;
+              for(unsigned int i=0; i < indices.size(); ++i)
+                cout << "\t\t" << i << "\t" << indices[i] << endl;
+            }
+
           buffermap[name]->shrink(indices);
+
+          if (DEBUG > 0)
+            {
+              cout << "\t** AFTER SHRINK( " << name << " )  count: " 
+                   << buffermap[name]->count() << endl;
+            }
         }
       else
         throw edm::Exception(edm::errors::Configuration,

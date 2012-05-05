@@ -5,7 +5,7 @@
 # Created: 06-Mar-2010 Harrison B. Prosper
 # Updated: 05-Oct-2010 HBP - clean up
 #          12-Mar-2011 HBP - give user option to add variables
-#$Id: mkmacro.py,v 1.1 2011/05/12 09:50:59 prosper Exp $
+#$Id: mkmacro.py,v 1.2 2012/05/04 20:54:35 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
 from string import *
@@ -171,14 +171,15 @@ MACRO=\
 //-----------------------------------------------------------------------------
 using namespace std;
 
-// Declare all user-defined variables to be added to ntuple in
-// the following struct
-
 struct %(name)sInternal
 {
   int counter;
 
-  // double HT;
+  // Declare in this struct all user-defined variables to be
+  // added to ntuple
+  // IMPORTANT: make sure the variable type and the type format in Branch
+  //            match
+  // float sumMuPt;
 };
 
 
@@ -186,8 +187,9 @@ void %(name)s::beginJob()
 {
   local = new %(name)sInternal();
   local->counter = 0;
-  
-  //tree->Branch("HT", &local->HT, "HT/F");
+
+  // Add a float variable to ntuple
+  //tree->Branch("sumMuPt", &local->sumMuPt, "sumMuPt/F");
 }
 
 void %(name)s::endJob()
@@ -203,8 +205,8 @@ bool %(name)s::analyze()
   // compute variables
   // apply cuts etc.
 
-  // local->HT = 0;
-  // for(unsigned int i=0; i < jet_pt.size(); ++i) local->HT += jet_pt[i];
+  //local->sumMuPt = 0;
+  //for(unsigned int i=0; i < muon_pt.size();++i) local->sumMuPt += muon_pt[i];
   
   // if ( miserable-event ) return false;
   
