@@ -1,18 +1,19 @@
 // -------------------------------------------------------------------------
 // File::   plugins02.cc
-// Created: Sat May  5 17:06:51 2012 by mkplugins.py
+// Created: Sun May  6 00:03:31 2012 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
 // -------------------------------------------------------------------------
 
-#include "AnalysisDataFormats/CMGTools/interface/CompositePtrCandidateT1T2MEt.h"
-#include "AnalysisDataFormats/CMGTools/interface/CompositePtrCandidateTMEt.h"
 #include "AnalysisDataFormats/TopObjects/interface/StEvtSolution.h"
 #include "AnalysisDataFormats/TrackInfo/interface/RecoTracktoTP.h"
 #include "AnalysisDataFormats/TrackInfo/interface/TPtoRecoTrack.h"
 #include "DataFormats/GeometryVector/interface/GlobalTag.h"
 #include "DataFormats/GeometryVector/interface/Point3DBase.h"
+#include "DataFormats/L1GlobalMuonTrigger/interface/L1MuGMTCand.h"
+#include "DataFormats/L1GlobalMuonTrigger/interface/L1MuRegionalCand.h"
+#include "DataFormats/L1Trigger/interface/L1TriggerError.h"
 #include "DataFormats/LTCDigi/interface/LTCDigi.h"
 #include "DataFormats/METObjects/interface/MET.h"
 #include "DataFormats/METObjects/interface/TowerMET.h"
@@ -26,16 +27,12 @@
 #include "DataFormats/Scalers/interface/LumiScalers.h"
 #include "DataFormats/SiPixelRawData/interface/SiPixelRawDataError.h"
 #include "DataFormats/TrackCandidate/interface/TrackCandidate.h"
-#include "DataFormats/TrackingSeed/interface/TrackingSeed.h"
-#include "DataFormats/TrajectorySeed/interface/TrajectorySeed.h"
 #include "SimDataFormats/CaloHit/interface/PCaloHit.h"
 #include "SimDataFormats/Forward/interface/LHCTransportLink.h"
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupMixingContent.h"
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
 #include "SimDataFormats/Track/interface/SimTrack.h"
 #include "SimDataFormats/TrackingAnalysis/interface/ParticleBase.h"
-#include "SimDataFormats/TrackingAnalysis/interface/TrackingParticle.h"
-#include "SimDataFormats/TrackingAnalysis/interface/TrackingVertex.h"
 #include "SimDataFormats/TrackingHit/interface/PSimHit.h"
 #include "SimDataFormats/ValidationFormats/interface/MaterialAccountingDetector.h"
 #include "SimDataFormats/ValidationFormats/interface/MaterialAccountingStep.h"
@@ -43,6 +40,27 @@
 #include "SimDataFormats/Vertex/interface/SimVertex.h"
 // -------------------------------------------------------------------------
 
+std::string L1MuGMTCand_n("L1MuGMTCand");
+typedef Buffer<L1MuGMTCand,
+               &L1MuGMTCand_n, COLLECTION>
+L1MuGMTCand_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1MuGMTCand_t,
+                  "L1MuGMTCand");
+				  
+std::string L1MuRegionalCand_n("L1MuRegionalCand");
+typedef Buffer<L1MuRegionalCand,
+               &L1MuRegionalCand_n, COLLECTION>
+L1MuRegionalCand_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1MuRegionalCand_t,
+                  "L1MuRegionalCand");
+				  
+std::string L1TriggerError_n("L1TriggerError");
+typedef Buffer<L1TriggerError,
+               &L1TriggerError_n, COLLECTION>
+L1TriggerError_t;
+DEFINE_EDM_PLUGIN(BufferFactory, L1TriggerError_t,
+                  "L1TriggerError");
+				  
 std::string L1TriggerRates_n("L1TriggerRates");
 typedef Buffer<L1TriggerRates,
                &L1TriggerRates_n, COLLECTION>
@@ -133,20 +151,6 @@ typedef Buffer<MaterialAccountingTrack,
 MaterialAccountingTrack_t;
 DEFINE_EDM_PLUGIN(BufferFactory, MaterialAccountingTrack_t,
                   "MaterialAccountingTrack");
-				  
-std::string PATMuPair_n("PATMuPair");
-typedef Buffer<PATMuPair,
-               &PATMuPair_n, COLLECTION>
-PATMuPair_t;
-DEFINE_EDM_PLUGIN(BufferFactory, PATMuPair_t,
-                  "PATMuPair");
-				  
-std::string PATMuonNuPair_n("PATMuonNuPair");
-typedef Buffer<PATMuonNuPair,
-               &PATMuonNuPair_n, COLLECTION>
-PATMuonNuPair_t;
-DEFINE_EDM_PLUGIN(BufferFactory, PATMuonNuPair_t,
-                  "PATMuonNuPair");
 				  
 std::string PCaloHit_n("PCaloHit");
 typedef Buffer<PCaloHit,
@@ -252,32 +256,4 @@ typedef Buffer<TrackCandidate,
 TrackCandidate_t;
 DEFINE_EDM_PLUGIN(BufferFactory, TrackCandidate_t,
                   "TrackCandidate");
-				  
-std::string TrackingParticle_n("TrackingParticle");
-typedef Buffer<TrackingParticle,
-               &TrackingParticle_n, COLLECTION>
-TrackingParticle_t;
-DEFINE_EDM_PLUGIN(BufferFactory, TrackingParticle_t,
-                  "TrackingParticle");
-				  
-std::string TrackingSeed_n("TrackingSeed");
-typedef Buffer<TrackingSeed,
-               &TrackingSeed_n, COLLECTION>
-TrackingSeed_t;
-DEFINE_EDM_PLUGIN(BufferFactory, TrackingSeed_t,
-                  "TrackingSeed");
-				  
-std::string TrackingVertex_n("TrackingVertex");
-typedef Buffer<TrackingVertex,
-               &TrackingVertex_n, COLLECTION>
-TrackingVertex_t;
-DEFINE_EDM_PLUGIN(BufferFactory, TrackingVertex_t,
-                  "TrackingVertex");
-				  
-std::string TrajectorySeed_n("TrajectorySeed");
-typedef Buffer<TrajectorySeed,
-               &TrajectorySeed_n, COLLECTION>
-TrajectorySeed_t;
-DEFINE_EDM_PLUGIN(BufferFactory, TrajectorySeed_t,
-                  "TrajectorySeed");
 				  

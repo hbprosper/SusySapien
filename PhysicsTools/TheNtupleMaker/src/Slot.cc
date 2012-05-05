@@ -5,7 +5,7 @@
 // Updated: 05-Jun-2008 HBP Adapt to CMS
 //          14-Apr-2011 HBP use unsigned long
 ///////////////////////////////////////////////////////////////////////
-//$Revision: 1.2 $
+//$Revision: 1.1.1.1 $
 
 #include <Python.h>
 #include <iostream>
@@ -24,7 +24,7 @@ ClassImp(Slot)
 
 Slot::Slot() {}
 
-Slot::Slot(unsigned long object, const char *method)  	   
+Slot::Slot(PyObject* object, const char *method)  	   
   : _object(object),
     _mstr(method),
     _method(std::vector<char>(_mstr.size()+1,0))
@@ -38,12 +38,11 @@ Slot::~Slot()
 // SLOTS
 ////////
 
-void Slot::handleSignal(Int_t id)
+void Slot::handleSignal(int id)
 {
   char ip[4] = {"(i)"};
-  PyObject *result = PyObject_CallMethod((PyObject*)_object,
-					 &_method[0],
-					 ip, id);
+
+  PyObject* result = PyObject_CallMethod(_object, &_method[0], ip, id);
   if ( PyErr_Occurred() ) PyErr_Clear();
 
   // Decrement reference count. Use XDECREF to ignore NULL references
@@ -53,8 +52,7 @@ void Slot::handleSignal(Int_t id)
 
 void Slot::handleSignal()
 {
-  PyObject *result = PyObject_CallMethod((PyObject*)_object,
-					 &_method[0], NULL);
+  PyObject* result = PyObject_CallMethod(_object, &_method[0], NULL);
   if ( PyErr_Occurred() ) PyErr_Clear();
 
   // Decrement reference count. Use XDECREF to ignore NULL references

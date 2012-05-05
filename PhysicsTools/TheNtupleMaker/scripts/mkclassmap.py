@@ -5,7 +5,7 @@
 # Created:     26-Aug-2010 Harrison B. Prosper
 #              31-Mar-2011 HBP - include typedefs
 #              23-Apr-2012 HBP - use import to load class map
-#$Id: mkclassmap.py,v 1.20 2012/04/04 01:32:41 prosper Exp $
+#$Id: mkclassmap.py,v 1.21 2012/05/04 20:54:35 prosper Exp $
 #---------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
@@ -74,7 +74,7 @@ except GetoptError, m:
 Update = False
 PKGBASE = BASE # default: scan $CMSSW_RELEASE_BASE
 CLASSMAPFILE = '%s/classmap.py' % PYTHONDIR
-subpkgs = []
+subpkgs = pkgs
 
 for option, value in opts:
 	if option == "-H":
@@ -82,32 +82,32 @@ for option, value in opts:
 		
 	elif option == "-u":
 		Update = True
-		subpkgs = split(value)
+		subpkgs += split(value)
 		if os.path.exists(CLASSMAPFILE):
 			execfile(CLASSMAPFILE)
 			PKGBASE = ""
 		else:
 			Update = False
 			PKGBASE = LOCALBASE
-			subpkgs = ["%s/%s", (PACKAGE, SUBPACKAGE)]
+			subpkgs += ["%s/%s", (PACKAGE, SUBPACKAGE)]
+
+SUBPACKAGELIST = ["AnalysisDataFormats/*",
+				  "DataFormats/*",
+				  "SimDataFormats/*",
+				  "FWCore/Framework",
+				  "FWCore/Common",
+				  "FWCore/Utilities",
+				  "FWCore/FWLite",
+				  "FWCore/MessageLogger",
+				  "FWCore/ParameterSet",
+				  "PhysicsTools/TheNtupleMaker"]
 
 if len(subpkgs) > 0:
-	SUBPACKAGELIST = subpkgs
-else:
-	SUBPACKAGELIST = ["AnalysisDataFormats/*",
-					  "DataFormats/*",
-					  "SimDataFormats/*",
-					  "FWCore/Framework",
-					  "FWCore/Common",
-					  "FWCore/Utilities",
-					  "FWCore/FWLite",
-					  "FWCore/MessageLogger",
-					  "FWCore/ParameterSet",
-					  "PhysicsTools/TheNtupleMaker"
-					  ]
-	userpackage = "%s/%s" % (PACKAGE, SUBPACKAGE)
-	if not userpackage in SUBPACKAGELIST:
-		SUBPACKAGELIST.append(userpackage)
+	SUBPACKAGELIST += subpkgs
+
+userpackage = "%s/%s" % (PACKAGE, SUBPACKAGE)
+if not userpackage in SUBPACKAGELIST:
+	SUBPACKAGELIST.append(userpackage)
 #----------------------------------------------------------------------------
 # subsystems to ignore
 
@@ -265,13 +265,13 @@ def main():
 		hmap = cmap
 
 
-	# define lib areas
+## 	# define lib areas
 
-	LOCALLIBAREA = "%s/lib/%s/" % (LOCALBASE[:-5], SCRAM_ARCH)
-	LIBAREA = "%s/lib/%s/" % (BASE[:-5], SCRAM_ARCH)
+## 	LOCALLIBAREA = "%s/lib/%s/" % (LOCALBASE[:-5], SCRAM_ARCH)
+## 	LIBAREA = "%s/lib/%s/" % (BASE[:-5], SCRAM_ARCH)
 
 	getmodule = re.compile('(?<=src/).*(?=/interface)')
-	librecs = []
+## 	librecs = []
 	recs = []
 	keys = hmap.keys()
 	keys.sort()
@@ -284,20 +284,22 @@ def main():
 		else:
 			recs.append("'%s': %s"   % (key, value))
 
-		# find the shared library in which the class typeinfo resides
+## 		# find the shared library in which the class typeinfo resides
 
-		module = split(value,'/interface/')[0]
-		library = "lib%s" % replace(module, '/', '')
+## 		module = split(value,'/interface/')[0]
+## 		library = "lib%s" % replace(module, '/', '')
 
-		found = False
-		filename = "%s%s.so" % (LOCALLIBAREA, library)
-		if not os.path.exists(filename):
-			filename = "%s%s.so" % (LIBAREA, library)
-			if not os.path.exists(filename):
-				continue
+## 		found = False
+## 		filename = "%s%s.so" % (LOCALLIBAREA, library)
+		
+## 		if not os.path.exists(filename):
+## 			filename = "%s%s.so" % (LIBAREA, library)
+## 			if not os.path.exists(filename):
+## 				print "\twarning: library %s not found"
+## 				continue
 
 		# add lib to list
-		librecs.append("'%s': '%s'" % (key, library))
+## 		librecs.append("'%s': '%s'" % (key, library))
 
 	record = joinfields(recs,',\n')		
 	outfile = CLASSMAPFILE
@@ -308,10 +310,10 @@ def main():
 	out.write(record+'\n')
 	out.write("}\n\n")
 
-	record = joinfields(librecs,',\n')
-	out.write("ClassToLibraryMap = {\\\n")
-	out.write(record+'\n')
-	out.write("}\n")
+## 	record = joinfields(librecs,',\n')
+## 	out.write("ClassToLibraryMap = {\\\n")
+## 	out.write(record+'\n')
+## 	out.write("}\n")
 	out.close()
 #---------------------------------------------------------------------------
 main()

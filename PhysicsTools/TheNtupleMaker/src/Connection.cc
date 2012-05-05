@@ -4,7 +4,7 @@
 // Created: Summer-2002 Harrison B. Prosper
 // Updated: 05-Jun-2008 HBP Adapt to CMS
 ///////////////////////////////////////////////////////////////////////
-//$Revision: 1.2 $
+//$Revision: 1.1.1.1 $
 
 #include "PhysicsTools/TheNtupleMaker/interface/Connection.h"
 #include <iostream>
@@ -17,7 +17,7 @@ Connection::Connection(TQObject *sender,   const char *signal,
   : _sender  (sender),
     _signal  (signal)
 {
-  _slot = new Slot((unsigned long)receiver, method);
+  _slot = new Slot(receiver, method);
 
   if ( noArgs(_signal) )
     TQObject::Connect(_sender, _signal.c_str(), 

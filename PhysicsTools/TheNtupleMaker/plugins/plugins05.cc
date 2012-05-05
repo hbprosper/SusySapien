@@ -1,236 +1,44 @@
 // -------------------------------------------------------------------------
 // File::   plugins05.cc
-// Created: Sat May  5 17:06:51 2012 by mkplugins.py
+// Created: Sun May  6 00:03:31 2012 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
 // -------------------------------------------------------------------------
 
-#include "DataFormats/BTauReco/interface/BaseTagInfo.h"
-#include "DataFormats/CaloRecHit/interface/CaloCluster.h"
+#include "AnalysisDataFormats/Egamma/interface/ElectronID.h"
+#include "DataFormats/BTauReco/interface/CombinedTauTagInfo.h"
+#include "DataFormats/BTauReco/interface/EMIsolatedTauTagInfo.h"
+#include "DataFormats/Candidate/interface/CompositeCandidate.h"
 #include "DataFormats/CastorReco/interface/CastorCell.h"
 #include "DataFormats/CastorReco/interface/CastorCluster.h"
-#include "DataFormats/EgammaReco/interface/BasicCluster.h"
+#include "DataFormats/CastorReco/interface/CastorEgamma.h"
+#include "DataFormats/CastorReco/interface/CastorJet.h"
+#include "DataFormats/CastorReco/interface/CastorTower.h"
+#include "DataFormats/EgammaCandidates/interface/Conversion.h"
+#include "DataFormats/EgammaCandidates/interface/Electron.h"
+#include "DataFormats/EgammaReco/interface/ClusterShape.h"
+#include "DataFormats/EgammaReco/interface/ElectronSeed.h"
+#include "DataFormats/EgammaTrackReco/interface/ConversionTrack.h"
+#include "DataFormats/HcalIsolatedTrack/interface/EcalIsolatedParticleCandidate.h"
+#include "DataFormats/HeavyIonEvent/interface/Centrality.h"
+#include "DataFormats/HeavyIonEvent/interface/EvtPlane.h"
 #include "DataFormats/JetReco/interface/BasicJet.h"
 #include "DataFormats/JetReco/interface/CaloJet.h"
+#include "DataFormats/JetReco/interface/CastorJetID.h"
+#include "DataFormats/JetReco/interface/FFTAnyJet.h"
+#include "DataFormats/JetReco/interface/GenJet.h"
+#include "DataFormats/JetReco/interface/JPTJet.h"
+#include "DataFormats/JetReco/interface/PFJet.h"
+#include "DataFormats/JetReco/interface/TrackJet.h"
 #include "DataFormats/METReco/interface/CaloMET.h"
 #include "DataFormats/MuonReco/interface/CaloMuon.h"
-#include "DataFormats/ParticleFlowReco/interface/Calibratable.h"
-#include "DataFormats/ParticleFlowReco/interface/ParticleFiltrationDecision.h"
-#include "DataFormats/PatCandidates/interface/Electron.h"
-#include "DataFormats/PatCandidates/interface/EventHypothesis.h"
-#include "DataFormats/PatCandidates/interface/GenericParticle.h"
-#include "DataFormats/PatCandidates/interface/Hemisphere.h"
-#include "DataFormats/PatCandidates/interface/Jet.h"
-#include "DataFormats/PatCandidates/interface/MET.h"
-#include "DataFormats/PatCandidates/interface/MHT.h"
-#include "DataFormats/PatCandidates/interface/Muon.h"
-#include "DataFormats/PatCandidates/interface/PFParticle.h"
-#include "DataFormats/PatCandidates/interface/Particle.h"
-#include "DataFormats/PatCandidates/interface/Photon.h"
-#include "DataFormats/PatCandidates/interface/Tau.h"
-#include "DataFormats/PatCandidates/interface/TauJetCorrFactors.h"
-#include "DataFormats/PatCandidates/interface/TriggerAlgorithm.h"
-#include "DataFormats/PatCandidates/interface/TriggerCondition.h"
-#include "DataFormats/PatCandidates/interface/TriggerFilter.h"
-#include "DataFormats/PatCandidates/interface/TriggerObject.h"
-#include "DataFormats/PatCandidates/interface/TriggerObjectStandAlone.h"
-#include "DataFormats/PatCandidates/interface/TriggerPath.h"
-#include "DataFormats/TauReco/interface/BaseTau.h"
-#include "DataFormats/TauReco/interface/BaseTauTagInfo.h"
+#include "DataFormats/ParticleFlowReco/interface/ConvBremSeed.h"
 #include "DataFormats/TauReco/interface/CaloTau.h"
 #include "DataFormats/TauReco/interface/CaloTauTagInfo.h"
+#include "DataFormats/TrackReco/interface/DeDxData.h"
 // -------------------------------------------------------------------------
 
-std::string patElectron_n("pat::Electron");
-typedef Buffer<pat::Electron,
-               &patElectron_n, COLLECTION>
-patElectron_t;
-DEFINE_EDM_PLUGIN(BufferFactory, patElectron_t,
-                  "patElectron");
-				  
-std::string patEventHypothesis_n("pat::EventHypothesis");
-typedef Buffer<pat::EventHypothesis,
-               &patEventHypothesis_n, COLLECTION>
-patEventHypothesis_t;
-DEFINE_EDM_PLUGIN(BufferFactory, patEventHypothesis_t,
-                  "patEventHypothesis");
-				  
-std::string patGenericParticle_n("pat::GenericParticle");
-typedef Buffer<pat::GenericParticle,
-               &patGenericParticle_n, COLLECTION>
-patGenericParticle_t;
-DEFINE_EDM_PLUGIN(BufferFactory, patGenericParticle_t,
-                  "patGenericParticle");
-				  
-std::string patHemisphere_n("pat::Hemisphere");
-typedef Buffer<pat::Hemisphere,
-               &patHemisphere_n, COLLECTION>
-patHemisphere_t;
-DEFINE_EDM_PLUGIN(BufferFactory, patHemisphere_t,
-                  "patHemisphere");
-				  
-std::string patJet_n("pat::Jet");
-typedef Buffer<pat::Jet,
-               &patJet_n, COLLECTION>
-patJet_t;
-DEFINE_EDM_PLUGIN(BufferFactory, patJet_t,
-                  "patJet");
-				  
-std::string patMET_n("pat::MET");
-typedef Buffer<pat::MET,
-               &patMET_n, COLLECTION>
-patMET_t;
-DEFINE_EDM_PLUGIN(BufferFactory, patMET_t,
-                  "patMET");
-				  
-std::string patMHT_n("pat::MHT");
-typedef Buffer<pat::MHT,
-               &patMHT_n, COLLECTION>
-patMHT_t;
-DEFINE_EDM_PLUGIN(BufferFactory, patMHT_t,
-                  "patMHT");
-				  
-std::string patMuon_n("pat::Muon");
-typedef Buffer<pat::Muon,
-               &patMuon_n, COLLECTION>
-patMuon_t;
-DEFINE_EDM_PLUGIN(BufferFactory, patMuon_t,
-                  "patMuon");
-				  
-std::string patPFParticle_n("pat::PFParticle");
-typedef Buffer<pat::PFParticle,
-               &patPFParticle_n, COLLECTION>
-patPFParticle_t;
-DEFINE_EDM_PLUGIN(BufferFactory, patPFParticle_t,
-                  "patPFParticle");
-				  
-std::string patParticle_n("pat::Particle");
-typedef Buffer<pat::Particle,
-               &patParticle_n, COLLECTION>
-patParticle_t;
-DEFINE_EDM_PLUGIN(BufferFactory, patParticle_t,
-                  "patParticle");
-				  
-std::string patPhoton_n("pat::Photon");
-typedef Buffer<pat::Photon,
-               &patPhoton_n, COLLECTION>
-patPhoton_t;
-DEFINE_EDM_PLUGIN(BufferFactory, patPhoton_t,
-                  "patPhoton");
-				  
-std::string patTau_n("pat::Tau");
-typedef Buffer<pat::Tau,
-               &patTau_n, COLLECTION>
-patTau_t;
-DEFINE_EDM_PLUGIN(BufferFactory, patTau_t,
-                  "patTau");
-				  
-std::string patTauJetCorrFactorsCorrectionFactor_n("pat::TauJetCorrFactors::CorrectionFactor");
-typedef Buffer<pat::TauJetCorrFactors::CorrectionFactor,
-               &patTauJetCorrFactorsCorrectionFactor_n, COLLECTION>
-patTauJetCorrFactorsCorrectionFactor_t;
-DEFINE_EDM_PLUGIN(BufferFactory, patTauJetCorrFactorsCorrectionFactor_t,
-                  "patTauJetCorrFactorsCorrectionFactor");
-				  
-std::string patTriggerAlgorithm_n("pat::TriggerAlgorithm");
-typedef Buffer<pat::TriggerAlgorithm,
-               &patTriggerAlgorithm_n, COLLECTION>
-patTriggerAlgorithm_t;
-DEFINE_EDM_PLUGIN(BufferFactory, patTriggerAlgorithm_t,
-                  "patTriggerAlgorithm");
-				  
-std::string patTriggerCondition_n("pat::TriggerCondition");
-typedef Buffer<pat::TriggerCondition,
-               &patTriggerCondition_n, COLLECTION>
-patTriggerCondition_t;
-DEFINE_EDM_PLUGIN(BufferFactory, patTriggerCondition_t,
-                  "patTriggerCondition");
-				  
-std::string patTriggerFilter_n("pat::TriggerFilter");
-typedef Buffer<pat::TriggerFilter,
-               &patTriggerFilter_n, COLLECTION>
-patTriggerFilter_t;
-DEFINE_EDM_PLUGIN(BufferFactory, patTriggerFilter_t,
-                  "patTriggerFilter");
-				  
-std::string patTriggerObject_n("pat::TriggerObject");
-typedef Buffer<pat::TriggerObject,
-               &patTriggerObject_n, COLLECTION>
-patTriggerObject_t;
-DEFINE_EDM_PLUGIN(BufferFactory, patTriggerObject_t,
-                  "patTriggerObject");
-				  
-std::string patTriggerObjectStandAlone_n("pat::TriggerObjectStandAlone");
-typedef Buffer<pat::TriggerObjectStandAlone,
-               &patTriggerObjectStandAlone_n, COLLECTION>
-patTriggerObjectStandAlone_t;
-DEFINE_EDM_PLUGIN(BufferFactory, patTriggerObjectStandAlone_t,
-                  "patTriggerObjectStandAlone");
-				  
-std::string patTriggerPath_n("pat::TriggerPath");
-typedef Buffer<pat::TriggerPath,
-               &patTriggerPath_n, COLLECTION>
-patTriggerPath_t;
-DEFINE_EDM_PLUGIN(BufferFactory, patTriggerPath_t,
-                  "patTriggerPath");
-				  
-std::string pftoolsCalibratable_n("pftools::Calibratable");
-typedef Buffer<pftools::Calibratable,
-               &pftoolsCalibratable_n, COLLECTION>
-pftoolsCalibratable_t;
-DEFINE_EDM_PLUGIN(BufferFactory, pftoolsCalibratable_t,
-                  "pftoolsCalibratable");
-				  
-std::string pftoolsParticleFiltrationDecision_n("pftools::ParticleFiltrationDecision");
-typedef Buffer<pftools::ParticleFiltrationDecision,
-               &pftoolsParticleFiltrationDecision_n, COLLECTION>
-pftoolsParticleFiltrationDecision_t;
-DEFINE_EDM_PLUGIN(BufferFactory, pftoolsParticleFiltrationDecision_t,
-                  "pftoolsParticleFiltrationDecision");
-				  
-std::string recoBaseTagInfo_n("reco::BaseTagInfo");
-typedef Buffer<reco::BaseTagInfo,
-               &recoBaseTagInfo_n, COLLECTION>
-recoBaseTagInfo_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoBaseTagInfo_t,
-                  "recoBaseTagInfo");
-				  
-std::string recoBaseTau_n("reco::BaseTau");
-typedef Buffer<reco::BaseTau,
-               &recoBaseTau_n, COLLECTION>
-recoBaseTau_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoBaseTau_t,
-                  "recoBaseTau");
-				  
-std::string recoBaseTauTagInfo_n("reco::BaseTauTagInfo");
-typedef Buffer<reco::BaseTauTagInfo,
-               &recoBaseTauTagInfo_n, COLLECTION>
-recoBaseTauTagInfo_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoBaseTauTagInfo_t,
-                  "recoBaseTauTagInfo");
-				  
-std::string recoBasicCluster_n("reco::BasicCluster");
-typedef Buffer<reco::BasicCluster,
-               &recoBasicCluster_n, COLLECTION>
-recoBasicCluster_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoBasicCluster_t,
-                  "recoBasicCluster");
-				  
-std::string recoBasicJet_n("reco::BasicJet");
-typedef Buffer<reco::BasicJet,
-               &recoBasicJet_n, COLLECTION>
-recoBasicJet_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoBasicJet_t,
-                  "recoBasicJet");
-				  
-std::string recoCaloCluster_n("reco::CaloCluster");
-typedef Buffer<reco::CaloCluster,
-               &recoCaloCluster_n, COLLECTION>
-recoCaloCluster_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoCaloCluster_t,
-                  "recoCaloCluster");
-				  
 std::string recoCaloJet_n("reco::CaloJet");
 typedef Buffer<reco::CaloJet,
                &recoCaloJet_n, COLLECTION>
@@ -279,4 +87,172 @@ typedef Buffer<reco::CastorCluster,
 recoCastorCluster_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoCastorCluster_t,
                   "recoCastorCluster");
+				  
+std::string recoCastorEgamma_n("reco::CastorEgamma");
+typedef Buffer<reco::CastorEgamma,
+               &recoCastorEgamma_n, COLLECTION>
+recoCastorEgamma_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCastorEgamma_t,
+                  "recoCastorEgamma");
+				  
+std::string recoCastorJet_n("reco::CastorJet");
+typedef Buffer<reco::CastorJet,
+               &recoCastorJet_n, COLLECTION>
+recoCastorJet_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCastorJet_t,
+                  "recoCastorJet");
+				  
+std::string recoCastorJetID_n("reco::CastorJetID");
+typedef Buffer<reco::CastorJetID,
+               &recoCastorJetID_n, COLLECTION>
+recoCastorJetID_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCastorJetID_t,
+                  "recoCastorJetID");
+				  
+std::string recoCastorTower_n("reco::CastorTower");
+typedef Buffer<reco::CastorTower,
+               &recoCastorTower_n, COLLECTION>
+recoCastorTower_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCastorTower_t,
+                  "recoCastorTower");
+				  
+std::string recoCentrality_n("reco::Centrality");
+typedef Buffer<reco::Centrality,
+               &recoCentrality_n, COLLECTION>
+recoCentrality_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCentrality_t,
+                  "recoCentrality");
+				  
+std::string recoClusterShape_n("reco::ClusterShape");
+typedef Buffer<reco::ClusterShape,
+               &recoClusterShape_n, COLLECTION>
+recoClusterShape_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoClusterShape_t,
+                  "recoClusterShape");
+				  
+std::string recoCombinedTauTagInfo_n("reco::CombinedTauTagInfo");
+typedef Buffer<reco::CombinedTauTagInfo,
+               &recoCombinedTauTagInfo_n, COLLECTION>
+recoCombinedTauTagInfo_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCombinedTauTagInfo_t,
+                  "recoCombinedTauTagInfo");
+				  
+std::string recoCompositeCandidate_n("reco::CompositeCandidate");
+typedef Buffer<reco::CompositeCandidate,
+               &recoCompositeCandidate_n, COLLECTION>
+recoCompositeCandidate_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCompositeCandidate_t,
+                  "recoCompositeCandidate");
+				  
+std::string recoConvBremSeed_n("reco::ConvBremSeed");
+typedef Buffer<reco::ConvBremSeed,
+               &recoConvBremSeed_n, COLLECTION>
+recoConvBremSeed_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoConvBremSeed_t,
+                  "recoConvBremSeed");
+				  
+std::string recoConversion_n("reco::Conversion");
+typedef Buffer<reco::Conversion,
+               &recoConversion_n, COLLECTION>
+recoConversion_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoConversion_t,
+                  "recoConversion");
+				  
+std::string recoConversionTrack_n("reco::ConversionTrack");
+typedef Buffer<reco::ConversionTrack,
+               &recoConversionTrack_n, COLLECTION>
+recoConversionTrack_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoConversionTrack_t,
+                  "recoConversionTrack");
+				  
+std::string recoDeDxData_n("reco::DeDxData");
+typedef Buffer<reco::DeDxData,
+               &recoDeDxData_n, COLLECTION>
+recoDeDxData_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoDeDxData_t,
+                  "recoDeDxData");
+				  
+std::string recoEMIsolatedTauTagInfo_n("reco::EMIsolatedTauTagInfo");
+typedef Buffer<reco::EMIsolatedTauTagInfo,
+               &recoEMIsolatedTauTagInfo_n, COLLECTION>
+recoEMIsolatedTauTagInfo_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoEMIsolatedTauTagInfo_t,
+                  "recoEMIsolatedTauTagInfo");
+				  
+std::string recoEcalIsolatedParticleCandidate_n("reco::EcalIsolatedParticleCandidate");
+typedef Buffer<reco::EcalIsolatedParticleCandidate,
+               &recoEcalIsolatedParticleCandidate_n, COLLECTION>
+recoEcalIsolatedParticleCandidate_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoEcalIsolatedParticleCandidate_t,
+                  "recoEcalIsolatedParticleCandidate");
+				  
+std::string recoElectron_n("reco::Electron");
+typedef Buffer<reco::Electron,
+               &recoElectron_n, COLLECTION>
+recoElectron_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoElectron_t,
+                  "recoElectron");
+				  
+std::string recoElectronID_n("reco::ElectronID");
+typedef Buffer<reco::ElectronID,
+               &recoElectronID_n, COLLECTION>
+recoElectronID_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoElectronID_t,
+                  "recoElectronID");
+				  
+std::string recoElectronSeed_n("reco::ElectronSeed");
+typedef Buffer<reco::ElectronSeed,
+               &recoElectronSeed_n, COLLECTION>
+recoElectronSeed_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoElectronSeed_t,
+                  "recoElectronSeed");
+				  
+std::string recoEvtPlane_n("reco::EvtPlane");
+typedef Buffer<reco::EvtPlane,
+               &recoEvtPlane_n, COLLECTION>
+recoEvtPlane_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoEvtPlane_t,
+                  "recoEvtPlane");
+				  
+std::string recoFFTAnyJetrecoBasicJet_n("reco::FFTAnyJet<reco::BasicJet>");
+typedef Buffer<reco::FFTAnyJet<reco::BasicJet>,
+               &recoFFTAnyJetrecoBasicJet_n, COLLECTION>
+recoFFTAnyJetrecoBasicJet_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoFFTAnyJetrecoBasicJet_t,
+                  "recoFFTAnyJetrecoBasicJet");
+				  
+std::string recoFFTAnyJetrecoCaloJet_n("reco::FFTAnyJet<reco::CaloJet>");
+typedef Buffer<reco::FFTAnyJet<reco::CaloJet>,
+               &recoFFTAnyJetrecoCaloJet_n, COLLECTION>
+recoFFTAnyJetrecoCaloJet_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoFFTAnyJetrecoCaloJet_t,
+                  "recoFFTAnyJetrecoCaloJet");
+				  
+std::string recoFFTAnyJetrecoGenJet_n("reco::FFTAnyJet<reco::GenJet>");
+typedef Buffer<reco::FFTAnyJet<reco::GenJet>,
+               &recoFFTAnyJetrecoGenJet_n, COLLECTION>
+recoFFTAnyJetrecoGenJet_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoFFTAnyJetrecoGenJet_t,
+                  "recoFFTAnyJetrecoGenJet");
+				  
+std::string recoFFTAnyJetrecoJPTJet_n("reco::FFTAnyJet<reco::JPTJet>");
+typedef Buffer<reco::FFTAnyJet<reco::JPTJet>,
+               &recoFFTAnyJetrecoJPTJet_n, COLLECTION>
+recoFFTAnyJetrecoJPTJet_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoFFTAnyJetrecoJPTJet_t,
+                  "recoFFTAnyJetrecoJPTJet");
+				  
+std::string recoFFTAnyJetrecoPFJet_n("reco::FFTAnyJet<reco::PFJet>");
+typedef Buffer<reco::FFTAnyJet<reco::PFJet>,
+               &recoFFTAnyJetrecoPFJet_n, COLLECTION>
+recoFFTAnyJetrecoPFJet_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoFFTAnyJetrecoPFJet_t,
+                  "recoFFTAnyJetrecoPFJet");
+				  
+std::string recoFFTAnyJetrecoTrackJet_n("reco::FFTAnyJet<reco::TrackJet>");
+typedef Buffer<reco::FFTAnyJet<reco::TrackJet>,
+               &recoFFTAnyJetrecoTrackJet_n, COLLECTION>
+recoFFTAnyJetrecoTrackJet_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoFFTAnyJetrecoTrackJet_t,
+                  "recoFFTAnyJetrecoTrackJet");
 				  

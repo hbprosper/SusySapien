@@ -15,7 +15,7 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Wed Jun 20 19:53:47 EDT 2007
 //         Updated:  Sat Oct 25 2008 - make matchInDeltaR saner
-// $Id: rfx.cc,v 1.3 2011/06/06 17:10:04 prosper Exp $
+// $Id: rfx.cc,v 1.4 2012/05/04 20:54:37 prosper Exp $
 //
 //
 //-----------------------------------------------------------------------------
@@ -41,7 +41,7 @@
 #include "TIterator.h"
 #include "TFile.h"
 #include "TInterpreter.h"
-#include "FWCore/FWLite/interface/AutoLibraryLoader.h"
+
 #include "FWCore/Utilities/interface/Exception.h"
 #include "PhysicsTools/TheNtupleMaker/interface/rfx.h"
 #include "PhysicsTools/TheNtupleMaker/interface/colors.h"

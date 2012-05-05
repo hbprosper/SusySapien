@@ -5,7 +5,7 @@
 # Created: 06-Mar-2010 Harrison B. Prosper
 # Updated: 05-Oct-2010 HBP - clean up
 #          12-Mar-2011 HBP - give user option to add variables
-#$Id: mkmacro.py,v 1.2 2012/05/04 20:54:35 prosper Exp $
+#$Id: mkmacro.py,v 1.3 2012/05/05 04:24:17 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
 from string import *
@@ -255,7 +255,7 @@ LDFLAGS := -shared
 #------------------------------------------------------------------------------
 LIBS	:= $(shell root-config --glibs)
 #------------------------------------------------------------------------------
-linkdef	:= linkdef.h
+linkdef	:= $(name)Linkdef.h
 header  := %(name)s.h
 cinthdr := dict.h
 cintsrc	:= dict.cc

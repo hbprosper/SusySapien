@@ -2,16 +2,14 @@
 # File: ReflexLib.py
 # Description: A collection of simple Reflex utilities
 # Created: 25-Apr-2012 Harrison B. Prosper
-#$Revision: 1.1 $
+#$Revision: 1.2 $
 #---------------------------------------------------------------------------
 from ROOT import *
 from string import *
 import os, sys, re, posixpath
 from PhysicsTools.TheNtupleMaker.Lib import fixName, getwords
 try:
-	from PhysicsTools.TheNtupleMaker.classmap import \
-		 ClassToHeaderMap,\
-		 ClassToLibraryMap
+	from PhysicsTools.TheNtupleMaker.classmap import ClassToHeaderMap
 except:
 	print "*** unable to import ClassToHeaderMap"
 	print "*** run mkclassmap.py to create classmap.py"
@@ -70,22 +68,22 @@ LOADED_LIBS = {}
 
 def loadLibrary(name):
 	name = fixName(name) # remove unnecessary spaces
-	if not ClassToLibraryMap.has_key(name): return
+
+	if not ClassToHeaderMap.has_key(name): return
+
+	# construct library name from header:
+	# lib<subsystem><package>
 	
-	library = ClassToLibraryMap[name]
+	library = "lib%s%s" % tuple(split(ClassToHeaderMap[name],'/')[:2])
+	
 	if LOADED_LIBS.has_key(library): return
 	
 	LOADED_LIBS[library] = 0
 
-	found = False
-	if   os.path.exists("%s%s.so" % (LOCALLIBAREA, library)):
-		found = True
-	elif os.path.exists("%s%s.so" % (LIBAREA, library)):
-		found = True
-
-	if found:
-		if gSystem.Load(library) != 0:
-			print "** failed to load %s for %s" % (library, name)
+	try:
+		gSystem.Load(library)
+	except:
+		print "** failed to load %s for %s" % (library, name)
 #----------------------------------------------------------------------------
 skipmethod = re.compile(r'TClass|TBuffer|TMember|operator|^__')
 reftype    = re.compile(r'(?<=edm::Ref\<std::vector\<)(?P<name>.+?)(?=\>,)')

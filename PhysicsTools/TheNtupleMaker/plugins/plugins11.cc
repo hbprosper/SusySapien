@@ -1,13 +1,11 @@
 // -------------------------------------------------------------------------
 // File::   plugins11.cc
-// Created: Sat May  5 17:06:51 2012 by mkplugins.py
+// Created: Sun May  6 00:03:31 2012 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
 // -------------------------------------------------------------------------
 
-#include "AnalysisDataFormats/CMGTools/interface/METSignificance.h"
-#include "AnalysisDataFormats/TopObjects/interface/StGenEvent.h"
 #include "AnalysisDataFormats/TopObjects/interface/TopGenEvent.h"
 #include "AnalysisDataFormats/TopObjects/interface/TtFullHadronicEvent.h"
 #include "AnalysisDataFormats/TopObjects/interface/TtFullLeptonicEvent.h"
@@ -25,7 +23,6 @@
 #include "DataFormats/Common/interface/RefProd.h"
 #include "DataFormats/Common/interface/TriggerResults.h"
 #include "DataFormats/HLTReco/interface/ModuleTiming.h"
-#include "DataFormats/HeavyIonEvent/interface/Centrality.h"
 #include "DataFormats/HeavyIonEvent/interface/HeavyIon.h"
 #include "DataFormats/JetReco/interface/BasicJetCollection.h"
 #include "DataFormats/JetReco/interface/CaloJetCollection.h"
@@ -42,13 +39,6 @@
 #include "SimDataFormats/HiGenData/interface/GenHIEvent.h"
 // -------------------------------------------------------------------------
 
-std::string StGenEvent_n("StGenEvent");
-typedef Buffer<StGenEvent,
-               &StGenEvent_n, SINGLETON>
-StGenEvent_t;
-DEFINE_EDM_PLUGIN(BufferFactory, StGenEvent_t,
-                  "StGenEvent");
-				  
 std::string StringMap_n("StringMap");
 typedef Buffer<StringMap,
                &StringMap_n, SINGLETON>
@@ -97,13 +87,6 @@ typedef Buffer<TtSemiLeptonicEvent,
 TtSemiLeptonicEvent_t;
 DEFINE_EDM_PLUGIN(BufferFactory, TtSemiLeptonicEvent_t,
                   "TtSemiLeptonicEvent");
-				  
-std::string cmgMETSignificance_n("cmg::METSignificance");
-typedef Buffer<cmg::METSignificance,
-               &cmgMETSignificance_n, SINGLETON>
-cmgMETSignificance_t;
-DEFINE_EDM_PLUGIN(BufferFactory, cmgMETSignificance_t,
-                  "cmgMETSignificance");
 				  
 std::string edmConditionsInEventBlock_n("edm::ConditionsInEventBlock");
 typedef Buffer<edm::ConditionsInEventBlock,
@@ -265,13 +248,6 @@ typedef Buffer<reco::CandidatePtrVector,
 recoCandidatePtrVector_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoCandidatePtrVector_t,
                   "recoCandidatePtrVector");
-				  
-std::string recoCentrality_n("reco::Centrality");
-typedef Buffer<reco::Centrality,
-               &recoCentrality_n, SINGLETON>
-recoCentrality_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoCentrality_t,
-                  "recoCentrality");
 				  
 std::string recoClusterRemovalInfo_n("reco::ClusterRemovalInfo");
 typedef Buffer<reco::ClusterRemovalInfo,

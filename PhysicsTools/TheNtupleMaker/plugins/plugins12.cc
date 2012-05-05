@@ -1,20 +1,16 @@
 // -------------------------------------------------------------------------
 // File::   plugins12.cc
-// Created: Sat May  5 17:06:51 2012 by mkplugins.py
+// Created: Sun May  6 00:03:31 2012 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
 // -------------------------------------------------------------------------
 
-#include "AnalysisDataFormats/SUSYBSMObjects/interface/HSCPCaloInfo.h"
-#include "AnalysisDataFormats/SUSYBSMObjects/interface/HSCPIsolation.h"
-#include "AnalysisDataFormats/SUSYBSMObjects/interface/HSCParticle.h"
 #include "DataFormats/HLTReco/interface/HLTPrescaleTable.h"
 #include "DataFormats/HLTReco/interface/HLTResult.h"
 #include "DataFormats/HLTReco/interface/TriggerEvent.h"
 #include "DataFormats/HLTReco/interface/TriggerEventWithRefs.h"
 #include "DataFormats/HLTReco/interface/TriggerFilterObjectWithRefs.h"
-#include "DataFormats/HeavyIonEvent/interface/EvtPlane.h"
 #include "DataFormats/HepMCCandidate/interface/PdfInfo.h"
 #include "DataFormats/JetReco/interface/DiscretizedEnergyFlow.h"
 #include "DataFormats/JetReco/interface/FFTJetPileupSummary.h"
@@ -47,13 +43,6 @@ typedef Buffer<reco::EcalHaloData,
 recoEcalHaloData_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoEcalHaloData_t,
                   "recoEcalHaloData");
-				  
-std::string recoEvtPlane_n("reco::EvtPlane");
-typedef Buffer<reco::EvtPlane,
-               &recoEvtPlane_n, SINGLETON>
-recoEvtPlane_t;
-DEFINE_EDM_PLUGIN(BufferFactory, recoEvtPlane_t,
-                  "recoEvtPlane");
 				  
 std::string recoFFTJetPileupSummary_n("reco::FFTJetPileupSummary");
 typedef Buffer<reco::FFTJetPileupSummary,
@@ -180,41 +169,6 @@ typedef Buffer<reco::TrackJetRefVector,
 recoTrackJetRefVector_t;
 DEFINE_EDM_PLUGIN(BufferFactory, recoTrackJetRefVector_t,
                   "recoTrackJetRefVector");
-				  
-std::string susybsmHSCPCaloInfo_n("susybsm::HSCPCaloInfo");
-typedef Buffer<susybsm::HSCPCaloInfo,
-               &susybsmHSCPCaloInfo_n, SINGLETON>
-susybsmHSCPCaloInfo_t;
-DEFINE_EDM_PLUGIN(BufferFactory, susybsmHSCPCaloInfo_t,
-                  "susybsmHSCPCaloInfo");
-				  
-std::string susybsmHSCPCaloInfoValueMap_n("susybsm::HSCPCaloInfoValueMap");
-typedef Buffer<susybsm::HSCPCaloInfoValueMap,
-               &susybsmHSCPCaloInfoValueMap_n, SINGLETON>
-susybsmHSCPCaloInfoValueMap_t;
-DEFINE_EDM_PLUGIN(BufferFactory, susybsmHSCPCaloInfoValueMap_t,
-                  "susybsmHSCPCaloInfoValueMap");
-				  
-std::string susybsmHSCPIsolation_n("susybsm::HSCPIsolation");
-typedef Buffer<susybsm::HSCPIsolation,
-               &susybsmHSCPIsolation_n, SINGLETON>
-susybsmHSCPIsolation_t;
-DEFINE_EDM_PLUGIN(BufferFactory, susybsmHSCPIsolation_t,
-                  "susybsmHSCPIsolation");
-				  
-std::string susybsmHSCPIsolationValueMap_n("susybsm::HSCPIsolationValueMap");
-typedef Buffer<susybsm::HSCPIsolationValueMap,
-               &susybsmHSCPIsolationValueMap_n, SINGLETON>
-susybsmHSCPIsolationValueMap_t;
-DEFINE_EDM_PLUGIN(BufferFactory, susybsmHSCPIsolationValueMap_t,
-                  "susybsmHSCPIsolationValueMap");
-				  
-std::string susybsmTracksEcalRecHitsMap_n("susybsm::TracksEcalRecHitsMap");
-typedef Buffer<susybsm::TracksEcalRecHitsMap,
-               &susybsmTracksEcalRecHitsMap_n, SINGLETON>
-susybsmTracksEcalRecHitsMap_t;
-DEFINE_EDM_PLUGIN(BufferFactory, susybsmTracksEcalRecHitsMap_t,
-                  "susybsmTracksEcalRecHitsMap");
 				  
 std::string triggerHLTPrescaleTable_n("trigger::HLTPrescaleTable");
 typedef Buffer<trigger::HLTPrescaleTable,
