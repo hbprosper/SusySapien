@@ -13,7 +13,7 @@
 //                   Thu May 03 2012 HBP - allow for storage of selected
 //                                         objects
 //
-// $Id: UserBuffer.h,v 1.8 2012/05/04 20:54:34 prosper Exp $
+// $Id: UserBuffer.h,v 1.9 2012/05/05 04:24:16 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/BufferUtil.h"
@@ -184,6 +184,7 @@ struct UserBuffer  : public BufferThing
     
     // Cache event and eventsetup in helper
     helper_.cacheEvent(event, eventsetup);
+
      
     // Perform (optional) user event-level analysis
     helper_.analyzeEvent();

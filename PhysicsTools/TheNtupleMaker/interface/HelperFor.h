@@ -6,7 +6,7 @@
 // Description: Base class for helpers
 // Created:     Aug, 2010 Harrison B. Prosper
 //              01 May, 2011 HBP add param
-//$Revision: 1.4 $
+//$Revision: 1.5 $
 //-----------------------------------------------------------------------------
 #include <sstream>
 #include <memory>
@@ -37,11 +37,13 @@ public:
   {}
 
   virtual ~HelperFor() {}
+
   ///
   void cacheEvent(const edm::Event& e, const edm::EventSetup& s) 
   { 
     event = &e;
     eventsetup = &s;
+    hltconfig  = Configuration::instance().getHLTconfig();
   }
 
   ///

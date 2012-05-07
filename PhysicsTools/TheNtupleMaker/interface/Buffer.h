@@ -28,7 +28,7 @@
 //                                    file, BufferEvent.h
 //                   Sun Apr 22 2012 HBP - Use Caller object
 //
-// $Id: Buffer.h,v 1.5 2012/05/04 20:54:34 prosper Exp $
+// $Id: Buffer.h,v 1.6 2012/05/05 04:24:16 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/BufferUtil.h"
@@ -70,7 +70,6 @@ struct Buffer  : public BufferThing
   Buffer() 
     : out_(0),
       classname_(*CNAME),
-      //classname_(boost::python::type_id<X>().name()),
       label_(""),
       label1_(""),
       label2_(""),
@@ -225,7 +224,9 @@ struct Buffer  : public BufferThing
   /// Shrink buffer size using specified array of indices.
   void shrink(std::vector<int>& index)
   {
+    // Reset count
     count_ = index.size();
+
     if ( count_ > (int)cache_.size() ) cache_.resize(count_);
 
     if ( debug_ > 0 )
@@ -233,12 +234,12 @@ struct Buffer  : public BufferThing
 
     for(unsigned i=0; i < variables_.size(); ++i)
       {
-        for(int j=0; j < count_; ++j)
-          cache_[j] = variables_[i].value[index[j]];
-        
+        for(int j=0; j < count_; ++j) cache_[j]=variables_[i].value[index[j]];
+   
         for(int j=0; j < count_; ++j)
           {
             variables_[i].value[j] = cache_[j];
+            
             if ( debug_ > 0 )
               {
                 std::cout << "\t" 

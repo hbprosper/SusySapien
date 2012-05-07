@@ -8,7 +8,7 @@
 //                   Thu Feb 17 HBP change definition of isArray (maxcount > 1)
 //                   Wed Jul 20 HBP handle BasicType
 //                   25-Apr-2012 HBP fix objectname when it is a template
-// $Id: BufferUtil.cc,v 1.2 2011/07/20 16:19:55 prosper Exp $
+// $Id: BufferUtil.cc,v 1.3 2012/05/04 20:54:37 prosper Exp $
 //-----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python/type_id.hpp>
@@ -138,7 +138,8 @@ void initializeBuffer(otreestream& out,
       // Add leaf counter to tree
       counter = "n" + prefix;        
       out.add(counter, count);
-      std::cout << "      counter: " << counter << std::endl;
+      std::cout << "      counter: " << counter 
+                << "\taddress( " << &count << ")" << std::endl;
       log << "int/" 
           << counter << "/"
           << "n"+objectname << "/"

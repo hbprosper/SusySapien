@@ -129,9 +129,13 @@ TriggerResultsHelper::prescale(std::string name)
                          "event pointer is ZERO");
   
   if ( hltconfig == 0 )
-    throw edm::Exception(edm::errors::Configuration,
-                         "\nTriggerResultsHelper - " 
-                         "HLTConfigProvider pointer is ZERO");
+    { 
+      edm::LogWarning("HLTConfigProviderNotInitialized")
+        << "\nTriggerResultsHelper::prescale - " 
+        << "HLTConfigProvider has not been initialized"
+        << std::endl;
+      return 1;
+    }
   
   // NB: use a reference to avoid expensive copying
   try

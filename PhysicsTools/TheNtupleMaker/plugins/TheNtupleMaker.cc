@@ -55,7 +55,7 @@
 //                   Fri Jul 22 2011 HBP - make buffer name and get by label
 //                                   available to buffers
 //                   Mon Aug 08 2011 HBP - allow global alias
-// $Id: TheNtupleMaker.cc,v 1.15 2012/05/04 20:54:34 prosper Exp $
+// $Id: TheNtupleMaker.cc,v 1.16 2012/05/05 04:24:16 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -141,7 +141,8 @@ private:
 
   // From Josh's code
   std::string triggerProcessName_;
-  HLTConfigProvider hltConfig_; 
+  HLTConfigProvider HLTconfig_;
+  bool HLTconfigured;
 };
 
 
@@ -149,7 +150,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   : ntuplename_(iConfig.getUntrackedParameter<string>("ntupleName")), 
     output(otreestream(ntuplename_,
                        "Events", 
-                       "created by TheNtupleMaker $Revision: 1.15 $")),
+                       "created by TheNtupleMaker $Revision: 1.16 $")),
     logfilename_("TheNtupleMaker.log"),
     log_(new std::ofstream(logfilename_.c_str())),
     macroname_(""),
@@ -159,7 +160,8 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
     haltlogger_(false),
     macroEnabled_(false),
     inputCount_(0),
-    triggerProcessName_("HLT") 
+    triggerProcessName_("HLT"),
+    HLTconfigured(false)
 {
   cout << "\nBEGIN TheNtupleMaker Configuration" << endl;
 
@@ -170,7 +172,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   // --------------------------------------------------------------------------
   TFile* file = output.file();
   ptree_ = new TTree("Provenance",
-                     "created by TheNtupleMaker $Revision: 1.15 $");
+                     "created by TheNtupleMaker $Revision: 1.16 $");
   string cmsver("unknown");
   if ( getenv("CMSSW_VERSION") > 0 ) cmsver = string(getenv("CMSSW_VERSION"));
   ptree_->Branch("cmssw_version", (void*)(cmsver.c_str()), "cmssw_version/C");
@@ -196,8 +198,8 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   ptree_->Fill();
 
   // --------------------------------------------------------------------------
-  // Cache global configuration 
-  Configuration::instance().set(iConfig, hltConfig_);
+  // Cache global configuration
+  Configuration::instance().set(iConfig);
     
   // Get optional configuration parameters
 
@@ -642,26 +644,6 @@ TheNtupleMaker::analyze(const edm::Event& iEvent,
   if ( count_ % imalivecount_ == 0 )
     cout << "\t=> event count: " << count_ << endl;
 
-  //string message("");  
-   //if ( !buffers[i]->fill(iEvent, iSetup) ) message += buffers[i]->message();
-
-  // Check for error report from buffers
-
-//   if ( message != "" )
-//     {
-//       time_t tt = time(0);
-//       string ct(ctime(&tt));
-      
-//       log_->open(logfilename_.c_str(), ios::app);
-//       *log_ << endl
-//             << "REPORT RUN: " 
-//             << iEvent.id().run() << "\tEvent: " << iEvent.id().event() 
-//             << "\t" << ct << endl 
-//             << message << endl
-//             << "END" << endl;
-//       log_->close();
-//     }
-
   // Apply optional cuts
 
   if ( ! selectEvent(iEvent) ) return;
@@ -676,11 +658,8 @@ TheNtupleMaker::analyze(const edm::Event& iEvent,
   output.store();
 
   // Ok, fill this branch
-  TFile* file = output.file();
-  file->cd();
-  //ptree_->Fill();
 
-  output.save();
+  output.commit();
 }
 
 bool
@@ -775,30 +754,41 @@ TheNtupleMaker::beginRun(const edm::Run& run,
 
   try
     {
-      bool hltChanged=false;
+      bool HLTchanged=false;
 
-      bool okay = hltConfig_.init(run, 
+      bool okay = HLTconfig_.init(run, 
                                   eventsetup, 
                                   triggerProcessName_, 
-                                  hltChanged);
+                                  HLTchanged);
       if ( okay )
         {
-          if ( hltChanged ) 
+          if ( HLTchanged ) 
             edm::LogInfo("HLTConfig") 
               << "The HLT configuration has changed"
               << std::endl;
+          HLTconfigured = true;
         }
-      else 
-        edm::LogWarning("HLTConfigFailure") 
-          << "Problem with HLT configuration"
-          << std::endl;
+      else
+        {
+          edm::LogWarning("HLTConfigFailure") 
+            << "Problem with HLT configuration"
+            << std::endl;
+          HLTconfigured = false;
+        }
     }
   catch (...)
     {
       edm::LogWarning("HLTConfigInitFailure") 
         << "Problem initializing HLT configuration"
         << std::endl;
+      HLTconfigured = false;
     }
+
+  // Update HLT config pointer
+  if ( HLTconfigured ) 
+    Configuration::instance().set(&HLTconfig_);
+  else
+    Configuration::instance().set((HLTConfigProvider*)0);
 }
 
 // --- method called once each job just after ending the event loop  ----------

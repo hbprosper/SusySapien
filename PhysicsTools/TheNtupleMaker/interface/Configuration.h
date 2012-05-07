@@ -10,7 +10,7 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Wed Sep 01, 2010
 //
-// $Id: Configuration.h,v 1.3 2011/07/23 12:33:25 prosper Exp $
+// $Id: Configuration.h,v 1.4 2011/08/01 07:47:55 prosper Exp $
 
 #include <string>
 #include <sstream>
@@ -29,11 +29,21 @@ public:
   }
 
   ///
-  void set(const edm::ParameterSet& config, 
-           HLTConfigProvider& hltconfig) 
+  void set(const edm::ParameterSet& config)
   { 
     config_ = &config;
+  }
+
+  ///
+  void set(HLTConfigProvider& hltconfig) 
+  { 
     hltconfig_ = &hltconfig;
+  }
+
+  ///
+  void set(HLTConfigProvider* hltconfig) 
+  { 
+    hltconfig_ = hltconfig;
   }
 
   ///
