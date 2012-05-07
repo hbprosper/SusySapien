@@ -6,7 +6,10 @@
 // Updated:     Mon Mar 08, 2010 Sezen & HBP - add triggerBits class
 //              Tue Aug 24, 2010 HBP - add HcalNoiseRBXHelper
 //              Thu Sep 02, 2010 HBP - update to new version of HelperFor
-//$Revision: 1.6 $
+//              Mon May 07, 2012 HBP - value and prescale of 
+//                                     TriggerResultsHelper now returns -1
+//                                     if a trigger does not exist
+//$Revision: 1.8 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -69,7 +72,7 @@ TriggerResultsHelper::TriggerResultsHelper()
 TriggerResultsHelper::~TriggerResultsHelper() {}
 
 ///
-bool 
+int 
 TriggerResultsHelper::value(std::string name) const
 {
   if ( event == 0 )
@@ -104,10 +107,10 @@ TriggerResultsHelper::value(std::string name) const
             << "\nTriggerResultsHelper::value - " 
             << "trigger \"" + name + "\" NOT FOUND"
             << std::endl;
-          return true;
+          return -1;
         }
       else
-        return object->accept(bit);
+        return object->accept(bit) ? 1 : 0;
     }
   catch (...)
     {
@@ -115,12 +118,12 @@ TriggerResultsHelper::value(std::string name) const
         << "\nTriggerResultsHelper::value - " 
         << "Problem accessing trigger \"" + name + "\""
         << std::endl;
-      return true;
+      return -1;
     }
 }
 
 ///
-unsigned int
+int
 TriggerResultsHelper::prescale(std::string name)
 {
   if ( event == 0 )
@@ -134,7 +137,7 @@ TriggerResultsHelper::prescale(std::string name)
         << "\nTriggerResultsHelper::prescale - " 
         << "HLTConfigProvider has not been initialized"
         << std::endl;
-      return 1;
+      return -1;
     }
   
   // NB: use a reference to avoid expensive copying
@@ -164,16 +167,16 @@ TriggerResultsHelper::prescale(std::string name)
             << "\nTriggerResultsHelper::prescale - " 
             << "trigger \"" + name + "\" NOT FOUND"
             << std::endl;
-          return 1;
+          return -1;
         }
       else
         {
           if ( !event->isRealData() ) 
             return 1;
           else if (hltconfig->prescaleSet(*event, *eventsetup) != -1)
-            return hltconfig->prescaleValue(*event, *eventsetup, name);
+            return (int)hltconfig->prescaleValue(*event, *eventsetup, name);
           else
-            return 1;
+            return -1;
         }
     }
   catch (...)
@@ -182,7 +185,7 @@ TriggerResultsHelper::prescale(std::string name)
         << "\nTriggerResultsHelper::prescale - "
         << "Problem accessing prescale for trigger \"" + name + "\""
         << std::endl;
-      return 1;
+      return -1;
     }
 }
 

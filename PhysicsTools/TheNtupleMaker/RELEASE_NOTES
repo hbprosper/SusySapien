@@ -1,5 +1,10 @@
-$Revision: 1.30 $
+$Revision: 1.31 $
 
+v5_3_5 May 07 2012
+------------------
+	1. TriggerResultsHelper::value and prescale now return -1 if no trigger
+	   of a given name exists.
+	
 v5_3_4 May 06 2012
 ------------------
 	1. Fix bug in mkhelper.py - mkhelper.py should now return all methods

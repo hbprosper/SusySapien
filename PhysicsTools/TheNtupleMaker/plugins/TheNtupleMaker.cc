@@ -289,16 +289,16 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
 
       // Create commands to execute macro using CINT
 
+      string treecmd("TTree* tree = (TTree*)0x%lx"); 
+      gROOT->ProcessLine(Form(treecmd.c_str(),(unsigned long)(output.tree())));
+
       string mapcmd("map<string,countvalue>* "
-                    "varmap = (map<string,countvalue>*)0x%x");
-      gROOT->ProcessLine(Form(mapcmd.c_str(), &varmap));
+                    "varmap = (map<string,countvalue>*)0x%lx");
+      gROOT->ProcessLine(Form(mapcmd.c_str(), (unsigned long)(&varmap)));
 
       string imapcmd("map<string,vector<int> >* "
-                     "indexmap = (map<string,vector<int> >*)0x%x");
-      gROOT->ProcessLine(Form(imapcmd.c_str(), &indexmap));
-
-      string treecmd("TTree* tree = (TTree*)0x%x"); 
-      gROOT->ProcessLine(Form(treecmd.c_str(), output.tree()));
+                     "indexmap = (map<string,vector<int> >*)0x%lx");
+      gROOT->ProcessLine(Form(imapcmd.c_str(), (unsigned long)(&indexmap)));
 
       string macrocmd = macroname_ + string(" obj(tree,varmap,indexmap);");
       gROOT->ProcessLine(macrocmd.c_str());
@@ -655,10 +655,6 @@ TheNtupleMaker::analyze(const edm::Event& iEvent,
 
   // Copy data to output buffers
 
-  output.store();
-
-  // Ok, fill this branch
-
   output.commit();
 }
 
@@ -703,7 +699,7 @@ TheNtupleMaker::shrinkBuffers()
 
   if ( DEBUG > 0)
     cout << " ==> indexmap.size(): " << indexmap.size() << endl;
-
+  //DEBUG = 1;
   for(iter=indexmap.begin(); iter != indexmap.end(); ++iter)
     {
       string name(iter->first);
@@ -734,6 +730,7 @@ TheNtupleMaker::shrinkBuffers()
                              "\n\tyou blocks you stones you worse "
                              "than senseless things\n");
     }
+  //DEBUG = 0;
 }
 
 // --- method called once each job just before starting event loop  -----------
