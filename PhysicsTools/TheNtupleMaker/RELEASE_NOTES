@@ -1,4 +1,13 @@
-$Revision: 1.29 $
+$Revision: 1.30 $
+
+v5_3_4 May 06 2012
+------------------
+	1. Fix bug in mkhelper.py - mkhelper.py should now return all methods
+	   with arguments of fundamental types
+	2. Verified that the selection mechanism in helpers, based on the use of
+	   the count variable, works
+	3. Trap errors in TriggerHelper rather than crash 
+
 
 v5_3_3 May 05 2012
 ------------------

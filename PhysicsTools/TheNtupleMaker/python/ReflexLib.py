@@ -2,7 +2,7 @@
 # File: ReflexLib.py
 # Description: A collection of simple Reflex utilities
 # Created: 25-Apr-2012 Harrison B. Prosper
-#$Revision: 1.2 $
+#$Revision: 1.3 $
 #---------------------------------------------------------------------------
 from ROOT import *
 from string import *
@@ -21,7 +21,10 @@ isFuntype = re.compile(r'[0-9]+|bool|short|int|long|float|double'\
 					   '|unsigned short|unsigned int|unsigned long'\
 					   '|std::string|char|const char')
 isSTL     = re.compile(r'std::(vector|set|map|pair)')
-stufftoskip = re.compile(r'operator|__|iterator')
+skipthis  = re.compile('operator|'\
+					   '__get|'\
+					   'const_iterator|'\
+					   'iterator')
 #------------------------------------------------------------------------------
 def findHeaders(name):
 	hdrs = {}
@@ -94,8 +97,17 @@ FINAL   = 1
 SCOPED  = 4
 def classMethods(classname, db, depth=0):
 	loadLibrary(classname)
-	
+
 	depth += 1
+	if depth == 1:
+		db['scopes'] = {}
+		db['methods'] = {}
+		db['datamembers'] = {}
+		db['classname'] = classname
+		db['classlist'] = []
+		db['baseclassnames'] = []
+		db['signature'] = {}
+		
 	if depth > 20:
 		print "lost in trees"
 		return
@@ -116,22 +128,77 @@ def classMethods(classname, db, depth=0):
 		if m.IsDestructor():  continue
 
 		name  = m.Name()
+		# skip some obviously "skipable" stuff
+		if skipthis.match(name) != None: continue
+		
 		f     = m.TypeOf()
 		mtype = f.Name(SCOPED)
-
-		# skip some obviously "skipable" stuff
-		if stufftoskip.search(mtype) != None: continue
+		mtype = strip(basicstr.sub("std::string", mtype))
+		mtype = replace(mtype, "std::string >", "std::string>")
 		
 		t = split(mtype, '(')
-
 		if len(t) != 2:  continue
 
-		# Get arguments
-		args  = strip(t[1])
-		args  = replace('(%s' % args, '(void)', '()')
-
-		# Get return type and check for "const"
+		# Get return type
 		rtype = strip(t[0])
+		# Skip setters
+		rtype = strip(rtype)
+		if rtype in ['void', 'void*']: continue
+
+		# Get arguments
+		args  = "(%s" % strip(t[1])
+		args  = replace(args, "(void)", "()")
+		argscall = args
+		
+		if args != "()":
+			
+			# decode parameters
+			nargs  = m.FunctionParameterSize(False)
+			nrargs = m.FunctionParameterSize(True)
+			ndefargs = nargs - nrargs
+			
+			argtypes = map(strip, split(args[1:-1], ','))
+			#print name, argtypes, nargs, nrargs
+			
+			if len(argtypes) != nargs:
+				print "**** ARGLENGTH MISMATCH (%s) (%s)" % (name, mtype)
+				#sys.exit(0)
+				continue
+
+			# skip functions with non-fundamental type arguments
+			skipnonfun = False
+			for argtype in argtypes:
+				if isFuntype.match(argtype): continue
+				skipnonfun = True
+				break
+			if skipnonfun: continue
+			
+			#print "\nNAME(%s) ARGS(%s) %d, %d" % \
+			#	  (name, argtypes, nargs, ndefargs)
+			argscall = '('
+			args = "("
+			delim= ""
+
+			# required arguments
+			for iarg in xrange(nargs):
+				argname = m.FunctionParameterNameAt(iarg)
+				argtype = argtypes[iarg]
+				if iarg < nrargs:
+					value = ""
+				else:
+					value = "=%s" % m.FunctionParameterDefaultAt(iarg)
+				
+				#print "\tARGTYPE(%s) ARG(%s%s)" % (argtype, argname, value)
+				
+				args += "%s%s %s%s" % (delim, argtype, argname, value)
+				argscall += "%s%s" % (delim, argname)
+				delim = ", "
+
+			args += ")"
+			argscall += ")"
+			
+		# Check return type
+		
 		isconst = f.ReturnType().IsConst()
 			
 		# In C++ there is no overloading across scopes
@@ -144,12 +211,11 @@ def classMethods(classname, db, depth=0):
 			if  scope != classname: continue
 		db['scopes'][name] = classname
 
-		signature = name + args
-
-		# Skip setters
-		rtype = strip(rtype)
-		if rtype in ['void', 'void*']: continue
-
+		signature  = name + args
+		methodcall = name + argscall
+		
+		#print "SIG(%s) CALL(%s)" % (signature, methodcall)
+		
 		# Expand typedefs, but check first for pointers and
 		# references
 		fullrtype = rtype
@@ -157,7 +223,7 @@ def classMethods(classname, db, depth=0):
 			r = thing.ByName(rtype[:-1])
 			if r.IsTypedef():
 				fullrtype = "%s%s" % (r.Name(SCOPED+FINAL), rtype[-1])
-				rtype = fullrtype # Fri Jan 29
+				#rtype = fullrtype # Fri Jan 29
 		else:
 			r = thing.ByName(rtype)
 			if r.IsTypedef():
@@ -187,7 +253,11 @@ def classMethods(classname, db, depth=0):
 		# Important: make sure we don't have duplicates
 		if db['methods'].has_key(method):
 			continue
-		db['methods'][method] = (name, classname)
+		db['methods'][method] = (name, classname,
+								 rtype, fullrtype,
+								 signature,
+								 methodcall)
+		
 		cdb['methods'].append((fullrtype, method))
 
 	db['classlist'].append( cdb )

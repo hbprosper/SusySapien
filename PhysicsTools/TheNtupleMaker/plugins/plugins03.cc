@@ -1,73 +1,34 @@
 // -------------------------------------------------------------------------
 // File::   plugins03.cc
-// Created: Sun May  6 00:03:31 2012 by mkplugins.py
+// Created: Sun May  6 00:40:38 2012 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
 // -------------------------------------------------------------------------
 
+#include "AnalysisDataFormats/CMGTools/interface/AbstractPhysicsObject.h"
+#include "AnalysisDataFormats/CMGTools/interface/BaseJet.h"
+#include "AnalysisDataFormats/CMGTools/interface/BaseMET.h"
+#include "AnalysisDataFormats/CMGTools/interface/CompoundTypes.h"
+#include "AnalysisDataFormats/CMGTools/interface/Electron.h"
+#include "AnalysisDataFormats/CMGTools/interface/FatJet.h"
+#include "AnalysisDataFormats/CMGTools/interface/GenericTypes.h"
+#include "AnalysisDataFormats/CMGTools/interface/Hemisphere.h"
+#include "AnalysisDataFormats/CMGTools/interface/MultiObject.h"
+#include "AnalysisDataFormats/CMGTools/interface/Muon.h"
+#include "AnalysisDataFormats/CMGTools/interface/NamedObject.h"
+#include "AnalysisDataFormats/CMGTools/interface/PFJet.h"
+#include "AnalysisDataFormats/CMGTools/interface/Photon.h"
+#include "AnalysisDataFormats/CMGTools/interface/Tau.h"
+#include "AnalysisDataFormats/CMGTools/interface/TriggerObject.h"
+#include "AnalysisDataFormats/CMGTools/interface/VBFEventT1T2.h"
 #include "AnalysisDataFormats/TopObjects/interface/TtDilepEvtSolution.h"
 #include "AnalysisDataFormats/TopObjects/interface/TtHadEvtSolution.h"
 #include "AnalysisDataFormats/TopObjects/interface/TtSemiEvtSolution.h"
-#include "DataFormats/Common/interface/DetSet.h"
-#include "DataFormats/Common/interface/HLTPathStatus.h"
-#include "DataFormats/EcalRecHit/interface/EcalRecHit.h"
-#include "DataFormats/FP420Cluster/interface/ClusterFP420.h"
-#include "DataFormats/FP420Cluster/interface/RecoFP420.h"
-#include "DataFormats/FP420Cluster/interface/TrackFP420.h"
-#include "DataFormats/FP420Digi/interface/HDigiFP420.h"
-#include "DataFormats/L1CSCTrackFinder/interface/L1Track.h"
-#include "DataFormats/L1Trigger/interface/L1EmParticle.h"
-#include "DataFormats/L1Trigger/interface/L1EtMissParticle.h"
-#include "DataFormats/L1Trigger/interface/L1HFRings.h"
-#include "DataFormats/L1Trigger/interface/L1JetParticle.h"
-#include "DataFormats/Provenance/interface/EventAuxiliary.h"
-#include "DataFormats/SiPixelDigi/interface/PixelDigi.h"
-#include "DataFormats/SiPixelDigi/interface/SiPixelCalibDigi.h"
-#include "DataFormats/SiPixelDigi/interface/SiPixelCalibDigiError.h"
-#include "DataFormats/SiPixelRawData/interface/SiPixelRawDataError.h"
-#include "DataFormats/SiStripCluster/interface/SiStripCluster.h"
-#include "DataFormats/SiStripDigi/interface/SiStripDigi.h"
-#include "DataFormats/SiStripDigi/interface/SiStripProcessedRawDigi.h"
-#include "DataFormats/SiStripDigi/interface/SiStripRawDigi.h"
-#include "DataFormats/TrackingSeed/interface/TrackingSeed.h"
-#include "DataFormats/TrajectorySeed/interface/TrajectorySeed.h"
-#include "FWCore/MessageLogger/interface/ErrorSummaryEntry.h"
-#include "SimDataFormats/RPCDigiSimLink/interface/RPCDigiSimLink.h"
-#include "SimDataFormats/TrackerDigiSimLink/interface/PixelDigiSimLink.h"
-#include "SimDataFormats/TrackerDigiSimLink/interface/StripDigiSimLink.h"
-#include "SimDataFormats/TrackingAnalysis/interface/TrackingParticle.h"
-#include "SimDataFormats/TrackingAnalysis/interface/TrackingVertex.h"
+#include "DataFormats/PatCandidates/interface/Jet.h"
+#include "DataFormats/PatCandidates/interface/PFParticle.h"
 // -------------------------------------------------------------------------
 
-std::string TrackingParticle_n("TrackingParticle");
-typedef Buffer<TrackingParticle,
-               &TrackingParticle_n, COLLECTION>
-TrackingParticle_t;
-DEFINE_EDM_PLUGIN(BufferFactory, TrackingParticle_t,
-                  "TrackingParticle");
-				  
-std::string TrackingSeed_n("TrackingSeed");
-typedef Buffer<TrackingSeed,
-               &TrackingSeed_n, COLLECTION>
-TrackingSeed_t;
-DEFINE_EDM_PLUGIN(BufferFactory, TrackingSeed_t,
-                  "TrackingSeed");
-				  
-std::string TrackingVertex_n("TrackingVertex");
-typedef Buffer<TrackingVertex,
-               &TrackingVertex_n, COLLECTION>
-TrackingVertex_t;
-DEFINE_EDM_PLUGIN(BufferFactory, TrackingVertex_t,
-                  "TrackingVertex");
-				  
-std::string TrajectorySeed_n("TrajectorySeed");
-typedef Buffer<TrajectorySeed,
-               &TrajectorySeed_n, COLLECTION>
-TrajectorySeed_t;
-DEFINE_EDM_PLUGIN(BufferFactory, TrajectorySeed_t,
-                  "TrajectorySeed");
-				  
 std::string TtDilepEvtSolution_n("TtDilepEvtSolution");
 typedef Buffer<TtDilepEvtSolution,
                &TtDilepEvtSolution_n, COLLECTION>
@@ -89,171 +50,220 @@ TtSemiEvtSolution_t;
 DEFINE_EDM_PLUGIN(BufferFactory, TtSemiEvtSolution_t,
                   "TtSemiEvtSolution");
 				  
-std::string cscL1Track_n("csc::L1Track");
-typedef Buffer<csc::L1Track,
-               &cscL1Track_n, COLLECTION>
-cscL1Track_t;
-DEFINE_EDM_PLUGIN(BufferFactory, cscL1Track_t,
-                  "cscL1Track");
+std::string cmgAbstractPhysicsObject_n("cmg::AbstractPhysicsObject");
+typedef Buffer<cmg::AbstractPhysicsObject,
+               &cmgAbstractPhysicsObject_n, COLLECTION>
+cmgAbstractPhysicsObject_t;
+DEFINE_EDM_PLUGIN(BufferFactory, cmgAbstractPhysicsObject_t,
+                  "cmgAbstractPhysicsObject");
 				  
-std::string edmDetSetClusterFP420_n("edm::DetSet<ClusterFP420>");
-typedef Buffer<edm::DetSet<ClusterFP420>,
-               &edmDetSetClusterFP420_n, COLLECTION>
-edmDetSetClusterFP420_t;
-DEFINE_EDM_PLUGIN(BufferFactory, edmDetSetClusterFP420_t,
-                  "edmDetSetClusterFP420");
+std::string cmgBaseJet_n("cmg::BaseJet");
+typedef Buffer<cmg::BaseJet,
+               &cmgBaseJet_n, COLLECTION>
+cmgBaseJet_t;
+DEFINE_EDM_PLUGIN(BufferFactory, cmgBaseJet_t,
+                  "cmgBaseJet");
 				  
-std::string edmDetSetEcalRecHit_n("edm::DetSet<EcalRecHit>");
-typedef Buffer<edm::DetSet<EcalRecHit>,
-               &edmDetSetEcalRecHit_n, COLLECTION>
-edmDetSetEcalRecHit_t;
-DEFINE_EDM_PLUGIN(BufferFactory, edmDetSetEcalRecHit_t,
-                  "edmDetSetEcalRecHit");
+std::string cmgBaseMET_n("cmg::BaseMET");
+typedef Buffer<cmg::BaseMET,
+               &cmgBaseMET_n, COLLECTION>
+cmgBaseMET_t;
+DEFINE_EDM_PLUGIN(BufferFactory, cmgBaseMET_t,
+                  "cmgBaseMET");
 				  
-std::string edmDetSetHDigiFP420_n("edm::DetSet<HDigiFP420>");
-typedef Buffer<edm::DetSet<HDigiFP420>,
-               &edmDetSetHDigiFP420_n, COLLECTION>
-edmDetSetHDigiFP420_t;
-DEFINE_EDM_PLUGIN(BufferFactory, edmDetSetHDigiFP420_t,
-                  "edmDetSetHDigiFP420");
+std::string cmgDiElectron_n("cmg::DiElectron");
+typedef Buffer<cmg::DiElectron,
+               &cmgDiElectron_n, COLLECTION>
+cmgDiElectron_t;
+DEFINE_EDM_PLUGIN(BufferFactory, cmgDiElectron_t,
+                  "cmgDiElectron");
 				  
-std::string edmDetSetPixelDigi_n("edm::DetSet<PixelDigi>");
-typedef Buffer<edm::DetSet<PixelDigi>,
-               &edmDetSetPixelDigi_n, COLLECTION>
-edmDetSetPixelDigi_t;
-DEFINE_EDM_PLUGIN(BufferFactory, edmDetSetPixelDigi_t,
-                  "edmDetSetPixelDigi");
+std::string cmgDiFatJet_n("cmg::DiFatJet");
+typedef Buffer<cmg::DiFatJet,
+               &cmgDiFatJet_n, COLLECTION>
+cmgDiFatJet_t;
+DEFINE_EDM_PLUGIN(BufferFactory, cmgDiFatJet_t,
+                  "cmgDiFatJet");
 				  
-std::string edmDetSetPixelDigiSimLink_n("edm::DetSet<PixelDigiSimLink>");
-typedef Buffer<edm::DetSet<PixelDigiSimLink>,
-               &edmDetSetPixelDigiSimLink_n, COLLECTION>
-edmDetSetPixelDigiSimLink_t;
-DEFINE_EDM_PLUGIN(BufferFactory, edmDetSetPixelDigiSimLink_t,
-                  "edmDetSetPixelDigiSimLink");
+std::string cmgDiHemisphere_n("cmg::DiHemisphere");
+typedef Buffer<cmg::DiHemisphere,
+               &cmgDiHemisphere_n, COLLECTION>
+cmgDiHemisphere_t;
+DEFINE_EDM_PLUGIN(BufferFactory, cmgDiHemisphere_t,
+                  "cmgDiHemisphere");
 				  
-std::string edmDetSetRPCDigiSimLink_n("edm::DetSet<RPCDigiSimLink>");
-typedef Buffer<edm::DetSet<RPCDigiSimLink>,
-               &edmDetSetRPCDigiSimLink_n, COLLECTION>
-edmDetSetRPCDigiSimLink_t;
-DEFINE_EDM_PLUGIN(BufferFactory, edmDetSetRPCDigiSimLink_t,
-                  "edmDetSetRPCDigiSimLink");
+std::string cmgDiJet_n("cmg::DiJet");
+typedef Buffer<cmg::DiJet,
+               &cmgDiJet_n, COLLECTION>
+cmgDiJet_t;
+DEFINE_EDM_PLUGIN(BufferFactory, cmgDiJet_t,
+                  "cmgDiJet");
 				  
-std::string edmDetSetRecoFP420_n("edm::DetSet<RecoFP420>");
-typedef Buffer<edm::DetSet<RecoFP420>,
-               &edmDetSetRecoFP420_n, COLLECTION>
-edmDetSetRecoFP420_t;
-DEFINE_EDM_PLUGIN(BufferFactory, edmDetSetRecoFP420_t,
-                  "edmDetSetRecoFP420");
+std::string cmgDiMuon_n("cmg::DiMuon");
+typedef Buffer<cmg::DiMuon,
+               &cmgDiMuon_n, COLLECTION>
+cmgDiMuon_t;
+DEFINE_EDM_PLUGIN(BufferFactory, cmgDiMuon_t,
+                  "cmgDiMuon");
 				  
-std::string edmDetSetSiPixelCalibDigi_n("edm::DetSet<SiPixelCalibDigi>");
-typedef Buffer<edm::DetSet<SiPixelCalibDigi>,
-               &edmDetSetSiPixelCalibDigi_n, COLLECTION>
-edmDetSetSiPixelCalibDigi_t;
-DEFINE_EDM_PLUGIN(BufferFactory, edmDetSetSiPixelCalibDigi_t,
-                  "edmDetSetSiPixelCalibDigi");
+std::string cmgDiPFCandidate_n("cmg::DiPFCandidate");
+typedef Buffer<cmg::DiPFCandidate,
+               &cmgDiPFCandidate_n, COLLECTION>
+cmgDiPFCandidate_t;
+DEFINE_EDM_PLUGIN(BufferFactory, cmgDiPFCandidate_t,
+                  "cmgDiPFCandidate");
 				  
-std::string edmDetSetSiPixelCalibDigiError_n("edm::DetSet<SiPixelCalibDigiError>");
-typedef Buffer<edm::DetSet<SiPixelCalibDigiError>,
-               &edmDetSetSiPixelCalibDigiError_n, COLLECTION>
-edmDetSetSiPixelCalibDigiError_t;
-DEFINE_EDM_PLUGIN(BufferFactory, edmDetSetSiPixelCalibDigiError_t,
-                  "edmDetSetSiPixelCalibDigiError");
+std::string cmgDiPFJet_n("cmg::DiPFJet");
+typedef Buffer<cmg::DiPFJet,
+               &cmgDiPFJet_n, COLLECTION>
+cmgDiPFJet_t;
+DEFINE_EDM_PLUGIN(BufferFactory, cmgDiPFJet_t,
+                  "cmgDiPFJet");
 				  
-std::string edmDetSetSiPixelRawDataError_n("edm::DetSet<SiPixelRawDataError>");
-typedef Buffer<edm::DetSet<SiPixelRawDataError>,
-               &edmDetSetSiPixelRawDataError_n, COLLECTION>
-edmDetSetSiPixelRawDataError_t;
-DEFINE_EDM_PLUGIN(BufferFactory, edmDetSetSiPixelRawDataError_t,
-                  "edmDetSetSiPixelRawDataError");
+std::string cmgDiPhoton_n("cmg::DiPhoton");
+typedef Buffer<cmg::DiPhoton,
+               &cmgDiPhoton_n, COLLECTION>
+cmgDiPhoton_t;
+DEFINE_EDM_PLUGIN(BufferFactory, cmgDiPhoton_t,
+                  "cmgDiPhoton");
 				  
-std::string edmDetSetSiStripCluster_n("edm::DetSet<SiStripCluster>");
-typedef Buffer<edm::DetSet<SiStripCluster>,
-               &edmDetSetSiStripCluster_n, COLLECTION>
-edmDetSetSiStripCluster_t;
-DEFINE_EDM_PLUGIN(BufferFactory, edmDetSetSiStripCluster_t,
-                  "edmDetSetSiStripCluster");
+std::string cmgDiTau_n("cmg::DiTau");
+typedef Buffer<cmg::DiTau,
+               &cmgDiTau_n, COLLECTION>
+cmgDiTau_t;
+DEFINE_EDM_PLUGIN(BufferFactory, cmgDiTau_t,
+                  "cmgDiTau");
 				  
-std::string edmDetSetSiStripDigi_n("edm::DetSet<SiStripDigi>");
-typedef Buffer<edm::DetSet<SiStripDigi>,
-               &edmDetSetSiStripDigi_n, COLLECTION>
-edmDetSetSiStripDigi_t;
-DEFINE_EDM_PLUGIN(BufferFactory, edmDetSetSiStripDigi_t,
-                  "edmDetSetSiStripDigi");
+std::string cmgElectron_n("cmg::Electron");
+typedef Buffer<cmg::Electron,
+               &cmgElectron_n, COLLECTION>
+cmgElectron_t;
+DEFINE_EDM_PLUGIN(BufferFactory, cmgElectron_t,
+                  "cmgElectron");
 				  
-std::string edmDetSetSiStripProcessedRawDigi_n("edm::DetSet<SiStripProcessedRawDigi>");
-typedef Buffer<edm::DetSet<SiStripProcessedRawDigi>,
-               &edmDetSetSiStripProcessedRawDigi_n, COLLECTION>
-edmDetSetSiStripProcessedRawDigi_t;
-DEFINE_EDM_PLUGIN(BufferFactory, edmDetSetSiStripProcessedRawDigi_t,
-                  "edmDetSetSiStripProcessedRawDigi");
+std::string cmgFatJet_n("cmg::FatJet");
+typedef Buffer<cmg::FatJet,
+               &cmgFatJet_n, COLLECTION>
+cmgFatJet_t;
+DEFINE_EDM_PLUGIN(BufferFactory, cmgFatJet_t,
+                  "cmgFatJet");
 				  
-std::string edmDetSetSiStripRawDigi_n("edm::DetSet<SiStripRawDigi>");
-typedef Buffer<edm::DetSet<SiStripRawDigi>,
-               &edmDetSetSiStripRawDigi_n, COLLECTION>
-edmDetSetSiStripRawDigi_t;
-DEFINE_EDM_PLUGIN(BufferFactory, edmDetSetSiStripRawDigi_t,
-                  "edmDetSetSiStripRawDigi");
+std::string cmgGenJet_n("cmg::GenJet");
+typedef Buffer<cmg::GenJet,
+               &cmgGenJet_n, COLLECTION>
+cmgGenJet_t;
+DEFINE_EDM_PLUGIN(BufferFactory, cmgGenJet_t,
+                  "cmgGenJet");
 				  
-std::string edmDetSetStripDigiSimLink_n("edm::DetSet<StripDigiSimLink>");
-typedef Buffer<edm::DetSet<StripDigiSimLink>,
-               &edmDetSetStripDigiSimLink_n, COLLECTION>
-edmDetSetStripDigiSimLink_t;
-DEFINE_EDM_PLUGIN(BufferFactory, edmDetSetStripDigiSimLink_t,
-                  "edmDetSetStripDigiSimLink");
+std::string cmgGenParticle_n("cmg::GenParticle");
+typedef Buffer<cmg::GenParticle,
+               &cmgGenParticle_n, COLLECTION>
+cmgGenParticle_t;
+DEFINE_EDM_PLUGIN(BufferFactory, cmgGenParticle_t,
+                  "cmgGenParticle");
 				  
-std::string edmDetSetTrackFP420_n("edm::DetSet<TrackFP420>");
-typedef Buffer<edm::DetSet<TrackFP420>,
-               &edmDetSetTrackFP420_n, COLLECTION>
-edmDetSetTrackFP420_t;
-DEFINE_EDM_PLUGIN(BufferFactory, edmDetSetTrackFP420_t,
-                  "edmDetSetTrackFP420");
+std::string cmgHemisphere_n("cmg::Hemisphere");
+typedef Buffer<cmg::Hemisphere,
+               &cmgHemisphere_n, COLLECTION>
+cmgHemisphere_t;
+DEFINE_EDM_PLUGIN(BufferFactory, cmgHemisphere_t,
+                  "cmgHemisphere");
 				  
-std::string edmErrorSummaryEntry_n("edm::ErrorSummaryEntry");
-typedef Buffer<edm::ErrorSummaryEntry,
-               &edmErrorSummaryEntry_n, COLLECTION>
-edmErrorSummaryEntry_t;
-DEFINE_EDM_PLUGIN(BufferFactory, edmErrorSummaryEntry_t,
-                  "edmErrorSummaryEntry");
+std::string cmgMuEle_n("cmg::MuEle");
+typedef Buffer<cmg::MuEle,
+               &cmgMuEle_n, COLLECTION>
+cmgMuEle_t;
+DEFINE_EDM_PLUGIN(BufferFactory, cmgMuEle_t,
+                  "cmgMuEle");
 				  
-std::string edmEventAuxiliary_n("edm::EventAuxiliary");
-typedef Buffer<edm::EventAuxiliary,
-               &edmEventAuxiliary_n, COLLECTION>
-edmEventAuxiliary_t;
-DEFINE_EDM_PLUGIN(BufferFactory, edmEventAuxiliary_t,
-                  "edmEventAuxiliary");
+std::string cmgMultiObject_n("cmg::MultiObject");
+typedef Buffer<cmg::MultiObject,
+               &cmgMultiObject_n, COLLECTION>
+cmgMultiObject_t;
+DEFINE_EDM_PLUGIN(BufferFactory, cmgMultiObject_t,
+                  "cmgMultiObject");
 				  
-std::string edmHLTPathStatus_n("edm::HLTPathStatus");
-typedef Buffer<edm::HLTPathStatus,
-               &edmHLTPathStatus_n, COLLECTION>
-edmHLTPathStatus_t;
-DEFINE_EDM_PLUGIN(BufferFactory, edmHLTPathStatus_t,
-                  "edmHLTPathStatus");
+std::string cmgMuon_n("cmg::Muon");
+typedef Buffer<cmg::Muon,
+               &cmgMuon_n, COLLECTION>
+cmgMuon_t;
+DEFINE_EDM_PLUGIN(BufferFactory, cmgMuon_t,
+                  "cmgMuon");
 				  
-std::string l1extraL1EmParticle_n("l1extra::L1EmParticle");
-typedef Buffer<l1extra::L1EmParticle,
-               &l1extraL1EmParticle_n, COLLECTION>
-l1extraL1EmParticle_t;
-DEFINE_EDM_PLUGIN(BufferFactory, l1extraL1EmParticle_t,
-                  "l1extraL1EmParticle");
+std::string cmgNamedObject_n("cmg::NamedObject");
+typedef Buffer<cmg::NamedObject,
+               &cmgNamedObject_n, COLLECTION>
+cmgNamedObject_t;
+DEFINE_EDM_PLUGIN(BufferFactory, cmgNamedObject_t,
+                  "cmgNamedObject");
 				  
-std::string l1extraL1EtMissParticle_n("l1extra::L1EtMissParticle");
-typedef Buffer<l1extra::L1EtMissParticle,
-               &l1extraL1EtMissParticle_n, COLLECTION>
-l1extraL1EtMissParticle_t;
-DEFINE_EDM_PLUGIN(BufferFactory, l1extraL1EtMissParticle_t,
-                  "l1extraL1EtMissParticle");
+std::string cmgPFCandidate_n("cmg::PFCandidate");
+typedef Buffer<cmg::PFCandidate,
+               &cmgPFCandidate_n, COLLECTION>
+cmgPFCandidate_t;
+DEFINE_EDM_PLUGIN(BufferFactory, cmgPFCandidate_t,
+                  "cmgPFCandidate");
 				  
-std::string l1extraL1HFRings_n("l1extra::L1HFRings");
-typedef Buffer<l1extra::L1HFRings,
-               &l1extraL1HFRings_n, COLLECTION>
-l1extraL1HFRings_t;
-DEFINE_EDM_PLUGIN(BufferFactory, l1extraL1HFRings_t,
-                  "l1extraL1HFRings");
+std::string cmgPFJet_n("cmg::PFJet");
+typedef Buffer<cmg::PFJet,
+               &cmgPFJet_n, COLLECTION>
+cmgPFJet_t;
+DEFINE_EDM_PLUGIN(BufferFactory, cmgPFJet_t,
+                  "cmgPFJet");
 				  
-std::string l1extraL1JetParticle_n("l1extra::L1JetParticle");
-typedef Buffer<l1extra::L1JetParticle,
-               &l1extraL1JetParticle_n, COLLECTION>
-l1extraL1JetParticle_t;
-DEFINE_EDM_PLUGIN(BufferFactory, l1extraL1JetParticle_t,
-                  "l1extraL1JetParticle");
+std::string cmgPhoton_n("cmg::Photon");
+typedef Buffer<cmg::Photon,
+               &cmgPhoton_n, COLLECTION>
+cmgPhoton_t;
+DEFINE_EDM_PLUGIN(BufferFactory, cmgPhoton_t,
+                  "cmgPhoton");
+				  
+std::string cmgQuadMuon_n("cmg::QuadMuon");
+typedef Buffer<cmg::QuadMuon,
+               &cmgQuadMuon_n, COLLECTION>
+cmgQuadMuon_t;
+DEFINE_EDM_PLUGIN(BufferFactory, cmgQuadMuon_t,
+                  "cmgQuadMuon");
+				  
+std::string cmgTau_n("cmg::Tau");
+typedef Buffer<cmg::Tau,
+               &cmgTau_n, COLLECTION>
+cmgTau_t;
+DEFINE_EDM_PLUGIN(BufferFactory, cmgTau_t,
+                  "cmgTau");
+				  
+std::string cmgTauEle_n("cmg::TauEle");
+typedef Buffer<cmg::TauEle,
+               &cmgTauEle_n, COLLECTION>
+cmgTauEle_t;
+DEFINE_EDM_PLUGIN(BufferFactory, cmgTauEle_t,
+                  "cmgTauEle");
+				  
+std::string cmgTauMu_n("cmg::TauMu");
+typedef Buffer<cmg::TauMu,
+               &cmgTauMu_n, COLLECTION>
+cmgTauMu_t;
+DEFINE_EDM_PLUGIN(BufferFactory, cmgTauMu_t,
+                  "cmgTauMu");
+				  
+std::string cmgTriggerObject_n("cmg::TriggerObject");
+typedef Buffer<cmg::TriggerObject,
+               &cmgTriggerObject_n, COLLECTION>
+cmgTriggerObject_t;
+DEFINE_EDM_PLUGIN(BufferFactory, cmgTriggerObject_t,
+                  "cmgTriggerObject");
+				  
+std::string cmgVBFEventT1T2patJetpatJet_n("cmg::VBFEventT1T2<pat::Jet,pat::Jet>");
+typedef Buffer<cmg::VBFEventT1T2<pat::Jet,pat::Jet>,
+               &cmgVBFEventT1T2patJetpatJet_n, COLLECTION>
+cmgVBFEventT1T2patJetpatJet_t;
+DEFINE_EDM_PLUGIN(BufferFactory, cmgVBFEventT1T2patJetpatJet_t,
+                  "cmgVBFEventT1T2patJetpatJet");
+				  
+std::string cmgVBFEventT1T2patJetpatPFParticle_n("cmg::VBFEventT1T2<pat::Jet,pat::PFParticle>");
+typedef Buffer<cmg::VBFEventT1T2<pat::Jet,pat::PFParticle>,
+               &cmgVBFEventT1T2patJetpatPFParticle_n, COLLECTION>
+cmgVBFEventT1T2patJetpatPFParticle_t;
+DEFINE_EDM_PLUGIN(BufferFactory, cmgVBFEventT1T2patJetpatPFParticle_t,
+                  "cmgVBFEventT1T2patJetpatPFParticle");
 				  

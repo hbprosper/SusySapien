@@ -6,7 +6,7 @@
 // Updated:     Mon Mar 08, 2010 Sezen & HBP - add triggerBits class
 //              Tue Aug 24, 2010 HBP - add HcalNoiseRBXHelper
 //              Thu Sep 02, 2010 HBP - update to new version of HelperFor
-//$Revision: 1.5 $
+//$Revision: 1.6 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -35,7 +35,7 @@ using namespace std;
 
   oindex            index of current helped object (dumb pointer)
   index             index of current helper object (dumb pointer)
-  count             number of instances returned by helper
+  count             number of instances returned by helper/helped object
  */
 //-----------------------------------------------------------------------------
 namespace {
@@ -74,7 +74,7 @@ TriggerResultsHelper::value(std::string name) const
 {
   if ( event == 0 )
     throw edm::Exception(edm::errors::Configuration,
-                         "\nTriggerResultsHelper - " 
+                         "\nTriggerResultsHelper::value - " 
                          "event pointer is ZERO");
   
   // NB: use a reference to avoid expensive copying
@@ -92,16 +92,31 @@ TriggerResultsHelper::value(std::string name) const
     }
 
   // Get bit associated with trigger name
-  unsigned int bit = tnames.triggerIndex(name);
+  try
+    {
+      unsigned int bit = tnames.triggerIndex(name);
   
-  // If trigger does not exist, crash and burn, unless
-  // the caller is kind and reduces this exception into a warning.
-  if ( bit == tnames.size() )
-    throw edm::Exception(edm::errors::Configuration,
-                         "\nTriggerResultsHelper - " 
-                         "trigger \"" + name + "\" NOT FOUND");
-  else
-    return object->accept(bit);
+      // If trigger does not exist issue a warning
+
+      if ( bit == tnames.size() )
+        {
+          edm::LogWarning("TriggerNotFound")
+            << "\nTriggerResultsHelper::value - " 
+            << "trigger \"" + name + "\" NOT FOUND"
+            << std::endl;
+          return true;
+        }
+      else
+        return object->accept(bit);
+    }
+  catch (...)
+    {
+      edm::LogWarning("TriggerFailure")
+        << "\nTriggerResultsHelper::value - " 
+        << "Problem accessing trigger \"" + name + "\""
+        << std::endl;
+      return true;
+    }
 }
 
 ///
@@ -119,36 +134,52 @@ TriggerResultsHelper::prescale(std::string name)
                          "HLTConfigProvider pointer is ZERO");
   
   // NB: use a reference to avoid expensive copying
-  const edm::TriggerNames& tnames = event->triggerNames(*object);
-
-  // Write out trigger names upon first call
-  if ( TriggerResultsHelper::first )
+  try
     {
-      TriggerResultsHelper::first = false;
-      ofstream fout("triggerNames.txt");
-      fout << std::endl << "Bit" << "\t" "Trigger Name" << std::endl;
-      for(unsigned  bit=0; bit < tnames.size(); bit++)
-        fout << bit << "\t" << tnames.triggerName(bit) << std::endl;
-      fout.close();
+      const edm::TriggerNames& tnames = event->triggerNames(*object);
+
+      // Write out trigger names upon first call
+      if ( TriggerResultsHelper::first )
+        {
+          TriggerResultsHelper::first = false;
+          ofstream fout("triggerNames.txt");
+          fout << std::endl << "Bit" << "\t" "Trigger Name" << std::endl;
+          for(unsigned  bit=0; bit < tnames.size(); bit++)
+            fout << bit << "\t" << tnames.triggerName(bit) << std::endl;
+          fout.close();
+        }
+
+      // Get bit associated with trigger name
+      unsigned int bit = tnames.triggerIndex(name);
+  
+      // If trigger does not exist issue a warning
+
+      if ( bit == tnames.size() )
+        {
+          edm::LogWarning("TriggerNotFound")
+            << "\nTriggerResultsHelper::prescale - " 
+            << "trigger \"" + name + "\" NOT FOUND"
+            << std::endl;
+          return 1;
+        }
+      else
+        {
+          if ( !event->isRealData() ) 
+            return 1;
+          else if (hltconfig->prescaleSet(*event, *eventsetup) != -1)
+            return hltconfig->prescaleValue(*event, *eventsetup, name);
+          else
+            return 1;
+        }
     }
-
-  // Get bit associated with trigger name
-  unsigned int bit = tnames.triggerIndex(name);
-  
-  // If trigger does not exist, crash and burn, unless
-  // the caller is kind and reduces this exception into a warning.
-  if ( bit == tnames.size() )
-    throw edm::Exception(edm::errors::Configuration,
-                         "\nTriggerResultsHelper - " 
-                         "trigger \"" + name + "\" NOT FOUND");
-
-  
-  if ( !event->isRealData() ) 
-    return 1;
-  else if (hltconfig->prescaleSet(*event, *eventsetup) != -1)
-    return hltconfig->prescaleValue(*event, *eventsetup, name);
-  else
-    return 1;
+  catch (...)
+    {
+      edm::LogWarning("TriggerPrescaleFailure")
+        << "\nTriggerResultsHelper::prescale - "
+        << "Problem accessing prescale for trigger \"" + name + "\""
+        << std::endl;
+      return 1;
+    }
 }
 
 

@@ -1,17 +1,20 @@
 // -------------------------------------------------------------------------
 // File::   plugins12.cc
-// Created: Sun May  6 00:03:31 2012 by mkplugins.py
+// Created: Sun May  6 00:40:38 2012 by mkplugins.py
 // -------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
 // -------------------------------------------------------------------------
 
+#include "DataFormats/Candidate/interface/CandMatchMapMany.h"
+#include "DataFormats/Candidate/interface/CandidateFwd.h"
 #include "DataFormats/HLTReco/interface/HLTPrescaleTable.h"
 #include "DataFormats/HLTReco/interface/HLTResult.h"
 #include "DataFormats/HLTReco/interface/TriggerEvent.h"
 #include "DataFormats/HLTReco/interface/TriggerEventWithRefs.h"
 #include "DataFormats/HLTReco/interface/TriggerFilterObjectWithRefs.h"
 #include "DataFormats/HepMCCandidate/interface/PdfInfo.h"
+#include "DataFormats/JetReco/interface/CaloJetCollection.h"
 #include "DataFormats/JetReco/interface/DiscretizedEnergyFlow.h"
 #include "DataFormats/JetReco/interface/FFTJetPileupSummary.h"
 #include "DataFormats/JetReco/interface/FFTJetProducerSummary.h"
@@ -25,11 +28,71 @@
 #include "DataFormats/METReco/interface/GlobalHaloData.h"
 #include "DataFormats/METReco/interface/HcalHaloData.h"
 #include "DataFormats/METReco/interface/PhiWedge.h"
+#include "DataFormats/TauReco/interface/CaloTauDiscriminator.h"
+#include "DataFormats/TauReco/interface/CaloTauDiscriminatorAgainstElectron.h"
+#include "DataFormats/TauReco/interface/CaloTauDiscriminatorByIsolation.h"
 #include "DataFormats/TauReco/interface/JetPiZeroAssociation.h"
 #include "DataFormats/TauReco/interface/PFTauDiscriminator.h"
 #include "DataFormats/TauReco/interface/PFTauDiscriminatorByIsolation.h"
+#include "DataFormats/TrackerRecHit2D/interface/ClusterRemovalInfo.h"
 // -------------------------------------------------------------------------
 
+std::string recoCaloJetRefVector_n("reco::CaloJetRefVector");
+typedef Buffer<reco::CaloJetRefVector,
+               &recoCaloJetRefVector_n, SINGLETON>
+recoCaloJetRefVector_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCaloJetRefVector_t,
+                  "recoCaloJetRefVector");
+				  
+std::string recoCaloTauDiscriminator_n("reco::CaloTauDiscriminator");
+typedef Buffer<reco::CaloTauDiscriminator,
+               &recoCaloTauDiscriminator_n, SINGLETON>
+recoCaloTauDiscriminator_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCaloTauDiscriminator_t,
+                  "recoCaloTauDiscriminator");
+				  
+std::string recoCaloTauDiscriminatorAgainstElectron_n("reco::CaloTauDiscriminatorAgainstElectron");
+typedef Buffer<reco::CaloTauDiscriminatorAgainstElectron,
+               &recoCaloTauDiscriminatorAgainstElectron_n, SINGLETON>
+recoCaloTauDiscriminatorAgainstElectron_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCaloTauDiscriminatorAgainstElectron_t,
+                  "recoCaloTauDiscriminatorAgainstElectron");
+				  
+std::string recoCaloTauDiscriminatorByIsolation_n("reco::CaloTauDiscriminatorByIsolation");
+typedef Buffer<reco::CaloTauDiscriminatorByIsolation,
+               &recoCaloTauDiscriminatorByIsolation_n, SINGLETON>
+recoCaloTauDiscriminatorByIsolation_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCaloTauDiscriminatorByIsolation_t,
+                  "recoCaloTauDiscriminatorByIsolation");
+				  
+std::string recoCandMatchMapMany_n("reco::CandMatchMapMany");
+typedef Buffer<reco::CandMatchMapMany,
+               &recoCandMatchMapMany_n, SINGLETON>
+recoCandMatchMapMany_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCandMatchMapMany_t,
+                  "recoCandMatchMapMany");
+				  
+std::string recoCandidateBaseRefVector_n("reco::CandidateBaseRefVector");
+typedef Buffer<reco::CandidateBaseRefVector,
+               &recoCandidateBaseRefVector_n, SINGLETON>
+recoCandidateBaseRefVector_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCandidateBaseRefVector_t,
+                  "recoCandidateBaseRefVector");
+				  
+std::string recoCandidatePtrVector_n("reco::CandidatePtrVector");
+typedef Buffer<reco::CandidatePtrVector,
+               &recoCandidatePtrVector_n, SINGLETON>
+recoCandidatePtrVector_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoCandidatePtrVector_t,
+                  "recoCandidatePtrVector");
+				  
+std::string recoClusterRemovalInfo_n("reco::ClusterRemovalInfo");
+typedef Buffer<reco::ClusterRemovalInfo,
+               &recoClusterRemovalInfo_n, SINGLETON>
+recoClusterRemovalInfo_t;
+DEFINE_EDM_PLUGIN(BufferFactory, recoClusterRemovalInfo_t,
+                  "recoClusterRemovalInfo");
+				  
 std::string recoDiscretizedEnergyFlow_n("reco::DiscretizedEnergyFlow");
 typedef Buffer<reco::DiscretizedEnergyFlow,
                &recoDiscretizedEnergyFlow_n, SINGLETON>

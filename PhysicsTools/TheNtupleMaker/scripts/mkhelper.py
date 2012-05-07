@@ -5,7 +5,7 @@
 #          22-Jul-2011 HBP - fix duplicate HelperFor bug
 #          22-Apr-2012 HBP - use SINGLETON and COLLECTION keywords
 #          03-May-2012 HBP - add methods automatically
-#$Id: mkhelper.py,v 1.7 2012/05/04 20:54:35 prosper Exp $
+#$Id: mkhelper.py,v 1.8 2012/05/05 04:24:17 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -92,7 +92,6 @@ Usage:
 
 	options
 	-u    undo effect of most recent call to mkhelper.py (experimental!)
-	      This option does not need the other arguments
 	'''
 	sys.exit(0)
 #------------------------------------------------------------------------------
@@ -452,74 +451,39 @@ def main():
 	# Get class methods
 	# ----------------------------------------------------------------
 	db = {}
-	db['scopes'] = {}
-	db['methods'] = {}
-	db['datamembers'] = {}
-	db['classname'] = classtype
-	db['classlist'] = []
-	db['baseclassnames'] = []
-	db['signature'] = {}
-	
 	classMethods(classtype, db)
 	#db['baseclassnames'] = []
 	#classDataMembers(classtype, db)
 
 	# sort methods
-	mlist = []
-	for (method, value) in db['methods'].items():
-		mlist.append((value[0], method))
-	mlist.sort()
-	
+	meths = {}
+	for method, value in db['methods'].items():
+		nom, dummy, rtype, fullrtype, signature, methodcall = value
+		meths[lower(signature)] = (method, rtype,
+								   fullrtype, signature, methodcall)
+	sigs = meths.keys()
+	sigs.sort()
+
 	methods = ''
-	for (nom, method) in mlist:
+	for key in sigs:
+		method, rtype, fullrtype, signature, methodcall = meths[key]
+		#print "%s\t%s | %s" % (rtype, signature, methodcall)	
+		
 		if stufftoskip.search(method) != None: continue
 		method = strip(method)
-		msig   = signature.findall(method)
-		if len(msig) == 0: continue
-		
-		msig  = msig[0]
-		args  = arguments.findall(msig)
-		if len(args) == 0: continue
-
-		args  = strip(args[0])
-		rtype = strip(replace(method, msig, ""))
-		
-		if len(args) > 0:
-			t = split(args, ',')
-			# Keep methods only if all arguments are fundamental types
-			# or void
-			skipMethod = False
-			for x in t:
-				if isFuntype.match(strip(x)) != None: continue
-				skipMethod = True
-				break
-			if skipMethod: continue
-			
-			n = range(len(t))
-			
-			t = map(lambda x, i: "%s a%d" % (x, i), t, n)
-			args = '(%s)' % joinfields(t, ',')
-			nom  = split(msig, '(')[0]
-			msig = nom + args
-
-			t = map(lambda i: "a%d" % i, n)
-			args = '(%s)' % joinfields(t, ', ')
-			mcall = nom + args
-		else:
-			mcall = msig
 
 		# If return type is a non-const pointer
 		# then cast it explicitly to a non-const type
 		cast = ""
-		if rtype[-1] == "*":
+		if fullrtype[-1] == "*":
 			if rtype[:6] != "const ":
 				cast = "(%s)" % rtype
 			
 		noms = {'tab': tab,
 				'rtype': rtype,
 				'cast' : cast,
-				'signature': msig,
-				'methodcall': mcall}
+				'signature': signature,
+				'methodcall': methodcall}
 				 
 		m = '%(tab)s%(rtype)s %(signature)s const'\
 			' { return %(cast)sobject->%(methodcall)s; }' % noms
