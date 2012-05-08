@@ -55,7 +55,9 @@
 //                   Fri Jul 22 2011 HBP - make buffer name and get by label
 //                                   available to buffers
 //                   Mon Aug 08 2011 HBP - allow global alias
-// $Id: TheNtupleMaker.cc,v 1.16 2012/05/05 04:24:16 prosper Exp $
+//                   Sun May 06 2012 HBP - fix macro invokation
+//                   Mon May 07 2012 HBP - remove SelectedObjectMap.h 
+// $Id: TheNtupleMaker.cc,v 1.18 2012/05/07 15:02:57 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -80,9 +82,9 @@
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"
 #include "PhysicsTools/TheNtupleMaker/interface/CurrentEvent.h"
 #include "PhysicsTools/TheNtupleMaker/interface/Configuration.h"
-#include "PhysicsTools/TheNtupleMaker/interface/SelectedObjectMap.h"
-#include "DataFormats/PatCandidates/interface/Muon.h"
+
 #include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
+
 #include "TROOT.h"
 #include "TSystem.h"
 #include "TMap.h"
@@ -150,7 +152,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   : ntuplename_(iConfig.getUntrackedParameter<string>("ntupleName")), 
     output(otreestream(ntuplename_,
                        "Events", 
-                       "created by TheNtupleMaker $Revision: 1.16 $")),
+                       "created by TheNtupleMaker $Revision: 1.18 $")),
     logfilename_("TheNtupleMaker.log"),
     log_(new std::ofstream(logfilename_.c_str())),
     macroname_(""),
@@ -172,7 +174,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   // --------------------------------------------------------------------------
   TFile* file = output.file();
   ptree_ = new TTree("Provenance",
-                     "created by TheNtupleMaker $Revision: 1.16 $");
+                     "created by TheNtupleMaker $Revision: 1.18 $");
   string cmsver("unknown");
   if ( getenv("CMSSW_VERSION") > 0 ) cmsver = string(getenv("CMSSW_VERSION"));
   ptree_->Branch("cmssw_version", (void*)(cmsver.c_str()), "cmssw_version/C");

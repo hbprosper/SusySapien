@@ -5,7 +5,8 @@
 # Created: 06-Mar-2010 Harrison B. Prosper
 # Updated: 05-Oct-2010 HBP - clean up
 #          12-Mar-2011 HBP - give user option to add variables
-#$Id: mkmacro.py,v 1.3 2012/05/05 04:24:17 prosper Exp $
+#          07-May-2012 HBP - fix object selection bug
+#$Id: mkmacro.py,v 1.4 2012/05/05 22:03:57 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
 from string import *
@@ -116,13 +117,25 @@ public:
   
   bool analyze();
 
-  // call this function to keep specified object
+  // call these functions to select the specified objects
   // example:
-  //   keep("electron", i);
-  void keep(std::string name, int index)
+  //
+  //   select("jet");    which is to be called once from beginJob()
+  //
+  // and
+  //
+  //   select("jet", i); which is to be called in analyze() for every object
+  //
+  // to be kept
+  
+  void select(std::string name)
   {
-    if ( indexmap->find(name) == indexmap->end() )
-	  (*indexmap)[name] = std::vector<int>();
+    (*indexmap)[name] = std::vector<int>();
+  }
+  
+  void select(std::string name, int index)
+  {
+    if ( indexmap->find(name) == indexmap->end() ) return;
     (*indexmap)[name].push_back(index);
   }
 
@@ -139,7 +152,12 @@ private:
 
   void initialize_()
   {
-    indexmap->clear();
+    // clear object selection map every event
+	
+    for(IndexMap::iterator item=indexmap->begin(); 
+        item != indexmap->end();
+        ++item)
+      item->second.clear();	
 	
 %(impl)s
   }
@@ -179,7 +197,7 @@ struct %(name)sInternal
   // added to ntuple
   // IMPORTANT: make sure the variable type and the type format in Branch
   //            match
-  // float sumMuPt;
+  //float HT;
 };
 
 
@@ -189,7 +207,10 @@ void %(name)s::beginJob()
   local->counter = 0;
 
   // Add a float variable to ntuple
-  //tree->Branch("sumMuPt", &local->sumMuPt, "sumMuPt/F");
+  //tree->Branch("HT", &local->HT, "HT/F");
+
+  // Define objects that are to be selected in analyze()
+  //select("jet");
 }
 
 void %(name)s::endJob()
@@ -205,11 +226,19 @@ bool %(name)s::analyze()
   // compute variables
   // apply cuts etc.
 
-  //local->sumMuPt = 0;
-  //for(unsigned int i=0; i < muon_pt.size();++i) local->sumMuPt += muon_pt[i];
+  //local->HT = 0;
+  //for(unsigned int i=0; i < jet_pt.size(); ++i)
+  //{
+  //  if ( !(jet_pt[i] > 100) ) continue;
+  //  if ( !(jet_pt[i] < 400) ) continue;
+  //
+  //  select("jet", i);
+  //  local->HT += jet_pt[i];
+  //} 
   
-  // if ( miserable-event ) return false;
-  
+  //if ( miserable-event )
+  //  return false;
+  //else
   return true;
 }
 '''

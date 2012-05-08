@@ -1,4 +1,4 @@
-# Created: Mon May  7 16:52:31 2012
+# Created: Tue May  8 03:56:42 2012
 # Version: CMSSW_5_2_3_patch2
 ClassToHeaderMap = {\
 'ATest': 'PhysicsTools/TheNtupleMaker/interface/ClassFunction.h',
@@ -862,7 +862,6 @@ ClassToHeaderMap = {\
 'ScalersEventRecordRaw_v5': 'DataFormats/Scalers/interface/ScalersRaw.h',
 'ScalersEventRecordRaw_v6': 'DataFormats/Scalers/interface/ScalersRaw.h',
 'ScalersRaw': 'DataFormats/Scalers/interface/ScalersRaw.h',
-'SelectedObjectMap': 'PhysicsTools/TheNtupleMaker/interface/SelectedObjectMap.h',
 'SiPixelCalibDigi': 'DataFormats/SiPixelDigi/interface/SiPixelCalibDigi.h',
 'SiPixelCalibDigi::datacontainer': 'DataFormats/SiPixelDigi/interface/SiPixelCalibDigi.h',
 'SiPixelCalibDigiError': 'DataFormats/SiPixelDigi/interface/SiPixelCalibDigiError.h',
@@ -1068,7 +1067,7 @@ ClassToHeaderMap = {\
 'TtSemiLepEvtPartons': 'AnalysisDataFormats/TopObjects/interface/TtSemiLepEvtPartons.h',
 'TtSemiLeptonicEvent': 'AnalysisDataFormats/TopObjects/interface/TtSemiLeptonicEvent.h',
 'UpdatablePSimHit': 'SimDataFormats/TrackingHit/interface/UpdatablePSimHit.h',
-'UserBuffer': 'PhysicsTools/TheNtupleMaker/interface/BufferEventHelper.h',
+'UserBuffer': 'PhysicsTools/TheNtupleMaker/interface/UserBuffer.h',
 'Variable': 'PhysicsTools/TheNtupleMaker/interface/BufferUtil.h',
 'VariableDescriptor': 'PhysicsTools/TheNtupleMaker/interface/BufferUtil.h',
 'Vec2D': 'DataFormats/Math/interface/SSEVec.h',

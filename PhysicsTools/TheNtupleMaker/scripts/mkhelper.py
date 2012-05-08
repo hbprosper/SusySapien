@@ -5,7 +5,7 @@
 #          22-Jul-2011 HBP - fix duplicate HelperFor bug
 #          22-Apr-2012 HBP - use SINGLETON and COLLECTION keywords
 #          03-May-2012 HBP - add methods automatically
-#$Id: mkhelper.py,v 1.8 2012/05/05 04:24:17 prosper Exp $
+#$Id: mkhelper.py,v 1.9 2012/05/07 00:25:12 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -112,7 +112,12 @@ def wrpluginheader(names):
 #include "PhysicsTools/TheNtupleMaker/interface/HelperFor.h"
 %(header)s
 //-----------------------------------------------------------------------------
-// Note: The following variables are automatically defined and available to
+// Definitions:
+//   helper:        object of class %(name)s
+//   helped object: object of class %(classname)s
+//
+//
+// The following variables are automatically defined and available to
 //       all methods:
 //
 //         blockname          name of config. buffer object (config block) 
@@ -124,16 +129,41 @@ def wrpluginheader(names):
 //                            string param = parameter("label");
 //
 //         0. hltconfig       pointer to HLTConfigProvider
+//                            Note: this will be zero if HLTConfigProvider
+//                                  has not been properly initialized
+//
 //         1. config          pointer to global ParameterSet object
 //         2. event           pointer to the current event
-//         3. object          pointer to the current helper object
-//         4. oindex          index of current helper object
-//         5. index           index of item(s) returned by helper 
-//         6. count           count per helper object (default = 1)
+//         3. object          pointer to the current helped object
+//         4. oindex          index of current helped object
 //
-//       Items 0-6 are initialized by TheNtupleMaker.
-//       Items 0-5 should not be changed.
-//       Item  6 can be changed from its default value of 1 by the helper.
+//         5. index           index of item(s) returned by helper.
+//                            Note 1: an item is associated with all
+//                                    helper methods (think of it as an
+//                                    extension of the helped object)
+//                                  
+//                            Note 2: index may differ from oindex if,
+//                                    for a given helped object, the count
+//                                    variable (see below) differs from 1.
+//
+//         6. count           number of items per helped object (default=1)
+//                            Note:
+//                                  count = 0  ==> current helped object is
+//                                                 to be skipped
+//
+//                                  count = 1  ==> current helped object is
+//                                                 to be kept
+//
+//                                  count > 1  ==> current helped object is
+//                                                 associated with "count"
+//                                                 items, where each item
+//                                                 is associated with all the
+//                                                 helper methods
+//
+//       variables 0-6 are initialized by TheNtupleMaker.
+//       variables 0-5 should not be changed.
+//       variable    6 can be changed by the helper to control whether a
+//                     helped object should be kept or generates more items
 //-----------------------------------------------------------------------------
 '''
 	template_nonamespace = '''
@@ -392,7 +422,9 @@ def main():
 	if len(ctype) != 1:
 		usage()
 
-	if not ctype in ['s','c', 'S', 'C']:
+	if classname == "edm::Event":
+		ctype = "s"
+	elif not ctype in ['s','c', 'S', 'C']:
 		usage()
 	
 	if argc > 2:

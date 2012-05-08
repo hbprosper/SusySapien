@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # Create the skeleton of a user package
 # Created: 03-Sep-2010 Harrison B. Prosper
-#$Id: mkpackage.py,v 1.17 2011/07/20 16:19:54 prosper Exp $
+#$Id: mkpackage.py,v 1.18 2012/04/04 01:32:41 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -75,7 +75,7 @@ def main():
 	grep "<use " $CMSSW_BASE/src/%(mkntuple)s/plugins/BuildFile.xml > plugins/BuildFile.xml
 	echo -e "<use name=\\"%(pkg)s/%(subpkg)s\\"/>" >> plugins/BuildFile.xml	
 
-	sed -e "s/PhysicsTools.TheNtupleMaker/%(pkg)s.%(subpkg)s/g" $CMSSW_BASE/src/%(mkntuple)s/test/thentuplemaker_cfg.py  >  test/%(subpkg)s_cfg.py
+	sed -e "s/PhysicsTools.TheNtupleMaker/%(pkg)s.%(subpkg)s/g" $CMSSW_BASE/src/%(mkntuple)s/TheNtupleMaker_cfg.py  >  %(subpkg)s_cfg.py
 
 	grep "<use " $CMSSW_BASE/src/%(mkntuple)s/bin/BuildFile.xml > bin/BuildFile.xml
 	echo -e "<bin name=\\"%(prog)s\\" file=\\"%(prog)s.cc\\">" >> bin/BuildFile.xml

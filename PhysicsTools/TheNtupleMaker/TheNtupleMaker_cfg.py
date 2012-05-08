@@ -1,4 +1,4 @@
-#$Revision: 1.1.1.1 $
+#$Revision: 1.1 $
 import FWCore.ParameterSet.Config as cms
 
 process = cms.Process("TheNtupleMaker")

@@ -27,8 +27,10 @@
 //                   Sun May 01 HBP - Place Specialized buffer in a separate
 //                                    file, BufferEvent.h
 //                   Sun Apr 22 2012 HBP - Use Caller object
+//                   Mon May 07 2012 HBP - Skip classes LHEEventProduct and
+//                                         PileupSummaryInfo for real data.
 //
-// $Id: Buffer.h,v 1.6 2012/05/05 04:24:16 prosper Exp $
+// $Id: Buffer.h,v 1.7 2012/05/07 04:32:42 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/BufferUtil.h"
@@ -90,7 +92,10 @@ struct Buffer  : public BufferThing
               << std::endl;
 
     // We need to skip these classes, if we are running over real data
-    boost::regex getname("GenEvent|GenParticle|GenJet|GenRun");
+    boost::regex getname("GenEvent|GenParticle|"
+                         "GenJet|GenRun|genPart|generator|"
+                         "LHEEventProduct|"
+                         "PileupSummaryInfo");
     boost::smatch m;
     skipme_ = boost::regex_search(classname_, m, getname);
   }

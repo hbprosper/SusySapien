@@ -12,8 +12,10 @@
 //                                    specialization for edm::Event
 //                   Thu May 03 2012 HBP - allow for storage of selected
 //                                         objects
+//                   Mon May 07 2012 HBP - skip LHEEventProduct and
+//                                         PileupSummaryInfo for real data
 //
-// $Id: UserBuffer.h,v 1.9 2012/05/05 04:24:16 prosper Exp $
+// $Id: UserBuffer.h,v 1.10 2012/05/07 04:32:42 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/BufferUtil.h"
@@ -107,8 +109,10 @@ struct UserBuffer  : public BufferThing
     debug_  = debug;
      
     // We need to skip these classes, if we are running over real data
-    boost::regex getname("GenEvent|GenParticle"
-                         "|GenJet|GenRun|genPart|generator");
+    boost::regex getname("GenEvent|GenParticle|"
+                         "GenJet|GenRun|genPart|generator|"
+                         "LHEEventProduct|"
+                         "PileupSummaryInfo");
     boost::smatch m;
     std::string tmpstr = classname_ + " " + label_;
     skipme_ = boost::regex_search(tmpstr, m, getname);
@@ -333,29 +337,22 @@ struct UserBuffer<edm::Event, Y, SINGLETON> : public BufferThing
   ///
   UserBuffer() 
     : out_(0),
-      classname_("edm::Event"),
+      classname_(boost::python::type_id<Y>().name()),
       label_(""),
       label1_(""),
       label2_(""),
       prefix_(""),
-      buffertype_(HELPER),
+      buffertype_(EVENT),
       var_(std::vector<VariableDescriptor>()),
-      maxcount_(0),
+      maxcount_(1),
       count_(0),
       ctype_(SINGLETON),
       message_(""),
-      debug_(0),
-      skipme_(false),
-      cache_(std::vector<double>(100))
+      debug_(0)
   {
     std::cout << "UserBuffer created for objects of type: " 
               << name()
               << std::endl;
-
-    // We need to skip these classes, if we are running over real data
-    boost::regex getname("GenEvent|GenParticle|GenJet|GenRun");
-    boost::smatch m;
-    skipme_ = boost::regex_search(classname_, m, getname);
   }
   
   ///
@@ -382,15 +379,17 @@ struct UserBuffer<edm::Event, Y, SINGLETON> : public BufferThing
     label_  = label;
     prefix_ = prefix;
     var_    = var;
-    maxcount_ = maxcount;
+    maxcount_ = 1;
     debug_  = debug;
-      
+    count_  = 1;
+
     std::cout << "\t=== Initialize UserBuffer (" 
-              << boost::python::type_id<Y>().name() << ")"
+              << name() << ")"
               << std::endl;
 
 
     initBuffer<Y>(out,
+                  classname_,
                   label_,
                   label1_,
                   label2_,
@@ -416,18 +415,12 @@ struct UserBuffer<edm::Event, Y, SINGLETON> : public BufferThing
                 << "Begin UserBuffer::fill\n\t" 
                 << BLUE
                 << "X: " << "edm::Event" << "\n\t"
-                << "Y: " << boost::python::type_id<Y>().name()
+                << "Y: " << name()
                 << DEFAULT_COLOR
                 << std::endl;
     
-    count_ = 0; // reset count, just in case we have to bail out
+    count_ = 1; // reset count, just in case we have to bail out
     message_ = "";
-    
-    // If this is real data ignore generator objects
-    if ( event.isRealData() )
-      {
-        if ( skipme_ ) return true;
-      }
     
     // Create helper.
     // A helper provides the following methods in addition to its accessors:
@@ -439,7 +432,7 @@ struct UserBuffer<edm::Event, Y, SINGLETON> : public BufferThing
 
     // Cache event and eventsetup in helper
     helper_.cacheEvent(event, eventsetup);
-     
+    
     // Perform (optional) user event-level analysis
     helper_.analyzeEvent();
     
@@ -450,21 +443,15 @@ struct UserBuffer<edm::Event, Y, SINGLETON> : public BufferThing
     // Perform (optional) user object-level analysis
     helper_.analyzeObject();
         
-    // Note: size returns the value of the internal variable count
-    int k = 0;
-    while ( (k < helper_.size()) && (count_ < maxcount_) )
-      {
-        helper_.set(k);    // set index of items to be returned
-        callMethods(count_, (const Y)helper_, variables_, debug_);
-        k++;
-        count_++;
-      }
+    helper_.set(0);
+    callMethods(0, (const Y)helper_, variables_, debug_);
       
     // Perform (optional) user post event-level cleanup/analysis
     helper_.flushEvent();
 
     if ( debug_ > 0 ) 
       std::cout << DEFAULT_COLOR << "End UserBuffer::fill " << std::endl; 
+
     return true;
   }
   
@@ -472,21 +459,8 @@ struct UserBuffer<edm::Event, Y, SINGLETON> : public BufferThing
 
   std::string name() { return classname_; }
 
- /// Shrink buffer size using specified array of indices.
-  void shrink(std::vector<int>& index)
-  {
-    count_ = index.size();
-    if ( count_ > (int)cache_.size() ) cache_.resize(count_);
-
-    for(unsigned i=0; i < variables_.size(); ++i)
-      {
-        for(int j=0; j < count_; ++j)
-          cache_[j] = variables_[i].value[index[j]];
-        
-        for(int j=0; j < count_; ++j)
-          variables_[i].value[j] = cache_[j];
-      }
-  }
+  /// Shrink buffer size using specified array of indices.
+  void shrink(std::vector<int>& index) {}
 
   countvalue& variable(std::string name)
   {
@@ -522,9 +496,7 @@ private:
   ClassType  ctype_;
   std::string message_;
   int  debug_;
-  bool skipme_; 
   std::string bufferkey_;
-  std::vector<double> cache_;
 
   // helper object
   Y helper_;
