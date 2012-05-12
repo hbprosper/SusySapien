@@ -5,7 +5,7 @@
 #          22-Jul-2011 HBP - fix duplicate HelperFor bug
 #          22-Apr-2012 HBP - use SINGLETON and COLLECTION keywords
 #          03-May-2012 HBP - add methods automatically
-#$Id: mkhelper.py,v 1.9 2012/05/07 00:25:12 prosper Exp $
+#$Id: mkhelper.py,v 1.10 2012/05/08 01:58:06 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -195,6 +195,11 @@ public:
   // ---------------------------------------------------------
   // -- Access Methods
   // ---------------------------------------------------------
+
+  // WARNING: some methods may fail to compile because of coding
+  //          problems in one of the base classes. If so, just
+  //          comment out the offending method and try again.
+  
   %(methods)s
 };
 #endif
@@ -490,20 +495,29 @@ def main():
 	# sort methods
 	meths = {}
 	for method, value in db['methods'].items():
-		nom, dummy, rtype, fullrtype, signature, methodcall = value
+		nom, clname, rtype, fullrtype, signature, methodcall, simpleArgs=value
 		meths[lower(signature)] = (method, rtype,
-								   fullrtype, signature, methodcall)
+								   fullrtype,
+								   signature, methodcall, clname, simpleArgs)
 	sigs = meths.keys()
 	sigs.sort()
 
 	methods = ''
 	for key in sigs:
-		method, rtype, fullrtype, signature, methodcall = meths[key]
+		method, rtype, fullrtype, signature, \
+				methodcall, clname, simpleArgs = meths[key]
 		#print "%s\t%s | %s" % (rtype, signature, methodcall)	
 		
 		if stufftoskip.search(method) != None: continue
 		method = strip(method)
 
+		if simpleArgs:
+			c1 = ""
+			c2 = ""
+		else:
+			c1 = "%s/**\n" % tab
+			c2 = "\n%s*/"  % tab
+			
 		# If return type is a non-const pointer
 		# then cast it explicitly to a non-const type
 		cast = ""
@@ -514,9 +528,10 @@ def main():
 		noms = {'tab': tab,
 				'rtype': rtype,
 				'cast' : cast,
+				'classname': clname,
 				'signature': signature,
 				'methodcall': methodcall}
-				 
+
 		m = '%(tab)s%(rtype)s %(signature)s const'\
 			' { return %(cast)sobject->%(methodcall)s; }' % noms
 		
@@ -528,7 +543,8 @@ def main():
 			if len(n+m) > 79:
 				m = m + '\n%(tab)s' + strip(n)
 				m = m % noms
-		methods += "\n\n%s" % m
+		comment = "%(tab)s// from %(classname)s\n" % noms
+		methods += "\n\n%s%s%s%s" % (comment, c1, m, c2)
 	#----------------------------------
 	
 	print "class:  %s" % classname

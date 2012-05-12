@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 #------------------------------------------------------------------------------
-# initialize TheNtupleMaker with CMGTools, if it is installed in the
-# local release. This scripts must be excecuted before scram build
+# initialize TheNtupleMaker:
+#  1. scripts/mkclassmap.py [CMG]
+#  2. scripts/mkclasslist.py
+#  3. scripts/mkplugins.py
+#
 # Created 2 Apr 2012 Harrison B. Prosper
 #------------------------------------------------------------------------------
 import os, sys
@@ -10,7 +13,7 @@ pwd = split(os.environ["PWD"],"/")[-1]
 if pwd != "TheNtupleMaker":
         print "\n\t* Please run this script from the TheNtupleMaker directory:"
         
-        print "\t    python scripts/initTNMwCMG.py"
+        print "\t    python scripts/initTNM.py [CMG]"
         print
         sys.exit(0)
 
@@ -22,7 +25,6 @@ if not os.environ.has_key("CMSSW_BASE"):
         print "\t* Please remember \n\t\tcmsenv\n"
         sys.exit(0)
 
-        
 # Add link to TheNtupleMaker
 
 base = os.environ["CMSSW_BASE"]
@@ -34,17 +36,22 @@ ln -s %s/src/PhysicsTools/TheNtupleMaker/python %s/python/PhysicsTools/TheNtuple
 
 # Check if CMGTools installed
 
-cmgtools = "%s/src/AnalysisDataFormats/CMGTools" % base
-if not os.path.exists(cmgtools):
-        print "\t* CMGTools was not found in local release"
-        print "\t* Please install the CMGTools and re-run this script\n"
-        sys.exit(0)
-        
-print "\n\t* Initialize TheNtupleMaker with CMGTools *\n"
+if len(sys.argv) > 1:
+        cmgtools = "%s/src/AnalysisDataFormats/CMGTools" % base
+        if os.path.exists(cmgtools):
+                withCMG = "AnalysisDataFormats/CMGTools"
+                print "\n\t* Initialize TheNtupleMaker with CMGTools *\n"
+        else:
+                print "\t* CMGTools was not found in local release"
+                print "\t* Please install and re-run this script\n"
+                sys.exit(0)
+else:
+        withCMG = ""
+        print "\n\t* Initialize TheNtupleMaker *\n"
 
 # Now execute initialization commands
 
-cmd = "scripts/mkclassmap.py AnalysisDataFormats/CMGTools"
+cmd = "scripts/mkclassmap.py " + withCMG
 print cmd
 os.system(cmd)
 

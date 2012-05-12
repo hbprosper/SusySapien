@@ -1,5 +1,17 @@
-$Revision: 1.31 $
+$Revision: 1.32 $
 
+v5_3_7 May 11 2012
+------------------
+    1. Add process.load("L1TriggerConfig.L1GtConfigProducers.L1GtConfig_cff")
+	   to config file. This is needed to initialize HLTConfigProducer
+	   correctly.
+	2. Add a warning in helper headers that some methods may need to be
+	   commented out
+	3. Include all methods in helper headers but comment out those
+	   containing at least one argument of non-fundamental type
+	4. add initTNM.py script (and delete initTNMwCMG.py)
+ 	
+	
 v5_3_5 May 07 2012
 ------------------
 	1. TriggerResultsHelper::value and prescale now return -1 if no trigger

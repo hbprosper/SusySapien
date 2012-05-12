@@ -57,7 +57,7 @@
 //                   Mon Aug 08 2011 HBP - allow global alias
 //                   Sun May 06 2012 HBP - fix macro invokation
 //                   Mon May 07 2012 HBP - remove SelectedObjectMap.h 
-// $Id: TheNtupleMaker.cc,v 1.18 2012/05/07 15:02:57 prosper Exp $
+// $Id: TheNtupleMaker.cc,v 1.19 2012/05/08 01:58:05 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -141,10 +141,10 @@ private:
   TTree* ptree_;
   int inputCount_;
 
-  // From Josh's code
-  std::string triggerProcessName_;
+  edm::InputTag triggerResults_;
   HLTConfigProvider HLTconfig_;
   bool HLTconfigured;
+
 };
 
 
@@ -152,7 +152,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   : ntuplename_(iConfig.getUntrackedParameter<string>("ntupleName")), 
     output(otreestream(ntuplename_,
                        "Events", 
-                       "created by TheNtupleMaker $Revision: 1.18 $")),
+                       "created by TheNtupleMaker $Revision: 1.19 $")),
     logfilename_("TheNtupleMaker.log"),
     log_(new std::ofstream(logfilename_.c_str())),
     macroname_(""),
@@ -162,7 +162,6 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
     haltlogger_(false),
     macroEnabled_(false),
     inputCount_(0),
-    triggerProcessName_("HLT"),
     HLTconfigured(false)
 {
   cout << "\nBEGIN TheNtupleMaker Configuration" << endl;
@@ -174,7 +173,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   // --------------------------------------------------------------------------
   TFile* file = output.file();
   ptree_ = new TTree("Provenance",
-                     "created by TheNtupleMaker $Revision: 1.18 $");
+                     "created by TheNtupleMaker $Revision: 1.19 $");
   string cmsver("unknown");
   if ( getenv("CMSSW_VERSION") > 0 ) cmsver = string(getenv("CMSSW_VERSION"));
   ptree_->Branch("cmssw_version", (void*)(cmsver.c_str()), "cmssw_version/C");
@@ -207,12 +206,12 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
 
   try
     {
-      triggerProcessName_ 
-        = iConfig.getUntrackedParameter<string>("triggerProcessName");
+      triggerResults_ 
+        = iConfig.getParameter<edm::InputTag>("HLTriggerResults");
     }
   catch (...)
     {
-      triggerProcessName_ = std::string("HLT");
+      triggerResults_ = edm::InputTag("TriggerResults", "", "HLT");
     }
 
   try
@@ -513,10 +512,11 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
           var.push_back(VariableDescriptor(rtype, method, varname));
 
           if ( DEBUG > 0 )
-            cout << "\trtype:  <" << RED   << rtype << BLACK << ">"
-                 << "\tmethod: <" << BLUE  << method << BLACK << ">"
-                 << "\tvarname:<" << GREEN << varname << BLACK << ">" 
+            cout << "\trtype:  <" << RED   << rtype << DEFAULT_COLOR << ">\n"
+                 << "\tmethod: <" << BLUE  << method << DEFAULT_COLOR << ">\n"
+                 << "\tvarname:<" << GREEN << varname << DEFAULT_COLOR << ">" 
                  << endl;
+
         }
       
       // Create a buffer of appropriate type...
@@ -559,6 +559,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
 
       if ( DEBUG > 0 )
         {
+          cout << DEFAULT_COLOR;
           cout << "  buffer: " << buffer << " created " << endl << endl;
           cout << "          " << key    << " address " << buffermap[key] 
                << endl << endl;
@@ -735,6 +736,7 @@ TheNtupleMaker::shrinkBuffers()
   //DEBUG = 0;
 }
 
+
 // --- method called once each job just before starting event loop  -----------
 void 
 TheNtupleMaker::beginJob()
@@ -753,34 +755,45 @@ TheNtupleMaker::beginRun(const edm::Run& run,
 
   try
     {
-      bool HLTchanged=false;
+      bool HLTchanged=true; // follow HLTTrigReport 
 
-      bool okay = HLTconfig_.init(run, 
-                                  eventsetup, 
-                                  triggerProcessName_, 
-                                  HLTchanged);
-      if ( okay )
+      if ( HLTconfig_.init(run, 
+                           eventsetup, 
+                           triggerResults_.process(), 
+                           HLTchanged) )
         {
-          if ( HLTchanged ) 
-            edm::LogInfo("HLTConfig") 
-              << "The HLT configuration has changed"
-              << std::endl;
           HLTconfigured = true;
+
+          if ( HLTchanged )
+            {
+              edm::LogInfo("HLTConfigChanged") 
+                << "The HLT configuration has changed"
+                << std::endl;
+             }
         }
       else
         {
-          edm::LogWarning("HLTConfigFailure") 
-            << "Problem with HLT configuration"
-            << std::endl;
           HLTconfigured = false;
+
+          edm::LogWarning("HLTConfigFailure") 
+            << "The HLT configuration failed"
+            << std::endl;
         }
     }
   catch (...)
     {
+      HLTconfigured = false;
       edm::LogWarning("HLTConfigInitFailure") 
         << "Problem initializing HLT configuration"
+        << std::endl
+        << "\ttry including the line: "
+        << BOLDRED 
+        << "process.load(\""
+        << "L1TriggerConfig.L1GtConfigProducers.L1GtConfig_cff\")"
+        << DEFAULT_COLOR
+        << std::endl
+        << "in your configuration file"
         << std::endl;
-      HLTconfigured = false;
     }
 
   // Update HLT config pointer

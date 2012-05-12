@@ -2,7 +2,7 @@
 # File: ReflexLib.py
 # Description: A collection of simple Reflex utilities
 # Created: 25-Apr-2012 Harrison B. Prosper
-#$Revision: 1.3 $
+#$Revision: 1.4 $
 #---------------------------------------------------------------------------
 from ROOT import *
 from string import *
@@ -16,10 +16,10 @@ except:
 	sys.exit(0)
 #------------------------------------------------------------------------------
 isfun     = re.compile(r'[0-9]+|bool|short|int|long|float|double'\
-					   '|unsigned short|unsigned int|unsigned long')
+					   '|unsigned short|unsigned int|unsigned long|size_t')
 isFuntype = re.compile(r'[0-9]+|bool|short|int|long|float|double'\
 					   '|unsigned short|unsigned int|unsigned long'\
-					   '|std::string|char|const char')
+					   '|std::string|char|const char|size_t')
 isSTL     = re.compile(r'std::(vector|set|map|pair)')
 skipthis  = re.compile('operator|'\
 					   '__get|'\
@@ -70,6 +70,10 @@ LIBAREA = "%s/lib/%s/" % (os.environ["CMSSW_RELEASE_BASE"], SCRAM_ARCH)
 LOADED_LIBS = {}
 
 def loadLibrary(name):
+## 	if len(LOADED_LIBS) == 0:
+## 		import PhysicsTools.TheNtupleMaker.AutoLoader
+## 		LOADED_LIBS[name] = 1
+## 		return
 	name = fixName(name) # remove unnecessary spaces
 
 	if not ClassToHeaderMap.has_key(name): return
@@ -107,6 +111,7 @@ def classMethods(classname, db, depth=0):
 		db['classlist'] = []
 		db['baseclassnames'] = []
 		db['signature'] = {}
+		db['private'] = {}
 		
 	if depth > 20:
 		print "lost in trees"
@@ -119,36 +124,64 @@ def classMethods(classname, db, depth=0):
 	thing = Reflex.Type()
 	c = thing.ByName(classname)
 	n = c.FunctionMemberSize()
+
+	###D
+	#print "CLASS( %s )" % classname
 	
 	for i in xrange(n):
 		m = c.FunctionMemberAt(i)
-		if not m.IsPublic(): continue
 		if not m.IsFunctionMember(): continue
+		name  = m.Name()
+
+		if not m.IsPublic():
+			f     = m.TypeOf()
+			mtype = f.Name(SCOPED)
+			sig   = '%s %s'
+			#print "\tname (%s) PRIVATE" % sig
+			db['private'][sig] = 1
+			continue
+
 		if m.IsConstructor(): continue
 		if m.IsDestructor():  continue
 
-		name  = m.Name()
+		#DEBUG = name in ['overlap']
+		DEBUG = False
+		
 		# skip some obviously "skipable" stuff
 		if skipthis.match(name) != None: continue
 		
 		f     = m.TypeOf()
 		mtype = f.Name(SCOPED)
+
+		# ignore methods that conflict with private methods
+		sig   = '%s %s'
+		if db['private'].has_key(sig):
+			print "**warning - %s is a private method of %s" % (name,
+																classname)
+			continue
+		
 		mtype = strip(basicstr.sub("std::string", mtype))
 		mtype = replace(mtype, "std::string >", "std::string>")
 		
 		t = split(mtype, '(')
+		if DEBUG:
+			print "NAME( %s )" % name
+			print "\ttest len(t)", t
 		if len(t) != 2:  continue
 
 		# Get return type
 		rtype = strip(t[0])
 		# Skip setters
 		rtype = strip(rtype)
+		if DEBUG:
+			print "\ttest for void"
 		if rtype in ['void', 'void*']: continue
 
 		# Get arguments
 		args  = "(%s" % strip(t[1])
 		args  = replace(args, "(void)", "()")
 		argscall = args
+		funargs = True
 		
 		if args != "()":
 			
@@ -166,12 +199,11 @@ def classMethods(classname, db, depth=0):
 				continue
 
 			# skip functions with non-fundamental type arguments
-			skipnonfun = False
 			for argtype in argtypes:
 				if isFuntype.match(argtype): continue
-				skipnonfun = True
+				funargs = False
 				break
-			if skipnonfun: continue
+			if DEBUG: print "\ttest for fundamental args"
 			
 			#print "\nNAME(%s) ARGS(%s) %d, %d" % \
 			#	  (name, argtypes, nargs, ndefargs)
@@ -187,8 +219,13 @@ def classMethods(classname, db, depth=0):
 					value = ""
 				else:
 					value = "=%s" % m.FunctionParameterDefaultAt(iarg)
-				
-				#print "\tARGTYPE(%s) ARG(%s%s)" % (argtype, argname, value)
+
+				# If no argument given, make one
+				if argname == "":
+					argname = "x%d" % iarg
+					
+				if DEBUG:
+					print "\tARGTYPE(%s) ARG(%s%s)" % (argtype, argname, value)
 				
 				args += "%s%s %s%s" % (delim, argtype, argname, value)
 				argscall += "%s%s" % (delim, argname)
@@ -208,13 +245,14 @@ def classMethods(classname, db, depth=0):
 			# If we are not in the same scope, however, it cannot
 			# overload the existing method
 			scope = db['scopes'][name]
+			if DEBUG: print "\ttest for scopes"
 			if  scope != classname: continue
 		db['scopes'][name] = classname
 
 		signature  = name + args
 		methodcall = name + argscall
 		
-		#print "SIG(%s) CALL(%s)" % (signature, methodcall)
+		if DEBUG: print "SIG(%s) CALL(%s)" % (signature, methodcall)
 		
 		# Expand typedefs, but check first for pointers and
 		# references
@@ -235,6 +273,7 @@ def classMethods(classname, db, depth=0):
 		fullrtype = strip(basicstr.sub("std::string", fullrtype))
 		signature = basicstr.sub("std::string", signature)
 		str = "%s  %s" % (rtype, signature)
+		if DEBUG: print "\ttest for skipmethod(%s)" % str
 		if skipmethod.search(str) != None: continue
 
 		m = reftype.findall(str)
@@ -256,7 +295,8 @@ def classMethods(classname, db, depth=0):
 		db['methods'][method] = (name, classname,
 								 rtype, fullrtype,
 								 signature,
-								 methodcall)
+								 methodcall,
+								 funargs)
 		
 		cdb['methods'].append((fullrtype, method))
 
