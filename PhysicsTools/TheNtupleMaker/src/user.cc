@@ -9,7 +9,7 @@
 //              Mon May 07, 2012 HBP - value and prescale of 
 //                                     TriggerResultsHelper now returns -1
 //                                     if a trigger does not exist
-//$Revision: 1.8 $
+//$Revision: 1.9 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -58,8 +58,6 @@ namespace {
 //-----------------------------------------------------------------------------
 // TriggerResults helper
 //-----------------------------------------------------------------------------
-bool TriggerResultsHelper::first=true;
-
 TriggerResultsHelper::TriggerResultsHelper() 
   : HelperFor<edm::TriggerResults>()
 {
@@ -83,17 +81,6 @@ TriggerResultsHelper::value(std::string name) const
   // NB: use a reference to avoid expensive copying
   const edm::TriggerNames& tnames = event->triggerNames(*object);
 
-  // Write out trigger names upon first call
-  if ( TriggerResultsHelper::first )
-    {
-      TriggerResultsHelper::first = false;
-      ofstream fout("triggerNames.txt");
-      fout << std::endl << "Bit" << "\t" "Trigger Name" << std::endl;
-      for(unsigned  bit=0; bit < tnames.size(); bit++)
-        fout << bit << "\t" << tnames.triggerName(bit) << std::endl;
-      fout.close();
-    }
-
   // Get bit associated with trigger name
   try
     {
@@ -101,10 +88,10 @@ TriggerResultsHelper::value(std::string name) const
   
       // If trigger does not exist issue a warning
 
-      if ( bit == tnames.size() )
+      if ( bit >= tnames.size() )
         {
           edm::LogWarning("TriggerNotFound")
-            << "\nTriggerResultsHelper::value - " 
+            << "TriggerResultsHelper: " 
             << "trigger \"" + name + "\" NOT FOUND"
             << std::endl;
           return -1;
@@ -115,8 +102,8 @@ TriggerResultsHelper::value(std::string name) const
   catch (...)
     {
       edm::LogWarning("TriggerFailure")
-        << "\nTriggerResultsHelper::value - " 
-        << "Problem accessing trigger \"" + name + "\""
+        << "TriggerResultsHelper: " 
+        << "cannot access trigger \"" + name + "\""
         << std::endl;
       return -1;
     }
@@ -134,7 +121,7 @@ TriggerResultsHelper::prescale(std::string name)
   if ( hltconfig == 0 )
     { 
       edm::LogWarning("HLTConfigProviderNotInitialized")
-        << "\nTriggerResultsHelper::prescale - " 
+        << "TriggerResultsHelper: " 
         << "HLTConfigProvider has not been initialized"
         << std::endl;
       return -1;
@@ -145,26 +132,15 @@ TriggerResultsHelper::prescale(std::string name)
     {
       const edm::TriggerNames& tnames = event->triggerNames(*object);
 
-      // Write out trigger names upon first call
-      if ( TriggerResultsHelper::first )
-        {
-          TriggerResultsHelper::first = false;
-          ofstream fout("triggerNames.txt");
-          fout << std::endl << "Bit" << "\t" "Trigger Name" << std::endl;
-          for(unsigned  bit=0; bit < tnames.size(); bit++)
-            fout << bit << "\t" << tnames.triggerName(bit) << std::endl;
-          fout.close();
-        }
-
       // Get bit associated with trigger name
       unsigned int bit = tnames.triggerIndex(name);
   
       // If trigger does not exist issue a warning
 
-      if ( bit == tnames.size() )
+      if ( bit >= tnames.size() )
         {
           edm::LogWarning("TriggerNotFound")
-            << "\nTriggerResultsHelper::prescale - " 
+            << "TriggerResultsHelper: " 
             << "trigger \"" + name + "\" NOT FOUND"
             << std::endl;
           return -1;
@@ -182,8 +158,8 @@ TriggerResultsHelper::prescale(std::string name)
   catch (...)
     {
       edm::LogWarning("TriggerPrescaleFailure")
-        << "\nTriggerResultsHelper::prescale - "
-        << "Problem accessing prescale for trigger \"" + name + "\""
+        << "TriggerResultsHelper: "
+        << "cannot access prescale for trigger \"" + name + "\""
         << std::endl;
       return -1;
     }

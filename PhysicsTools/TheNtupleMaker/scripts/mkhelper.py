@@ -5,7 +5,7 @@
 #          22-Jul-2011 HBP - fix duplicate HelperFor bug
 #          22-Apr-2012 HBP - use SINGLETON and COLLECTION keywords
 #          03-May-2012 HBP - add methods automatically
-#$Id: mkhelper.py,v 1.10 2012/05/08 01:58:06 prosper Exp $
+#$Id: mkhelper.py,v 1.11 2012/05/12 03:44:19 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -235,6 +235,11 @@ namespace %(namespace)s
     // ---------------------------------------------------------
     // -- Access Methods
     // ---------------------------------------------------------
+
+	// WARNING: some methods may fail to compile because of coding
+	//          problems in one of the base classes. If so, just
+	//          comment out the offending method and try again.
+  
 %(methods)s
   };
 }

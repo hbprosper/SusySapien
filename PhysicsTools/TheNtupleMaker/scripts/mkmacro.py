@@ -6,7 +6,8 @@
 # Updated: 05-Oct-2010 HBP - clean up
 #          12-Mar-2011 HBP - give user option to add variables
 #          07-May-2012 HBP - fix object selection bug
-#$Id: mkmacro.py,v 1.4 2012/05/05 22:03:57 prosper Exp $
+#          13-May-2012 HBP - add more comments, include object counters
+#$Id: mkmacro.py,v 1.5 2012/05/08 01:58:06 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
 from string import *
@@ -47,27 +48,7 @@ AUTHOR = getauthor()
 if os.environ.has_key("CMSSW_BASE"):
 	CMSSW_BASE = os.environ["CMSSW_BASE"]
 	PACKAGE = "%s/src/PhysicsTools/TheNtupleMaker" % CMSSW_BASE
-	SELECTED= "%s/interface/SelectedObjectMap.h" % PACKAGE
-else:
-	SELECTED= "SelectedObjectMap.h" % PACKAGE
-	
-## if not os.path.exists(SELECTED):
-## 	print "\n** error ** - required file:\n\t%s\n\t\tNOT found!" % SELECTED
-## 	sys.exit(0)
-#------------------------------------------------------------------------------
-# For later
-TMP=\
-	  '''
-// Classes
-%(class)s
 
-// Functions
-inline
-void keepObject(std::string name, int index)
-{
-  SelectedObjectMap::instance().set(name, index);
-}
-	  '''
 HEADER=\
 '''#ifndef %(NAME)s_H
 #define %(NAME)s_H
@@ -76,6 +57,10 @@ HEADER=\
 // Description: user macro called by TheNtupleMaker
 // Created:     %(time)s by mkmacro.py
 // Author:      %(author)s
+//
+// WARNING: It is better not to edit this header. You may inadvertently lose
+//          your changes!
+//
 //-----------------------------------------------------------------------------
 #include <map>
 #include <string>
@@ -89,6 +74,8 @@ HEADER=\
 #include "TROOT.h"
 #include "TTree.h"
 //-----------------------------------------------------------------------------
+
+// TNM: for internal use only
 struct countvalue
 {
   int*    count;
@@ -97,10 +84,17 @@ struct countvalue
 typedef std::map<std::string, countvalue> VarMap;
 typedef std::map<std::string, std::vector<int> > IndexMap;
 
-// -----------------------------------------------------------------------
-// This struct is defined by the user in %(name)s.cc
+/**----------------------------------------------------------------------------
+  All user-defined variables and functions should be declared in this struct
+  in the program %(name)s.cc, not in this header.
+  
+  This coding technique avoids the need to modify the header.
+  An object of this type, called "local", is allocated in beginJob().
+ ----------------------------------------------------------------------------*/
+
 class %(name)sInternal;
 
+// ----------------------------------------------------------------------------
 class %(name)s
 {
 public:
@@ -117,17 +111,19 @@ public:
   
   bool analyze();
 
-  // call these functions to select the specified objects
-  // example:
-  //
-  //   select("jet");    which is to be called once from beginJob()
-  //
-  // and
-  //
-  //   select("jet", i); which is to be called in analyze() for every object
-  //
-  // to be kept
+  /**--------------------------------------------------------------------------
+  call these functions to select the specified objects
+
+  example:
   
+    select("jet");    to be called from beginJob()
+ 
+  and
+  
+    select("jet", i); to be called from analyze() for every object
+  
+    to be kept
+  ---------------------------------------------------------------------------*/
   void select(std::string name)
   {
     (*indexmap)[name] = std::vector<int>();
@@ -171,10 +167,10 @@ ClassImp(%(name)s)
 '''
 
 TMP2='''
-//---------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 // --- These structs can be filled by calling fillObjects()
 // --- after the call to initializeEvents(...)
-//---------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 %(structdecl)s
 %(structimpl)s
 '''
@@ -186,27 +182,45 @@ MACRO=\
 // Author:      %(author)s
 //-----------------------------------------------------------------------------
 #include "%(name)s.h"
-//-----------------------------------------------------------------------------
 using namespace std;
+/**----------------------------------------------------------------------------
+  All user-defined variables and functions should be declared in this struct.
+  This coding technique avoids the need to modify the header %(name)s.h.
+  An object of this type, called "local", is allocated in beginJob().
 
+  
+  IMPORTANT: If some of these variables are to be added to the ntuple,
+             make sure the type of each variable matches the type format
+			 specified in the call to tree->Branch(...). See example below.
+ ----------------------------------------------------------------------------*/
 struct %(name)sInternal
 {
   int counter;
 
-  // Declare in this struct all user-defined variables to be
-  // added to ntuple
-  // IMPORTANT: make sure the variable type and the type format in Branch
-  //            match
   //float HT;
 };
 
+/**----------------------------------------------------------------------------
+  call these functions to select the specified objects
 
+  example:
+  
+    select("jet");    to be called from beginJob()
+ 
+  and
+  
+    select("jet", i); to be called from analyze() for every object
+  
+    to be kept
+ ----------------------------------------------------------------------------*/
 void %(name)s::beginJob()
 {
   local = new %(name)sInternal();
   local->counter = 0;
 
   // Add a float variable to ntuple
+  // Note match between the type of the variable HT (a float) and its
+  // format specifier ("HT/F")
   //tree->Branch("HT", &local->HT, "HT/F");
 
   // Define objects that are to be selected in analyze()
@@ -217,7 +231,7 @@ void %(name)s::endJob()
 {
   if ( local ) delete local;
 }
-
+//-----------------------------------------------------------------------------
 
 bool %(name)s::analyze()
 {
@@ -367,6 +381,7 @@ def main():
 	# skip first line
 	records = records[1:]
 	stnamemap = {}
+	reclist = []
 	for index in xrange(len(records)):
 		record = records[index]
 		if record == "": continue
@@ -380,22 +395,6 @@ def main():
 			key = t[0]
 			if not stnamemap.has_key(key): stnamemap[key] = 0
 			stnamemap[key] += 1
-	
-	# Loop over branch names
-	
-	# If a variable name matches a struct name, this will generate a
-	# multiply defined error. One of the names must be altered. Let's
-	# take this to be the variable name.
-
-	usednames = {}
-	vars = {}
-	vectormap = {}
-	
-	for index in xrange(len(records)):
-		record = records[index]
-		if record == "": continue
-		
-		rtype, branchname, varname, count = split(record, '/')
 
 		# Fix annoying types
 		if rtype == "bool":
@@ -407,7 +406,21 @@ def main():
 		elif rtype == "uchar":
 			rtype = "int"
 		elif rtype == "uint":
-			rtype = "int"			
+			rtype = "int"
+			
+		reclist.append((rtype, branchname, varname, count))
+		
+	# Loop over branch names
+	
+	# If a variable name matches a struct name, this will generate a
+	# multiply defined error. One of the names must be altered. Let's
+	# take this to be the variable name.
+
+	vars = {}
+	usednames = {}
+	vectormap = {}
+	
+	for index, (rtype, branchname, varname, count) in enumerate(reclist):
 
 		# Check that varname is not the same as that of a potential
 		# struct
@@ -487,11 +500,21 @@ def main():
 		n, rtype, branchname, count, iscounter = vars[varname]
 
 		# If this is a counter variable ignore it
-		if iscounter: continue
+		#if iscounter: continue
 
 		if rtype == "bool": rtype = "int"
 
-		if count == 1:
+		if iscounter:
+			decl.append("  %s\t%s;" % (rtype, varname))
+			impl.append('    countvalue& v%d = (*varmap)["%s"];' %(index,
+																   branchname))
+			impl.append('    if ( v%d.count )' % index)
+			impl.append('      %s = *v%d.count;' % (varname, index))
+			impl.append('    else')
+			impl.append('      %s = 0;' % varname)
+			impl.append('')			
+
+		elif count == 1:
 			decl.append("  %s\t%s;" % (rtype, varname))
 			impl.append('    countvalue& v%d = (*varmap)["%s"];' % (index,
 															   branchname))
@@ -591,13 +614,18 @@ def main():
 			 'structimpl': join("", structimpl, "\n")			 
 			 }
 
-	record = HEADER % names
 	outfilename = "%(name)s.h" % names
+	record = HEADER % names
 	open(outfilename, "w").write(record)
 
-	record = MACRO % names
+
 	outfilename = "%(name)s.cc" % names
-	open(outfilename, "w").write(record)
+	if os.path.exists(outfilename):
+		print "\t** %s already exists...new version NOT created!" % \
+		outfilename
+	else:
+		record = MACRO % names	
+		open(outfilename, "w").write(record)
 
 	record = COMPILE % names
 	outfilename = "%(name)s.mk" % names

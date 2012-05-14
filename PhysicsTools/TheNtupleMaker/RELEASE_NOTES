@@ -1,4 +1,32 @@
-$Revision: 1.32 $
+$Revision: 1.33 $
+
+v5_3_8 May 13 2012
+------------------
+	1. New range mechanism:
+
+		int value("HLT_Jet50_v1..3")
+
+	   automatically expands to
+
+		int value("HLT_Jet50_v1")
+		int value("HLT_Jet50_v2")
+		int value("HLT_Jet50_v3")
+
+	2. New wildcard mechanism:
+
+		int value("HLT_*(Fat|Di)Jet*")
+	
+	   automatically matches all trigers of the form HLT_*FatJet*, 
+	   HLT_*DiJet* and includes branches for each in the ntuple. 
+	   Note: this uses the trigger list available at the first call to
+       beginRun(...)
+
+	3. triggerNames.txt now accumulates all trigger names 
+	   encountered during the job.
+
+	4. Add a few more comments to macro headers.
+
+	5. Include all object counters (e.g., nelectron, nmuon, etc.)
 
 v5_3_7 May 11 2012
 ------------------

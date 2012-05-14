@@ -13,7 +13,7 @@
 //                   Sun Apr 22 2012 HBP introduce Caller object and
 //                                   ClassType
 //
-// $Id: BufferUtil.h,v 1.6 2011/06/07 07:41:55 prosper Exp $
+// $Id: BufferUtil.h,v 1.7 2012/05/04 20:54:34 prosper Exp $
 // ----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python/type_id.hpp>
@@ -229,10 +229,22 @@ void initBuffer(otreestream& out,
       varmap[name] = v;
     }
 
-  countvalue v; 
-  v.count = 0;
-  v.value = 0;
-  varmap["NONE"] = v;
+  // Add counter variable
+  {
+    countvalue v;
+    v.count = &count;
+    v.value = 0;
+    std::string counter = "n" + prefix; 
+    varnames.push_back(counter);
+    varmap[counter] = v;
+  }
+
+  {
+    countvalue v; 
+    v.count = 0;
+    v.value = 0;
+    varmap["NONE"] = v;
+  }
 }
 
 /// Function to handle getByLabel.

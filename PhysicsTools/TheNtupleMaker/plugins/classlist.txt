@@ -1,6 +1,5 @@
 collection	BeamSpotOnline
 collection	CaloTower
-collection	CorrMETData
 collection	DcsStatus
 collection	ESListOfFEDS
 collection	EcalListOfFEDS
@@ -77,7 +76,6 @@ collection	cmg::DiFatJet
 collection	cmg::DiHemisphere
 collection	cmg::DiJet
 collection	cmg::DiMuon
-collection	cmg::DiPFCandidate
 collection	cmg::DiPFJet
 collection	cmg::DiPhoton
 collection	cmg::DiTau
@@ -86,16 +84,16 @@ collection	cmg::FatJet
 collection	cmg::GenJet
 collection	cmg::GenParticle
 collection	cmg::Hemisphere
-collection	cmg::MuEle
+collection	cmg::MuE
 collection	cmg::MultiObject
 collection	cmg::Muon
 collection	cmg::NamedObject
-collection	cmg::PFCandidate
+collection	cmg::PFCand
 collection	cmg::PFJet
 collection	cmg::Photon
 collection	cmg::QuadMuon
 collection	cmg::Tau
-collection	cmg::TauEle
+collection	cmg::TauE
 collection	cmg::TauMu
 collection	cmg::TriggerObject
 collection	cmg::VBFEventT1T2<pat::Jet,pat::Jet>
@@ -146,7 +144,6 @@ collection	pat::PFParticle
 collection	pat::Particle
 collection	pat::Photon
 collection	pat::Tau
-collection	pat::TauJetCorrFactors::CorrectionFactor
 collection	pat::TriggerAlgorithm
 collection	pat::TriggerCondition
 collection	pat::TriggerFilter
@@ -289,15 +286,8 @@ collection	susybsm::HSCPCaloInfo
 collection	susybsm::HSCPIsolation
 collection	susybsm::HSCParticle
 collection	trigger::TriggerObject
-singleton	AnomalousECALVariables
 singleton	BaseMETv0
 singleton	CSCTriggerContainer<csctf::TrackStub>
-singleton	ClusterSummary
-singleton	CrossingFrame<PCaloHit>
-singleton	CrossingFrame<PSimHit>
-singleton	CrossingFrame<SimTrack>
-singleton	CrossingFrame<SimVertex>
-singleton	CrossingFrame<edm::HepMCProduct>
 singleton	CrossingFramePlaybackInfo
 singleton	CrossingFramePlaybackInfoExtended
 singleton	EcalTrigPrimCompactColl
@@ -313,7 +303,6 @@ singleton	HcalUnpackerReport
 singleton	L1DataEmulRecord
 singleton	L1GlobalTriggerEvmReadoutRecord
 singleton	L1GlobalTriggerObjectMapRecord
-singleton	L1GlobalTriggerObjectMaps
 singleton	L1GlobalTriggerReadoutRecord
 singleton	L1GlobalTriggerReadoutSetup
 singleton	L1GlobalTriggerRecord
@@ -355,7 +344,6 @@ singleton	TtFullHadronicEvent
 singleton	TtFullLeptonicEvent
 singleton	TtGenEvent
 singleton	TtSemiLeptonicEvent
-singleton	cmg::METSignificance
 singleton	edm::ConditionsInEventBlock
 singleton	edm::ConditionsInLumiBlock
 singleton	edm::ConditionsInRunBlock
@@ -365,7 +353,6 @@ singleton	edm::GenHIEvent
 singleton	edm::HLTGlobalStatus
 singleton	edm::MergeableCounter
 singleton	edm::TriggerResults
-singleton	edm::helpers::KeyVal<edm::RefProd<std::vector<reco::SecondaryVertexTagInfo> >,edm::RefProd<std::vector<reco::Vertex> > >
 singleton	pat::HeavyIon
 singleton	pat::TriggerEvent
 singleton	reco::BasicJetRefVector
@@ -380,9 +367,7 @@ singleton	reco::CandMatchMapMany
 singleton	reco::CandidateBaseRefVector
 singleton	reco::CandidatePtrVector
 singleton	reco::ClusterRemovalInfo
-singleton	reco::DiscretizedEnergyFlow
 singleton	reco::EcalHaloData
-singleton	reco::FFTJetPileupSummary
 singleton	reco::FFTJetProducerSummary
 singleton	reco::GlobalHaloData
 singleton	reco::HLTResult<16,unsigned short>
