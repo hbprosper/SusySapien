@@ -30,7 +30,7 @@
 //                   Mon May 07 2012 HBP - Skip classes LHEEventProduct and
 //                                         PileupSummaryInfo for real data.
 //
-// $Id: Buffer.h,v 1.7 2012/05/07 04:32:42 prosper Exp $
+// $Id: Buffer.h,v 1.8 2012/05/08 01:58:04 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/BufferUtil.h"
@@ -118,6 +118,7 @@ struct Buffer  : public BufferThing
        std::vector<VariableDescriptor>& var,
        int maxcount,
        std::ofstream& log,
+       std::set<std::string>& branchset,  
        int debug=0)
   {
     out_    = &out;
@@ -179,6 +180,7 @@ struct Buffer  : public BufferThing
                   maxcount_,
                   log,
                   bufferkey_,
+                  branchset,
                   debug_);
   }
   

@@ -7,7 +7,7 @@
 #          12-Mar-2011 HBP - give user option to add variables
 #          07-May-2012 HBP - fix object selection bug
 #          13-May-2012 HBP - add more comments, include object counters
-#$Id: mkmacro.py,v 1.5 2012/05/08 01:58:06 prosper Exp $
+#$Id: mkmacro.py,v 1.6 2012/05/14 02:41:17 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
 from string import *
@@ -57,6 +57,13 @@ HEADER=\
 // Description: user macro called by TheNtupleMaker
 // Created:     %(time)s by mkmacro.py
 // Author:      %(author)s
+//
+// Note:    To make your macro %(name)s known to TheNtupleMaker add the
+//          line
+//
+//               macroName = cms.untracked.string("%(name)s".cc),
+//
+//          to ntuple_cfi.py.
 //
 // WARNING: It is better not to edit this header. You may inadvertently lose
 //          your changes!
@@ -241,7 +248,7 @@ bool %(name)s::analyze()
   // apply cuts etc.
 
   //local->HT = 0;
-  //for(unsigned int i=0; i < jet_pt.size(); ++i)
+  //for(int i=0; i < njet; ++i)
   //{
   //  if ( !(jet_pt[i] > 100) ) continue;
   //  if ( !(jet_pt[i] < 400) ) continue;

@@ -5,7 +5,7 @@
 #          22-Jul-2011 HBP - fix duplicate HelperFor bug
 #          22-Apr-2012 HBP - use SINGLETON and COLLECTION keywords
 #          03-May-2012 HBP - add methods automatically
-#$Id: mkhelper.py,v 1.11 2012/05/12 03:44:19 prosper Exp $
+#$Id: mkhelper.py,v 1.12 2012/05/14 02:41:17 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
@@ -197,8 +197,8 @@ public:
   // ---------------------------------------------------------
 
   // WARNING: some methods may fail to compile because of coding
-  //          problems in one of the base classes. If so, just
-  //          comment out the offending method and try again.
+  //          problems in one of the CMSSW base classes. If so,
+  //          just comment out the offending method and try again.
   
   %(methods)s
 };
@@ -237,8 +237,8 @@ namespace %(namespace)s
     // ---------------------------------------------------------
 
 	// WARNING: some methods may fail to compile because of coding
-	//          problems in one of the base classes. If so, just
-	//          comment out the offending method and try again.
+	//          problems in one of the CMSSW base classes. If so,
+	//          just comment out the offending method and try again.
   
 %(methods)s
   };

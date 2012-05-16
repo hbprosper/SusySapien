@@ -13,7 +13,7 @@
 //                   Sun Apr 22 2012 HBP introduce Caller object and
 //                                   ClassType
 //
-// $Id: BufferUtil.h,v 1.7 2012/05/04 20:54:34 prosper Exp $
+// $Id: BufferUtil.h,v 1.8 2012/05/14 02:41:16 prosper Exp $
 // ----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python/type_id.hpp>
@@ -35,6 +35,12 @@
 // ----------------------------------------------------------------------------
 struct VariableDescriptor
 {
+  VariableDescriptor()
+    : rtype(""),
+      method(""),
+      varname("")
+  {}
+
   VariableDescriptor(std::string r, std::string m, std::string v)
     : rtype(r),
       method(m),
@@ -68,6 +74,7 @@ struct BufferThing
                     std::vector<VariableDescriptor>& var,
                     int  maxcount,
                     std::ofstream& log,
+                    std::set<std::string>& branchset,
                     int debug=0)=0;
   
   /// Call requested methods of selected objects and fill buffer.
@@ -122,6 +129,7 @@ void initializeBuffer(otreestream& out,
                       int   maxcount,
                       std::ofstream& log,
                       std::string& bufferkey,
+                      std::set<std::string>& branchset,
                       int   debug);
 // ----------------------------------------------------------------------------
 // We need a few templates to make the code generic. 
@@ -171,6 +179,7 @@ void initBuffer(otreestream& out,
                 int   maxcount,
                 std::ofstream& log,
                 std::string&   bufferkey,
+                std::set<std::string>& branchset,
                 int   debug)
 {
   initializeBuffer(out,
@@ -185,6 +194,7 @@ void initBuffer(otreestream& out,
                    maxcount,
                    log,
                    bufferkey,
+                   branchset,
                    debug);
 
   // Create a variable object for each method. We use a boost::ptr_vector

@@ -8,13 +8,14 @@
 //                   Thu Feb 17 HBP change definition of isArray (maxcount > 1)
 //                   Wed Jul 20 HBP handle BasicType
 //                   25-Apr-2012 HBP fix objectname when it is a template
-// $Id: BufferUtil.cc,v 1.3 2012/05/04 20:54:37 prosper Exp $
+// $Id: BufferUtil.cc,v 1.4 2012/05/07 04:32:43 prosper Exp $
 //-----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python/type_id.hpp>
 #include <boost/regex.hpp>
 #include <iostream>
 #include <string>
+#include <set>
 #include "FWCore/Framework/interface/Event.h"
 #include "PhysicsTools/TheNtupleMaker/interface/kit.h"
 #include "PhysicsTools/TheNtupleMaker/interface/treestream.h"
@@ -35,6 +36,7 @@ void initializeBuffer(otreestream& out,
                       int   maxcount,
                       std::ofstream& log,
                       std::string&   bufferkey,
+                      std::set<std::string>& branchset,
                       int   debug)
 {
   // Define regular expressions to check for compound methods; i.e., methods
@@ -61,17 +63,18 @@ void initializeBuffer(otreestream& out,
       switch (ctype)
         {
         case SINGLETON:
-          std::cout << RED  << "\tSINGLETON( " << classname << " )" 
+          std::cout << RED  << "SINGLETON BUFFER FOR( " << classname << " )" 
                     << BLACK << std::endl;
           break;
 
         case COLLECTION:
-          std::cout << RED  << "\tCOLLECTION( " << classname << " )" 
+          std::cout << RED  << "COLLECTION BUFFER FOR( " << classname 
+                    << " )" 
                     << BLACK << std::endl;
           break;
 
         case CONTAINER:
-          std::cout << RED  << "\tCONTAINER( " << classname << " )" 
+          std::cout << RED  << "CONTAINER BUFFER FOR( " << classname << " )" 
                     << BLACK << std::endl;
         }
     }
@@ -148,16 +151,15 @@ void initializeBuffer(otreestream& out,
     }
   
   // For every method, create the associated n-tuple variable name
-
+  int nvar = 0;
   for(unsigned i=0; i < var.size(); i++)
     {    
       std::string rtype   = var[i].rtype;
       std::string method  = var[i].method;
       std::string varname = var[i].varname;
       if ( debug > 0 )
-        std::cout << "Buffer -"
-                  << RED
-                  << " varname(" << varname << ")"
+        std::cout << BLUE
+                  << " varname before(" << varname << ")"
                   << BLACK
                   << std::endl;
 
@@ -176,11 +178,31 @@ void initializeBuffer(otreestream& out,
       if ( debug > 0 )
         std::cout << "        "
                   << RED 
-                  << " varname(" << varname << ")"
+                  << " varname after (" << varname << ")"
                   << BLACK
                   << std::endl;      
 
       std::string name = prefix + "." + varname;
+
+      // check for uniqueness
+      if ( branchset.find(name) != branchset.end() )
+        {
+          edm::LogWarning("BranchNotUnique")
+            << "\t...Fee fi fo fum" 
+            << std::endl
+            << "\t...I smell the blood of an Englishman"
+            << std::endl
+            << "\t...Be he alive, or be he dead"
+            << std::endl
+            << "\t...I'll grind his bones to make my bread"
+            << std::endl
+            << "This branch (" 
+            << BOLDRED << name 
+            << DEFAULT_COLOR << ") is NOT unique!"
+            << std::endl;
+          continue;
+        }
+      branchset.insert(name);
 
       log << rtype << "/" 
           << name  << "/"
@@ -190,13 +212,21 @@ void initializeBuffer(otreestream& out,
         
       if ( isArray ) name += "[" + counter + "]";
       
-      var[i].name = name;
-      var[i].maxcount = maxcount;
-      var[i].method = method;
+      // Note: nvar <= i
+      var[nvar].name = name;
+      var[nvar].maxcount = maxcount;
+      var[nvar].method = method;
 
-      std::cout << "   " << i << ":\t" << name 
-                << std::endl
-                << "\t\t" << method << std::endl;
+      if ( debug > 0 )
+        std::cout << "   " << nvar << ":\t" << name 
+                  << std::endl
+                  << "\t\t" << method << std::endl;
+
+      // update variable count
+      nvar++;
     }
+
+  // update size of var, if necessary
+  if ( nvar < (int)var.size() ) var.resize(nvar);
 }
 

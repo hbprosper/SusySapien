@@ -62,7 +62,7 @@
 //                                   beginRun()
 //                                   Implement wildcard for triggers and
 //                                   range processing for all variables
-// $Id: TheNtupleMaker.cc,v 1.20 2012/05/12 03:44:09 prosper Exp $
+// $Id: TheNtupleMaker.cc,v 1.21 2012/05/14 02:41:17 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -172,7 +172,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   : ntuplename_(iConfig.getUntrackedParameter<string>("ntupleName")), 
     output(otreestream(ntuplename_,
                        "Events", 
-                       "created by TheNtupleMaker $Revision: 1.20 $")),
+                       "created by TheNtupleMaker $Revision: 1.21 $")),
     logfilename_("TheNtupleMaker.log"),
     log_(new std::ofstream(logfilename_.c_str())),
     macroname_(""),
@@ -194,7 +194,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   // --------------------------------------------------------------------------
   TFile* file = output.file();
   ptree_ = new TTree("Provenance",
-                     "created by TheNtupleMaker $Revision: 1.20 $");
+                     "created by TheNtupleMaker $Revision: 1.21 $");
   string cmsver("unknown");
   if ( getenv("CMSSW_VERSION") > 0 ) cmsver = string(getenv("CMSSW_VERSION"));
   ptree_->Branch("cmssw_version", (void*)(cmsver.c_str()), "cmssw_version/C");
@@ -994,8 +994,11 @@ TheNtupleMaker::beginRun(const edm::Run& run,
   vout << "tree: Events " << ct << endl;
   
   // ---------------------------------------------------------------
-  // Create a buffers of appropriate type...  
+  // Create a buffers of appropriate type. Make sure to eliminate
+  // duplicates, but warn that this is being done  
   // ---------------------------------------------------------------
+  set<string> branchset;
+
   for(unsigned int i=0; i < blockName_.size(); i++)
     {
       if ( DEBUG > 0 )
@@ -1042,7 +1045,8 @@ TheNtupleMaker::beginRun(const edm::Run& run,
                            prefix_[i], 
                            variables_[i], 
                            maxcount_[i], 
-                           vout, 
+                           vout,
+                           branchset,
                            DEBUG);
 
       // cache addresses of buffers
@@ -1073,7 +1077,6 @@ TheNtupleMaker::beginRun(const edm::Run& run,
   // Make sure branch names are unique
   int index=0;
   cout << endl << endl << " BEGIN Branches " << endl;
-  set<string> branchset;
 
   for(unsigned int i=0; i < buffers.size(); ++i)
     {
@@ -1086,22 +1089,6 @@ TheNtupleMaker::beginRun(const edm::Run& run,
       for(unsigned int ii=0; ii < vnames.size(); ++ii)
         {
           string name = vnames[ii];
-          if ( branchset.find(name) != branchset.end() )
-            throw cms::Exception("BranchNotUnique")
-              << "\t...Fee fi fo fum" 
-              << endl
-              << "\t...I smell the blood of an Englishman"
-              << endl
-              << "\t...Be he alive, or be he dead"
-              << endl
-              << "\t...I'll grind his bones to make my bread"
-              << endl
-              << "This branch (" 
-              << BOLDRED << name 
-              << DEFAULT_COLOR << ") is NOT unique!"
-              << endl;
-
-          branchset.insert(name);
           varmap[name] = buffers[i]->variable(name);
           index++;
           cout << "  " << index 

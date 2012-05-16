@@ -15,7 +15,7 @@
 //                   Mon May 07 2012 HBP - skip LHEEventProduct and
 //                                         PileupSummaryInfo for real data
 //
-// $Id: UserBuffer.h,v 1.10 2012/05/07 04:32:42 prosper Exp $
+// $Id: UserBuffer.h,v 1.11 2012/05/08 01:58:05 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/BufferUtil.h"
@@ -95,6 +95,7 @@ struct UserBuffer  : public BufferThing
        std::vector<VariableDescriptor>& var,
        int  maxcount,
        std::ofstream& log,
+       std::set<std::string>& branchset,
        int debug=0)
   {
     std::cout << "\t=== Initialize UserBuffer (" 
@@ -156,6 +157,7 @@ struct UserBuffer  : public BufferThing
                   maxcount_,
                   log,
                   bufferkey_,
+                  branchset,
                   debug_);
   }
   
@@ -373,6 +375,7 @@ struct UserBuffer<edm::Event, Y, SINGLETON> : public BufferThing
        std::vector<VariableDescriptor>& var,
        int  maxcount,
        std::ofstream& log,
+       std::set<std::string>& branchset,
        int debug=0)
   {
     out_    = &out;
@@ -403,6 +406,7 @@ struct UserBuffer<edm::Event, Y, SINGLETON> : public BufferThing
                   maxcount_,
                   log,
                   bufferkey_,
+                  branchset,
                   debug_);
   }
   

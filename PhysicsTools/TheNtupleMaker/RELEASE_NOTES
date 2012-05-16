@@ -1,4 +1,11 @@
-$Revision: 1.33 $
+$Revision: 1.34 $
+
+v5_3_9 May 15 2012
+------------------
+	1. warn about duplicate branch names (but exclude the duplicates)
+	2. changed warning in helper headers
+	3. add reminder about macroName in macro headers
+	4. small change to macro example
 
 v5_3_8 May 13 2012
 ------------------
