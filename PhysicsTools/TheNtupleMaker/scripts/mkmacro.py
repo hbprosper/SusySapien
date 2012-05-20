@@ -7,7 +7,7 @@
 #          12-Mar-2011 HBP - give user option to add variables
 #          07-May-2012 HBP - fix object selection bug
 #          13-May-2012 HBP - add more comments, include object counters
-#$Id: mkmacro.py,v 1.6 2012/05/14 02:41:17 prosper Exp $
+#$Id: mkmacro.py,v 1.7 2012/05/16 16:54:00 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
 from string import *
@@ -61,7 +61,7 @@ HEADER=\
 // Note:    To make your macro %(name)s known to TheNtupleMaker add the
 //          line
 //
-//               macroName = cms.untracked.string("%(name)s".cc),
+//               macroName = cms.untracked.string("%(name)s.cc"),
 //
 //          to ntuple_cfi.py.
 //
