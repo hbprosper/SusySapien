@@ -42,7 +42,7 @@
 //                      directly.
 //          22-Nov-2010 HBP allow reading of multiple trees
 //          22-Nov-2011 HBP handle reading/storing of strings
-//$Revision: 1.3 $
+//$Revision: 1.4 $
 //----------------------------------------------------------------------------
 #ifdef PROJECT_NAME
 #include <boost/regex.hpp>
@@ -1597,12 +1597,17 @@ itreestream::str() const
       if ( leafcounter != 0 )
         {
           // This variable has a leaf counter
-          sprintf(record, "%5d %s \t/ %s (%d) [%s]\n",
+ //          sprintf(record, "%5d %s \t/ %s (%d) [%s]\n",
+//                   count,
+//                   field.fullname.c_str(),
+//                   field.leaf->GetTypeName(),
+//                   leafcounter->GetMaximum(),
+//                   leafcounter->GetName());
+          sprintf(record, "%5d %s \t/ %s (%d)\n",
                   count,
                   field.fullname.c_str(),
                   field.leaf->GetTypeName(),
-                  leafcounter->GetMaximum(),
-                  leafcounter->GetName());
+                  leafcounter->GetMaximum());
         }
       else
         {

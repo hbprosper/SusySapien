@@ -1,4 +1,10 @@
-$Revision: 1.35 $
+$Revision: 1.36 $
+
+v5_4_1 June 5 2012
+------------------
+	1. Remove counter variable [..] from listing provided by treestream::str()
+	2. Remove setting of object counter in saveSelectedObject function
+	   created by mkanalyzer.py
 
 v5_4_0 May 19 2012
 ------------------

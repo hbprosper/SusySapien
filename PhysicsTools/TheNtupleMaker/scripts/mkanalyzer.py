@@ -13,7 +13,7 @@
 #          11-Mar-2011 HBP - fix naming bug
 #          26-Apr-2011 HBP - alert user only if duplicate name is not a leaf
 #                            counter
-#$Id: mkanalyzer.py,v 1.18 2011/08/08 15:59:38 prosper Exp $
+#$Id: mkanalyzer.py,v 1.19 2012/04/04 01:32:41 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
 from string import *
@@ -1177,7 +1177,7 @@ def main():
 		structimpl.append('    }')
 		selectimpl.append('      n++;')
 		selectimpl.append('    }')
-		selectimpl.append('  n%s = n;' % objname)
+		#selectimpl.append('  n%s = n;' % objname) # HBP June 5 2012
 		
 	structimpl.append('}')  # end of fillObjects()
 	selectimpl.append('  fillObjectsCalled = false;')
