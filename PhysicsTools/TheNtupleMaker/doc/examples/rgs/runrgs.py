@@ -30,19 +30,6 @@ if not os.path.exists(SIGFILE):
 BKGFILE = "qcd.dat"
 if not os.path.exists(BKGFILE):
 	error("unable to open background file %s" % BKGFILE)
-# -----------------------------------------------------------------------------
-#  Get cut variables and cut directions
-# -------------------------------------------
-def getvars(filename):
-	records = map(split, filter(lambda x: x != "",
-								map(strip, open(filename).readlines())))
-	vars = vstring()
-	cutdir = vstring()
-	for v, c in records:
-		vars.push_back(v)
-		cutdir.push_back(c)
-		print "\t\t%-10s: %10s" % (vars.back(), cutdir.back())
-	return (vars, cutdir)
 # -------------------------------------------
 def formatHist(h, color):
 	NDIVX =-505
@@ -83,12 +70,6 @@ def main():
 	gROOT.ProcessLine(".x style.C")
 
 	# -------------------------------------------------------------------------
-	#  Get cut variables
-	# -------------------------------------------------------------------------
-	print "\t==> get variables"
-	cutvar, cutdir = getvars("rgs.vars")
-	
-	# -------------------------------------------------------------------------
 	#  Create RGS object
 	# 
 	#  Needed:
@@ -118,8 +99,11 @@ def main():
 	# -------------------------------------------------------------------------
 	#  Run!
 	# -------------------------------------------------------------------------
-	rgs.run(cutvar, cutdir)
+	rgs.run(VARFILE)
 
+
+	#  Save results to a root file
+	rfile = rgs.save("rgs.root")
 	
 	# -------------------------------------------------------------------------
 	#  Plot results
@@ -128,7 +112,7 @@ def main():
 
 	nbins= 100
 	bmax = 0.05
-	smax = 0.25
+	smax = 0.20
 
 	nh = 5
 	hrgs = [0]*5
@@ -187,29 +171,26 @@ def main():
 	es= s / stotal      #  signal efficiency
 	signif = s / sqrt(b)
 
-	out = open("bestcuts.txt", "w")
-	record =\
-		   "record: %d\n"\
-		   "\tsignal:     %10.1f\n"\
-		   "\tbackground: %10.1f\n"\
-		   "\ts/sqrt(b):  %10.1f\n"\
-		   "\teff_s:      %10.3f\n"\
-		   "\teff_b:      %10.3f\n" % (k+2, s, b, signif, es, eb)
-	print record
-	out.write(record)
+## 	out = open("bestcuts.txt", "w")
+## 	record =\
+## 		   "record: %d\n"\
+## 		   "\tsignal:     %10.1f\n"\
+## 		   "\tbackground: %10.1f\n"\
+## 		   "\ts/sqrt(b):  %10.1f\n"\
+## 		   "\teff_s:      %10.3f\n"\
+## 		   "\teff_b:      %10.3f\n" % (k+2, s, b, signif, es, eb)
+## 	print record
+## 	out.write(record)
 
-	cut = rgs.cuts(k)
+## 	cut = rgs.cuts(k)
 
-	for i in xrange(cutvar.size()):
-		record = "\t%-10s\t%s\t%10.1f" % (cutvar[i],
-										  cutdir[i],
-										  cut[i])
-		print record
-		out.write("%s\n" % record)
-	out.close()
-
-	#  Save results to a root file
-	rfile = rgs.save("rgs.root")
+## 	for i in xrange(cutvar.size()):
+## 		record = "\t%-10s\t%s\t%10.1f" % (cutvar[i],
+## 										  cutdir[i],
+## 										  cut[i])
+## 		print record
+## 		out.write("%s\n" % record)
+## 	out.close()
 
 	crgs.cd()
 	hrgs[0].Draw()

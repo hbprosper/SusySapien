@@ -15,28 +15,6 @@ error(string message)
   cout << "** " << message << endl;
   exit(0);
 }
-//-----------------------------------------------------------------------------
-// Get cut variables and cut directions
-//-----------------------------------------------------------------------------
-void 
-getvars(string filename, vector<string>& vars, vector<string>& cutdir)
-{
-  // Get variables
-
-  ifstream inpv(filename.c_str());
-  if ( ! inpv.good() ) error("unable to open " + filename);
-
-  string line;
-  while (getline(inpv, line))
-    {
-      istringstream inp(line);
-      string v, c, n("");
-      inp >> v >> c;
-      if ( v == "" ) continue;
-      vars.push_back(v);
-      cutdir.push_back(c);
-    }
-}
 
 void formatHist(TH2F* h, int color)
 {
@@ -72,13 +50,6 @@ example()
   gROOT->ProcessLine(".x style.C");
 
   //---------------------------------------------------------------------------
-  // Get cut variables
-  //---------------------------------------------------------------------------
-  vector<string> cutvar;      // cut variables
-  vector<string> cutdir;      // cut directions ( >, <, <|, or >| )
-  getvars("rgs.vars", cutvar, cutdir);
- 
-  //---------------------------------------------------------------------------
   // Create RGS object
   //
   // Provide a file of cut-points - usually a signal file, which ideally is
@@ -107,7 +78,12 @@ example()
   //---------------------------------------------------------------------------
   // Run!
   //---------------------------------------------------------------------------
-  rgs.run(cutvar, cutdir);
+  rgs.run("rgs.vars");
+
+  // Save results to a root file
+  TFile* rfile = rgs.save("rgs.root");
+
+  exit(0);
 
   //---------------------------------------------------------------------------
   // Plot results
@@ -179,41 +155,38 @@ example()
 
   // Get best cuts
 
-  double b = rgs.count(0, k); // background count after the ith cut-point
-  double s = rgs.count(1, k); // signal count after the ith cut-point
-  double eb= b / btotal;      // background efficiency
-  double es= s / stotal;      // signal efficiency
-  double signif = s / sqrt(b);
+//   double b = rgs.count(0, k); // background count after the ith cut-point
+//   double s = rgs.count(1, k); // signal count after the ith cut-point
+//   double eb= b / btotal;      // background efficiency
+//   double es= s / stotal;      // signal efficiency
+//   double signif = s / sqrt(b);
 
-  ofstream out("bestcuts.txt");
-  char record[1024];
-  sprintf(record,
-          "record: %d\n"
-          "\tsignal:     %10.1f\n"
-          "\tbackground: %10.1f\n"
-          "\ts/sqrt(b):  %10.1f\n"
-          "\teff_s:      %10.3f\n"
-          "\teff_b:      %10.3f\n",
-          k+2, s, b, signif, es, eb);
-  cout << record << endl;
-  out << record << endl;
+//   ofstream out("bestcuts.txt");
+//   char record[1024];
+//   sprintf(record,
+//           "record: %d\n"
+//           "\tsignal:     %10.1f\n"
+//           "\tbackground: %10.1f\n"
+//           "\ts/sqrt(b):  %10.1f\n"
+//           "\teff_s:      %10.3f\n"
+//           "\teff_b:      %10.3f\n",
+//           k+2, s, b, signif, es, eb);
+//   cout << record << endl;
+//   out << record << endl;
 
-  vector<double> cut = rgs.cuts(k);
+//   vector<double> cut = rgs.cuts(k);
 
-  for(int i=0; i < (unsigned)cutvar.size(); i++)
-    {
-      sprintf(record,
-              "\t%-10s\t%s\t%10.1f\n", 
-              cutvar[i].c_str(),
-              cutdir[i].c_str(),
-              cut[i]);
-      cout << record;
-      out << record;
-    }
-  out.close();
-
-  // Save results to a root file
-  TFile* rfile = rgs.save("rgs.root");
+//   for(int i=0; i < (unsigned)cutvar.size(); i++)
+//     {
+//       sprintf(record,
+//               "\t%-10s\t%s\t%10.1f\n", 
+//               cutvar[i].c_str(),
+//               cutdir[i].c_str(),
+//               cut[i]);
+//       cout << record;
+//       out << record;
+//     }
+//   out.close();
 
   crgs->cd();
   hrgs[0]->Draw();

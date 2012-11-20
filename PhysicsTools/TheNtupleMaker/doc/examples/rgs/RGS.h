@@ -4,7 +4,7 @@
 // File:    RGS.h
 // Purpose: Declaration of RGS classes
 // Created: 18-Aug-2000 Harrison B. Prosper, Chandigarh, India
-//$Revision: 1.1.1.1 $
+//$Revision: 1.3 $
 //////////////////////////////////////////////////////////////////////////////
 #ifdef __WITH_CINT__
 #include "TObject.h"
@@ -34,7 +34,7 @@ const int rBADINDEX=-2;
 const int rEOF     =-6;
 const int rPYTHONERROR =-7;
 
-enum CUTCODE {GT, LT, ABSGT, ABSLT};
+enum CUTCODE {GT, LT, ABSGT, ABSLT, EQ, BOX, LADDER, END};
 
 typedef std::map< std::string, int >  varmap;
 
@@ -81,7 +81,11 @@ public:
 
   /// Run the RGS algorithm for specified cut variables and cut directions.
   void  run(vstring&  cutvar,  // Variables defining cuts 
-            vstring&  cutdir,  // Cut direction
+            vstring&  cutdir,  // Cut direction (cut-type)
+            int nprint=500);
+
+  /// Run the RGS algorithm for specified cut variables and cut directions.
+  void  run(std::string  varfile,  // file name of Variables file
             int nprint=500);
 
   /// Return the total count for the data file identified by dataindex.
@@ -105,20 +109,20 @@ public:
   /// Return number of events for specified data file.
   int       ndata(int dataindex);
 
-  /// Return values for data a given data file and event.
+  /// Return values for data given data file and event.
   vdouble&  data(int dataindex, int event);
 
   /// Save counts to a root file
   TFile*    save(std::string filename, double lumi=1);
   
 private:
-
   int         _status;
 
   vvdouble    _cutdata;
   varmap      _varmap;
   vstring     _var;
   vint        _cutcode;
+  vint        _cutpointcount;
 
   vstring                   _searchname;
   std::vector< vvdouble >   _searchdata;
@@ -127,7 +131,11 @@ private:
   vdouble     _totals;
   vvdouble    _counts;
 
+  std::vector<std::vector<int> > _cutpointindex;
+
   void _init(vstring& filename, int start=0, int numrows=0);
+  bool _boxcut(float x, int cutpoint, int jcut);
+  bool _laddercut(vdouble& datarow, int cutpoint, int& cut);
 
 #ifdef __WITH_CINT__
   public:
