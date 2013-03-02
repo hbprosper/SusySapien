@@ -1,13 +1,15 @@
+%$revision:$
 \documentclass[aps,prd,preprint]{revtex4}
 \usepackage{graphicx,amssymb,amsmath}
 \begin{document}
 
 \centerline{\bf \large Razor Boost Without Explicit Fitting}
 
-\centerline{Sezen Sekmen$^1$ and Harrison B. Prosper$^2$}
+\centerline{Sezen Sekmen$^1$ Nadja Strobbe$^2$ and Harrison B. Prosper$^3$}
 
 \centerline{$^1$ CERN, Geneva, Switzerland}
-\centerline{$^2$Department of Physics, Florida State University, Tallahassee, USA}
+\centerline{$^2$ Ghent University, Ghent, Belgium}
+\centerline{$^3$ Florida State University, Tallahassee, USA}
 
 \centerline{CMS Razor Group}
 \centerline{\today}
@@ -69,19 +71,19 @@ A straightforward way to achieve the goal is to discretize the razor plane and m
 content of each bin. This reduces the analysis problem to the well-understood multi-count
 experiment for which the likelihood is generally taken to be
 \begin{equation}
-	L(x, y|\sigma, b, {\cal L}) = \prod_{j=1}^K \text{Poisson}(N_j| \sigma_j \, {\cal L} +  \sum_{l=1}^M b_{lj}),
+	L(x, y|\sigma, b, {\cal L}) = \prod_{j=1}^K \text{Poisson}(N_j| \sigma_j \, {\cal L} +  b_\text{tot} \,\sum_{l=1}^M b_{lj} / b_\text{norm}),
 \end{equation}
 where, now, $K$ is the number of bins in the razor plane, $N_j$ is the observed count
-in bin $j$, $\sigma$ denotes the effective cross sections $\sigma_1,\ldots,\sigma_K$,  and
+in bin $j$, $\sigma$ denotes the effective cross sections $\sigma_1,\ldots,\sigma_K$, 
 \begin{eqnarray}
-	b(\theta) & = & b_\text{tot} \int_{x_\text{min}}^{x_\text{max}}  dx \int_{x_\text{min}}^{x_\text{max}} dy  \, p(x, y|\theta), \\ \nonumber
-	& \approx & b_\text{tot} \, (x_\text{max} - x_\text{min}) (y_\text{max} - y_\text{min}) \, p(x, y|\theta),
+	b(\theta) & = & \int_{x_\text{min}}^{x_\text{max}}  dx \int_{x_\text{min}}^{x_\text{max}} dy  \, p(x, y|\theta), \quad \text{and} \\ \nonumber
+	b_\text{norm} & = & \sum_{j=1}^K \sum_{l=1}^M b_{lj}.
 \end{eqnarray}
-gives the expected background count in a given bin for a given background component,
+The quantity $b_\text{tot} (b_{lj} / b_\text{norm})$ is the expected background count in a given bin for a given background component,
 where $b_\text{tot}$ is the total expected background in the razor plane. The likelihood can
 then be reduced to a function of the effective cross sections only, either by profiling over the 
 background parameters $\theta_l$ and the integrated luminosity ${\cal L}$, constrained 
-by the luminosity prior $\pi({\cal L})$, or by marginalization. This model is one that could, and probably should, be implemented using {\tt HistFactory}.
+by the luminosity prior $\pi({\cal L})$, or by marginalization. This model is one that could be implemented using {\tt HistFactory} at a later date.
 %
 %\begin{thebibliography}{99}
 %\bibitem{bib:Gao}
