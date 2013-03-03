@@ -83,13 +83,13 @@ private:
 	  std::cout << "** RooRazor2DBackground ** N*z = " << Nz 
 		    << " is too large" 
 		    << std::endl
-		    << "\tMR0=" << X0 
-		    << " R0=" << Y0
-		    << " B0=" << B
-		    << " N0=" << N 
+		    << "\tMR0 = " << X0 
+		    << " R0 = " << Y0
+		    << " B0 = " << B
+		    << " N0 = " << N 
 		    << std::endl
-		    << "\tMR=" << x
-		    << "Rsq=" << y 
+		    << "\tMR = " << x
+		    << "\tRsq = " << y 
 		    << std::endl;
 	return false;
       }
@@ -99,12 +99,12 @@ private:
 	if ( negativeCount < 3 )
 	  std::cout << "** RooRazor2DBackground ** z = " << z << " < 1"
 		    << std::endl
-		    << "\tMR0=" << X0 
-		    << " R0=" << Y0
-		    << " B0=" << B
-		    << " N0=" << N << std::endl
-		    << "\tMR=" << x
-		    << "Rsq=" << y
+		    << "\tMR0 = " << X0 
+		    << " R0 = " << Y0
+		    << " B0 = " << B
+		    << " N0 = " << N << std::endl
+		    << "\tMR = " << x
+		    << "\tRsq = " << y
 		    << std::endl;
         return false;
       }

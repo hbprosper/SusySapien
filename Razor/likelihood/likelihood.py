@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#$Revision: 1.2 $
+#$Revision: 1.4 $
 #----------------------------------------------------------------------
 # Created:    Feb-2013 SS
 # Updated: 03-Mar-2013 HBP - Add data set to workspace - this is needed
@@ -118,7 +118,10 @@ def main():
         minedges = kde.GetBinMinEdges(i)
         maxedges = kde.GetBinMaxEdges(i)
         binarea = (maxedges[0] - minedges[0])*(maxedges[1] - minedges[1])
-        print kde.GetBinContent(i), kde.GetBinDensity(i), kde.GetBinContent(i)/kde.GetBinDensity(i), binarea
+        print "%10d %10.3e %10.3e %10.3e" % (kde.GetBinContent(i),
+                                             kde.GetBinDensity(i),
+                                             kde.GetBinContent(i)/kde.GetBinDensity(i),
+                                             binarea)
         #print minedges[0], '< MR <', maxedges[0], ';', minedges[1], '< Rsq <', maxedges[1]
 
 
@@ -131,17 +134,22 @@ def main():
     binsMaxEdges = kde.GetBinsMaxEdges()
 
     # convert the bin edges to the actual values
+    # WARNING: This overwrites the values stored internally in kde!
+    print
+    print "Convert from scaled values to actual values "
+    print MRmn, MRmx, Rsqmn, Rsqmx
+    print
     for i in range(nbins*2):
+        print "\t%10.3e %10.3e" % (binsMinEdges[i], binsMaxEdges[i])
         if i % 2 == 0:
             binsMinEdges[i] = binsMinEdges[i]*(MRmx - MRmn)/2 + (MRmx + MRmn)/2
             binsMaxEdges[i] = binsMaxEdges[i]*(MRmx - MRmn)/2 + (MRmx + MRmn)/2
         else:
             binsMinEdges[i] = binsMinEdges[i]*(Rsqmx - Rsqmn)/2 + (Rsqmx + Rsqmn)/2
             binsMaxEdges[i] = binsMaxEdges[i]*(Rsqmx - Rsqmn)/2 + (Rsqmx + Rsqmn)/2
-        print binsMinEdges[i], binsMaxEdges[i]
-
-
-    print MRmn, MRmx, Rsqmn, Rsqmx
+        print "\t%10.3e %10.3e" % (binsMinEdges[i], binsMaxEdges[i])
+        print
+ 
     #h2pol = TH2Poly("h2PolyBinTest", "KDTree binning", kde.GetDataMin(0), kde.GetDataMax(0), kde.GetDataMin(1), kde.GetDataMax(1))
     h2pol = TH2Poly("h2PolyBinTest", "KDTree binning", MRmn, 1500, Rsqmn, 0.5)
    
@@ -252,7 +260,7 @@ def main():
     sigmas = 'sigma'
 
     # make the bnorm variable:
-    bnorm = '1.7e-308 + '  # to avoid summed background = 0
+    bnorm = ''
     bslist = ''    
 
     for i in range(nbins):
@@ -264,7 +272,9 @@ def main():
         # Put the data counts into the workspace
         wspace.factory('N%(bin)s[%(count)d]' % {'bin': bin,  'count': N} )
         # Add the data counts to the obs RooArgSet
-        obs.add(wspace.var('N%(bin)s' % {'bin': bin}) )
+        obs.add(wspace.var('N%(bin)s' % {'bin': bin}))
+
+        # WARNING: Values of MR and Rsq are now the actual values! (see above)
         # Get the min and max edges for the bins
         minedges = kde.GetBinMinEdges(i)
         maxedges = kde.GetBinMaxEdges(i)
@@ -272,11 +282,13 @@ def main():
         #print minedges[0], maxedges[0], minedges[1], maxedges[1]
 
         # Convert the bin edges from the normalized values to the actual values
-        MRimn = minedges[0]*(MRmx - MRmn)/2 + (MRmx + MRmn)/2
-        MRimx = maxedges[0]*(MRmx - MRmn)/2 + (MRmx + MRmn)/2
-        Rsqimn = minedges[1]*(Rsqmx - Rsqmn)/2 + (Rsqmx + Rsqmn)/2
-        Rsqimx = maxedges[1]*(Rsqmx - Rsqmn)/2 + (Rsqmx + Rsqmn)/2
+        MRimn  = minedges[0] #*(MRmx - MRmn)/2 + (MRmx + MRmn)/2
+        MRimx  = maxedges[0] #*(MRmx - MRmn)/2 + (MRmx + MRmn)/2
+        Rsqimn = minedges[1] #*(Rsqmx - Rsqmn)/2 + (Rsqmx + Rsqmn)/2
+        Rsqimx = maxedges[1] #*(Rsqmx - Rsqmn)/2 + (Rsqmx + Rsqmn)/2
 
+        print "bin%s: MR = [%10.3e, %10.3e]\t Rsq = [%10.3e,%10.3e]" % (bin, MRimn, MRimx, Rsqimn, Rsqimx)
+        
         # Write the bin edges into the workspace
         wspace.factory('MR%(bin)s[%(MRimn)s, %(MRimx)s]' % {'bin' : bin, 'MRimn' : MRimn, 'MRimx' : MRimx} )
         wspace.factory('Rsq%(bin)s[%(Rsqimn)s, %(Rsqimx)s]' % {'bin' : bin, 'Rsqimn' : Rsqimn, 'Rsqimx' : Rsqimx} )
@@ -295,9 +307,10 @@ def main():
             bslist = bslist + 'bfunc%(bin)s ' % {'bin' : bin}
 
     bnorm = 'expr::bnorm("'+bnorm+'", '+bslist+')'
+    print
     print bnorm
     wspace.factory(bnorm)
-
+    
     #wspace.Print()
 
     #sys.exit(0)
@@ -305,7 +318,8 @@ def main():
     for i in range(nbins):
         bin = "_%3.3d" % i
 
-        b = 'expr::b%(bin)s("(btot/bnorm)*bfunc%(bin)s", btot, bnorm, bfunc%(bin)s)' \
+        # Write as btot * (bfunc / bnorm) so that the calculation within the parenthesis is done first
+        b = 'expr::b%(bin)s("btot*(bfunc%(bin)s/bnorm)", btot, bnorm, bfunc%(bin)s)' \
             % {'bin' : bin}
         wspace.factory(b)
 
@@ -448,10 +462,6 @@ def main():
     # Make the plot for the profile:
     lrplot = RooStats.LikelihoodIntervalPlot(plInt)
     lrplot.Draw()
-
-    
-
-
 #-----------------------------------------------------------------
 try:
     main()
