@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+#$Revision:$
+
 
 import os,sys,time
 
@@ -10,10 +12,22 @@ def main():
 
     # Read the arguments
 
+    # Sezen's ROOT style:
+    gROOT.SetStyle('Plain')
+    gStyle.SetOptStat(kFALSE)
+    gStyle.SetPalette(1)
+    
+    gStyle.SetTextFont(42)
+    
+    gStyle.SetTitleStyle(0000)
+    gStyle.SetTitleBorderSize(0)    
+
 
     # Read the RooDataSet from the input file
 
     rootfilename = 'rzrBTHAD_QCD_MR600.0_R0.2_Had.root'
+    #rootfilename = 'rzrBTHAD_data_MR600.0_R0.2_Had.root'
+    #rootfilename = 'rzrBTHAD_TTJets_MR600.0_R0.2_Had.root'
     datasetname = 'RMRTree'
     nbins = 10
     nvars = 2
@@ -115,19 +129,19 @@ def main():
     binsMaxEdges = kde.GetBinsMaxEdges()
 
     # convert the bin edges to the actual values
-#    for i in range(20):
-#        if i % 2 == 0:
-#            binsMinEdges[i] = binsMinEdges[i]*(MRmx - MRmn)/2 + (MRmx + MRmn)/2
-#            binsMaxEdges[i] = binsMaxEdges[i]*(MRmx - MRmn)/2 + (MRmx + MRmn)/2
-#        else:
-#            binsMinEdges[i] = binsMinEdges[i]*(Rsqmx - Rsqmn)/2 + (Rsqmx + Rsqmn)/2
-#            binsMaxEdges[i] = binsMaxEdges[i]*(Rsqmx - Rsqmn)/2 + (Rsqmx + Rsqmn)/2
-#        print binsMinEdges[i], binsMaxEdges[i]
+    for i in range(nbins*2):
+        if i % 2 == 0:
+            binsMinEdges[i] = binsMinEdges[i]*(MRmx - MRmn)/2 + (MRmx + MRmn)/2
+            binsMaxEdges[i] = binsMaxEdges[i]*(MRmx - MRmn)/2 + (MRmx + MRmn)/2
+        else:
+            binsMinEdges[i] = binsMinEdges[i]*(Rsqmx - Rsqmn)/2 + (Rsqmx + Rsqmn)/2
+            binsMaxEdges[i] = binsMaxEdges[i]*(Rsqmx - Rsqmn)/2 + (Rsqmx + Rsqmn)/2
+        print binsMinEdges[i], binsMaxEdges[i]
 
 
     print MRmn, MRmx, Rsqmn, Rsqmx
     #h2pol = TH2Poly("h2PolyBinTest", "KDTree binning", kde.GetDataMin(0), kde.GetDataMax(0), kde.GetDataMin(1), kde.GetDataMax(1))
-    h2pol = TH2Poly("h2PolyBinTest", "KDTree binning", MRmn, MRmx, Rsqmn, Rsqmx)
+    h2pol = TH2Poly("h2PolyBinTest", "KDTree binning", MRmn, 1500, Rsqmn, 0.5)
    
    
     for i in range(nbins):
@@ -135,10 +149,41 @@ def main():
         h2pol.AddBin(binsMinEdges[edgeDim], binsMinEdges[edgeDim + 1], binsMaxEdges[edgeDim], binsMaxEdges[edgeDim + 1])
         h2pol.SetBinContent(i+1, kde.GetBinDensity(i))
 
-    #h2pol.Draw('COLZ')
-    #h2pol.Draw('SAME')
+    #c = TCanvas('c', 'c', 600, 450)
+    #c.SetBottomMargin(0.15)
+    #c.SetLeftMargin(0.15)
 
-    #time.sleep(50)
+    h2pol.SetTitle('')
+    h2pol.GetXaxis().SetTitle('M_{R} [GeV]')
+    h2pol.GetXaxis().CenterTitle()
+    h2pol.GetXaxis().SetTitleOffset(1.25)
+    h2pol.GetXaxis().SetTitleSize(0.055)
+    h2pol.GetXaxis().SetTitleFont(42)
+    h2pol.GetXaxis().SetLabelOffset(0.012)
+    h2pol.GetXaxis().SetLabelSize(0.050)
+    h2pol.GetXaxis().SetLabelFont(42)
+    h2pol.GetXaxis().SetNdivisions(10, 5, 0)
+    h2pol.GetYaxis().SetTitle("R^{2}")
+    h2pol.GetYaxis().CenterTitle()
+    h2pol.GetYaxis().SetTitleOffset(1.2)
+    h2pol.GetYaxis().SetTitleSize(0.055)
+    h2pol.GetYaxis().SetTitleFont(42)
+    h2pol.GetYaxis().SetLabelOffset(0.012)
+    h2pol.GetYaxis().SetLabelSize(0.050)
+    h2pol.GetYaxis().SetLabelFont(42)    
+    h2pol.GetYaxis().SetNdivisions(10, 5, 0)
+
+    #h2pol.Draw('COL')
+    #h2pol.Draw('same')
+
+    #t1 = TLatex(0.11, 0.95, 'KDTreeBinning: data')           
+    #t1.SetTextSize(0.056)
+    #t1.SetNDC()
+    #t1.Draw("same") 
+
+    #c.Print('datakdtree.pdf')
+
+    #time.sleep(10)
 
     #sys.exit(0)
 
@@ -170,7 +215,7 @@ def main():
     wspace.factory('R0[-0.0372,-1.,0.]')
     wspace.factory('B0[7.25,0.0001,10.0]')
     wspace.factory('N0[96.34,0.5,150.0]')
-    wspace.factory('Ntot[660.0,0.0,10000.0]')
+    wspace.factory('btot[660.0,0.0,10000.0]')
     # RooArgSet of all observables, i.e. data counts in each bin
     obs = RooArgSet('obs')
     # RooArgSet of BG nuisance parameters:
@@ -197,6 +242,10 @@ def main():
     sigmalast = 'sigma'
     sigmas = 'sigma'
 
+    # make the bnorm variable:
+    bnorm = ''
+    bslist = ''    
+
     for i in range(nbins):
         bin = "_%3.3d" % i
 
@@ -220,48 +269,70 @@ def main():
         Rsqimx = maxedges[1]*(Rsqmx - Rsqmn)/2 + (Rsqmx + Rsqmn)/2
 
         # Write the bin edges into the workspace
-        wspace.factory('MRimn%(bin)s[%(MRimn)s]' % {'bin' : bin, 'MRimn' : MRimn} )
-        wspace.factory('MRimx%(bin)s[%(MRimx)s]' % {'bin' : bin, 'MRimx' : MRimx} )
-        wspace.factory('Rsqimn%(bin)s[%(Rsqimn)s]' % {'bin' : bin, 'Rsqimn' : Rsqimn} )
-        wspace.factory('Rsqimx%(bin)s[%(Rsqimx)s]' % {'bin' : bin, 'Rsqimx' : Rsqimx} )        
-        wspace.var('MRimn%(bin)s' % {'bin' : bin} ).setConstant()
-        wspace.var('MRimx%(bin)s' % {'bin' : bin} ).setConstant()
-        wspace.var('Rsqimn%(bin)s' % {'bin' : bin} ).setConstant()    
-        wspace.var('Rsqimx%(bin)s' % {'bin' : bin} ).setConstant()
+        wspace.factory('MR%(bin)s[%(MRimn)s, %(MRimx)s]' % {'bin' : bin, 'MRimn' : MRimn, 'MRimx' : MRimx} )
+        wspace.factory('Rsq%(bin)s[%(Rsqimn)s, %(Rsqimx)s]' % {'bin' : bin, 'Rsqimn' : Rsqimn, 'Rsqimx' : Rsqimx} )
+        wspace.var('MR%(bin)s' % {'bin' : bin} ).setConstant()
+        wspace.var('Rsq%(bin)s' % {'bin' : bin} ).setConstant()    
 
         # Write the BG yield function into the workspace
-        wspace.factory('Razor2DBackground::b%(bin)s('\
-                                   'MRimn%(bin)s,MRimx%(bin)s,'\
-                                   'Rsqimn%(bin)s,Rsqimx%(bin)s,'\
-                                   'MRmn,MRmx,Rsqmn,Rsqmx,'\
-                                   'MR0,R0,B0,N0,Ntot)' % {'bin' : bin})
+        wspace.factory('Razor2DBackground::bfunc%(bin)s('\
+                                   'MR%(bin)s,Rsq%(bin)s,'\
+                                   'MR0,R0,B0,N0, 1)' % {'bin' : bin})
+        if i != nbins - 1:
+            bnorm = bnorm + 'bfunc%(bin)s + ' % {'bin' : bin}
+            bslist = bslist + 'bfunc%(bin)s, ' % {'bin' : bin}
+        else:
+            bnorm = bnorm + 'bfunc%(bin)s' % {'bin' : bin}
+            bslist = bslist + 'bfunc%(bin)s ' % {'bin' : bin}
+
+    bnorm = 'expr::bnorm("'+bnorm+'", '+bslist+')'
+    print bnorm
+    wspace.factory(bnorm)
+
+    #wspace.Print()
+
+    #sys.exit(0)
+
+    for i in range(nbins):
+        bin = "_%3.3d" % i
+
+        b = 'expr::b%(bin)s("(btot/bnorm)*bfunc%(bin)s", btot, bnorm, bfunc%(bin)s)' \
+            % {'bin' : bin}
+        wspace.factory(b)
 
         # Write the Poisson PDF for each bin
         if i < nbins-1:
             sigmalast = sigmalast + ' - sigma%(bin)s' % {'bin': bin}
             sigmas = sigmas + ',sigma%(bin)s' % {'bin': bin}
+            wspace.factory('sigma%(bin)s[0.0,0.0,100.0]' % {'bin' : bin})
             # Create the string factory expression for the Poisson pdf for the bin
-            p = 'Poisson::p%(bin)s(N%(bin)s, '\
-                'sum::n%(bin)s(prod::s%(bin)s(sigma%(bin)s[0.0,0.0,100.0], L), b%(bin)s))'%\
-                {'bin': bin}
+            s = 'expr::s%(bin)s("sigma%(bin)s * L", sigma%(bin)s, L)' \
+                % {'bin' : bin}
+            wspace.factory(s)
             # Add the signal counts to the nuis_s RooArgSet
             nuis_s.add(wspace.var('sigma%(bin)s' % {'bin': bin}) )
         else:
-            print sigmalast
-            print sigmas
-            sigmalast = "expr::sigmalast('"+sigmalast+"', "+sigmas+")"
-            print sigmalast
+            sigmalast = 'expr::sigma%(bin)s("%(sigmalast)s", %(sigmas)s)' \
+                        % {'bin' : bin, 'sigmalast' : sigmalast, 'sigmas' : sigmas}
             wspace.factory(sigmalast)
-            p = 'Poisson::p%(bin)s(N%(bin)s, '\
-                'sum::n%(bin)s(prod::s%(bin)s(sigmalast, L), b%(bin)s))'%\
-                {'bin': bin}
-            print p
+            s = 'expr::s%(bin)s("sigma%(bin)s + L", sigma%(bin)s, L)' \
+                % {'bin' : bin}
+            wspace.factory(s)
             # Add the signal counts to the nuis_s RooArgSet
             nuis_s.add(wspace.var('sigma'))
-        # Put the Poisson pdf for the bin into the workspace
+
+
+        # n = s + b
+        n = 'expr::n%(bin)s("s%(bin)s + b%(bin)s", s%(bin)s, b%(bin)s)' \
+            % {'bin' : bin}
+        wspace.factory(n)
+
+        # Poisson pdf for a single bin
+        p = 'Poisson::p%(bin)s(N%(bin)s, n%(bin)s)' \
+            % {'bin': bin}
         wspace.factory(p)
 
-        # Add the Poisson pdf to the factory string expression for the product pdf
+        # Add the Poisson pdf to the factory string expression for the product pdf, i.e. model
         if i != nbins - 1:
             model += "p%(bin)s," % {'bin': bin}
         else:
@@ -330,7 +401,7 @@ def main():
 
     wspace.Print()
 
-    #sys.exit(0)
+    sys.exit(0)
 
     # Use profile likelihood:
     print 'Starting profile lh...'
