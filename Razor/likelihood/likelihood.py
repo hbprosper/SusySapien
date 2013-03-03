@@ -4,6 +4,7 @@
 # Created:    Feb-2013 SS
 # Updated: 03-Mar-2013 HBP - Add data set to workspace - this is needed
 #                            for the BAT rooInterface
+#                          - Add uniform prior for all parameters
 #----------------------------------------------------------------------
 import os,sys,time
 from ROOT import *
@@ -251,7 +252,7 @@ def main():
     sigmas = 'sigma'
 
     # make the bnorm variable:
-    bnorm = ''
+    bnorm = '1.7e-308 + '  # to avoid summed background = 0
     bslist = ''    
 
     for i in range(nbins):
