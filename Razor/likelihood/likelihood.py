@@ -1,12 +1,14 @@
 #!/usr/bin/env python
-#$Revision:$
-
-
+#$Revision: 1.2 $
+#----------------------------------------------------------------------
+# Created:    Feb-2013 SS
+# Updated: 03-Mar-2013 HBP - Add data set to workspace - this is needed
+#                            for the BAT rooInterface
+#----------------------------------------------------------------------
 import os,sys,time
-
 from ROOT import *
 from array import array
-
+#----------------------------------------------------------------------
 
 def main():
 
@@ -36,7 +38,6 @@ def main():
     dataset = rootfile.Get(datasetname)
 
     dataset.Print()
-
 
     # KDTreeBinning only accepts a dataset that has a size that is an exact multiple
     # of the number of bins
@@ -205,17 +206,24 @@ def main():
     # The free parameters
     wspace.factory('MR[1900.00000,600.000,4000.000]')
     wspace.factory('Rsq[0.29500,0.04,1.5]')
+    
     # Luminosity
     wspace.factory('L[12.07, 0, 100]')
     wspace.var('L').setConstant()
+    
     # signal
-    wspace.factory('sigma[0.0, 0.0, 10000.0]')    
+    wspace.factory('sigma[0.0, 0.0, 10000.0]')
+    
     # BG parametersars:
     wspace.factory('MR0[-161.54, -2000, 250.]')
     wspace.factory('R0[-0.0372,-1.,0.]')
     wspace.factory('B0[7.25,0.0001,10.0]')
     wspace.factory('N0[96.34,0.5,150.0]')
     wspace.factory('btot[660.0,0.0,10000.0]')
+
+    # Set of all the parameters
+    params = RooArgSet('parameters')
+    
     # RooArgSet of all observables, i.e. data counts in each bin
     obs = RooArgSet('obs')
     # RooArgSet of BG nuisance parameters:
@@ -340,12 +348,23 @@ def main():
 
         #print 'Compare', i, wspace.var('b%(bin)s' % {'bin': bin}).getVal()
 
+    # -------------------------------------------------------
+    # Create a set of all parameters
+    # -------------------------------------------------------
+    print "\ndefineSet: parameters"
+    wspace.defineSet('parameters', '%s,%s' % (sigmas, 'MR0,R0,B0,N0,btot'))
+    
+    # build an n-dimensional uniform prior
+    wspace.factory('Uniform::prior(parameters)')
 
-    # Complete the model pdf string and write the model into the workspace
+    # -------------------------------------------------------
+    # Complete the model pdf string and write the model into
+    # the workspace
+    # -------------------------------------------------------
     model = model+')'
     print 'MODEL: ', model
     wspace.factory(model)
-
+    
     #mr = wspace.var("N0")
     pdf = wspace.pdf("model")
 
@@ -363,6 +382,8 @@ def main():
     poi_b.add(wspace.var('R0'))
     poi_b.add(wspace.var('B0'))
     poi_b.add(wspace.var('N0'))
+    poi_b.add(wspace.var('btot'))
+    
     # Add the set of parameters of interest to the workspace:
     wspace.defineSet('poi_b', poi_b)    
 
@@ -374,6 +395,8 @@ def main():
     nuis_b.add(wspace.var('R0'))
     nuis_b.add(wspace.var('B0'))
     nuis_b.add(wspace.var('N0'))
+    nuis_b.add(wspace.var('btot'))
+    
     # Add the set of BG nuisance parameters to the workspace:
     wspace.defineSet('nuis_b', nuis_b)
 
@@ -385,18 +408,22 @@ def main():
     data = RooDataSet('data', 'data', obs)
     data.add(obs)
     data.Print()
+
+    # Add RooDataSet to workspace
+    getattr(wspace,'import')(data)
     
     # Create model configuration
     modelconfig = RooStats.ModelConfig("Boris")
     modelconfig.SetWorkspace(wspace)
     modelconfig.SetPdf(wspace.pdf("model"))
-    #modelconfig.SetPriorPdf(wspace.pdf('prior'))
+    modelconfig.SetPriorPdf(wspace.pdf('prior'))
     modelconfig.SetParametersOfInterest(wspace.set('poi_s'))
     modelconfig.SetNuisanceParameters(wspace.set('nuis_b'))
 
-    # Write workspace to file
+    # Add model configuration to workspace
     getattr(wspace,'import')(modelconfig)
-    
+
+    # Write workspace to file
     wspace.writeToFile("Boris.root")
 
     wspace.Print()

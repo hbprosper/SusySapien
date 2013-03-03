@@ -2,7 +2,9 @@
 // File: RooRazor2DBackground.cc
 // Description:
 // Compute Razor background function within a rectangle in the Razor plane
-// Created: 27 Feb. 2013 based on RooRazor2DTail_SYS.cc HBP & SS
+// Created: 27-Feb-2013 based on RooRazor2DTail_SYS.cc HBP & SS
+// Updated: 03-Mar-2013 HBP - use valueOK method to check values of z and N*z
+//$Revision:$
 //---------------------------------------------------------------------------
 #include <iostream>
 #include "RooFit.h"
@@ -17,13 +19,15 @@ RooRazor2DBackground::RooRazor2DBackground(const char *name, const char *title,
                                            RooAbsReal &_b,  RooAbsReal &_n,
                                            int _code)
   : RooAbsReal(name, title), 
-    X("X",  "X observable", this, _x),
-    Y("Y",  "Y observable", this, _y),
-    X0("X0","X Offset", this, _x0),
-    Y0("Y0","Y Offset", this, _y0),
-    B("B",  "shape parameter", this, _b),
-    N("N",  "shape parameter", this, _n),
-    code(_code)
+  X("X",  "X observable", this, _x),
+  Y("Y",  "Y observable", this, _y),
+  X0("X0","X Offset", this, _x0),
+  Y0("Y0","Y Offset", this, _y0),
+  B("B",  "shape parameter", this, _b),
+  N("N",  "shape parameter", this, _n),
+  code(_code),
+  underflowCount(0),
+  negativeCount(0)
 {  
 }
 
@@ -37,7 +41,9 @@ RooRazor2DBackground::RooRazor2DBackground(const RooRazor2DBackground& other,
     Y0("Y0",this, other.Y0),
     B("B",  this, other.B),
     N("N",  this, other.N),
-    code(other.code)
+    code(other.code),
+    underflowCount(other.underflowCount),
+    negativeCount(other.negativeCount)
 {
 }
 //---------------------------------------------------------------------------
@@ -48,6 +54,10 @@ double RooRazor2DBackground::evaluate() const
   double xmax = X.max();
   double ymin = Y.min();
   double ymax = Y.max();
+
+  // check values of z and N*Z at center of bin
+  double z, Nz;
+  if ( ! ((RooRazor2DBackground*)this)->valuesOK(0.5*(xmin+xmax), 0.5*(ymin+ymax), z, Nz) ) return 1.7e-308;
 
   switch (code)
     {

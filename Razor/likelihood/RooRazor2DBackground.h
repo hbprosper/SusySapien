@@ -4,6 +4,7 @@
 //---------------------------------------------------------------------------
 // Compute Razor background function within a rectangle in the Razor plane
 // Created: 27 Feb 2013 HBP & SS
+//$Revision:$
 //---------------------------------------------------------------------------
 #include "RooAbsReal.h"
 #include "RooRealProxy.h"
@@ -30,7 +31,7 @@ public:
 
   virtual TObject* clone(const char* newname) const 
   { return new RooRazor2DBackground(*this, newname); }
-
+  
   inline virtual ~RooRazor2DBackground() {}
 
 protected:
@@ -48,8 +49,11 @@ protected:
   int code;           // code (0 - numerical, 1 - analytical)
 
   double evaluate() const;
-
+  
 private:
+
+  int underflowCount;
+  int negativeCount;
 
   // -------------------------------------------------------------------
   // code for analytical integration (without trigger function)
@@ -65,47 +69,60 @@ private:
   }
 
   // -------------------------------------------------------------------
-  // background function
+  // background function (can't be const because we're changing the object)
 
-  inline double bfunc(const double* x)
+  inline bool valuesOK(double x, double y, double& z, double& Nz)
   {
-    double z = B * pow( fabs((x[0]-X0)*(x[1]-Y0)), 1./N);
-    double Nz = N*z;
+    z = B * pow( fabs((x-X0)*(y-Y0)), 1./N);
+    Nz = N*z;
     
     if ( Nz > 700 )
       {
-        std::cout << "** RooRazor2DBackground ** N*z = " << Nz 
-                  << " is too large" 
-                  << std::endl
-                  << "\tMR0=" << X0 
-                  << " R0=" << Y0
-                  << " B0=" << B
-                  << " N0=" << N 
-                  << std::endl
-                  << "\tMR=" << x[0]
-                  << "Rsq=" << x[1] 
-                  << std::endl;
-        return 1.7e-308;
+	underflowCount++;
+	if ( underflowCount < 3 )
+	  std::cout << "** RooRazor2DBackground ** N*z = " << Nz 
+		    << " is too large" 
+		    << std::endl
+		    << "\tMR0=" << X0 
+		    << " R0=" << Y0
+		    << " B0=" << B
+		    << " N0=" << N 
+		    << std::endl
+		    << "\tMR=" << x
+		    << "Rsq=" << y 
+		    << std::endl;
+	return false;
       }
     if ( z < 1 )
       {
-        std::cout << "** RooRazor2DBackground ** z = " << z << " < 1"
-                  << std::endl
-                  << "\tMR0=" << X0 
-                  << " R0=" << Y0
-                  << " B0=" << B
-                  << " N0=" << N << std::endl
-                  << "\tMR=" << x[0]
-                  << "Rsq=" << x[1]
-                  << std::endl;
-        return 1.7e-308;
+	negativeCount++;
+	if ( negativeCount < 3 )
+	  std::cout << "** RooRazor2DBackground ** z = " << z << " < 1"
+		    << std::endl
+		    << "\tMR0=" << X0 
+		    << " R0=" << Y0
+		    << " B0=" << B
+		    << " N0=" << N << std::endl
+		    << "\tMR=" << x
+		    << "Rsq=" << y
+		    << std::endl;
+        return false;
       }
+    return true;
+  } 
 
-    return (z-1)*exp(-Nz);
+  inline double bfunc(const double* x)
+  {
+    double z;
+    double Nz;
+    if ( ((RooRazor2DBackground*)this)->valuesOK(x[0], x[1], z, Nz) )
+      return (z-1)*exp(-Nz);
+    else
+      return 1.7e-308;
   }
  
   // numerical integration of background function over rectangular bin
-
+  
   inline double numerical2D(double xmin, double xmax, double ymin, double ymax)
   {
     // Declare function to be integrated
@@ -121,10 +138,8 @@ private:
     
     return ifn.Integral(lower, upper);
   }
-
-
+  
   ClassDef(RooRazor2DBackground,1)    
 };
-
 //---------------------------------------------------------------------------
 #endif
