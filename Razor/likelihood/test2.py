@@ -26,15 +26,19 @@ def main():
 
 	for name in ['data', 'model', 'prior', 'nuis', 'pois']:
 		print "\n\t<== %s ==>" % name
-		exec('%s.Print()' % nam
+		exec('%s.Print()' % name)
 
 	nbins = len(nuis)
 	print "nbins:", nbins
-	sys.exit(0)
 	
-	for i in range(nbins):
-		bin = "_%3.3d" % i
-		wspace.var('sigma%(bin)' % bin).setConstant()
+	for i in range(nbins):	     
+		bin = "_%3.3d" % i		     
+		wspace.var('sigma%s' % bin).setConstant()
+	wspace.var('B0').setConstant()
+	wspace.var('N0').setConstant()
+	wspace.var('R0').setConstant()
+	wspace.var('btot').setConstant()
+	
 	model.fitTo(data)
 	sys.exit(0)
 	
