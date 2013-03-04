@@ -26,8 +26,18 @@ def main():
 
 	for name in ['data', 'model', 'prior', 'nuis', 'pois']:
 		print "\n\t<== %s ==>" % name
-		exec('%s.Print()' % name)
+		exec('%s.Print()' % nam
 
+	nbins = len(nuis)
+	print "nbins:", nbins
+	sys.exit(0)
+	
+	for i in range(nbins):
+		bin = "_%3.3d" % i
+		wspace.var('sigma%(bin)' % bin).setConstant()
+	model.fitTo(data)
+	sys.exit(0)
+	
 	# ----------------------------------------------
 	# set up BAT/RooFit interface
 	# ----------------------------------------------
@@ -38,15 +48,20 @@ def main():
 
 	rooInterface = BCRooInterface()
 	rooInterface.Initialize(data, model, prior, nuis, pois)
-
+	
 	output = BCModelOutput(rooInterface, "batman.root");
 	output.WriteMarkovChain()
 
-	nMCMC = 100000
-	rooInterface.MCMCSetNIterationsRun(nMCMC)
-	sys.exit(0)
-	
-	rootInterface.MarginalizeAll()
+	nIters  = 100000
+	nChains = 2
+	rooInterface.MCMCSetNIterationsRun(nIters)
+	rooInterface.MCMCSetNChains(nChains)
+	# Don't fill histograms of sampled values. This should save some time
+	rooInterface.MCMCSetFlagFillHistograms(False)
+
+	msglevel = RooMsgService.instance().globalKillBelow()
+	RooMsgService.instance().setGlobalKillBelow(RooFit.FATAL)
+	rooInterface.MarginalizeAll()
 	output.Close();
 #------------------------------------------------------------------
 try:
