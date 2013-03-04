@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#$Revision: 1.4 $
+#$Revision: 1.5 $
 #----------------------------------------------------------------------
 # Created:    Feb-2013 SS
 # Updated: 03-Mar-2013 HBP - Add data set to workspace - this is needed
@@ -453,11 +453,12 @@ def main():
     msglevel = RooMsgService.instance().globalKillBelow()
 
     RooMsgService.instance().setGlobalKillBelow(RooFit.FATAL)
-    plInt.LowerLimit(wspace.var('sigma'))
+    print plInt.LowerLimit(wspace.var('sigma'))
+    print plInt.UpperLimit(wspace.var('sigma'))
     RooMsgService.instance().setGlobalKillBelow(msglevel)
     print wspace.var('sigma').getVal()    
 
-    #sys.exit(0)
+    sys.exit(0)
 
     # Make the plot for the profile:
     lrplot = RooStats.LikelihoodIntervalPlot(plInt)

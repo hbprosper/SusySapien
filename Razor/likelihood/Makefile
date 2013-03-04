@@ -18,13 +18,30 @@ ROOFIT 		:= $(word 1, $(shell find $(LCG_PATH)/roofit/*cms* -maxdepth 0))
 endif
 # ----------------------------------------------------------------------------
 NAME		:= RooRazor2DBackground
-# add all sources to be compiled into shared library
-SOURCES		:= $(NAME)_dict.cc $(wildcard *.cc)
-OBJECTS		:= $(SOURCES:.cc=.o)
+
+# get lists of sources
+CINTSRCS	:= $(wildcard *_dict.cc)
+CCSRCS		:= $(filter-out $(CINTSRCS),$(wildcard Roo*.cc))
+CXXSRCS		:= $(wildcard Roo*.cxx)
+OTHERSRCS	:= $(filter-out $(CINTSRCS) $(CCSRCS),$(wildcard *.cc))
+
+# list of dictionaries to be created
+DICTIONARIES	:= $(CCSRCS:.cc=_dict.cc) $(CXXSRCS:.cxx=_dict.cc)
+HEADERS		:= $(CCSRCS:.cc=.h) $(CXXSRCS:.cxx=.h)
+
+# get list of objects
+CCOBJS		:= $(CCSRCS:.cc=.o) $(OTHERSRCS:.cc=.o) $(DICTIONARIES:.cc=.o)
+CXXOBJS		:= $(CXXSRCS:.cxx=.o)
+OBJECTS		:= $(CCOBJS) $(CXXOBJS)
+
+#say := $(shell echo "OTHERSRCS:     $(OTHERSRCS)" >& 2)
+#say := $(shell echo "CCOBJS:     $(CCOBJS)" >& 2)
+#say := $(shell echo "CXXOBJS:    $(CXXOBJS)" >& 2)
+#$(error bye)
 # ----------------------------------------------------------------------------
 ROOTCINT	:= rootcint
-CXX			:= g++
-LD			:= g++
+CXX		:= g++
+LD		:= g++
 CPPFLAGS	:= -I. -I$(ROOFIT)/include
 CXXFLAGS	:= -O -Wall -fPIC -g -ansi -Wextra $(shell root-config --cflags)
 LDFLAGS		:= -g  -L$(ROOFIT)/lib
@@ -36,10 +53,9 @@ ifeq ($(OS),Darwin)
 else
 	LDFLAGS	+= -shared
 endif	
-LDFLAGS += $(shell root-config --ldflags) $(shell root-config --libs --nonew)
+LDFLAGS 	+= $(shell root-config --ldflags) $(shell root-config --libs --nonew)
 LIBS 		:= -lRooFitCore -lRooFit -lMathMore -lPyROOT -lRooStats
 
-# Check 
 #say := $(shell echo -e "\n" >& 2)
 #say := $(shell echo -e "NAME:     $(NAME)\n" >& 2)
 #say := $(shell echo -e "CPPFLAGS: $(CPPFLAGS)\n" >& 2)
@@ -51,17 +67,23 @@ LIBS 		:= -lRooFitCore -lRooFit -lMathMore -lPyROOT -lRooStats
 all: lib$(NAME).so
 
 lib$(NAME).so	: $(OBJECTS)
-	@echo -e "\n\t===> Linking shared library $@"
+	@echo "\n\t===> Linking shared library $@"
 	$(LD) $(LDFLAGS) $(LIBS) -o $@ $^
-	@rm -rf $(NAME)_dict.*
 
-$(NAME)_dict.cc	: $(NAME).h
-	@echo -e "\n\t===> Building dictionary $@"
+$(DICTIONARIES)	: %_dict.cc	: %.h
+	@echo "\n\t===> Building dictionary $@"
 	$(ROOTCINT)	-f $@ -c $(CPPFLAGS) $^
 
-$(OBJECTS)	: %.o	: 	%.cc
-	@echo -e "\n\t==> Compiling $<"
+$(CCOBJS)	: %.o	: 	%.cc
+	@echo "\n\t==> Compiling $<"
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $<
+
+$(CXXOBJS)	: %.o	: 	%.cxx
+	@echo "\n\t==> Compiling $<"
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $<
 
 clean:
-	rm -rf lib$(NAME).so $(NAME)_dict.* $(OBJECTS) 
+	rm -rf *_dict.* *.o 
+
+veryclean:
+	rm -rf lib$(NAME).so *_dict.* *.o
