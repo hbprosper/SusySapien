@@ -52,10 +52,7 @@ def main():
     # original numbers
     lMR = []
     lRsq = []
-    # normalized numbers for KDTreeBinning
-    lsMR = []
-    lsRsq = []
-
+ 
     # Find min and max for MR and Rsq, which will be used for scaling R2 and MR
     # so that they are between -1 and 1
     Rsqmn = TMath.Infinity()
@@ -69,29 +66,25 @@ def main():
         Rsq = row['Rsq'].getVal()
         lMR.append(MR)
         lRsq.append(Rsq)
-        #print Rsq
-        if MR <= MRmn:
-            MRmn = MR
-        if MR >= MRmx:
-            MRmx = MR
-        if Rsq <= Rsqmn:
-            Rsqmn = Rsq
-        if Rsq >= Rsqmx:
-            Rsqmx = Rsq 
-        #print MR, Rsq
-    print 'Rsqmn:', Rsqmn
+
+    MRmn = min(lMR)
+    MRmx = max(lMR)
+    Rsqmn= min(lRsq)
+    Rsqmx= max(lRsq)
+
+    print 'MRmn: ', MRmn, "\tMRmx: ", MRmx
+    print 'Rsqmn:', Rsqmn,"\tRsqmx:", Rsqmx
 
     # scale MR and Rsq
-    for i in range(0, datasetsize):    
-        MR = lMR[i]
-        Rsq = lRsq[i]
-        sMR = 2*MR/(MRmx - MRmn) - (MRmx + MRmn) / (MRmx - MRmn)
-        sRsq = 2*Rsq/(Rsqmx - Rsqmn) - (Rsqmx + Rsqmn) / (Rsqmx - Rsqmn)
+    MRcenter = (MRmx + MRmn)/2
+    MRhrange = (MRmx - MRmn)/2
+    
+    Rsqcenter= (Rsqmx+ Rsqmn)/2
+    Rsqhrange= (Rsqmx- Rsqmn)/2
 
-        lsMR.append(sMR)
-        lsRsq.append(sRsq)
-
-
+    lsMR  = map(lambda x: (x - MRcenter)/MRhrange, lMR)
+    lsRsq = map(lambda x: (x - Rsqcenter)/Rsqhrange, lRsq)
+ 
     # Put the MR, Rsq list into an array, which will be given as an input
     # to the KDTreeBinning
 
@@ -134,26 +127,24 @@ def main():
     binsMaxEdges = kde.GetBinsMaxEdges()
 
     # convert the bin edges to the actual values
-    # WARNING: This overwrites the values stored internally in kde!
+    # WARNING: The following code overwrites the values stored internally in kde!
     print
     print "Convert from scaled values to actual values "
-    print MRmn, MRmx, Rsqmn, Rsqmx
-    print
     for i in range(nbins*2):
         print "\t%10.3e %10.3e" % (binsMinEdges[i], binsMaxEdges[i])
         if i % 2 == 0:
-            binsMinEdges[i] = binsMinEdges[i]*(MRmx - MRmn)/2 + (MRmx + MRmn)/2
-            binsMaxEdges[i] = binsMaxEdges[i]*(MRmx - MRmn)/2 + (MRmx + MRmn)/2
+            binsMinEdges[i] = binsMinEdges[i]*MRhrange + MRcenter
+            binsMaxEdges[i] = binsMaxEdges[i]*MRhrange + MRcenter
         else:
-            binsMinEdges[i] = binsMinEdges[i]*(Rsqmx - Rsqmn)/2 + (Rsqmx + Rsqmn)/2
-            binsMaxEdges[i] = binsMaxEdges[i]*(Rsqmx - Rsqmn)/2 + (Rsqmx + Rsqmn)/2
+            binsMinEdges[i] = binsMinEdges[i]*Rsqhrange + Rsqcenter
+            binsMaxEdges[i] = binsMaxEdges[i]*Rsqhrange + Rsqcenter
         print "\t%10.3e %10.3e" % (binsMinEdges[i], binsMaxEdges[i])
         print
  
     #h2pol = TH2Poly("h2PolyBinTest", "KDTree binning", kde.GetDataMin(0), kde.GetDataMax(0), kde.GetDataMin(1), kde.GetDataMax(1))
     h2pol = TH2Poly("h2PolyBinTest", "KDTree binning", MRmn, 1500, Rsqmn, 0.5)
    
-   
+  
     for i in range(nbins):
         edgeDim = i*dim
         h2pol.AddBin(binsMinEdges[edgeDim], binsMinEdges[edgeDim + 1], binsMaxEdges[edgeDim], binsMaxEdges[edgeDim + 1])
@@ -201,14 +192,8 @@ def main():
 
     print '\n *** STARTING LIKELIHOOD *** \n'
 
-    gSystem.Load("libRooRazor2DBackground.so") 
-
-    _MR0 = -161.54
-    _R0 = -0.0372
-    _B0 = 7.25
-    _N0 = 96.34
-    _Ntot = 660.
-
+    gSystem.Load("libRooRazor2DBackground.so")
+    
     # Make the workspace
     wspace = RooWorkspace('binnedrazor')
 
@@ -221,14 +206,21 @@ def main():
     wspace.var('L').setConstant()
     
     # signal
-    wspace.factory('sigma[0.0, 0.0, 10000.0]')
+    wspace.factory('sigma[0.0, 0.0, 100.0]')
     
-    # BG parametersars:
-    wspace.factory('MR0[-161.54, -2000, 250.]')
-    wspace.factory('R0[-0.0372,-1.,0.]')
-    wspace.factory('B0[7.25,0.0001,10.0]')
-    wspace.factory('N0[96.34,0.5,150.0]')
-    wspace.factory('btot[660.0,0.0,10000.0]')
+    # BG parameters:
+
+    _MR0 = -161.54
+    _R0 = -0.0372
+    _B0 = 7.25
+    _N0 = 96.34
+    _btot = datasetsize
+
+    wspace.factory('MR0[%f, -500, 500.]' % _MR0)
+    wspace.factory('R0[%f,-1.,1.]' % _R0)
+    wspace.factory('B0[%f,0.0,20.0]' % _B0)
+    wspace.factory('N0[%f,0.5,200.0]' % _N0)
+    wspace.factory('btot[%f,0.0,2000.0]' % _btot)
 
     # Set of all the parameters
     params = RooArgSet('parameters')
@@ -297,8 +289,8 @@ def main():
 
         # Write the BG yield function into the workspace
         wspace.factory('Razor2DBackground::bfunc%(bin)s('\
-                                   'MR%(bin)s,Rsq%(bin)s,'\
-                                   'MR0,R0,B0,N0, 1)' % {'bin' : bin})
+                       'MR%(bin)s,Rsq%(bin)s,'\
+                       'MR0,R0,B0,N0, 1)' % {'bin' : bin})
         if i != nbins - 1:
             bnorm = bnorm + 'bfunc%(bin)s + ' % {'bin' : bin}
             bslist = bslist + 'bfunc%(bin)s, ' % {'bin' : bin}
@@ -324,7 +316,7 @@ def main():
         wspace.factory(b)
 
         # Write the Poisson PDF for each bin
-        if i < nbins-1:
+        if i < nbins:
             sigmalast = sigmalast + ' - sigma%(bin)s' % {'bin': bin}
             sigmas = sigmas + ',sigma%(bin)s' % {'bin': bin}
             wspace.factory('sigma%(bin)s[0.0,0.0,100.0]' % {'bin' : bin})
