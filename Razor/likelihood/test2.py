@@ -6,7 +6,6 @@ import os,sys
 from ROOT import *
 #------------------------------------------------------------------
 def main():
-
 	gSystem.Load("libRooRazor2DBackground.so")
 	gSystem.Load("libBAT")
 	rootFilename = "Boris.root"
@@ -34,16 +33,17 @@ def main():
 	for i in range(nbins):	     
 		bin = "_%3.3d" % i		     
 		wspace.var('sigma%s' % bin).setConstant()
-	wspace.var('B0').setConstant()
-	wspace.var('N0').setVal(1)
-	wspace.var('N0').setConstant()
-	wspace.var('R0').setConstant()
-	wspace.var('btot').setConstant()
-	wspace.var('MR0').setVal(0.)
-	MR0 = wspace.var('MR0')
-	MR0frame = MR0.frame()
-	model.plotOn(MR0frame)
-	MR0frame.Draw()
+
+	# set all variables constant except 'variable'
+	variable = 'btot'
+	for v in ['B0', 'N0', 'R0', 'btot', 'MR0']:
+		if v == variable: continue
+		wspace.var(v).setConstant()
+	
+	x = wspace.var(variable)
+	xframe = x.frame()
+	model.plotOn(xframe)
+	xframe.Draw()
 	gApplication.Run()
 	#model.fitTo(data)
 	sys.exit(0)

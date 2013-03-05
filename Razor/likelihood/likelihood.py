@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#$Revision: 1.5 $
+#$Revision: 1.7 $
 #----------------------------------------------------------------------
 # Created:    Feb-2013 SS
 # Updated: 03-Mar-2013 HBP - Add data set to workspace - this is needed
@@ -32,21 +32,15 @@ def main():
     #rootfilename = 'rzrBTHAD_data_MR600.0_R0.2_Had.root'
     #rootfilename = 'rzrBTHAD_TTJets_MR600.0_R0.2_Had.root'
     datasetname = 'RMRTree'
-    nbins = 10
+
+    MAXMR = 1200
+    MAXRsq= 0.12
+    nbins = 20
     nvars = 2
     
     rootfile = TFile(rootfilename)
     dataset = rootfile.Get(datasetname)
-
     dataset.Print()
-
-    # KDTreeBinning only accepts a dataset that has a size that is an exact multiple
-    # of the number of bins
-    # We modify the dataset size to fulfil that requirement
-    k = int(dataset.numEntries() / nbins)
-    datasetsize = k*nbins
-    print 'Datasetsize', datasetsize
-
 
     # Get the numbers from the RooDataSet
     # original numbers
@@ -60,13 +54,27 @@ def main():
     MRmn = TMath.Infinity()
     MRmx = -TMath.Infinity()
 
-    for i in range(0, datasetsize):
+    for i in xrange(dataset.numEntries()):
         row = dataset.get(i)
+
         MR = row['MR'].getVal()
+        if MR > MAXMR: continue
+        
         Rsq = row['Rsq'].getVal()
+        if Rsq > MAXRsq: continue
+
         lMR.append(MR)
         lRsq.append(Rsq)
 
+    # KDTreeBinning only accepts a dataset that has a size that is an exact multiple
+    # of the number of bins
+    # We modify the dataset size to fulfil that requirement
+    k = len(lMR) / nbins
+    datasetsize = k*nbins
+    print 'Datasetsize', datasetsize
+    lMR = lMR[:datasetsize]
+    lRsq = lRsq[:datasetsize]
+    
     MRmn = min(lMR)
     MRmx = max(lMR)
     Rsqmn= min(lRsq)
@@ -142,7 +150,7 @@ def main():
         print
  
     #h2pol = TH2Poly("h2PolyBinTest", "KDTree binning", kde.GetDataMin(0), kde.GetDataMax(0), kde.GetDataMin(1), kde.GetDataMax(1))
-    h2pol = TH2Poly("h2PolyBinTest", "KDTree binning", MRmn, 1500, Rsqmn, 0.5)
+    h2pol = TH2Poly("h2PolyBinTest", "KDTree binning", MRmn, MRmx, Rsqmn, Rsqmx)
    
   
     for i in range(nbins):
@@ -150,9 +158,9 @@ def main():
         h2pol.AddBin(binsMinEdges[edgeDim], binsMinEdges[edgeDim + 1], binsMaxEdges[edgeDim], binsMaxEdges[edgeDim + 1])
         h2pol.SetBinContent(i+1, kde.GetBinDensity(i))
 
-    #c = TCanvas('c', 'c', 600, 450)
-    #c.SetBottomMargin(0.15)
-    #c.SetLeftMargin(0.15)
+    c = TCanvas('c', 'c', 600, 450)
+    c.SetBottomMargin(0.15)
+    c.SetLeftMargin(0.15)
 
     h2pol.SetTitle('')
     h2pol.GetXaxis().SetTitle('M_{R} [GeV]')
@@ -174,17 +182,17 @@ def main():
     h2pol.GetYaxis().SetLabelFont(42)    
     h2pol.GetYaxis().SetNdivisions(10, 5, 0)
 
-    #h2pol.Draw('COL')
-    #h2pol.Draw('same')
+    h2pol.Draw('COL')
+    h2pol.Draw('same')
 
-    #t1 = TLatex(0.11, 0.95, 'KDTreeBinning: data')           
-    #t1.SetTextSize(0.056)
-    #t1.SetNDC()
-    #t1.Draw("same") 
+    t1 = TLatex(0.11, 0.95, 'KDTreeBinning: data')           
+    t1.SetTextSize(0.056)
+    t1.SetNDC()
+    t1.Draw("same") 
 
-    #c.Print('datakdtree.pdf')
-
-    #time.sleep(10)
+    c.Print('datakdtree.pdf')
+    #gApplication.Run()
+    time.sleep(5)
 
     #sys.exit(0)
 
@@ -198,8 +206,8 @@ def main():
     wspace = RooWorkspace('binnedrazor')
 
     # The free parameters
-    wspace.factory('MR[1900.00000,600.000,4000.000]')
-    wspace.factory('Rsq[0.29500,0.04,1.5]')
+    wspace.factory('MR[%f,600.000, %f]' % (MRcenter, MAXMR))
+    wspace.factory('Rsq[%f,0.04, %f]' % (Rsqcenter, MAXRsq))
     
     # Luminosity
     wspace.factory('L[12.07, 0, 100]')
