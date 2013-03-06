@@ -263,6 +263,11 @@ def main():
     bnorm = ''
     bslist = ''    
 
+    # write out bin boundaries and counts
+    out = open('data.txt', 'w')
+    record = '%10s'*6 % ('bin', 'N', 'MRmin', 'MRmax', 'Rsqmin', 'Rsqmax')
+    out.write('%s\n' % record)
+    
     for i in range(nbins):
         bin = "_%3.3d" % i
 
@@ -287,6 +292,11 @@ def main():
         Rsqimn = minedges[1] #*(Rsqmx - Rsqmn)/2 + (Rsqmx + Rsqmn)/2
         Rsqimx = maxedges[1] #*(Rsqmx - Rsqmn)/2 + (Rsqmx + Rsqmn)/2
 
+        # write out needed info
+        fmt = '%10d%10d%10.3f%10.3f%10.3f%10.3f'
+        record = fmt % (i, N, MRimn, MRimx, Rsqimn, Rsqimx)
+        out.write('%s\n' % record)
+    
         print "bin%s: MR = [%10.3e, %10.3e]\t Rsq = [%10.3e,%10.3e]" % (bin, MRimn, MRimx, Rsqimn, Rsqimx)
         
         # Write the bin edges into the workspace
@@ -298,7 +308,7 @@ def main():
         # Write the BG yield function into the workspace
         wspace.factory('Razor2DBackground::bfunc%(bin)s('\
                        'MR%(bin)s,Rsq%(bin)s,'\
-                       'MR0,R0,B0,N0, 0)' % {'bin' : bin})
+                       'MR0,R0,B0,N0, 1)' % {'bin' : bin})
         if i != nbins - 1:
             bnorm = bnorm + 'bfunc%(bin)s + ' % {'bin' : bin}
             bslist = bslist + 'bfunc%(bin)s, ' % {'bin' : bin}
@@ -306,6 +316,7 @@ def main():
             bnorm = bnorm + 'bfunc%(bin)s' % {'bin' : bin}
             bslist = bslist + 'bfunc%(bin)s ' % {'bin' : bin}
 
+    out.close()
     bnorm = 'expr::bnorm("'+bnorm+'", '+bslist+')'
     print
     print bnorm

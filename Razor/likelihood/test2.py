@@ -36,7 +36,7 @@ def main():
 		wspace.var('sigma%s' % bin).setConstant()
 
 	# set all variables constant except 'variable'
-	variable = 'btot'
+	variable = 'N0'
 	for v in ['B0', 'N0', 'R0', 'btot', 'MR0']:
 		if v == variable: continue
 		wspace.var(v).setConstant()

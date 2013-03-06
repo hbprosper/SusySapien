@@ -4,7 +4,7 @@
 //---------------------------------------------------------------------------
 // Compute Razor background function within a rectangle in the Razor plane
 // Created: 27 Feb 2013 HBP & SS
-//$Revision:$
+//$Revision: 1.3 $
 //---------------------------------------------------------------------------
 #include "RooAbsReal.h"
 #include "RooRealProxy.h"
@@ -65,7 +65,7 @@ private:
   
   inline double Gfun(const Double_t x, const Double_t y) const
   {
-    return Gamma(N,B*N*pow(x-X0,1/N)*pow(y-Y0,1/N));
+    return Gamma(N,B*N*pow( fabs((x-X0)*(y-Y0)),1.0/N) );
   }
 
   // -------------------------------------------------------------------
@@ -73,13 +73,13 @@ private:
 
   inline bool valuesOK(double x, double y, double& z, double& Nz)
   {
-    z = B * pow( fabs((x-X0)*(y-Y0)), 1./N);
+    z = B * pow( fabs((x-X0)*(y-Y0)), 1.0/N);
     Nz = N*z;
     
     if ( Nz > 700 )
       {
 	underflowCount++;
-	if ( underflowCount < 3 )
+	if ( underflowCount < 0 )
 	  std::cout << "** RooRazor2DBackground ** N*z = " << Nz 
 		    << " is too large" 
 		    << std::endl
@@ -96,7 +96,7 @@ private:
     if ( z < 1 )
       {
 	negativeCount++;
-	if ( negativeCount < 3 )
+	if ( negativeCount < 0 )
 	  std::cout << "** RooRazor2DBackground ** z = " << z << " < 1"
 		    << std::endl
 		    << "\tMR0 = " << X0 
