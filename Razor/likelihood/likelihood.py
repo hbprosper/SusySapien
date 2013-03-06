@@ -298,7 +298,7 @@ def main():
         # Write the BG yield function into the workspace
         wspace.factory('Razor2DBackground::bfunc%(bin)s('\
                        'MR%(bin)s,Rsq%(bin)s,'\
-                       'MR0,R0,B0,N0, 1)' % {'bin' : bin})
+                       'MR0,R0,B0,N0, 0)' % {'bin' : bin})
         if i != nbins - 1:
             bnorm = bnorm + 'bfunc%(bin)s + ' % {'bin' : bin}
             bslist = bslist + 'bfunc%(bin)s, ' % {'bin' : bin}

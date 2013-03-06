@@ -29,7 +29,8 @@ def main():
 
 	nbins = len(nuis)
 	print "nbins:", nbins
-	
+
+	# set all sigmas to constant zero
 	for i in range(nbins):	     
 		bin = "_%3.3d" % i		     
 		wspace.var('sigma%s' % bin).setConstant()
@@ -44,7 +45,10 @@ def main():
 	xframe = x.frame()
 	model.plotOn(xframe)
 	xframe.Draw()
+
+	# block (quit using Root Gui)
 	gApplication.Run()
+	
 	#model.fitTo(data)
 	sys.exit(0)
 	
