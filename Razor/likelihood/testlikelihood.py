@@ -121,10 +121,16 @@ def main():
 	wspace.var('btot').setConstant()
 	
 	# get parameter values
-	MR0 = wspace.var('MR0').getVal()
-	R0  = wspace.var('R0').getVal()
-	B0  = wspace.var('B0').getVal()
-	N0  = wspace.var('N0').getVal()
+	MR0 = -1358.8
+	R0  = -0.128 
+	B0  = 0.89   
+	N0  = 2.4
+	
+	## MR0 = wspace.var('MR0').getVal()
+	## R0  = wspace.var('R0').getVal()
+	## B0  = wspace.var('B0').getVal()
+	## N0  = wspace.var('N0').getVal()
+	
 	btot= wspace.var('btot').getVal()
 	L   = wspace.var('L').getVal()
 	print MR0, R0, B0, N0, btot, L
@@ -141,17 +147,36 @@ def main():
 		print "%5d\t%5d %s %s" % (i, N[i], MR[i], Rsq[i])
 
 	print
-	ntrials = 100
+
+	# Create a BG function object
+	wspace.factory('mr[-1, 1]')
+	wspace.factory('rsq[-1, 1]')
+        wspace.factory('Razor2DBackground::bf(mr, rsq, MR0, R0, B0, N0, 1)')
+	bfunc = wspace.function('bf')
+	
+	ntrials = 2
 	for trial in xrange(ntrials):
 		mr0 = uniform(0.9*MR0, 1.1*MR0)
-		r0  = uniform(0.9*R0, 1.1*R0)
-		b0  = uniform(0.9*B0, 1.1*B0)
-		n0  = uniform(0.9*N0, 1.1*N0)
+		r0  = uniform(0.9*R0,  1.1*R0)
+		b0  = uniform(0.9*B0,  1.1*B0)
+		n0  = uniform(0.9*N0,  1.1*N0)
 
 		wspace.var('MR0').setVal(mr0)
 		wspace.var('R0').setVal(r0)
 		wspace.var('B0').setVal(b0)
 		wspace.var('N0').setVal(n0)
+		
+		print "%5d\t%10.3f %10.3f %10.3f %10.3f" % (trial, mr0, r0, b0, n0)
+		bf = 0.0
+		for i in xrange(nbins):
+			wspace.var('mr').setRange(MR[i][0], MR[i][1])
+			wspace.var('rsq').setRange(Rsq[i][0], Rsq[i][1])
+
+			b1 = bfunc.getVal()
+			b2 = razor2DBackground(MR[i], Rsq[i], mr0, r0, b0, n0)
+			print "\t%10.3e %10.3e" % (b1, b2)
+		continue	
+
 		
 		p1 = model.getVal()
 		p2 = razorLikelihood(N, MR, Rsq, s, mr0, r0, b0, n0, btot, L)
