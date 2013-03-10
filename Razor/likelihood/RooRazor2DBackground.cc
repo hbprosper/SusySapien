@@ -4,7 +4,7 @@
 // Compute Razor background function within a rectangle in the Razor plane
 // Created: 27-Feb-2013 based on RooRazor2DTail_SYS.cc HBP & SS
 // Updated: 03-Mar-2013 HBP - use valueOK method to check values of z and N*z
-//$Revision:$
+//$Revision: 1.2 $
 //---------------------------------------------------------------------------
 #include <iostream>
 #include "RooFit.h"
@@ -54,6 +54,11 @@ double RooRazor2DBackground::evaluate() const
   double xmax = X.max();
   double ymin = Y.min();
   double ymax = Y.max();
+
+  //std::cout << "b1 xmn xmx ymn ymx: " << xmin << " " << xmax << " " << ymin << " " << ymax << std::endl;
+  //  std::cout << "X,Y,X0,Y0,B,N: " << X << " " << Y << " " << X0 << " " << Y0 << " " 
+  //    << B << " " << N << " " << std::endl; 
+  //std::cout << "X0,Y0,B,N: " << X0 << " " << Y0 << " " << B << " " << N << " " << std::endl; 
 
   // check values of z and N*Z at center of bin
   double z, Nz;

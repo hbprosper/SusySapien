@@ -34,6 +34,11 @@ def razor2DBackground(MR, Rsq, MR0, R0, B0, N0):
 	xmin, xmax = MR
 	ymin, ymax = Rsq
 
+	print "b2 xmn xmx ymn ymx: ", xmin, xmax, ymin, ymax
+	print "X0,Y0,B,N: ", MR0, R0, B0, N0
+	
+	print xmin, xmax, ymin, ymax
+
 	try:
 		y0 = N0 / (B0*N0)**N0
 	except OverflowError:
@@ -53,15 +58,16 @@ def razorLikelihood(N, MR, Rsq, s, MR0, R0, B0, N0, btot, L):
 		bfunc[i] = razor2DBackground(MR[i], Rsq[i], MR0, R0, B0, N0)
 
 		# check value of background function
-		if isnan(bfunc[i]):
-			print "bfunc[%d] is NAN" % i, MR0, R0, B0, N0
-			return nearlyZero
-		elif isinf(bfunc[i]):
-			print "bfunc[%d] is INFINITE" % i, MR0, R0, B0, N0
-			return nearlyInfinite
-		elif bfunc[i] < 0:
-			print "bfunc[%d] is NEGATIVE" % i, MR0, R0, B0, N0
-			return nearlyZero
+		#if TMath.IsNan(bfunc[i]):
+		#if isnan(bfunc[i]):
+		#	print "bfunc[%d] is NAN" % i, MR0, R0, B0, N0
+		#	return nearlyZero
+		#elif isinf(bfunc[i]):
+		#	print "bfunc[%d] is INFINITE" % i, MR0, R0, B0, N0
+		#	return nearlyInfinite
+		#elif bfunc[i] < 0:
+		#print "bfunc[%d] is NEGATIVE" % i, MR0, R0, B0, N0
+		#return nearlyZero
 
 	# all background values are real numbers
 	# get normalization
@@ -77,24 +83,24 @@ def razorLikelihood(N, MR, Rsq, s, MR0, R0, B0, N0, btot, L):
 		p *= poisson(N[i], mean)
 
 	# check value of likelihood function
-	if isnan(p):
-		print "likelihood is NAN", MR0, R0, B0, N0
-		return nearlyZero
-	elif isinf(p):
-		print "likelihood is INFINITE", MR0, R0, B0, N0
-		return nearlyInfinite
-	elif p == 0:
-		print "likelihood is ZERO", MR0, R0, B0, N0
-		return nearlyZero
-	elif p < 0:
-		print "likelihood is NEGATIVE", MR0, R0, B0, N0
-		return nearlyZero
-	else:
-		return p
+	#if isnan(p):
+	#	print "likelihood is NAN", MR0, R0, B0, N0
+	#	return nearlyZero
+	#elif isinf(p):
+	#	print "likelihood is INFINITE", MR0, R0, B0, N0
+	#	return nearlyInfinite
+	#elif p == 0:
+	#	print "likelihood is ZERO", MR0, R0, B0, N0
+	#	return nearlyZero
+	#elif p < 0:
+	#	print "likelihood is NEGATIVE", MR0, R0, B0, N0
+	#	return nearlyZero
+	#else:
+	return p
 #------------------------------------------------------------------
 def main():	
 	gSystem.Load("libRooRazor2DBackground.so")
-	gSystem.Load("libBAT")
+	#gSystem.Load("libBAT")
 	rootFilename = "Boris.root"
 	workspaceName= "binnedrazor"
 
@@ -107,7 +113,7 @@ def main():
 	model = wspace.pdf('model')
 	
 	nuis  = wspace.set('nuis_s')
-	nbins = len(nuis)
+	nbins = nuis.getSize()
 	print "nbins:", nbins
 
 	# parameters
@@ -161,26 +167,26 @@ def main():
 		b0  = uniform(0.9*B0,  1.1*B0)
 		n0  = uniform(0.9*N0,  1.1*N0)
 
-		wspace.var('MR0').setVal(mr0)
+		wspace.var('MR0').setVal(mr0)		
 		wspace.var('R0').setVal(r0)
 		wspace.var('B0').setVal(b0)
 		wspace.var('N0').setVal(n0)
-		
+
 		print "%5d\t%10.3f %10.3f %10.3f %10.3f" % (trial, mr0, r0, b0, n0)
 		bf = 0.0
 		for i in xrange(nbins):
 			wspace.var('mr').setRange(MR[i][0], MR[i][1])
 			wspace.var('rsq').setRange(Rsq[i][0], Rsq[i][1])
-
+			wspace.var('mr').setVal(uniform(MR[i][0], MR[i][1]))
 			b1 = bfunc.getVal()
 			b2 = razor2DBackground(MR[i], Rsq[i], mr0, r0, b0, n0)
 			print "\t%10.3e %10.3e" % (b1, b2)
-		continue	
+		#continue
 
 		
 		p1 = model.getVal()
 		p2 = razorLikelihood(N, MR, Rsq, s, mr0, r0, b0, n0, btot, L)
-		
+		print 'Likelihoods: '
 		print "%10.3f %10.3f %10.3f %10.3f %10.3e %10.3e" % (mr0, r0, b0, n0, p1, p2)
 #------------------------------------------------------------------
 try:

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#$Revision: 1.7 $
+#$Revision: 1.10 $
 #----------------------------------------------------------------------
 # Created:    Feb-2013 SS
 # Updated: 03-Mar-2013 HBP - Add data set to workspace - this is needed
@@ -35,7 +35,7 @@ def main():
 
     MAXMR = 1200
     MAXRsq= 0.12
-    nbins = 20
+    nbins = 50
     nvars = 2
     
     rootfile = TFile(rootfilename)
@@ -218,16 +218,23 @@ def main():
     
     # BG parameters:
 
-    _MR0 = -161.54
-    _R0 = -0.0372
-    _B0 = 7.25
-    _N0 = 96.34
+    #_MR0 = -161.54
+    #_R0 = -0.0372
+    #_B0 = 7.25
+    #_N0 = 96.34
+    #_N0 = 1
+    #_btot = datasetsize
+
+    _MR0 = -1358.8
+    _R0 = -0.128
+    _B0 = 0.89
+    _N0 = 2.4
     _btot = datasetsize
 
-    wspace.factory('MR0[%f, -500, 500.]' % _MR0)
-    wspace.factory('R0[%f,-1.,1.]' % _R0)
-    wspace.factory('B0[%f,0.0,20.0]' % _B0)
-    wspace.factory('N0[%f,0.5,200.0]' % _N0)
+    wspace.factory('MR0[%f, -5000, 5000.]' % _MR0)
+    wspace.factory('R0[%f,-5.,5.]' % _R0)
+    wspace.factory('B0[%f,0.0,5.0]' % _B0)
+    wspace.factory('N0[%f,0.5,5.0]' % _N0)
     wspace.factory('btot[%f,0.0,2000.0]' % _btot)
 
     # Set of all the parameters
@@ -399,7 +406,7 @@ def main():
     #sys.exit(0)
 
     # add parameters of interes to the relevant RooArgSet
-    poi_s.add(wspace.var('sigma'))
+    poi_s.add(wspace.var('sigma_000'))
     # Add the set of parameters of interest to the workspace:
     wspace.defineSet('poi_s', poi_s)
 
