@@ -2,7 +2,7 @@
 // Fit to data in Razor plane
 // Created: 10 February 2013 HBP & SS
 // ----------------------------------------------------------------------------
-#define FIT 0 // 0 for razor; 1 for razorrz
+#define FIT 2 // 0 for razor; 1 for razorrz; 2 for two component razor
 
 
 #include "Math/WrappedFunction.h"
@@ -26,6 +26,8 @@
 #include "bfunction.C"
 #elif FIT == 1
 #include "bfunctionrz.C"
+#elif FIT == 2
+#include "bfunction2comp.C"
 #endif
 
 // ----------------------------------------------------------------------------
@@ -40,6 +42,10 @@ double eP[7];
 int NPAR=5;
 double P[5];
 double eP[5];
+#elif FIT == 2
+int NPAR=14;
+double P[14];
+double eP[14];
 #endif
 
 int NBINS=0;
@@ -73,7 +79,7 @@ double integral2term(double xmin, double xmax, double ymin, double ymax, double 
   return 0.5*(px + py);
 }
 
-bool usechi = true;
+bool usechi = false;
 
 double chisq(double* p)
 {
@@ -119,6 +125,8 @@ void fitrazor(string filename = "BorisQCD.root", int nb = 20)
     fit = "razor";
   else if(FIT == 1)
     fit = "razorrz";
+  else if(FIT == 2)
+    fit = "2comprazor";
 
   cout << endl << "\t<===== fitrazor ======>" << endl;
   cout << " \t Doing fit for background function " << fit << endl;
@@ -252,8 +260,38 @@ void fitrazor(string filename = "BorisQCD.root", int nb = 20)
     for(int i=0; i<NPAR; ++i)
       minuit.mnparm(i, Aname[i], A[i], Astep[i], Amin[i], Amax[i], ierflag);
 
+  } else if(fit == "2comprazor") {
+    cout << "doing 2 component razor fit" << endl;
+    if(NPAR != 14){
+      cout << "NPAR must be set equal to 14" << endl;
+      exit(0);
+    }
+
+    double A[] = {0,-14,-37,-27,10,24,12,1,1,1,0,0,0,1};
+    //double A[] = {0,0,0,0,0,0,0,1.5,1,0,0,0,0,0};
+    string Aname[] = {"A1","B1","C1","D1","E1","F1","G1","A2","B2","C2","D2","E2","F2","K"};
+    double Astep[] = {0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1};
+    double Amin[] = {-2000,-1000,-1000,-2000,-1000,-1000,0,-2000,-1000,-100,-2000,-1000,-1000,0};
+    double Amax[] = {2000,1000,1000,2000,1000,1000,100,2000,1000,1000,2000,1000,1000,100};
+
+    for(int i=0; i<NPAR; ++i)
+      minuit.mnparm(i, Aname[i], A[i], Astep[i], Amin[i], Amax[i], ierflag);
+
+    //minuit.FixParameter(0);
+    //minuit.FixParameter(1);
+    //minuit.FixParameter(2);
+    //minuit.FixParameter(3);
+    //minuit.FixParameter(4);
+    //minuit.FixParameter(5);
+    //minuit.FixParameter(6);
+    //minuit.FixParameter(7);
+    //minuit.FixParameter(8);
+    //minuit.FixParameter(9);
+    //minuit.FixParameter(10);
+    //minuit.FixParameter(11);
+    //minuit.FixParameter(12);
+    //minuit.FixParameter(13);
   }
-  
 
   // Fit with MIGRAD
   double arglist[2];
@@ -271,7 +309,7 @@ void fitrazor(string filename = "BorisQCD.root", int nb = 20)
   minuit.mnstat(fmin, fedm, errdef, nvpar, nparx, istatus);
   cout << "covariance matrix status: " << istatus << endl;
   // ------------------------------------------------------------
-  char record[100];
+  char record[200];
   cout << endl << "Fit results:" << endl;
   sprintf(record, "fitresults.txt");
   ofstream fout(record);
@@ -284,7 +322,7 @@ void fitrazor(string filename = "BorisQCD.root", int nb = 20)
     }
   
   // Get error matrix
-  double errmat[100];
+  double errmat[200];
   minuit.mnemat(errmat, NPAR);
   cout << endl;
   fout << endl;
