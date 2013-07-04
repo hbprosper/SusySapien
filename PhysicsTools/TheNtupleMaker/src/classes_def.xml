@@ -12,8 +12,6 @@
    <class name="std::map<std::string, std::vector<double> >"/>
    <class name="std::map<std::string, std::vector<double>* >"/>
 
-   <class name="CanvasScribe"/>
-   <class name="HistogramCache"/>
    <class name="Connection"/>
    <class name="Slot"/>
    <class name="kit"/>
@@ -26,14 +24,8 @@
    <class name="THelpDialog"/>
    <class name="ClassFunction"/>
    <class name="ClassMembers"/>
-   <class name="PoissonGammaFit"/>
    <class name="itreestream"/>
    <class name="otreestream"/>
-   <class name="RGS"/>
-   <class name="KDE"/>
-   <class name="jetnet::NN"/>
-   <class name="AdBayes"/>
-   <class name="Bayespack"/>
    <class name="ATestBase"/>
    <class name="Aclass"/>
    <class name="Bclass"/>

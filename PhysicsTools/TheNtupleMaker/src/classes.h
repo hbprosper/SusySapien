@@ -1,4 +1,4 @@
-//$Revision: 1.6 $
+//$Revision: 1.7 $
 #include "PhysicsTools/TheNtupleMaker/interface/Connection.h"
 #include "PhysicsTools/TheNtupleMaker/interface/Slot.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pdg.h"
@@ -14,12 +14,6 @@
 #include "PhysicsTools/TheNtupleMaker/interface/CanvasScribe.h"
 #include "PhysicsTools/TheNtupleMaker/interface/ClassFunction.h"
 #include "PhysicsTools/TheNtupleMaker/interface/ClassMembers.h"
-#include "PhysicsTools/TheNtupleMaker/interface/PoissonGammaFit.h"
-#include "PhysicsTools/TheNtupleMaker/interface/RGS.h"
-#include "PhysicsTools/TheNtupleMaker/interface/jetnet.h"
-#include "PhysicsTools/TheNtupleMaker/interface/KDE.h"
-#include "PhysicsTools/TheNtupleMaker/interface/AdBayes.h"
-#include "PhysicsTools/TheNtupleMaker/interface/Bayespack.h"
 //-----------------------------------------------------------------------------
 #include "TLorentzVector.h"
 #include "TH1F.h"
