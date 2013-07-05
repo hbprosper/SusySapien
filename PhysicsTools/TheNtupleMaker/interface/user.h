@@ -12,7 +12,8 @@
 //                                   - add GenParticleHelper
 //              Thu Sep 02, 2010 HBP - move HelpFor to separate file
 //              Sat Jun 25, 2011 HBP - add template class for ints etc.
-//$Revision: 1.7 $
+//              Thu Jul 04, 2013 HBP - add BasType bool
+//$Revision: 1.8 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -130,12 +131,49 @@ public:
 };
 
 template <>
+class BasicType<short> : public HelperFor<short>
+{
+public:
+  BasicType() : HelperFor<short>() {}
+  virtual ~BasicType() {}
+  short value() const {return *object;}
+};
+
+
+template <>
 class BasicType<unsigned int> : public HelperFor<unsigned int>
 {
 public:
   BasicType() : HelperFor<unsigned int>() {}
   virtual ~BasicType() {}
   unsigned int value() const {return *object;}
+};
+
+template <>
+class BasicType<unsigned short> : public HelperFor<unsigned short>
+{
+public:
+  BasicType() : HelperFor<unsigned short>() {}
+  virtual ~BasicType() {}
+  unsigned short value() const {return *object;}
+};
+
+template <>
+class BasicType<unsigned long> : public HelperFor<unsigned long>
+{
+public:
+  BasicType() : HelperFor<unsigned long>() {}
+  virtual ~BasicType() {}
+  unsigned long value() const {return *object;}
+};
+
+template <>
+class BasicType<long> : public HelperFor<long>
+{
+public:
+  BasicType() : HelperFor<long>() {}
+  virtual ~BasicType() {}
+  long value() const {return *object;}
 };
 
 template <>
@@ -152,6 +190,15 @@ class BasicType<double> : public HelperFor<double>
 {
 public:
   BasicType() : HelperFor<double>() {}
+  virtual ~BasicType() {}
+  double value() const {return *object;}
+};
+
+template <>
+class BasicType<bool> : public HelperFor<bool>
+{
+public:
+  BasicType() : HelperFor<bool>() {}
   virtual ~BasicType() {}
   double value() const {return *object;}
 };

@@ -42,7 +42,8 @@ if len(sys.argv) > 1:
                 withCMG = "AnalysisDataFormats/CMGTools"
                 print "\n\t* Initialize TheNtupleMaker with CMGTools *\n"
         else:
-                print "\t* CMGTools was not found in local release"
+                print "\t* CMGTools was not found in local release %s" % \
+                      os.environ['CMSSW_VERSION']
                 print "\t* Please install and re-run this script\n"
                 sys.exit(0)
 else:

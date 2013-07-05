@@ -62,7 +62,8 @@
 //                                   beginRun()
 //                                   Implement wildcard for triggers and
 //                                   range processing for all variables
-// $Id: TheNtupleMaker.cc,v 1.21 2012/05/14 02:41:17 prosper Exp $
+//                   Thu Jul 04 2013 HBP - fix variables.txt
+// $Id: TheNtupleMaker.cc,v 1.22 2012/05/16 16:53:59 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -172,7 +173,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   : ntuplename_(iConfig.getUntrackedParameter<string>("ntupleName")), 
     output(otreestream(ntuplename_,
                        "Events", 
-                       "created by TheNtupleMaker $Revision: 1.21 $")),
+                       "created by TheNtupleMaker $Revision: 1.22 $")),
     logfilename_("TheNtupleMaker.log"),
     log_(new std::ofstream(logfilename_.c_str())),
     macroname_(""),
@@ -194,7 +195,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   // --------------------------------------------------------------------------
   TFile* file = output.file();
   ptree_ = new TTree("Provenance",
-                     "created by TheNtupleMaker $Revision: 1.21 $");
+                     "created by TheNtupleMaker $Revision: 1.22 $");
   string cmsver("unknown");
   if ( getenv("CMSSW_VERSION") > 0 ) cmsver = string(getenv("CMSSW_VERSION"));
   ptree_->Branch("cmssw_version", (void*)(cmsver.c_str()), "cmssw_version/C");
@@ -376,19 +377,33 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   boost::regex getstrarg("(?<=[(]\").+(?=\"[)])");
   boost::smatch matchstrarg;
 
-  // get list of strings from "buffers", decode them, and cache the results
+  // get list of strings from "objects", decode them, and cache the results
+  // NOTE: Within TNM, block and object are used interchangeably
   // --------------------------------------------------------------------------
-  vector<string> vrecords = iConfig.
-    getUntrackedParameter<vector<string> >("buffers");
+  vector<string> vrecords;
+  try
+    {
+      vrecords = iConfig.getUntrackedParameter<vector<string> >("objects");
+    }
+  catch (...)
+    {
+      vrecords = iConfig.getUntrackedParameter<vector<string> >("buffers");
+    }
 
   for(unsigned ii=0; ii < vrecords.size(); ii++)
     {
+      // We must distinguish between the block name and the buffer name
+      // because multiple blocks can map to the same buffer name
+      // The block name will be used as the name of the C++ struct
+      // 
+      string blockName = vrecords[ii];
+
       if ( DEBUG > 1 ) 
-        cout << "record(" << vrecords[ii]  << ")" << endl; 
+        cout << "block(" << blockName  << ")" << endl; 
       
       // Get description for current buffer of variables
       vector<string> bufferrecords = iConfig.
-        getUntrackedParameter<vector<string> >(vrecords[ii]);
+        getUntrackedParameter<vector<string> >(blockName);
 
       // Decode first record which should
       // contain the buffer name, getByLabel and max count, with
@@ -397,8 +412,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
       string record = bufferrecords[0];
 
       // If current buffer is a Helper, create a parameter set specific to
-      // the Helper from this string.
-      //string localparam("");
+      // the Helper 
 
       // Structure containing information about the methods to be called.
       vector<VariableDescriptor> var;
@@ -406,13 +420,17 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
       vector<string> field;
       kit::split(record, field);
 
-      string buffer = field[0];                 // Buffer name
+      string bufferName = field[0];
 
       if ( DEBUG > 0 )
-        cout << "  buffer: " << buffer << endl;
+        cout << "  buffer: " << bufferName << endl;
+      
+      // The first part of the branch name associated with a method is
+      // the same as the buffer name, which basically identifies the
+      // associated class
 
       string label("");
-      string prefix = buffer;
+      string prefix = bufferName;
       string varprefix = "";
       int maxcount=1;
 
@@ -420,14 +438,14 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
       // helper for edm::Event. So don't crash if there is no
       // getByLabel
 
-      if ( buffer.substr(0,8) != "edmEvent" )
+      if ( bufferName.substr(0,8) != "edmEvent" )
         {
           if ( field.size() < 3 )
             // Have a tantrum!
             throw edm::Exception(edm::errors::Configuration,
                                  "cfg error: "
                                  "you need at least 3 fields in first line of"
-                                 " each buffer block\n"
+                                 " each buffer\n"
                                  "\tyou blocks you stones you worse than "
                                  "senseless things...");
         }
@@ -466,9 +484,9 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
       //DB
       if ( DEBUG > 1 )
         cout 
-          << "   buffer("
+          << "   block " << blockName << "("
           << RED  
-          << buffer 
+          << bufferName 
           << BLACK 
           << ")"
           << " label("    
@@ -592,7 +610,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
           
           if ( endrange == 0 )
             {
-              // No range variable detector so just
+              // No range variable detected so just
               // add to vector of variables
               var.push_back(VariableDescriptor(rtype, method, varname));
               
@@ -629,6 +647,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
 
                   // Add to vector of variables
                   var.push_back(VariableDescriptor(rtype, method, varname));
+                                                   
               
                   if ( DEBUG > 0 )
                     cout << "   rtype:   " << RED   << rtype 
@@ -645,8 +664,8 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
 
       // Cache decoded buffer information
 
-      blockName_.push_back(vrecords[ii]);
-      bufferName_.push_back(buffer);
+      blockName_.push_back(blockName);
+      bufferName_.push_back(bufferName);
       label_.push_back(label);
       parameters_.push_back(parameters);
       prefix_.push_back(prefix);
@@ -1002,7 +1021,7 @@ TheNtupleMaker::beginRun(const edm::Run& run,
   for(unsigned int i=0; i < blockName_.size(); i++)
     {
       if ( DEBUG > 0 )
-        cout << "BLOCKNAME(" << blockName_[i] << ")" << endl;
+        cout << "BLOCK NAME(" << blockName_[i] << ")" << endl;
 
       if ( bufferName_[i] == "edmTriggerResultsHelper" ) 
         updateTriggerBranches(i);
@@ -1040,7 +1059,8 @@ TheNtupleMaker::beginRun(const edm::Run& run,
 
 
       // ... and initialize it
-      buffers.back()->init(output, 
+      buffers.back()->init(output,
+                           blockName_[i], 
                            label_[i], 
                            prefix_[i], 
                            variables_[i], 

@@ -1,4 +1,10 @@
-$Revision: 1.36 $
+$Revision: 1.37 $
+
+v5_4_2 July 4 2013
+------------------
+	1. Use names listed in buffers in config as names of C++ structs
+	2. Add src, include, and lib directory to analyzer directory and
+	   improve Makefile
 
 v5_4_1 June 5 2012
 ------------------

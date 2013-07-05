@@ -46,7 +46,7 @@
 //          22-Nov-2010 Allow reading of multiple trees using friend
 //                      mechanism
 //          22-Nov-2011 Handle storing of strings
-//$Revision: 1.2 $
+//$Revision: 1.3 $
 //----------------------------------------------------------------------------
 #include <vector>
 #include <string>
@@ -215,6 +215,9 @@ class itreestream
   void   select(std::string namen, short& datum);
 
   ///
+  void   select(std::string namen, bool& datum);
+
+  ///
   void   select(std::string namen, unsigned long& datum);
 
   ///
@@ -251,6 +254,9 @@ class itreestream
 
   ///
   void   select(std::string namen, std::vector<short>& data);
+
+  ///
+  void   select(std::string namen, std::vector<bool>& data);
 
   ///
   void   select(std::string namen, std::vector<char>& data);
@@ -409,6 +415,12 @@ class otreestream
   void   add(std::string namen, short& datum);
 
   ///
+  void   add(std::string namen, char& datum);
+
+  ///
+  void   add(std::string namen, bool& datum);
+
+  ///
   void   add(std::string namen, unsigned long& datum);
 
   ///
@@ -444,6 +456,9 @@ class otreestream
 
   ///
   void   add(std::string namen, std::vector<char>& data);
+
+  ///
+  void   add(std::string namen, std::vector<bool>& data);
 
   ///
   void   add(std::string namen, std::vector<unsigned long>& data);

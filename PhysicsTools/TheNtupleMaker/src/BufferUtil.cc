@@ -8,7 +8,14 @@
 //                   Thu Feb 17 HBP change definition of isArray (maxcount > 1)
 //                   Wed Jul 20 HBP handle BasicType
 //                   25-Apr-2012 HBP fix objectname when it is a template
-// $Id: BufferUtil.cc,v 1.4 2012/05/07 04:32:43 prosper Exp $
+//                   Thu Jul 04 2013 HBP - add objectname to argument fof init
+//                                   by default objectname = name of block
+//                                   in config file. This way the C++ object
+//                                   name in the variables.txt file will be
+//                                   the same as that specified in the config
+//                                   file.
+//
+// $Id: BufferUtil.cc,v 1.5 2012/05/16 16:54:00 prosper Exp $
 //-----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python/type_id.hpp>
@@ -24,7 +31,8 @@
 //-----------------------------------------------------------------------------
 
 /// Function to initialize a Buffer.
-void initializeBuffer(otreestream& out,  
+void initializeBuffer(otreestream& out,
+                      std::string& objectname,  
                       std::string& classname,
                       std::string& label,
                       std::string& label1,
@@ -103,17 +111,6 @@ void initializeBuffer(otreestream& out,
       return;
     }
   
-  // create name of object
-
-  std::string objectname = classname;
-  TString objname = TString(boost::regex_replace(objectname, 
-                                                 stripcolon, "").c_str());
-  objname.ToLower();
-  objectname = std::string(objname.Data());
-  // Replace "->", ".", "(", ")" "," " " and quotes by ""
-  objectname = rfx::strip(boost::regex_replace(objectname, stripme,  ""));
-
-  if (objectname.substr(0, 9) == "basictype") objectname = prefix;
 
   // buffer key is used in shrink buffer method of TNM
   bufferkey = objectname;
@@ -127,15 +124,16 @@ void initializeBuffer(otreestream& out,
   // to and from vectors ourselves.
 
   // If we have a vector variable, create a counter variable for it.
-  // Root calls this a "leaf counter". A vector variable i s generally a
+  // Root calls this a "leaf counter". A vector variable is generally a
   // collection. However, a helper for a singleton object could expand
   // into a vector variable. Likewise, a helper class for a collection object,
   // say a collection of pat::Jets, could map these objects to a single 
   // instance of each variable, for example to HT. If so, we shall assume 
   // that the n-tuple variable is to be a simple non-array type.
 
-  bool isArray = maxcount > 1; 
   std::string counter("");
+
+  bool isArray = maxcount > 1; 
   if ( isArray )
     {
       // Add leaf counter to tree
@@ -182,10 +180,11 @@ void initializeBuffer(otreestream& out,
                   << BLACK
                   << std::endl;      
 
-      std::string name = prefix + "." + varname;
+      // create branch name 
+      std::string branchname = prefix + "." + varname;
 
       // check for uniqueness
-      if ( branchset.find(name) != branchset.end() )
+      if ( branchset.find(branchname) != branchset.end() )
         {
           edm::LogWarning("BranchNotUnique")
             << "\t...Fee fi fo fum" 
@@ -197,28 +196,28 @@ void initializeBuffer(otreestream& out,
             << "\t...I'll grind his bones to make my bread"
             << std::endl
             << "This branch (" 
-            << BOLDRED << name 
+            << BOLDRED << branchname 
             << DEFAULT_COLOR << ") is NOT unique!"
             << std::endl;
           continue;
         }
-      branchset.insert(name);
+      branchset.insert(branchname);
 
       log << rtype << "/" 
-          << name  << "/"
+          << branchname  << "/"
           << objectname + "_" + varname << "/"
           << maxcount 
           << std::endl;
         
-      if ( isArray ) name += "[" + counter + "]";
+      if ( isArray ) branchname += "[" + counter + "]";
       
       // Note: nvar <= i
-      var[nvar].name = name;
+      var[nvar].name = branchname;
       var[nvar].maxcount = maxcount;
       var[nvar].method = method;
 
       if ( debug > 0 )
-        std::cout << "   " << nvar << ":\t" << name 
+        std::cout << "   " << nvar << ":\t" << branchname 
                   << std::endl
                   << "\t\t" << method << std::endl;
 

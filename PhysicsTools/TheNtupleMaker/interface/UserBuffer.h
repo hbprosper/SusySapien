@@ -14,8 +14,11 @@
 //                                         objects
 //                   Mon May 07 2012 HBP - skip LHEEventProduct and
 //                                         PileupSummaryInfo for real data
+//                   Thu Jul 04 2013 HBP - add objectname to argument fof init
+//                                   by default objectname = name of block
+//                                   in config file
 //
-// $Id: UserBuffer.h,v 1.11 2012/05/08 01:58:05 prosper Exp $
+// $Id: UserBuffer.h,v 1.12 2012/05/16 16:53:59 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/BufferUtil.h"
@@ -56,6 +59,7 @@ struct UserBuffer  : public BufferThing
   ///
   UserBuffer() 
     : out_(0),
+      objectname_(""),
       classname_(boost::python::type_id<X>().name()),
       label_(""),
       label1_(""),
@@ -82,6 +86,7 @@ struct UserBuffer  : public BufferThing
 
   /** Initialize buffer.
       @param out - output ntuple file.
+      @param objectname - C++ name assigned to object (same as block name)
       @param label - getByLabel
       @param prefix - prefix for variable names (and internal name of buffer)
       @param var - variable descriptors
@@ -90,6 +95,7 @@ struct UserBuffer  : public BufferThing
    */
   virtual void
   init(otreestream& out,
+       std::string  objectname, 
        std::string  label, 
        std::string  prefix,
        std::vector<VariableDescriptor>& var,
@@ -103,6 +109,7 @@ struct UserBuffer  : public BufferThing
               << std::endl;
 
     out_    = &out;
+    objectname_  = objectname;
     label_  = label;
     prefix_ = prefix;
     var_    = var;
@@ -141,9 +148,10 @@ struct UserBuffer  : public BufferThing
                 << classname_ << ")"
                 << std::endl;    
 
-    std::string helpername = boost::python::type_id<Y>().name();
+    std::string classname = boost::python::type_id<Y>().name();
     initBuffer<Y>(out,
-                  helpername,
+                  objectname,
+                  classname,
                   label_,
                   label1_,
                   label2_,
@@ -306,6 +314,7 @@ struct UserBuffer  : public BufferThing
 
 private:
   otreestream* out_;
+  std::string  objectname_;
   std::string  classname_;  
   std::string  label_;
   std::string  label1_;
@@ -339,6 +348,7 @@ struct UserBuffer<edm::Event, Y, SINGLETON> : public BufferThing
   ///
   UserBuffer() 
     : out_(0),
+      objectname_(""),
       classname_(boost::python::type_id<Y>().name()),
       label_(""),
       label1_(""),
@@ -362,6 +372,7 @@ struct UserBuffer<edm::Event, Y, SINGLETON> : public BufferThing
 
   /** Initialize buffer.
       @param out - output ntuple file.
+      @param objectname - C++ name assigned to object (same as block name)
       @param label - getByLabel
       @param prefix - prefix for variable names (and internal name of buffer)
       @param var - variable descriptors
@@ -370,6 +381,7 @@ struct UserBuffer<edm::Event, Y, SINGLETON> : public BufferThing
    */
   virtual void
   init(otreestream& out,
+       std::string  objectname, 
        std::string  label, 
        std::string  prefix,
        std::vector<VariableDescriptor>& var,
@@ -379,6 +391,7 @@ struct UserBuffer<edm::Event, Y, SINGLETON> : public BufferThing
        int debug=0)
   {
     out_    = &out;
+    objectname_  = objectname;
     label_  = label;
     prefix_ = prefix;
     var_    = var;
@@ -392,6 +405,7 @@ struct UserBuffer<edm::Event, Y, SINGLETON> : public BufferThing
 
 
     initBuffer<Y>(out,
+                  objectname_,
                   classname_,
                   label_,
                   label1_,
@@ -485,6 +499,7 @@ struct UserBuffer<edm::Event, Y, SINGLETON> : public BufferThing
 
 private:
   otreestream* out_;
+  std::string  objectname_;  
   std::string  classname_;  
   std::string  label_;
   std::string  label1_;

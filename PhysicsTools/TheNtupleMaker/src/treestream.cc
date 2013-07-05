@@ -42,12 +42,12 @@
 //                      directly.
 //          22-Nov-2010 HBP allow reading of multiple trees
 //          22-Nov-2011 HBP handle reading/storing of strings
-//$Revision: 1.4 $
+//$Revision: 1.5 $
 //----------------------------------------------------------------------------
 #ifdef PROJECT_NAME
 #include <boost/regex.hpp>
-#include <glob.h>
 #endif
+#include <glob.h>
 
 #include <map>
 #include <vector>
@@ -214,6 +214,10 @@ namespace
             val = static_cast<double>(invalue<char>(field, index, 1));
             break;
 
+          case 'O':
+            val = static_cast<double>(invalue<bool>(field, index, 1));
+            break;
+
           case 'l':
             val = static_cast<double>(invalue<unsigned long>(field, index, 1));
             break;
@@ -266,6 +270,10 @@ namespace
 
       case 'B':
         size = insize<char>(field);
+        break;
+
+      case 'O':
+        size = insize<bool>(field);
         break;
 
       case 'C':
@@ -390,6 +398,10 @@ namespace
       case 'B':
         d = static_cast<double>(exvalue<char>(field, index));
         break;
+
+      case 'O':
+        d = static_cast<double>(exvalue<bool>(field, index));
+        break;
        
       case 'l':
         d = static_cast<double>(exvalue<unsigned long>(field, index));
@@ -436,6 +448,9 @@ namespace
      
       case 'B':
         size = exsize<char>(field);
+
+      case 'O':
+        size = exsize<bool>(field);
 
       case 'C':
         size = exsize<string>(field);
@@ -520,6 +535,11 @@ namespace
           d->value[i] = static_cast<T>(exvalue<char>(field, i));
         break;
 
+      case 'O':
+        for(int i=0; i < count; i++)
+          d->value[i] = static_cast<T>(exvalue<bool>(field, i));
+        break;
+
       case 'l':
         for(int i=0; i < count; i++)
           d->value[i] = static_cast<T>(exvalue<unsigned long>(field, i));
@@ -545,7 +565,8 @@ namespace
     if ( DEBUGLEVEL > 0 )
       {
         cout << "\tinternal value = " << d->value[0] << endl;
-        cout << "\taddress        = " << &d->value[0] << endl;
+        //cout << "\taddress        = " << &(d->value[0])
+        //     << endl;
         cout << "END fromexternal" << endl;
       }
   }
@@ -744,6 +765,8 @@ namespace
 
     DBUG("\tcreatebranch: " + v->branchname + "\t" + format);
 
+    // IMPORTANT: need address of first element of vector, not of the
+    // vector itself
     void* address = &(v->value[0]);
     tree->Branch(v->branchname.c_str(), address, format);
 
@@ -871,6 +894,10 @@ namespace
 
       case 'B':
         toexternal<char>(field);
+        break;
+
+      case 'O':
+        toexternal<bool>(field);
         break;
 
       case 'C':
@@ -1040,14 +1067,20 @@ itreestream::_open(vector<string>& fname, vector<string>& tname)
           globfree(&g);
         }
 #else
-      filepath.push_back(fname[0]);
+     for (unsigned int j=0; j < fname.size(); ++j){
+       filepath.push_back(fname[j]);
+     }
+     //filepath.push_back(fname[0]);
+      std::cout << "filepath size: " << filepath.size() << endl;  
 #endif
-      DBUG("itreestream::ctor - new TFile ", 2);
+      //DBUG("itreestream::ctor - new TFile ", 2);
+      DBUG("itreestream::ctor - TFile::Open ", 2);
   
       // ----------------------------------------
       // Open first file
       // ----------------------------------------
-      TFile* file_ = new TFile(filepath[0].c_str());
+      TFile* file_ = TFile::Open(filepath[0].c_str());
+      //TFile* file_ = new TFile(filepath[0].c_str());
       if ( ! file_ || (file_ != 0 && ! file_->IsOpen()) )
         fatal("itreestream - unable to open file " + filepath[0]);
       file_->cd();
@@ -1123,7 +1156,7 @@ itreestream::_open(vector<string>& fname, vector<string>& tname)
           _chainlist.push_back(new TChain(tname[i].c_str()));
           _chain->AddFriend(_chainlist.back());
         }
-  
+
       for(int i=0; i < (int)filepath.size(); i++)
         {
           for(unsigned int k=0; k < _chainlist.size(); k++)
@@ -1358,6 +1391,12 @@ itreestream::select(string namen, short& d)
 }
 
 void 
+itreestream::select(string namen, bool& d)
+{
+  _select(namen, &d, 1, 'O');
+}
+
+void 
 itreestream::select(string namen, string& d)
 {
   _select(namen, &d, 1, 'C');
@@ -1418,6 +1457,12 @@ void
 itreestream::select(string namen, vector<char>& d)
 {
   _select(namen, &d, d.size(), 'B', true);
+}
+
+void 
+itreestream::select(string namen, vector<bool>& d)
+{
+  _select(namen, &d, d.size(), 'O', true);
 }
 
 void 
@@ -1887,7 +1932,8 @@ otreestream::otreestream(std::string filename,
 {
   DBUG("create file "+filename,1);
 
-  _file = new TFile(filename.c_str(), "RECREATE");
+  _file = TFile::Open(filename.c_str(), "RECREATE");
+  //_file = new TFile(filename.c_str(), "RECREATE");
   if ( ! _file )
     {
       cerr << "itreestream **Error** unable to open " << filename << endl;
@@ -2022,6 +2068,18 @@ otreestream::add(string namen, short& datum)
 }
 
 void
+otreestream::add(string namen, char& datum)
+{
+  _add(namen, &datum, 1, 'B', 'B');
+}
+
+void
+otreestream::add(string namen, bool& datum)
+{
+  _add(namen, &datum, 1, 'O', 'O');
+}
+
+void
 otreestream::add(string namen, string& datum)
 {
   _add(namen, &datum, 1, 'C', 'C');
@@ -2081,6 +2139,12 @@ void
 otreestream::add(string namen, vector<char>& d)
 {
   _add(namen, &d, d.size(), 'B', 'B', true);
+}
+
+void 
+otreestream::add(string namen, vector<bool>& d)
+{
+  _add(namen, &d, d.size(), 'O', 'O', true);
 }
 
 void 
@@ -2198,6 +2262,10 @@ otreestream::store()
 
         case 'B':
           fromexternal<char> (field, count);
+          break;
+
+        case 'O':
+          fromexternal<bool> (field, count);
           break;
 
         case 'C':
@@ -2363,6 +2431,10 @@ otreestream::_add(string namen, void* address, int maxsize,
 
         case 'B':
           createbranch<char> (_tree, &field, format, selecteddata);
+          break;
+
+        case 'O':
+          createbranch<int>  (_tree, &field, format, selecteddata);
           break;
 
         case 'C':

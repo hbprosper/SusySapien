@@ -13,7 +13,9 @@
 #          11-Mar-2011 HBP - fix naming bug
 #          26-Apr-2011 HBP - alert user only if duplicate name is not a leaf
 #                            counter
-#$Id: mkanalyzer.py,v 1.19 2012/04/04 01:32:41 prosper Exp $
+#          04-Jul-2013 HBP - make a better analyzer work area
+#
+#$Id: mkanalyzer.py,v 1.20 2012/06/05 17:03:11 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
 from string import *
@@ -739,121 +741,154 @@ main()
 '''
 
 MAKEFILE = '''#------------------------------------------------------------------------------
-# Description: Makefile to build executable %(filename)s
+# Description: Makefile to build analyzers
 # Created:     %(time)s by mkanalyzer.py
-#
-#               available switches:
-#
-#                 debugflag  (e.g., debugflag=-ggdb [default])
-#                 cppflags
-#                 cxxflags
-#                 optflag
-#                 verbose    (e.g., verbose=1)
-#                 withcern   (e.g., withcern=1  expects to find CERN_LIB)
 # Author:      %(author)s
 #------------------------------------------------------------------------------
 ifndef ROOTSYS
 $(error *** Please set up Root)
 endif
-withroot:=1
-#------------------------------------------------------------------------------
-ifndef program
-# default program name
-program := %(filename)s
-endif
 
-cppsrcs	:= $(wildcard *.cpp)
-ccsrcs  := $(wildcard *.cc)
+# Sub-directories
+srcdir	:= src
+tmpdir	:= tmp
+libdir	:= $(PWD)/lib
+incdir	:= include
 
-# filter out all main programs except the one to be built
-# 1. search files for main(...) and write list of files to .main
-$(shell grep -H "main[(].*[)]" $(cppsrcs) $(ccsrcs)|cut -f1 -d: > .main)
-# 2. send list back to Makefile
-main	:= $(shell cat .main)
-# 3. remove subset of files (including the file to be built) from main
-main	:= $(filter-out $(program).cc $(program).cpp treestream.cc,$(main))
-# 4. remove the set main from the set of all files in the directory
-cppsrcs	:= $(filter-out $(main),$(cppsrcs))
-ccsrcs	:= $(filter-out $(main),$(ccsrcs))
+$(shell mkdir -p tmp)
+$(shell mkdir -p lib)
 
-cppobjs	:= $(patsubst %(percent)s.cpp,tmp/%(percent)s.o,$(cppsrcs))
-ccobjs	:= $(patsubst %(percent)s.cc,tmp/%(percent)s.o,$(ccsrcs))
-objects	:= $(ccobjs) $(cppobjs)
-say     := $(shell echo "Program: $(program)" >& 2)
-#------------------------------------------------------------------------------
-ifdef GCC_DIR
-GCC_BIN_PREFIX	:= $(GCC_DIR)/bin/
-else
-GCC_BIN_PREFIX	:=
-endif
-C++	    := $(GCC_BIN_PREFIX)g++
-LDSHARED:= $(GCC_BIN_PREFIX)g++
-C++VER	:= $(shell $(C++) --version)
-COMP	:= $(word 1, $(C++VER))
-CTYPE	:= $(word 2, $(C++VER))
-CVER	:= $(word 3, $(C++VER))
-say 	:= $(shell echo "$(COMP) $(CTYPE) $(CVER)" >& 2)
-#------------------------------------------------------------------------------
+
+# Set this equal to the @ symbol to suppress display of instructions
+# while make executes
 ifdef verbose
-	AT =
+AT 	:=
 else
-	AT = @
-endif
-#------------------------------------------------------------------------------
-# Products to compile/link against
-#------------------------------------------------------------------------------
-ifdef withcern
-	ifndef CERN_LIB
-		ifdef CERN_DIR
-			CERN_LIB:= $(CERN_DIR)/lib
-		else
-			say:=$(error CERN_LIB must point to CERN lib directory)
-		endif
-	endif
-	cernlib	:= -L$(CERN_LIB) -lpacklib -lmathlib -lkernlib
+AT	:= @
 endif
 
-ifdef withroot
-	rootcpp	:= $(shell root-config --cflags)
-	rootlib	:= $(shell root-config --glibs) -lTreePlayer
+# Get list of sources to be compiled into applications
+appsrcs	:= $(wildcard *.cc)
+
+# Construct list of applications
+applications := $(appsrcs:.cc=)
+
+# Construct names of object models from list of sources
+appobjs	:= $(addprefix $(tmpdir)/,$(appsrcs:.cc=.o))
+
+# Get list of sources to be made into shared libraries
+cppsrcs	:= $(wildcard $(srcdir)/*.cpp)
+cppobjs	:= $(subst $(srcdir)/,$(tmpdir)/,$(cppsrcs:.cpp=.o))
+
+ccsrcs	:= $(wildcard $(srcdir)/*.cc) 
+ccobjs	:= $(subst $(srcdir)/,$(tmpdir)/,$(ccsrcs:.cc=.o))
+objects	:= $(cppobjs) $(ccobjs)
+
+sharedlib := $(libdir)/libanalyzer.so
+
+# Display list of applications to be built
+#say	:= $(shell echo -e "Apps: $(applications)" >& 2)
+#say	:= $(shell echo -e "AppObjs: $(appobjs)" >& 2)
+#say	:= $(shell echo -e "Objects: $(objects)" >& 2)
+#$(error bye!) 
+
+#-----------------------------------------------------------------------
+
+# 	Define which compilers and linkers to use
+
+# 	C++ Compiler
+CXX	:= g++
+
+
+# 	Define paths to be searched for C++ header files (#include ....)
+
+CPPFLAGS:= -I. -I$(incdir) -I$(srcdir) $(shell root-config --cflags) 
+
+# 	Define compiler flags to be used
+#	-c		perform compilation step only 
+#	-g		include debug information in the executable file
+#	-O2		optimize
+#	-ansi	require strict adherance to C++ standard
+#	-Wall	warn if source uses any non-standard C++
+#	-pipe	communicate via different stages of compilation
+#			using pipes rather than temporary files
+
+CXXFLAGS:= -c -g -O2 -ansi -Wall -pipe -fPIC
+
+#	C++ Linker
+
+LD	:= g++
+
+OS	:= $(shell uname -s)
+ifeq ($(OS),Darwin)
+	LDSHARED	:= $(LD) -dynamiclib
+else
+	LDSHARED	:= $(LD) -shared
 endif
-#------------------------------------------------------------------------------
-# Switches/includes
-# debug flag is on by default
-#------------------------------------------------------------------------------
-debugflag:=-ggdb
 
-ifndef optflag
-	optflag:=-O2
-endif
+#	Linker flags
 
-CPPFLAGS:= -I. $(rootcpp) $(cppflags)
-CXXFLAGS:= -c -pipe $(optflag) -fPIC -Wall $(cxxflags) $(debugflag)
-LDFLAGS	:= $(ldflags) $(debugflag)
-LIBS	:= $(libs) $(rootlib) $(cernlib)
-#------------------------------------------------------------------------------
-# Rules
-#------------------------------------------------------------------------------
-bin:	$(program)
+LDFLAGS := -g
 
-$(program)	: $(objects)
+# 	Libraries
+
+LIBS	:=  \
+$(shell root-config --libs) \
+-L$(libdir) -lanalyzer -lMinuit  -lMathMore -lMathCore
+
+
+#	Rules
+#	The structure of a rule is
+#	target : source
+#		command
+#	The command makes a target from the source. 
+#	$@ refers to the target
+#	$< refers to the source
+
+all:	$(sharedlib) $(applications) 
+
+bin:	$(applications)
+
+lib:	$(sharedlib)
+
+# Syntax:
+# list of targets : target pattern : source pattern
+
+
+# Make applications depend on shared libraries to force the latter
+# to be built first
+
+$(applications)	: %(percent)s	: $(tmpdir)/%(percent)s.o  $(sharedlib)
 	@echo "---> Linking $@"
-	$(AT)$(LDSHARED) $(LDFLAGS) $(objects) $(LIBS) -o $@
-	@echo ""
+	$(AT)$(LD) $(LDFLAGS) $< $(LIBS) -o $@
 
-$(cppobjs)	: tmp/%(percent)s.o : %(percent)s.cpp
-	@echo "---> Compiling $<" 
-	$(AT)$(CXX)	$(CXXFLAGS) $(CPPFLAGS) $< -o $@
+$(sharedlib)	: $(objects)
+	@echo "---> Linking `basename $@`"
+	$(AT)$(LDSHARED) $(LDFLAGS) -fPIC $(objects) -o $@
 
-$(ccobjs)	: tmp/%(percent)s.o : %(percent)s.cc
-	@echo "---> Compiling $<" 
+$(cppobjs)	: $(tmpdir)/%(percent)s.o	: $(srcdir)/%(percent)s.cpp
+	@echo "---> Compiling `basename $<`" 
+	$(AT)$(CXX) $(CXXFLAGS) $(CPPFLAGS)  $< -o $@ >& $*.FAILED
+	$(AT)rm -rf $*.FAILED
 
-	$(AT)$(CXX)	$(CXXFLAGS) $(CPPFLAGS) $< -o $@
+$(ccobjs)	: $(tmpdir)/%(percent)s.o	: $(srcdir)/%(percent)s.cc
+	@echo "---> Compiling `basename $<`" 
+	$(AT)$(CXX) $(CXXFLAGS) $(CPPFLAGS)  $< -o $@ >& $*.FAILED
+	$(AT)rm -rf $*.FAILED
 
-# Define clean up rule
-clean   	:
-	rm -rf tmp/*.o $(program)
+$(appobjs)	: $(tmpdir)/%(percent)s.o	: %(percent)s.cc
+	@echo "---> Compiling `basename $<`" 
+	$(AT)$(CXX) $(CXXFLAGS) $(CPPFLAGS)  $< -o $@ >& $*.FAILED
+	$(AT)rm -rf $*.FAILED
+# 	Define clean up rules
+clean   :
+	rm -rf $(tmpdir)/*.o
+
+veryclean   :
+	rm -rf $(tmpdir)/*.o $(applications) $(libdir)/*.so
 '''
+
+
 
 README = '''Created: %(time)s
 
@@ -1189,16 +1224,19 @@ def main():
 	
 	cmd = '''
 	mkdir -p %(dir)s/tmp
-	cp %(hpp)s %(dir)s
-	cp %(cpp)s %(dir)s
+	mkdir -p %(dir)s/lib
+	mkdir -p %(dir)s/src
+	mkdir -p %(dir)s/include
+	cp %(hpp)s %(dir)s/include
+	cp %(cpp)s %(dir)s/src
 	''' % {'dir': filename,
 		   'hpp': TREESTREAM_HPP,
 		   'cpp': TREESTREAM_CPP}
 	os.system(cmd)
 
 	cmd = '''
-	cp %(hpp)s %(dir)s
-	cp %(cpp)s %(dir)s
+	cp %(hpp)s %(dir)s/include
+	cp %(cpp)s %(dir)s/src
 	''' % {'dir': filename,
 		   'hpp': PDG_HPP,
 		   'cpp': PDG_CPP}

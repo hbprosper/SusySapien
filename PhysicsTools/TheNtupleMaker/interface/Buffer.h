@@ -29,8 +29,11 @@
 //                   Sun Apr 22 2012 HBP - Use Caller object
 //                   Mon May 07 2012 HBP - Skip classes LHEEventProduct and
 //                                         PileupSummaryInfo for real data.
+//                   Thu Jul 04 2013 HBP - add objectname to argument fof init
+//                                   by default objectname = name of block
+//                                   in config file
 //
-// $Id: Buffer.h,v 1.8 2012/05/08 01:58:04 prosper Exp $
+// $Id: Buffer.h,v 1.9 2012/05/16 16:53:59 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/BufferUtil.h"
@@ -71,6 +74,7 @@ struct Buffer  : public BufferThing
   ///
   Buffer() 
     : out_(0),
+      objectname_(""),
       classname_(*CNAME),
       label_(""),
       label1_(""),
@@ -105,6 +109,7 @@ struct Buffer  : public BufferThing
 
   /** Initialize buffer.
       @param out - output ntuple file.
+      @param objectname - C++ name to be assigned to objects 
       @param label - getByLabel
       @param prefix - prefix for variable names (and internal name of buffer)
       @param var - variable descriptors
@@ -113,6 +118,7 @@ struct Buffer  : public BufferThing
    */
   virtual void
   init(otreestream& out,
+       std::string  objectname,
        std::string  label, 
        std::string  prefix,
        std::vector<VariableDescriptor>& var,
@@ -122,6 +128,7 @@ struct Buffer  : public BufferThing
        int debug=0)
   {
     out_    = &out;
+    objectname_ = objectname;
     label_  = label;
     prefix_ = prefix;
     var_    = var;
@@ -166,6 +173,7 @@ struct Buffer  : public BufferThing
     if ( boost::regex_search(classname_, match, re) ) buffertype_ = RUNINFO;
 
     initBuffer<X>(out,
+                  objectname_,
                   classname_,
                   label_,
                   label1_,
@@ -280,6 +288,7 @@ struct Buffer  : public BufferThing
 
 private:
   otreestream* out_;
+  std::string  objectname_;
   std::string  classname_;
   std::string  label_;
   std::string  label1_;

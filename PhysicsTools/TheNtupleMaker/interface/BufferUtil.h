@@ -12,8 +12,11 @@
 //                   -9999
 //                   Sun Apr 22 2012 HBP introduce Caller object and
 //                                   ClassType
+//                   Thu Jul 04 2013 HBP - add objectname to argument fof init
+//                                   by default objectname = name of block
+//                                   in config file
 //
-// $Id: BufferUtil.h,v 1.8 2012/05/14 02:41:16 prosper Exp $
+// $Id: BufferUtil.h,v 1.9 2012/05/16 16:53:59 prosper Exp $
 // ----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python/type_id.hpp>
@@ -49,10 +52,10 @@ struct VariableDescriptor
 
   ~VariableDescriptor() {}
 
-  std::string rtype;
-  std::string method;
-  std::string varname;
-  std::string name;
+  std::string rtype;    // return type of method
+  std::string method;   // method
+  std::string name;     // stripped class name
+  std::string varname;  // name derived from method
   int maxcount;
 };
 
@@ -69,6 +72,7 @@ struct BufferThing
       
   /// Initialize the buffer. 
   virtual void init(otreestream& out,
+                    std::string objectname, 
                     std::string label, 
                     std::string prefix,
                     std::vector<VariableDescriptor>& var,
@@ -117,7 +121,8 @@ enum ClassType
 
 
 ///
-void initializeBuffer(otreestream& out,  
+void initializeBuffer(otreestream& out,
+                      std::string& objectname,  
                       std::string& classname,
                       std::string& label,
                       std::string& label1,
@@ -165,6 +170,7 @@ struct Variable
 // ----------------------------------------------------------------------------
 template <typename X>
 void initBuffer(otreestream& out,
+                std::string& objectname,
                 std::string& classname,
                 std::string& label,
                 std::string& label1,
@@ -183,6 +189,7 @@ void initBuffer(otreestream& out,
                 int   debug)
 {
   initializeBuffer(out,
+                   objectname,
                    classname,
                    label,
                    label1,
