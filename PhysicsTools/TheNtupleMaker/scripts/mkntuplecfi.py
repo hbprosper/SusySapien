@@ -19,7 +19,7 @@
 #              24-Mar-2012 HBP - change ntuplecfi to ntuple_cfi
 #              05-Jul-2013 HBP - simplify names of buffers
 #-----------------------------------------------------------------------------
-#$Id: mkntuplecfi.py,v 1.21 2012/05/04 20:54:35 prosper Exp $
+#$Id: mkntuplecfi.py,v 1.22 2013/07/05 21:01:54 prosper Exp $
 #-----------------------------------------------------------------------------
 import sys, os, re, platform
 from ROOT import *
@@ -57,8 +57,8 @@ if not os.environ.has_key("CMSSW_BASE"):
 	sys.exit(0)
 
 BASE = os.environ["PWD"]
-REVISION="$Revision: $"
-rev = split(REVISION)[1][:-1]
+REVISION="$Revision: 1.22 $"
+rev = split(REVISION)[1]
 VERSION        = \
 """
 mkntuplecfi.py %s
@@ -98,7 +98,7 @@ from PhysicsTools.TheNtupleMaker.AutoLoader import *
 CLASSLISTFILE = "%sPhysicsTools/TheNtupleMaker/plugins/classlist.txt" % \
 				LOCALBASE
 stripstd = re.compile(r'\bstd::')
-simplify = re.compile(r'^(pat|edm|cmg|reco)|Helper')
+stripnsp = re.compile(r'^(pat|edm|cmg|reco)')
 
 CLASSMAP = {}
 if os.path.exists(CLASSLISTFILE):
@@ -1167,6 +1167,7 @@ class Gui:
 		
 		# Get info to be written out
 
+		blocknamemap = {}
 		cnames = self.cmap.keys()
 		cnames.sort()
 		blocks  = []
@@ -1252,13 +1253,22 @@ class Gui:
 				t = replace(cname, " ", "")
 				t = replace(t, "<->", "")
 				buffer = stripname.sub("", t)
+			buffer = replace(buffer, 'Helper', '')
 
-			blockName = simplify.sub("", buffer)
+			# strip away namespace
+
+			blockName = stripnsp.sub("", buffer)
+			if blocknamemap.has_key(blockName):
+				blockName = buffer
+			else:
+				blocknamemap[blockName] = buffer
+
+
+			##D
+			#print "BLOCK( %s ) BUFFER( %s )" % (blockName, buffer)
 			block = blockName
 			blocks.append(block)
 
-			##D
-			#print "BLOCK(%s) \t LABEL(%s), %d" % (block,labels[0],len(labels))
 			databuf[block] = {}
 			databuf[block]['buffer']  = buffer
 			databuf[block]['label']   = labels[0]

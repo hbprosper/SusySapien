@@ -12,7 +12,7 @@
 #          31-Mar-2012 HBP   use simplified classes.txt format. change name
 #                            to classlist.txt
 #          22-Apr-2012 HBP   use SINGLETON and COLLECTION keywords
-#$Id: mkplugins.py,v 1.21 2012/05/04 20:54:35 prosper Exp $
+#$Id: mkplugins.py,v 1.22 2013/07/05 21:01:54 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import atof, atoi, replace, lower,\
@@ -133,7 +133,7 @@ if not os.path.exists("plugins/classlist.txt"):
 cnames = map(exclass,
 			 map(strip,
 				 open("plugins/classlist.txt").readlines()))
-names  = {'time': ctime(time())}
+names  = {'time': ctime()}
 
 # Split across several plugin files
 npmax = 1 + len(cnames)/NPLUGINS

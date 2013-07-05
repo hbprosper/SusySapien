@@ -5,14 +5,12 @@
 # Created: 19-May-2006 Harrison B. Prosper
 #          18-Sep-2010 HBP use updated version of convert2html
 #          31-Mar-2012 HBP parseHeader now extract typedefs 
-#$Revision: 1.3 $
+#$Revision: 1.4 $
 #---------------------------------------------------------------------------
-from ROOT import *
-from string import atof, atoi, replace, lower,\
-	 upper, joinfields, split, strip, find
+import os, sys, re, posixpath
+from string import *
 from elementtree.ElementTree import ElementTree
 from xml.parsers.expat import ExpatError
-import os, sys, re, posixpath
 #---------------------------------------------------------------------------
 WEIRD        = '<|<@&@>|>'
 AMPERSAND    = '&amp;'
@@ -1488,6 +1486,7 @@ def parseHeader(file):
 	except:
 		return ('', {})
 	if record == '': record = oldrecord
+
 	return (record, items)
 #---------------------------------------------------------------------------
 #------------------------------------ FUNCTIONS USED BY parseHeader --------
@@ -1555,7 +1554,7 @@ def parseClassBoundaries(record, items):
 	classbnds = findClasses(record)
 	if len(classbnds) == 0:
 		return ''
-
+	
 	classbounds = []
 	for i,(str, group, start, left, right, end) in enumerate(classbnds):
 		endpreamble = left +1

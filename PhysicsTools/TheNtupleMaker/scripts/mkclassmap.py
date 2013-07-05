@@ -5,13 +5,13 @@
 # Created:     26-Aug-2010 Harrison B. Prosper
 #              31-Mar-2011 HBP - include typedefs
 #              23-Apr-2012 HBP - use import to load class map
-#$Id: mkclassmap.py,v 1.22 2012/05/05 22:03:57 prosper Exp $
+#$Id: mkclassmap.py,v 1.23 2013/07/05 21:01:54 prosper Exp $
 #---------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
 from string import atof, atoi, replace, lower,\
-	 upper, joinfields, split, strip, find
-from time import sleep, ctime
+	 upper, joinfields, split, strip, find, rfind
+from time import sleep, ctime, time
 from glob import glob
 from getopt     import getopt, GetoptError
 from PhysicsTools.TheNtupleMaker.Lib import \
@@ -173,8 +173,11 @@ def main():
 				hlist.sort()
 				filelist += hlist
 
+		
 	# Filter headers
 	filelist = filter(lambda x: skipheader.search(x) == None, filelist)
+	print
+	print "scan %d headers for potentially useful classes" % len(filelist)
 	
 	#-------------------------------------------------
 	# Loop over header files to be scanned
@@ -187,11 +190,15 @@ def main():
 			continue
 
 		file = os.path.abspath(file)
+		if index % 100 == 0: print index
 
 		# Scan header and parse it for classes
 
 		record, items = parseHeader(file)
-		if record == '': continue
+	
+		if record == '':
+			print "** failed on %s" % file
+			continue
 		records = splitHeader(record)
 		if len(records) == 0: continue
 
@@ -255,7 +262,8 @@ def main():
 				addToMap(fullkey, header, ClassToHeaderMap)
 			else:
 				addToMap(fullkey, header, cmap)
-				
+
+	
 	# Write out class to header map
 
 	if Update:
@@ -266,6 +274,7 @@ def main():
 		hmap = cmap
 
 
+		
 ## 	# define lib areas
 
 ## 	LOCALLIBAREA = "%s/lib/%s/" % (LOCALBASE[:-5], SCRAM_ARCH)

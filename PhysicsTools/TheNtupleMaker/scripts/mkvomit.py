@@ -11,12 +11,12 @@
 #                          python/classmap.py
 #              24-Apr-2012 HBP, get list of potential classes from
 #                          plugins/classlist.txt instead
-#$Id: mkvomit.py,v 1.3 2012/05/04 20:54:35 prosper Exp $
+#$Id: mkvomit.py,v 1.4 2013/07/05 21:01:54 prosper Exp $
 #---------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
 from string import atof, atoi, replace, lower,\
-	 upper, joinfields, split, strip, find
+	 upper, joinfields, split, strip, find, rfind
 from time import sleep, ctime
 from elementtree.ElementTree import Element
 from getopt import getopt
@@ -126,7 +126,7 @@ def printHeader(db, out):
 			
 		out.write("\n")
 	out.write('Version:       %s\n' % db['version'])
-	out.write('Created:       %s\tmkvomit.py\n' % ctime(time()))
+	out.write('Created:       %s\tmkvomit.py\n' % ctime())
 #-----------------------------------------------------------------------------
 def writeHTML(db, txtfilename):
 
