@@ -7,11 +7,14 @@
 #          12-Mar-2011 HBP - give user option to add variables
 #          07-May-2012 HBP - fix object selection bug
 #          13-May-2012 HBP - add more comments, include object counters
-#$Id: mkmacro.py,v 1.7 2012/05/16 16:54:00 prosper Exp $
+#          05-Jul-2013 HBP - defer much of the work to mkanalyzer.py
+#
+#$Id: mkmacro.py,v 1.8 2012/05/20 02:00:46 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
-from string import *
-from time import *
+from string import atof, atoi, replace, lower,\
+	 upper, joinfields, split, strip, find
+from time import sleep, ctime
 from glob import glob
 #------------------------------------------------------------------------------
 # Functions
@@ -65,8 +68,7 @@ HEADER=\
 //
 //          to ntuple_cfi.py.
 //
-// WARNING: It is better not to edit this header. You may inadvertently lose
-//          your changes!
+// WARNING: It is better not to edit this header.
 //
 //-----------------------------------------------------------------------------
 #include <map>
@@ -76,12 +78,11 @@ HEADER=\
 #include <iostream>
 #include <algorithm>
 #include <cassert>
+#include <stdio.h>
 #include <stdlib.h>
 
-#include "TROOT.h"
 #include "TTree.h"
 //-----------------------------------------------------------------------------
-
 // TNM: for internal use only
 struct countvalue
 {
@@ -105,32 +106,16 @@ class %(name)sInternal;
 class %(name)s
 {
 public:
+  %(name)s() {}
   %(name)s(TTree* tree_, VarMap* varmap_, IndexMap* indexmap_)
-    : tree(tree_), varmap(varmap_), indexmap(indexmap_)
-%(init)s
-	{}
-
+    : tree(tree_), varmap(varmap_), indexmap(indexmap_) {}
   ~%(name)s() {}
 
   void beginJob();
   void initialize() { initialize_(); }
-  void endJob();
-  
   bool analyze();
+  void endJob();
 
-  /**--------------------------------------------------------------------------
-  call these functions to select the specified objects
-
-  example:
-  
-    select("jet");    to be called from beginJob()
- 
-  and
-  
-    select("jet", i); to be called from analyze() for every object
-  
-    to be kept
-  ---------------------------------------------------------------------------*/
   void select(std::string name)
   {
     (*indexmap)[name] = std::vector<int>();
@@ -147,40 +132,46 @@ private:
   VarMap*   varmap;
   IndexMap* indexmap;
   %(name)sInternal* local;
-
-  // ------------------------------------------------------------------------
-  // --- Initialize variables
-  // ------------------------------------------------------------------------
+  void initialize_();
+};
+#endif
+'''
+HEADER_INIT =\
+'''#ifndef %(NAME)sINITIALIZER_H
+#define %(NAME)sINITIALIZER_H
+//-----------------------------------------------------------------------------
+// File:        %(name)sInitializer.h
+// Description: Initialize variables for user macro
+// Created:     %(time)s by mkmacro.py
+// Author:      %(author)s
+//-----------------------------------------------------------------------------
+#include "%(name)s.h"
 %(decl)s
 
-  void initialize_()
-  {
-    // clear object selection map every event
+
+
+// ------------------------------------------------------------------------
+// --- Initialize variables
+// ------------------------------------------------------------------------
+void %(name)s::initialize_()
+{
+  using namespace std;
+  using namespace evt;
+  
+  // clear object selection map every event
 	
-    for(IndexMap::iterator item=indexmap->begin(); 
-        item != indexmap->end();
-        ++item)
-      item->second.clear();	
+  for(IndexMap::iterator
+    item=indexmap->begin(); 
+    item != indexmap->end();
+	++item)
+	item->second.clear();	
 	
 %(impl)s
-  }
-  
-public:
-  ClassDef(%(name)s,1)
-};
-ClassImp(%(name)s)
+}
 
 #endif
 '''
 
-TMP2='''
-//-----------------------------------------------------------------------------
-// --- These structs can be filled by calling fillObjects()
-// --- after the call to initializeEvents(...)
-//-----------------------------------------------------------------------------
-%(structdecl)s
-%(structimpl)s
-'''
 MACRO=\
 		  '''//-----------------------------------------------------------------------------
 // File:        %(name)s.cc
@@ -188,8 +179,9 @@ MACRO=\
 // Created:     %(time)s by mkmacro.py
 // Author:      %(author)s
 //-----------------------------------------------------------------------------
-#include "%(name)s.h"
+#include "%(name)sInitializer.h"
 using namespace std;
+using namespace evt;
 /**----------------------------------------------------------------------------
   All user-defined variables and functions should be declared in this struct.
   This coding technique avoids the need to modify the header %(name)s.h.
@@ -244,17 +236,20 @@ bool %(name)s::analyze()
 {
   local->counter++;
 
+  // Uncomment if you want to fill the structs
+  // fillObjects();
+  
   // compute variables
   // apply cuts etc.
 
   //local->HT = 0;
   //for(int i=0; i < njet; ++i)
   //{
-  //  if ( !(jet_pt[i] > 100) ) continue;
-  //  if ( !(jet_pt[i] < 400) ) continue;
+  //  if ( !(Jet_pt[i] > 100) ) continue;
+  //  if ( !(Jet_pt[i] < 400) ) continue;
   //
-  //  select("jet", i);
-  //  local->HT += jet_pt[i];
+  //  select("Jet", i);
+  //  local->HT += Jet_pt[i];
   //} 
   
   //if ( miserable-event )
@@ -292,25 +287,30 @@ COMPILE=\
 # Created: %(time)s
 #------------------------------------------------------------------------------
 name	:= %(name)s
-AT      := @
+AT      := @ # leave blank for verbose printout
 #------------------------------------------------------------------------------
 CINT	:= rootcint
 CXX     := g++
 LDSHARED:= g++
 #------------------------------------------------------------------------------
 DEBUG	:= -ggdb
-CPPFLAGS:= -I. $(shell root-config --cflags)
+CPPFLAGS:= -I. $(filter-out -std=c++0x,$(shell root-config --cflags))
 CXXFLAGS:= $(DEBUG) -pipe -O2 -fPIC -Wall
-LDFLAGS := -shared 
+
+OS	:= $(shell uname -s)
+ifeq ($(OS),Darwin)
+	LDFLAGS	:= -dynamiclib
+else
+	LDFLAGS := -shared
+endif
 #------------------------------------------------------------------------------
 LIBS	:= $(shell root-config --glibs)
 #------------------------------------------------------------------------------
+header  := $(name).h
 linkdef	:= $(name)Linkdef.h
-header  := %(name)s.h
-cinthdr := dict.h
-cintsrc	:= dict.cc
-cintobj	:= dict.o
-
+cinthdr := $(name)Dictionary.h
+cintsrc	:= $(name)Dictionary.cc
+cintobj	:= $(name)Dictionary.o
 cppsrc 	:= $(name).cc
 cppobj  := $(name).o
 
@@ -322,15 +322,14 @@ lib:	$(library)
 $(library)	: $(objects)
 	@echo "---> Linking $@"
 	$(AT)$(LDSHARED) $(LDFLAGS) $+ $(LIBS) -o $@
-	@rm -rf $(cinthdr) $(cintsrc) $(objects) 
 
 $(cppobj)	: $(cppsrc)
 	@echo "---> Compiling `basename $<`" 
-	$(AT)$(CXX)	$(CXXFLAGS) $(CPPFLAGS) -c $<
+	$(AT)$(CXX)	$(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 
 $(cintobj)	: $(cintsrc)
 	@echo "---> Compiling `basename $<`"
-	$(AT)$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $<
+	$(AT)$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 
 $(cintsrc) : $(header) $(linkdef)
 	@echo "---> Generating dictionary `basename $@`"
@@ -355,7 +354,10 @@ $(linkdef)	:
 	@echo -e "#endif" >> $(linkdef)
 
 clean   :
-	@rm -rf dict.* $(objects)  $(library) $(linkdef)
+	rm -rf $(cintsrc) $(cinthdr) $(objects) $(linkdef)
+
+veryclean   :
+	rm -rf $(cintsrc) $(cinthdr) $(objects) $(linkdef) $(library)
 '''
 #------------------------------------------------------------------------------
 def main():
@@ -367,7 +369,7 @@ def main():
 	argc = len(argv)
 	if argc < 1: usage()
 
-	filename = nameonly(argv[0])
+	name = nameonly(argv[0])
 	if argc > 1:
 		varfilename = argv[1]
 	else:
@@ -376,270 +378,59 @@ def main():
 		print "\t** error ** can't find variable file: %s" % varfilename
 		sys.exit(0)
 
-	# Read variable names
 
-	records = map(strip, open(varfilename, "r").readlines())
-
-	# Create maps from object name to object type etc.
-	# But only group together variables that are meant to be
-	# together!
-
-
-	# skip first line
-	records = records[1:]
-	stnamemap = {}
-	reclist = []
-	for index in xrange(len(records)):
-		record = records[index]
-		if record == "": continue
-
-		# split record into its fields
-		# varname = variable name as determined by mkvariables.py
-		
-		rtype, branchname, varname, count = split(record, '/')
-		t = split(varname,'_')
-		if len(t) > 1: # Need at least two fields
-			key = t[0]
-			if not stnamemap.has_key(key): stnamemap[key] = 0
-			stnamemap[key] += 1
-
-		# Fix annoying types
-		if rtype == "bool":
-			rtype = "int"
-		elif rtype == "long64":
-			rtype = "long"
-		elif rtype == "int32":
-			rtype = "int"
-		elif rtype == "uchar":
-			rtype = "int"
-		elif rtype == "uint":
-			rtype = "int"
-			
-		reclist.append((rtype, branchname, varname, count))
-		
-	# Loop over branch names
+	# use mkanalyzer in macro mode to do the heavy lifting
+	cmd = 'mkanalyzer.py %s %s macromode' % (name, varfilename)
+	os.system(cmd)
 	
-	# If a variable name matches a struct name, this will generate a
-	# multiply defined error. One of the names must be altered. Let's
-	# take this to be the variable name.
-
-	vars = {}
-	usednames = {}
-	vectormap = {}
+	if not os.path.exists('%s_decl.h' % name):
+		print '** unable to open file %s_decl.h' % name
+		sys.exit(0)
+	decl = open('%s_decl.h' % name).read()
 	
-	for index, (rtype, branchname, varname, count) in enumerate(reclist):
+	if not os.path.exists('%s_decl.h' % name):
+		print '** unable to open file %s_decl.h' % name
+		sys.exit(0)
+	impl = open('%s_impl.h' % name).read()
 
-		# Check that varname is not the same as that of a potential
-		# struct
-		if stnamemap.has_key(varname):
-			print "\t**warning: multiply defined name, %s; changing " % varname
-			print "\t           varname to %s1" % varname
-			varname = "%s1" % varname
-			
-		# Get object and field names
-		objname = ''
-		fldname = ''
-		t = split(varname,'_')
-		if len(t) > 0:
-
-			# we have at least two fields in varname
-			
-			key = t[0]
-			if stnamemap.has_key(key):
-
-				# This branch potentially belongs to a struct.
-
-				objname = key
-				# Make sure the count for this branch matches that
-				# of existing struct
-				if not usednames.has_key(objname):
-					usednames[objname] = count;
-									
-				if usednames[objname] == count:
-					fldname = replace(varname, '%s_' % objname, '')
-				else:
-					objname = ''
-					fldname = ''
-
-		# Check for leaf counter flag (a "*")
-
-		t = split(count)
-		count = atoi(t[0]) # Change type to an integer
-		iscounter = t[-1] == "*"
-
-		# Take care of duplicate names
-		n = 1
-		if vars.has_key(varname):
-			# duplicate name; add a number to object name
-			n, a, b, c, d = vars[varname]
-			n += 1
-			vars[varname][0] = n;
-
-			if fldname != '':
-				objname = "%s%d"  % (objname, n)
-				varname = "%s_%s" % (objname, fldname)
-			else:
-				varname = "%s%d" % (varname, n)
-
-		# update map for all variables
-		vars[varname] = [1, rtype, branchname, count, iscounter]
-
-		# vector types must have the same object name and a max count > 1
-		if count > 1:
-			if fldname != "":
-				
-				# Make sure fldname is valid			
-				if fldname[0] in ['0','1','2','3','4','5','6','7','8','9']:
-					fldname = 'f%s' % fldname
-		
-				if not vectormap.has_key(objname): vectormap[objname] = []	
-				vectormap[objname].append((rtype, fldname, varname, count))
-				#print "%s.%s (%s)" % (objname, fldname, count)
+	os.system('rm %s_*l.h' % name)
 	
-	# Declare all variables
-	
-	keys = vars.keys()
-	keys.sort()
-	decl = []
-	impl = []
-	init = []
-	for index, varname in enumerate(keys):
-		n, rtype, branchname, count, iscounter = vars[varname]
-
-		# If this is a counter variable ignore it
-		#if iscounter: continue
-
-		if rtype == "bool": rtype = "int"
-
-		if iscounter:
-			decl.append("  %s\t%s;" % (rtype, varname))
-			impl.append('    countvalue& v%d = (*varmap)["%s"];' %(index,
-																   branchname))
-			impl.append('    if ( v%d.count )' % index)
-			impl.append('      %s = *v%d.count;' % (varname, index))
-			impl.append('    else')
-			impl.append('      %s = 0;' % varname)
-			impl.append('')			
-
-		elif count == 1:
-			decl.append("  %s\t%s;" % (rtype, varname))
-			impl.append('    countvalue& v%d = (*varmap)["%s"];' % (index,
-															   branchname))
-			impl.append('    if ( v%d.value )' % index)
-			impl.append('      %s = *v%d.value;' % (varname, index))
-			impl.append('    else')
-			impl.append('      %s = 0;' % varname)
-			impl.append('')
-
-		else:
-			# this is a vector
-			init.append(" %s\t(std::vector<%s>(%d,0))" %\
-						(varname, rtype, count))
-			decl.append("  std::vector<%s>\t%s;" %(rtype, varname))
-			impl.append('    countvalue& v%d = (*varmap)["%s"];' % (index,
-															   branchname))
-			impl.append('    if ( v%d.value )' % index)
-			impl.append('      {')
-			impl.append('        %s.resize(*v%d.count);' % (varname, index))
-			impl.append('        copy(v%d.value, v%d.value+*v%d.count, '\
-						'%s.begin());'% (index, index, index, varname))
-			impl.append('      }')
-			impl.append('    else')
-			impl.append('      %s.clear();' % varname)
-			impl.append('')
-
-	# Create structs for vector variables
-	
-	keys = vectormap.keys()
-	keys.sort()	
-	structdecl = []
-	structimpl = []
-
-	structimpl.append('void fillObjects()')
-	structimpl.append('{')
-	for index, objname in enumerate(keys):
-		values = vectormap[objname]
-		varname= values[0][-2];
-		
-		structimpl.append('')
-		structimpl.append('  %s.resize(%s.size());' % (objname, varname))
-		structimpl.append('  for(unsigned int i=0; i < %s.size(); ++i)' % \
-						  varname)
-		structimpl.append('    {')
-
-		structdecl.append('struct %s_s' % objname)
-		structdecl.append('{')
-		for rtype, fldname, varname, count in values:
-			# treat bools as ints
-			if rtype == "bool":
-				cast = '(bool)'
-			else:
-				cast = ''
-			
-			structdecl.append('  %s\t%s;' % (rtype, fldname))
-
-			structimpl.append('      %s[i].%s\t= %s%s[i];' % (objname,
-															  fldname,
-															  cast,
-															  varname))
-		structdecl.append('};')
-		structdecl.append('std::vector<%s_s> %s(%d);' % (objname,
-														 objname,
-														 count))
-		structdecl.append('')
-		structdecl.append('std::ostream& '\
-						  'operator<<(std::ostream& os, const %s_s& o)' % \
-						  objname)
-		structdecl.append('{')
-		structdecl.append('  char r[1024];')
-		structdecl.append('  os << "%s" << std::endl;' % objname)
-		
-		for rtype, fldname, varname, count in values:
-			structdecl.append('  sprintf(r, "  %s: %s\\n", "%s",'\
-							  ' (double)o.%s); '\
-							  'os << r;' % ("%-32s", "%f", fldname, fldname))
-		structdecl.append('  return os;')
-		structdecl.append('}')
-		structdecl.append('//-----------------------------------------'
-						  '------------------------------------')
-		
-		structimpl.append('    }')	
-	structimpl.append('}')  # end of fillObjects()
-			
 	# Create C++ codes
 
-	names = {'name'  : filename,
-			 'NAME'  : upper(filename),
-			 'time'  : ctime(time()),
-			 'class' : join("", records, ""),
-			 'decl'  : join("", decl, "\n"),
-			 'impl'  : rstrip(join("", impl, "\n")),
-			 'init'  : join("    ,", init, "\n"),
+	names = {'name'  : name,
+			 'NAME'  : upper(name),
+			 'time'  : ctime(),
+			 'decl'  : decl,
+			 'impl'  : impl,
 			 'author': AUTHOR,
-			 's': '%s',
-			 'structdecl': join("", structdecl, "\n"),
-			 'structimpl': join("", structimpl, "\n")			 
+			 's': '%s'
 			 }
 
-	outfilename = "%(name)s.h" % names
+	os.system('mkdir -p %s' % name)
+	outfilename = "%(name)s/%(name)s.h" % names
 	record = HEADER % names
 	open(outfilename, "w").write(record)
 
 
-	outfilename = "%(name)s.cc" % names
+	outfilename = "%(name)s/%(name)sInitializer.h" % names
+	record = HEADER_INIT % names
+	open(outfilename, "w").write(record)
+
+	outfilename = "%(name)s/%(name)s.cc" % names
 	if os.path.exists(outfilename):
-		print "\t** %s already exists...new version NOT created!" % \
+		print "\t** %s already exists...please delete or rename first!" % \
 		outfilename
 	else:
 		record = MACRO % names	
 		open(outfilename, "w").write(record)
 
 	record = COMPILE % names
-	outfilename = "%(name)s.mk" % names
+	outfilename = "%(name)s/Makefile" % names
 	open(outfilename, "w").write(record)
 
-	print "\n\tto compile and link the macro %(name)s\n\tdo" % names
-	print "\t\tmake -f %(name)s.mk\n" % names
+	print "\tto compile and link the macro %(name)s\n\tdo" % names
+	print "\t\tcd %(name)s" % names
+	print "\t\tmake\n" % names
 #------------------------------------------------------------------------------
 main()
 

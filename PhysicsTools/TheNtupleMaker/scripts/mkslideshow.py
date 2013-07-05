@@ -3,13 +3,14 @@
 # File: mkslideshow.py
 # Description: Create a web-based slideshow from a list of gif files
 # Created: 29-Oct-2006 Harrison B. Prosper
-#$Id:$
+#$Id: mkslideshow.py,v 1.16 2011/05/07 18:39:14 prosper Exp $
 #------------------------------------------------------------------------------
 import os
 import sys
 from getopt  import getopt, GetoptError
-from string  import *
-from time    import *
+from string import atof, atoi, replace, lower,\
+	 upper, joinfields, split, strip, find
+from time import sleep, ctime
 from glob    import glob
 #------------------------------------------------------------------------------
 WIDTH = 200

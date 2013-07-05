@@ -3,13 +3,14 @@
 # Filename: mkmethodlist.py
 # Description: For given class, make an exhaustive listing of methods
 # Created:  10-Doc-2009 HBP
-#$Id:$
+#$Id: mkmethodlist.py,v 1.15 2011/05/07 18:39:14 prosper Exp $
 #-----------------------------------------------------------------------------
 import os, sys, re
 from sys    import exit
 from glob   import glob
-from time   import *
-from string import *
+from string import atof, atoi, replace, lower,\
+	 upper, joinfields, split, strip, find
+from time import sleep, ctime
 from PhysicsTools.TheNtupleMaker.Lib import \
 	 nameonly,\
 	 readMethods,\

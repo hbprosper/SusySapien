@@ -2,10 +2,11 @@
 # File: ReflexLib.py
 # Description: A collection of simple Reflex utilities
 # Created: 25-Apr-2012 Harrison B. Prosper
-#$Revision: 1.4 $
+#$Revision: 1.5 $
 #---------------------------------------------------------------------------
 from ROOT import *
-from string import *
+from string import atof, atoi, replace, lower, \
+	 upper, joinfields, split, strip, find
 import os, sys, re, posixpath
 from PhysicsTools.TheNtupleMaker.Lib import fixName, getwords
 try:

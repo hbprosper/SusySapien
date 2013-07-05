@@ -15,11 +15,12 @@
 #                            counter
 #          04-Jul-2013 HBP - make a better analyzer work area
 #
-#$Id: mkanalyzer.py,v 1.20 2012/06/05 17:03:11 prosper Exp $
+#$Id: mkanalyzer.py,v 1.21 2013/07/05 07:15:14 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
-from string import *
-from time import *
+from string import atof, atoi, replace, lower,\
+	 upper, joinfields, split, strip, find
+from time import sleep, ctime
 from glob import glob
 #------------------------------------------------------------------------------
 # Functions
@@ -78,6 +79,26 @@ if not os.path.exists(TREESTREAM_CPP):
 		  TREESTREAM_CPP
 	sys.exit(0)
 #------------------------------------------------------------------------------
+MACRO_DECL_H =\
+'''
+//-----------------------------------------------------------------------------
+// -- Declare variables
+//-----------------------------------------------------------------------------
+namespace evt {
+%(vardecl)s
+//-----------------------------------------------------------------------------
+// --- Structs can be filled by calling fillObjects()
+//-----------------------------------------------------------------------------
+%(structdecl)s
+%(structimpl)s
+}; // end namespace evt
+'''
+
+MACRO_IMPL_H =\
+'''
+%(impl)s
+'''
+
 TEMPLATE_H =\
 '''#ifndef %(NAME)s_H
 #define %(NAME)s_H
@@ -98,13 +119,8 @@ TEMPLATE_H =\
 #include <iomanip>
 #include <fstream>
 
-#ifdef PROJECT_NAME
-#include "PhysicsTools/TheNtupleMaker/interface/treestream.h"
-#include "PhysicsTools/TheNtupleMaker/interface/pdg.h"
-#else
 #include "treestream.h"
 #include "pdg.h"
-#endif
 
 // -- Root
 
@@ -117,8 +133,9 @@ TEMPLATE_H =\
 #include "TH1F.h"
 #include "TH2F.h"
 //-----------------------------------------------------------------------------
-// -- Declare variables to be read
+// -- Declare variables
 //-----------------------------------------------------------------------------
+namespace evt {
 %(vardecl)s
 //-----------------------------------------------------------------------------
 // --- Structs can be filled by calling fillObjects()
@@ -138,6 +155,9 @@ void selectVariables(itreestream& stream)
 {
 %(selection)s
 }
+}; // end namespace evt
+
+
 //-----------------------------------------------------------------------------
 // -- Utilities
 //-----------------------------------------------------------------------------
@@ -222,7 +242,7 @@ struct outputFile
 	  tree_->AutoSave("SaveSelf");
   }
 
-  void count(std::string cond, int w=1)
+  void count(std::string cond, double w=1)
   {
     hist_->Fill(cond.c_str(), w);
   }
@@ -307,18 +327,12 @@ TEMPLATE_CC =\
 '''//-----------------------------------------------------------------------------
 // File:        %(name)s.cc
 // Description: Analyzer for ntuples created by TheNtupleMaker
-// Created:     %(time)s by mkntanalyzer.py
+// Created:     %(time)s by mkanalyzer.py
 // Author:      %(author)s
 //-----------------------------------------------------------------------------
 #include "%(name)s.h"
-
-#ifdef PROJECT_NAME
-#include "PhysicsTools/TheNtupleMaker/interface/pdg.h"
-#else
-#include "pdg.h"
-#endif
-
 using namespace std;
+using namespace evt;
 //-----------------------------------------------------------------------------
 int main(int argc, char** argv)
 {
@@ -784,7 +798,7 @@ ccsrcs	:= $(wildcard $(srcdir)/*.cc)
 ccobjs	:= $(subst $(srcdir)/,$(tmpdir)/,$(ccsrcs:.cc=.o))
 objects	:= $(cppobjs) $(ccobjs)
 
-sharedlib := $(libdir)/libanalyzer.so
+sharedlib := $(libdir)/lib%(name)s.so
 
 # Display list of applications to be built
 #say	:= $(shell echo -e "Apps: $(applications)" >& 2)
@@ -954,6 +968,11 @@ def main():
 		print "mkanalyzer.py - can't find variable file: %s" % varfilename
 		sys.exit(0)
 
+
+	# Check for macro mode
+	macroMode = argc > 2
+	
+
 	# Read variable names
 
 	records = map(strip, open(varfilename, "r").readlines())
@@ -1101,13 +1120,49 @@ def main():
 	pyselect  = []
 	declare = []
 	select  = []
-
-	for varname in keys:
+	impl = []
+	for index, varname in enumerate(keys):
 		n, rtype, branchname, count, iscounter = vars[varname]
 
 		# If this is a counter variable with a name identical to that of a
 		# vector variable, ignore it
 		if iscounter and vectormap.has_key(varname): continue
+
+		if macroMode:
+
+			if iscounter:
+				impl.append('  countvalue& v%d = (*varmap)["%s"];'%\
+							(index, branchname))
+				impl.append('  if ( v%d.count )' % index)
+				impl.append('    %s = *v%d.count;' % (varname, index))
+				impl.append('  else')
+				impl.append('    %s = 0;' % varname)
+				impl.append('')			
+
+			elif count == 1:
+				impl.append('  countvalue& v%d = (*varmap)["%s"];' %\
+							(index, branchname))
+							 
+				impl.append('  if ( v%d.value )' % index)
+				impl.append('    %s = *v%d.value;' % (varname, index))
+				impl.append('  else')
+				impl.append('    %s = 0;' % varname)
+				impl.append('')
+			else:
+				# this is a vector
+				impl.append('  countvalue& v%d = (*varmap)["%s"];' % \
+							(index, branchname))
+							
+				impl.append('  if ( v%d.value )' % index)
+				impl.append('    {')
+				impl.append('      %s.resize(*v%d.count);' % (varname, index))
+				impl.append('      copy(v%d.value, v%d.value+*v%d.count, '\
+							'%s.begin());'% (index, index, index, varname))
+				impl.append('    }')
+				impl.append('  else')
+				impl.append('    %s.clear();' % varname)
+				impl.append('')
+
 
 		if count == 1:
 			declare.append("%s\t%s;" % (rtype, varname))
@@ -1123,6 +1178,7 @@ def main():
 							 (varname, rtype, count))
 		select.append('stream.select("%s", %s);' % (branchname, varname))
 		pyselect.append('stream.select("%s", %s)'  % (branchname, varname))
+
 
 
 	# Create structs for vector variables
@@ -1220,8 +1276,32 @@ def main():
 	
 	# Write out files
 
+	if macroMode:
+		
+		names = {'NAME': upper(filename),
+				 'name': filename,
+				 'time': ctime(),
+				 'author': AUTHOR,
+				 'vardecl': join("", declare, "\n"),
+				 'selection': join("  ", select, "\n"),
+				 'structdecl': join("", structdecl, "\n"),
+				 'structimpl': join("", structimpl, "\n"),
+				 'selectimpl': join("", selectimpl, "\n"),
+				 'impl': join("", impl, "\n"),
+				 'treename': treename,
+				 'percent': '%' }
+
+		record = MACRO_DECL_H % names
+		outfilename = "%s_decl.h" % filename
+		open(outfilename, "w").write(record)
+
+		record = MACRO_IMPL_H % names
+		outfilename = "%s_impl.h" % filename
+		open(outfilename, "w").write(record)
+		sys.exit(0)
+
 	# Put everything into a directory
-	
+
 	cmd = '''
 	mkdir -p %(dir)s/tmp
 	mkdir -p %(dir)s/lib
@@ -1240,14 +1320,14 @@ def main():
 	''' % {'dir': filename,
 		   'hpp': PDG_HPP,
 		   'cpp': PDG_CPP}
-
+	
 	os.system(cmd)
 
 	# Create Makefile
 
 	names = {'name': filename,
 			 'filename': filename,
-			 'time': ctime(time()),
+			 'time': ctime(),
 			 'author': AUTHOR,
 			 'percent': '%'
 			 }
@@ -1261,7 +1341,7 @@ def main():
 
 	names = {'NAME': upper(filename),
 			 'name': filename,
-			 'time': ctime(time()),
+			 'time': ctime(),
 			 'author': AUTHOR,
 			 'vardecl': join("", declare, "\n"),
 			 'selection': join("  ", select, "\n"),
@@ -1299,7 +1379,7 @@ def main():
 	names = {'name': filename,
 			 'treename': treename,
 			 'percent': '%',
-			 'time': ctime(time()),
+			 'time': ctime(),
 			 'selection': s,
 			 'author': AUTHOR,
 			 'htab': "%s%s\\t%s\\t%s"

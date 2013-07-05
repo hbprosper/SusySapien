@@ -17,17 +17,18 @@
 #              30-May-2011 HBP - use absolute path to methods directory
 #              28-Jul-2011 HBP - handle simple types
 #              24-Mar-2012 HBP - change ntuplecfi to ntuple_cfi
+#              05-Jul-2013 HBP - simplify names of buffers
 #-----------------------------------------------------------------------------
-#$Id: mkntuplecfi.py,v 1.20 2012/04/04 01:41:03 prosper Exp $
+#$Id: mkntuplecfi.py,v 1.21 2012/05/04 20:54:35 prosper Exp $
 #-----------------------------------------------------------------------------
 import sys, os, re, platform
-from string import *
-from time import *
+from ROOT import *
+from time import ctime, sleep
+from string import lower, replace, strip, split, joinfields, find
 from glob import glob
 from array import array
 from PhysicsTools.TheNtupleMaker.Lib import cmsswProject, fixName
 from PhysicsTools.TheNtupleMaker.ReflexLib import getFullname
-from ROOT import *
 #------------------------------------------------------------------------------
 PACKAGE, SUBPACKAGE, LOCALBASE, BASE, VERSION = cmsswProject()
 PKGDIR = '%s%s/%s' % (LOCALBASE, PACKAGE, SUBPACKAGE)
@@ -56,13 +57,13 @@ if not os.environ.has_key("CMSSW_BASE"):
 	sys.exit(0)
 
 BASE = os.environ["PWD"]
-REVISION=""
-rev = "" #split(REVISION)[1]
+REVISION="$Revision: $"
+rev = split(REVISION)[1][:-1]
 VERSION        = \
 """
-mkntuplecfi.py %s March 2012
-Python %s
-Root   %s
+mkntuplecfi.py %s
+Python         %s
+Root           %s
 """ % (rev,
 	   platform.python_version(),
 	   gROOT.GetVersion())
@@ -97,6 +98,8 @@ from PhysicsTools.TheNtupleMaker.AutoLoader import *
 CLASSLISTFILE = "%sPhysicsTools/TheNtupleMaker/plugins/classlist.txt" % \
 				LOCALBASE
 stripstd = re.compile(r'\bstd::')
+simplify = re.compile(r'^(pat|edm|cmg|reco)|Helper')
+
 CLASSMAP = {}
 if os.path.exists(CLASSLISTFILE):
 	records = map(split, open(CLASSLISTFILE).readlines())
@@ -511,7 +514,7 @@ class Gui:
 		self.toolBar.AddFrame(self.progressBar, PB_LAYOUT)
 
 		# Set up a timer for progress bar
-		self.progTimer = TTimer(1000)
+		self.progTimer = TTimer(500)
 		self.connection.append(Connection(self.progTimer,
 										  "Timeout()",
 										  self, "progTimeout"))
@@ -1158,6 +1161,9 @@ class Gui:
 # Save selected class/label/methods to config file fragment
 #---------------------------------------------------------------------------
 	def save(self):
+
+		##D
+		#print "SAVED CALLED"
 		
 		# Get info to be written out
 
@@ -1246,34 +1252,35 @@ class Gui:
 				t = replace(cname, " ", "")
 				t = replace(t, "<->", "")
 				buffer = stripname.sub("", t)
-				
-			blocks.append(buffer)
+
+			blockName = simplify.sub("", buffer)
+			block = blockName
+			blocks.append(block)
 
 			##D
-			#print "TYPE( %s )    BUFFER( %s )" % (cname, buffer)
-			
-			databuf[buffer] = {}
-			databuf[buffer]['buffer']  = buffer
-			databuf[buffer]['label']   = labels[0]
-			databuf[buffer]['count']   = maxcount
-			databuf[buffer]['methods'] = methods
-			
-			for index in xrange(1, len(labels)):
-				key = "%s%d" % (buffer, index)
-				blocks.append(key)
-			    ##D
-				#print "    buffer(%s)" % key
+			#print "BLOCK(%s) \t LABEL(%s), %d" % (block,labels[0],len(labels))
+			databuf[block] = {}
+			databuf[block]['buffer']  = buffer
+			databuf[block]['label']   = labels[0]
+			databuf[block]['count']   = maxcount
+			databuf[block]['methods'] = methods
 
-				databuf[key] = {}
-				databuf[key]['buffer']  = buffer
-				databuf[key]['label']   = labels[index]
-				databuf[key]['count']   = maxcount
-				databuf[key]['methods'] = methods
+			for index in xrange(1,len(labels)):
+				block = "%s%d" % (blockName, index)
+				blocks.append(block)
+				##D
+				#print "BLOCK(%s) \t LABEL(%s)" % (block, labels[index])
+												  
+				databuf[block] = {}
+				databuf[block]['buffer']  = buffer
+				databuf[block]['label']   = labels[index]
+				databuf[block]['count']   = maxcount
+				databuf[block]['methods'] = methods
+
+		##D
+		#print "HERE 1"
 					
 		# Now write out info
-
-		#D
-		#print "    write out info"
 		
 		self.saveDir = PYDIR
 		fdialog = TFileDialog(self.window,
@@ -1287,12 +1294,14 @@ class Gui:
 		
 		self.statusBar.SetText("Saving to file", 0)
 		self.statusBar.SetText(filename, 1)
-
+		##D
+		#print "OUTPUT(%s)" % filename
+		
 		tab  = ' '*15
 		out = open(filename, "w")
 		out.write('#------------------------------------'\
 				  '-------------------------------------\n')
-		out.write("# Created: %s by %s\n" % (ctime(time()), filename))
+		out.write("# Created: %s by mkntuplecfi.py\n" % ctime())
 		out.write('#------------------------------------'\
 				  '-------------------------------------\n')
 		out.write("import FWCore.ParameterSet.Config as cms\n")
@@ -1302,20 +1311,29 @@ class Gui:
 				  tab)
 		out.write('%sanalyzerName = cms.untracked.string("analyzer.cc"),\n\n' \
 				  % tab)
-		
+
+		out.write('\n')
+		out.write('# NOTE: the names listed below will be the prefixes for\n'\
+				  '#       the associated C++ variables created by '\
+				  'mkanalyzer.py\n'\
+				  '#       and the asscociated C++ structs.\n')
+		out.write('\n')
 		out.write('%sbuffers =\n' % tab)
 		out.write('%scms.untracked.\n' % tab)
 		out.write("%svstring(\n" % tab)
 		tab1 = tab
 
+		##D
+		#print "HERE 2"
+		
 		# 1. Write out list of buffer blocks
-
+			
 		tab = 4*' '
 		delim = tab
 		for index, block in enumerate(blocks):
 			out.write("%s'%s'" % (delim, block))
 			delim = ",\n%s" % tab
-		out.write('\n%s),\n' % tab)
+		out.write('\n%s),\n\n' % tab)
 
 		# 2. For each buffer block, write out associated methods
 		
@@ -1340,7 +1358,8 @@ class Gui:
 			out.write('%s#--------------------------------'\
 					  '-------------------------------------\n' % tab)
 
-			#D
+			##D
+			#print "HERE 3"
 			#print record
 			
 			# Loop over methods for current block
@@ -1355,7 +1374,7 @@ class Gui:
 				
 		out.write("\n%s)\n" % tab1)
 		out.close()
-
+		sleep(1)
 		self.statusBar.SetText("Done!", 0)
 		self.statusBar.SetText("", 1)
 

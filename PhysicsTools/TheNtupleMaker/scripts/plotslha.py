@@ -3,13 +3,14 @@
 # File: plotslha.py
 # Description: plot SUSY mass spectrum or decays from an SLHA file
 # Created: 22 Sep 2010 Harrison B. Prosper & Sezen Sekmen
-#$Id:$
+#$Id: plotslha.py,v 1.16 2011/05/07 18:39:15 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re
-from string import *
-from time import sleep
-from getopt import getopt, GetoptError
 from ROOT import *
+from string import atof, atoi, replace, lower,\
+	 upper, joinfields, split, strip, find
+from time import sleep, ctime
+from getopt import getopt, GetoptError
 #------------------------------------------------------------------------------
 OPTIONS= 'p:y:t:w:l' # command line options
 RED    ="\x1b[0;31;48m"

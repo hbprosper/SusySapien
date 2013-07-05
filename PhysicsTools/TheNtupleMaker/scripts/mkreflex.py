@@ -3,12 +3,13 @@
 # File:        mkreflex.py
 # Description: Create files needed to make classes visible to Root Reflex
 # Created:     28-Jul-2011 Harrison B. Prosper
-#$Id:$
+#$Id: mkreflex.py,v 1.1 2011/07/28 10:37:13 prosper Exp $
 #---------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
-from string import *
-from time import *
+from string import atof, atoi, replace, lower,\
+	 upper, joinfields, split, strip, find
+from time import sleep, ctime
 from getopt import getopt
 from PhysicsTools.TheNtupleMaker.Lib import \
 	 parseHeader,\

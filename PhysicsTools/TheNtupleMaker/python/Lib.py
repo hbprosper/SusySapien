@@ -5,10 +5,11 @@
 # Created: 19-May-2006 Harrison B. Prosper
 #          18-Sep-2010 HBP use updated version of convert2html
 #          31-Mar-2012 HBP parseHeader now extract typedefs 
-#$Revision: 1.2 $
+#$Revision: 1.3 $
 #---------------------------------------------------------------------------
 from ROOT import *
-from string import *
+from string import atof, atoi, replace, lower,\
+	 upper, joinfields, split, strip, find
 from elementtree.ElementTree import ElementTree
 from xml.parsers.expat import ExpatError
 import os, sys, re, posixpath

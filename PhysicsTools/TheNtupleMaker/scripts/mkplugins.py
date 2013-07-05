@@ -12,11 +12,12 @@
 #          31-Mar-2012 HBP   use simplified classes.txt format. change name
 #                            to classlist.txt
 #          22-Apr-2012 HBP   use SINGLETON and COLLECTION keywords
-#$Id: mkplugins.py,v 1.20 2012/04/04 01:32:42 prosper Exp $
+#$Id: mkplugins.py,v 1.21 2012/05/04 20:54:35 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re
-from string import *
-from time import *
+from string import atof, atoi, replace, lower,\
+	 upper, joinfields, split, strip, find
+from time import sleep, ctime
 from PhysicsTools.TheNtupleMaker.Lib import cmsswProject, nameonly, getwords
 from PhysicsTools.TheNtupleMaker.ReflexLib import findHeaders
 from PhysicsTools.TheNtupleMaker.classmap import ClassToHeaderMap

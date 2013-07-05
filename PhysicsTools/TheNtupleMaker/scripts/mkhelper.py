@@ -5,13 +5,15 @@
 #          22-Jul-2011 HBP - fix duplicate HelperFor bug
 #          22-Apr-2012 HBP - use SINGLETON and COLLECTION keywords
 #          03-May-2012 HBP - add methods automatically
-#$Id: mkhelper.py,v 1.12 2012/05/14 02:41:17 prosper Exp $
+#$Id: mkhelper.py,v 1.13 2012/05/16 16:54:00 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re
-from string import *
-from time import *
+from string import atof, atoi, replace, lower,\
+	 upper, joinfields, split, strip, find
+from time import sleep, ctime
 from glob import glob
 from getopt     import getopt, GetoptError
+
 from PhysicsTools.TheNtupleMaker.Lib import \
 	 nameonly, \
 	 cmsswProject, \

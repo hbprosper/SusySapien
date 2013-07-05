@@ -11,12 +11,14 @@
 #                          python/classmap.py
 #              24-Apr-2012 HBP, get list of potential classes from
 #                          plugins/classlist.txt instead
-#$Id: mkvomit.py,v 1.2 2012/04/04 01:32:42 prosper Exp $
+#$Id: mkvomit.py,v 1.3 2012/05/04 20:54:35 prosper Exp $
 #---------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
-from string import *
-from time import *
+from string import atof, atoi, replace, lower,\
+	 upper, joinfields, split, strip, find
+from time import sleep, ctime
+from elementtree.ElementTree import Element
 from getopt import getopt
 from PhysicsTools.TheNtupleMaker.classmap import ClassToHeaderMap
 from PhysicsTools.TheNtupleMaker.Lib import \

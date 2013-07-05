@@ -2,11 +2,12 @@
 #------------------------------------------------------------------------------
 # Create the skeleton of a user package
 # Created: 03-Sep-2010 Harrison B. Prosper
-#$Id: mkpackage.py,v 1.18 2012/04/04 01:32:41 prosper Exp $
+#$Id: mkpackage.py,v 1.19 2012/05/08 01:58:06 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re
-from string import *
-from time import *
+from string import atof, atoi, replace, lower,\
+	 upper, joinfields, split, strip, find
+from time import sleep, ctime
 from PhysicsTools.TheNtupleMaker.Lib import \
 	 nameonly, getauthor, cmsswProject
 #------------------------------------------------------------------------------

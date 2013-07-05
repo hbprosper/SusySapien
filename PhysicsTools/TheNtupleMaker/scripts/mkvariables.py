@@ -18,12 +18,14 @@
 #               22-Nov-2010 HBP allow multiple trees
 #               11-Jan-2011 HBP shorten genparticlehelper variable
 #               20-Jul-2011 HBP fix problem with basic type
-#$Id: mkvariables.py,v 1.16 2011/05/07 18:39:14 prosper Exp $
+#$Id: mkvariables.py,v 1.17 2011/07/20 16:19:54 prosper Exp $
 # -----------------------------------------------------------------------------
-from ROOT import *
-from time import *
-from string import *
 import os, sys, re
+from ROOT import *
+from string import atof, atoi, replace, lower,\
+	 upper, joinfields, split, strip, find
+from elementtree.ElementTree import Element
+from time import sleep, ctime
 # -----------------------------------------------------------------------------
 def usage():
 	print '''

@@ -8,7 +8,9 @@
 # Created 2 Apr 2012 Harrison B. Prosper
 #------------------------------------------------------------------------------
 import os, sys
-from string import *
+from string import atof, atoi, replace, lower,\
+	 upper, joinfields, split, strip, find
+
 pwd = split(os.environ["PWD"],"/")[-1]
 if pwd != "TheNtupleMaker":
         print "\n\t* Please run this script from the TheNtupleMaker directory:"

@@ -1,4 +1,15 @@
-$Revision: 1.37 $
+$Revision: 1.38 $
+
+v5_4_3 July 5 2013
+------------------
+	1. mkmacro.py now defers most of the work to mkanalyzer.py. The macro
+	code is now placed in directory and (macro).mk is now called Makefile
+	2. mkntuplecfi.py simplifies the names of the buffers by stripping away
+	namespaces and "Helper"
+	3. Can now store singlets of bools (though not tested)
+	4. treestream uses fixes from Sezen
+	5. OutputFile::count can now take floating values
+	
 
 v5_4_2 July 4 2013
 ------------------

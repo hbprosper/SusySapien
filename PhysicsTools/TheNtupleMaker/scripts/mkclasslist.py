@@ -10,11 +10,13 @@
 #                      classes
 #          18-Apr-2012 HBP use inclusionlist.txt to include specific
 #                      classes not picked up automatically
-#$Id: mkclasslist.py,v 1.21 2012/05/04 20:54:35 prosper Exp $
+#$Id: mkclasslist.py,v 1.22 2012/05/05 15:17:47 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re
-from string import *
 from ROOT import *
+from string import atof, atoi, replace, lower,\
+	 upper, joinfields, split, strip, find
+from time import sleep, ctime
 from PhysicsTools.TheNtupleMaker.Lib import cmsswProject, fixName
 from PhysicsTools.TheNtupleMaker.ReflexLib import findHeaders, getFullname
 from PhysicsTools.TheNtupleMaker.classmap import ClassToHeaderMap

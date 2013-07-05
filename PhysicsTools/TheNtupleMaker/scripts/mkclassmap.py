@@ -5,12 +5,13 @@
 # Created:     26-Aug-2010 Harrison B. Prosper
 #              31-Mar-2011 HBP - include typedefs
 #              23-Apr-2012 HBP - use import to load class map
-#$Id: mkclassmap.py,v 1.21 2012/05/04 20:54:35 prosper Exp $
+#$Id: mkclassmap.py,v 1.22 2012/05/05 22:03:57 prosper Exp $
 #---------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *
-from string import *
-from time import *
+from string import atof, atoi, replace, lower,\
+	 upper, joinfields, split, strip, find
+from time import sleep, ctime
 from glob import glob
 from getopt     import getopt, GetoptError
 from PhysicsTools.TheNtupleMaker.Lib import \
