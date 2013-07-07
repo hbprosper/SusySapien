@@ -46,7 +46,7 @@
 //          22-Nov-2010 Allow reading of multiple trees using friend
 //                      mechanism
 //          22-Nov-2011 Handle storing of strings
-//$Revision: 1.3 $
+//$Revision: 1.4 $
 //----------------------------------------------------------------------------
 #include <vector>
 #include <string>
@@ -56,6 +56,7 @@
 #include <iostream>
 #include <typeinfo>
 #include <cctype>
+
 
 #include "TFile.h"
 #include "TTree.h"
@@ -359,13 +360,6 @@ class itreestream
   void _update();
 
   bool _delete;
-
- public:
-
-#ifdef __WITH_CINT__
-  ClassDef(itreestream, 1)
-#endif
-
 };
 
 /// Model an output stream of trees of the same species.
@@ -535,11 +529,6 @@ class otreestream
 
   void _add(std::string name, void* address, int maxsize,
 	    char srctype, char iotype, bool isvector=false);
-
-#ifdef __WITH_CINT__
-  ClassDef(otreestream, 1)
-#endif
-
 };
 
 std::ostream& operator<<(std::ostream& os, const itreestream& tuple);

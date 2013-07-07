@@ -15,7 +15,7 @@
 #                            counter
 #          04-Jul-2013 HBP - make a better analyzer work area
 #
-#$Id: mkanalyzer.py,v 1.21 2013/07/05 07:15:14 prosper Exp $
+#$Id: mkanalyzer.py,v 1.22 2013/07/05 21:01:54 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
 from string import atof, atoi, replace, lower,\
@@ -33,7 +33,7 @@ def usage():
 	   mkanalyzer.py <analyzer-name> [variables.txt]
 	'''
 	sys.exit(0)
-	
+
 def nameonly(s):
 	return posixpath.splitext(posixpath.split(s)[1])[0]
 
@@ -91,6 +91,7 @@ namespace evt {
 //-----------------------------------------------------------------------------
 %(structdecl)s
 %(structimpl)s
+%(structimplall)s
 }; // end namespace evt
 '''
 
@@ -143,6 +144,7 @@ namespace evt {
 //-----------------------------------------------------------------------------
 %(structdecl)s
 %(structimpl)s
+%(structimplall)s
 //-----------------------------------------------------------------------------
 // --- Call saveSelectedObjects() just before call to addEvent if
 // --- you wish to save only the selected objects
@@ -230,9 +232,9 @@ struct outputFile
 
   void addEvent(double weight=1)
   {
-    if ( tree_ == 0 ) return;
-	
-    weight_ = weight;
+	if ( tree_ == 0 ) return;
+
+	weight_ = weight;
 	file_   = tree_->GetCurrentFile();
 	file_->cd();
 	tree_->Fill();
@@ -244,16 +246,16 @@ struct outputFile
 
   void count(std::string cond, double w=1)
   {
-    hist_->Fill(cond.c_str(), w);
+	hist_->Fill(cond.c_str(), w);
   }
-  
+
   void close()
   {
-  	std::cout << "==> histograms saved to file " << filename_ << std::endl;
-    if ( tree_ != 0 )
+	std::cout << "==> histograms saved to file " << filename_ << std::endl;
+	if ( tree_ != 0 )
 	  {
-	    std::cout << "==> events skimmed to file " << filename_ << std::endl;
-	    file_ = tree_->GetCurrentFile();
+		std::cout << "==> events skimmed to file " << filename_ << std::endl;
+		file_ = tree_->GetCurrentFile();
 	  }
 	file_->cd();
 	//file_->Write("", TObject::kWriteDelete);
@@ -300,7 +302,7 @@ decodeCommandLine(int argc, char** argv, commandLine& cl)
   // Make sure extension is ".root"
   std::string name = cl.outputfilename;
   if ( name.substr(name.size()-5, 5) != std::string(".root") )
-    cl.outputfilename += std::string(".root");
+	cl.outputfilename += std::string(".root");
 }
 
 // Read ntuple filenames from file list
@@ -361,37 +363,37 @@ int main(int argc, char** argv)
   // program execution. If this is not needed, just comment out the following
   // line
 
-  TApplication app("analyzer", &argc, argv);
+  TApplication app("%(name)s", &argc, argv);
 
   /*
 	 Notes:
-	
+
 	 1. Use
 	   ofile = outputFile(cmdline.outputfile, stream)
-	
+
 	 to skim events to output file in addition to writing out histograms.
-	
+
 	 2. Use
 	   ofile.addEvent(event-weight)
-	
+
 	 to specify that the current event is to be added to the output file.
 	 If omitted, the event-weight is defaulted to 1.
-	
+
 	 3. Use
-	    ofile.count(cut-name, event-weight)
-	
+		ofile.count(cut-name, event-weight)
+
 	 to keep track, in the count histogram, of the number of events
 	 passing a given cut. If omitted, the event-weight is taken to be 1.
 	 If you want the counts in the count histogram to appear in a given
 	 order, specify the order, before entering the event loop, as in
 	 the example below
-	 
-	    ofile.count("NoCuts", 0)
+
+		ofile.count("NoCuts", 0)
 		ofile.count("GoodEvent", 0)
 		ofile.count("Vertex", 0)
 		ofile.count("MET", 0)
   */
-  
+
   outputFile ofile(cmdline.outputfilename);
 
   //---------------------------------------------------------------------------
@@ -414,9 +416,9 @@ int main(int argc, char** argv)
 	  // are available. Each struct contains the field "selected", which
 	  // can be set as needed. Call saveSelectedObjects() before a call to
 	  // addEvent if you wish to save only the selected objects.
-	  
+
 	  // fillObjects();
-	  
+
 	  // ---------------------
 	  // -- event selection --
 	  // ---------------------
@@ -438,32 +440,29 @@ PYTEMPLATELIB =\
 '''# -----------------------------------------------------------------------------
 #  File:        %(name)slib.py
 #  Description: Analyzer for ntuples created by TheNtupleMaker
-#  Created:     %(time)s by mkntanalyzer.py
+#  Created:     %(time)s by mkanalyzer.py
 #  Author:      %(author)s
 # -----------------------------------------------------------------------------
+import os, sys, re
 from ROOT import *
-from time import sleep
-from string import *
+from string import atof, atoi, split, strip, replace
 from array import array
 from math import *
+from time import sleep
 from sys import exit
-import os, sys, re
 # -----------------------------------------------------------------------------
-STANDALONE = True  # set to False to work within CMSSW
-if STANDALONE:
-    gROOT.ProcessLine(".L treestream.cc+")
-    gROOT.ProcessLine(".L pdg.cc+")
-else:
-    from PhysicsTools.TheNtupleMaker.AutoLoader import *
+gSystem.AddIncludePath("-Iinclude")
+gROOT.ProcessLine(".L src/treestream.cc+")
+gROOT.ProcessLine(".L src/pdg.cc+")
 # -----------------------------------------------------------------------------
 # -- Classes, procedures and functions
 # -----------------------------------------------------------------------------
 class outputFile:
 
-    def __init__(self, filename, stream=None, savecount=50000):
+	def __init__(self, filename, stream=None, savecount=50000):
 		if stream != None:
-		    print "events will be skimmed to file", filename
-		    self.tree = stream.tree().CloneTree(0)
+			print "events will be skimmed to file", filename			
+			self.tree = stream.tree().CloneTree(0)
 			self.weight = Double()
 			self.b_weight = self.tree.Branch("eventWeight", self.weight,
 											 "eventWeight/D")
@@ -473,7 +472,7 @@ class outputFile:
 			self.b_weight = None
 
 		self.entry = 0
-			
+
 		self.filename = filename
 		self.file = TFile(filename, "recreate")
 
@@ -485,7 +484,7 @@ class outputFile:
 
 	def addEvent(self, weight=1.0):
 		if self.tree == None: return
-		
+
 		self.file = self.tree.GetCurrentFile()
 		self.file.cd()
 		self.tree.Fill()
@@ -493,16 +492,16 @@ class outputFile:
 		self.entry += 1		
 		if self.entry %(percent)s self.SAVECOUNT == 0:
 			self.tree.AutoSave("SaveSelf")
-				
-	def count(self, cond, w=1):
+
+	def count(self, cond, w=1.0):
 		self.hist.Fill(cond, w)
-		
+
 	def close(self):
 		print "==> histograms saved to file", self.filename
 		if self.tree != None:			
 			print "==> events skimmed to file", self.filename
 			self.file = self.tree.GetCurrentFile()
-			
+
 		self.file.cd()
 		#self.file.Write("", TObject.kOverwrite)
 		self.file.Write()
@@ -560,7 +559,7 @@ def setStyle():
 	gROOT.SetStyle("Pub")
 	style = gROOT.GetStyle("Pub")
 	style.SetPalette(1)
-	
+
 	# For the canvas
 	style.SetCanvasBorderMode(0)
 	style.SetCanvasColor(kWhite)
@@ -592,7 +591,7 @@ def setStyle():
 	style.SetHistLineStyle(0)
 	style.SetHistLineWidth(1)
 	style.SetEndErrorSize(2)
-	style.SetErrorX(0.)
+	#style.SetErrorX(0.)
 	style.SetMarkerSize(0.1)
 	style.SetMarkerStyle(20)
 
@@ -685,13 +684,10 @@ PYTEMPLATE =\
 # -----------------------------------------------------------------------------
 #  File:        %(name)s.py
 #  Description: Analyzer for ntuples created by TheNtupleMaker
-#  Created:     %(time)s by mkntanalyzer.py
+#  Created:     %(time)s by mkanalyzer.py
 #  Author:      %(author)s
 # -----------------------------------------------------------------------------
-from ROOT import *
-from string import *
 from %(name)slib import *
-import os, sys, re
 # -----------------------------------------------------------------------------
 # -- Procedures and functions
 # -----------------------------------------------------------------------------
@@ -730,7 +726,7 @@ def main():
 	#	ofile.count("GoodEvent", 0)
 	#	ofile.count("Vertex", 0)
 	#	ofile.count("MET", 0)
-	
+
 	ofile = outputFile(cmdline.outputfilename)
 
 	# -------------------------------------------------------------------------
@@ -848,7 +844,7 @@ LDFLAGS := -g
 
 LIBS	:=  \
 $(shell root-config --libs) \
--L$(libdir) -lanalyzer -lMinuit  -lMathMore -lMathCore
+-L$(libdir) -l%(name)s -lMinuit  -lMathMore -lMathCore
 
 
 #	Rules
@@ -906,20 +902,16 @@ veryclean   :
 
 README = '''Created: %(time)s
 
-    o To build the default program (%(name)s) do
+	o To build all programs do
 
 	  make
 
-    o To build another program in this directory do
-
-	  make program=<program-name>
-
-    example:
-
-	  make program=findSUSYalready
+	  This will first build lib/lib%(name)s.so from the codes in src, then
+	  build all the programs in the current directory, linked against the
+	  shared library.
 
 
-    o To run the program, first create a text file (default name=filelist.txt)
+	o To run the program, first create a text file (default name=filelist.txt)
 	containing a list of the ntuples to be analyzed, one filename per line.
 	Then do
 
@@ -938,7 +930,7 @@ README = '''Created: %(time)s
 For details, please refer to the documentation at:
 
 	https://twiki.cern.ch/twiki/bin/viewauth/CMS/TheNtupleMaker
-	
+
 '''
 #------------------------------------------------------------------------------
 def cmp(x, y):
@@ -971,7 +963,7 @@ def main():
 
 	# Check for macro mode
 	macroMode = argc > 2
-	
+
 
 	# Read variable names
 
@@ -993,12 +985,12 @@ def main():
 			treename += " %s" % t[1]
 			start += 1
 
-   	# Done with header, so loop over branch names
+	# Done with header, so loop over branch names
 	# and get list of potential struct names (first field of
 	# varname.
-	
+
 	records = records[start:]
-	
+
 	stnamemap = {}
 	for index in xrange(len(records)):
 		record = records[index]
@@ -1006,16 +998,16 @@ def main():
 
 		# split record into its fields
 		# varname = variable name as determined by mkvariables.py
-		
+
 		rtype, branchname, varname, count = split(record, '/')
 		t = split(varname,'_')
 		if len(t) > 1: # Need at least two fields
 			key = t[0]
 			if not stnamemap.has_key(key): stnamemap[key] = 0
 			stnamemap[key] += 1
-	
+
 	# Loop over branch names
-	
+
 	# If a variable name matches a struct name, this will generate a
 	# multiply defined error. One of the names must be altered. Let's
 	# take this to be the variable name.
@@ -1023,11 +1015,11 @@ def main():
 	usednames = {}
 	vars = {}
 	vectormap = {}
-	
+
 	for index in xrange(len(records)):
 		record = records[index]
 		if record == "": continue
-		
+
 		rtype, branchname, varname, count = split(record, '/')
 
 		# Fix annoying types
@@ -1047,7 +1039,7 @@ def main():
 		t = split(count)
 		count = atoi(t[0]) # Change type to an integer
 		iscounter = t[-1] == "*"
-		
+
 		# Check that varname is not the same as that of a potential
 		# struct
 		if stnamemap.has_key(varname):
@@ -1057,7 +1049,7 @@ def main():
 					  varname
 				print "\t           varname to %s1" % varname
 			varname = "%s1" % varname
-			
+
 		# Get object and field names
 		objname = ''
 		fldname = ''
@@ -1065,7 +1057,7 @@ def main():
 		if len(t) > 0:
 
 			# we have at least two fields in varname
-			
+
 			key = t[0]
 			if stnamemap.has_key(key):
 
@@ -1076,7 +1068,7 @@ def main():
 				# of existing struct
 				if not usednames.has_key(objname):
 					usednames[objname] = count;
-									
+
 				if usednames[objname] == count:
 					fldname = replace(varname, '%s_' % objname, '')
 				else:
@@ -1103,17 +1095,17 @@ def main():
 		# vector types must have the same object name and a max count > 1
 		if count > 1:
 			if fldname != "":
-				
+
 				# Make sure fldname is valid			
 				if fldname[0] in ['0','1','2','3','4','5','6','7','8','9']:
 					fldname = 'f%s' % fldname
-		
+
 				if not vectormap.has_key(objname): vectormap[objname] = []	
 				vectormap[objname].append((rtype, fldname, varname, count))
 				#print "%s.%s (%s)" % (objname, fldname, count)
-				
+
 	# Declare all variables
-	
+
 	keys = vars.keys()
 	keys.sort()
 	pydeclare = []
@@ -1142,7 +1134,7 @@ def main():
 			elif count == 1:
 				impl.append('  countvalue& v%d = (*varmap)["%s"];' %\
 							(index, branchname))
-							 
+
 				impl.append('  if ( v%d.value )' % index)
 				impl.append('    %s = *v%d.value;' % (varname, index))
 				impl.append('  else')
@@ -1152,7 +1144,7 @@ def main():
 				# this is a vector
 				impl.append('  countvalue& v%d = (*varmap)["%s"];' % \
 							(index, branchname))
-							
+
 				impl.append('  if ( v%d.value )' % index)
 				impl.append('    {')
 				impl.append('      %s.resize(*v%d.count);' % (varname, index))
@@ -1182,28 +1174,31 @@ def main():
 
 
 	# Create structs for vector variables
-	
+
 	keys = vectormap.keys()
 	keys.sort()	
 	structdecl = []
 	structimpl = []
+	structimplall = []
 
 	selectdecl = []
 	selectimpl = []
-	
+
 	selectimpl.append('void saveSelectedObjects()')
 	selectimpl.append('{')
-	selectimpl.append('  if ( ! fillObjectsCalled ) return;')
 	selectimpl.append('  int n = 0;')
+	structimplall.append('void fillObjects()')
+	structimplall.append('{')
 
-	structimpl.append('static bool fillObjectsCalled = false;')
-	structimpl.append('void fillObjects()')
-	structimpl.append('{')
-	structimpl.append('  fillObjectsCalled = true;')
 	for index, objname in enumerate(keys):
 		values = vectormap[objname]
-		varname= values[0][-2];
-		
+		varname= values[0][-2]
+
+		structimplall.append('  fill%s();' % objname)
+		structimpl.append('static bool fill%sCalled = false;' % objname)
+		structimpl.append('inline void fill%s()' % objname)
+		structimpl.append('{')
+		structimpl.append('  fill%sCalled = true;' % objname)
 		structimpl.append('')
 		structimpl.append('  %s.resize(%s.size());' % (objname, varname))
 		structimpl.append('  for(unsigned int i=0; i < %s.size(); ++i)' % \
@@ -1212,18 +1207,20 @@ def main():
 		structimpl.append('      %s[i].selected\t= false;' % objname)
 
 		selectimpl.append('')
-		selectimpl.append('  n = 0;')
-		selectimpl.append('  for(unsigned int i=0; i < %s.size(); ++i)' % \
-						  objname)
+		selectimpl.append('  if ( fill%sCalled )' % objname)
 		selectimpl.append('    {')
-		selectimpl.append('      if ( ! %s[i].selected ) continue;' % \
+		selectimpl.append('      n = 0;')
+		selectimpl.append('      for(unsigned int i=0; i < %s.size(); ++i)' % \
+						  objname)
+		selectimpl.append('        {')
+		selectimpl.append('          if ( ! %s[i].selected ) continue;' % \
 						  objname)
 
 		structdecl.append('struct %s_s' % objname)
 		structdecl.append('{')
 
 		structdecl.append('  %s\t%s;' % ("bool", "selected"))
-		
+
 		for rtype, fldname, varname, count in values:
 			# treat bools as ints
 			if rtype == "bool":
@@ -1232,7 +1229,7 @@ def main():
 				cast = ''
 
 						# this is a vector
-	
+
 			structdecl.append('  %s\t%s;' % (rtype, fldname))
 
 			structimpl.append('      %s[i].%s\t= %s%s[i];' % (objname,
@@ -1240,10 +1237,10 @@ def main():
 															  cast,
 															  varname))
 
-			selectimpl.append('      %s[n]\t= %s[i].%s;' % (varname,
-															objname,
-															fldname))
-			
+			selectimpl.append('          %s[n]\t= %s[i].%s;' % (varname,
+																objname,
+																fldname))
+
 		structdecl.append('};')
 		structdecl.append('std::vector<%s_s> %s(%d);' % (objname,
 														 objname,
@@ -1255,7 +1252,7 @@ def main():
 		structdecl.append('{')
 		structdecl.append('  char r[1024];')
 		structdecl.append('  os << "%s" << std::endl;' % objname)
-		
+
 		for rtype, fldname, varname, count in values:
 			structdecl.append('  sprintf(r, "  %s: %s\\n", "%s",'\
 							  ' (double)o.%s); '\
@@ -1266,18 +1263,20 @@ def main():
 						  '------------------------------------')
 
 		structimpl.append('    }')
-		selectimpl.append('      n++;')
+		structimpl.append('}\n')  # end of fill<objec>()
+		selectimpl.append('          n++;')
+		selectimpl.append('        }')
+		selectimpl.append('      n%s = n;' % objname)
 		selectimpl.append('    }')
-		#selectimpl.append('  n%s = n;' % objname) # HBP June 5 2012
-		
-	structimpl.append('}')  # end of fillObjects()
-	selectimpl.append('  fillObjectsCalled = false;')
+
+	structimplall.append('}')  # end of fillObjects()
+	#selectimpl.append('  fillObjectsCalled = false;')
 	selectimpl.append('}')  # end of saveObjects()
-	
+
 	# Write out files
 
 	if macroMode:
-		
+
 		names = {'NAME': upper(filename),
 				 'name': filename,
 				 'time': ctime(),
@@ -1286,6 +1285,7 @@ def main():
 				 'selection': join("  ", select, "\n"),
 				 'structdecl': join("", structdecl, "\n"),
 				 'structimpl': join("", structimpl, "\n"),
+				 'structimplall': join("", structimplall, "\n"),
 				 'selectimpl': join("", selectimpl, "\n"),
 				 'impl': join("", impl, "\n"),
 				 'treename': treename,
@@ -1320,7 +1320,7 @@ def main():
 	''' % {'dir': filename,
 		   'hpp': PDG_HPP,
 		   'cpp': PDG_CPP}
-	
+
 	os.system(cmd)
 
 	# Create Makefile
@@ -1347,6 +1347,7 @@ def main():
 			 'selection': join("  ", select, "\n"),
 			 'structdecl': join("", structdecl, "\n"),
 			 'structimpl': join("", structimpl, "\n"),
+			 'structimplall': join("", structimplall, "\n"),
 			 'selectimpl': join("", selectimpl, "\n"),
 			 'treename': treename,
 			 'percent': '%' }
@@ -1356,9 +1357,9 @@ def main():
 
 	###
 	#print "OUT( %s )" % outfilename
-	
+
 	# Create cc file if one does not yet exist
-	
+
 	outfilename = "%s/%s.cc" % (filename, filename)
 	if not os.path.exists(outfilename):
 		record = TEMPLATE_CC % names
@@ -1388,7 +1389,7 @@ def main():
 	open(outfilename,"w").write(record)
 
 	# Create Python script if one does not yet exist
-	
+
 	outfilename = "%s/%s.py" % (filename, filename)
 	if not os.path.exists(outfilename):
 		record = PYTEMPLATE % names

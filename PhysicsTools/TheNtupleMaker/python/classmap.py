@@ -1,4 +1,4 @@
-# Created: Fri Jul  5 18:02:07 2013
+# Created: Fri Jul  5 19:07:12 2013
 # Version: CMSSW_6_0_1
 ClassToHeaderMap = {\
 'ATest': 'PhysicsTools/TheNtupleMaker/interface/ClassFunction.h',

@@ -1,4 +1,15 @@
-$Revision: 1.39 $
+$Revision: 1.40 $
+
+v5_4_5 July 6 2013
+------------------
+	1. Fix bug in analyzer Makefile: make sure shared library name is
+	lib<analyzer-name>.so
+	2. Create a separate fill<object>() function for each struct.
+	Example:
+		fillGenParticle()
+		fillGsfElectron()
+
+	fillObjects() still exists. It simply calls all  fill object functions
 
 v5_4_4 July 5 2013
 ------------------

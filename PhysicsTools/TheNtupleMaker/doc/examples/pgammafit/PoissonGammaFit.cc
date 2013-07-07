@@ -29,7 +29,7 @@
 // Updated:     06-Feb-2006 HBP Adapt for use in Root
 //              19-Feb-2011 HBP generalize to handle weighted events
 //              16-Apr-2011 HBP allow some parameters to be fixed
-//$Revision: 1.5 $
+//$Revision: 1.1.1.1 $
 //-----------------------------------------------------------------------------
 #include <iostream>
 #include <cmath>
@@ -76,10 +76,12 @@ namespace
             j++;
           }
       }
-    fval = -fitobject->logLikelihood(p);
 
     iflag = *grad; // some stupidity to avoid compiler warnings
     iflag = npar;  // more stupidity to avoid compiler warnings
+    fval  = iflag; // and more..
+
+    fval  = -fitobject->logLikelihood(p);
   }
 
   double flogp(double* point) 

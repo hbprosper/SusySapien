@@ -42,12 +42,12 @@
 //                      directly.
 //          22-Nov-2010 HBP allow reading of multiple trees
 //          22-Nov-2011 HBP handle reading/storing of strings
-//$Revision: 1.5 $
+//$Revision: 1.6 $
 //----------------------------------------------------------------------------
 #ifdef PROJECT_NAME
 #include <boost/regex.hpp>
-#endif
 #include <glob.h>
+#endif
 
 #include <map>
 #include <vector>
@@ -79,13 +79,7 @@
 #include "treestream.h"
 #endif
 //----------------------------------------------------------------------------
-
-#ifdef __WITH_CINT__
-ClassImp(itreestream)
-  ClassImp(otreestream)
-#endif
-
-  using namespace std;
+using namespace std;
 
 // Status codes
 
