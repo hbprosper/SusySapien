@@ -1,4 +1,13 @@
-$Revision: 1.40 $
+$Revision: 1.41 $
+
+v5_5_0 July 8 2013
+------------------
+	1. The language of the analyzer and the macro are now the same. In 
+	particular, the analyzer now uses the initialize, select mechanism to
+	declare objects to be selected and to select them. Since this is an
+	important revision, we bump up the 2nd index.
+	2. The utilities have been moved to a header <analyzer-mame>util.h.
+
 
 v5_4_5 July 6 2013
 ------------------

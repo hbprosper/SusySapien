@@ -15,7 +15,7 @@
 #                            counter
 #          04-Jul-2013 HBP - make a better analyzer work area
 #
-#$Id: mkanalyzer.py,v 1.22 2013/07/05 21:01:54 prosper Exp $
+#$Id: mkanalyzer.py,v 1.23 2013/07/07 01:59:57 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
 from string import atof, atoi, replace, lower,\
@@ -113,13 +113,16 @@ TEMPLATE_H =\
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string>
+#include <map>
 #include <vector>
-#include <cmath>
+#include <string>
 #include <iostream>
 #include <iomanip>
 #include <fstream>
+#include <cassert>
+#include <cmath>
 
+#include "%(name)sutil.h"
 #include "treestream.h"
 #include "pdg.h"
 
@@ -133,11 +136,44 @@ TEMPLATE_H =\
 #include "TKey.h"
 #include "TH1F.h"
 #include "TH2F.h"
-//-----------------------------------------------------------------------------
-// -- Declare variables
-//-----------------------------------------------------------------------------
+
 namespace evt {
+//-----------------------------------------------------------------------------
+// --- Declare variables
+//-----------------------------------------------------------------------------
 %(vardecl)s
+//-----------------------------------------------------------------------------
+// --- indexmap keeps track of which objects have been flagged for selection
+// --- IMPORTANT: initialize must be called every event to clear selection
+std::map<std::string, std::vector<int> > indexmap;
+void initialize()
+{
+  for(std::map<std::string, std::vector<int> >::iterator
+    item=indexmap.begin(); 
+    item != indexmap.end();
+	++item)
+	item->second.clear();
+}
+
+void select(std::string objname)
+{
+  indexmap[objname] = std::vector<int>();
+}
+
+void select(std::string objname, int index)
+{
+  try
+    {
+      indexmap[objname].push_back(index);
+    }
+  catch (...)
+    {
+      std::cout << "*** perhaps you failed to call select for " 
+                << objname << std::endl;
+      assert(0);
+    }
+}
+
 //-----------------------------------------------------------------------------
 // --- Structs can be filled by calling fillObjects()
 // --- after the call to stream.read(...)
@@ -151,18 +187,44 @@ namespace evt {
 //-----------------------------------------------------------------------------
 %(selectimpl)s
 //-----------------------------------------------------------------------------
-// -- Select variables to be read
+// --- Select variables to be read
 //-----------------------------------------------------------------------------
 void selectVariables(itreestream& stream)
 {
 %(selection)s
 }
 }; // end namespace evt
+#endif
+'''
 
 
+UTIL_H =\
+'''#ifndef %(NAME)sUTIL_H
+#define %(NAME)sUTIL_H
 //-----------------------------------------------------------------------------
 // -- Utilities
+// Created: %(time)s by mkanalyzer.py
 //-----------------------------------------------------------------------------
+#include <stdio.h>
+#include <stdlib.h>
+#include <string>
+#include <vector>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <algorithm>
+#include <cmath>
+
+#include "TFile.h"
+#include "TTree.h"
+#include "TBranch.h"
+#include "TH1F.h"
+#include "TMath.h"
+#include "TString.h"
+#include "treestream.h"
+//-----------------------------------------------------------------------------
+
+///
 void
 error(std::string message)
 {
@@ -170,6 +232,9 @@ error(std::string message)
   exit(0);
 }
 
+// string utils ==============================================================
+
+///
 std::string 
 strip(std::string line)
 {
@@ -189,6 +254,28 @@ strip(std::string line)
   return line.substr(n,m-n+1);
 }
 
+///
+void 
+split(std::string str, std::vector<std::string>& vstr)
+{
+  vstr.clear();
+  std::istringstream stream(str);
+  while ( stream )
+    {
+      std::string str;
+      stream >> str;
+      if ( stream ) vstr.push_back(str);
+    }
+}
+
+///
+std::string
+replace(std::string& str, std::string oldstr, std::string newstr)
+{
+  return std::string(TString(str).ReplaceAll(oldstr, newstr).Data());
+}
+
+///
 std::string
 nameonly(std::string filename)
 {
@@ -197,9 +284,24 @@ nameonly(std::string filename)
   if ( j < 0 ) j = filename.size();
   return filename.substr(i+1,j-i-1);
 }
-//-----------------------------------------------------------------------------
+
+///
+std::string 
+shell(std::string cmd)
+{
+  FILE* f = popen(cmd.c_str(),"r");
+  int buffsize=8192;
+  char s[8192];
+  int n = fread(s,1,buffsize,f);
+  pclose(f);
+  std::string result = strip(std::string(s).substr(0,n));
+  return result;
+}
+
+///
 struct outputFile
 {
+///
   outputFile(std::string filename)
    : filename_(filename),
 	 file_(new TFile(filename_.c_str(), "recreate")),
@@ -214,6 +316,7 @@ struct outputFile
 	hist_->SetStats(0);
   }
 
+///
   outputFile(std::string filename, itreestream& stream, int savecount=50000) 
    : filename_(filename),
 	 file_(new TFile(filename.c_str(), "recreate")),
@@ -230,6 +333,7 @@ struct outputFile
 	hist_->SetStats(0);
   }
 
+///
   void addEvent(double weight=1)
   {
 	if ( tree_ == 0 ) return;
@@ -244,11 +348,13 @@ struct outputFile
 	  tree_->AutoSave("SaveSelf");
   }
 
+///
   void count(std::string cond, double w=1)
   {
 	hist_->Fill(cond.c_str(), w);
   }
 
+///
   void close()
   {
 	std::cout << "==> histograms saved to file " << filename_ << std::endl;
@@ -274,6 +380,7 @@ struct outputFile
   int    SAVECOUNT_;
 };
 
+///
 struct commandLine
 {
   std::string progname;
@@ -281,7 +388,7 @@ struct commandLine
   std::string outputfilename;
 };
 
-
+///
 void
 decodeCommandLine(int argc, char** argv, commandLine& cl)
 {
@@ -305,8 +412,7 @@ decodeCommandLine(int argc, char** argv, commandLine& cl)
 	cl.outputfilename += std::string(".root");
 }
 
-// Read ntuple filenames from file list
-
+/// Read ntuple filenames from file list
 std::vector<std::string>
 getFilenames(std::string filelist)
 {
@@ -320,6 +426,123 @@ getFilenames(std::string filelist)
   while ( stream >> filename )
 	if ( strip(filename) != "" ) v.push_back(filename);
   return v;
+}
+
+// physics utils ==============================================================
+
+///
+double
+deltaPhi(double phi1, double phi2)
+{
+  double deltaphi = phi2 - phi1;
+  if ( fabs(deltaphi) > M_PI ) deltaphi = 2 * M_PI - fabs(deltaphi);
+  return deltaphi;
+}
+
+///
+double
+deltaR(double eta1, double phi1, double eta2, double phi2)
+{
+  double deltaeta = eta1 - eta2;
+  double deltaphi = deltaPhi(phi1, phi2);
+  return sqrt(deltaeta*deltaeta + deltaphi*deltaphi);
+}
+
+///
+struct MatchedPair
+{
+  int first;
+  int second;
+  double distance;
+  bool operator<(const MatchedPair& o) const 
+  { return this->distance < o.distance; }
+};
+
+/// Collect together standard attributes and permit pT-sorting.
+struct PtThing
+{
+  PtThing() {}
+  PtThing(int index_, int id_,
+          double pt_, double eta_, double phi_, std::string name_="")
+   : index(index_), id(id_),
+     pt(pt_), eta(eta_), phi(phi_), name(name_) {}		  
+  ~PtThing() {}
+
+  /// Copy constructor.
+  PtThing(const PtThing& rhs)
+  {
+    *this = rhs; // this will call assignment operator
+  }
+
+  /// Assignment. 
+  PtThing& operator=(const PtThing& rhs)
+  {
+    index = rhs.index;
+    id    = rhs.id;
+    pt    = rhs.pt;
+    eta   = rhs.eta;
+    phi   = rhs.phi;
+	name  = rhs.name;
+    var   = rhs.var;
+    return *this;
+  }
+
+  /** Find \f$|Delta R = \sqrt{\Delta\phi^2+\Delta\eta^2}\f$ between this
+      PtThing and the given.
+  */
+  double deltaR(PtThing& thing)
+  {
+    double deta = eta - thing.eta;
+	double dphi = phi - thing.phi;
+    
+	// Make sure acute
+	if ( fabs(dphi) > TMath::Pi() ) dphi = TMath::TwoPi() - fabs(dphi);
+	return sqrt(deta*deta+dphi*dphi);
+  }
+
+  /// Compare direction of this PtThing with another using deltaR.
+  bool matches(PtThing& thing, double drcut=0.4)
+  {
+    return deltaR(thing) < drcut;
+  }
+
+  int index;
+  int id;
+  double pt;
+  double eta;
+  double phi;
+  std::string name;
+    
+  /// Map for additional variables.
+  std::map<std::string, double> var;
+    
+  /// To sort PtThings in descending pt.
+  bool operator<(const PtThing& o) const { return o.pt < this->pt; }
+};
+
+///
+std::vector<MatchedPair>
+deltaR(std::vector<PtThing>& v1, std::vector<PtThing>& v2)
+{
+  if ( v1.size() == 0 || v2.size() == 0 ) return std::vector<MatchedPair>();
+
+  std::vector<MatchedPair> mp(v1.size(), MatchedPair());
+  std::vector<MatchedPair> vp(v2.size(), MatchedPair());
+
+  for(unsigned i=0; i < v1.size(); i++)
+    {
+      for(unsigned j=0; j < v2.size(); j++)
+        {
+          vp[j].first = i;
+          vp[j].second = j;
+          vp[j].distance = v1[i].deltaR(v2[j]);
+        }
+      std::sort(vp.begin(), vp.end());
+      mp[i].first = i;
+      mp[i].second = vp[0].second;
+      mp[i].distance = vp[0].distance;
+    }
+  return mp;
 }
 
 #endif
@@ -360,14 +583,14 @@ int main(int argc, char** argv)
 
 
   // The root application is needed to make canvases visible during
-  // program execution. If this is not needed, just comment out the following
-  // line
+  // program execution. If this is not needed, just comment out the
+  // following line
 
   TApplication app("%(name)s", &argc, argv);
 
-  /*
-	 Notes:
-
+  /**
+	 Notes 1
+	 -------
 	 1. Use
 	   ofile = outputFile(cmdline.outputfile, stream)
 
@@ -392,6 +615,33 @@ int main(int argc, char** argv)
 		ofile.count("GoodEvent", 0)
 		ofile.count("Vertex", 0)
 		ofile.count("MET", 0)
+
+     Notes 2
+	 -------
+	 By default all variables are saved. Before the event loop, you can use
+  
+       select(objectname)
+	  
+     e.g.,
+	
+       select("GenParticle")
+  
+     to declare that you intend to select objects of this type. The
+	 selection is done using
+
+       select(objectname, index)
+	  
+     e.g.,
+	  
+       select("GenParticle", 3),
+  
+     which is called within the event loop. Call saveSelectedObjects()
+	 before a call to addEvent if you wish to save the selected objects.
+	 All other objects are saved by default.
+	 
+	 NB: If you declare your intention to select objects of a given type
+	     by calling select(objectname), but subsequently fail to select
+	     them using select(objectname, index) then none will be saved!
   */
 
   outputFile ofile(cmdline.outputfilename);
@@ -401,29 +651,31 @@ int main(int argc, char** argv)
   //---------------------------------------------------------------------------
 
 
-
   //---------------------------------------------------------------------------
   // Loop over events
   //---------------------------------------------------------------------------
+
 
   for(int entry=0; entry < nevents; ++entry)
 	{
 	  // Read event into memory
 	  stream.read(entry);
 
+	  // NB: call to clear object selection map (indexmap)
+	  initialize();
+	  
 	  // Uncomment the following line if you wish to copy variables into
 	  // structs. See the header file %(name)s.h to find out what structs
-	  // are available. Each struct contains the field "selected", which
-	  // can be set as needed. Call saveSelectedObjects() before a call to
-	  // addEvent if you wish to save only the selected objects.
-
+	  // are available. Alternatively, you can call individual fill functions.
 	  // fillObjects();
+
 
 	  // ---------------------
 	  // -- event selection --
 	  // ---------------------
 
 
+	  
 	  // ---------------------
 	  // -- fill histograms --
 	  // ---------------------	  
@@ -668,14 +920,6 @@ def setStyle():
 # -----------------------------------------------------------------------------
 #  Define variables to be read
 # -----------------------------------------------------------------------------
-cmdline = decodeCommandLine()
-
-#  Get names of ntuple files to be processed and open chain of ntuples
-
-filenames = getFilenames(cmdline.filelist)
-stream = itreestream(filenames, "%(treename)s")
-if not stream.good(): error("unable to open ntuple file(s)")
-
 %(selection)s
 '''
 
@@ -696,10 +940,17 @@ from %(name)slib import *
 # -----------------------------------------------------------------------------
 def main():
 
+	cmdline = decodeCommandLine()
+
+	#  Get names of ntuple files to be processed and open chain of ntuples
+
+	filenames = getFilenames(cmdline.filelist)
+	stream = itreestream(filenames, "%(treename)s")
+	if not stream.good(): error("unable to open ntuple file(s)")
+
 	# Get number of events
 	nevents = stream.size()
 	print "Number of events:", nevents
-
 
 	# Notes:
 	#
@@ -742,7 +993,6 @@ def main():
 	for entry in xrange(nevents):
 		stream.read(entry)
 
-		# -- Event selection
 
 	stream.close()
 	ofile.close()
@@ -1184,6 +1434,8 @@ def main():
 	selectdecl = []
 	selectimpl = []
 
+	selectimpl.append('// Select objects for which the select'\
+					  ' function was called')
 	selectimpl.append('void saveSelectedObjects()')
 	selectimpl.append('{')
 	selectimpl.append('  int n = 0;')
@@ -1193,33 +1445,33 @@ def main():
 	for index, objname in enumerate(keys):
 		values = vectormap[objname]
 		varname= values[0][-2]
-
+		count  = values[0][-1]
+		
 		structimplall.append('  fill%s();' % objname)
-		structimpl.append('static bool fill%sCalled = false;' % objname)
 		structimpl.append('inline void fill%s()' % objname)
 		structimpl.append('{')
-		structimpl.append('  fill%sCalled = true;' % objname)
-		structimpl.append('')
 		structimpl.append('  %s.resize(%s.size());' % (objname, varname))
 		structimpl.append('  for(unsigned int i=0; i < %s.size(); ++i)' % \
 						  objname)
 		structimpl.append('    {')
-		structimpl.append('      %s[i].selected\t= false;' % objname)
 
 		selectimpl.append('')
-		selectimpl.append('  if ( fill%sCalled )' % objname)
+		selectimpl.append('  n = 0;')
+		selectimpl.append('  try')
 		selectimpl.append('    {')
-		selectimpl.append('      n = 0;')
-		selectimpl.append('      for(unsigned int i=0; i < %s.size(); ++i)' % \
-						  objname)
+		selectimpl.append('       n = indexmap["%s"].size();' % objname)
+		selectimpl.append('    }')
+		selectimpl.append('  catch (...)')
+		selectimpl.append('    {}')
+		selectimpl.append('  if ( n > 0 )')
+		selectimpl.append('    {')
+		selectimpl.append('      std::vector<int>& '\
+						  'index = indexmap["%s"];' % objname)
+		selectimpl.append('      for(int i=0; i < n; ++i)')
 		selectimpl.append('        {')
-		selectimpl.append('          if ( ! %s[i].selected ) continue;' % \
-						  objname)
-
+		selectimpl.append('          int j = index[i];')
 		structdecl.append('struct %s_s' % objname)
 		structdecl.append('{')
-
-		structdecl.append('  %s\t%s;' % ("bool", "selected"))
 
 		for rtype, fldname, varname, count in values:
 			# treat bools as ints
@@ -1237,15 +1489,14 @@ def main():
 															  cast,
 															  varname))
 
-			selectimpl.append('          %s[n]\t= %s[i].%s;' % (varname,
-																objname,
-																fldname))
+			selectimpl.append('          %s[i]\t= %s[j];' % (varname,
+															 varname))
 
 		structdecl.append('};')
 		structdecl.append('std::vector<%s_s> %s(%d);' % (objname,
 														 objname,
 														 count))
-		structdecl.append('')
+		structdecl.append('')		
 		structdecl.append('std::ostream& '\
 						  'operator<<(std::ostream& os, const %s_s& o)' % \
 						  objname)
@@ -1264,7 +1515,6 @@ def main():
 
 		structimpl.append('    }')
 		structimpl.append('}\n')  # end of fill<objec>()
-		selectimpl.append('          n++;')
 		selectimpl.append('        }')
 		selectimpl.append('      n%s = n;' % objname)
 		selectimpl.append('    }')
@@ -1355,6 +1605,10 @@ def main():
 	record = TEMPLATE_H % names
 	open(outfilename,"w").write(record)
 
+	outfilename = "%s/include/%sutil.h" % (filename, filename)
+	record = UTIL_H % names
+	open(outfilename,"w").write(record)
+	
 	###
 	#print "OUT( %s )" % outfilename
 
