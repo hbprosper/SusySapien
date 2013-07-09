@@ -6,13 +6,14 @@
 // Description: Base class for helpers
 // Created:     Aug, 2010 Harrison B. Prosper
 //              01 May, 2011 HBP add param
-//$Revision: 1.5 $
+//$Revision: 1.6 $
 //-----------------------------------------------------------------------------
 #include <sstream>
 #include <memory>
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
-#include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
+//#include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
+#include "PhysicsTools/TheNtupleMaker/interface/HLTConfigProvider.h"
 #include "PhysicsTools/TheNtupleMaker/interface/Configuration.h"
 //-----------------------------------------------------------------------------
 /// Base class for helpers.
