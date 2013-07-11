@@ -15,7 +15,7 @@
 #                            counter
 #          04-Jul-2013 HBP - make a better analyzer work area
 #
-#$Id: mkanalyzer.py,v 1.23 2013/07/07 01:59:57 prosper Exp $
+#$Id: mkanalyzer.py,v 1.24 2013/07/08 04:32:15 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
 from string import atof, atoi, replace, lower,\
@@ -1009,10 +1009,12 @@ ifndef ROOTSYS
 $(error *** Please set up Root)
 endif
 
+name    := %(name)s
+
 # Sub-directories
 srcdir	:= src
 tmpdir	:= tmp
-libdir	:= $(PWD)/lib
+libdir	:= lib
 incdir	:= include
 
 $(shell mkdir -p tmp)
@@ -1044,7 +1046,7 @@ ccsrcs	:= $(wildcard $(srcdir)/*.cc)
 ccobjs	:= $(subst $(srcdir)/,$(tmpdir)/,$(ccsrcs:.cc=.o))
 objects	:= $(cppobjs) $(ccobjs)
 
-sharedlib := $(libdir)/lib%(name)s.so
+sharedlib := $(libdir)/lib$(name).so
 
 # Display list of applications to be built
 #say	:= $(shell echo -e "Apps: $(applications)" >& 2)
@@ -1076,8 +1078,9 @@ CPPFLAGS:= -I. -I$(incdir) -I$(srcdir) $(shell root-config --cflags)
 CXXFLAGS:= -c -g -O2 -ansi -Wall -pipe -fPIC
 
 #	C++ Linker
+#   set default path to shared library
 
-LD	:= g++
+LD	:= g++ -Wl,-rpath,$(PWD)/$(libdir)
 
 OS	:= $(shell uname -s)
 ifeq ($(OS),Darwin)
@@ -1093,8 +1096,7 @@ LDFLAGS := -g
 # 	Libraries
 
 LIBS	:=  \
-$(shell root-config --libs) \
--L$(libdir) -l%(name)s -lMinuit  -lMathMore -lMathCore
+$(shell root-config --libs) -L$(libdir) -lMinuit  -lMathMore -lMathCore
 
 
 #	Rules
@@ -1120,11 +1122,11 @@ lib:	$(sharedlib)
 
 $(applications)	: %(percent)s	: $(tmpdir)/%(percent)s.o  $(sharedlib)
 	@echo "---> Linking $@"
-	$(AT)$(LD) $(LDFLAGS) $< $(LIBS) -o $@
+	$(AT)$(LD) $(LDFLAGS) $< $(LIBS) -l%(name)s -o $@
 
 $(sharedlib)	: $(objects)
 	@echo "---> Linking `basename $@`"
-	$(AT)$(LDSHARED) $(LDFLAGS) -fPIC $(objects) -o $@
+	$(AT)$(LDSHARED) $(LDFLAGS) -fPIC $(objects) $(LIBS) -o $@
 
 $(cppobjs)	: $(tmpdir)/%(percent)s.o	: $(srcdir)/%(percent)s.cpp
 	@echo "---> Compiling `basename $<`" 
@@ -1235,13 +1237,14 @@ def main():
 			treename += " %s" % t[1]
 			start += 1
 
+	# --------------------------------------------------------------------
 	# Done with header, so loop over branch names
 	# and get list of potential struct names (first field of
 	# varname.
-
+	# --------------------------------------------------------------------
 	records = records[start:]
-
-	stnamemap = {}
+	tokens = []
+	tmpmap = {}
 	for index in xrange(len(records)):
 		record = records[index]
 		if record == "": continue
@@ -1249,30 +1252,62 @@ def main():
 		# split record into its fields
 		# varname = variable name as determined by mkvariables.py
 
-		rtype, branchname, varname, count = split(record, '/')
+		tokens.append(split(record, '/'))
+		rtype, branchname, varname, count = tokens[-1]
+		
+		# varname should have the format
+		# <objname>_<field-name>
 		t = split(varname,'_')
-		if len(t) > 1: # Need at least two fields
+		if len(t) > 1: # Need at least two fields for a struct
 			key = t[0]
-			if not stnamemap.has_key(key): stnamemap[key] = 0
-			stnamemap[key] += 1
+			if not tmpmap.has_key(key): tmpmap[key] = 0
+			tmpmap[key] += 1
 
-	# Loop over branch names
+	# If we have at least two fields, we'll create a struct
+	structname = {}
+	for key in tmpmap.keys():
+		if tmpmap[key] > 1:
+			structname[key] = tmpmap[key]
+			#print "struct: %s" % key
 
-	# If a variable name matches a struct name, this will generate a
-	# multiply defined error. One of the names must be altered. Let's
-	# take this to be the variable name.
-
+	# --------------------------------------------------------------------
+	# Loop over tokens
+	# --------------------------------------------------------------------
 	usednames = {}
 	vars = {}
 	vectormap = {}
 
-	for index in xrange(len(records)):
-		record = records[index]
-		if record == "": continue
+	for index, (rtype, branchname, varname, count) in enumerate(tokens):
 
-		rtype, branchname, varname, count = split(record, '/')
+		# Check if current variable is a leaf counter (flagged with an "*")
 
-		# Fix annoying types
+		t = split(count)
+		count = atoi(t[0]) # Change type to an integer
+		iscounter = t[-1] == "*"
+
+		# make sure names are unique. If they aren't bail out!
+
+		if vars.has_key(varname):
+			print "** error ** duplicate variable name %s; "\
+			"please fix variables.txt by hand"
+			sys.exit(0)
+
+		# do something about annoying types
+
+		if find(varname, '[') > -1 and count > 1:
+			print "** warning: access to %s[%d] "\
+				  "must be hand-coded" % (branchname, count)
+			continue
+		
+		if find(lower(rtype), 'ref') > -1:
+			print "** warning: access to %s of type %s "\
+			"must be hand-coded" % (branchname, rtype)
+			continue
+
+		# special handling for Delphes
+		if find(varname, '_size') > -1:
+			varname = 'n%s' % replace(varname, '_size', '')
+			
 		if rtype == "bool":
 			rtype = "int"
 		elif rtype == "long64":
@@ -1284,22 +1319,18 @@ def main():
 		elif rtype == "uint":
 			rtype = "int"			
 
-		# Check for leaf counter flag (a "*")
+		# If this is a leaf counter, which happens to have the same name
+		# as a struct, then just ignore for now
+		if iscounter:
+			if structname.has_key(varname):
+				continue
 
-		t = split(count)
-		count = atoi(t[0]) # Change type to an integer
-		iscounter = t[-1] == "*"
+		###D
+## 		print "iscounter( %s ) varname( %s ) count ( %d )" % (iscounter,
+## 															  varname,
+## 															  count)
 
-		# Check that varname is not the same as that of a potential
-		# struct
-		if stnamemap.has_key(varname):
-			if not iscounter:
-				# This is not a leaf counter, so alert user
-				print "\t**warning: multiply defined name, %s; changing " % \
-					  varname
-				print "\t           varname to %s1" % varname
-			varname = "%s1" % varname
-
+	
 		# Get object and field names
 		objname = ''
 		fldname = ''
@@ -1309,7 +1340,7 @@ def main():
 			# we have at least two fields in varname
 
 			key = t[0]
-			if stnamemap.has_key(key):
+			if structname.has_key(key):
 
 				# This branch potentially belongs to a struct.
 
@@ -1325,28 +1356,15 @@ def main():
 					objname = ''
 					fldname = ''
 
-		# Take care of duplicate names
-		n = 1
-		if vars.has_key(varname):
-			# duplicate name; add a number to object name
-			n, a, b, c, d = vars[varname]
-			n += 1
-			vars[varname][0] = n;
-
-			if fldname != '':
-				objname = "%s%d"  % (objname, n)
-				varname = "%s_%s" % (objname, fldname)
-			else:
-				varname = "%s%d" % (varname, n)
 
 		# update map for all variables
-		vars[varname] = [1, rtype, branchname, count, iscounter]
+		vars[varname] = [rtype, branchname, count, iscounter]
 
 		# vector types must have the same object name and a max count > 1
 		if count > 1:
 			if fldname != "":
 
-				# Make sure fldname is valid			
+				# Make sure fldname is a valid	c++ name		
 				if fldname[0] in ['0','1','2','3','4','5','6','7','8','9']:
 					fldname = 'f%s' % fldname
 
@@ -1354,6 +1372,7 @@ def main():
 				vectormap[objname].append((rtype, fldname, varname, count))
 				#print "%s.%s (%s)" % (objname, fldname, count)
 
+	
 	# Declare all variables
 
 	keys = vars.keys()
@@ -1364,11 +1383,7 @@ def main():
 	select  = []
 	impl = []
 	for index, varname in enumerate(keys):
-		n, rtype, branchname, count, iscounter = vars[varname]
-
-		# If this is a counter variable with a name identical to that of a
-		# vector variable, ignore it
-		if iscounter and vectormap.has_key(varname): continue
+		rtype, branchname, count, iscounter = vars[varname]
 
 		if macroMode:
 

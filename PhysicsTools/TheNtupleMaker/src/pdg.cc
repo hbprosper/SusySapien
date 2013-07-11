@@ -5,11 +5,13 @@
 #include <map>
 #include <cmath>
 #include <iomanip>
+#include <algorithm>
 #ifdef PROJECT_NAME
 #include "PhysicsTools/TheNtupleMaker/interface/pdg.h"
 #else
 #include "pdg.h"
 #endif
+
 //-----------------------------------------------------------------------------
 using namespace std;
 namespace {
@@ -1290,6 +1292,31 @@ string pdg::particleName(int pdgid)
 // Purpose: Print StdHep event in a tree format
 // Created: 06-Sep-2004 Harrison B. Prosper
 //---------------------------------------------------------------------------
+void 
+pdg::printTree(std::ostream& stream,
+               int    index,
+               int    nhep,
+               vector<int>& Pdgid,
+               vector<int>& Status,
+               vector<float>& Pt,
+               vector<float>& Eta,
+               vector<float>& Phi,
+               vector<float>& Mass,
+               std::vector<int>& firstDaughter,
+               std::vector<int>& lastDaughter,
+               int           printlevel,
+               int           maxdepth,
+               int           depth)
+{
+  vector<double> pt(Pt.size());    copy(Pt.begin(), Pt.end(), pt.begin());
+  vector<double> eta(Eta.size());  copy(Eta.begin(), Eta.end(), eta.begin());
+  vector<double> phi(Phi.size());  copy(Phi.begin(), Phi.end(), phi.begin());
+  vector<double> mass(Mass.size());copy(Mass.begin(), Mass.end(),mass.begin());
+  printTree(stream, index, nhep, Pdgid, Status,
+            pt, eta, phi, mass, firstDaughter, lastDaughter,
+            printlevel, maxdepth, depth);
+}
+
 void 
 pdg::printTree(std::ostream& stream,
                int    index,

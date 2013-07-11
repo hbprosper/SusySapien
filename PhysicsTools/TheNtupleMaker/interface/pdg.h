@@ -14,7 +14,7 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Fri Apr 04 2008
-// $Id: pdg.h,v 1.1 2010/09/25 21:34:55 prosper Exp $
+// $Id: pdg.h,v 1.1.1.1 2011/05/04 13:04:28 prosper Exp $
 //
 //-----------------------------------------------------------------------------
 #include <iostream>
@@ -28,7 +28,26 @@ struct pdg
   static
   std::string particleName(int pdgid);
 
+
   ///
+  static
+  void printTree(std::ostream& stream,
+                 int    index,
+                 int    nhep,
+                 std::vector<int>& pdgid,
+                 std::vector<int>& status,
+                 std::vector<float>& pt,
+                 std::vector<float>& eta,
+                 std::vector<float>& phi,
+                 std::vector<float>& mass,
+                 std::vector<int>& firstDaughter,
+                 std::vector<int>& lastDaughter,
+                 
+                 int           printlevel=1,
+                 int           maxdepth=10,
+                 int           depth=0);
+
+ ///
   static
   void printTree(std::ostream& stream,
                  int    index,

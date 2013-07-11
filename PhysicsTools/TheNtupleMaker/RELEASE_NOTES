@@ -1,4 +1,14 @@
-$Revision: 1.41 $
+$Revision: 1.42 $
+
+v5_5_2 July 10 2013
+-------------------
+	1. Fix the Makefile created by mkanalyzer.py so that it is unnecessary
+	to use LD_LIBRARY_PATH. Do this usig -Wl,-rparh,$(DEFAULT-PATH) switch 
+	to the linker.
+	2. Simplify mkanalzyer.py. This possible because we now rely on the
+	config file to provide unique names for objects.
+	3. Verify that the analyzer compiles and runs both on SLC5 as well as
+	on Darwin (a Mac).
 
 v5_5_0 July 8 2013
 ------------------

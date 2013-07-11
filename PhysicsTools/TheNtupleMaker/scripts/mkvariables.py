@@ -9,7 +9,7 @@
 #               type / branch[.leaf] / variable-name / maximum count
 #
 #               This file can then be used by mkanalyzer.py to create a
-#               reasonably comprehensive (first) version of a an analyzer.
+#               reasonably comprehensive (first) version of an analyzer.
 #
 #  Created:     Mon Oct  4, 2010
 #  Author:      Harrison B. Prosper
@@ -18,14 +18,16 @@
 #               22-Nov-2010 HBP allow multiple trees
 #               11-Jan-2011 HBP shorten genparticlehelper variable
 #               20-Jul-2011 HBP fix problem with basic type
-#$Id: mkvariables.py,v 1.17 2011/07/20 16:19:54 prosper Exp $
+#               09-Jul-2013 HBP re-order imports to avoid Error message from
+#                           root. Also do not convert names to lower case.
+#$Id: mkvariables.py,v 1.18 2013/07/05 21:01:54 prosper Exp $
 # -----------------------------------------------------------------------------
 import os, sys, re
-from ROOT import *
 from string import atof, atoi, replace, lower,\
 	 upper, joinfields, split, strip, find
 from elementtree.ElementTree import Element
 from time import sleep, ctime
+from ROOT import *
 # -----------------------------------------------------------------------------
 def usage():
 	print '''
@@ -89,7 +91,7 @@ def main():
 	print "==> output: variables.txt"
 
 	out = open("variables.txt", "w")
-	out.write("tree: %s\t%s\n" % (tname[0], ctime(time())))
+	out.write("tree: %s\t%s\n" % (tname[0], ctime()))
 	for name in tname[1:]:
 		out.write("tree: %s\n" % name)
 	out.write("\n")
@@ -150,7 +152,7 @@ def main():
 		bname = t[0]
 		
 		if len(t) > 1:
-			t[0] = lower(t[0])			
+			#t[0] = lower(t[0])			
 			a = patname.findall(t[0])
 			if len(a) == 0:
 				a = reconame.findall(t[0])
@@ -160,7 +162,8 @@ def main():
 				t[0] = a[0]
 		else:
 			if len(countname.findall(t[0])) > 0:
-				t[0] = split(lower(countname.sub("", t[0])),'_')[0]
+				#t[0] = split(lower(countname.sub("", t[0])),'_')[0]
+				t[0] = split(countname.sub("", t[0]),'_')[0]
 		#t[0] = replace(t[0], 'helper', '')
 
 		# check for duplicate names
