@@ -1,6 +1,6 @@
 $Revision: 1.43 $
 
-v5_6_0 Sept. 7 2013
+v5_6_3 Sept. 7 2013
 -------------------
 	1. Provide a better workaround the use of new C++ constructs in 
 	HLTConfigProvider etc. that causes codes using HelperFor not to
