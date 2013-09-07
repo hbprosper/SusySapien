@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # Create the skeleton of a user package
 # Created: 03-Sep-2010 Harrison B. Prosper
-#$Id: mkpackage.py,v 1.19 2012/05/08 01:58:06 prosper Exp $
+#$Id: mkpackage.py,v 1.20 2013/07/05 21:01:54 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import atof, atoi, replace, lower,\

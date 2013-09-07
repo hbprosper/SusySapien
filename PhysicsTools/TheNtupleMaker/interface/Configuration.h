@@ -10,12 +10,15 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Wed Sep 01, 2010
 //
-// $Id: Configuration.h,v 1.4 2011/08/01 07:47:55 prosper Exp $
+// $Id: Configuration.h,v 1.5 2012/05/07 04:32:42 prosper Exp $
 
 #include <string>
 #include <sstream>
-#include "FWCore/ParameterSet/interface/ParameterSet.h"
-#include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
+
+namespace edm {
+class ParameterSet;
+}
+class HLTConfigProvider;
 
 /// A singleton class to cache global objects.
 class Configuration

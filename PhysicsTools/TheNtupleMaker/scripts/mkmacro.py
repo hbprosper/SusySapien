@@ -9,7 +9,7 @@
 #          13-May-2012 HBP - add more comments, include object counters
 #          05-Jul-2013 HBP - defer much of the work to mkanalyzer.py
 #
-#$Id: mkmacro.py,v 1.8 2012/05/20 02:00:46 prosper Exp $
+#$Id: mkmacro.py,v 1.9 2013/07/05 21:01:54 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
 from string import atof, atoi, replace, lower,\

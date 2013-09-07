@@ -5,8 +5,8 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
 //         Updated:  Sun Jan 17 HBP - add log file
-// $Id: TestMethod.cc,v 1.2 2011/05/23 08:46:57 prosper Exp $
-// $Revision: 1.2 $
+// $Id: TestMethod.cc,v 1.3 2012/05/04 20:54:34 prosper Exp $
+// $Revision: 1.3 $
 //
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>

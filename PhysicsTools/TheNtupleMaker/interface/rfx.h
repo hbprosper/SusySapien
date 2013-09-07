@@ -17,9 +17,9 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Fri Apr 04 2008
-// $Id: rfx.h,v 1.3 2012/04/12 02:35:48 prosper Exp $
+// $Id: rfx.h,v 1.4 2012/05/04 20:54:34 prosper Exp $
 //
-//$Revision: 1.3 $
+//$Revision: 1.4 $
 //-----------------------------------------------------------------------------
 #include <iostream>
 #include <fstream>

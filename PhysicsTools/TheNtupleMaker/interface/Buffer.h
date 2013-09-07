@@ -33,11 +33,12 @@
 //                                   by default objectname = name of block
 //                                   in config file
 //
-// $Id: Buffer.h,v 1.9 2012/05/16 16:53:59 prosper Exp $
+// $Id: Buffer.h,v 1.10 2013/07/05 07:15:14 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/BufferUtil.h"
 #include "PhysicsTools/TheNtupleMaker/interface/Configuration.h"
+#include "FWCore/ParameterSet/interface/ParameterSet.h"
 // ----------------------------------------------------------------------------
 // We need a few templates to make the code generic. 
 // WARNING: keep code as short as possible to minimize code bloat due to 

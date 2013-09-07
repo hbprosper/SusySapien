@@ -4,7 +4,7 @@
 // Created: Summer-2002 Harrison B. Prosper
 // Updated: 05-Jun-2008 HBP Adapt to CMS
 ///////////////////////////////////////////////////////////////////////
-//$Revision: 1.1.1.1 $
+//$Revision: 1.2 $
 
 #include "PhysicsTools/TheNtupleMaker/interface/Connection.h"
 #include <iostream>

@@ -7,7 +7,7 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Tue Dec  8 15:40:26 CET 2009
-// $Id: Method.h,v 1.1.1.1 2011/05/04 13:04:28 prosper Exp $
+// $Id: Method.h,v 1.2 2011/05/23 08:46:57 prosper Exp $
 //
 // If using Python, include its header first to avoid annoying compiler
 // complaints.

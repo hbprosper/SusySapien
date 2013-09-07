@@ -9,7 +9,7 @@
 //              Mon May 07, 2012 HBP - value and prescale of 
 //                                     TriggerResultsHelper now returns -1
 //                                     if a trigger does not exist
-//$Revision: 1.9 $
+//$Revision: 1.10 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -18,11 +18,15 @@
 #include <vector>
 #include <map>
 
-#include "DataFormats/Common/interface/TriggerResults.h"
-#include "FWCore/Common/interface/TriggerNames.h"
-#include "FWCore/Framework/interface/Event.h"
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/user.h"
+
+#include "FWCore/Framework/interface/Event.h"
+#include "FWCore/ParameterSet/interface/ParameterSet.h"
+#include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
+
+#include "DataFormats/Common/interface/TriggerResults.h"
+#include "FWCore/Common/interface/TriggerNames.h"
 //-----------------------------------------------------------------------------
 using namespace edm;
 using namespace reco;

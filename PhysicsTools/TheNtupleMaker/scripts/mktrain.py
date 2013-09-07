@@ -6,7 +6,7 @@
 # Updated: 20-Oct-2006 HBP & Daekwang Kau
 #          02-Apr-2008 HBP some minor fixes for Serban
 #          11-Nov-2010 HBP fix sh script when -mr is specified
-#$Id:$
+#$Id: mktrain.py,v 1.16 2011/05/07 18:39:14 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys
 from string import *

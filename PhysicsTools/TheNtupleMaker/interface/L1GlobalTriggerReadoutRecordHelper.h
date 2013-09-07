@@ -6,7 +6,7 @@
 // Description: TheNtupleMaker helper class for L1GlobalTriggerReadoutRecord
 // Created:     Fri Oct  8 18:15:16 2010
 // Author:      Harrison B. Prosper      
-//$Revision: 1.1 $
+//$Revision: 1.1.1.1 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>

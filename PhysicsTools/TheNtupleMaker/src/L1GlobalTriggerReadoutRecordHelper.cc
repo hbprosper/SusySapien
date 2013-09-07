@@ -4,10 +4,14 @@
 // Description: TheNtupleMaker helper class for L1GlobalTriggerReadoutRecord
 // Created:     Fri Oct  8 18:15:16 2010
 // Author:      Harrison B. Prosper      
-//$Revision: 1.1 $
+//$Revision: 1.1.1.1 $
 //-----------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/L1GlobalTriggerReadoutRecordHelper.h"
 #include "PhysicsTools/TheNtupleMaker/interface/CurrentEvent.h"
+//-----------------------------------------------------------------------------
+#include "FWCore/Framework/interface/Event.h"
+#include "FWCore/ParameterSet/interface/ParameterSet.h"
+#include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
 //-----------------------------------------------------------------------------
 using namespace std;
 //-----------------------------------------------------------------------------

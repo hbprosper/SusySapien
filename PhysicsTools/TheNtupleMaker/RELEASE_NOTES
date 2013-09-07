@@ -1,11 +1,27 @@
-$Revision: 1.42 $
+$Revision: 1.43 $
+
+v5_6_0 Sept. 7 2013
+-------------------
+	1. Provide a better workaround the use of new C++ constructs in 
+	HLTConfigProvider etc. that causes codes using HelperFor not to
+	compile. HelperFor no longer includes the HLTConfigProvider, Event,
+	and ParameterSet headers. Instead HelperFor uses forward declarations 
+	and the headers are included in the codes that include the header for 
+	HelperFor.
+	The hacked HLTConfigProvider header has been removed from the release.
+	2. Add Sam's rmhelper.py script, which removes the specified helper from
+	a local release.
+
+	3. Now under git control. The new repository for TNM is at
+
+		https://github.com/hbprosper/SusySapien.git 
 
 v5_5_2 July 10 2013
 -------------------
 	1. Fix the Makefile created by mkanalyzer.py so that it is unnecessary
 	to use LD_LIBRARY_PATH. Do this usig -Wl,-rparh,$(DEFAULT-PATH) switch 
 	to the linker.
-	2. Simplify mkanalzyer.py. This possible because we now rely on the
+	2. Simplify mkanalzyer.py. This is possible because we now rely on the
 	config file to provide unique names for objects.
 	3. Verify that the analyzer compiles and runs both on SLC5 as well as
 	on Darwin (a Mac).

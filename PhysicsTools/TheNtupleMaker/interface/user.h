@@ -13,7 +13,7 @@
 //              Thu Sep 02, 2010 HBP - move HelpFor to separate file
 //              Sat Jun 25, 2011 HBP - add template class for ints etc.
 //              Thu Jul 04, 2013 HBP - add BasType bool
-//$Revision: 1.8 $
+//$Revision: 1.9 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -22,7 +22,7 @@
 #include "FWCore/Common/interface/TriggerNames.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
-#include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
+//#include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
 #include "DataFormats/Common/interface/TriggerResults.h"
 #include "DataFormats/METReco/interface/HcalNoiseRBX.h"
 #include "PhysicsTools/TheNtupleMaker/interface/HelperFor.h"

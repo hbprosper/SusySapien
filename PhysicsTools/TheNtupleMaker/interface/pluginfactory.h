@@ -9,7 +9,7 @@
 */
 //
 // Original Author:  HBP
-// $Id: pluginfactory.h,v 1.8 2010/09/19 14:09:53 prosper Exp $
+// $Id: pluginfactory.h,v 1.1.1.1 2011/05/04 13:04:28 prosper Exp $
 //
 //
 

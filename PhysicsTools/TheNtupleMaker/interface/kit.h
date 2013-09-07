@@ -19,9 +19,9 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  Fri Apr 04 2008
-// $Id: kit.h,v 1.2 2010/11/08 11:00:35 prosper Exp $
+// $Id: kit.h,v 1.1.1.1 2011/05/04 13:04:28 prosper Exp $
 //
-//$Revision: 1.2 $
+//$Revision: 1.1.1.1 $
 //-----------------------------------------------------------------------------
 #include <iostream>
 #include <fstream>

@@ -46,7 +46,7 @@
 //          22-Nov-2010 Allow reading of multiple trees using friend
 //                      mechanism
 //          22-Nov-2011 Handle storing of strings
-//$Revision: 1.4 $
+//$Revision: 1.5 $
 //----------------------------------------------------------------------------
 #include <vector>
 #include <string>

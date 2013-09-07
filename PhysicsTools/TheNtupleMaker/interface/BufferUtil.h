@@ -16,7 +16,7 @@
 //                                   by default objectname = name of block
 //                                   in config file
 //
-// $Id: BufferUtil.h,v 1.9 2012/05/16 16:53:59 prosper Exp $
+// $Id: BufferUtil.h,v 1.10 2013/07/05 07:15:14 prosper Exp $
 // ----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python/type_id.hpp>

@@ -63,7 +63,7 @@
 //                                   Implement wildcard for triggers and
 //                                   range processing for all variables
 //                   Thu Jul 04 2013 HBP - fix variables.txt
-// $Id: TheNtupleMaker.cc,v 1.22 2012/05/16 16:53:59 prosper Exp $
+// $Id: TheNtupleMaker.cc,v 1.23 2013/07/05 07:15:14 prosper Exp $
 // ---------------------------------------------------------------------------
 #include <boost/regex.hpp>
 #include <memory>
@@ -77,10 +77,7 @@
 #include "FWCore/Utilities/interface/Exception.h"
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/EDAnalyzer.h"
-#include "FWCore/Framework/interface/Event.h"
-#include "FWCore/Framework/interface/FileBlock.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
-#include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/FWLite/interface/AutoLibraryLoader.h"
 #include "FWCore/MessageLogger/interface/MessageLogger.h"
 
@@ -90,7 +87,10 @@
 #include "PhysicsTools/TheNtupleMaker/interface/CurrentEvent.h"
 #include "PhysicsTools/TheNtupleMaker/interface/Configuration.h"
 
+#include "FWCore/Framework/interface/Event.h"
+#include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
+
 
 #include "TROOT.h"
 #include "TSystem.h"
@@ -173,7 +173,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   : ntuplename_(iConfig.getUntrackedParameter<string>("ntupleName")), 
     output(otreestream(ntuplename_,
                        "Events", 
-                       "created by TheNtupleMaker $Revision: 1.22 $")),
+                       "created by TheNtupleMaker $Revision: 1.23 $")),
     logfilename_("TheNtupleMaker.log"),
     log_(new std::ofstream(logfilename_.c_str())),
     macroname_(""),
@@ -195,7 +195,7 @@ TheNtupleMaker::TheNtupleMaker(const edm::ParameterSet& iConfig)
   // --------------------------------------------------------------------------
   TFile* file = output.file();
   ptree_ = new TTree("Provenance",
-                     "created by TheNtupleMaker $Revision: 1.22 $");
+                     "created by TheNtupleMaker $Revision: 1.23 $");
   string cmsver("unknown");
   if ( getenv("CMSSW_VERSION") > 0 ) cmsver = string(getenv("CMSSW_VERSION"));
   ptree_->Branch("cmssw_version", (void*)(cmsver.c_str()), "cmssw_version/C");

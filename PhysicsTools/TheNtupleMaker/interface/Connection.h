@@ -6,7 +6,7 @@
 // Created: 25-Aug-2002 Harrison B. Prosper
 // Updated: 05-Jun-2008 HBP Adapt to CMS 
 /////////////////////////////////////////////////////////////////////////
-//$Revision: 1.2 $
+//$Revision: 1.1.1.1 $
 
 #include <Python.h>
 #include "PhysicsTools/TheNtupleMaker/interface/Slot.h"

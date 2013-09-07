@@ -4,10 +4,15 @@
 // Description: TheNtupleMaker helper class for GenEventInfoProduct
 // Created:     Wed Feb 16 01:43:26 2011
 // Author:      Harrison B. Prosper      
-//$Revision: 1.5 $
+//$Revision: 1.6 $
 //-----------------------------------------------------------------------------
 #include <stdlib.h>
+
 #include "PhysicsTools/TheNtupleMaker/interface/GenEventInfoProductHelper.h"
+#include "FWCore/Framework/interface/Event.h"
+#include "FWCore/ParameterSet/interface/ParameterSet.h"
+#include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
+
 #include "LHAPDF/LHAPDF.h"
 //-----------------------------------------------------------------------------
 using namespace std;

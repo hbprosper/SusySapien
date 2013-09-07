@@ -15,7 +15,7 @@
 //                                   the same as that specified in the config
 //                                   file.
 //
-// $Id: BufferUtil.cc,v 1.5 2012/05/16 16:54:00 prosper Exp $
+// $Id: BufferUtil.cc,v 1.6 2013/07/05 07:15:14 prosper Exp $
 //-----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python/type_id.hpp>

@@ -16,9 +16,9 @@
 //
 // Original Author:  Harrison B. Prosper
 //         Created:  December 2009
-// $Id: ClassMembers.h,v 1.1.1.1 2011/05/04 13:04:28 prosper Exp $
+// $Id: ClassMembers.h,v 1.2 2012/04/12 02:35:48 prosper Exp $
 //
-//$Revision: 1.1.1.1 $
+//$Revision: 1.2 $
 //-----------------------------------------------------------------------------
 #include <iostream>
 #include <vector>

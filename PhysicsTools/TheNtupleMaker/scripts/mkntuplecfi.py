@@ -19,7 +19,7 @@
 #              24-Mar-2012 HBP - change ntuplecfi to ntuple_cfi
 #              05-Jul-2013 HBP - simplify names of buffers
 #-----------------------------------------------------------------------------
-#$Id: mkntuplecfi.py,v 1.22 2013/07/05 21:01:54 prosper Exp $
+#$Id: mkntuplecfi.py,v 1.23 2013/07/05 23:02:36 prosper Exp $
 #-----------------------------------------------------------------------------
 import sys, os, re, platform
 from ROOT import *
@@ -57,7 +57,7 @@ if not os.environ.has_key("CMSSW_BASE"):
 	sys.exit(0)
 
 BASE = os.environ["PWD"]
-REVISION="$Revision: 1.22 $"
+REVISION="$Revision: 1.23 $"
 rev = split(REVISION)[1]
 VERSION        = \
 """

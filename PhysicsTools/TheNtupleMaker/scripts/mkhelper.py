@@ -5,7 +5,8 @@
 #          22-Jul-2011 HBP - fix duplicate HelperFor bug
 #          22-Apr-2012 HBP - use SINGLETON and COLLECTION keywords
 #          03-May-2012 HBP - add methods automatically
-#$Id: mkhelper.py,v 1.13 2012/05/16 16:54:00 prosper Exp $
+#
+#$Id: mkhelper.py,v 1.14 2013/07/05 21:01:54 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import atof, atoi, replace, lower,\
@@ -269,6 +270,9 @@ def wrplugincode(names):
 // Author:      %(author)s      
 //-----------------------------------------------------------------------------
 #include "%(package)s/%(subpackage)s/interface/%(filename)s.h"
+#include "FWCore/Framework/interface/Event.h"
+#include "FWCore/ParameterSet/interface/ParameterSet.h"
+#include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
 //-----------------------------------------------------------------------------
 using namespace std;
 %(usingnamespace)s

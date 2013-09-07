@@ -3,7 +3,7 @@
 # File: unweight.py
 # Description: Create unweighted events from weighted ones.
 # Created: 19-Dec-2005 Harrison B. Prosper
-#$Id: unweight.py,v 1.16 2011/05/07 18:39:15 prosper Exp $
+#$Id: unweight.py,v 1.17 2011/05/18 08:51:48 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys
 from string import *

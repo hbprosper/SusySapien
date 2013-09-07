@@ -9,13 +9,18 @@
 // Original Author:  Harrison B. Prosper
 //         Created:  Mon Mar  8, 2010
 //
-// $Id: CurrentEvent.h,v 1.5 2010/10/11 02:15:31 prosper Exp $
+// $Id: CurrentEvent.h,v 1.1.1.1 2011/05/04 13:04:28 prosper Exp $
 
 #include <map>
 #include <vector>
 #include <string>
-#include "FWCore/Framework/interface/Event.h"
+//#include "FWCore/Framework/interface/Event.h"
 #include "PhysicsTools/TheNtupleMaker/interface/BufferUtil.h"
+
+namespace edm {
+class Event;
+class EventSetup;
+}
 
 /// A singleton class to cache event.
 class CurrentEvent

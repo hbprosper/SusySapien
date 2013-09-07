@@ -7,7 +7,7 @@
 //              Tue Aug 24, 2010 HBP - add HcalNoiseRBXHelper
 //              Thu Sep 02, 2010 HBP - update to new version of HelperFor
 //                               HBP - move classes to separate files
-//$Revision: 1.1.1.1 $
+//$Revision: 1.2 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>
@@ -16,9 +16,12 @@
 #include <vector>
 #include <map>
 
-#include "FWCore/Framework/interface/Event.h"
 #include "PhysicsTools/TheNtupleMaker/interface/Buffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/GenParticleHelper.h"
+
+#include "FWCore/Framework/interface/Event.h"
+#include "FWCore/ParameterSet/interface/ParameterSet.h"
+#include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
 //-----------------------------------------------------------------------------
 using namespace edm;
 using namespace reco;

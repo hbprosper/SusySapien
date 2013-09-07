@@ -3,7 +3,7 @@
 # Filename: mkmethodlist.py
 # Description: For given class, make an exhaustive listing of methods
 # Created:  10-Doc-2009 HBP
-#$Id: mkmethodlist.py,v 1.15 2011/05/07 18:39:14 prosper Exp $
+#$Id: mkmethodlist.py,v 1.16 2013/07/05 21:01:54 prosper Exp $
 #-----------------------------------------------------------------------------
 import os, sys, re
 from sys    import exit

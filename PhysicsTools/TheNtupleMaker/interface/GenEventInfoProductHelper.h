@@ -6,7 +6,7 @@
 // Description: TheNtupleMaker helper class for GenEventInfoProduct
 // Created:     Wed Feb 16 01:43:26 2011
 // Author:      Harrison B. Prosper      
-//$Revision: 1.1.1.1 $
+//$Revision: 1.2 $
 //-----------------------------------------------------------------------------
 #include <algorithm>
 #include <iostream>

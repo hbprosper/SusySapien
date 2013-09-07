@@ -1,7 +1,7 @@
 // ----------------------------------------------------------------------------
 // Created: Fri Oct  8 18:15:16 2010 by mkuserplugin.py
 // Author:      Harrison B. Prosper      
-//$Revision: 1.1.1.1 $
+//$Revision: 1.2 $
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/UserBuffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"

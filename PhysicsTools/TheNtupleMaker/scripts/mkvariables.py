@@ -20,7 +20,7 @@
 #               20-Jul-2011 HBP fix problem with basic type
 #               09-Jul-2013 HBP re-order imports to avoid Error message from
 #                           root. Also do not convert names to lower case.
-#$Id: mkvariables.py,v 1.18 2013/07/05 21:01:54 prosper Exp $
+#$Id: mkvariables.py,v 1.19 2013/07/11 01:54:22 prosper Exp $
 # -----------------------------------------------------------------------------
 import os, sys, re
 from string import atof, atoi, replace, lower,\

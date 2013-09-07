@@ -6,16 +6,25 @@
 // Description: Base class for helpers
 // Created:     Aug, 2010 Harrison B. Prosper
 //              01 May, 2011 HBP add param
-//$Revision: 1.6 $
+// Updated:     05 Sep, 2013 HBP remove explicit dependency on Event.h
+//                           HLTConfigProvider.h and ParameterSet.h
+//$Revision: 1.7 $
 //-----------------------------------------------------------------------------
 #include <sstream>
 #include <memory>
-#include "FWCore/Framework/interface/Event.h"
-#include "FWCore/ParameterSet/interface/ParameterSet.h"
-//#include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
-#include "PhysicsTools/TheNtupleMaker/interface/HLTConfigProvider.h"
 #include "PhysicsTools/TheNtupleMaker/interface/Configuration.h"
+#include "PhysicsTools/TheNtupleMaker/interface/CurrentEvent.h"
 //-----------------------------------------------------------------------------
+
+// The headers for these must be included in the codes that include this
+// header. These codes are typically helpers.
+
+namespace edm {
+class Event;
+class ParameterSet;
+}
+class HLTConfigProvider;
+
 /// Base class for helpers.
 template <typename X>
 class HelperFor
@@ -40,10 +49,10 @@ public:
   virtual ~HelperFor() {}
 
   ///
-  void cacheEvent(const edm::Event& e, const edm::EventSetup& s) 
+  void cacheEvent()
   { 
-    event = &e;
-    eventsetup = &s;
+    event      = CurrentEvent::instance().get();
+    eventsetup = CurrentEvent::instance().getsetup();
     hltconfig  = Configuration::instance().getHLTconfig();
   }
 
@@ -102,22 +111,6 @@ public:
       return "";
   }
   
-//   template <>
-//   std::string parameter<std::string>(std::string key)
-//   {
-//     if ( parameters.find(key) != parameters.end() ) 
-//       return parameters[key];
-//     else
-//       return "";
-//   }
-  
- //  std::istringstream& parameter(std::string key)
-  //   {
-//     std::string value("");
-//     if ( parameters.find(key) != parameters.end() ) value = parameters[key];
-//     std::auto_ptr<std::istringstream> iss(new std::istringstream(value));
-//     return *(iss->get());
-//   }
 
   /// Pointer to ParameterSet initialized from config file.
   const edm::ParameterSet* config;

@@ -5,7 +5,7 @@
 # Created:     26-Aug-2010 Harrison B. Prosper
 #              31-Mar-2011 HBP - include typedefs
 #              23-Apr-2012 HBP - use import to load class map
-#$Id: mkclassmap.py,v 1.23 2013/07/05 21:01:54 prosper Exp $
+#$Id: mkclassmap.py,v 1.24 2013/07/05 23:02:36 prosper Exp $
 #---------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *

@@ -10,7 +10,7 @@
 #                      classes
 #          18-Apr-2012 HBP use inclusionlist.txt to include specific
 #                      classes not picked up automatically
-#$Id: mkclasslist.py,v 1.22 2012/05/05 15:17:47 prosper Exp $
+#$Id: mkclasslist.py,v 1.23 2013/07/05 21:01:54 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *

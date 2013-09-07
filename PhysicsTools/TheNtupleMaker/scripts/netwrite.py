@@ -15,7 +15,7 @@
 #          15-May-2010 HBP Change format of floats - use more precision
 #          17-Sep-2010 HBP handle abs(..) variables
 #          18-Oct-2010 HBP remove ";" from end of namespace
-#$Id: netwrite.py,v 1.16 2011/05/07 18:39:15 prosper Exp $
+#$Id: netwrite.py,v 1.17 2013/07/05 21:01:54 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys
 from getopt import getopt, GetoptError

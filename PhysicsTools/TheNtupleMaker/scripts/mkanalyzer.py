@@ -15,7 +15,7 @@
 #                            counter
 #          04-Jul-2013 HBP - make a better analyzer work area
 #
-#$Id: mkanalyzer.py,v 1.24 2013/07/08 04:32:15 prosper Exp $
+#$Id: mkanalyzer.py,v 1.25 2013/07/11 01:54:22 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re, posixpath
 from string import atof, atoi, replace, lower,\

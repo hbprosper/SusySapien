@@ -8,7 +8,7 @@
 //              Thu Aug 25, 2010 HBP - rename classes
 //              Fri Jun 24, 2011 HBP - add sint and vint
 //              Fri Jun 25, 2011 HBP - add suint and vuint
-//$Revision: 1.5 $
+//$Revision: 1.6 $
 //-----------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/UserBuffer.h"
 #include "PhysicsTools/TheNtupleMaker/interface/pluginfactory.h"

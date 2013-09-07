@@ -12,7 +12,7 @@
 #          31-Mar-2012 HBP   use simplified classes.txt format. change name
 #                            to classlist.txt
 #          22-Apr-2012 HBP   use SINGLETON and COLLECTION keywords
-#$Id: mkplugins.py,v 1.22 2013/07/05 21:01:54 prosper Exp $
+#$Id: mkplugins.py,v 1.23 2013/07/05 23:02:36 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import atof, atoi, replace, lower,\

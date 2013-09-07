@@ -17,12 +17,15 @@
 //                   Thu Jul 04 2013 HBP - add objectname to argument fof init
 //                                   by default objectname = name of block
 //                                   in config file
+//                   Thu Sep 05 2013 HBP - remove arguments from cacheEvent
+//                                   and use singleton CurrentEvent instead
 //
-// $Id: UserBuffer.h,v 1.12 2012/05/16 16:53:59 prosper Exp $
+// $Id: UserBuffer.h,v 1.13 2013/07/05 07:15:14 prosper Exp $
 //
 // ----------------------------------------------------------------------------
 #include "PhysicsTools/TheNtupleMaker/interface/BufferUtil.h"
 #include "PhysicsTools/TheNtupleMaker/interface/Configuration.h"
+#include "FWCore/ParameterSet/interface/ParameterSet.h"
 // ----------------------------------------------------------------------------
 /** Model a helper buffer.
     A buffer is a thing with<br>
@@ -196,8 +199,9 @@ struct UserBuffer  : public BufferThing
     // 1. void analyzeEvent()
     // 2. void analyzeObject()
     
-    // Cache event and eventsetup in helper
-    helper_.cacheEvent(event, eventsetup);
+    // Cache event, eventsetup, and hltconfig in helper
+    //helper_.cacheEvent(event, eventsetup);
+    helper_.cacheEvent();
 
      
     // Perform (optional) user event-level analysis
@@ -449,7 +453,7 @@ struct UserBuffer<edm::Event, Y, SINGLETON> : public BufferThing
     // analyzeEvent and analyzeObject do the same thing
 
     // Cache event and eventsetup in helper
-    helper_.cacheEvent(event, eventsetup);
+    helper_.cacheEvent();
     
     // Perform (optional) user event-level analysis
     helper_.analyzeEvent();

@@ -18,7 +18,7 @@
 //                   Sat May 21 2011 HBP - clear memory occupied by objects
 //                                         returned by value
 // 
-// $Id: ClassFunction.cc,v 1.2 2012/04/04 01:32:42 prosper Exp $
+// $Id: ClassFunction.cc,v 1.3 2012/05/04 20:54:37 prosper Exp $
 //-----------------------------------------------------------------------------
 #include <Python.h>
 #include <boost/python.hpp>

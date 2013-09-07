@@ -11,7 +11,7 @@
 #                          python/classmap.py
 #              24-Apr-2012 HBP, get list of potential classes from
 #                          plugins/classlist.txt instead
-#$Id: mkvomit.py,v 1.4 2013/07/05 21:01:54 prosper Exp $
+#$Id: mkvomit.py,v 1.5 2013/07/05 23:02:36 prosper Exp $
 #---------------------------------------------------------------------------
 import os, sys, re
 from ROOT import *

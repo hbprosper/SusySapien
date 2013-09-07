@@ -3,7 +3,7 @@
 # File: memmon.py
 # A memory monitor
 # Created May 20 2011 Harrison B. Prosper
-#$Id:$
+#$Id: memmon.py,v 1.1 2011/05/23 14:32:07 prosper Exp $
 #------------------------------------------------------------------------------
 import os, sys, re
 from string import *
